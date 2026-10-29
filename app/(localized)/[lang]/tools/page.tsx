@@ -5,10 +5,11 @@ import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import type { ToolPageContent } from '@/content/toolPages';
 import { getLocalizedToolPages } from '@/i18n/toolPageContent';
-import { REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
+import { REVIEW_CATALOG_SLUGS, REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
+import { isSeoFullIndex } from '@/lib/seoFlags';
 import { Panel } from '@/components/darkroom/panel';
 import ToolCatalog, { type ToolCatalogLabels } from '@/components/tools/tool-catalog';
-import { toCatalogTool } from '@/components/tools/tool-catalog-data';
+import { buildCatalogTools } from '@/components/tools/tool-catalog-data';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { localizeHref } from '@/i18n/locales';
 import { getServerT } from '@/lib/i18n/server';
@@ -34,14 +35,20 @@ export default async function ToolsIndexPage({ params }: PageParams) {
   // the rest render exactly like them. (Until 2026-10-28 this page filtered to
   // the 17 allowlisted slugs, which hid the whole Audio category and ~60 tools
   // that the home-page converter offered with no page to find them from.)
-  const localizedPages = getLocalizedToolPages(locale);
-  const allowlisted = new Set<string>(REVIEW_INDEXED_TOOL_SLUGS);
+  //
+  // MM84 review mode (flag off): the 24 copy-bar tools are full cards; every
+  // other non-alias tool is in a collapsed, server-rendered "All tools" list per
+  // category with rel="nofollow"; alias pages are not listed at all (search
+  // finds their primary). With NEXT_PUBLIC_SEO_FULL_INDEX on, all full cards.
+  const localizedPages: ToolPageContent[] = getLocalizedToolPages(locale);
   const contentStudio = localizedPages.find((tool) => tool.slug === 'content-studio');
   // MM48: Motion is featured beside Darkroom, never in the category grid.
   const motion = localizedPages.find((tool) => tool.slug === 'motion');
-  const catalogTools = localizedPages
-    .filter((tool): tool is ToolPageContent => tool.category !== 'contentStudio' && tool.category !== 'motion')
-    .map((tool) => toCatalogTool(tool, allowlisted.has(tool.slug)));
+  const catalogTools = buildCatalogTools(localizedPages, {
+    featuredSlugs: new Set<string>(REVIEW_INDEXED_TOOL_SLUGS),
+    listedSlugs: new Set<string>(REVIEW_CATALOG_SLUGS),
+    fullIndex: isSeoFullIndex(),
+  });
   // Resolved here because `toolsIndex.*` lives in the server-only `pages`
   // shard; the client catalog cannot translate them itself. The two templated
   // strings are passed with their placeholders intact (the server `t` leaves
@@ -69,6 +76,7 @@ export default async function ToolsIndexPage({ params }: PageParams) {
     allCategories: t('toolsIndex.allCategories'),
     noResults: raw('toolsIndex.noResults'),
     popular: t('toolsIndex.popular'),
+    moreTools: raw('toolsIndex.moreTools'),
   };
   return (
     <>

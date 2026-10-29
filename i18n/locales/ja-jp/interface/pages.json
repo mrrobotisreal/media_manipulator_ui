@@ -2074,7 +2074,8 @@
       "ai": "AIツール",
       "privacy": "プライバシー",
       "editor": "エディター"
-    }
+    },
+    "moreTools": "{{category}}：ほか {{count}} 件"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "パンくずリスト",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "よくある質問",
     "faqHeading": "よくある質問",
     "relatedToolsAriaLabel": "関連ツール",
-    "relatedToolsHeading": "関連ツール"
+    "relatedToolsHeading": "関連ツール",
+    "aliasHeading": "詳しいガイド・実例・よくある質問",
+    "aliasLink": "{{name}} の詳しいガイドを読む",
+    "workedExamplesHeading": "実例",
+    "whenNotToUseHeading": "このツールが向かない場合"
   },
   "contentStudioGuide": {
     "summaryTitle": "Darkroomの仕組み — クイックガイド",

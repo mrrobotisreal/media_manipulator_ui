@@ -2074,7 +2074,8 @@
       "ai": "أدوات الذكاء الاصطناعي",
       "privacy": "الخصوصية",
       "editor": "المحررات"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} أخرى"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "مسار التنقل",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "الأسئلة الشائعة",
     "faqHeading": "الأسئلة الشائعة",
     "relatedToolsAriaLabel": "أدوات ذات صلة",
-    "relatedToolsHeading": "أدوات ذات صلة"
+    "relatedToolsHeading": "أدوات ذات صلة",
+    "aliasHeading": "الدليل الكامل والأمثلة والأسئلة الشائعة",
+    "aliasLink": "اقرأ الدليل الكامل لأداة {{name}}",
+    "workedExamplesHeading": "أمثلة عملية",
+    "whenNotToUseHeading": "متى لا تستخدم هذه الأداة"
   },
   "contentStudioGuide": {
     "summaryTitle": "كيف يعمل Darkroom: دليل سريع",

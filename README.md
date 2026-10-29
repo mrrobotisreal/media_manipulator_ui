@@ -32,7 +32,7 @@ This repository is the **frontend** for [media-manipulator.com](https://www.medi
 
 - ⚡ **Next.js 16 App Router** — public pages are **server‑rendered/statically generated**, so titles, copy, FAQs, and JSON‑LD are present in view‑source for SEO. Interactive tools load as client‑only islands.
 - 🎬 **Content Studio** — a Premiere‑style multi‑track timeline editor (video + image + audio layers → MP4 export), entirely in the browser.
-- 🧰 **65 single‑purpose tools** across image, video, audio, AI, and privacy/metadata categories, each with a unique landing page.
+- 🧰 **98 tools** (`TOOL_PAGES` in `content/toolPages.ts`: 112 pages, of which 14 are thin alias pages for duplicate‑intent slugs that canonicalise to their primary, `content/toolAliases.ts`) across image, video, audio, AI, and privacy/metadata categories, each with a unique landing page. The 24 allowlisted and pending pages meet the MM84 copy bar (`content/toolCopy.test.ts`).
 - 🌍 **i18n‑ready** via `i18next` / `react-i18next` with feature‑sharded locale bundles.
 - 🔒 **AdSense‑review‑safe by design** — ads are disabled by default, hard‑guarded to a single in‑content placement, and a CI‑style audit (`npm run audit:ads`) blocks regressions.
 - 🎨 **Tailwind CSS v4** + **Radix UI** primitives, dark/light theming, and a custom “sci‑fi frame” visual language.
@@ -175,7 +175,7 @@ This app is built to pass Google AdSense review cleanly:
 - **Mock ads** (`components/mock-ad.tsx`) are local‑preview‑only and never contact Google.
 - **Review allowlist** (`content/reviewAllowlist.ts`) drives which tools are indexed, listed, sitemapped, and ad‑eligible. The homepage and review pages never link into non‑allowlisted tools.
 - **Loader on ad‑eligible pages only (MM82, ADR‑0016).** With ads on, `components/ads/adsense-loader.tsx` loads Google's script from the layout on ad‑eligible pages (`isAdEligiblePath`), after the Consent Mode defaults (all ad signals denied); units show to anonymous and free visitors only.
-- **`npm run audit:ads`** fails the build on any regression (placeholder leakage, ad script outside the config/loader, disallowed placements, macOS artifacts, the loader or a unit on ineligible pages, an ads‑on build with no loader + slot on the tool pages, or the home/tool pages linking to non‑allowlisted tools). It reads `.next/server/app/en.html` + `en/**/*.html` and fails if a build exists but no English HTML is found.
+- **`npm run audit:ads`** fails the build on any regression (placeholder leakage, ad script outside the config/loader, disallowed placements, macOS artifacts, the loader or a unit on ineligible pages, an ads‑on build with no loader + slot on the tool pages, the home/tool pages linking to non‑allowlisted tools, `/tools` or home linking a non‑allowlisted, non‑pending tool without `rel="nofollow"` (MM84), or any page linking an alias slug from `content/toolAliases.ts`). It reads `.next/server/app/en.html` + `en/**/*.html` and fails if a build exists but no English HTML is found.
 - **Review‑safe sitemap** (`app/sitemap.ts`) + crawler‑friendly `app/robots.ts`, with canonical origin `https://www.media-manipulator.com`.
 
 ---

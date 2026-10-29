@@ -17,6 +17,7 @@ const ptBrToolPages = {
   pages: {
     // MM48/MM66: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: 'Desenhe ou importe um SVG, anime em uma linha do tempo de keyframes e exporte como SVG animado, Lottie, React, JavaScript, Flutter ou GIF, tudo no seu navegador.',
       intro: 'O Motion é um editor de SVG com linha do tempo de animação, integrado ao Media Manipulator. Abra um arquivo SVG (ou uma animação Lottie) e cada forma vira uma camada que você pode selecionar, mover, recolorir e animar, ou comece com uma tela em branco e desenhe com as ferramentas de retângulo, elipse, linha, caneta e texto. Cada propriedade animada tem a própria trilha de keyframes, com predefinições de suavização, um editor de curvas para suavizações personalizadas e keyframes de retenção para saltos instantâneos. Os animadores de um clique adicionam desenho progressivo do traço, movimento ao longo de um caminho, morph de formas, mudanças de cor em gradientes, animação de máscaras e desfoque. Quando o movimento estiver do jeito que você quer, exporte como SVG animado, arquivo Lottie, componente React, módulo JavaScript ou TypeScript, widget Flutter ou GIF. A edição e todas as exportações rodam no seu navegador, então sua arte nunca é enviada para ser exportada.',
       whatItDoes: [
@@ -554,6 +555,145 @@ const ptBrToolPages = {
       name: 'Alterador de voz',
       tagline:
         'Altere instantaneamente o tom e o caráter de uma gravação ou converta a fala com IA para uma voz salva ou predefinida.',
+    },
+    // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
+    'content-studio': {
+      name: 'Darkroom',
+      tagline: 'Edite, sobreponha e mixe vídeo e áudio em uma linha do tempo multipista e depois exporte em MP4. Um editor no estilo Premiere Pro, direto no navegador.',
+      metaTitle: 'Darkroom: editor de vídeo multipista online e grátis | Media Manipulator',
+      metaDescription: 'Edite, sobreponha e mixe vídeo e áudio em uma linha do tempo multipista e depois exporte em MP4: um editor de vídeo gratuito no estilo Premiere Pro que roda direto no navegador. Sem cadastro e sem instalação.',
+    },
+    'remove-exif-metadata': {
+      name: 'Remover metadados EXIF de imagens',
+      tagline: 'Elimine localização GPS e dados de dispositivo, câmera e data e hora das fotos antes de compartilhá-las em qualquer lugar.',
+      metaTitle: 'Remover metadados EXIF de imagens online (grátis) | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para remover metadados EXIF, GPS, IPTC e de câmera de imagens JPG, PNG, WebP e HEIC. Sem cadastro. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'compress-image': {
+      name: 'Comprimir imagem',
+      tagline: 'Reduza o tamanho de arquivos JPG, PNG e WebP para sites mais rápidos, envios menores e compartilhamento mais fácil.',
+      metaTitle: 'Comprimir imagem online grátis | Media Manipulator',
+      metaDescription: 'Compressor de imagens online gratuito. Reduza o tamanho de arquivos JPG, PNG e WebP mantendo boa qualidade. Sem cadastro. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'image-resizer': {
+      name: 'Redimensionar imagem',
+      tagline: 'Redimensione imagens JPG, PNG, WebP e GIF para dimensões exatas em pixels mantendo a proporção.',
+      metaTitle: 'Redimensionar imagem online grátis | Media Manipulator',
+      metaDescription: 'Redimensionador de imagens online gratuito. Redimensione imagens JPG, PNG, WebP e GIF para dimensões exatas em pixels mantendo a proporção. Sem cadastro. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'remove-background-from-image': {
+      name: 'Remover fundo de imagem',
+      tagline: 'Apague automaticamente o fundo de qualquer foto e baixe um recorte em PNG limpo e transparente.',
+      metaTitle: 'Remover fundo de imagem online grátis | Media Manipulator',
+      metaDescription: 'Removedor de fundo online gratuito. Apague automaticamente o fundo de qualquer foto e baixe um PNG transparente. Roda na nossa própria GPU, sem IA de terceiros. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'image-to-pdf': {
+      name: 'Imagem para PDF',
+      tagline: 'Transforme imagens JPG, PNG e outras em um documento PDF limpo e fácil de compartilhar, com um clique.',
+      metaTitle: 'Converter imagem em PDF online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de imagem para PDF. Transforme imagens JPG, PNG e outras em um documento PDF limpo. Sem cadastro e sem marcas d\'água. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'pdf-to-jpg': {
+      name: 'PDF para JPG',
+      tagline: 'Converta cada página de um PDF em imagens JPG de alta qualidade para compartilhar, editar ou publicar.',
+      metaTitle: 'Converter PDF em JPG online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de PDF para JPG. Converta cada página de um PDF em imagens JPG de alta qualidade, baixadas em um ZIP. Sem cadastro. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'compress-video': {
+      name: 'Comprimir vídeo',
+      tagline: 'Reduza o tamanho de arquivos MP4, WebM, MOV, MKV e AVI para web, e-mail, redes sociais e envios para a nuvem.',
+      metaTitle: 'Comprimir vídeo online (grátis) | Media Manipulator',
+      metaDescription: 'Compressor de vídeo online gratuito. Reduza o tamanho de arquivos MP4, WebM, MOV, MKV e AVI mantendo boa qualidade. Sem cadastro. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'video-trimmer': {
+      name: 'Cortar vídeo',
+      tagline: 'Corte um clipe para ficar só com a parte que você quer, com um corte rápido que preserva a qualidade, sem recodificar quando possível.',
+      metaTitle: 'Cortar vídeo online grátis | Media Manipulator',
+      metaDescription: 'Cortador de vídeo online gratuito. Defina um tempo de início e de fim e corte seu clipe de forma rápida e sem perdas. Saída em MP4, sem marca d\'água e sem cadastro. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'extract-audio-from-video': {
+      name: 'Extrair áudio de vídeo',
+      tagline: 'Salve a faixa de áudio de qualquer vídeo como um arquivo MP3, WAV, M4A, AAC, FLAC ou OGG limpo.',
+      metaTitle: 'Extrair áudio de vídeo: MP3, WAV, M4A e mais | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para extrair o áudio de qualquer arquivo de vídeo (MP4, MOV, MKV, WebM, AVI). Saída em MP3, WAV, M4A, AAC, FLAC ou OGG. Sem cadastro. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'convert-video-to-animated-gif': {
+      name: 'Converter vídeo em GIF animado',
+      tagline: 'Transforme clipes curtos em MP4, WebM, MOV ou MKV em GIFs animados fáceis de compartilhar em segundos.',
+      metaTitle: 'Converter vídeo em GIF animado online (grátis) | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de vídeo para GIF. Transforme clipes curtos em MP4, WebM, MOV e MKV em GIFs animados, com controle de tamanho e taxa de quadros.',
+    },
+    'transcribe-video': {
+      name: 'Transcrever vídeo',
+      tagline: 'Extraia a fala de um vídeo ou arquivo de áudio como legendas WebVTT ou SRT, texto simples ou JSON com marcações de tempo.',
+      metaTitle: 'Transcrever vídeo em texto online (grátis) | Media Manipulator',
+      metaDescription: 'Transcrição de vídeo online gratuita. Converta arquivos MP4, MOV, WebM, MKV e de áudio em texto pesquisável, legendas VTT ou transcrições em JSON.',
+    },
+    'transcode-to-hls': {
+      name: 'Transcodificar vídeo para HLS',
+      tagline: 'Empacote qualquer vídeo em um pacote Apple HLS VOD: master.m3u8 e segmentos .ts por rendition, prontos para a web.',
+      metaTitle: 'Transcodificar vídeo para HLS online | Ferramenta gratuita de streaming adaptativo',
+      metaDescription: 'Transcodificador HLS online gratuito. Converta MP4, MOV, WebM e MKV em um pacote HLS VOD com renditions de 360p/480p/720p, com legendas e storyboards opcionais.',
+    },
+    'ai-video-restoration': {
+      name: 'Restauração de vídeo com IA',
+      tagline: 'Amplie e restaure um trecho curto de vídeo com até seis modelos de IA (Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT e VRT) e compare cada resultado lado a lado.',
+      metaTitle: 'Restauração de vídeo com IA: compare 6 modelos de upscaling online | Media Manipulator',
+      metaDescription: 'Ferramenta gratuita de restauração de vídeo com IA. Passe um clipe curto pelos modelos de super-resolução Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT e VRT na nossa própria GPU e baixe todos os resultados em um único pacote.',
+    },
+    'ai-image-restoration': {
+      name: 'Restauração e upscaling de imagens com IA',
+      tagline: 'Limpe, amplie e restaure uma foto com até oito modelos de IA: pré-limpeza fiel (FBCNN, SCUNet, NAFNet), upscalers gerais (Real-ESRGAN, SwinIR, HAT) e melhoria de rostos (GFPGAN, CodeFormer), e compare cada resultado com o original.',
+      metaTitle: 'Restauração e upscaling de imagens com IA: compare 8 modelos | Media Manipulator',
+      metaDescription: 'Restauração e ampliação de fotos com IA, grátis. Remova artefatos JPEG, ruído e desfoque, amplie até 4K/8K com Real-ESRGAN, SwinIR ou HAT e melhore rostos com GFPGAN/CodeFormer, tudo na nossa própria GPU e comparado lado a lado.',
+    },
+    'ai-document-scan': {
+      name: 'Digitalização de documentos com IA',
+      tagline: 'Transforme documentos digitalizados e anotações manuscritas em um PDF de várias páginas pesquisável e em um documento Word editável: páginas impressas recebem uma camada de texto Tesseract fiel, e a escrita à mão é transcrita por uma IA de visão com a incerteza marcada, nunca inventada.',
+      metaTitle: 'Digitalização de documentos com IA: páginas escaneadas e manuscritos em PDF/Word | Media Manipulator',
+      metaDescription: 'Digitalização de documentos com IA, grátis: converta imagens escaneadas em PDF pesquisável e em Word com OCR, e transcreva anotações manuscritas em texto. Reordene páginas, misture texto impresso e manuscrito, tudo na nossa própria GPU, literalmente e com a incerteza marcada.',
+    },
+    'ai-image-upscaler': {
+      name: 'Upscaler de imagens com IA',
+      tagline: 'Amplie uma foto pequena ou suave com um modelo Real-ESRGAN que reconstrói detalhes finos em vez de apenas esticar os pixels.',
+      metaTitle: 'Upscaler de imagens com IA: amplie fotos em 2x ou 4x | Media Manipulator',
+      metaDescription: 'Amplie uma foto de baixa resolução em 2x ou 4x com uma IA que restaura bordas e texturas. Roda na nossa própria GPU, saída em PNG. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'blur-faces-in-photo': {
+      name: 'Desfocar rostos em foto',
+      tagline: 'Detecte rostos automaticamente e depois desfoque, pixelize ou cubra de preto todos eles ou só os que você escolher.',
+      metaTitle: 'Desfocar rostos em uma foto online | Media Manipulator',
+      metaDescription: 'Desfoque, pixelize ou cubra de preto os rostos em uma foto. Detecte cada rosto e escolha quais ocultar. A IA roda na nossa própria GPU. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'redact-text-in-image': {
+      name: 'Ocultar texto em imagem',
+      tagline: 'Encontre texto legível em uma captura de tela ou foto e cubra dados pessoais, ou todo o texto, com desfoque ou uma tarja preta.',
+      metaTitle: 'Ocultar texto em uma imagem online | Media Manipulator',
+      metaDescription: 'Encontre automaticamente o texto em uma imagem e cubra de preto ou desfoque nomes, e-mails, números e outros dados pessoais. IA na nossa própria GPU. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'remove-object-from-photo': {
+      name: 'Remover objeto de foto',
+      tagline: 'Desenhe uma caixa em volta do que você não quer na imagem e um modelo de inpainting preenche o espaço com um fundo compatível.',
+      metaTitle: 'Remover objeto de uma foto online | Media Manipulator',
+      metaDescription: 'Apague objetos indesejados de uma foto. Desenhe um retângulo e o inpainting com IA preenche o espaço combinando com o fundo. Roda na nossa própria GPU. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'clean-voice-audio': {
+      name: 'Limpar áudio de voz',
+      tagline: 'Deixe a fala mais clara reduzindo chiado, som ambiente e ruído grave em podcasts, entrevistas e memorandos de voz.',
+      metaTitle: 'Limpar gravações de voz com IA | Media Manipulator',
+      metaDescription: 'Limpe uma gravação de voz com IA. Reduza chiado, zumbido e ruído do ambiente para ouvir melhor a fala. Roda na nossa própria GPU. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'remove-background-noise': {
+      name: 'Remover ruído de fundo',
+      tagline: 'Reduza chiado, zumbido, trânsito e ruído do ambiente em uma gravação com um redutor de ruído por IA, mantendo o som principal em primeiro plano.',
+      metaTitle: 'Remover ruído de fundo de áudio online | Media Manipulator',
+      metaDescription: 'Remova o ruído de fundo do áudio. Um redutor de ruído com IA diminui chiado, zumbido e sons ambientes em gravações. Roda na nossa própria GPU. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
+    },
+    'remove-vocals-from-song': {
+      name: 'Remover vocais de uma música',
+      tagline: 'Retire o canto de uma faixa e mantenha a música, para karaokê, prática e bases. Use apenas em músicas cujos direitos você possui.',
+      metaTitle: 'Remover vocais de uma música: criador de karaokê | Media Manipulator',
+      metaDescription: 'Remova os vocais de uma música com IA e baixe o instrumental no mesmo formato do seu arquivo, ou em FLAC ou WAV. Faixas de karaokê e de prática, na nossa própria GPU. Os arquivos ficam guardados por 24 horas para visitantes; com uma conta gratuita, você escolhe de 24 horas a 2 anos.',
     },
   },
 } as const;

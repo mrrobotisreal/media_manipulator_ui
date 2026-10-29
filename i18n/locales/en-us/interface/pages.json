@@ -2074,7 +2074,8 @@
       "ai": "AI tools",
       "privacy": "Privacy",
       "editor": "Editors"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} more"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Breadcrumb",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "Frequently asked questions",
     "faqHeading": "Frequently asked questions",
     "relatedToolsAriaLabel": "Related tools",
-    "relatedToolsHeading": "Related tools"
+    "relatedToolsHeading": "Related tools",
+    "aliasHeading": "Full guide, examples and FAQ",
+    "aliasLink": "Read the full guide for {{name}}",
+    "workedExamplesHeading": "Worked examples",
+    "whenNotToUseHeading": "When not to use this"
   },
   "contentStudioGuide": {
     "summaryTitle": "How Darkroom works — quick guide",

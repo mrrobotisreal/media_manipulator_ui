@@ -7,6 +7,7 @@
 // is indexable; see isReviewIndexedToolSlug below and lib/seoFlags.ts.
 
 import { isSeoFullIndex } from '@/lib/seoFlags';
+import { isToolAliasSlug } from '@/content/toolAliases';
 
 export const REVIEW_INDEXED_TOOL_SLUGS = [
   'content-studio',
@@ -58,8 +59,16 @@ export type ReviewIndexedToolSlug = (typeof REVIEW_INDEXED_TOOL_SLUGS)[number];
  */
 export function isReviewIndexedToolSlug(slug: string): boolean {
   if ((REVIEW_INDEXED_TOOL_SLUGS as readonly string[]).includes(slug)) return true;
+  // MM84: an alias page is noindex in every mode, flag or not.
+  if (isToolAliasSlug(slug)) return false;
   return isSeoFullIndex() && slug.length > 0;
 }
+
+/**
+ * MM84 decision 4: the 24 tools that get full cards on /tools in review mode
+ * (the allowlist plus the pending set that meets the copy bar).
+ */
+export const REVIEW_CATALOG_SLUGS: readonly string[] = [...REVIEW_INDEXED_TOOL_SLUGS, ...PENDING_ALLOWLIST];
 
 /** Extract the tool slug from a /tools/<slug> href, or null. */
 export function getToolSlugFromHref(href: string): string | null {
@@ -77,9 +86,21 @@ export function isReviewAllowedToolHref(href: string): boolean {
 }
 
 /**
+ * MM84: true when a tool slug may be linked from review-visible pages without
+ * rel="nofollow": the allowlist plus the pending set (all 24 meet the copy
+ * bar), or any non-alias slug once the full-index flag is on. Indexing is still
+ * decided by isReviewIndexedToolSlug; pending pages stay noindex until flipped.
+ */
+export function isReviewListedToolSlug(slug: string): boolean {
+  if (isToolAliasSlug(slug)) return false;
+  return REVIEW_CATALOG_SLUGS.includes(slug) || isReviewIndexedToolSlug(slug);
+}
+
+/**
  * True when an internal href is safe to surface on review-visible pages. Core
  * pages, blog, and tutorials are always allowed; /tools/<slug> links are only
- * allowed when the slug is in the review allowlist.
+ * allowed when the slug is in the review allowlist or the pending set (MM84),
+ * and never when it is an alias.
  */
 export function isReviewSafeInternalHref(href: string): boolean {
   if (!href.startsWith('/')) return false;
@@ -97,7 +118,10 @@ export function isReviewSafeInternalHref(href: string): boolean {
 
   if (href.startsWith('/tutorials/')) return true;
   if (href.startsWith('/blog/')) return true;
-  if (href.startsWith('/tools/')) return isReviewAllowedToolHref(href);
+  if (href.startsWith('/tools/')) {
+    const slug = getToolSlugFromHref(href);
+    return slug !== null && isReviewListedToolSlug(slug);
+  }
 
   return false;
 }

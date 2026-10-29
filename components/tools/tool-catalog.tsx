@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Search, Star } from 'lucide-react';
+import { ChevronDown, Search, Star } from 'lucide-react';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { analytics, EVENTS } from '@/lib/analytics';
 import {
@@ -34,6 +34,11 @@ export interface ToolCatalogLabels {
   /** Template with {{query}}. */
   noResults: string;
   popular: string;
+  /**
+   * MM84 review mode: summary of the collapsed list of a category's remaining
+   * tools. Template with {{count}} and {{category}}.
+   */
+  moreTools: string;
 }
 
 interface ToolCatalogProps {
@@ -86,10 +91,12 @@ export default function ToolCatalog({ tools, labels }: ToolCatalogProps) {
     }
     return CATALOG_CATEGORY_ORDER.filter((cat) => byCategory.has(cat)).map((cat) => ({
       category: cat,
-      groups: CATALOG_GROUP_ORDER.filter((g) => byCategory.get(cat)!.has(g)).map((g) => ({
+      groups: CATALOG_GROUP_ORDER.filter((g) => byCategory.get(cat)!.get(g)?.some((t) => t.listed)).map((g) => ({
         group: g,
-        tools: [...byCategory.get(cat)!.get(g)!].sort((a, b) => Number(b.featured) - Number(a.featured) || a.name.localeCompare(b.name)),
+        tools: byCategory.get(cat)!.get(g)!.filter((t) => t.listed).sort((a, b) => Number(b.featured) - Number(a.featured) || a.name.localeCompare(b.name)),
       })),
+      // MM84 review mode: the category's other tools, collapsed and nofollow.
+      more: [...byCategory.get(cat)!.values()].flat().filter((t) => !t.listed).sort((a, b) => a.name.localeCompare(b.name)),
     }));
   }, [visible]);
 
@@ -152,7 +159,7 @@ export default function ToolCatalog({ tools, labels }: ToolCatalogProps) {
           {fill(labels.noResults, { query })}
         </p>
       ) : (
-        sections.map(({ category: cat, groups }) => (
+        sections.map(({ category: cat, groups, more }) => (
           <section key={cat} className="my-8" aria-label={categoryLabels[cat]} data-testid={`tool-catalog-section-${cat}`}>
             <h2 className="mb-3 text-2xl font-semibold text-card-foreground">{categoryLabels[cat]}</h2>
             {groups.map(({ group, tools: groupTools }) => (
@@ -183,6 +190,36 @@ export default function ToolCatalog({ tools, labels }: ToolCatalogProps) {
                 </ul>
               </div>
             ))}
+            {more.length > 0 && (
+              // MM84: closed by default and server-rendered, so the list works
+              // without JS; a search opens it so matches are never hidden.
+              <details
+                key={normalizedQuery ? 'search' : 'browse'}
+                open={normalizedQuery.length > 0}
+                className="group rounded-lg border border-border bg-background/40"
+                data-testid={`tool-catalog-more-${cat}`}
+              >
+                <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-2 text-sm font-medium text-card-foreground [&::-webkit-details-marker]:hidden">
+                  <span>{fill(labels.moreTools, { count: more.length, category: categoryLabels[cat] })}</span>
+                  <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+                </summary>
+                <ul className="grid gap-x-4 gap-y-1 border-t border-border px-4 py-3 text-sm sm:grid-cols-2 lg:grid-cols-3">
+                  {more.map((tool) => (
+                    <li key={tool.slug}>
+                      <Link
+                        href={localized(`/tools/${tool.slug}`)}
+                        rel="nofollow"
+                        className="inline-flex min-h-11 items-center text-muted-foreground underline-offset-4 hover:text-card-foreground hover:underline"
+                        data-testid={`tool-link-${tool.slug}`}
+                        title={tool.tagline}
+                      >
+                        {tool.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
           </section>
         ))
       )}

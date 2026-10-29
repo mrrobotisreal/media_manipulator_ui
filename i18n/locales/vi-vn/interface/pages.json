@@ -2074,7 +2074,8 @@
       "ai": "Công cụ AI",
       "privacy": "Quyền riêng tư",
       "editor": "Trình chỉnh sửa"
-    }
+    },
+    "moreTools": "{{category}}: thêm {{count}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Đường dẫn điều hướng",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "Câu hỏi thường gặp",
     "faqHeading": "Câu hỏi thường gặp",
     "relatedToolsAriaLabel": "Công cụ liên quan",
-    "relatedToolsHeading": "Công cụ liên quan"
+    "relatedToolsHeading": "Công cụ liên quan",
+    "aliasHeading": "Hướng dẫn đầy đủ, ví dụ và câu hỏi thường gặp",
+    "aliasLink": "Đọc hướng dẫn đầy đủ về {{name}}",
+    "workedExamplesHeading": "Ví dụ thực tế",
+    "whenNotToUseHeading": "Khi nào không nên dùng công cụ này"
   },
   "contentStudioGuide": {
     "summaryTitle": "Cách Darkroom hoạt động — hướng dẫn nhanh",

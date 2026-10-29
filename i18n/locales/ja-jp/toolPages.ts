@@ -16,6 +16,7 @@ const jaToolPages = {
   pages: {
     // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: 'SVGを描くかインポートし、キーフレームタイムラインでアニメーション化して、アニメーションSVG、Lottie、React、JavaScript、Flutter、GIFとしてエクスポート。すべてブラウザ内で完結します。',
       intro: 'MotionはMedia Manipulatorに組み込まれた、アニメーションタイムライン付きのSVGエディターです。SVGファイル（またはLottieアニメーション）を開くと、すべての図形が選択、移動、色変更、アニメーション化できるレイヤーになります。白紙のキャンバスから、長方形、楕円、直線、ペン、テキストのツールで描き始めることもできます。アニメーション化した各プロパティにはそれぞれキーフレームのトラックがあり、イージングプリセット、カスタムイージング用のカーブエディター、瞬時に切り替わるホールドキーを備えています。ワンクリックのアニメーターで、線の描画アニメーション、パスに沿った移動、形状のモーフ、グラデーションの色変化、マスクのアニメーション、ぼかしを追加できます。思いどおりに動いたら、アニメーションSVG、Lottieファイル、Reactコンポーネント、JavaScriptまたはTypeScriptモジュール、Flutterウィジェット、GIFとしてエクスポートします。編集もすべてのエクスポートもブラウザ内で実行されるため、エクスポートのためにアートワークがアップロードされることはありません。',
       whatItDoes: [
@@ -553,6 +554,145 @@ const jaToolPages = {
       name: 'ボイスチェンジャー',
       tagline:
         '録音のピッチと声質を即座にシフトするか、AIで音声を保存したボイスまたはプリセットのボイスに変換します。',
+    },
+    // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
+    'content-studio': {
+      name: 'Darkroom',
+      tagline: 'マルチトラックのタイムラインで動画と音声を編集・重ね合わせ・ミックスし、MP4で書き出せます。Premiere Proのようなエディターが、ブラウザーだけで使えます。',
+      metaTitle: 'Darkroom：無料のオンラインマルチトラック動画エディター | Media Manipulator',
+      metaDescription: 'マルチトラックのタイムラインで動画と音声を編集・重ね合わせ・ミックスして、MP4で書き出せます。ブラウザー上で動作する、Premiere Proのような無料の動画エディターです。登録もインストールも不要です。',
+    },
+    'remove-exif-metadata': {
+      name: '画像からEXIFメタデータを削除',
+      tagline: '写真をどこかで共有する前に、GPS位置情報、デバイス、カメラ、撮影日時のデータを削除します。',
+      metaTitle: '画像のEXIFメタデータをオンラインで削除（無料） | Media Manipulator',
+      metaDescription: 'JPG、PNG、WebP、HEIC画像からEXIF、GPS、IPTC、カメラのメタデータを削除する無料のオンラインツールです。登録不要。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'compress-image': {
+      name: '画像を圧縮',
+      tagline: 'JPG、PNG、WebPのファイルサイズを縮小して、サイトの高速化、アップロードの軽量化、共有の手軽さを実現します。',
+      metaTitle: '画像をオンラインで無料圧縮 | Media Manipulator',
+      metaDescription: '無料のオンライン画像圧縮ツールです。JPG、PNG、WebPのファイルサイズを、画質を保ったまま縮小します。登録不要。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'image-resizer': {
+      name: '画像リサイズ',
+      tagline: 'JPG、PNG、WebP、GIF画像を、縦横比を保ったまま正確なピクセルサイズにリサイズします。',
+      metaTitle: '画像をオンラインで無料リサイズ | Media Manipulator',
+      metaDescription: '無料のオンライン画像リサイズツールです。JPG、PNG、WebP、GIF画像を、縦横比を保ったまま正確なピクセルサイズにリサイズします。登録不要。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'remove-background-from-image': {
+      name: '画像の背景を削除',
+      tagline: 'どんな写真でも背景を自動で消去し、きれいな透過PNGの切り抜き画像をダウンロードできます。',
+      metaTitle: '画像の背景をオンラインで無料削除 | Media Manipulator',
+      metaDescription: '無料のオンライン背景削除ツールです。どんな写真でも背景を自動で消去し、透過PNGをダウンロードできます。自社のGPUで動作し、外部のAIは使用しません。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'image-to-pdf': {
+      name: '画像をPDFに変換',
+      tagline: 'JPGやPNGなどの画像を、きれいで共有しやすいPDFドキュメントにワンクリックで変換します。',
+      metaTitle: '画像をPDFにオンラインで無料変換 | Media Manipulator',
+      metaDescription: '無料のオンライン画像PDF変換ツールです。JPGやPNGなどの画像を、きれいなPDFドキュメントに変換します。登録不要、透かしなし。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'pdf-to-jpg': {
+      name: 'PDFをJPGに変換',
+      tagline: 'PDFのすべてのページを、共有・編集・投稿できる高画質のJPG画像に変換します。',
+      metaTitle: 'PDFをJPGにオンラインで無料変換 | Media Manipulator',
+      metaDescription: '無料のオンラインPDF JPG変換ツールです。PDFのすべてのページを高画質のJPG画像に変換し、ZIPでダウンロードできます。登録不要。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'compress-video': {
+      name: '動画を圧縮',
+      tagline: 'MP4、WebM、MOV、MKV、AVIファイルを、Web、メール、SNS、クラウドへのアップロード向けに縮小します。',
+      metaTitle: '動画をオンラインで圧縮（無料） | Media Manipulator',
+      metaDescription: '無料のオンライン動画圧縮ツールです。MP4、WebM、MOV、MKV、AVIのファイルサイズを、画質を保ったまま縮小します。登録不要。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'video-trimmer': {
+      name: '動画トリミング',
+      tagline: '高速で画質を保つトリミングで、クリップを必要な部分だけに切り出します。可能な場合は再エンコードしません。',
+      metaTitle: '動画をオンラインで無料トリミング | Media Manipulator',
+      metaDescription: '無料のオンライン動画トリミングツールです。開始時間と終了時間を設定し、高速で劣化のないトリミングでクリップを切り出します。MP4出力、透かしなし、登録不要。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'extract-audio-from-video': {
+      name: '動画から音声を抽出',
+      tagline: 'あらゆる動画の音声トラックを、きれいなMP3、WAV、M4A、AAC、FLAC、OGGファイルとして保存します。',
+      metaTitle: '動画から音声を抽出：MP3、WAV、M4Aなど | Media Manipulator',
+      metaDescription: '動画ファイル（MP4、MOV、MKV、WebM、AVI）から音声を抽出する無料のオンラインツールです。MP3、WAV、M4A、AAC、FLAC、OGGで出力できます。登録不要。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'convert-video-to-animated-gif': {
+      name: '動画をアニメーションGIFに変換',
+      tagline: '短いMP4、WebM、MOV、MKVクリップを、共有しやすいアニメーションGIFに数秒で変換します。',
+      metaTitle: '動画をアニメーションGIFにオンラインで変換（無料） | Media Manipulator',
+      metaDescription: '無料のオンライン動画GIF変換ツールです。短いMP4、WebM、MOV、MKVクリップを、サイズとフレームレートを調整しながらアニメーションGIFに変換します。',
+    },
+    'transcribe-video': {
+      name: '動画を文字起こし',
+      tagline: '動画や音声ファイルの話し言葉を、WebVTTまたはSRTの字幕、プレーンテキスト、タイムスタンプ付きJSONとして取り出します。',
+      metaTitle: '動画をテキストにオンラインで文字起こし（無料） | Media Manipulator',
+      metaDescription: '無料のオンライン動画文字起こしツールです。MP4、MOV、WebM、MKV、音声ファイルを、検索できるテキスト、VTT字幕、JSONの文字起こしに変換します。',
+    },
+    'transcode-to-hls': {
+      name: '動画をHLSにトランスコード',
+      tagline: 'あらゆる動画をApple HLSのVODバンドルにパッケージ化します。master.m3u8とレンディションごとの.tsセグメントで、Webにすぐ使えます。',
+      metaTitle: '動画をHLSにオンラインでトランスコード | 無料のアダプティブストリーミングツール',
+      metaDescription: '無料のオンラインHLSトランスコーダーです。MP4、MOV、WebM、MKVを、360p/480p/720pのレンディションを備えたHLS VODパッケージに変換し、字幕やストーリーボードも追加できます。',
+    },
+    'ai-video-restoration': {
+      name: 'AI動画修復',
+      tagline: '最大6つのAIモデル（Real-ESRGAN、SwinIR、HAT、BasicVSR++、RVRT、VRT）で短い動画を高解像度化・修復し、すべての結果を並べて比較できます。',
+      metaTitle: 'AI動画修復ツール：6つのアップスケールモデルをオンラインで比較 | Media Manipulator',
+      metaDescription: '無料のAI動画修復ツールです。短いクリップを、自社のGPUでReal-ESRGAN、SwinIR、HAT、BasicVSR++、RVRT、VRTの超解像モデルにかけ、すべての結果を1つのパッケージでダウンロードできます。',
+    },
+    'ai-image-restoration': {
+      name: 'AI画像修復・アップスケール',
+      tagline: '最大8つのAIモデルで写真をクリーンアップ、高解像度化、修復します。忠実度を保つ事前クリーンアップ（FBCNN、SCUNet、NAFNet）、汎用アップスケーラー（Real-ESRGAN、SwinIR、HAT）、顔の補正（GFPGAN、CodeFormer）に対応し、すべての結果を元の画像と比較できます。',
+      metaTitle: 'AI画像修復・アップスケーラー：8つのモデルをオンラインで比較 | Media Manipulator',
+      metaDescription: '無料のAI写真修復・アップスケールです。JPEGのノイズ除去、ノイズ低減、ぼけ補正を行い、Real-ESRGAN、SwinIR、HATで4K/8Kまで高解像度化し、GFPGAN/CodeFormerで顔を補正します。すべて自社のGPUで処理し、並べて比較できます。',
+    },
+    'ai-document-scan': {
+      name: 'AI書類スキャン',
+      tagline: 'スキャンした書類や手書きのメモを、検索できる複数ページのPDFと編集できるWord文書に変換します。印刷されたページにはTesseractによる忠実なテキストレイヤーを付与し、手書きは視覚AIが書き起こして、不確かな部分には印を付け、推測で補うことはありません。',
+      metaTitle: 'AI書類スキャン：スキャンページと手書きをPDF/Wordに変換 | Media Manipulator',
+      metaDescription: '無料のAI書類スキャンです。スキャンした画像を検索できるPDFや画像からWordへのOCRに変換し、手書きメモもテキストに書き起こします。ページの並べ替えや、印刷と手書きの混在にも対応。すべて自社のGPUで処理し、原文のまま、不確かな部分には印を付けます。',
+    },
+    'ai-image-upscaler': {
+      name: 'AI画像アップスケーラー',
+      tagline: '小さい写真やぼやけた写真を、単に引き伸ばすのではなく細部を再構築するReal-ESRGANモデルで拡大します。',
+      metaTitle: 'AI画像アップスケーラー：写真を2倍・4倍に拡大 | Media Manipulator',
+      metaDescription: '低解像度の写真を、輪郭とテクスチャーを復元するAIで2倍または4倍に拡大します。自社のGPUで動作し、PNGで出力します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'blur-faces-in-photo': {
+      name: '写真の顔にぼかしを入れる',
+      tagline: '顔を自動検出し、すべての顔、または選んだ顔だけにぼかし、モザイク、黒塗りを適用します。',
+      metaTitle: '写真の顔にオンラインでぼかしを入れる | Media Manipulator',
+      metaDescription: '写真の顔にぼかし、モザイク、黒塗りを適用します。すべての顔を検出し、隠す顔を選べます。AIは自社のGPUで動作します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'redact-text-in-image': {
+      name: '画像内のテキストを伏せる',
+      tagline: 'スクリーンショットや写真から読み取れるテキストを見つけ、個人情報またはすべてのテキストをぼかしや黒い四角で隠します。',
+      metaTitle: '画像内のテキストをオンラインで伏せる | Media Manipulator',
+      metaDescription: '画像内のテキストを自動で見つけ、名前、メールアドレス、番号などの個人情報を黒塗りまたはぼかしします。AIは自社のGPUで動作します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'remove-object-from-photo': {
+      name: '写真から不要な物を消す',
+      tagline: '写真に写したくない物を四角で囲むと、インペインティングモデルが周囲に合う背景で埋めてくれます。',
+      metaTitle: '写真から不要な物をオンラインで消す | Media Manipulator',
+      metaDescription: '写真から不要な物を消去します。四角形を描くと、AIのインペインティングが背景に合わせてその部分を埋めます。自社のGPUで動作します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'clean-voice-audio': {
+      name: '音声をクリーンにする',
+      tagline: 'ポッドキャスト、インタビュー、ボイスメモのヒスノイズ、部屋の響き、低音のゴロゴロ音を減らして、声を聞き取りやすくします。',
+      metaTitle: 'AIでボイス録音をクリーンアップ | Media Manipulator',
+      metaDescription: 'AIでボイス録音をクリーンアップします。ヒスノイズ、ハム音、部屋のノイズを減らして、声を聞き取りやすくします。自社のGPUで動作します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'remove-background-noise': {
+      name: '背景ノイズを除去',
+      tagline: 'AIノイズ除去で、録音内のヒスノイズ、ハム音、交通音、部屋のノイズを低減し、メインの音を前面に保ちます。',
+      metaTitle: '音声の背景ノイズをオンラインで除去 | Media Manipulator',
+      metaDescription: '音声から背景ノイズを除去します。AIノイズ除去が、録音内のヒスノイズ、ハム音、周囲の音を低減します。自社のGPUで動作します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
+    },
+    'remove-vocals-from-song': {
+      name: '曲からボーカルを除去',
+      tagline: 'トラックから歌声を取り除いて音楽だけを残し、カラオケ、練習、バッキングトラックに使えます。権利をお持ちの音楽にのみご利用ください。',
+      metaTitle: '曲からボーカルを除去：カラオケメーカー | Media Manipulator',
+      metaDescription: 'AIで曲からボーカルを除去し、インストゥルメンタルを元のファイルと同じ形式、またはFLACやWAVでダウンロードできます。カラオケや練習用トラックを自社のGPUで作成します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
     },
   },
 } as const;

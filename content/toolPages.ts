@@ -24,7 +24,9 @@ import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 
 import { RETENTION_PROMISE } from '@/content/retentionPromise';
+import { privacyNoteFor } from '@/content/toolPrivacy';
 import { CATALOG_TOOL_PAGES, VOICE_TOOL_PAGES } from '@/content/toolPagesCatalog';
+import { aliasTargetOf } from '@/content/toolAliases';
 
 export { RETENTION_PROMISE } from '@/content/retentionPromise';
 
@@ -41,6 +43,14 @@ export interface ToolUseCase {
 export interface ToolFlowStepData {
   title: string;
   description?: string;
+}
+
+/** MM84: a worked example with real numbers taken from the API's behaviour. */
+export interface ToolWorkedExample {
+  /** Short heading, e.g. "A 48 MB phone clip at Balanced". */
+  title: string;
+  /** Input size/format -> output size/format and time, phrased "about" where it depends on the input. */
+  body: string;
 }
 
 export interface ToolRelatedLink {
@@ -214,6 +224,20 @@ export interface ToolPageContent {
   /** Optional supported-format section content. */
   supportedFormats?: ToolSupportedFormats;
   /**
+   * MM84 copy bar: two worked examples with real numbers (required on the 24
+   * allowlisted + pending pages, see content/toolCopy.test.ts).
+   */
+  workedExamples?: ToolWorkedExample[];
+  /** MM84 copy bar: one "When not to use this" paragraph. */
+  whenNotToUse?: string;
+  /**
+   * MM84: this slug is a thin alias of another page with the same intent
+   * (content/toolAliases.ts). The alias keeps its URL, H1, intro and panel,
+   * sets its canonical to the primary, is `noindex, follow`, and is never
+   * listed on /tools, in the sitemap or in llms.txt.
+   */
+  aliasOf?: string;
+  /**
    * Shipped features for a `SoftwareApplication` JSON-LD block (MM48). When set,
    * lib/seo.ts emits SoftwareApplication with this `featureList` instead of the
    * generic WebApplication block. List only what users can use today.
@@ -224,7 +248,7 @@ export interface ToolPageContent {
 const sharedPrivacyNote =
   `Your uploads are processed on our own servers. ${RETENTION_PROMISE}. We do not share your files with third-party AI providers, and AI features run on a local GPU server we operate. No login or account is required.`;
 
-export const TOOL_PAGES: ToolPageContent[] = [
+const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- CONTENT STUDIO
   {
     slug: 'content-studio',
@@ -247,123 +271,159 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Create a new project (or reopen a recent one), drag video, image, and audio files into the media bin, then drop them onto the multi-track timeline. Trim, split, and arrange clips, layer overlays and titles, mix audio, and export a finished MP4 — all in your browser.',
     },
     intro:
-      "Darkroom is a free, browser-based multi-track video editor. Instead of converting one file at a time, you build a complete edit: lay video, image, and audio clips across stacked timeline tracks, trim and split them on a frame-accurate timeline, layer titles and overlays on top, mix audio, and export the whole thing to MP4. It's the closest thing to a Premiere Pro–style timeline that runs entirely in your web browser — no install, no signup, and nothing to learn before you start.",
+      'Darkroom is a multi-track video editor that runs in a browser tab. You create a project with a canvas and a frame rate, drop video, image and audio files into a media bin, lay them out on stacked tracks, trim and split them at frame boundaries, grade and key them, add titles, transitions and captions, mix the audio with a per-track mixer, and then hand the finished timeline to our render server, where ffmpeg builds the whole edit as one filter graph and encodes it to H.264 or HEVC in MP4, or to MP3 or WAV when the project is audio only. The preview you edit against is composited live on your GPU in WebGL2; the export is checked against that preview so what you saw is what you get.',
     whatItDoes: [
-      'Hosts a multi-track timeline where video, image, and audio clips stack on separate layers and play back together.',
-      'Lets you trim clip in/out points, split clips at the playhead, and ripple-delete to close gaps.',
-      'Layers overlays — additional video, images, and titles render on top of the base track in stacking order.',
-      'Mixes multiple audio tracks alongside your video and previews the composite in real time.',
-      'Exports the finished sequence as a single MP4 you can download and share.',
+      'Runs a frame-accurate multi-track timeline: trim, split, ripple delete, razor, slip, slide, roll and ripple edits, markers, groups, track lock, solo and hide, and detaching audio from video.',
+      'Composites tracks in stacking order with crop, fit, transform, a Lumetri-style colour grade (exposure, contrast, saturation, temperature, tint, vibrance), 3D LUTs, chroma key with an eyedropper, opacity and eight blend modes.',
+      'Animates position, scale, rotation, opacity, volume, pan and effect parameters with keyframes and five easing curves; adds fifteen transitions and title clips built from text and shape layers.',
+      'Mixes audio through a per-track fader, pan, three-band EQ and compressor with live meters, plus ducking and streaming, podcast and broadcast loudness presets on the master bus.',
+      'Generates captions with Whisper on our GPU, lets you edit them in a captions lane, and exports them burned into the picture or as an SRT or VTT sidecar.',
+      'Exports H.264 or HEVC MP4 with AAC audio, or MP3 or WAV, at the canvas size or scaled to 720, 1080, 1440 or 2160 lines, and keeps an exports panel with progress and re-render.',
     ],
     flowSteps: [
       {
         title: 'Create a project',
-        description: 'Name it and pick a resolution (up to 4K) and frame rate (24/30/60 fps).',
+        description: 'Pick a canvas (16:9 at 1920 x 1080, 9:16 at 1080 x 1920, 1:1, 4:5 or a custom size) and a frame rate of 24, 30 or 60.',
       },
       {
         title: 'Import media',
-        description: 'Drag video, image, and audio files into the media bin.',
+        description: 'Upload video, images and audio to the media bin. The server renders a preview proxy with a keyframe every second so scrubbing stays cheap.',
       },
       {
-        title: 'Build the timeline',
-        description: 'Drop clips onto tracks, then trim, split, and arrange them around the playhead.',
+        title: 'Cut and layer',
+        description: 'Place clips on tracks, trim and split at the playhead, stack overlays and titles above the base footage, and hold still images for any length.',
       },
       {
-        title: 'Layer & mix',
-        description: 'Stack overlays and titles, add extra audio tracks, and preview the result.',
+        title: 'Grade, key and mix',
+        description: 'Adjust colour, apply a LUT, key out a background, keyframe what should move, and balance the audio tracks on the mixer.',
       },
       {
-        title: 'Export MP4',
-        description: 'Render the sequence to an MP4 and download it.',
+        title: 'Export',
+        description: 'Choose format, quality, output height, captions mode and loudness preset. ffmpeg renders the timeline on our server and the file appears in the exports panel.',
       },
     ],
     advancedDetails: [
-      'The timeline is frame-accurate: the playhead, clip boundaries, and split points snap to the project frame rate so cuts land where you expect.',
-      'Tracks composite in stacking order — higher tracks render over lower ones — which is how overlays, picture-in-picture, and titles sit on top of your base footage.',
-      'Preview playback is driven by a browser preview engine that composites the active clips on a canvas; the final export is encoded to H.264 MP4 with AAC audio.',
-      'Projects, media references, and edit decisions are stored per project, so you can close the tab and reopen a recent project to keep working.',
+      'The export is one ffmpeg invocation: every source is an input, the timeline becomes a filter_complex graph (trim, scale, overlay, drawtext for titles, eq and colour filters, amix with normalize=0 for audio) and the output is encoded in a single pass. Keyframed parameters ride a sendcmd sidecar on the graph, which needs ffmpeg 4.4 or newer on the render host.',
+      'H.264 uses the h264_nvenc hardware encoder when a probe encode succeeds on the render GPU, otherwise libx264. Quality presets map to NVENC preset p4 at constant quality 23 (Medium), p5 at CQ 19 (High) and p4 at CQ 28 (Low); on libx264 they are preset medium CRF 23, slow CRF 18 and veryfast CRF 28. Both pin yuv420p.',
+      'HEVC uses hevc_nvenc or libx265 at CQ or CRF values five points higher (28, 24, 33 on NVENC; 28, 24, 32 on libx265), which is the usual offset for equal perceived quality, and tags the stream hvc1 so the MP4 plays in Safari and QuickTime. If neither encoder is available the export fails loudly instead of handing back H.264 under an HEVC name.',
+      'Audio is resampled to 48 kHz stereo inside the graph and encoded as AAC at 192 kb/s for video exports; MP3 exports use libmp3lame at 192 kb/s and WAV exports are 16-bit PCM. The loudness presets are ffmpeg loudnorm: streaming I=-14 LUFS TP=-1.5 LRA=11, podcast I=-16 TP=-1.5 LRA=11, broadcast I=-23 TP=-2 LRA=7.',
+      'Choosing an output height scales the composed frame as the last filter (lanczos, square pixels, width rounded to an even number), after captions are burned in, so text is scaled with the picture rather than redrawn. A height your plan cannot render is refused with an error, never silently downgraded.',
+      'MP4 files are written with -movflags +faststart so the index sits at the front and the file starts playing before it has fully downloaded. Still images on the timeline become inputs with -loop 1 -framerate <project fps> -t <hold>, so a held photo costs no more to decode than its frames.',
     ],
     whyItMatters: [
-      'Most online media tools only do one operation at a time; real content needs several clips cut, layered, and mixed together.',
-      'A timeline editor lets you tell a story — intro, b-roll, titles, music — instead of just converting a single file.',
-      'Doing it in the browser means no multi-gigabyte install and no account, so you can go from raw clips to an exported MP4 in minutes.',
+      'A conversion tool changes one file. An edit combines several: the b-roll under the interview, the title over the opening, the music bed under both, each trimmed to the frame.',
+      'Preview and export usually drift apart in browser editors. Darkroom renders the preview on your GPU and the export on ours, and keeps the two inside a documented tolerance with a golden-image harness.',
+      'The heavy work stays off your laptop. A 4K export, a Whisper transcription or a LUT-graded multi-layer composite runs on a GPU render server, so a thin notebook can finish the job.',
     ],
     useCases: [
       {
-        title: 'Short-form social videos',
-        description: 'Cut clips, add a title card and background music, and export a vertical or square MP4.',
+        title: 'Vertical clips for short-form platforms',
+        description: 'A 1080 x 1920 canvas, a punch-in on the speaker, a title card, music ducked under the voice and captions burned in.',
       },
       {
         title: 'Tutorials and screen recordings',
-        description: 'Trim dead air, stitch takes together, and overlay callout titles.',
+        description: 'Cut dead air, stitch takes, overlay a webcam picture-in-picture, add callouts and export at 1080p with a sidecar caption file.',
       },
       {
-        title: 'Highlight reels',
-        description: 'Assemble the best moments from several clips into one continuous edit.',
+        title: 'Interview and podcast episodes',
+        description: 'Two camera angles cut to the speaker, a loudness-normalised mix, and an MP3 export of the same timeline for the audio feed.',
       },
       {
-        title: 'Simple promos',
-        description: 'Layer a logo or text overlay over b-roll and mix in a voiceover or music bed.',
+        title: 'Promos and product videos',
+        description: 'Chroma-keyed footage over a background plate, a LUT for the look, keyframed logo moves and a 15-second cut at 4K for the wall screen.',
       },
     ],
     whyMediaManipulator: [
-      'A genuine multi-track timeline — not a single-clip trimmer dressed up as an editor.',
-      'Runs in your browser with no install and no signup, and your media is processed on our own servers.',
-      'Pairs with the rest of Media Manipulator: compress, transcode, transcribe, or strip metadata from your source or exported files in the same place.',
+      'Real editing primitives: razor, slip, slide, roll, ripple, markers, groups, keyframes with easing, a mixer with EQ and compression, not a trimmer with a title field.',
+      'Honest exports: hardware or software encoding is chosen by a live probe, HEVC refuses rather than lies, and a resolution your plan cannot render is an error, not a quiet downgrade.',
+      'One account, one place: transcribe, compress or strip metadata from the same files you edit, and generate voiceover or captions on the same GPU server.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Darkroom keeps your media on our servers for as long as the project exists: uploads go to the media bin as assets, the server renders preview proxies, filmstrips and waveform peaks from them, and exports are built by ffmpeg into outputs/<jobId>/ on the render host. When you ask for captions, the audio is sent to Whisper on our own GPU and the resulting cues are stored with the project. The project document, its assets, versions and exports can be deleted from the editor or your Account page. ${RETENTION_PROMISE}. Uploaded video and audio also pass through an automated analysis step on our own server. Nothing is sent to a third-party AI provider and no file is used to train anything.`,
     faq: [
       {
         question: 'Is Darkroom free?',
-        answer: 'Yes. Darkroom is free to use with no signup or account required.',
+        answer:
+          'Yes. Without an account you can keep one project and render 5 exports a day, with uploads up to 200 MB per file and output up to 1080 lines. A free account raises that to 5 projects, 30 exports a day, 1 GB files and 1440 lines; Premium gives unlimited projects, 300 exports a day, 5 GB files and 2160-line output; Pro raises exports to 700 a day. Exports have their own daily counter and do not consume the general operations allowance. These are the defaults; the pricing page shows the live numbers.',
       },
       {
-        question: 'Do I need to install anything?',
-        answer: 'No. It runs entirely in your web browser — there is nothing to download or install.',
+        question: 'What can I export?',
+        answer:
+          'MP4 with H.264 or HEVC video and AAC audio, or MP3 or WAV for audio-only projects. Video can go out at the canvas size or scaled to 720, 1080, 1440 or 2160 lines, with captions burned in, as an SRT or VTT sidecar, or omitted, and with a streaming, podcast or broadcast loudness preset on the mix.',
       },
       {
-        question: 'What can I put on the timeline?',
-        answer: 'Video clips, images, and audio files. They stack on separate tracks and play back together.',
+        question: 'Which quality preset should I pick?',
+        answer:
+          'Medium is CRF 23 on libx264 or constant quality 23 on NVENC and is the sensible default for upload to a platform that re-encodes anyway. High (CRF 18 or CQ 19, preset slow or p5) is for a master you will edit again or show on a large screen. Low (CRF 28 or CQ 28, veryfast or p4) is for a quick preview to send to a colleague.',
       },
       {
-        question: 'What format does it export?',
-        answer: 'Darkroom exports your finished sequence as an MP4 (H.264 video with AAC audio).',
+        question: 'Why did my HEVC export fail?',
+        answer:
+          'HEVC needs either hevc_nvenc on the render GPU or libx265 in the ffmpeg build. If the server has neither the export fails with an unsupported-encoder message instead of returning an H.264 file labelled HEVC. Switch the format to H.264 and the same timeline will render.',
       },
       {
-        question: 'What resolutions and frame rates are supported?',
-        answer: 'You can create projects at up to 4K (3840×2160), including vertical 1080×1920, at 24, 30, or 60 fps.',
+        question: 'How are captions made?',
+        answer:
+          'Generate captions sends the timeline audio to Whisper on our GPU server. The segments come back as cues you can edit in the captions lane, then export burned into the picture (an ASS subtitle track rendered into the frames) or as an SRT or VTT file next to the video. Generating captions counts as one AI operation.',
       },
       {
-        question: 'Are my files kept private?',
-        answer: `Your media is processed on our own servers. ${RETENTION_PROMISE}. We do not share files with third-party providers.`,
+        question: 'Does the export match the preview?',
+        answer:
+          'That is the point of the design. The preview composites in WebGL2 in the same order the server filter graph uses (crop, fit, transform, grade, LUT, key, opacity, blend), and a golden-image harness compares frames from both within a documented tolerance. Solo and hide apply to the export exactly as they do to the preview.',
       },
       {
         question: 'Can I come back to a project later?',
-        answer: 'Yes. Recent projects appear on the Darkroom start screen so you can reopen one and keep editing.',
+        answer:
+          'Yes. Projects are saved with revision numbers, so a stale tab cannot overwrite newer work, and version history keeps checkpoints you can return to. A draft is also kept in your browser for crash recovery. Signed-in users can open recent projects from any device; guest projects stay with the browser session and the 24-hour retention window.',
       },
     ],
     related: [
       {
-        label: 'Compress Video',
+        label: 'Compress video',
         to: '/tools/compress-video',
-        description: 'Shrink your exported MP4 for faster uploads and sharing.',
+        description: 'Shrink an export further for email or a slow connection.',
       },
       {
-        label: 'Transcribe Video',
+        label: 'Transcribe video',
         to: '/tools/transcribe-video',
-        description: 'Generate a transcript or captions from your finished video.',
+        description: 'Get a full transcript of a finished edit, not just captions.',
       },
       {
-        label: 'Extract Audio from Video',
+        label: 'Extract audio from video',
         to: '/tools/extract-audio-from-video',
-        description: 'Pull the audio track out of a clip as MP3 or WAV.',
+        description: 'Pull the soundtrack out of a clip before you bring it into the timeline.',
+      },
+      {
+        label: 'Video trimmer',
+        to: '/tools/video-trimmer',
+        description: 'When a single cut is all you need.',
+      },
+      {
+        label: `${MOTION_BRAND}`,
+        to: '/tools/motion',
+        description: 'Animate a logo or lower third as SVG, then export a GIF for the timeline.',
       },
       {
         label: 'Darkroom tutorial',
         to: '/tutorials/content-studio',
-        description: 'A step-by-step walkthrough of building an edit and exporting MP4.',
+        description: 'Build an edit from empty project to exported MP4, step by step.',
       },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 90-second 1080p30 cut at the Medium preset',
+        body:
+          'Two 1080p clips, a music track and a title card on a 1920 x 1080 canvas at 30 fps, exported as H.264 at Medium. On the render server with a working NVENC this is h264_nvenc preset p4 at constant quality 23 with yuv420p; without it, libx264 preset medium CRF 23. The audio mix is encoded as AAC at 192 kb/s, which for 90 seconds is 192,000 x 90 / 8, about 2.2 MB of audio regardless of content. The video side is quality-targeted rather than bitrate-targeted, so its size follows the footage: static talking-head material at CQ 23 encodes small, handheld motion encodes large. The render time scales with timeline length and the number of clips visible at once, because every frame of every visible clip is decoded and composited before the encoder sees it.',
+      },
+      {
+        title: 'A 20-minute podcast exported as MP3 and as WAV',
+        body:
+          'An audio-only project (two voice tracks, an intro sting, podcast loudness preset) skips the video graph entirely. Exported as MP3 the file is libmp3lame at a constant 192 kb/s: 192,000 x 1,200 / 8 = 28.8 MB, so about 29 MB. Exported as WAV it is 16-bit PCM at the graph\'s 48 kHz stereo: 48,000 x 2 channels x 2 bytes = 192,000 bytes a second, 230 MB for 20 minutes. The loudnorm stage targets -16 LUFS integrated with a -1.5 dBTP ceiling and 11 LU of loudness range. With no frames to composite the job is bounded by decoding the sources and the audio filters, so it finishes well inside the length of the episode.',
+      },
+    ],
+    whenNotToUse:
+      'Darkroom is the wrong tool for a one-step job. If you only need to cut the start and end off a clip, change its format or shrink it, the single-purpose video trimmer and compressor pages do that with one upload and no project. It is also not a place for footage you cannot upload: every source is sent to our server for proxies and rendering, so material that must never leave your machine belongs in a desktop editor. Projects on a guest session are limited to one and last 24 hours; sign in before starting anything you want to return to next week.',
     primaryKeyword: 'online video editor',
     secondaryKeywords: [
       'multi-track video editor',
@@ -414,13 +474,13 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Start a new drawing or reopen a recent one. The editor opens full screen; your work is kept in this browser, and signed-in users can save it to their account.',
     },
     intro:
-      `${MOTION_BRAND} is an SVG editor with an animation timeline, built into Media Manipulator. Open an SVG file (or a Lottie animation) and every shape becomes a layer you can select, move, recolour and animate, or start from a blank canvas and draw with the rectangle, ellipse, line, pen and text tools. Each animated property gets its own track of keyframes, with easing presets, a curve editor for custom easing, and hold keys for instant jumps. One-click animators add stroke draw-on, motion along a path, shape morphing, gradient colour changes, mask animation and blur. When it moves the way you want, export it as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. Editing and every export run in your browser, so your artwork is never uploaded to export it.`,
+      `${MOTION_BRAND} is an SVG editor with an animation timeline, built into Media Manipulator. Open an SVG file (or a Lottie animation) and every shape becomes a layer you can select, move, recolour and animate, or start from a blank canvas and draw with the rectangle, ellipse, line, pen and text tools. Each animated property gets its own track of keyframes, with easing presets, a curve editor for custom easing, and hold keys for instant jumps. One-click animators add stroke draw-on, motion along a path, shape morphing, gradient colour changes, mask animation and blur. When it moves the way you want, export it as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. Editing and every export run in your browser, so your artwork is never uploaded to export it; the server is only asked to count the export against your daily allowance.`,
     whatItDoes: [
-      'Imports SVG files into an editable layer tree (groups, paths, shapes, text, images, gradients, masks and clip paths) and imports Lottie JSON animations with their keyframes.',
+      'Imports SVG files into an editable layer tree (groups, paths, shapes, text, images, gradients, masks and clip paths) and imports Lottie JSON animations with their keyframes, each file up to 4 MB.',
       'Draws new artwork with rectangle, ellipse, line, pen (Bézier) and text tools, and edits path nodes directly on the canvas.',
       'Animates position, scale, rotation, skew, opacity, fill, stroke and stroke width on a keyframe timeline with linear, ease-in, ease-out, ease-in-out, custom cubic-bezier and hold easing.',
-      'Adds advanced animation in one click: stroke draw-on, motion along a path with optional auto-rotate, shape morphing, gradient stop colours, mask and clip-path animation, and blur.',
-      'Exports a static SVG (always free), an animated SVG that plays without any library, Lottie JSON, a React component, a JavaScript or TypeScript module, a Flutter widget and an animated GIF.',
+      'Adds six one-click animators: stroke draw-on, motion along a path with optional auto-rotate, shape morphing, gradient stop colours, mask and clip-path animation, and blur.',
+      'Exports a static SVG (always free and never counted), an animated SVG that plays without any library, Lottie JSON, a React component, a JavaScript or TypeScript module, a Flutter widget and an animated GIF, all generated on your machine.',
     ],
     flowSteps: [
       {
@@ -437,20 +497,21 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
       {
         title: 'Export',
-        description: 'Download animated SVG, Lottie, React, JS/TS, Flutter or GIF, made in your browser.',
+        description: 'Choose a format; the server counts one export, then your browser builds and downloads the file.',
       },
     ],
     advancedDetails: [
-      'The animated SVG export uses pure CSS keyframes whenever every effect can be expressed in CSS in Chrome, Firefox and Safari. Shape morphs, moving gradient stops and blur need a small script, so those files embed a trimmed copy of anime.js (MIT licence, about 14 KB compressed) with its licence notice at the top.',
+      'The animated SVG export uses pure CSS keyframes whenever every effect can be expressed in CSS in Chrome, Firefox and Safari. Shape morphs, moving gradient stops and blur need a script, so those files embed a trimmed copy of anime.js (MIT licence, about 31 KB of script, roughly 13 KB after gzip) with its licence notice at the top.',
       'Shape morphing normalises both shapes to the same number of curve segments and lines up their start points and winding, so the morph does not twist. Two shapes that cannot be matched hold instead of morphing.',
-      'The Lottie writer targets the Lottie 1.0.1 specification and the LottieFiles "Basic" feature set. Anything Lottie cannot carry (such as filters, text or advanced masks) is listed after the download; nothing is dropped silently.',
-      'GIF export uses an encoder written for Media Manipulator, with one global palette built from frames across the animation, so flat vector art keeps its exact colours.',
-      'Imported SVGs are cleaned on the way in: scripts, event handlers, external references and other unsafe content are removed, and the editor rebuilds unsupported markup from an allow-list instead of inserting it as HTML.',
+      'The Lottie writer targets the Lottie 1.0.1 specification and the LottieFiles "Basic" feature set. Anything Lottie cannot carry (such as filters, text or advanced masks) is listed after the download; nothing is dropped silently. The reader uses the same list in the other direction.',
+      'GIF export renders frames one at a time, transfers each to a Worker, and encodes with an encoder written for Media Manipulator: one global palette sampled from five frames spread across the span, dithering off by default (flat vector art has few colours and dither adds noise), a frame delay of round(100 / fps) centiseconds, and transparency kept only when the canvas background is transparent. Output is capped at 2 GB and the dialog shows a size estimate before you start.',
+      'Imported SVGs are cleaned on the way in: scripts, event handlers, external references and other unsafe content are removed, and the editor rebuilds unsupported markup from an allow-list instead of inserting it as HTML. Markup it cannot model is kept as an opaque layer that round-trips unchanged.',
+      'The export counter is a single database transaction: the format lock and the caps are checked, then the counter and an export row are written together. A refused export writes nothing and costs nothing; an export the browser then cancels or fails has already been counted.',
     ],
     whyItMatters: [
       'Animated SVGs stay sharp at every size and are usually far smaller than a video or GIF of the same animation, which makes them ideal for logos, icons, loaders and illustrations on the web.',
       'Developers need animation as code, not just as a video: a React component, a JavaScript module, a Lottie file or a Flutter widget drops straight into an app.',
-      'Doing the export in the browser means your artwork stays on your device; only a count of each export is sent to us, to enforce the daily allowance.',
+      'Doing the export in the browser means your artwork stays on your device; only the format, size, length and time of each export are sent to us, to enforce the daily allowance.',
     ],
     useCases: [
       {
@@ -471,44 +532,52 @@ export const TOOL_PAGES: ToolPageContent[] = [
       },
     ],
     whyMediaManipulator: [
-      'A real layer-and-keyframe editor with holds, custom curves and advanced animators, not a template gallery.',
+      'A real layer-and-keyframe editor with holds, custom curves and six animators, not a template gallery.',
       'Exports for designers and developers alike: animated SVG, Lottie, React, JavaScript or TypeScript, Flutter and GIF from one project.',
       'Exports are made in your browser, and the only third-party code an export uses is permissively licensed (anime.js under MIT; flutter_svg and webview_flutter for Flutter), with its licence notice kept in the file.',
     ],
     privacyNote:
-      'Editing and exporting happen in your browser; your artwork is not uploaded to export it. Without an account, projects are kept only in this browser. If you sign in and save a project to your account, it is stored on our servers like a Darkroom project, follows the retention period you choose, and can be deleted from your Account page. For each export we record only its format, size, length and time, to enforce the daily allowance.',
+      'Editing and exporting happen in your browser; your artwork is not uploaded to export it. Without an account, projects are kept only in this browser. If you sign in and save a project to your account, the sanitised document (up to 4 MB) and a thumbnail are stored on our servers like a Darkroom project, follow the retention period you choose, and can be deleted from your Account page. For each counted export we record only its format, height, frame rate, length and time, with your account or session as the owner, to enforce the daily allowance; the export row never contains the artwork.',
     faq: [
       {
         question: `Is ${MOTION_BRAND} free?`,
-        answer: `Yes. Opening ${MOTION_BRAND}, drawing, animating, saving and exporting a static SVG are free and unlimited, with no account. Animated exports count toward a daily allowance that depends on your plan; the plan table on this page shows each plan's allowance and formats.`,
+        answer:
+          `Yes. Opening ${MOTION_BRAND}, drawing, animating, saving in this browser and exporting a static SVG are free, unlimited and need no account. Animated exports count toward a daily allowance that depends on your plan: by default 2 a day without an account (animated SVG only), 5 with a free account, 30 with Premium and 150 with Pro. The plan table on this page shows each plan's live allowance and formats.`,
       },
       {
         question: 'Which formats can I export?',
-        answer: 'Static SVG, animated SVG (CSS, or a small inline script when needed), Lottie JSON, a React component (.tsx), a JavaScript or TypeScript module, a Flutter widget (.dart) and an animated GIF. Which of these your plan includes, and the daily number of exports, are shown in the plan table on this page.',
+        answer:
+          'Static SVG, animated SVG (CSS, or a small inline script when needed), Lottie JSON, a React component (.tsx), a JavaScript or TypeScript module, a Flutter widget (.dart) and an animated GIF. By default animated SVG is on every plan, Lottie from the free account up, and React, JS/TS, Flutter and GIF from Premium up. Which of these your plan includes, and the daily number of exports, are shown in the plan table on this page.',
       },
       {
         question: 'What are the limits?',
-        answer: 'Animated exports are counted per day and reset at midnight UTC. Visitors without an account can save projects only in their browser; signed-in plans save a number of projects to the account. Visitors also have a maximum animation length for export, and GIF export has a size and length cap. Every current number is in the plan table on this page and on the pricing page.',
+        answer:
+          'Animated exports are counted per day and reset at midnight UTC; a refused export is not counted, but an export you cancel after the count has been taken is. Visitors without an account save projects only in their browser and can export animations up to 10 seconds long; a free account saves 3 projects to the account, Premium 25, Pro without limit. SVG and Lottie imports are capped at 4 MB each, GIF export at 50 fps and 2 GB of output. Every current number is in the plan table on this page and on the pricing page.',
       },
       {
         question: 'Can I animate an SVG I already have?',
-        answer: 'Yes. Import any SVG and its groups, paths, shapes, text, gradients, masks and clip paths become editable layers. Parts the editor cannot edit, such as patterns or complex filters, are kept and exported unchanged, and anything unsafe (scripts or external links) is removed and listed after the import.',
+        answer:
+          'Yes. Import any SVG and its groups, paths, shapes, text, gradients, masks and clip paths become editable layers. Parts the editor cannot edit, such as patterns or complex filters, are kept and exported unchanged, and anything unsafe (scripts, event handlers or external links) is removed and listed after the import.',
       },
       {
         question: 'Does it support Lottie?',
-        answer: 'Yes, in both directions. You can import a Lottie JSON file to edit it, and export your animation as Lottie JSON for lottie-web and the iOS, Android and Flutter Lottie players. Features one side cannot represent are listed in the dialog instead of being dropped silently.',
+        answer:
+          'Yes, in both directions. You can import a Lottie JSON file to edit it (the import counts as one unit on the free plan and up), and export your animation as Lottie JSON for lottie-web and the iOS, Android and Flutter Lottie players. Features one side cannot represent are listed in the dialog instead of being dropped silently.',
       },
       {
         question: 'Which browsers support video export?',
-        answer: 'GIF export works in all modern browsers. MP4 and WebM export rely on WebCodecs, the browser\'s built-in video encoder, which is available in Chrome and Edge and in recent versions of Safari and Firefox depending on the codec; the export dialog checks your browser and says when it cannot encode. The plan table on this page shows which plan includes each video format.',
+        answer:
+          'GIF export works in all modern browsers. MP4 and WebM export rely on WebCodecs, the browser\'s built-in video encoder, which is available in Chrome and Edge and in recent versions of Safari and Firefox depending on the codec; the export dialog checks your browser and says when it cannot encode. The plan table on this page shows which plan includes each video format.',
       },
       {
         question: 'What licence applies to the exported code?',
-        answer: 'Your animation belongs to you. When an animated SVG or a code export needs a runtime, it uses anime.js, which is MIT-licensed; its copyright notice is written at the top of the file and must be kept there. Flutter exports use the flutter_svg (MIT) or webview_flutter (BSD-3-Clause) package. Everything else in the file is generated from your project. The open-source libraries the editor uses are listed on our licences page.',
+        answer:
+          'Your animation belongs to you. When an animated SVG or a code export needs a runtime, it uses anime.js, which is MIT-licensed; its copyright notice is written at the top of the file and must be kept there. Flutter exports use the flutter_svg (MIT) or webview_flutter (BSD-3-Clause) package. Everything else in the file is generated from your project. The open-source libraries the editor uses are listed on our licences page.',
       },
       {
         question: 'Where are my projects stored?',
-        answer: 'Without an account, projects are kept only in this browser, so clearing your browser data removes them. When you are signed in you can save a project to your account; it then syncs between devices, autosaves while you work, follows the retention period you chose and can be deleted from your Account page.',
+        answer:
+          'Without an account, projects are kept only in this browser, so clearing your browser data removes them. When you are signed in you can save a project to your account; it then syncs between devices, autosaves while you work, follows the retention period you chose and can be deleted from your Account page.',
       },
     ],
     related: [
@@ -523,7 +592,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         description: 'Edit video on a multi-track timeline and export MP4.',
       },
       {
-        label: 'Convert Video to Animated GIF',
+        label: 'Convert video to animated GIF',
         to: '/tools/convert-video-to-animated-gif',
         description: 'Turn a video clip into a GIF when your animation started as footage.',
       },
@@ -533,6 +602,21 @@ export const TOOL_PAGES: ToolPageContent[] = [
         description: 'The libraries the editor runs and writes into your exports.',
       },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 2-second logo draw-on as animated SVG',
+        body:
+          'A wordmark of a few paths with the Draw on animator across 2,000 ms, exported as animated SVG. Draw-on is a stroke-dasharray and stroke-dashoffset animation, which CSS can express in every major browser, so the exporter writes a <style> block of @keyframes and no script at all. The file is your SVG plus a few hundred bytes of CSS, it plays the moment it is in the page, and it counts as one svg_animated export: without an account that is one of 2 a day and within the 10-second length cap for visitors; with a free account one of 5. The export is a string transform in your browser and completes at once.',
+      },
+      {
+        title: 'A 400 x 400 morph loop as a GIF',
+        body:
+          'A 2-second shape morph on a 400 x 400 canvas exported as GIF at 25 fps on a Premium plan (GIF is a Premium format by default). The dialog clamps to the plan\'s height and frame-rate presets, 25 fps giving a delay of round(100 / 25) = 4 centiseconds per frame and 50 frames in all. Its size estimate is pixels x frames x 0.25 bytes + 1 KB: 160,000 x 50 x 0.25 is about 2 MB, deliberately on the high side, and flat two-colour art usually lands well under it. Frames render on the main thread and encode in a Worker one at a time, so memory stays at a couple of frames plus the growing file; the time is spent rasterising 50 frames of SVG, a few seconds on a laptop.',
+      },
+    ],
+    whenNotToUse:
+      `${MOTION_BRAND} animates vector artwork; it does not edit video or photographs. If your starting point is footage, Darkroom is the editor and the video-to-GIF page turns a clip into a GIF. It is also not a vectoriser for complex raster images: a photograph traced to paths will be heavy and the result will not animate meaningfully. Animations that depend on filters, text effects or advanced masks will not survive a Lottie export intact (the dialog lists what was dropped), so for those targets keep to the animated SVG, React or JavaScript exports. And MP4 or WebM output depends on your browser's WebCodecs support and on your plan, so check the plan table before planning a video deliverable.`,
     primaryKeyword: 'svg animation editor',
     secondaryKeywords: [
       'animate svg online',
@@ -582,7 +666,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- METADATA / PRIVACY
   {
     slug: 'remove-exif-metadata',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Remove EXIF Metadata from Images',
     h1: 'Remove EXIF Metadata from Images Online',
     tagline:
@@ -604,110 +688,150 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a JPG, PNG, WebP, or HEIC photo. We show every tag it carries, then press Strip everything to remove them all and see exactly what was removed.',
     },
     intro:
-      'Every photo you take stores hidden information about it — the camera you used, the exact time, and often the GPS coordinates of where the photo was taken. This metadata can leak your home address, daily routine, or device details whenever you share a picture online. Media Manipulator strips all of that out and gives you a clean image safe to publish.',
+      'A photo carries a second document inside it. Alongside the pixels, a phone or camera writes the make and model of the device, often its serial number, the lens, the exposure, the exact second the shutter fired, the software that last saved the file, a small preview thumbnail, and, when location services were on, the latitude, longitude and altitude of the spot you were standing on. This tool reads all of that out of a JPG, PNG, WebP or HEIC, shows you every tag grouped by what it reveals, and then removes the lot with a single pass of ExifTool so the copy you share carries only the picture.',
     whatItDoes: [
-      'Removes EXIF tags including camera make/model, exposure settings, and embedded thumbnails.',
-      'Strips GPS location data: latitude, longitude, altitude, capture direction, and GPS timestamps.',
-      'Removes IPTC and XMP metadata such as author, copyright, keywords, and descriptions.',
-      'Preserves the original visual content — only the hidden metadata sidecar is touched.',
+      'Inspects the upload with ExifTool and lists every tag it finds, grouped into categories (camera, lens, GPS, date and time, XMP, IPTC, thumbnail, colour, maker notes and more) with location, identity, device and history tags flagged.',
+      'Removes the EXIF blocks (IFD0 and ExifIFD: make, model, body serial number, lens model, exposure, ISO, focal length, capture and modification dates) and the GPS IFD (latitude, longitude, altitude, their reference tags, GPS timestamps).',
+      'Removes the IFD1 embedded preview thumbnail, which is a separate small copy of the image that survives cropping in many editors.',
+      'Removes XMP packets (creator tool, edit history, keywords, ratings), IPTC records (author, copyright, caption), Photoshop resource blocks, vendor maker notes and the ICC colour profile.',
+      'Applies the EXIF orientation to the pixels first, so a phone photo that relied on the rotation tag does not come out sideways once the tag is gone.',
+      'Counts what was removed by comparing the before and after reports and shows the number, with a note when location tags were among them.',
     ],
     flowSteps: [
       {
-        title: 'Upload image',
-        description: 'Drop in any JPG, PNG, WebP, or HEIC photo.',
+        title: 'Upload the photo',
+        description: 'Drop in a JPG, PNG, WebP or HEIC. The server runs ExifTool twice (a readable pass and a numeric pass for GPS and exposure values) and returns the report.',
       },
       {
-        title: 'Read metadata',
-        description: 'We read EXIF/IPTC/XMP fields on our servers and list them, with the private ones flagged.',
+        title: 'Read the report',
+        description: 'Tags are grouped by category; GPS coordinates are plotted on a locator so you can see exactly what the file gives away.',
       },
       {
-        title: 'Remove private fields',
-        description: 'GPS, device, and timestamp tags are stripped.',
+        title: 'Strip everything',
+        description: 'One click re-saves the image with ImageMagick and runs exiftool -all= over the result.',
       },
       {
-        title: 'Download clean image',
-        description: 'Save the metadata-free copy for safe sharing.',
+        title: 'Compare and download',
+        description: 'The result screen reports how many tags went, offers a side-by-side diff of the two reports, and gives you the clean file.',
       },
     ],
     advancedDetails: [
-      'Stripping is performed with ImageMagick + exiftool on the server, ensuring every common metadata profile (EXIF, IPTC, XMP, ICC, MakerNote) is removed.',
-      'The output container is preserved by default — JPG stays JPG, PNG stays PNG — so re-encoding artifacts are minimal.',
-      'If you want to keep ICC color profiles but drop everything else, use the Metadata section\'s "Custom" mode to keep only the fields you care about.',
+      'The pixel pass is ImageMagick: convert <input> -auto-orient -quality 85 <output>, with the output container matching the input for JPG, PNG, WebP, GIF and AVIF. HEIC, TIFF and BMP have no same-container path on this page and come back as JPG.',
+      'The metadata pass is exiftool -overwrite_original -all= on the converted file. -all= removes every writable group in one go: EXIF (IFD0, ExifIFD, GPS, InteropIFD), the IFD1 thumbnail, XMP, IPTC, Photoshop IRB, ICC_Profile, maker notes and any APP segments ExifTool knows how to write. The JFIF and Adobe APP14 segments a JPEG decoder needs are left in place; they describe pixel layout, not you.',
+      'Because the image is re-encoded, a JPG is written again at quality 85 and a PNG is written again losslessly. The strip is not a byte-for-byte copy with the metadata cut out.',
+      'The before and after reports are the same MetadataDocument the inspector builds: group-keyed entries such as GPS:GPSLatitude or XMP-xmpMM:History, each classified by a catalogue of about 1,800 tags into 22 categories and four privacy classes (location, identity, device, history).',
+      'The removed count excludes rows that change on every conversion (file name, size, modification date, MIME type, image size), so it reflects metadata that was actually dropped rather than bookkeeping.',
+      'Video and audio containers can be stripped too, from the video and audio converters: ffmpeg is run with -map_metadata -1 -map_chapters -1, and for MP4, MOV, M4A and M4V an exiftool -all= pass follows because ffmpeg leaves QuickTime keys and XMP behind.',
     ],
     whyItMatters: [
-      'Photos uploaded straight from a phone can reveal the exact GPS coordinates of your home or workplace.',
-      'EXIF data persists when you message, email, or upload an image to most websites — even some social networks keep it intact.',
-      'Stripping metadata is the simplest way to make a photo safe to share without changing what it looks like.',
+      'GPS tags resolve to a street address. A photo of a sofa for sale, posted from home, can tell a stranger where the sofa is.',
+      'Device and serial-number tags link photos to each other and to you. Two images with the same BodySerialNumber were taken with the same camera, whatever account posted them.',
+      'The IFD1 thumbnail is a copy of the original frame. Crop a face or a document out of the picture and the preview may still show it.',
+      'Many sites strip EXIF on upload and many do not. Messaging apps, email attachments, cloud shares and marketplaces frequently pass the file through untouched.',
     ],
     useCases: [
       {
-        title: 'Posting on forums or marketplaces',
-        description: 'Hide your home GPS coordinates from buyers, members, or strangers.',
+        title: 'Marketplace and classified listings',
+        description: 'Remove the location and capture time from product photos taken at home before buyers see them.',
       },
       {
-        title: 'Sharing photos publicly',
-        description: 'Remove camera serial numbers, lens info, and capture times from publicly posted photos.',
+        title: 'Photos of documents',
+        description: 'A snapshot of a form or a letter also records when and where it was photographed; strip that before sending it on.',
       },
       {
-        title: 'Journalism and source protection',
-        description: 'Scrub identifying device/GPS metadata before publishing a sensitive image.',
+        title: 'Publishing from a sensitive location',
+        description: 'Drop device identifiers and coordinates from an image before it leaves your control, and verify with the diff that they are gone.',
       },
       {
-        title: 'Selling a product',
-        description: 'Remove the embedded thumbnail and EXIF data before listing on a marketplace.',
+        title: 'Cleaning an edited image',
+        description: 'Editors append XMP history and keep the original thumbnail; remove both so the file only shows what you intended.',
       },
     ],
     whyMediaManipulator: [
-      'Runs entirely on our own infrastructure — no third-party metadata service sees your photo.',
-      'Strips every common metadata profile, not just the EXIF block.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'You see the evidence. The inspector lists every tag before you strip and a diff proves what went after, rather than a green tick and a promise.',
+      'One pass, every group. ExifTool -all= removes EXIF, GPS, XMP, IPTC, Photoshop, ICC, maker notes and the preview thumbnail together; nothing has to be ticked one block at a time.',
+      'Orientation is handled. The rotation tag is applied to the pixels before it is removed, which is the usual way a stripped phone photo ends up on its side elsewhere.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `This tool removes, from the copy it returns, the EXIF blocks (camera make, model, serial number, lens, exposure, dates), the GPS block, the IFD1 preview thumbnail, XMP and IPTC records, Photoshop resources, maker notes and the ICC profile. To do that the server has to read them first: the upload is inspected with ExifTool and the report is written to the job folder as metadata.json, and after the strip a second report of the result is kept beside it so the Compare view can show the difference. Both reports and both files live in uploads/<jobId>/ and outputs/<jobId>/ and are deleted together when the retention window ends. ${RETENTION_PROMISE}. The stand-alone inspector (reading a file without converting it) removes its temporary copy as soon as the report is produced. Images also pass through an automated analysis step on our own server; nothing is sent to a third party.`,
     faq: [
       {
-        question: 'What metadata gets removed?',
+        question: 'Exactly which metadata groups are removed?',
         answer:
-          'EXIF (camera, exposure, GPS, timestamps), IPTC (author, copyright, keywords), XMP, embedded thumbnails, and most MakerNote vendor blocks.',
+          'Everything ExifTool can write: EXIF (IFD0, ExifIFD, InteropIFD), the GPS IFD, the IFD1 thumbnail, XMP in all its namespaces (xmp, dc, xmpMM, photoshop, and so on), IPTC IIM records, Photoshop resource blocks, maker notes from Apple, Canon, Nikon, Sony and other vendors, and the ICC colour profile. For PNG that includes the tEXt, iTXt, zTXt, eXIf and iCCP chunks; for WebP the EXIF, XMP and ICCP chunks.',
       },
       {
-        question: 'Will the image quality change?',
+        question: 'Does the image get re-encoded?',
         answer:
-          'No — we keep the original encoding when possible. JPG stays JPG without re-compressing twice, PNG stays PNG.',
+          'Yes. The file goes through ImageMagick (which also applies the orientation tag to the pixels) before ExifTool removes the tags. A JPG is rewritten at quality 85, a PNG is rewritten losslessly, a WebP at quality 85. Visually the JPG re-encode is hard to tell from the original at normal viewing sizes, but it is not the identical bitstream.',
       },
       {
-        question: 'Can I keep some metadata, like copyright?',
+        question: 'Why did my HEIC come back as a JPG?',
         answer:
-          'Yes. Use the "Custom" metadata mode in the form and keep only the IPTC fields you want to publish.',
+          'The one-click strip keeps the container for JPG, PNG, WebP, GIF and AVIF. HEIC, TIFF and BMP are decoded and written as JPG so the result opens everywhere. If you need a HEIC back, convert it in the image converter with metadata set to Strip.',
       },
       {
-        question: 'Are my uploads kept?',
+        question: 'Will the colour profile be removed, and does that matter?',
         answer:
-          `No — files are never shared with third-party providers. ${RETENTION_PROMISE}.`,
+          'Yes, exiftool -all= removes the ICC profile. For a standard sRGB photo nothing changes, because viewers assume sRGB when no profile is present. For a wide-gamut Display P3 photo from a recent phone, colours may look slightly less saturated in software that honours profiles. If that matters to you, use the image converter\'s Custom metadata mode and keep the profile there.',
+      },
+      {
+        question: 'Can I keep a copyright line or a title?',
+        answer:
+          'Not with the one-click strip, which removes everything. The image converter\'s metadata section has a Custom mode that strips the file and then writes back only what you type: title, author, description, copyright, comment, keywords and chosen EXIF or GPS fields. Use that when you want a clean file that still names you.',
+      },
+      {
+        question: 'How do I know it worked?',
+        answer:
+          'The result screen gives the number of tags removed and flags when location data was among them. Open Compare for the full before and after: it is the same ExifTool report run on the output file, so a GPS or serial-number row that survived would show up there.',
+      },
+      {
+        question: 'Is it free, and how many photos can I strip?',
+        answer:
+          'Yes. Each strip is one upload through the standard converter, so it counts against the daily operations allowance: by default 5 a day without an account and up to 200 MB per file, 30 a day with a free account and files up to 1 GB, 300 with Premium and 700 with Pro. A job that fails gives its unit back. The live numbers are on the pricing page.',
       },
     ],
     related: [
       {
-        label: 'Image converter',
-        to: '/tools/image-converter',
-        description: 'Convert between JPG, PNG, WebP, AVIF, GIF, and more.',
+        label: 'Blur faces in a photo',
+        to: '/tools/blur-faces-in-photo',
+        description: 'Metadata is only half the story; hide the faces the picture itself shows.',
       },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Image optimization guide',
-      //   to: '/blog/image/image-optimization-guide',
-      //   description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
-      // },
       {
-        label: 'Image converter tutorial',
-        to: '/tutorials/image/getting-started',
-        description: 'Full walkthrough of every option in the image converter.',
+        label: 'Redact text in an image',
+        to: '/tools/redact-text-in-image',
+        description: 'Black out names, addresses and numbers printed in the picture.',
+      },
+      {
+        label: 'Compress image',
+        to: '/tools/compress-image',
+        description: 'Shrink the cleaned photo before posting it.',
+      },
+      {
+        label: 'Image to PDF',
+        to: '/tools/image-to-pdf',
+        description: 'Bundle stripped photos of documents into one PDF.',
       },
       {
         label: 'Privacy policy',
         to: '/privacy-policy',
-        description: 'How uploaded files are processed and deleted.',
+        description: 'How uploads, reports and results are stored and deleted.',
       },
     ],
+    workedExamples: [
+      {
+        title: 'A 12-megapixel iPhone JPEG with GPS',
+        body:
+          'A 4032 x 3024 JPEG straight from an iPhone 15 Pro carries, in a typical case, 5 IFD0 tags (make, model, orientation, software, modify date), 7 ExifIFD tags including the body serial number and lens model, 5 GPS tags, 4 XMP entries including edit history, 2 ICC profile entries, the 3 IFD1 thumbnail entries (about 5 KB of preview JPEG) and a derived GPSPosition. The result screen reports 27 tags removed, including location: those 27 are every entry except the file name, size, date and type rows and the image size, which exist on any file. The output is a JPG re-encoded at quality 85 with the orientation baked into the pixels; the re-encode decides the final size. The job is a single ImageMagick decode and encode plus one ExifTool rewrite, so it finishes in a few seconds and the time is spent on the pixels, not the tags.',
+      },
+      {
+        title: 'A HEIC from a recent phone',
+        body:
+          'HEIC has no same-container path on this page, so a 12-megapixel HEIC is decoded by ImageMagick and written as a JPG at quality 85, then stripped with exiftool -all=. You lose the HEIC container and its colour profile and gain a file every browser and marketplace accepts. Expect a larger file than the HEIC you uploaded, because the JPEG re-encode at quality 85 is the only compression applied and it decides the size. The report lists the Apple maker notes and GPS block before, and nothing but file and image-size rows after. The HEIC decode is the slow part; it is still a matter of seconds for one photo.',
+      },
+    ],
+    whenNotToUse:
+      'Do not strip a photo you still need to edit or prove the provenance of. Camera RAW files are not accepted here and should not be stripped with -all= anyway, because their maker notes hold data the RAW converter needs. If you want to keep a copyright notice or a title while dropping GPS and device tags, use the image converter\'s Custom metadata mode instead, which strips everything and writes back only the fields you fill in. And remember that removing metadata does not remove what is visible in the picture: a street sign, a reflection or a face still says where you were; the face blur and text redaction tools handle those.',
     primaryKeyword: 'remove EXIF metadata',
     secondaryKeywords: [
       'strip GPS from photo',
@@ -721,7 +845,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- VIDEO
   {
     slug: 'compress-video',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Compress Video',
     h1: 'Compress Video Online Without Ruining Quality',
     tagline:
@@ -742,141 +866,108 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video and pick a smaller quality preset or lower bitrate. Keep the same codec for the fastest result, or switch to WebM/H.265 for smaller files on modern devices. Keeping the same resolution gives the most natural-looking result.',
     },
     intro:
-      'A 30-second clip from a modern phone or screen recorder can easily be hundreds of megabytes. Media Manipulator re-encodes your video at a lower bitrate or with a more efficient codec so the file shrinks dramatically while still looking good. Most users get 50–80% smaller files with no visible quality loss.',
+      'A video file is large because of its bitrate: how many bits the encoder spent per second of footage. Phones and screen recorders spend generously, which is why a short 1080p clip can run to tens or hundreds of megabytes. This page opens a three-control compressor instead of the full converter: a compression level, an output container, and an optional resolution and codec. On our server the job is one FFmpeg command that re-encodes the picture at a constant-quality setting (CRF) chosen by the level, re-encodes the audio to AAC or Opus, and writes the result with the index at the front of the file so it starts playing before it has fully downloaded.',
     whatItDoes: [
-      'Re-encodes video at a lower bitrate or with a more efficient codec.',
-      'Supports MP4, WebM, MOV, MKV, AVI, FLV, WMV, and ProRes inputs.',
-      'Lets you change resolution, frame rate, and audio bitrate for further savings.',
-      'Outputs to MP4 (H.264 / H.265), WebM (VP9), or any other supported container.',
+      'Re-encodes the video at a fixed quality level rather than a fixed bitrate: Smallest file is CRF 31, Balanced is CRF 26 and High quality is CRF 22.',
+      'Outputs MP4 (H.264 by default, or H.265/HEVC when you pick it) or WebM (VP9 with Opus audio).',
+      'Optionally scales the picture down to 1080p, 720p or 480p in the same pass while keeping the aspect ratio.',
+      'Optionally drops the audio track entirely for the smallest possible file.',
+      'Accepts MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG and MPG uploads; the full converter page handles ProRes and other editing formats.',
     ],
     flowSteps: [
-      {
-        title: 'Upload video',
-        description: 'Drop in any MP4, WebM, MOV, MKV, AVI, or other supported video.',
-      },
-      {
-        title: 'Analyze codec/bitrate',
-        description: 'We detect the source codec and recommend a target.',
-      },
-      {
-        title: 'Apply compression',
-        description: 'FFmpeg re-encodes at a lower bitrate or smarter codec.',
-      },
-      {
-        title: 'Download smaller video',
-        description: 'Save a leaner file ready for the web or sharing.',
-      },
+      { title: 'Upload the video', description: 'The browser puts the file straight into our storage bucket, then asks the API to start the job.' },
+      { title: 'Choose a level', description: 'Balanced is preselected. Smallest file trades visible detail for size; High quality keeps more of it.' },
+      { title: 'Optionally change format, resolution or codec', description: 'MP4 with H.264 plays everywhere; H.265 and WebM are smaller on devices that decode them.' },
+      { title: 'FFmpeg re-encodes', description: 'libx264, libx265 or libvpx-vp9 with the CRF for your level, plus AAC or Opus audio and faststart for MP4.' },
+      { title: 'Download the smaller file', description: 'The result stays in the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'Under the hood the tool runs FFmpeg with libx264, libx265, or libvpx-vp9 depending on the target container.',
-      'For modern browsers, H.265 in MP4 (HEVC) or VP9 in WebM typically gives 25–50% smaller files than H.264 at equivalent quality.',
-      'When dropping resolution from 4K to 1080p, file size usually drops 4× — even before re-encoding.',
-      'The "medium" quality preset roughly matches a 23 CRF for x264, a sensible visually-lossless default.',
+      'The exact command for MP4 is ffmpeg -i input [-vf scale=-1:H] -c:v libx264 -crf N -pix_fmt yuv420p -movflags +faststart -c:a aac output.mp4, where N is 31, 26 or 22 for the three levels (buildVideoCodecArgs and videoCRF in converter.go). No encoder speed preset is passed, so libx264 runs at its default, medium.',
+      'Picking H.265 swaps the encoder for libx265 and adds -tag:v hvc1, the tag QuickTime and Safari need to recognise HEVC inside MP4. Older Android phones, smart TVs and many web players cannot decode H.265 at all.',
+      'WebM output runs libvpx-vp9 with -b:v 0 -crf N and Opus audio; if the server FFmpeg build lacked VP9 or Opus it would fall back to VP8 and Vorbis. The same N is passed, but VP9 reads CRF on a 0 to 63 scale, so 26 is a relatively high quality setting there.',
+      'A resolution choice becomes scale=-1:1080, scale=-1:720 or scale=-1:480: height fixed, width computed from the source aspect ratio. The height is applied as given, so picking 1080p for a 720p source upscales it and makes the file larger, not smaller; pick a height at or below the source.',
+      'Remove the audio track adds -an. Otherwise the audio is re-encoded by the FFmpeg native AAC encoder at its default bitrate (no -b:a is passed; for stereo that is typically about 128 kbps), which is a small fraction of the file at any level.',
+      'Compression is CRF-driven, so the output size follows the content: static slides compress far harder than confetti or water. The server validates CRF to 0 to 51 and the compression level to one of the three names before any encoding starts.',
+      'The upload is also queued for the automated content analysis that every standard conversion receives: frames are sampled and described by a local vision model, and audio is transcribed on our own hardware. The analysis result is stored with the job, not shared.',
     ],
     whyItMatters: [
-      'Page-load time directly affects bounce rate, SEO ranking, and conversions.',
-      'Most email and chat platforms reject files over a few hundred MB.',
-      'Hosting costs scale with bandwidth — smaller videos save real money at scale.',
+      'Chat apps, mail servers and learning platforms enforce caps in megabytes, and a phone clip at its native bitrate blows through them.',
+      'A page that autoplays a 60 MB background video stalls on mobile connections; the same clip at CRF 26 is a fraction of that.',
+      'Storage and bandwidth bills scale with bytes, so keeping compressed copies of originals you rarely open adds up quickly.',
     ],
     useCases: [
-      {
-        title: 'Faster websites',
-        description: 'Shrink hero or background videos so pages load in under 3 seconds.',
-      },
-      {
-        title: 'Email and Slack',
-        description: 'Get under file-size limits without uploading to a separate share host.',
-      },
-      {
-        title: 'Social media',
-        description: 'Pre-compress so uploads finish faster on mobile data.',
-      },
-      {
-        title: 'Cloud storage',
-        description: 'Cut storage bills by archiving compressed versions of large originals.',
-      },
+      { title: 'Email and chat', description: 'Get a 1 minute phone recording under a 25 MB or 100 MB limit without a separate sharing link.' },
+      { title: 'Website hero and background loops', description: 'Encode a WebM or H.264 MP4 that a page can autoplay without a long buffer.' },
+      { title: 'Course and meeting recordings', description: 'Shrink screen recordings whose static slides compress extremely well at any CRF.' },
+      { title: 'Archive copies', description: 'Keep a 720p Balanced copy of long originals and move the master to cold storage.' },
     ],
     whyMediaManipulator: [
-      'Runs on our own GPU and CPU servers — no third-party processing.',
-      'Full control over codec, bitrate, resolution, and audio settings.',
-      'Free, no watermarks, no signup, no monthly limit on a casual use level.',
+      'The CRF behind each level is written on this page, so you can predict what Smallest file will do to detailed footage before you wait for it.',
+      'H.265 in MP4 gets the hvc1 tag Apple players require, which many online compressors forget.',
+      'Encoding runs on our own servers with FFmpeg; nothing is handed to an outside processing service, and no watermark is added.',
+      `A compression counts as one operation of your daily allowance: 5 a day without an account by default, 30 with a free account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `The compressor re-encodes your video on our own servers with FFmpeg. The upload is stored under uploads/<jobId>/ and the compressed file under outputs/<jobId>/; both are in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. Because this is a standard conversion, the upload is also passed through our automated content analysis on the same hardware (sampled frames described by a local vision model, audio transcribed locally); that report is kept with the job and is not shared with third parties. Container metadata is kept unless you choose to strip it; nothing is sent to an outside AI or processing provider.`,
     faq: [
       {
-        question: 'Will the video quality drop?',
+        question: 'Will compressing make my video look worse?',
         answer:
-          'A small amount — but at the "medium" or "high" preset most people can\'t tell the difference. For the smallest file size try the "low" preset or drop the resolution.',
+          'Some detail is always lost in a re-encode. At High quality (CRF 22) and Balanced (CRF 26) the loss is mostly in fine grain and noise that most viewers do not notice; at Smallest file (CRF 31) you can see softening on detailed footage. Keeping the resolution avoids the blurring that downscaling adds.',
       },
       {
-        question: 'Which output format is best?',
+        question: 'Should I pick H.264, H.265 or WebM?',
         answer:
-          'MP4 with H.264 is the safe-everywhere default. WebM (VP9) or MP4 (H.265) are smaller, but H.265 requires a modern player.',
+          'H.264 MP4 plays on everything, including old TVs and corporate laptops. H.265 gives a smaller file at the same CRF but needs a device that decodes HEVC; we tag it hvc1 so Apple players accept it. WebM (VP9 and Opus) is the choice for web pages where you control the player.',
       },
       {
-        question: 'Can I keep the original audio?',
+        question: 'How much smaller will the file be?',
         answer:
-          'Yes — set the audio bitrate to "match source" or pick the same audio codec. The audio is typically a small part of total file size.',
+          'It depends on the source bitrate and the content. A phone clip at 12 Mbps has a lot of headroom and shrinks dramatically at CRF 26; a file that was already encoded at a modest bitrate shrinks little, because CRF spends what the picture needs. Dropping to 720p and removing audio always help.',
       },
       {
-        question: 'Is there a file-size limit?',
+        question: 'Does the compressor add a watermark or change the frame rate?',
         answer:
-          'Yes, large uploads may be rejected to keep the free service stable. For very large files, lower the resolution before uploading.',
+          'No. The frame rate, duration and aspect ratio are preserved, and nothing is drawn on the picture. Only the codec, the CRF, the optional height and the optional audio removal change.',
+      },
+      {
+        question: 'Is compressing a video free, and what are the limits?',
+        answer:
+          'By default a guest gets 5 operations a day with files up to 200 MB and 5 minutes of video, output up to 1080p; a free account raises that to 30 a day, 1 GB and 20 minutes. A compression that fails is refunded. The current numbers are on the pricing page.',
+      },
+      {
+        question: 'Why is the output not smaller than the original?',
+        answer:
+          'The source was probably already compressed efficiently, or it is at a low bitrate for its resolution. CRF cannot go below what the picture requires without a lower level. Try Smallest file, or drop the resolution, or switch to H.265.',
+      },
+      {
+        question: 'Can I compress a video with no audio or keep the original audio untouched?',
+        answer:
+          'A silent source stays silent. Audio in a kept track is always re-encoded to AAC (MP4) or Opus (WebM) by this page; the full video converter is where you set an explicit audio bitrate.',
       },
     ],
     related: [
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the clip first; the compressor then has less to encode.' },
+      { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'For clips of a few seconds, a GIF is the format that plays inline.' },
+      { label: 'Transcode to HLS', to: '/tools/transcode-to-hls', description: 'Package a video as an adaptive stream instead of one file.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Keep only the sound track as MP3, WAV or FLAC.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Get the speech as text before or after compressing.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Step-by-step walkthrough of every video option.' },
+    ],
+    workedExamples: [
       {
-        label: 'Video compressor',
-        to: '/tools/video-compressor',
-        description: 'Compress any video with one-click presets.',
+        title: 'A 48 MB, 30 second 1080p phone clip at Balanced',
+        body:
+          'Input: a 30 second MP4 from a phone, 1920 x 1080, 48 MB, which works out to about 12.8 Mbps. Settings: Balanced, MP4, H.264, resolution kept, audio kept. The server runs libx264 at CRF 26 with yuv420p and faststart, and re-encodes the audio to AAC at 128 kbps, so the sound track alone is about 0.5 MB of the result (128 kbps x 30 s). Everything else is decided by the picture: CRF 26 gives up fine grain and noise first, so a steady handheld shot comes out a small fraction of the 12.8 Mbps source, while fast action or heavy camera noise shrinks less. The encode is a single pass over 900 frames of 1080p with the default medium preset; on our server that is a short job, and the upload of 48 MB usually dominates the wait.',
       },
       {
-        label: 'Compress MP4',
-        to: '/tools/compress-mp4',
-        description: 'MP4-specific compressor with H.264 output.',
-      },
-      {
-        label: 'Video converter',
-        to: '/tools/video-converter',
-        description: 'Convert between MP4, WebM, MOV, AVI, and more.',
-      },
-      {
-        label: 'MP4 converter',
-        to: '/tools/mp4-converter',
-        description: 'Convert almost any video into a universal MP4.',
-      },
-      {
-        label: 'Convert MP4 to WebM',
-        to: '/tools/convert-mp4-to-webm',
-        description: 'Re-encode MP4 into a smaller VP9 WebM for the web.',
-      },
-      {
-        label: 'Convert video to animated GIF',
-        to: '/tools/convert-video-to-animated-gif',
-        description: 'Turn short clips into shareable animated GIFs.',
-      },
-      {
-        label: 'Transcribe video',
-        to: '/tools/transcribe-video',
-        description: 'Pull speech out of video into searchable text.',
-      },
-      {
-        label: 'AI Frame Interpolation',
-        to: '/tools/ai-frame-interpolation',
-        description: 'Smooth video motion by lifting FPS to 48, 60, or 120 with RIFE.',
-      },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Video compression guide',
-      //   to: '/blog/video/video-compression-guide',
-      //   description: 'Codecs, bitrate, and container deep dive.',
-      // },
-      {
-        label: 'Video converter tutorial',
-        to: '/tutorials/video/getting-started',
-        description: 'Step-by-step walkthrough of every video option.',
+        title: 'A 160 MB, 60 second 4K clip to 720p H.265 at Smallest file',
+        body:
+          'Input: a 60 second 3840 x 2160 MP4 of 160 MB, about 21 Mbps, within the 200 MB guest cap. Settings: Smallest file, MP4, codec H.265, resolution 720p, audio removed. FFmpeg applies scale=-1:720, which produces 1280 x 720: 0.92 megapixels per frame against 8.3 for the source, roughly a ninth of the pixels before the codec does anything. Then libx265 runs at CRF 31 with -tag:v hvc1 and -an drops the audio. The combination of nine times fewer pixels, a more efficient codec and a high CRF is where the largest reductions come from, so expect a result measured in a few megabytes rather than tens. Time is dominated by decoding 4K frames and by libx265, which is noticeably slower than libx264 at the same preset, so this job takes longer than the 1080p example even though the output is smaller.',
       },
     ],
+    whenNotToUse:
+      'Do not compress a file you still intend to edit or colour grade; every re-encode loses detail, and an editor wants the original or a ProRes intermediate from the full converter instead. Do not use it to make a clip play on a particular device if the problem is the container rather than the size; the video converter changes formats without lowering quality. If your only goal is to cut a section out, the trimmer copies the streams without re-encoding and is both faster and lossless. And if the file is large because it is long, compression helps less than you hope; a 20 minute recording at CRF 26 is still a 20 minute recording.',
     primaryKeyword: 'compress video online',
     secondaryKeywords: [
       'reduce video file size',
@@ -888,7 +979,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'transcode-to-hls',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Transcode Video to HLS',
     h1: 'Transcode Video to HLS Online',
     tagline:
@@ -911,111 +1002,109 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an MP4/MOV/WebM/MKV. We ffprobe the source, let you pick free quality rungs (360p/480p/720p), then run H.264 + AAC ffmpeg encoding and bundle a downloadable tar.gz of the HLS package.',
     },
     intro:
-      'HTTP Live Streaming (HLS) is Apple’s adaptive streaming format and the closest thing the web has to a universally supported VOD container. Media Manipulator transcodes your source video into an HLS package — master.m3u8 plus per-rendition variant playlists and .ts segments — so you can drop the unzipped folder onto any CDN or origin and serve it with built-in adaptive bitrate switching. Free tier covers 360p, 480p, and 720p; premium rungs are available with Premium.',
+      'HTTP Live Streaming serves a video as a playlist of short segments at several quality levels, so a player can start fast and switch rungs as the connection changes. Producing that package by hand means encoding each rendition with aligned keyframes, segmenting them, and writing a master playlist that describes every variant correctly. This page does the whole job: it probes your upload, offers the ladder rungs your source and plan allow, encodes each one with libx264 and AAC into 2 second MPEG-TS segments, optionally adds captions from our own Whisper transcriber, a storyboard sprite sheet and an I-frame playlist for scrubbing, and bundles everything as a tar.gz or zip you can unpack onto any static host.',
     whatItDoes: [
-      'Probes your source with ffprobe and shows resolution, FPS, duration, codec, and audio status.',
-      'Lets you tick which quality rungs to encode (only ones your source can actually support are enabled).',
-      'Runs an H.264 + AAC FFmpeg pipeline with HLS VOD output and independent_segments.',
-      'Writes a master.m3u8 that references each variant, plus a variant index.m3u8 + .ts segments per rung.',
-      'Optionally generates WebVTT captions and storyboard scrubber thumbnails.',
-      'Bundles the result into media-manipulator-hls-<jobID>.tar.gz with a report.json and README.',
-      'Uploads the tarball to S3 and hands you back a short-lived presigned GET URL for download.',
+      'Probes the source with ffprobe and lists the ladder rungs: 144p, 240p, 360p, 480p, 720p, 1080p and 2160p, each enabled only if the source is tall enough and your plan allows it.',
+      'Encodes each selected rung with libx264 High profile level 4.1 and AAC stereo at 48 kHz, into 2 second .ts segments with a keyframe on every segment boundary.',
+      'Writes hls/master.m3u8 with BANDWIDTH, RESOLUTION, FRAME-RATE and CODECS for every variant, plus one index.m3u8 per rung.',
+      'Optionally transcribes the audio with Whisper into a WebVTT track, translates it into up to 3 more languages with a local model, and links each as a subtitle rendition in the master.',
+      'Optionally renders a storyboard sprite sheet with a WebVTT index for scrubber thumbnails, and always tries to add a 240p I-frame-only playlist.',
+      'Packages the folder with README.txt and report.json into a tar.gz (or zip) and gives you a presigned download link.',
     ],
     flowSteps: [
-      {
-        title: 'Upload',
-        description: 'Direct S3 presigned PUT — your file never goes through the API server.',
-      },
-      {
-        title: 'Probe',
-        description: 'ffprobe reads resolution, FPS, audio presence, and codec metadata.',
-      },
-      {
-        title: 'Pick rungs',
-        description: 'Choose 360p, 480p, 720p, or any combination you need.',
-      },
-      {
-        title: 'Encode',
-        description: 'libx264 + AAC at 2-second segments with forced keyframes on segment boundaries.',
-      },
-      {
-        title: 'Package',
-        description: 'master.m3u8 + variants + segments tar.gz’d with report.json and README.',
-      },
-      {
-        title: 'Download',
-        description: 'Presigned S3 GET URL valid for 30 minutes.',
-      },
+      { title: 'Upload', description: 'The browser uploads straight to our storage bucket with a presigned PUT; the API then downloads it to work on.' },
+      { title: 'Probe', description: 'ffprobe reads width, height, frame rate, duration and whether there is audio; rungs taller than the source are greyed out.' },
+      { title: 'Pick rungs and extras', description: '360p, 480p and 720p are preselected. Tick captions, extra caption languages, storyboards, and tar.gz or zip.' },
+      { title: 'Encode each rung', description: 'libx264 at the rung CRF and bitrate with a 2 second GOP, AAC at the rung audio bitrate, HLS VOD output.' },
+      { title: 'Add extras and write the master', description: 'Captions, storyboards and the I-frame playlist are generated, then master.m3u8 is rewritten to reference them.' },
+      { title: 'Download the package', description: 'A presigned link valid for 30 minutes by default; the job page lets you fetch it while it lasts.' },
     ],
     advancedDetails: [
-      'HLS variants are encoded with -hls_time 2 -hls_playlist_type vod -hls_flags independent_segments.',
-      'Force keyframes are emitted every 2 seconds so segments align cleanly across renditions.',
-      'CODECS attribute is "avc1.640028" with "mp4a.40.2" appended when audio is present.',
-      'No upscaling: rungs taller than the source resolution are disabled with a tooltip.',
-      'When the source has no audio track, the audio mapping is omitted so video-only HLS still works.',
+      'The ladder (transcode_profiles.go) is: 144p 200 kbps video and 64 kbps audio, CRF 26; 240p 400/64, CRF 25; 360p 800/96, CRF 23; 480p 1200/128, CRF 23; 720p 2800/128, CRF 22; 1080p 5000/192, CRF 22; 2160p 12000/256, CRF 21. All rungs use the veryfast preset except 2160p, which uses slow.',
+      'Each rung is encoded as ffmpeg -i input -map 0:v:0 -vf scale=-2:H -r FPS -c:v libx264 -profile:v high -level 4.1 -preset P -crf N -sc_threshold 0 -g GOP -keyint_min GOP -b:v B -maxrate 1.2B -bufsize 2B -force_key_frames expr:gte(t,n_forced*2) -map 0:a:0? -c:a aac -b:a A -ac 2 -ar 48000 -hls_time 2 -hls_playlist_type vod -hls_flags independent_segments. GOP is the frame rate times 2, so segments start on keyframes in every rung.',
+      'Because the encode is CRF-driven with -maxrate as a cap, a rung averages at most about its listed bitrate (the cap is 1.2 times it) and comes in lower on easy content. The master playlist advertises BANDWIDTH as the listed video plus audio bitrate, and CODECS as avc1.640028 with mp4a.40.2 appended when audio is present.',
+      'By default a guest may select 360p to 720p, a free account 360p to 1080p, and Premium or Pro the full 144p to 2160p ladder; sources shorter than 360p are refused below Premium. The server re-validates the rungs at start, so a client cannot request a rung it was not offered.',
+      'Captions use the same Whisper model (whisper-ctranslate2, medium) as the transcriber; the primary track is written to captions/<lang>/auto.vtt with a one-segment subs.m3u8 wrapper and referenced from the master as EXT-X-MEDIA TYPE=SUBTITLES. Up to 3 extra languages from a list of 37 are translated segment by segment by a local Ollama model (a translategemma 12b build); a failed translation is recorded as a warning, never a failed job.',
+      'Storyboards are one ffmpeg pass: fps=1/N with N of 5, 10 or 15 seconds depending on duration (under 10 minutes, under 30, longer), 160 x 90 tiles padded to 16:9 in a 10 x 10 grid per JPEG sprite, plus storyboard.vtt with #xywh cues. The I-frame playlist re-encodes only keyframes at 240p (select=eq(pict_type,I), libx264 CRF 30, 4 second segments) and is listed as EXT-X-I-FRAME-STREAM-INF.',
+      'The master carries EXT-X-VERSION:6, EXT-X-INDEPENDENT-SEGMENTS and three EXT-X-SESSION-DATA entries naming the producer, the site and the copyright holder. report.json records the probe, the variants with segment counts and byte sizes, warnings and timestamps.',
     ],
     whyItMatters: [
-      'HLS is the de-facto streaming format on iOS, Safari, and every modern CDN.',
-      'A master playlist enables adaptive bitrate so viewers on slow connections get a watchable stream.',
-      'Pre-segmented VOD is far cheaper to serve than re-encoding on every request.',
+      'HLS is the native streaming format of iOS, Safari and every CDN, and with hls.js it plays in every other browser too.',
+      'Adaptive rungs let a viewer on a weak connection keep watching at 360p instead of buffering at 1080p.',
+      'A pre-segmented VOD package is static files, so it can be hosted on object storage with no transcoding server behind it.',
     ],
     useCases: [
-      { title: 'Course platforms', description: 'Serve lessons with adaptive bitrate on iOS/Android without a video service.' },
-      { title: 'Marketing sites', description: 'Drop a polished hero video that doesn’t buffer on mobile data.' },
-      { title: 'Internal portals', description: 'Host onboarding videos on your own CDN, no third-party SaaS.' },
-      { title: 'Archival', description: 'Convert a back catalog into a streamable format you control.' },
+      { title: 'Course platforms', description: 'Serve lessons from a bucket with adaptive bitrate and captions in several languages.' },
+      { title: 'Product and marketing pages', description: 'Stream a demo without a third-party video host and its player branding.' },
+      { title: 'Internal portals', description: 'Host training videos on your own CDN with scrubber thumbnails.' },
+      { title: 'Archives', description: 'Convert a back catalogue into a streamable layout you control and can mirror.' },
     ],
     whyMediaManipulator: [
-      'Runs on our own servers — no third-party transcoding provider sees your video.',
-      'Free tier already covers the three rungs most products need (360p/480p/720p).',
-      'Open package format: just unzip the .tar.gz and host the master.m3u8.',
+      'Every rung bitrate, CRF, preset and FFmpeg flag is listed on this page, so what the package contains is not a surprise.',
+      'Captions come from our own Whisper transcriber and translations from a model on our own hardware, both referenced correctly in the master playlist.',
+      'The package is plain files with a README and a report.json; unpack it onto any static host and point a player at master.m3u8.',
+      `A transcode spends one operation of your daily allowance (5 a day as a guest by default, 30 with a free account) and is limited to 10 starts an hour per session; a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your upload goes straight from the browser to our storage bucket and is then downloaded to our own server, where ffprobe, FFmpeg and, if you tick captions, our Whisper transcriber and a local Ollama translation model run; no third-party transcoding or AI service is involved. The source object, the working directory and the finished package are all registered in the retention ledger and deleted when the window ends, and the download link itself expires after 30 minutes by default. ${RETENTION_PROMISE}. Transcoding does not run the automated content analysis that standard conversions receive. The generated master playlist contains session-data lines naming Media Manipulator as the producer; they carry no information about you.`,
     faq: [
       {
-        question: 'What codec is used?',
-        answer: 'H.264 (libx264 High profile, level 4.1) for video and AAC LC for audio. The standard combo every HLS player supports.',
+        question: 'Which rungs can I select on my plan?',
+        answer:
+          'By default a guest gets 360p, 480p and 720p; a free account adds 1080p; Premium and Pro unlock 144p, 240p and 2160p as well. A rung taller than your source is always disabled, because nothing is upscaled. The chips show the reason on hover.',
       },
       {
-        question: 'Why are 144p, 240p, 1080p, and 2160p disabled?',
-        answer: 'They’re part of a premium ladder we’ll unlock when Premium sign-up launches. For now the free tool encodes 360p, 480p, and 720p only.',
+        question: 'How long are the segments, and why 2 seconds?',
+        answer:
+          'Every rung is cut into 2 second MPEG-TS segments with a forced keyframe at each boundary, so a player can switch rungs at any segment without a visual glitch. The I-frame playlist uses 4 second segments because it holds only keyframes.',
+      },
+      {
+        question: 'Are the captions linked in the master playlist?',
+        answer:
+          'Yes. Each language is written as captions/<lang>/auto.vtt with a subs.m3u8 wrapper and declared in master.m3u8 as EXT-X-MEDIA TYPE=SUBTITLES in the subs group, with the source language marked DEFAULT. You can add up to 3 translated languages from the list of 37.',
       },
       {
         question: 'What if my video has no audio?',
-        answer: 'The variant playlists are encoded video-only. The master.m3u8 omits the AAC codec hint so players don’t expect an audio track.',
+        answer:
+          'The rungs are encoded video-only with -an, the CODECS attribute omits mp4a.40.2, and the captions step is skipped with a warning in report.json since there is nothing to transcribe.',
       },
       {
-        question: 'Can I get captions in the master playlist?',
-        answer: 'Captions are generated as a WebVTT file inside the tar.gz. Linking them as an EXT-X-MEDIA subtitle rendition in the master.m3u8 is on the roadmap.',
+        question: 'What is in the package, and how do I host it?',
+        answer:
+          'hls/master.m3u8, one folder per rung with index.m3u8 and segments, hls/iframes/, optional captions/ and storyboards/, README.txt and report.json. Unpack it onto any static host or bucket that serves .m3u8 and .ts with the right MIME types and point your player at master.m3u8.',
       },
       {
-        question: 'How long does the download URL last?',
-        answer: 'Presigned GET URLs are valid for 30 minutes by default. Re-run the transcode if you need a fresh link.',
+        question: 'How long does the download link work, and can I get tar.gz or zip?',
+        answer:
+          'The presigned link lasts 30 minutes by default; run the job again if it has expired. Choose tar.gz (the default) or zip in the form before starting.',
+      },
+      {
+        question: 'How long does an HLS transcode take?',
+        answer:
+          'Each selected rung is a full libx264 encode with the veryfast preset, run one after another, so time grows with duration times the number of rungs; 720p dominates the three default rungs. Captions add a Whisper pass over the whole audio. The job page shows each stage as it completes.',
       },
     ],
     related: [
-      {
-        label: 'Transcode video to DASH',
-        to: '/tools/transcode-to-dash',
-        description: 'Same upload, but emits a MPEG-DASH (.mpd) package with AV1 or VP9.',
-      },
-      {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink an MP4 with the regular FFmpeg pipeline.',
-      },
-      {
-        label: 'Transcribe video',
-        to: '/tools/transcribe-video',
-        description: 'Pull speech out of video into searchable text.',
-      },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Video compression guide',
-      //   to: '/blog/video/video-compression-guide',
-      //   description: 'Codecs, bitrate, and container deep dive.',
-      // },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'One smaller MP4 instead of a streaming package.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Get the same Whisper captions as a standalone VTT or SRT.' },
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Remove the dead start and end before transcoding.' },
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'Upscale a low-resolution snippet before you build a ladder from it.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Edit and caption the video, then transcode the export.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 3 minute 1080p clip at the three default rungs',
+        body:
+          'Input: a 3 minute 1920 x 1080 30 fps MP4 of 140 MB with stereo audio, within the guest caps. Settings: 360p, 480p and 720p (the default selection and the most a guest can pick), no captions or storyboards, tar.gz. Each rung is cut into 2 second segments, 90 per rung, with a GOP of 60 frames so every segment starts on a keyframe. At the listed bitrates the rungs weigh at most about 20 MB for 360p (800 + 96 kbps x 180 s), 30 MB for 480p (1200 + 128 kbps) and 66 MB for 720p (2800 + 128 kbps), about 116 MB together before the small 240p I-frame playlist, and less on easy content because the encode is CRF-driven with the bitrate as a cap. The resulting package has 270 .ts segments, three index.m3u8 files and the master. Time is three libx264 veryfast encodes of 5400 frames each run one after another; the 720p rung takes the longest.',
+      },
+      {
+        title: 'A 12 minute 720p webinar with English captions, Spanish translation and storyboards',
+        body:
+          'Input: a 12 minute 1280 x 720 25 fps MP4 of 380 MB, uploaded with a free account because it exceeds the 5 minute guest default. Settings: 360p and 720p (1080p is greyed out because the source is 720p), captions on with Spanish as an extra language, storyboards on, zip. Whisper transcribes the 12 minutes first and writes captions/en/auto.vtt; the Spanish track is translated in batches of 30 segments into captions/es/auto.vtt, and both are listed as subtitle renditions in the master. Storyboards use a 10 second interval for a source over 10 minutes: 72 thumbnails of 160 x 90 fit in a single 1600 x 900 sprite_001.jpg with a storyboard.vtt pointing at each tile. The two rungs are 360 segments each of 2 seconds, with a 50 frame GOP at 25 fps, and weigh at most about 81 MB (360p) and 264 MB (720p) at the listed bitrates. The job spends longer on Whisper and the two encodes than on anything else; the translation is a short extra step.',
+      },
+    ],
+    whenNotToUse:
+      'Do not transcode to HLS if you simply want a smaller single file to send or embed; the compressor does that in one pass without segments and playlists. Do not use it for live events, since the output is a finished VOD playlist, not a live origin. If your source is below 360p, the ladder cannot be built without Premium. And if your player is a plain video tag with no HLS support, you need an MP4 or an hls.js style player first; a master.m3u8 on its own plays natively only in Safari and on Apple devices.',
     primaryKeyword: 'transcode video to HLS',
     secondaryKeywords: [
       'HLS transcoder',
@@ -1091,7 +1180,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'AV1 selected by default since AV1 is the future for high-quality adaptive streaming.',
       'Open package format: just unzip the .tar.gz and host the manifest.mpd.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is read once by FFmpeg, encoded into AV1 or VP9 renditions and split into DASH segments with a manifest, all on our servers.'),
     faq: [
       {
         question: 'AV1 or VP9 — which should I pick?',
@@ -1148,7 +1237,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'convert-video-to-animated-gif',
-    lastReviewed: '2026-05-30',
+    lastReviewed: '2026-10-29',
     name: 'Convert Video to Animated GIF',
     h1: 'Convert Video to Animated GIF Online',
     tagline:
@@ -1169,125 +1258,99 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a short video and pick GIF as the output format. Trim to under ~10 seconds and lower the frame rate for a smaller file.',
     },
     intro:
-      'Animated GIFs are the universal short-form clip format — they play inline in chat apps, forums, and email. Media Manipulator converts your video to a clean, looping GIF with full control over dimensions and frame rate. For best results, keep the clip short and trim before converting.',
+      'An animated GIF is a stack of indexed-colour frames, 256 colours at most per palette, with no inter-frame compression beyond simple run-length coding. That is why a GIF of a few seconds can outweigh an MP4 of a minute, and why making a good one is mostly about choosing width, frame rate and palette size. This page runs a two-stage pipeline: FFmpeg scales the video to the width you set and samples it at your frame rate, writing a raw GIF, then gifsicle re-quantises the palette to your colour count, sets the frame delay and optimises the frames so only changed pixels are stored. The defaults are tuned for screen recordings: 900 pixels wide, 12 frames per second, 128 colours.',
     whatItDoes: [
-      'Converts MP4, WebM, MOV, MKV, AVI, and more to looping animated GIFs.',
-      'Lets you trim the clip and change resolution before exporting.',
-      'Pick a frame rate that balances smoothness and file size.',
-      'Outputs standard, broadly-compatible animated GIFs.',
+      'Scales the clip to a chosen width (16 to 2000 px) with the height computed from the aspect ratio and rounded to a multiple of 4.',
+      'Samples the source at a chosen frame rate (1 to 50 fps; 12 by default) with FFmpeg.',
+      'Quantises each frame to a palette of 2 to 256 colours (128 by default) and optimises inter-frame storage with gifsicle at level 1 to 3.',
+      'Sets the frame delay in hundredths of a second, which decides playback speed independently of the sampling rate.',
+      'Honours a trim range from the converter form so only the selected seconds become frames.',
     ],
     flowSteps: [
-      {
-        title: 'Upload clip',
-        description: 'Drop in a short video — under ~10 seconds works best.',
-      },
-      {
-        title: 'Trim and resize',
-        description: 'Pick the segment, dimensions, and frame rate.',
-      },
-      {
-        title: 'Generate frames',
-        description: 'FFmpeg extracts frames and palettes a clean GIF.',
-      },
-      {
-        title: 'Export animated GIF',
-        description: 'Download a looping .gif ready for chat or web.',
-      },
+      { title: 'Upload a video and pick GIF', description: 'GIF is already selected as the output on this page; the Quality control is disabled because it does not apply.' },
+      { title: 'Trim to a few seconds', description: 'Use the trim control to keep the moment you want; every extra second is 12 more frames at the default rate.' },
+      { title: 'Set width, frame rate, colours and delay', description: 'The Animated GIF Settings panel starts at 900 px, 12 fps, 128 colours, delay 3, optimise 3.' },
+      { title: 'FFmpeg samples, gifsicle optimises', description: 'ffmpeg scale=W:-4 -pix_fmt rgb8 -r FPS, then gifsicle --optimize --delay --colors --interlace.' },
+      { title: 'Download the GIF', description: 'A standard looping GIF that chat apps and browsers play inline.' },
     ],
     advancedDetails: [
-      'Behind the scenes we use a two-pass FFmpeg palettegen/paletteuse flow to get clean colors instead of the default GIF quantization.',
-      'A 480px-wide GIF at 12 fps usually balances file size and smoothness for chat platforms.',
-      'GIF is uncompressed compared to MP4/WebM — for clips longer than ~10 seconds, an MP4 or WebM clip is usually a better choice even though it does not autoplay-loop everywhere.',
+      'Stage one is ffmpeg -i input [-ss START -t DURATION] -vf scale=W:-4 -pix_fmt rgb8 -r FPS -f gif raw.gif (convertVideoToGIF in converter.go). The -4 asks for a height that keeps the aspect ratio and is divisible by 4; rgb8 is an 8-bit indexed intermediate that stage two re-quantises.',
+      'Stage two is gifsicle --optimize=L --delay=D --colors C --interlace raw.gif -o output.gif. Optimise level 3 is the slowest and smallest: it stores only the rectangle of pixels that changed between frames, which is why a screencast with a static toolbar compresses far better than a panning camera shot.',
+      'The delay is applied to every frame after sampling and is independent of the sampling rate. At the default 12 fps and delay 3 (30 ms per frame) a clip plays about 2.8 times faster than real time; set the delay to 8 (80 ms, 12.5 fps) for roughly real-time playback at 12 fps, or 10 at 10 fps.',
+      'A width typed into the main Width field of the converter overrides the GIF panel width, so power users can keep one knob. Colours are clamped to 2 to 256 by the form; a GIF palette can never exceed 256.',
+      'There is no palettegen pass in FFmpeg here; palette quality comes from gifsicle --colors, which builds one optimised palette for the whole animation. Photographic clips with smooth gradients benefit from 256 colours; flat UI footage looks identical at 64.',
+      'The gifsicle stage runs under a 6 hour timeout, and the upload also receives the automated content analysis that standard conversions get, since GIF is a format of the regular video converter.',
     ],
     whyItMatters: [
-      'Animated GIFs autoplay inline almost everywhere video does not.',
-      'They are still the most reliable format for reaction clips, product demos, and bug repros.',
-      'A trimmed, well-sized GIF beats a multi-megabyte attached video for casual sharing.',
+      'GIFs autoplay inline in issue trackers, chat apps, documentation sites and email clients where a video attachment would show a play button or nothing.',
+      'A 5 second GIF of a bug reproduces it faster than a paragraph and does not need a video player.',
+      'Palette and frame-rate choices change the size by an order of magnitude, so exposing them beats a one-size preset.',
     ],
     useCases: [
-      {
-        title: 'Bug reproductions',
-        description: 'Capture a short screen recording and turn it into a GIF for a ticket.',
-      },
-      {
-        title: 'Product demos',
-        description: 'Show a feature in motion inside a blog post or README.',
-      },
-      {
-        title: 'Reaction clips',
-        description: 'Turn a video clip into a looping reaction GIF for chat.',
-      },
-      {
-        title: 'Email signatures and previews',
-        description: 'Use a tiny animated GIF to preview a longer video.',
-      },
+      { title: 'Bug reproductions', description: 'Record the screen, trim to the failure, and drop the GIF in the ticket.' },
+      { title: 'README and documentation demos', description: 'Show a feature in motion where a video embed is not allowed.' },
+      { title: 'Reaction clips', description: 'Cut 3 seconds from a video and share it anywhere that accepts images.' },
+      { title: 'Email previews', description: 'A small looping GIF linking to the full video, where video itself will not play.' },
     ],
     whyMediaManipulator: [
-      'Uses FFmpeg\'s palette-aware GIF encoder for clean colors.',
-      'Trim, resize, and re-color in one upload — no separate editor needed.',
-      'No watermarks, no signup, output is fully yours to use.',
+      'Both stages of the pipeline and their defaults are documented here, including the delay behaviour that makes default GIFs play fast.',
+      'Width, frame rate, colour count, delay and optimisation level are all exposed, not a single size slider.',
+      `A GIF conversion counts as one operation (5 a day for guests by default, 30 with a free account), and a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `GIF conversion runs on our own servers: FFmpeg samples and scales the frames, then gifsicle quantises and optimises them; a temporary raw GIF is deleted as soon as gifsicle finishes. The upload is kept in uploads/<jobId>/ and the GIF in outputs/<jobId>/, both in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. As a format of the standard video converter, the upload also goes through our automated content analysis on the same hardware (sampled frames described by a local vision model, any audio transcribed locally); that report stays with the job and is not shared with third parties.`,
     faq: [
       {
-        question: 'How long can my clip be?',
+        question: 'Why does my GIF play faster than the original video?',
         answer:
-          'There is no hard limit, but GIFs over ~10 seconds tend to become several megabytes. For longer clips, consider exporting WebP or short MP4 instead.',
+          'The frame delay is set after sampling and defaults to 3 hundredths of a second, which is about 33 frames per second of playback for frames sampled at 12 per second. Set the delay to 8 at 12 fps, or 10 at 10 fps, for real-time playback.',
       },
       {
-        question: 'Will my GIF loop?',
+        question: 'How do I make the GIF smaller?',
         answer:
-          'Yes — the exported GIF loops by default. Most platforms autoplay it inline.',
+          'In order of effect: trim to fewer seconds, lower the width (480 is plenty for chat), lower the frame rate to 8 or 10, and reduce colours to 64 on flat UI footage. Keep optimise at 3; levels 1 and 2 only trade size for speed.',
       },
       {
-        question: 'How can I make the file smaller?',
+        question: 'How many colours should I use?',
         answer:
-          'Trim aggressively, drop the dimensions (e.g. 480px wide), and lower the frame rate (10–12 fps is usually fine).',
+          '128, the default, suits most screen recordings. Flat interfaces look identical at 64 and save bytes. Photographic footage with gradients wants 256, which is the GIF maximum.',
       },
       {
-        question: 'What is the resolution limit?',
+        question: 'Can I pick which part of the video becomes the GIF?',
         answer:
-          'You can output up to the source resolution, but most chat apps shrink GIFs to fit. 480px width is a sensible default.',
+          'Yes. Use the trim control in the converter to set a start and end; only that range is sampled. Shorter is better, since every second adds frames at the chosen rate.',
+      },
+      {
+        question: 'Will the GIF loop, and does it keep the sound?',
+        answer:
+          'It loops, as GIFs do by default in every player. It cannot carry audio; the format has no sound track. Extract the audio separately if you need it.',
+      },
+      {
+        question: 'What is the largest GIF I can make?',
+        answer:
+          'The form allows up to 2000 px wide, 50 fps and 256 colours, but a GIF at those settings grows enormous fast. The upload itself is bound by your plan, 200 MB and 5 minutes of video for a guest by default.',
       },
     ],
     related: [
-      {
-        label: 'MP4 to GIF',
-        to: '/tools/mp4-to-gif',
-        description: 'Output locked to GIF for MP4 input.',
-      },
-      {
-        label: 'Video to GIF',
-        to: '/tools/video-to-gif',
-        description: 'Make a GIF from any video format.',
-      },
-      {
-        label: 'GIF converter',
-        to: '/tools/gif-converter',
-        description: 'The GIF hub — make and tune animated GIFs.',
-      },
-      {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink the source video before exporting a GIF.',
-      },
-      {
-        label: 'Video converter',
-        to: '/tools/video-converter',
-        description: 'Switch between MP4, WebM, MOV, AVI, and more.',
-      },
-      {
-        label: 'Video converter tutorial',
-        to: '/tutorials/video/getting-started',
-        description: 'Walk through trim, resize, and filter settings.',
-      },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Video compression guide',
-      //   to: '/blog/video/video-compression-guide',
-      //   description: 'How codec and bitrate affect output size.',
-      // },
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the exact seconds first, losslessly.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'For anything longer than a few seconds, a small MP4 beats a GIF.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Add captions or crop before exporting the clip.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and filter settings.' },
     ],
+    workedExamples: [
+      {
+        title: 'An 8 second 1080p screen recording at the defaults',
+        body:
+          'Input: an 8 second 1920 x 1080 MP4 screen recording of about 15 MB. Settings: GIF, width 900, 12 fps, 128 colours, delay 3, optimise 3. FFmpeg scales to 900 pixels wide by about 506 tall (nudged to a multiple of 4) and samples 96 frames. Uncompressed those 96 indexed frames would be about 43 MB (900 x 504 x 96 bytes), which is the ceiling gifsicle works down from; with a static toolbar and a moving cursor, level 3 optimisation stores only the changing rectangles, so a screencast lands far below that bound, typically in the low megabytes. With delay 3 the 96 frames play in about 2.9 seconds, roughly 2.8 times faster than the 8 second source; set the delay to 8 to play in about 7.7 seconds. The job is a short encode plus a gifsicle pass over 96 frames.',
+      },
+      {
+        title: 'A 5 second reaction clip at 480 px, 10 fps and 64 colours',
+        body:
+          'Input: a 20 second 1080p MP4 of 40 MB, trimmed in the form to a 5 second range. Settings: GIF, width 480, 10 fps, 64 colours, delay 10, optimise 3. FFmpeg cuts the 5 seconds, scales to 480 pixels wide by about 270 tall (rounded to a multiple of 4) and samples 50 frames. The raw frame data is about 6.5 MB (480 x 268 x 50 bytes) before optimisation, and a 64-colour palette needs only 6 bits per pixel, so a camera shot with motion across the whole frame will still come out well under that, while a steady talking head compresses to a fraction of it. Delay 10 is 100 ms per frame, so 50 frames play in exactly 5 seconds, matching real time at 10 fps.',
+      },
+    ],
+    whenNotToUse:
+      'Do not make a GIF of anything longer than about 10 seconds or with photographic motion across the whole frame; the format has no real inter-frame compression, so such clips become tens of megabytes while an MP4 or WebM of the same thing is a tenth of the size. Do not use GIF when colour fidelity matters, since every frame is limited to a 256-colour palette and gradients band. If the destination plays video inline, a compressed MP4 is better in every way. And if you need audio, a GIF cannot carry it at all.',
     primaryKeyword: 'convert video to GIF',
     secondaryKeywords: [
       'video to animated GIF',
@@ -1299,11 +1362,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'transcribe-video',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Transcribe Video',
     h1: 'Transcribe Video to Text Online',
     tagline:
-      'Pull spoken words out of video files into searchable text, captions, or structured JSON.',
+      'Pull the spoken words out of a video or audio file as WebVTT or SRT captions, plain text, or timestamped JSON.',
     metaTitle: 'Transcribe Video to Text Online (Free) | Media Manipulator',
     metaDescription:
       'Free online video transcription. Convert MP4, MOV, WebM, MKV, and audio files into searchable text, VTT captions, or JSON transcripts.',
@@ -1320,109 +1383,103 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video. The AI transcription model runs on our local GPU server and exports as VTT captions, plain text, or JSON: VTT for captions, plain text for an article, JSON for downstream tooling.',
     },
     intro:
-      'Whether you are adding accessibility captions, building a searchable archive, or just want to skim a long video, transcription unlocks the speech inside your file. Media Manipulator transcribes your video locally on our own GPU server — no third-party AI provider sees your media.',
+      'Transcribe Video takes an MP4, MOV, WebM, MKV or a plain audio file, separates the audio track, and runs it through Whisper on a GPU server we operate. You choose the shape of the result before you upload: a WebVTT or SRT caption file with cue timings, a plain text file with just the words, or a JSON document with every segment and its start and end time to the millisecond. The language is detected automatically, or you can type a two-letter code to pin it.',
     whatItDoes: [
-      'Extracts audio from your video and runs speech-to-text on it.',
-      'Exports captions in WebVTT (.vtt), plain text, or structured JSON.',
-      'Supports many spoken languages with automatic language detection.',
-      'Runs locally on our GPU server — no third-party AI provider involved.',
+      'Decodes the audio track with ffmpeg into a 16 kHz mono WAV, the sample rate Whisper expects, and deletes that intermediate when the job finishes.',
+      'Runs whisper-ctranslate2 with the medium Whisper model in float16 on our GPU, with voice-activity filtering switched on so silence and long stretches of music are skipped.',
+      'Writes one file named transcript.vtt, transcript.srt, transcript.txt or transcript.json, depending on the format you picked.',
+      'Detects the spoken language from the audio itself; a language code you type in the form overrides detection for short or mixed clips.',
+      'Reports honestly when there is nothing to transcribe: a video with no audio stream, or audio with no recognizable speech, still completes with a short message instead of an empty file.',
     ],
     flowSteps: [
-      {
-        title: 'Upload video',
-        description: 'Drop in any MP4, MOV, WebM, or MKV file.',
-      },
-      {
-        title: 'Extract audio',
-        description: 'FFmpeg pulls a clean audio track from the video.',
-      },
-      {
-        title: 'Local AI transcription',
-        description: 'whisper-ctranslate2 runs on our GPU server.',
-      },
-      {
-        title: 'Download transcript',
-        description: 'Save as VTT captions, plain text, or JSON.',
-      },
+      { title: 'Upload video or audio', description: 'MP4, MOV, WebM, MKV, AVI, or an audio file such as MP3, WAV, M4A or FLAC.' },
+      { title: 'Pick a format', description: 'VTT or SRT for captions, TXT for a readable transcript, JSON for timestamps you can process.' },
+      { title: 'ffmpeg extracts the audio', description: 'The track is converted to 16 kHz mono PCM; the video frames are never decoded.' },
+      { title: 'Whisper transcribes on our GPU', description: 'The job waits for a free GPU slot, then the medium model runs over the whole file in one pass.' },
+      { title: 'Download the transcript', description: 'The file appears with the job and can be downloaded as long as the job is kept.' },
     ],
     advancedDetails: [
-      'Transcripts come from whisper-ctranslate2 (a faster Whisper implementation) running on a local GPU we operate.',
-      'VTT output is the right pick for video captions — it works with HTML <track> elements, YouTube, and most video editors.',
-      'JSON output includes per-segment start/end timestamps and confidence values, useful for building search indexes or summarization pipelines.',
+      'The exact extraction command is ffmpeg -vn -acodec pcm_s16le -ar 16000 -ac 1, so a stereo 48 kHz track is folded to mono and resampled before Whisper sees it. That intermediate costs 32 KB per second (about 1.9 MB per minute) of disk while the job runs and is removed afterwards.',
+      'whisper-ctranslate2 is launched with --model medium --device cuda --compute_type float16 --vad_filter True and --output_format json; the API parses that JSON and renders your chosen format itself. The model is a server setting (WHISPER_CT2_MODEL), so medium is the default, not a promise.',
+      'VTT output starts with the WEBVTT header and numbers each cue; timestamps are HH:MM:SS.mmm. SRT is the same cue list with comma millisecond separators. A segment whose end equals its start is given half a second so players still display it.',
+      'JSON output contains language, hasAudio, hasSpeech, transcript, durationSeconds and a segments array of {id, start, end, text} with times rounded to the millisecond. There are no per-word timings and no confidence scores in this output.',
+      'Only one Whisper process runs at a time by default (WHISPER_GPU_CONCURRENCY=1), and the GPU scheduler checks free VRAM before starting; the medium model in float16 needs about 3.5 GB plus a 512 MB margin. If the card is busy your job waits in the queue rather than failing.',
+      'With the VAD filter on, a file that is all music or very faint speech can come back with "Audio was detected but no recognizable speech was found." That message is written into the transcript file so the download is never empty.',
     ],
     whyItMatters: [
-      'Captions make your video accessible to deaf and hard-of-hearing viewers — and to anyone watching on mute.',
-      'Search engines and AI agents can index a transcribed video far better than a raw video file.',
-      'Internal teams can search across recorded calls, demos, and tutorials when transcripts exist.',
+      'A caption file is the difference between a video that can be watched on mute, searched, or quoted and one that cannot.',
+      'Timestamped segments let you jump to the moment a phrase was said, which is what turns a two-hour recording into something you can actually use.',
+      'Keeping the transcription on hardware we run means the audio is not handed to an outside speech API.',
     ],
     useCases: [
-      {
-        title: 'Adding captions',
-        description: 'Generate VTT files for accessibility and silent autoplay.',
-      },
-      {
-        title: 'Searchable archive',
-        description: 'Index recorded meetings, calls, or training videos.',
-      },
-      {
-        title: 'Content repurposing',
-        description: 'Turn a video into a blog post or summary with a quick start.',
-      },
-      {
-        title: 'Compliance and notes',
-        description: 'Keep written records of recorded interviews or interactions.',
-      },
+      { title: 'Captions for a published video', description: 'Export VTT for HTML video and most web players, or SRT for editing suites and TV-style subtitle workflows.' },
+      { title: 'Meeting and interview notes', description: 'Take the TXT output into a document and edit from there instead of typing from scratch.' },
+      { title: 'Indexing a recording archive', description: 'Use the JSON segments to build a search index that points at the exact second a word was spoken.' },
+      { title: 'A first draft of an article', description: 'Transcribe a talk or screencast, then rewrite the plain text into prose.' },
     ],
     whyMediaManipulator: [
-      'Runs entirely on our own GPU server — no OpenAI/Anthropic/Google sees your audio.',
-      'Outputs the format you actually need: VTT, text, or JSON.',
-      'Same upload and retention privacy model as the rest of the toolset.',
+      'You choose VTT, SRT, TXT or JSON before uploading, so there is no second conversion step after the transcript exists.',
+      'Whisper runs on our own GPU with the model cache set to offline mode; no outside speech service receives the audio.',
+      'Transcription counts as an ordinary operation, not an AI-operation unit, so a guest can run 5 a day and a free account 30 by default (see /pricing).',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your video or audio file is stored under its job folder on our server. ffmpeg writes a temporary 16 kHz mono WAV that Whisper reads on our GPU, and that WAV is deleted when the job finishes. The transcript file and a transcribe_result.json copy of the segments stay with the job, and the transcript text is also passed to a language model running on our own hardware for an automated summary and safety review whose result is kept with the job. Nothing is sent to a third-party AI provider. ${RETENTION_PROMISE}.`,
     faq: [
       {
-        question: 'Which video formats are supported?',
+        question: 'Which caption format should I pick, VTT or SRT?',
         answer:
-          'MP4, MOV, WebM, MKV, AVI, FLV, and most other common containers. Audio files can also be transcribed directly.',
+          'VTT if the captions are for the web (HTML video, most players) and SRT if they are going into a video editor or a broadcast-style workflow. Both contain the same cues; only the header and the millisecond separator differ, a period in VTT and a comma in SRT.',
       },
       {
-        question: 'How accurate is the transcript?',
+        question: 'Does the JSON transcript include confidence scores or word timings?',
         answer:
-          'Word-error rates are typically a few percent for clear speech. Heavy background music, overlapping voices, or strong accents lower accuracy.',
+          'No. Each segment has an id, a start and end time in seconds (rounded to the millisecond) and its text. The file also records the detected language, the duration and whether speech was found, but there are no per-word timings and no probabilities.',
       },
       {
-        question: 'Can I get timestamps?',
+        question: 'How long a file can I transcribe?',
         answer:
-          'Yes — VTT and JSON outputs both include per-segment timestamps.',
+          'Audio-only uploads are held to the same duration cap as video: 5 minutes for a guest, 20 minutes with a free account, 2 hours on Premium and Pro by default, and 200 MB, 1 GB or 5 GB per file respectively. The form shows the limits that apply to you, and /pricing lists the current numbers.',
       },
       {
-        question: 'Does my video leave your servers?',
+        question: 'Why did I get "no recognizable speech was found"?',
         answer:
-          `No — transcription happens on a GPU server we operate. The original file and the transcript follow the same retention rule: ${RETENTION_PROMISE}.`,
+          'Whisper runs with voice-activity detection switched on, so a file that is music, ambient sound, silence or very faint speech can be trimmed to nothing. The message is written into the transcript file itself so the download still works. Re-record louder or trim to the spoken part and try again.',
+      },
+      {
+        question: 'Can I force the language instead of letting it detect?',
+        answer:
+          'Yes. Type a two-letter language code such as en, de or es in the language field and Whisper will transcribe in that language. Leave it blank for automatic detection, which works well on clips longer than a few seconds.',
+      },
+      {
+        question: 'Does transcription use my AI-operation allowance?',
+        answer:
+          'No. It is submitted through the standard upload endpoint and counts as one ordinary operation: 5 per day as a guest, 30 with a free account, 300 on Premium and 700 on Pro by default. A job that fails refunds the unit.',
+      },
+      {
+        question: 'What model is used, and can I pick a bigger one?',
+        answer:
+          'The service runs whisper-ctranslate2 with the medium model in float16 on a CUDA GPU by default. There is no model picker in the form; the model is set on the server, so very fast or very large variants are not something you can request per job.',
       },
     ],
     related: [
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink a large recording before uploading it for a transcript.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Pull out the audio track if you want to keep a copy of it as well.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Lift a noisy recording before transcribing it.' },
+      { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Cut the file down to the spoken part first.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Prepare and convert the video before transcribing.' },
+    ],
+    workedExamples: [
       {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink the video first if you only need the transcript.',
+        title: 'A 9-minute 1080p MP4 of 120 MB, as VTT captions',
+        body: 'The 120 MB is under the 200 MB guest cap, but 9 minutes is over the 5-minute guest limit, so this one needs a free account, which allows 20 minutes by default. ffmpeg writes a 16 kHz mono WAV of about 17 MB (32,000 bytes per second for 540 seconds), which is deleted after the run. Whisper medium then produces numbered cues with HH:MM:SS.mmm timings, and the resulting transcript.vtt is a few kilobytes, because it holds only text and timestamps. Uploading 120 MB on a home connection usually takes longer than the extraction, which is a few seconds; the Whisper pass is the rest and scales with the length of the speech, not the size of the video.',
       },
       {
-        label: 'Audio converter',
-        to: '/tools/audio-converter',
-        description: 'Extract a clean audio track for transcription.',
-      },
-      {
-        label: 'Video converter tutorial',
-        to: '/tutorials/video/getting-started',
-        description: 'Trim and clean up the video before transcribing.',
-      },
-      {
-        label: 'How it works',
-        to: '/how-it-works',
-        description: 'See how local AI transcription is wired up.',
+        title: 'An 18-minute podcast MP3 of about 26 MB, as JSON',
+        body: 'A 192 kbps MP3 is 24 KB per second, so 1,080 seconds comes to about 26 MB. Audio-only files are held to the same duration limit as video, so 18 minutes needs a free account (20-minute cap) rather than a guest session (5 minutes). There is no video to skip, but the file is still converted to 16 kHz mono PCM first (about 35 MB on disk, removed afterwards). The language is detected from the audio and written into the JSON as a two-letter code, and each segment carries its own start and end time. The JSON is larger than the TXT of the same recording because every segment is wrapped in its own object, but still well under a megabyte.',
       },
     ],
+    whenNotToUse:
+      'Do not use this when you need per-word timings, speaker labels, or confidence scores: the output has none of those, only segment-level timestamps. It is also the wrong tool for a file whose audio is music with no speech, since the voice-activity filter will skip it and you will get a short message instead of lyrics. If you only need to listen to the file, or you want captions translated into another language, you are after a different step. And if the recording is longer than your plan allows (5 minutes as a guest, 20 minutes on a free account by default), trim it first or sign in.',
     primaryKeyword: 'transcribe video online',
     secondaryKeywords: [
       'video to text',
@@ -1516,7 +1573,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Tune quality and compression precisely, instead of one-size-fits-all preset.',
       'Same privacy and retention model as the rest of the toolset.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your WebP is decoded and re-encoded as a JPG on our server; a transparent area is flattened because JPG cannot store it.'),
     faq: [
       {
         question: 'What about transparency?',
@@ -1613,7 +1670,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Converts any .png image to a standard .jpg (JPEG) file.',
       'Lets you pick JPG quality so you can balance file size against fidelity.',
       'Flattens transparency onto a solid background, since JPG has no alpha channel.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The pixels you see stay the same; only the file is re-encoded from PNG into JPG.',
     ],
     flowSteps: [
       { title: 'Upload PNG', description: 'Drop in a .png screenshot, graphic, or photo.' },
@@ -1641,9 +1698,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is genuinely locked to JPG, so there’s nothing to misconfigure.',
       'Precise quality control instead of a one-size-fits-all preset.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PNG is re-encoded as a JPG at the quality you set, on our server, and any transparency is flattened onto a solid background.'),
     supportedFormats: {
       supportedInputFormats: ['png'],
       supportedOutputFormats: ['jpg'],
@@ -1655,7 +1711,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert a PNG to JPG for free?',
         answer:
-          'Upload your .png above, choose a JPG quality, and click convert. The download is a standard .jpg file. It is completely free with no signup.',
+          'Upload your .png above, choose a JPG quality, and click convert. The download is a standard .jpg file.',
       },
       {
         question: 'Will converting PNG to JPG reduce quality?',
@@ -1672,17 +1728,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'PNG is lossless and stores every pixel exactly, which is large for photos. JPG uses perceptual compression, so photographic images shrink dramatically with little visible change.',
       },
-      {
-        question: 'Are my uploaded files kept?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No login is required and we never share your files with third parties.`,
-      },
     ],
     related: [
       { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Go the other way and add a transparent-capable PNG.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image format to JPG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG further without changing format.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
     ],
     primaryKeyword: 'convert PNG to JPG',
@@ -1724,7 +1774,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Converts any .jpg/.jpeg image to a lossless .png file.',
       'Preserves the exact current pixels so repeated editing won’t add artifacts.',
       'Produces a PNG you can later layer, mask, or make transparent in an editor.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'Every pixel of the JPG is kept exactly; the PNG stores them without further loss.',
     ],
     flowSteps: [
       { title: 'Upload JPG', description: 'Drop in a .jpg or .jpeg photo.' },
@@ -1752,9 +1802,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is genuinely locked to PNG, so the result is always lossless.',
       'Runs on our own servers — no third-party processing of your image.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your JPG is decoded on our server and written out as a lossless PNG of exactly the same pixels.'),
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg'],
       supportedOutputFormats: ['png'],
@@ -1783,17 +1832,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'Yes. PNG supports an alpha channel, so once you have the PNG you can erase or cut out a background in any image editor.',
       },
-      {
-        question: 'Are my uploaded files private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert PNG to JPG', to: '/tools/convert-png-to-jpg', description: 'Go the other way and shrink a PNG into a JPG.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image format to PNG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option in detail.' },
     ],
     primaryKeyword: 'convert JPG to PNG',
@@ -1830,12 +1873,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a WebP image. The output is locked to PNG for this tool, so transparency is preserved and the file opens in any image editor or viewer.',
     },
     intro:
-      'WebP is great for the web, but plenty of editors, older software, and design tools still expect PNG — and unlike JPG, PNG keeps full transparency. Media Manipulator converts your WebP to a clean, lossless PNG so it opens everywhere and your alpha channel survives. Free, online, no signup.',
+      'WebP is great for the web, but plenty of editors, older software, and design tools still expect PNG — and unlike JPG, PNG keeps full transparency. Media Manipulator converts your WebP to a clean, lossless PNG so it opens everywhere and your alpha channel survives.',
     whatItDoes: [
       'Converts any .webp image to a lossless .png file.',
       'Preserves the alpha channel so transparent WebPs stay transparent.',
       'Produces a PNG that opens in any editor, viewer, or design tool.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The picture is unchanged; WebP compression is swapped for lossless PNG storage.',
     ],
     flowSteps: [
       { title: 'Upload WebP', description: 'Drop in a .webp file, transparent or solid.' },
@@ -1862,9 +1905,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to PNG with transparency preserved automatically.',
       'Runs on our own servers — no third-party processing of your image.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your WebP is decoded on our server and saved as a lossless PNG, keeping its transparency.'),
     supportedFormats: {
       supportedInputFormats: ['webp'],
       supportedOutputFormats: ['png'],
@@ -1893,18 +1935,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'Only the first frame becomes a PNG. For animation, convert the WebP to an animated GIF instead.',
       },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Uploads are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert PNG to WebP', to: '/tools/convert-png-to-webp', description: 'Go the other way and shrink a PNG into a WebP.' },
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Convert WebP to a compact JPG instead.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image format to PNG.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink an image without re-format hassle.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
     ],
     primaryKeyword: 'convert WebP to PNG',
     secondaryKeywords: [
@@ -1973,9 +2009,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to WebP with transparency preserved.',
       'Precise quality control so you decide the size/fidelity trade-off.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PNG is re-encoded as WebP on our server at the quality you choose, with its transparency kept.'),
     supportedFormats: {
       supportedInputFormats: ['png'],
       supportedOutputFormats: ['webp'],
@@ -2003,11 +2038,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
         question: 'Is WebP supported everywhere?',
         answer:
           'Every modern browser supports WebP. A few older or niche programs do not — keep a PNG fallback if you need to support them.',
-      },
-      {
-        question: 'Are my uploads kept?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -2051,12 +2081,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a JPG image. The output is locked to WebP for this tool — pick a quality and convert. WebP usually produces a smaller file than JPG at the same visual quality.',
     },
     intro:
-      'WebP delivers the same visual quality as JPG in a noticeably smaller file, which is why it has become the default image format for fast websites. Media Manipulator converts your JPG to WebP at the quality you choose, so your photos look the same but load faster — free, online, no signup.',
+      'WebP delivers the same visual quality as JPG in a noticeably smaller file, which is why it has become the default image format for fast websites. Media Manipulator converts your JPG to WebP at the quality you choose, so your photos look the same but load faster.',
     whatItDoes: [
       'Converts any .jpg/.jpeg photo to a modern .webp file.',
       'Lets you choose WebP quality to balance file size against fidelity.',
       'Typically produces files 25–35% smaller than the source JPG at equal quality.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The photo looks the same; its bytes are re-encoded with WebP to make the file smaller.',
     ],
     flowSteps: [
       { title: 'Upload JPG', description: 'Drop in a .jpg or .jpeg photo.' },
@@ -2084,9 +2114,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output is locked to WebP, so there’s nothing to misconfigure.',
       'Precise quality control instead of a fixed preset.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your JPG is re-encoded as a smaller WebP on our server at the quality you choose.'),
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg'],
       supportedOutputFormats: ['webp'],
@@ -2115,11 +2144,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'Both formats are lossy. At quality 80–85 the result looks the same as the JPG. Avoid setting WebP quality very low to prevent compounding artifacts.',
       },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Go the other way back to a universal JPG.' },
@@ -2144,7 +2168,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'JPG Converter',
     h1: 'Free JPG Converter Online',
     tagline:
-      'Convert PNG, WebP, GIF, and more into universally compatible JPG photos at the quality you choose.',
+      "Convert images to JPG: the image converter with JPG preselected.",
     metaTitle: 'Free JPG Converter Online | Media Manipulator',
     metaDescription:
       `Free online JPG converter. Convert PNG, WebP, and GIF images into universally compatible JPG files at the quality you choose. No signup. ${RETENTION_PROMISE}.`,
@@ -2161,7 +2185,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any image — PNG, WebP, GIF, and more — and JPG is preselected as the output. Pick a quality and convert. Transparency is flattened because JPG has no alpha channel.',
     },
     intro:
-      'JPG (JPEG) is the most universally accepted image format on the planet — every device, editor, printer, and upload form takes it. Media Manipulator’s JPG converter turns PNG, WebP, GIF, and other images into a clean JPG at the quality you choose. JPG is preselected, but you can switch the output if you change your mind. Free, online, no signup.',
+      "This page opens the Media Manipulator image converter with JPG already chosen as the output. That is the only difference. You can still switch to PNG, WebP, AVIF or GIF before converting, and the same quality, resize and crop controls are on the form. JPG is the safest format to send a photo anywhere, but it has no transparency: a PNG logo or a cut-out with a transparent background is flattened onto a solid colour when it becomes a JPG, so keep those as PNG or WebP. The quality slider sets the JPEG encoder's quality; around 85 is a sensible default for photos, and lower values trade detail for size. The image converter page is the canonical version of this tool and covers each output format, the trade-offs between them and the upload limits for guests and free accounts. Upload an image below, check the quality and convert.",
     whatItDoes: [
       'Converts PNG, WebP, GIF, and other images to standard JPG.',
       'Preselects JPG as the output while still letting you change it.',
@@ -2240,6 +2264,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink your JPG even further.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'JPG converter',
     secondaryKeywords: [
       'convert to JPG',
@@ -2254,7 +2279,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'PNG Converter',
     h1: 'Free PNG Converter Online',
     tagline:
-      'Convert JPG, WebP, GIF, and more into lossless PNG files with full transparency support.',
+      "Convert images to PNG: the image converter with PNG preselected.",
     metaTitle: 'Free PNG Converter Online | Media Manipulator',
     metaDescription:
       `Free online PNG converter. Convert JPG, WebP, and GIF images into lossless PNG files with transparency support. No signup. ${RETENTION_PROMISE}.`,
@@ -2271,7 +2296,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any image — JPG, WebP, GIF, and more — and PNG is preselected as the output. PNG is lossless and keeps transparency where the source has it.',
     },
     intro:
-      'PNG is the go-to lossless format for graphics, screenshots, logos, and anything that needs transparency. Media Manipulator’s PNG converter turns JPG, WebP, GIF, and other images into a clean, lossless PNG. PNG is preselected, but you can switch the output if you prefer. Free, online, no signup.',
+      "This page is the Media Manipulator image converter with PNG preselected as the output, and nothing else about it is different. You can switch the output to JPG, WebP, AVIF or GIF if you change your mind, and the resize and crop controls are the same. PNG is lossless and keeps transparency, which makes it right for screenshots, diagrams, logos and anything with sharp text. It is the wrong choice for photographs if size matters: a phone photo saved as PNG is usually several times larger than the JPG it came from, and converting a JPG to PNG does not bring back detail the JPG already discarded; it only stops further loss. For transparency with smaller files, WebP is often the better target. The image converter page is the canonical version of this tool, with the full comparison of formats and the per-plan limits. Upload an image below to convert it to PNG.",
     whatItDoes: [
       'Converts JPG, WebP, GIF, and other images to lossless PNG.',
       'Preselects PNG as the output while still letting you change it.',
@@ -2351,6 +2376,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'PNG converter',
     secondaryKeywords: [
       'convert to PNG',
@@ -2364,7 +2390,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE: RESIZE / COMPRESS / AI
   {
     slug: 'image-resizer',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Image Resizer',
     h1: 'Resize Image Online Free',
     tagline:
@@ -2385,42 +2411,45 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an image and set a target width and/or height below. Leave one blank to scale proportionally and keep the original aspect ratio. The output format stays the same unless you change it.',
     },
     intro:
-      'Resizing an image to exact pixel dimensions is one of the most common tasks on the web — fitting an avatar, a banner, a thumbnail, or an upload limit. Media Manipulator resizes your image to the width and height you set while keeping the aspect ratio, so nothing looks stretched. Free, online, no signup.',
+      'This page opens the image converter with the resize fields in front. Type a width, a height, or both, and the server runs ImageMagick with a -resize argument built from exactly what you typed: 1600x for a width alone, x900 for a height alone, and 1600x900! when you fill in both. That trailing exclamation mark matters: it tells ImageMagick to produce that precise box even if the ratio differs from the original, which stretches the picture. So the rule is simple. One field keeps the proportions; two fields give you the exact size and trust you to have chosen a matching ratio or to have cropped first.',
     whatItDoes: [
-      'Resizes JPG, PNG, WebP, and GIF images to exact pixel dimensions.',
-      'Keeps the aspect ratio when you set only a width or only a height.',
-      'Lets you keep the original format or switch it during the resize.',
-      'Combines resize with quality control in a single pass.',
+      'Scales JPG, PNG, WebP and GIF images to the pixel width and height you type, after auto-orienting them from the EXIF rotation flag.',
+      'Keeps the aspect ratio when only one dimension is filled in; forces the exact box when both are.',
+      'Offers a crop box in the same form, applied before the resize, which is how you get an exact square or banner without distortion.',
+      'Writes the output in the original format by default, with a quality of 85 for JPG and WebP, and copies the original metadata tags onto it.',
+      'Caps the requested height to your plan output limit and the dimensions to what ImageMagick is allowed to produce.',
     ],
     flowSteps: [
-      { title: 'Upload an image', description: 'Drop in any JPG, PNG, WebP, or GIF.' },
-      { title: 'Set width / height', description: 'Enter a target width, height, or both.' },
-      { title: 'Resize', description: 'ImageMagick scales the image to your dimensions.' },
-      { title: 'Download', description: 'Save the resized image.' },
+      { title: 'Upload the image', description: 'JPG, PNG, WebP or GIF, up to the per-file cap for your plan.' },
+      { title: 'Type width, height or both', description: 'One value keeps the ratio. Two values force the box. Crop first if the ratio must change.' },
+      { title: 'ImageMagick resizes', description: 'convert input -auto-orient [-crop WxH+X+Y] -resize <arg> [-quality 85] output.' },
+      { title: 'Download', description: 'The resized file is served from the job output folder as converted.<format>.' },
     ],
     advancedDetails: [
-      'Set only width or only height and the other dimension scales proportionally to preserve aspect ratio.',
-      'Set both width and height to force exact dimensions — useful when a platform requires a specific size.',
-      'The image is auto-oriented from EXIF before resizing so the result matches the preview.',
-      'Pair resizing with a lower quality on JPG/WebP output to shrink the file even more.',
+      'The resize argument is built in convertImage (converter.go): both values give WxH! (force exact), width alone gives Wx, height alone gives xH. ImageMagick\'s default resampling filter is used; there is no option to pick a different one.',
+      'A crop, when set, is passed as -crop WxH+X+Y and runs before -resize, so crop coordinates refer to the auto-oriented original, not to the resized result.',
+      'The server rejects a width or height above 10000 or below 1, and the form caps both fields at 4096.',
+      'An explicit height is also checked against your plan output-height cap before the upload is accepted: 1080 px for guests by default, 1440 with a free account, 2160 on Premium and Pro. A request above the cap is refused with a message naming both numbers and no unit is spent. Width alone is not checked.',
+      'JPG and WebP output receive -quality 85 unless you change the number; PNG and GIF ignore it. Enlarging with this tool only interpolates existing pixels, so a 2x or 4x enlargement looks soft; the AI upscaler exists for that case.',
+      'After ImageMagick finishes, exiftool copies the original tags onto the result in the default metadata mode, so the resized file still carries the capture date, camera model and any GPS position.',
     ],
     whyItMatters: [
-      'Platforms enforce specific dimensions for avatars, banners, and thumbnails.',
-      'Smaller dimensions mean smaller files and faster page loads.',
-      'Resizing before upload avoids the platform’s own lower-quality auto-resize.',
+      'Avatar, cover and thumbnail slots want specific pixel sizes, and a platform resize is usually a lower-quality, uncontrolled one.',
+      'Pixel count is the single biggest factor in file size; a 24-megapixel photo displayed at 1920 px wide carries ten times the data the screen can show.',
+      'Resizing on your terms also lets you choose the crop, instead of letting a square slot chop a head off.',
     ],
     useCases: [
-      { title: 'Profile pictures', description: 'Resize to the exact avatar dimensions a platform requires.' },
-      { title: 'Social banners', description: 'Hit the precise header/cover size for each network.' },
-      { title: 'Thumbnails', description: 'Generate small, fast-loading preview images.' },
-      { title: 'Upload limits', description: 'Shrink dimensions to get under a size cap.' },
+      { title: 'Profile pictures and avatars', description: 'Crop to a square, then resize to the 400 or 512 px the service asks for.' },
+      { title: 'Web and blog images', description: 'Scale camera photos to the column width they will actually be displayed at.' },
+      { title: 'Banners and headers', description: 'Cut the exact aspect ratio, then hit the required width to the pixel.' },
+      { title: 'Form upload limits', description: 'Drop the dimensions to get under a megapixel or megabyte cap.' },
     ],
     whyMediaManipulator: [
-      'Exact pixel control with aspect-ratio preservation built in.',
-      'Resize and re-encode in one upload, with no watermarks.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
+      'The exact-box versus keep-ratio behaviour is spelled out here with the real ImageMagick arguments, so there is no surprise when a photo comes back stretched.',
+      'Crop, resize, format and quality are one upload, and the output carries no watermark.',
+      `No signup for the standard tool. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `The uploaded picture is saved under uploads/<jobId>/ on our server and the resized copy under outputs/<jobId>/; both directories are on the retention ledger and are removed together. Because the default metadata mode copies the original tags onto the resized file with exiftool, GPS coordinates and the camera serial number travel with the result unless you pick strip in the metadata section of the form. Images uploaded for resizing also go through the automated analysis that runs on every image on our server, using a local vision model, with the summary stored in the job folder. ${RETENTION_PROMISE}. No third party receives the file.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp', 'gif'],
       supportedOutputFormats: ['jpg', 'png', 'webp', 'gif'],
@@ -2430,38 +2459,62 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I resize an image online for free?',
+        question: 'Does resizing cost anything?',
         answer:
-          'Upload your image, enter a target width and/or height in the resize fields, and click convert. The resized image downloads instantly. It is free with no signup.',
+          'No account and no payment for the standard tool. Each resize is one daily operation: 5 per day for guests and 30 for a free account by default, with a 200 MB and 1 GB per-file cap respectively. Premium and Pro raise the counts to 300 and 700. See /pricing for the numbers in force today.',
       },
       {
-        question: 'How do I keep the aspect ratio when resizing?',
+        question: 'How do I keep the aspect ratio?',
         answer:
-          'Set only the width or only the height and leave the other field blank — the image scales proportionally so it never looks stretched.',
+          'Fill in only one of the two fields. A width alone becomes -resize 1600x and the height is computed from the original ratio; a height alone becomes x900 and the width follows.',
       },
       {
-        question: 'Can I resize to exact dimensions?',
+        question: 'Why did my image come out stretched?',
         answer:
-          'Yes. Enter both a width and a height to force exact pixel dimensions, which is handy when a platform requires a specific size.',
+          'You filled in both width and height with a ratio that does not match the picture. Two values are sent as WxH! which forces that exact box. Crop to the target ratio first, in the same form, and then set both values.',
       },
       {
-        question: 'Will resizing change the file format?',
+        question: 'What is the largest size I can request?',
         answer:
-          'No, the output keeps the original format by default. You can also pick a different format in the form if you want to convert at the same time.',
+          'The form accepts up to 4096 for either field and the server up to 10000. An explicit height above your plan output cap (1080 px for guests by default) is refused before the upload starts and costs nothing.',
       },
       {
-        question: 'Are my uploads private?',
+        question: 'Can I make a small photo larger with this tool?',
         answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'You can type a larger number, but ImageMagick only interpolates, so the result is soft. For a 2x or 4x enlargement that rebuilds detail, use the AI upscaler, which runs Real-ESRGAN instead.',
+      },
+      {
+        question: 'Does the output keep my EXIF data and orientation?',
+        answer:
+          'The pixels are auto-oriented first, so the result displays upright everywhere, and in the default mode exiftool copies the original tags back onto it. Choose strip if you want the tags gone.',
+      },
+      {
+        question: 'Can I resize a GIF?',
+        answer:
+          'GIF is accepted as input and output and goes through the same ImageMagick command. The tool is built for still images; for animated GIFs a dedicated GIF tool gives more control over frames and palette.',
       },
     ],
     related: [
-      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink an image’s file size without changing dimensions.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Lower the quality without changing dimensions.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'Enlarge 2x or 4x with a model instead of interpolation.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Drop the tags that resizing keeps by default.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap the resized image in a PDF page.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through resize, crop, and quality settings.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 6000 x 4000 camera JPEG scaled to 1920 px wide',
+        body:
+          'Input: an 8.5 MB, 24-megapixel JPEG from a mirrorless camera. Settings: width 1920, height empty, format unchanged, quality 85. The server runs convert input -auto-orient -resize 1920x -quality 85 converted.jpg. The ratio is 3:2, so the output is 1920 x 1280 pixels, about 2.46 megapixels, roughly one tenth of the original pixel count. The file size falls in a similar proportion, so expect something under 1 MB. One ImageMagick pass over 24 megapixels takes a few seconds on the server, and the exiftool copy afterwards keeps the lens and exposure tags.',
+      },
+      {
+        title: 'A 400 x 400 avatar from a 3024 x 4032 portrait phone photo',
+        body:
+          'Input: a 3.1 MB portrait JPEG, 3024 wide by 4032 tall. Typing 400 and 400 alone would run -resize 400x400! and squash the 3:4 picture into a square. Instead set the crop to 3024 x 3024 at offset 0,504 (a square from the middle), then width 400 and height 400. The command becomes convert input -auto-orient -crop 3024x3024+0+504 -resize 400x400! -quality 85 converted.jpg, and the result is an undistorted 400 x 400 JPG of 160,000 pixels, a few tens of kilobytes. The crop and resize are one pass and finish in a few seconds.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use the resizer to make a small image bigger: ImageMagick only interpolates the pixels that exist, so a 640 px photo pushed to 2560 px comes out blurry, and that case belongs to the AI upscaler. Do not type both a width and a height whose ratio differs from the picture unless you have cropped first, because the exact-box mode stretches rather than letterboxes. If the file is big but the dimensions are already right, use the compressor instead and leave the pixels alone. And animated GIFs are better handled by a dedicated GIF tool than by a plain resize.',
     primaryKeyword: 'resize image online',
     secondaryKeywords: [
       'image resizer',
@@ -2473,7 +2526,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'compress-image',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Compress Image',
     h1: 'Compress Image Online Free',
     tagline:
@@ -2494,42 +2547,45 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an image and lower the quality slider to shrink the file. The output format stays the same by default, or switch to WebP for the smallest size. A quality around 75–85 is a good balance.',
     },
     intro:
-      'Large images are the number-one cause of slow web pages and rejected uploads. Compressing an image lowers its file size — often by more than half — while keeping it looking great. Media Manipulator compresses your JPG, PNG, or WebP at the quality you choose, defaulting to a balanced 80. Free, online, no signup.',
+      'Compressing an image means re-encoding it so the same picture takes fewer bytes. This page opens the image converter with the quality field already set to 80 and the output format matched to your upload, so a JPG stays a JPG and a WebP stays a WebP. On our server the job is one ImageMagick command: the file is auto-oriented from its EXIF rotation flag, then written out with -quality 80, or whatever number between 1 and 100 you type. For JPG and WebP that number is what decides the file size. For PNG it is ignored, because PNG is lossless, so the real lever for a PNG photo is switching the output to JPG or WebP.',
     whatItDoes: [
-      'Reduces image file size by re-encoding at a lower quality you control.',
-      'Defaults to a balanced quality around 80 so files shrink with little visible change.',
-      'Keeps the original format by default, or switch to WebP for the smallest result.',
-      'Lets you also resize dimensions in the same pass for even smaller files.',
+      'Re-encodes JPG and WebP output at the quality you choose; the form starts at 80.',
+      'Keeps the input format unless you change it; moving a PNG photo to WebP or JPG is where the large savings for PNG come from.',
+      'Can shrink the pixel dimensions in the same pass: a width or height typed into the resize fields is applied before the quality setting, so the two savings compound.',
+      'Copies the original EXIF, IPTC and XMP tags back onto the compressed file unless you set the metadata mode to strip.',
+      'Writes the result as converted.jpg, converted.webp or converted.png inside the job output folder, which is what the download link serves.',
     ],
     flowSteps: [
-      { title: 'Upload an image', description: 'Drop in any JPG, PNG, or WebP file.' },
-      { title: 'Pick a quality', description: '75–85 balances size and fidelity; lower it for smaller files.' },
-      { title: 'Compress', description: 'ImageMagick re-encodes at your chosen quality.' },
-      { title: 'Download', description: 'Save a much smaller image.' },
+      { title: 'Upload a JPG, PNG or WebP', description: 'Anything up to your plan per-file cap, which is 200 MB for guests by default.' },
+      { title: 'Pick a quality number', description: '80 is preset. 60 to 75 shrinks harder; 90 and above keeps nearly everything.' },
+      { title: 'ImageMagick re-encodes', description: 'convert input -auto-orient -quality N output, followed by an exiftool pass that copies the tags across.' },
+      { title: 'Download the smaller file', description: 'The output is served from the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'Quality 75–85 is the sweet spot for JPG and WebP — most viewers can’t tell the difference from the original.',
-      'For photographic content, switching the output to WebP usually beats JPG file size at the same quality.',
-      'PNG is lossless: to shrink a PNG photo substantially, convert it to JPG or WebP rather than just lowering quality.',
-      'Reducing the pixel dimensions as well as the quality compounds the savings.',
+      'The exact command is ImageMagick convert with the input path first, then -auto-orient, an optional -crop and -resize, then -quality N, then the output path. The -quality argument is only appended when the output format is jpg, jpeg or webp (convertImage in converter.go).',
+      'Quality is validated on the server to the range 1 to 100; a value outside it is rejected before any work starts, and the job unit is refunded.',
+      'PNG output never receives a -quality argument, so lowering the number on a PNG-to-PNG job changes nothing. The converter does not run pngquant or any palette reduction; to make a PNG smaller you change its format.',
+      'In the default metadata mode the server runs exiftool -TagsFromFile <original> -all:all -unsafe on the result, so camera, lens, date and GPS tags survive compression. Choosing strip runs exiftool -all= on the output instead.',
+      'A resize, if you set one, happens before quality is applied. A width alone keeps the aspect ratio; width plus height forces that exact box even when the ratio differs.',
+      'Filters, a tint and a text overlay are available in the same form: a filter is applied right after the resize, and the tint and text overlay are added last, after the quality setting.',
     ],
     whyItMatters: [
-      'Page-load speed directly affects bounce rate, conversions, and SEO ranking.',
-      'Smaller images stay under email, form, and platform upload limits.',
-      'Lower bandwidth saves hosting costs at scale.',
+      'Image bytes are usually the largest part of a web page or an email, so halving them is the cheapest speed win available.',
+      'Upload forms, CMS fields and messaging apps enforce caps measured in megabytes, not in pixels.',
+      'Re-encoding once at a quality you chose beats letting a platform re-encode on its own terms.',
     ],
     useCases: [
-      { title: 'Faster websites', description: 'Compress images so pages load in under a few seconds.' },
-      { title: 'Email attachments', description: 'Get photos under attachment size limits.' },
-      { title: 'Form uploads', description: 'Meet a site’s maximum file-size requirement.' },
-      { title: 'Storage savings', description: 'Archive smaller copies of large image libraries.' },
+      { title: 'Blog and product photos', description: 'Bring a 4 to 6 MB camera JPEG well under 1 MB before publishing.' },
+      { title: 'Email attachments', description: 'Get a set of photos under a 20 or 25 MB mailbox limit.' },
+      { title: 'Application portals', description: 'Meet a 2 MB headshot or document-photo limit without visible loss.' },
+      { title: 'Working copies', description: 'Keep smaller copies for day-to-day use while the originals stay in your archive.' },
     ],
     whyMediaManipulator: [
-      'Sensible default quality with precise manual control.',
-      'Compress, resize, and convert in a single upload.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'The command that runs is written on this page, including the fact that PNG ignores the quality number, so you are not left guessing why a file did not shrink.',
+      'Quality, resize, format and metadata controls live in one form and one upload, and no watermark is added.',
+      `Nothing to install and no account needed for the standard tool. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your image is stored under uploads/<jobId>/ on our own server, ImageMagick writes the compressed copy to outputs/<jobId>/, and a metadata report of the original is written beside it. In the default mode exiftool copies the original EXIF, IPTC and XMP tags onto the compressed file, so location and camera data come back with the result unless you choose the strip option. Every uploaded image is also passed to an automated analysis run by a vision model on the same server, and its JSON summary is kept with the job. ${RETENTION_PROMISE}. Nothing is sent to a third-party service.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
@@ -2539,38 +2595,62 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I compress an image for free?',
+        question: 'Is compressing an image here free?',
         answer:
-          'Upload your image, lower the quality value (75–85 is a good start), and click convert. The compressed image downloads instantly. It is free with no signup.',
+          'Yes for the standard tool. A compression job spends one of the day\'s operations: guests get 5 per day with a 200 MB per-file cap by default, a free account raises that to 30 per day and 1 GB per file, and Premium and Pro go to 300 and 700. The live numbers are on /pricing, because the limits can change.',
       },
       {
-        question: 'Does compressing an image reduce quality?',
+        question: 'What quality number should I use?',
         answer:
-          'Slightly — compression is a trade-off. At quality 75–85 the change is usually invisible. Lower the quality further only when you need the smallest possible file.',
+          '80 is the preset and a sensible default for photos. Go lower only when a hard size limit forces it, and go to 90 or above for images that will be printed or cropped later. The number is passed straight to ImageMagick\'s -quality option, so it means the same thing it does in other tools built on ImageMagick.',
       },
       {
-        question: 'How do I compress a PNG?',
+        question: 'Why did my PNG not get smaller?',
         answer:
-          'PNG is lossless, so the biggest savings come from converting a photographic PNG to JPG or WebP. For graphics, WebP lossless can also help.',
+          'Because the quality field does nothing for PNG output: the server only adds -quality for jpg, jpeg and webp. Change the output format to WebP or JPG. If you need to keep transparency, WebP keeps an alpha channel while JPG does not.',
       },
       {
-        question: 'What is the best format for small image files?',
+        question: 'Does compression keep my EXIF and GPS data?',
         answer:
-          'WebP usually gives the smallest files at a given visual quality. JPG is a close second for photos and is more universally compatible.',
+          'By default, yes. After ImageMagick writes the file, exiftool copies every tag group from the original onto the result. Pick strip in the metadata section to remove them all instead, or use the dedicated EXIF remover.',
       },
       {
-        question: 'Are my uploads stored?',
+        question: 'Will the picture be resized as well?',
         answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'Not unless you type a width or a height. With both fields empty the pixel dimensions are unchanged and only the encoding changes.',
+      },
+      {
+        question: 'Can I compress several images in one go?',
+        answer:
+          'Each upload is one job with one output file. Run the tool once per image; every job counts as one operation against the daily allowance.',
+      },
+      {
+        question: 'Is WebP always smaller than JPG at the same quality?',
+        answer:
+          'Usually for photographs, but the quality scales of the two encoders are not identical, so compare the two outputs rather than assuming. Keep JPG when the file must open in software that predates WebP support.',
       },
     ],
     related: [
-      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize dimensions to shrink the file even more.' },
-      { label: 'Convert JPG to WebP', to: '/tools/convert-jpg-to-webp', description: 'Switch to WebP for the smallest photo files.' },
-      { label: 'Convert PNG to WebP', to: '/tools/convert-png-to-webp', description: 'Shrink PNG graphics by moving to WebP.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF, and GIF.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Cut pixel dimensions first for the biggest savings.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip location and camera tags without re-encoding.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap the compressed JPG in a one-page PDF.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'Go the other way and enlarge a small image.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through quality, resize, and format settings.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 4000 x 3000 phone JPEG at quality 80 with a 1600 px width',
+        body:
+          'Input: a 4.8 MB JPEG, 4000 x 3000 pixels, straight from a phone camera. Settings: width 1600, height left blank, quality 80, format unchanged. ImageMagick runs -resize 1600x, which keeps the ratio and produces 1600 x 1200 pixels: 1.92 megapixels against the original 12, about one sixth of the pixels. The result is written with -quality 80 and gets its EXIF copied back, so the output is a 1600 x 1200 JPG whose size follows that pixel reduction, roughly a sixth of the original, so expect around 1 MB or less from 4.8 MB. The conversion is a single ImageMagick pass over a 12-megapixel image and takes a few seconds; uploading the 4.8 MB file usually takes longer than converting it.',
+      },
+      {
+        title: 'A 2.6 MB PNG screenshot switched to WebP',
+        body:
+          'Input: a 1920 x 1080 PNG screenshot of 2.6 MB with no transparency. Leaving the format as PNG and moving the quality to 60 would change nothing, because -quality is not passed for PNG output. Switching the output to WebP at the preset 80 runs convert input -auto-orient -quality 80 converted.webp. Uncompressed, those 2,073,600 pixels are 6.2 MB of RGB; lossy WebP at quality 80 keeps only a fraction of that, so the result is a fraction of the 2.6 MB PNG, with the exact figure depending on how much flat colour and text the screenshot contains. The dimensions stay 1920 x 1080 and the job finishes in a few seconds.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use lossy compression on an image you still intend to edit heavily, on a PNG whose transparency you need to keep as PNG (switching to JPG flattens the alpha channel), or on screenshots of small text where a quality much below 85 makes letters smear. If the file is large only because of its pixel dimensions, the image resizer is the better first step; if your goal is privacy rather than size, the EXIF remover strips tags without touching the pixels. And a JPG that was already saved at quality 70 does not get much smaller at 80; each re-save adds loss without a matching gain.',
     primaryKeyword: 'compress image online',
     secondaryKeywords: [
       'image compressor',
@@ -2582,7 +2662,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'remove-background-from-image',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Remove Background from Image',
     h1: 'Remove Background from Image Online Free',
     tagline:
@@ -2606,42 +2686,44 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a photo. This tool is preset to the AI background remover and outputs a transparent PNG. Just upload and convert — the subject is kept and the background is erased.',
     },
     intro:
-      'Removing the background from a product shot, portrait, or logo used to require a manual selection in Photoshop. Media Manipulator does it automatically with an AI segmentation model running on our own GPU server — no third-party AI provider ever sees your image. The result is a clean, transparent PNG cutout, free, online, with no signup.',
+      'This page opens the image converter with the AI operation locked to Remove Background and the output locked to PNG. When you convert, the server hands your file to rembg, an open-source segmentation tool, running on a GPU we own: by default it loads the BiRefNet General model, predicts which pixels belong to the subject, and writes a PNG whose alpha channel is transparent everywhere else. Six other models are selectable in the form (a lighter BiRefNet, a portrait variant, ISNet, and three U2Net builds) for cases where the general model misjudges hair, glass or a person against a busy backdrop.',
     whatItDoes: [
-      'Automatically detects the main subject and erases everything behind it.',
-      'Outputs a transparent PNG so the cutout drops onto any background.',
-      'Runs the segmentation model on our own GPU server — not a third-party API.',
-      'Works on product photos, portraits, objects, and logos.',
+      'Runs rembg with the model you pick (BiRefNet General unless you change it) and returns the subject on a transparent background.',
+      'Always writes PNG, because transparency needs an alpha channel and the API forces the .png extension for this operation.',
+      'Keeps the full pixel dimensions of your upload; the cutout is not resized or cropped.',
+      'Executes on our own GPU through ONNX Runtime with CUDA; no image is sent to an outside AI service.',
+      'Counts as one ordinary daily operation, the same unit as a plain format conversion.',
     ],
     flowSteps: [
-      { title: 'Upload a photo', description: 'Drop in any JPG, PNG, or WebP image with a clear subject.' },
-      { title: 'AI finds the subject', description: 'A segmentation model separates subject from background on our GPU.' },
-      { title: 'Background erased', description: 'Everything behind the subject becomes transparent.' },
-      { title: 'Download transparent PNG', description: 'Save the cutout as a PNG with a transparent background.' },
+      { title: 'Upload a JPG, PNG or WebP', description: 'A single clear subject gives the cleanest mask.' },
+      { title: 'Choose a model, or keep the default', description: 'BiRefNet General is preselected; the portrait and human-segmentation models exist for people.' },
+      { title: 'rembg segments on the GPU', description: 'rembg i -m <model> input output.png runs with the CUDA ONNX Runtime environment sourced.' },
+      { title: 'Download the transparent PNG', description: 'The result is converted.png in the job output folder.' },
     ],
     advancedDetails: [
-      'Output is always PNG because transparency requires an alpha channel that JPG cannot store.',
-      'Several segmentation models are available in the full image tool (general, portrait, lite) — this page is preset to the recommended general model.',
-      'Clean separation works best when the subject is in clear focus and reasonably distinct from the background.',
-      'For tricky edges like fine hair, results vary; the full image converter lets you switch models for a better cut.',
+      'The call is RemoveBackground in ai_tools.go: a bash shell sources the ONNX Runtime CUDA environment script, sets U2NET_HOME to the server model directory, and runs rembg i -m <model> <input> <output>. Model weights are cached on the server, so the first job after a restart can take a little longer while they load.',
+      'Accepted model names are birefnet-general, birefnet-general-lite, isnet-general-use, u2net, u2netp, u2net_human_seg and birefnet-portrait; any other value is rejected before the job starts. An empty value becomes birefnet-general.',
+      'The AI path replaces the ImageMagick pipeline entirely, so the quality number, filters, tint, text overlay and metadata options in the form have no effect on this operation; the output is whatever rembg writes.',
+      'Because the normal exiftool copy step does not run for AI operations, the PNG carries no EXIF from the original. If you need the tags on the cutout, the metadata editor can add them in a second job.',
+      'Output size follows the subject: fully transparent regions compress to almost nothing in PNG, so a small product on a large canvas gives a small file while a full-frame subject gives a file close to a lossless PNG of the original.',
     ],
     whyItMatters: [
-      'Transparent cutouts are essential for product listings, thumbnails, and design composites.',
-      'Running locally on our GPU keeps your images away from third-party AI providers.',
-      'Automatic removal saves the manual masking work that used to take minutes per image.',
+      'Product listings, thumbnails and composites all start with a cutout, and masking one by hand is minutes per image.',
+      'Marketplaces increasingly require a plain or white background, which is a transparent cutout placed over a white layer.',
+      'A model trained on millions of masks handles fur, hair and semi-transparent edges better than a magic-wand selection.',
     ],
     useCases: [
-      { title: 'E-commerce products', description: 'Put products on a clean white or transparent background.' },
-      { title: 'Profile and team photos', description: 'Cut out a person to drop onto a branded background.' },
-      { title: 'Logos and graphics', description: 'Extract a logo from a solid background into a transparent PNG.' },
-      { title: 'Design composites', description: 'Build collages and thumbnails from clean cutouts.' },
+      { title: 'E-commerce products', description: 'Isolate the item and place it on white or any brand colour.' },
+      { title: 'Headshots and team pages', description: 'Use the portrait model to cut people cleanly from office backgrounds.' },
+      { title: 'Logos lifted from photos', description: 'Get a transparent version of a logo that only exists on a coloured sign or page.' },
+      { title: 'Thumbnails and stickers', description: 'Build layered designs from several cutouts in your editor.' },
     ],
     whyMediaManipulator: [
-      'AI background removal runs on our own GPU — no third-party AI provider sees your image.',
-      'Output is preset to a transparent PNG, so there’s nothing to configure.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'Seven real segmentation models are exposed by name, so you can switch from the general model to a portrait or U2Net build when an edge comes out wrong.',
+      'The output is a plain transparent PNG at full resolution with no watermark and no forced downscale.',
+      `The model runs on hardware we operate, and the standard tool needs no account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your photo is written to uploads/<jobId>/ on our server and read by rembg running on a GPU in the same machine; the cutout goes to outputs/<jobId>/converted.png. No external API is called for the segmentation and nothing from your image is used to train anything. Like every image upload, the file is also examined once by an automated analysis step using a vision model hosted on our server, and that summary is stored with the job. The PNG carries no EXIF from the original because the metadata copy step does not run for AI operations. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['png'],
@@ -2651,38 +2733,62 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I remove the background from an image for free?',
+        question: 'Is background removal free?',
         answer:
-          'Upload your photo above and click convert — the tool is preset to the AI background remover. You get a transparent PNG cutout back. It is free with no signup.',
+          'Yes, within the daily allowance. Because the job goes through the standard upload route it spends an ordinary operation, not the separate AI allowance: 5 per day for guests and 30 with a free account by default, with per-file caps of 200 MB and 1 GB. Premium and Pro get 300 and 700. The current figures are on /pricing.',
       },
       {
-        question: 'What format is the result?',
+        question: 'Which model should I choose?',
         answer:
-          'A PNG with a transparent background, because transparency needs an alpha channel that only formats like PNG support.',
+          'Keep BiRefNet General for objects, products and most photos. Pick BiRefNet Portrait or U2Net Human Segmentation for people, and BiRefNet General Lite or U2Net Lite when you want a faster pass on a large image.',
       },
       {
-        question: 'Does my image get sent to a third-party AI service?',
+        question: 'Why is the output always PNG?',
         answer:
-          `No. Background removal runs on a GPU server we operate. Your image is never sent to OpenAI, Google, or any other third-party AI provider. ${RETENTION_PROMISE}.`,
+          'The API forces a .png extension for this operation because the cutout needs an alpha channel; JPG has none and would show the background as black or white. Convert to another format afterwards if you have flattened it onto a colour.',
       },
       {
-        question: 'What kinds of images work best?',
+        question: 'Can I get a white background instead of transparency?',
         answer:
-          'Photos with a clear, in-focus subject that stands out from the background give the cleanest cutouts. Busy or low-contrast backgrounds can be harder.',
+          'Not directly from this tool. Place the PNG over a white layer in any editor or in Darkroom; the transparent pixels take the colour beneath them.',
       },
       {
-        question: 'Can I put the cutout on a new background?',
+        question: 'Does it work on hair, fur and glass?',
         answer:
-          'Yes. Because the result is a transparent PNG, you can drop it onto any color or image in your editor or design tool.',
+          'Often, and the portrait and BiRefNet models were trained with those edges in mind, but semi-transparent regions are the hardest case. Try a second model if the first leaves a fringe.',
+      },
+      {
+        question: 'Is my photo sent to an outside AI company?',
+        answer:
+          'No. rembg and its models run on our own GPU server, and the job never calls a third-party API.',
+      },
+      {
+        question: 'Does the cutout keep my EXIF data?',
+        answer:
+          'No. AI operations bypass the exiftool copy that the normal converter performs, so the PNG has no camera, date or GPS tags.',
       },
     ],
     related: [
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert other images to transparency-capable PNG.' },
-      { label: 'Convert JPG to PNG', to: '/tools/convert-jpg-to-png', description: 'Turn a JPG into a PNG ready for transparency.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert, resize, crop, and run AI tools in one upload.' },
-      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize the cutout to exact dimensions.' },
+      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase one thing and keep the rest of the scene.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Scale the cutout to the size your layout needs.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'Enlarge a small cutout before placing it.' },
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Anonymize people instead of isolating them.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every AI and image option.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 3000 x 2000 product JPEG with the default model',
+        body:
+          'Input: a 2.1 MB, 3000 x 2000 JPEG of a shoe on a grey backdrop. Model left at BiRefNet General. The server runs rembg on the GPU and writes converted.png at the same 3000 x 2000 pixels, four channels. Uncompressed that is 24 MB of RGBA, but the transparent backdrop compresses to nearly nothing, so the PNG size is governed by the shoe itself, typically a few megabytes because PNG is lossless. The time is one forward pass of the model over the image plus PNG encoding, a few seconds once the model is warm; the first run after a quiet period adds the weight-loading time.',
+      },
+      {
+        title: 'A 1080 x 1080 headshot with the portrait model',
+        body:
+          'Input: a 640 KB, 1080 x 1080 WebP selfie in front of a bookshelf. Switch the model to BiRefNet Portrait, which is tuned for people and hair. The output is a 1080 x 1080 PNG with the person opaque and the shelves fully transparent. At 1.17 megapixels the model pass is quick; most of the wall-clock time is the upload and the PNG write. Because the AI path skips the metadata copy, the PNG has no EXIF, which is usually what you want for a profile image.',
+      },
+    ],
+    whenNotToUse:
+      'Skip this tool when the subject is not a single distinct thing: a crowd, a landscape, a pattern, or an interior with no obvious foreground gives the model nothing to separate and the mask will be arbitrary. It is also the wrong tool when you want a soft blur behind a subject rather than transparency, when you need the result as JPG (JPG cannot hold the alpha channel, so you would have to flatten it afterwards), and when the input is a screenshot or a line drawing, where ISNet or a manual selection in an editor works better than a photo-trained model.',
     primaryKeyword: 'remove background from image',
     secondaryKeywords: [
       'background remover',
@@ -2696,7 +2802,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ------------------------------------------------------------- IMAGE <-> PDF
   {
     slug: 'image-to-pdf',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Image to PDF',
     h1: 'Convert Image to PDF Online Free',
     tagline:
@@ -2719,42 +2825,45 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any image — JPG, PNG, and more. The output is locked to PDF for this tool, so you get a single-page PDF wrapping your image at its native resolution.',
     },
     intro:
-      'A PDF is the universal document format — it opens identically on every device, prints cleanly, and is the format most forms, schools, and offices ask for. Media Manipulator wraps your image in a single-page PDF at its native resolution so it looks exactly like the original. Free, online, no signup.',
+      'This page locks the output format to PDF, which sends your image down a dedicated path in our API that builds the document in pure Go rather than through ImageMagick or Ghostscript. A JPEG is embedded byte-for-byte with the /DCTDecode filter, so the photo inside the PDF is the identical compressed stream you uploaded. A PNG, GIF or WebP is decoded, composited onto white, and stored as zlib-compressed 8-bit RGB. The single page is sized so the image sits at 96 pixels per inch: every pixel becomes 0.75 points, which keeps the picture at native resolution with no resampling.',
     whatItDoes: [
-      'Wraps a JPG, PNG, or other image into a single-page PDF document.',
-      'Embeds JPG images losslessly and renders other formats crisply onto the page.',
-      'Sizes the page to the image so nothing is cropped or stretched.',
-      'Produces a standard PDF that opens in any reader, browser, or office suite.',
+      'Wraps one image in a one-page PDF 1.4 document sized to the image at 96 DPI.',
+      'Embeds JPEG data untouched, so there is no second generation of compression for photos.',
+      'Flattens transparent PNG and GIF pixels onto white and stores them losslessly with zlib.',
+      'Rasterizes WebP and other containers Go cannot decode through ImageMagick first, then embeds the result losslessly.',
+      'Ignores the quality, resize, crop, filter and AI settings; the PDF path takes only the image.',
     ],
     flowSteps: [
-      { title: 'Upload an image', description: 'Drop in any JPG, PNG, or other common image.' },
-      { title: 'We build the page', description: 'The image is placed on a page sized to match it.' },
-      { title: 'Generate PDF', description: 'A standard single-page PDF is assembled on our server.' },
-      { title: 'Download PDF', description: 'Save a clean .pdf ready to share, print, or upload.' },
+      { title: 'Upload any image', description: 'JPG, PNG, GIF and WebP are the usual inputs; the field accepts any image type.' },
+      { title: 'The server reads the pixels', description: 'JPEG dimensions come from the header; other formats are decoded and flattened to RGB.' },
+      { title: 'A one-page PDF is assembled', description: 'Catalog, page, image XObject and a content stream that draws the image to fill the page.' },
+      { title: 'Download converted.pdf', description: 'Served from the job output folder until retention expires.' },
     ],
     advancedDetails: [
-      'JPG inputs are embedded directly (no re-compression), so a photo keeps its exact original quality inside the PDF.',
-      'PNG and other formats are flattened onto a white background and embedded losslessly — transparency becomes solid white, as PDF pages are opaque.',
-      'The page is sized from the image dimensions at 96 DPI, a sensible default that avoids enlarging or shrinking the picture.',
-      'To combine several images into one multi-page PDF, convert each and merge them in a PDF tool — single-image PDFs are the focus here.',
+      'The builder is imageToPDFBytes in pdf_tools.go. A file starting with the JPEG marker FF D8 FF is embedded as /DCTDecode with /DeviceRGB or /DeviceGray; a CMYK JPEG falls back to the decode-and-flatten path so the PDF never carries a CMYK stream.',
+      'Non-JPEG inputs are decoded with Go image codecs (PNG and GIF are registered). Each pixel is alpha-composited over white and written as three bytes, then the whole buffer is zlib-compressed and stored with /FlateDecode at 8 bits per component.',
+      'WebP and anything else Go cannot decode is first rasterized by ImageMagick with -auto-orient to a PNG stream in memory, and that PNG is then flattened and embedded.',
+      'Page size in points is width x 72 / 96 and height x 72 / 96, so a 1200 x 1600 image gives a 900 x 1200 point page (12.5 by 16.7 inches). PDF viewers scale a page to fit the window and printers scale to paper, so a large page is not a problem for viewing, but set "fit to page" when printing.',
+      'JPEGs on the fast path keep their EXIF, including an Orientation flag, but PDF viewers do not apply EXIF orientation. A phone photo stored sideways with a rotation flag will appear sideways in the PDF; convert it to JPG once first (which auto-orients) and then to PDF.',
+      'The quality value sent by the form is accepted but unused on this path, and there is no multi-image mode: one upload makes one single-page PDF.',
     ],
     whyItMatters: [
-      'Many upload forms, job applications, and school portals accept PDF only.',
-      'PDF prints predictably, while raw images can scale or tile unexpectedly.',
-      'A PDF is easier to email and archive than a loose image file.',
+      'Portals for visas, universities and HR systems frequently accept only PDF, even for a photo of a receipt.',
+      'A PDF prints and previews the same on every device, while a bare image may be rotated or scaled by the viewer.',
+      'Embedding the JPEG untouched means the PDF is proof-quality: nothing was re-encoded on the way in.',
     ],
     useCases: [
-      { title: 'Document uploads', description: 'Turn a photo of a receipt or form into a PDF a portal will accept.' },
-      { title: 'Printing', description: 'Get predictable print output from a single image.' },
-      { title: 'Sharing scans', description: 'Convert a scanned page photo into a tidy PDF.' },
-      { title: 'Archiving', description: 'Store images as PDFs alongside other documents.' },
+      { title: 'Receipts and forms', description: 'Turn a phone photo of a signed page into a PDF a portal will accept.' },
+      { title: 'ID and document uploads', description: 'Submit a scanned card or certificate as the PDF the form demands.' },
+      { title: 'Artwork proofs', description: 'Send a client a PDF of a PNG design with transparency flattened to white.' },
+      { title: 'Archiving', description: 'Keep a photo alongside other documents in one format.' },
     ],
     whyMediaManipulator: [
-      'JPG embedding is lossless — your photo quality is preserved exactly.',
-      'Runs on our own servers with no third-party processing of your file.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'The JPEG pass-through is a design decision: your photo is embedded without re-encoding, which many converters do not promise.',
+      'No Ghostscript and no ImageMagick PDF policy on the path, so the conversion does not depend on a server-side security setting that might refuse PDFs.',
+      `Free for the standard tool, no account required. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `The image is stored under uploads/<jobId>/ and the PDF under outputs/<jobId>/converted.pdf on our own server; both are deleted together when the retention window closes. A JPEG keeps all of its embedded metadata inside the PDF because the stream is copied verbatim, so EXIF location and camera tags remain readable by anyone who extracts the image; strip them first with the EXIF remover if that matters. PNG and other inputs are decoded to raw pixels, so no tags carry over. The upload itself is an image and therefore also goes through the automated vision-model analysis run on our server, whose summary stays with the job. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'gif', 'webp'],
       supportedOutputFormats: ['pdf'],
@@ -2764,38 +2873,62 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I convert an image to PDF for free?',
+        question: 'Is the image to PDF conversion free?',
         answer:
-          'Upload your image above and click convert — the output is locked to PDF. You get a single-page PDF back. It is free with no signup.',
+          'Yes for the standard tool. Each conversion spends one daily operation: 5 a day as a guest with a 200 MB file cap, 30 a day and 1 GB with a free account, and 300 or 700 on Premium or Pro, all by default and listed on /pricing.',
       },
       {
-        question: 'Does converting to PDF reduce my image quality?',
+        question: 'Is the photo re-compressed inside the PDF?',
         answer:
-          'No. JPG images are embedded without re-compression, and other formats are embedded losslessly, so the picture inside the PDF matches your original.',
+          'Not if it is a JPEG: the original bytes are embedded with /DCTDecode. PNG, GIF and WebP are stored losslessly as zlib-compressed RGB after flattening, so no quality is lost there either.',
       },
       {
-        question: 'Can I put multiple images into one PDF?',
+        question: 'What page size does the PDF have?',
         answer:
-          'This tool creates a one-image-per-PDF document. To combine pages, convert each image and merge the PDFs in a dedicated merge tool.',
+          'The page matches the image at 96 pixels per inch, so width and height in points are 0.75 times the pixel dimensions. A 1200 x 1600 image gives a 12.5 by 16.7 inch page; viewers and printers scale it to fit.',
       },
       {
-        question: 'What image formats can I convert to PDF?',
+        question: 'Can I combine several images into one PDF?',
         answer:
-          'JPG/JPEG and PNG are the most common; GIF and WebP are also supported. Each becomes a single-page PDF.',
+          'Not on this page. Each upload produces a single-page PDF. Convert each image and merge the resulting PDFs in a PDF editor.',
       },
       {
-        question: 'Are my uploads private?',
+        question: 'What happens to transparency?',
         answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'It is flattened onto white. PDF image XObjects on this path have no alpha, so transparent pixels become white pixels.',
+      },
+      {
+        question: 'Why is my phone photo sideways in the PDF?',
+        answer:
+          'Phones often store the pixels in landscape and set an EXIF Orientation flag. The JPEG is embedded untouched and PDF viewers ignore that flag. Run the photo through the image converter as JPG first, which applies auto-orient, then convert the result to PDF.',
+      },
+      {
+        question: 'Does the PDF keep my EXIF data?',
+        answer:
+          'For a JPEG, yes, because the whole JPEG stream including its EXIF is inside the PDF. Use the EXIF remover first if you do not want that. For PNG and other inputs, only the pixels are kept.',
       },
     ],
     related: [
-      { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Focused JPG → PDF converter.' },
-      { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Focused PNG → PDF converter.' },
-      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and back.' },
-      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Go the other way: render a PDF to JPG images.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Render PDF pages back to images.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip tags before they are embedded in the PDF.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPEG first, since the PDF embeds it as-is.' },
+      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'Clean up and OCR a photographed page instead of just wrapping it.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Set the pixel size, and therefore the page size, first.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 3024 x 4032 phone JPEG (2.9 MB)',
+        body:
+          'Input: a 2.9 MB JPEG, 3024 wide by 4032 tall, RGB. The header is read for the dimensions and the JPEG stream is embedded as-is with /DCTDecode. The page is 3024 x 0.75 = 2268 points wide and 4032 x 0.75 = 3024 points tall, which is 31.5 by 42 inches. The PDF comes out at about 2.9 MB plus under a kilobyte of PDF structure, because nothing is re-encoded. The work is reading the file and writing it back out, so the job is bound by disk and upload speed rather than CPU, and finishes in a few seconds.',
+      },
+      {
+        title: 'A 1920 x 1080 PNG with a transparent background',
+        body:
+          'Input: a 1.4 MB PNG of a logo on transparency. The PNG is decoded, every pixel is composited over white, and the 1920 x 1080 x 3 = 6,220,800 bytes of RGB are zlib-compressed and stored with /FlateDecode. The page is 1440 x 810 points (20 by 11.25 inches). Because flat white and solid colour compress well under zlib, the PDF is typically in the same range as the PNG, sometimes larger, since plain zlib lacks the row filters PNG uses. Decoding, compositing two million pixels and compressing them is CPU work that takes a few seconds; the transparency is gone in the result by design.',
+      },
+    ],
+    whenNotToUse:
+      'This is not the tool for a multi-page document: it makes exactly one page from one image, so a set of scans needs each page converted and then merged in a PDF editor. Do not use it when transparency must survive, because every pixel is flattened onto white. Do not expect a smaller file: a JPEG is embedded unchanged and a PNG becomes zlib-compressed RGB, so compress or resize the image first if size matters. And a photo whose correct orientation lives only in an EXIF flag should be converted to JPG once beforehand, otherwise the PDF shows it as stored.',
     primaryKeyword: 'image to pdf',
     secondaryKeywords: [
       'image to pdf converter',
@@ -2830,7 +2963,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a JPG image. The output is locked to PDF, and your JPG is embedded losslessly — the photo inside the PDF is bit-for-bit identical to your original.',
     },
     intro:
-      'JPG is the format your phone and camera shoot in, but a PDF is what most forms, applications, and offices want. Media Manipulator embeds your JPG directly into a PDF with no re-compression, so the document looks exactly like your photo and stays small. Free, online, no signup.',
+      'JPG is the format your phone and camera shoot in, but a PDF is what most forms, applications, and offices want. Media Manipulator embeds your JPG directly into a PDF with no re-compression, so the document looks exactly like your photo and stays small.',
     whatItDoes: [
       'Wraps a JPG/JPEG photo into a single-page PDF document.',
       'Embeds the original JPG bytes losslessly — zero added compression.',
@@ -2862,9 +2995,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Truly lossless — the JPG inside the PDF is identical to your original.',
       'Output is locked to PDF, so there is nothing to misconfigure.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your JPG is placed, without being re-compressed, onto a single PDF page that our server builds.'),
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg'],
       supportedOutputFormats: ['pdf'],
@@ -2893,16 +3025,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'This tool makes one PDF per image. Convert each JPG and merge the PDFs in a merge tool if you need multiple pages.',
       },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert PNG to PDF', to: '/tools/convert-png-to-pdf', description: 'Focused PNG → PDF converter.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Convert any image format to PDF.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert other formats to JPG first.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Go the other way: render a PDF to JPG.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'The full PDF conversion hub.' },
     ],
@@ -2940,7 +3067,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a PNG image. The output is locked to PDF, and your PNG is embedded losslessly so text and sharp edges stay crisp on the page.',
     },
     intro:
-      'PNG is the format for screenshots, diagrams, and graphics with crisp text and sharp edges. When you need to send or print one as a document, a PDF is the right wrapper. Media Manipulator embeds your PNG losslessly into a PDF so every edge stays sharp. Free, online, no signup.',
+      'PNG is the format for screenshots, diagrams, and graphics with crisp text and sharp edges. When you need to send or print one as a document, a PDF is the right wrapper. Media Manipulator embeds your PNG losslessly into a PDF so every edge stays sharp.',
     whatItDoes: [
       'Wraps a PNG image into a single-page PDF document.',
       'Embeds the image losslessly so text and line art stay crisp.',
@@ -2972,9 +3099,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Lossless embedding keeps text and edges razor-sharp.',
       'Output is locked to PDF, so there is nothing to misconfigure.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PNG is embedded losslessly into a one-page PDF on our server, with transparency flattened onto white.'),
     supportedFormats: {
       supportedInputFormats: ['png'],
       supportedOutputFormats: ['pdf'],
@@ -3003,16 +3129,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'This tool creates one PDF per image. Convert each PNG and merge the PDFs in a merge tool for multi-page documents.',
       },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert JPG to PDF', to: '/tools/convert-jpg-to-pdf', description: 'Focused JPG → PDF converter.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Convert any image format to PDF.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert other formats to PNG first.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PDF to PNG', to: '/tools/pdf-to-png', description: 'Go the other way: render a PDF to PNG.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'The full PDF conversion hub.' },
     ],
@@ -3027,7 +3148,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'pdf-to-jpg',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'PDF to JPG',
     h1: 'Convert PDF to JPG Online Free',
     tagline:
@@ -3053,42 +3174,45 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a PDF. Each page is rendered to a JPG image. Choose "all pages" for a ZIP of images, or "first page only" for a single JPG. Pick a render DPI for sharper output.',
     },
     intro:
-      'Sometimes you need a PDF as images — to post a page to social media, drop it into a slide, or edit it in an image editor. Media Manipulator renders each PDF page to a high-quality JPG using the same engine professional tools use. Choose every page or just the first, and pick the resolution. Free, online, no signup.',
+      'Upload a PDF and our server renders each page with pdftoppm from the Poppler toolkit, the same rasterizer used by many desktop PDF viewers. The form on this page is preset to JPG, all pages, and 150 DPI; you can change the DPI to 100, 200 or 300, limit the job to the first page, and set the JPEG quality, which defaults to 90. With all pages selected you get a ZIP containing page-001.jpg, page-002.jpg and so on; with first page only you get a single JPG. Before rendering, pdfinfo counts the pages and the job is refused if there are more than 500.',
     whatItDoes: [
-      'Renders each PDF page to a JPG image at the DPI you choose.',
-      'Converts all pages (downloaded as a ZIP) or just the first page (a single JPG).',
-      'Names multi-page output clearly: page-001.jpg, page-002.jpg, and so on.',
-      'Produces standard JPGs that open and edit anywhere.',
+      'Rasterizes every page, or only the first, to a JPG at the resolution you pick.',
+      'Packages multi-page output as one ZIP with zero-padded, sortable filenames.',
+      'Uses the JPEG quality you set (90 by default) for every page.',
+      'Reads the page count first so an oversized document fails before any rendering happens.',
+      'Keeps PDFs out of the automated image analysis, which only runs on image, video and audio uploads.',
     ],
     flowSteps: [
-      { title: 'Upload PDF', description: 'Drop in any .pdf document.' },
-      { title: 'Pick pages and DPI', description: 'All pages or first only; 150 DPI is a good default.' },
-      { title: 'Render to JPG', description: 'Poppler rasterizes each page to a JPG on our server.' },
-      { title: 'Download', description: 'Get a single JPG, or a ZIP of one JPG per page.' },
+      { title: 'Upload a PDF', description: 'Any .pdf up to your per-file cap; the page count must be 500 or fewer.' },
+      { title: 'Choose pages, DPI and quality', description: 'All pages or first only; 100, 150, 200 or 300 DPI; JPEG quality 1 to 100.' },
+      { title: 'pdftoppm renders', description: 'pdftoppm -r <dpi> -jpeg -jpegopt quality=<q> [-f 1 -l 1] input page' },
+      { title: 'Download', description: 'converted.jpg for a single page, converted.zip for all pages.' },
     ],
     advancedDetails: [
-      'Rendering uses Poppler (pdftoppm), the same engine behind many desktop PDF viewers, for accurate page output.',
-      'Higher DPI yields sharper, larger images — 150 DPI suits screen use, 300 DPI suits printing.',
-      'Multi-page PDFs are packaged into a single .zip so you get one tidy download instead of many files.',
-      'There is a page-count limit so very large PDFs fail fast with a clear message rather than running indefinitely.',
+      'The renderer is convertPDFToImages in pdf_tools.go. It calls pdfinfo for the page count, refuses more than 500 pages, then runs pdftoppm with -r for the DPI, -jpeg and -jpegopt quality=N for JPG output, and -f 1 -l 1 when only the first page is wanted.',
+      'The server clamps DPI to the range 50 to 400 and quality to 1 to 100 regardless of what the form sends; the form itself offers 100, 150, 200 and 300.',
+      'pdftoppm writes one file per page; the server renames them to page-001.jpg, page-002.jpg and so on (three-digit, zero-padded) and zips them, so the files sort in page order in any file manager.',
+      'Pixel dimensions follow directly from DPI: a US Letter page (8.5 x 11 in) is 1275 x 1650 pixels at 150 DPI and 2550 x 3300 at 300; an A4 page (8.27 x 11.69 in) is 1240 x 1754 at 150 and 2480 x 3508 at 300.',
+      'A PDF that is itself a scan is re-rasterized: if the embedded scan was 300 DPI and you render at 150, each page comes out at half the linear resolution of the scan. Pick 300 to keep what the scan had.',
+      'The PNG variant of this tool uses the same renderer with -png and no quality option; JPG is the right choice for photographic or scanned pages, PNG for pages with sharp text and flat colour where JPEG ringing would show.',
     ],
     whyItMatters: [
-      'JPG pages are easy to post, embed in slides, or drop into an editor.',
-      'Images are accepted by tools and platforms that cannot take a PDF.',
-      'A rendered page captures the exact visual layout of the document.',
+      'Many tools and platforms accept images but not PDFs: slide decks, social posts, chat apps and image editors.',
+      'A rendered page is a faithful picture of the layout, fonts and vector graphics, with nothing to embed or reflow.',
+      'Choosing the DPI yourself means you decide between a quick preview and a print-resolution export.',
     ],
     useCases: [
-      { title: 'Social posts', description: 'Share a PDF page as an image on social platforms.' },
-      { title: 'Presentations', description: 'Drop a document page into a slide as an image.' },
-      { title: 'Editing', description: 'Open a PDF page in an image editor for markup.' },
-      { title: 'Thumbnails', description: 'Generate a JPG preview of the first page.' },
+      { title: 'Slides and social posts', description: 'Render a report page or a poster to an image you can post or drop into a deck.' },
+      { title: 'Thumbnails and previews', description: 'Render only the first page at 100 DPI for a cover image.' },
+      { title: 'Markup in an editor', description: 'Open a page in an image editor to annotate, redact or crop.' },
+      { title: 'Scan extraction', description: 'Get each scanned page back out of a PDF as a separate JPG at the original resolution.' },
     ],
     whyMediaManipulator: [
-      'Poppler-based rendering for accurate, high-quality page images.',
-      'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'Poppler rendering with the real DPI and quality controls exposed, not a fixed preview size.',
+      'A single ZIP with page-numbered filenames instead of a pile of downloads.',
+      `No signup for the standard tool. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your PDF is stored under uploads/<jobId>/ on our server and the rendered JPGs, or their ZIP, under outputs/<jobId>/; pages are rendered into a temporary directory inside the output folder that is removed as soon as the ZIP is written. PDF uploads are detected as documents and are not passed to the automated vision analysis that image, video and audio uploads receive. Poppler runs entirely on our machine, and no page is sent to any outside service. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['pdf'],
       supportedOutputFormats: ['jpg', 'zip (one jpg per page)'],
@@ -3099,38 +3223,62 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How do I convert a PDF to JPG for free?',
+        question: 'Is PDF to JPG conversion free?',
         answer:
-          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert. It is free with no signup.',
+          'Yes for the standard tool. One PDF, however many pages, is one daily operation: 5 per day as a guest with a 200 MB per-file cap, 30 per day and 1 GB with a free account, 300 on Premium and 700 on Pro, all by default and shown on /pricing.',
       },
       {
-        question: 'Will I get one image or many?',
+        question: 'How many images will I get?',
         answer:
-          'Choose "all pages" to get a ZIP containing one JPG per page (page-001.jpg, page-002.jpg, …), or "first page only" to get a single JPG.',
+          'One per page when all pages is selected, delivered as converted.zip with files named page-001.jpg upward. With first page only you get one converted.jpg and no ZIP.',
       },
       {
-        question: 'What DPI should I pick?',
+        question: 'Which DPI should I choose?',
         answer:
-          '150 DPI is great for on-screen use and sharing. Use 300 DPI when you need print-quality images. Higher DPI means larger files.',
+          '150 for reading on screen and sharing (1240 x 1754 for A4). 300 for print or for scans that were made at 300 (2480 x 3508 for A4). 100 for small previews. The server accepts 50 to 400.',
       },
       {
-        question: 'Is there a limit on PDF size?',
+        question: 'What does the quality setting do?',
         answer:
-          'Very large PDFs (beyond a generous page limit) are rejected with a clear message so the conversion stays fast and reliable.',
+          'It is passed to pdftoppm as -jpegopt quality=N, the standard JPEG quality scale. 90 is the default; lower it for smaller files on photo-heavy pages.',
       },
       {
-        question: 'Are my uploads private?',
+        question: 'Is there a page limit?',
         answer:
-          `Yes. PDFs are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
+          'Yes, 500 pages. pdfinfo counts them before rendering starts and a longer document is refused with a message stating the count and the limit, and the operation is refunded.',
+      },
+      {
+        question: 'Will the text in the image be searchable?',
+        answer:
+          'No. The output is a raster image of each page. If you need text, keep the PDF, or use the AI document scan tool, which runs OCR on a photographed page.',
+      },
+      {
+        question: 'Can I get PNG instead of JPG?',
+        answer:
+          'This page locks the format to JPG. The same renderer produces PNG through the PDF to PNG page, which uses -png and has no quality setting.',
       },
     ],
     related: [
-      { label: 'PDF to PNG', to: '/tools/pdf-to-png', description: 'Render PDF pages to lossless PNG instead.' },
-      { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and images to PDF.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert the rendered images between formats.' },
-      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: turn images into a PDF.' },
+      { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: wrap an image in a PDF page.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the rendered JPGs for the web.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Scale a rendered page to a thumbnail or banner size.' },
+      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'OCR and clean up a photographed page.' },
+      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Black out names or numbers on a rendered page.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 12-page A4 report, all pages at 150 DPI',
+        body:
+          'Input: a 12-page A4 PDF of 1.8 MB containing text and a few charts. Settings left at the preset: JPG, all pages, 150 DPI, quality 90. pdfinfo reports 12 pages, under the 500 cap, and pdftoppm runs -r 150 -jpeg -jpegopt quality=90. Each page renders at 8.27 x 150 by 11.69 x 150, so 1240 x 1754 pixels (2.2 megapixels). The twelve files are renamed page-001.jpg through page-012.jpg and zipped into converted.zip. Rendering is per page and dominated by how much vector content and text each page has; a dozen text pages take a few seconds in total. Per-page JPEG size depends on content: mostly-white text pages compress far better than a full-bleed chart.',
+      },
+      {
+        title: 'First page only of a US Letter scan at 300 DPI',
+        body:
+          'Input: a 40-page scanned contract, Letter size, 28 MB. Choose first page only and 300 DPI, keep quality 90. The server runs pdftoppm -r 300 -jpeg -jpegopt quality=90 -f 1 -l 1, so only one page is rasterized, at 8.5 x 300 by 11 x 300 = 2550 x 3300 pixels (8.4 megapixels). The output is a single converted.jpg, not a ZIP. Rendering one scanned page is fast because the page is one embedded image; the upload of 28 MB takes longer than the render. At 150 DPI the same page would be 1275 x 1650, a quarter of the pixels, which is enough for screen reading but not for re-printing the scan.',
+      },
+    ],
+    whenNotToUse:
+      'Do not render a PDF to JPG when you need the text to stay selectable or searchable: the result is pixels, and a screen reader or a search index gets nothing. Do not use JPG for pages that are mostly sharp text and line art if you will zoom in, since JPEG compression leaves faint ringing around edges; the PNG variant is cleaner there. Documents longer than 500 pages are refused outright, and very high DPI on a long document produces a large ZIP, so render only the pages you actually need. And if the goal is to edit the PDF content rather than picture it, a PDF editor is the right tool.',
     primaryKeyword: 'pdf to jpg',
     secondaryKeywords: [
       'pdf to image',
@@ -3167,7 +3315,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a PDF. Each page is rendered to a lossless PNG image. Choose "all pages" for a ZIP, or "first page only" for a single PNG. Pick a render DPI for sharper output.',
     },
     intro:
-      'PNG is the best choice when a PDF page has crisp text, thin lines, or diagrams you want to keep razor-sharp. Media Manipulator renders each page to a lossless PNG with Poppler, so there are no JPEG artifacts around text. Choose every page or just the first, and pick the resolution. Free, online, no signup.',
+      'PNG is the best choice when a PDF page has crisp text, thin lines, or diagrams you want to keep razor-sharp. Media Manipulator renders each page to a lossless PNG with Poppler, so there are no JPEG artifacts around text. Choose every page or just the first, and pick the resolution.',
     whatItDoes: [
       'Renders each PDF page to a lossless PNG image at the DPI you choose.',
       'Converts all pages (downloaded as a ZIP) or just the first page (a single PNG).',
@@ -3200,9 +3348,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Lossless PNG rendering keeps text and edges sharp.',
       'Clear, tidy ZIP packaging with sortable page-numbered filenames.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PDF\'s pages are rendered to PNG images with Poppler on our server and, for more than one page, packed into a ZIP.'),
     supportedFormats: {
       supportedInputFormats: ['pdf'],
       supportedOutputFormats: ['png', 'zip (one png per page)'],
@@ -3215,7 +3362,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert a PDF to PNG for free?',
         answer:
-          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert. It is free with no signup.',
+          'Upload your .pdf above, choose all pages or just the first, pick a DPI, and click convert.',
       },
       {
         question: 'Why choose PNG over JPG for a PDF?',
@@ -3232,18 +3379,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'No — PDF pages are opaque, so rendered pages have a white background. There is no transparency to preserve.',
       },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. PDFs are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'PDF to JPG', to: '/tools/pdf-to-jpg', description: 'Render PDF pages to compact JPG instead.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and images to PDF.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert the rendered images between formats.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Go the other way: turn images into a PDF.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert the rendered pages to other formats.' },
     ],
     primaryKeyword: 'pdf to png',
     secondaryKeywords: [
@@ -3279,7 +3420,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a PDF to render its pages to JPG or PNG images, or upload an image to turn it into a PDF. The form adapts to whichever file you choose.',
     },
     intro:
-      'The PDF converter handles both directions in one place: render a PDF’s pages to JPG or PNG images, or wrap an image into a PDF document. Upload a PDF and you get image-export controls; upload an image and you get image-to-PDF. Everything runs on our own servers — free, online, no signup.',
+      'The PDF converter handles both directions in one place: render a PDF’s pages to JPG or PNG images, or wrap an image into a PDF document. Upload a PDF and you get image-export controls; upload an image and you get image-to-PDF. Everything runs on our own servers.',
     whatItDoes: [
       'Converts PDF pages to JPG or PNG at the resolution you choose.',
       'Converts JPG, PNG, and other images into single-page PDFs.',
@@ -3312,9 +3453,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Both conversion directions in a single, adaptive tool.',
       'Lossless image→PDF and accurate Poppler PDF→image rendering.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your PDF is rendered page by page to images, or your image is wrapped into a PDF, by Poppler and ImageMagick on our server.'),
     supportedFormats: {
       supportedInputFormats: ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'pdf', 'zip (multi-page export)'],
@@ -3338,16 +3478,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
         question: 'Can I convert a multi-page PDF to images?',
         answer:
           'Yes. Choose "all pages" and you get a ZIP containing one image per page, named page-001, page-002, and so on.',
-      },
-      {
-        question: 'Is it really free?',
-        answer:
-          `Yes — no signup, no watermarks. ${RETENTION_PROMISE}.`,
-      },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Everything is processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
       },
     ],
     related: [
@@ -3394,7 +3524,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a HEIC or HEIF photo from your iPhone. The output is locked to JPG, auto-oriented so it appears the right way up, at the quality you choose.',
     },
     intro:
-      'HEIC is the high-efficiency format iPhones use to save space, but it won’t open on many Windows PCs, websites, or older apps. Media Manipulator converts your HEIC photos to JPG — the format that works everywhere — with correct orientation and the quality you choose. Free, online, no signup.',
+      'HEIC is the high-efficiency format iPhones use to save space, but it won’t open on many Windows PCs, websites, or older apps. Media Manipulator converts your HEIC photos to JPG — the format that works everywhere — with correct orientation and the quality you choose.',
     whatItDoes: [
       'Converts Apple HEIC/HEIF photos to standard JPG.',
       'Auto-orients the image using EXIF so portraits aren’t sideways.',
@@ -3426,9 +3556,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Correct auto-orientation — no sideways photos.',
       'Quality control instead of a fixed preset.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your HEIC photo is decoded on our server, turned the right way up and saved as a JPG.'),
     supportedFormats: {
       supportedInputFormats: ['heic', 'heif'],
       supportedOutputFormats: ['jpg'],
@@ -3440,7 +3569,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert HEIC to JPG for free?',
         answer:
-          'Upload your .heic photo above, pick a quality, and click convert. You get a standard .jpg back. It is free with no signup.',
+          'Upload your .heic photo above, pick a quality, and click convert. You get a standard .jpg back.',
       },
       {
         question: 'Why won’t my HEIC photo open on Windows?',
@@ -3457,15 +3586,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'Naive converters ignore EXIF orientation. We auto-orient the image, so your photo comes out the right way up.',
       },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert AVIF to JPG', to: '/tools/convert-avif-to-jpg', description: 'Convert modern AVIF photos to JPG.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG for the web.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Walk through every image option.' },
@@ -3504,7 +3627,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an AVIF image. The output is locked to JPG, so you get a file every app, editor, and upload form accepts, at the quality you choose.',
     },
     intro:
-      'AVIF is a cutting-edge image format that produces tiny files, but plenty of apps, editors, and upload forms still can’t open it. Media Manipulator converts AVIF to JPG so your image works everywhere. Pick a quality and download. Free, online, no signup.',
+      'AVIF is a cutting-edge image format that produces tiny files, but plenty of apps, editors, and upload forms still can’t open it. Media Manipulator converts AVIF to JPG so your image works everywhere. Pick a quality and download.',
     whatItDoes: [
       'Converts AVIF images to standard JPG.',
       'Flattens any transparency onto a background, since JPG has no alpha.',
@@ -3536,9 +3659,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality control instead of a one-size-fits-all preset.',
       'Runs on our own servers — no third-party processing.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your AVIF is decoded on our server and re-encoded as a JPG at the quality you set.'),
     supportedFormats: {
       supportedInputFormats: ['avif'],
       supportedOutputFormats: ['jpg'],
@@ -3550,7 +3672,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert AVIF to JPG for free?',
         answer:
-          'Upload your .avif image above, pick a quality, and click convert. You get a standard .jpg back. It is free with no signup.',
+          'Upload your .avif image above, pick a quality, and click convert. You get a standard .jpg back.',
       },
       {
         question: 'Why can’t I open AVIF files?',
@@ -3567,16 +3689,10 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'At quality 85–90 the JPG looks essentially identical to the AVIF for most images.',
       },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert AVIF to PNG', to: '/tools/convert-avif-to-png', description: 'Keep transparency with a PNG instead.' },
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to JPG.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the JPG for the web.' },
     ],
@@ -3614,12 +3730,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an AVIF image. The output is locked to PNG, so transparency is preserved and the file opens losslessly in any editor or viewer.',
     },
     intro:
-      'When an AVIF image has transparency — like a logo or a cutout — converting to JPG would flatten it. PNG keeps the alpha channel and is lossless, so it’s the right target for graphics. Media Manipulator converts AVIF to PNG with transparency intact. Free, online, no signup.',
+      'When an AVIF image has transparency — like a logo or a cutout — converting to JPG would flatten it. PNG keeps the alpha channel and is lossless, so it’s the right target for graphics. Media Manipulator converts AVIF to PNG with transparency intact.',
     whatItDoes: [
       'Converts AVIF images to lossless PNG.',
       'Preserves the alpha channel so transparent AVIFs stay transparent.',
       'Produces a PNG that opens in any editor, viewer, or design tool.',
-      'Keeps the visible content identical — only the encoding changes.',
+      'The image is preserved pixel for pixel when the AVIF becomes a PNG.',
     ],
     flowSteps: [
       { title: 'Upload AVIF', description: 'Drop in a .avif image, transparent or solid.' },
@@ -3646,9 +3762,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Transparency preserved automatically.',
       'Lossless PNG output for graphics work.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your AVIF is decoded on our server and saved as a lossless PNG with its transparency intact.'),
     supportedFormats: {
       supportedInputFormats: ['avif'],
       supportedOutputFormats: ['png'],
@@ -3660,7 +3775,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert AVIF to PNG for free?',
         answer:
-          'Upload your .avif image above and click convert — the output is a lossless .png with transparency preserved. It is free with no signup.',
+          'Upload your .avif image above and click convert — the output is a lossless .png with transparency preserved.',
       },
       {
         question: 'Does AVIF to PNG keep transparency?',
@@ -3677,16 +3792,10 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'AVIF is a highly efficient compressed format, while PNG is lossless, so the PNG is typically larger. That’s expected.',
       },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert AVIF to JPG', to: '/tools/convert-avif-to-jpg', description: 'Convert AVIF to a compact JPG instead.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to lossless PNG.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, and more.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent PNG cutout automatically.' },
     ],
@@ -3724,7 +3833,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an SVG. The output is locked to PNG. Optionally set a width or height to control the rendered resolution — leave them blank to use the SVG’s natural size.',
     },
     intro:
-      'SVGs are perfect vectors, but many platforms — social networks, marketplaces, slide tools, and apps — only accept raster images like PNG. Media Manipulator rasterizes your SVG into a crisp, transparency-preserving PNG at the size you choose. SVGs are processed as untrusted input with a safe renderer. Free, online, no signup.',
+      'SVGs are perfect vectors, but many platforms — social networks, marketplaces, slide tools, and apps — only accept raster images like PNG. Media Manipulator rasterizes your SVG into a crisp, transparency-preserving PNG at the size you choose. SVGs are processed as untrusted input with a safe renderer.',
     whatItDoes: [
       'Rasterizes SVG vector files into PNG images.',
       'Lets you set a target width and/or height for the output resolution.',
@@ -3756,9 +3865,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Render at any size with no quality loss — vectors scale perfectly.',
       'Safe SVG handling with external fetches disabled.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your SVG is rendered to a PNG by librsvg on our server, with external images and fonts it references left unfetched.'),
     supportedFormats: {
       supportedInputFormats: ['svg'],
       supportedOutputFormats: ['png'],
@@ -3770,7 +3878,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert SVG to PNG for free?',
         answer:
-          'Upload your .svg above, optionally set a width or height, and click convert. You get a crisp .png back. It is free with no signup.',
+          'Upload your .svg above, optionally set a width or height, and click convert. You get a crisp .png back.',
       },
       {
         question: 'What size will the PNG be?',
@@ -3787,18 +3895,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'Yes. We treat SVGs as untrusted input and render them with external network fetches disabled, so embedded remote references can’t be loaded.',
       },
-      {
-        question: 'Are my uploads stored?',
-        answer:
-          `No. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert PNG to SVG', to: '/tools/convert-png-to-svg', description: 'Go the other way: vectorize a PNG into SVG.' },
-      { label: 'SVG converter', to: '/tools/svg-converter', description: 'The full SVG conversion hub.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert the rendered PNG to other formats.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn the PNG into a favicon.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
     ],
     primaryKeyword: 'svg to png',
     secondaryKeywords: [
@@ -3834,7 +3935,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a PNG. The output is locked to SVG and produced by real vectorization (potrace), not a raster wrapped in SVG. Adjust the black/white threshold to capture more or less detail. Best for logos, icons, signatures, and line art.',
     },
     intro:
-      'True PNG-to-SVG conversion means tracing your image into real vector paths that scale to any size without pixelation. Media Manipulator uses potrace to vectorize your PNG — ideal for logos, icons, signatures, and black-and-white line art. This is genuine vectorization, not a PNG hidden inside an SVG. It is not designed to turn photographs into clean vector art. Free, online, no signup.',
+      'True PNG-to-SVG conversion means tracing your image into real vector paths that scale to any size without pixelation. Media Manipulator uses potrace to vectorize your PNG — ideal for logos, icons, signatures, and black-and-white line art. This is genuine vectorization, not a PNG hidden inside an SVG. It is not designed to turn photographs into clean vector art.',
     whatItDoes: [
       'Traces a PNG into real, scalable SVG vector paths using potrace.',
       'Reduces the image to a clean black/white bitmap, then vectorizes the shapes.',
@@ -3867,9 +3968,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real potrace vectorization — honest about what it’s good at (and not).',
       'Threshold control so you can dial in the trace.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is reduced to black and white and traced into vector paths by potrace on our server.'),
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'gif'],
       supportedOutputFormats: ['svg'],
@@ -3881,7 +3981,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert a PNG to SVG for free?',
         answer:
-          'Upload your .png above, adjust the threshold if needed, and click convert. You get a real vector .svg back. It is free with no signup.',
+          'Upload your .png above, adjust the threshold if needed, and click convert. You get a real vector .svg back.',
       },
       {
         question: 'Is this real vectorization or just a wrapped PNG?',
@@ -3898,18 +3998,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'It sets the black/white cutoff before tracing. Raise it to capture more (lighter) detail; lower it to keep only the boldest shapes.',
       },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
       { label: 'Convert SVG to PNG', to: '/tools/convert-svg-to-png', description: 'Go the other way: rasterize an SVG to PNG.' },
-      { label: 'SVG converter', to: '/tools/svg-converter', description: 'The full SVG conversion hub.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert a PNG to other raster formats.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'PNG to ICO', to: '/tools/png-to-ico', description: 'Turn a PNG into a favicon.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
     ],
     primaryKeyword: 'png to svg',
     secondaryKeywords: [
@@ -3945,7 +4038,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a PNG (a square image works best). The output is locked to ICO, and a real multi-size icon is generated containing 16, 32, 48, 64, 128, and 256 px versions.',
     },
     intro:
-      'A favicon needs to be a real .ico file containing several sizes so browsers and Windows can pick the right one. Media Manipulator generates a genuine multi-size ICO from your PNG — not a renamed file — packing the standard 16–256 px icon ladder. Free, online, no signup.',
+      'A favicon needs to be a real .ico file containing several sizes so browsers and Windows can pick the right one. Media Manipulator generates a genuine multi-size ICO from your PNG — not a renamed file — packing the standard 16–256 px icon ladder.',
     whatItDoes: [
       'Generates a real .ico container from a PNG image.',
       'Packs multiple sizes (16, 32, 48, 64, 128, 256 px) into one file.',
@@ -3977,9 +4070,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'A genuine multi-size ICO, not a renamed PNG.',
       'Transparency preserved for clean icons.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is resized to each standard icon size and packed into one .ico file by ImageMagick on our server.'),
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'webp'],
       supportedOutputFormats: ['ico'],
@@ -3991,7 +4083,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'How do I convert a PNG to ICO for free?',
         answer:
-          'Upload your .png above and click convert — you get a real multi-size .ico back. It is free with no signup.',
+          'Upload your .png above and click convert — you get a real multi-size .ico back.',
       },
       {
         question: 'Is this a real ICO or a renamed PNG?',
@@ -4008,17 +4100,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
         answer:
           'A square PNG at 256×256 or larger gives the crispest result, since every smaller size downsamples cleanly from it.',
       },
-      {
-        question: 'Are my uploads private?',
-        answer:
-          `Yes. Files are processed on our own servers. ${RETENTION_PROMISE}. No account is required.`,
-      },
     ],
     related: [
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to PNG first.' },
+      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between JPG, PNG, WebP, AVIF and more.' },
       { label: 'Convert SVG to PNG', to: '/tools/convert-svg-to-png', description: 'Rasterize an SVG logo before making an icon.' },
       { label: 'Image resizer', to: '/tools/image-resizer', description: 'Make a square image before generating the icon.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Make a transparent icon source.' },
     ],
     primaryKeyword: 'png to ico',
@@ -4035,7 +4121,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'SVG Converter',
     h1: 'Free SVG Converter Online',
     tagline:
-      'Convert SVG to PNG and vectorize PNG to SVG — the complete SVG conversion hub.',
+      "Rasterise SVG to PNG or trace a PNG into SVG: the image converter with an SVG starting point.",
     metaTitle: 'Free SVG Converter Online | Media Manipulator',
     metaDescription:
       `Free online SVG converter. Rasterize SVG to PNG, or vectorize PNG to a real SVG. No signup, no watermarks. ${RETENTION_PROMISE}.`,
@@ -4053,7 +4139,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an SVG to rasterize it to PNG, or upload a PNG and choose SVG output to vectorize it. The form adapts to your file and chosen output.',
     },
     intro:
-      'The SVG converter handles both directions: rasterize an SVG into a PNG for platforms that don’t accept vectors, or vectorize a PNG logo into a real, scalable SVG. Upload an SVG to get a PNG, or upload a raster and pick SVG output for true potrace vectorization. Free, online, no signup.',
+      "The SVG converter is the Media Manipulator image converter set up for vector work. It accepts SVG files as input and preselects PNG as the output, and if you upload a raster image instead you can choose SVG as the output to trace it. Both directions are part of the main image converter. SVG to PNG renders the drawing with librsvg at the size you ask for and keeps transparency; external resources referenced by the file are not fetched. PNG to SVG traces the image with potrace into real vector paths, which works well for logos, icons, signatures and line art and badly for photographs, because potrace works on a two-colour bitmap. The image converter page is the canonical version of this tool and covers every input and output format, quality settings and the upload limits for guests and free accounts. Upload an SVG or a simple PNG below.",
     whatItDoes: [
       'Rasterizes SVG files into PNG images at the size you choose.',
       'Vectorizes PNG/raster logos and line art into real SVG paths (potrace).',
@@ -4129,6 +4215,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert images to PNG.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert between image formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'svg converter',
     secondaryKeywords: [
       'online svg converter',
@@ -4221,7 +4308,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Free, no signup, no watermarks, output is fully yours.',
       'Same retention privacy model as the rest of the toolset.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your WAV is encoded to MP3 by FFmpeg on our server at the bitrate you pick.'),
     faq: [
       {
         question: 'What bitrate should I pick?',
@@ -4356,7 +4443,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Combine with EQ, denoise, and trim in a single upload.',
       'Free, no signup, no watermarks on the output.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your song is split into stems by Demucs on our own GPU server and only the vocal stem is returned to you.'),
     faq: [
       {
         question: 'Is this fully clean separation?',
@@ -4437,42 +4524,45 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a photo. AI Upscale is already selected and locked, with the output set to PNG. Pick 2x or 4x and a model (photo or anime), then convert.',
     },
     intro:
-      'Ordinary resizing only interpolates between the pixels you already have, so a bigger copy of a small photo looks blurry. This page runs an AI super-resolution model (Real-ESRGAN) that has learned what edges, skin, fabric and foliage usually look like at higher resolution, and draws plausible detail back in. You choose 2x or 4x, and the enlarged image comes back as a lossless PNG.',
+      'This page opens the image converter with AI Upscale locked in and the output set to PNG. The server runs realesrgan-ncnn-vulkan, the Vulkan build of Real-ESRGAN, on a GPU we own: the default model is realesrgan-x4plus at 4x, with realesrgan-x4plus-anime and realesr-animevideov3 available for drawings and animation frames, and 2x as an alternative scale. Rather than interpolating between your existing pixels, the network predicts what edges, skin, fabric and foliage look like at the larger size and draws that detail in. The result is written as a lossless PNG so no new compression artifacts are stacked on top of the synthesized detail.',
     whatItDoes: [
-      'Enlarges the image to 2x or 4x its original width and height using a Real-ESRGAN model.',
-      'Offers a general photo model and an anime/illustration model, so line art stays crisp.',
-      'Saves the result as PNG so no extra compression damage is added after upscaling.',
-      'Runs on a GPU server we operate, not a third-party AI service.',
+      'Enlarges an image to 2x or 4x its width and height with a Real-ESRGAN model running on our GPU.',
+      'Lets you choose between a photo model and two anime-style models in the form; 4x and the photo model are preselected.',
+      'Always outputs PNG; the API forces the .png extension for this operation.',
+      'Tiles the image automatically on the GPU so large inputs do not run out of video memory.',
+      'Spends one ordinary daily operation, because the job travels through the standard upload route.',
     ],
     flowSteps: [
-      { title: 'Upload a small photo', description: 'Drop in a JPG, PNG or WebP that you want to make larger.' },
-      { title: 'Choose 2x or 4x', description: 'The operation is already set to AI Upscale; just pick the scale and model.' },
-      { title: 'AI rebuilds detail', description: 'The model enlarges the image and synthesizes sharper edges and texture.' },
-      { title: 'Download the PNG', description: 'Save the enlarged, lossless result.' },
+      { title: 'Upload a small or soft image', description: 'JPG, PNG or WebP. The smaller the input, the more the model has to invent.' },
+      { title: 'Pick 4x or 2x and a model', description: 'realesrgan-x4plus for photos, the anime models for line art and cartoon frames.' },
+      { title: 'Real-ESRGAN runs on the GPU', description: 'realesrgan-ncnn-vulkan -i in -o out -n <model> -s <2|4> -t 0 -g <gpu> -f png' },
+      { title: 'Download the PNG', description: 'converted.png at 2x or 4x the original pixel dimensions.' },
     ],
     advancedDetails: [
-      'The photo model (realesrgan-x4plus) suits natural images; the anime models suit drawings, screenshots of cartoons and flat-color art.',
-      'Upscaling cannot recover information that was never captured. Fine text, faces and patterns are inferred, so they can look slightly different from reality.',
-      'A 4x result is 16 times as many pixels, so the PNG can be large. Use the 2x option if you only need a modest bump.',
-      'Whether a very large input or a high scale is allowed depends on your plan; the form shows the live limits for your account.',
+      'The call is UpscaleImage in ai_tools.go. It launches realesrgan-ncnn-vulkan with -n for the model, -s for the scale, -t 0 for automatic tile size, -g for the GPU index and -f png; the Vulkan ICD is pinned by environment variables so the loader always finds the NVIDIA driver.',
+      'Only scales 2 and 4 and only the three model names realesrgan-x4plus, realesrgan-x4plus-anime and realesr-animevideov3 are accepted; anything else is rejected before the job starts.',
+      '2x runs the same x4 network at half scale. The form carries a note that 2x can look slightly cropped or zoomed on some images, which was observed on the server with a 640 x 360 photo; the API deliberately does not hide this by running 4x and downscaling.',
+      'Because the AI path bypasses ImageMagick and the exiftool copy, the quality, resize, filter and metadata settings in the form do nothing here, and the PNG carries no EXIF from the original.',
+      'Pixel count grows with the square of the scale: 4x means 16 times as many pixels and 2x means 4 times. The uncompressed RGB of the output is width x height x 3 bytes, which bounds how large the PNG can be.',
+      'There is no server-side cap on input dimensions specific to this operation beyond the per-file size limit for your plan; very large inputs simply take longer, tile by tile.',
     ],
     whyItMatters: [
-      'Old photos, thumbnails and low-resolution downloads often need to be printed or shown bigger than they were captured.',
-      'AI upscaling is the difference between a soft, blocky enlargement and an image that still looks intentional.',
-      'Starting from a lossless PNG means you can still compress or resize the result afterward for the web.',
+      'Old digital photos, low-resolution downloads and small web images often need to be printed or shown far larger than they were captured.',
+      'Plain interpolation makes a larger image, not a sharper one; a super-resolution model is the difference between blurry and usable.',
+      'Starting from a lossless PNG leaves you free to compress or resize the result afterward without compounding artifacts.',
     ],
     useCases: [
-      { title: 'Printing old photos', description: 'Enlarge a scanned or phone-sized photo before sending it to a printer.' },
-      { title: 'Rescuing small downloads', description: 'Bring a tiny product or reference image up to a usable size.' },
-      { title: 'Illustrations and anime art', description: 'Scale up line art with the anime model without muddy edges.' },
-      { title: 'Wallpapers and backgrounds', description: 'Turn a low-resolution picture into something that fills a modern display.' },
+      { title: 'Printing old photos', description: 'Take a 1-megapixel photo from an early camera to a size that prints well.' },
+      { title: 'Rescuing small downloads', description: 'Enlarge a 400 px product or reference image to something usable.' },
+      { title: 'Anime and illustration', description: 'Scale up line art with realesrgan-x4plus-anime without muddy edges.' },
+      { title: 'Game and video frames', description: 'Use realesr-animevideov3 on captured animation frames.' },
     ],
     whyMediaManipulator: [
-      'The upscaler runs on our own GPU, so your photo is not sent to an outside AI provider.',
-      'The operation is locked in for this page, so there is no menu to hunt through.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The real binary, models and flags are named here, so you know it is Real-ESRGAN with automatic tiling and not a generic "enhance".',
+      'The 2x caveat is stated instead of hidden, and the operation is locked so there is no menu to hunt through.',
+      `Runs on hardware we own; the standard tool needs no account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your image is stored under uploads/<jobId>/ on our server and read directly by the realesrgan-ncnn-vulkan binary on a GPU in the same machine; the PNG it produces goes to outputs/<jobId>/converted.png. No outside AI provider is involved and your image is not used to train anything. As with every image upload, an automated analysis step on our server runs a local vision model over the file once and stores its summary with the job. The result has no EXIF from the original, because AI operations skip the metadata copy. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['png'],
@@ -4482,37 +4572,63 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'How is AI upscaling different from just resizing?',
+        question: 'Is the AI upscaler free to use?',
         answer:
-          'A normal resize interpolates existing pixels, which makes a larger image look blurry. The AI model predicts plausible edges and texture at the higher resolution, so the enlarged result looks sharper. It is still an educated guess, not recovered original data.',
+          'Yes within the daily allowance. The job goes through the standard upload route, so it spends an ordinary operation rather than the separate AI allowance: 5 per day for guests and 30 with a free account by default, with 200 MB and 1 GB per-file caps; 300 and 700 on Premium and Pro. The live numbers are on /pricing.',
+      },
+      {
+        question: 'How is this different from the image resizer?',
+        answer:
+          'The resizer runs ImageMagick, which interpolates existing pixels and makes a larger but softer image. This tool runs a trained Real-ESRGAN network that synthesizes edges and texture at the larger size. It is an inference, not recovered data.',
       },
       {
         question: 'Should I pick 2x or 4x?',
         answer:
-          'Use 2x when the source is already decent and you only need a modest increase. Use 4x for very small images, but expect a much larger file and a bit more invented detail.',
+          '4x is the default and gives the most consistent output. 2x runs the same network at half scale and can look slightly cropped on some images, so if 4x is more than you need, consider 4x followed by a resize down.',
       },
       {
-        question: 'Will it make a blurry photo sharp?',
+        question: 'Which model is right for drawings?',
         answer:
-          'It helps with softness caused by low resolution. It cannot repair heavy motion blur or missed focus, and it may over-smooth faces or textures. Always compare against the original.',
+          'realesrgan-x4plus-anime for illustrations and flat-colour art; realesr-animevideov3 for frames taken from animation. The photo model adds skin-like texture that looks wrong on line art.',
       },
       {
-        question: 'Which model should I use for drawings?',
+        question: 'Why is the output PNG and so large?',
         answer:
-          'Choose one of the anime models for illustrations, cartoons and flat-color art. The photo model can add texture that does not belong in clean line art.',
+          'PNG is forced so the synthesized detail is not immediately damaged by JPEG compression. A 4x result has 16 times the pixels, so the file is large; compress it to JPG or WebP afterward for sharing.',
       },
       {
-        question: 'Are there limits for free use?',
+        question: 'Can it fix a blurry or out-of-focus photo?',
         answer:
-          'AI operations can be limited by file size or daily quota depending on your plan. The form shows the limits that apply to you at the moment you upload, so they are never out of date.',
+          'It helps with softness that comes from low resolution. It cannot undo motion blur or a missed focus, and it may smooth or alter faces and fine text. Compare the result with the original before using it.',
+      },
+      {
+        question: 'Is my photo sent to a third-party AI service?',
+        answer:
+          'No. Real-ESRGAN runs on a GPU server we operate, and the job never calls an external API.',
       },
     ],
     related: [
-      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up compression and noise before or after enlarging.' },
-      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize to exact pixel dimensions without AI.' },
-      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the large upscaled file for sharing.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option, including all AI tools, in one upload.' },
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean compression and noise before or after enlarging.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Bring a 4x result down to the exact size you need.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Turn the large PNG into a shareable JPG or WebP.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Cut the enlarged subject out onto transparency.' },
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'The equivalent for video frames.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 640 x 360 JPEG at 4x with realesrgan-x4plus',
+        body:
+          'Input: a 92 KB, 640 x 360 JPEG thumbnail of a landscape. Settings left at the preset: 4x, photo model, PNG output. The server runs realesrgan-ncnn-vulkan -n realesrgan-x4plus -s 4 -t 0 -f png and writes converted.png at 2560 x 1440 pixels, 16 times the original 230,400 pixels. The uncompressed output is 2560 x 1440 x 3 = 11 MB of RGB, and the PNG lands below that depending on how much sky and flat colour it contains, so expect several megabytes from a 92 KB input. The GPU pass over the automatically chosen tiles is a matter of seconds for an output of this size; the PNG encode and download of a multi-megabyte file take a noticeable share of the total.',
+      },
+      {
+        title: 'A 1200 x 800 photo at 2x',
+        body:
+          'Input: a 480 KB, 1200 x 800 JPEG of a person. Choose 2x and keep the photo model. The output is a 2400 x 1600 PNG, 3.84 megapixels, four times the original 0.96. Uncompressed that is 11.5 MB of RGB, and the PNG will be some fraction of it. Because 2x runs the x4 network at half scale, inspect the edges for the slight crop or zoom the form warns about; if it appears, run 4x instead and resize the 4800 x 3200 result down to 2400 x 1600 with the image resizer, which costs one more operation.',
+      },
+    ],
+    whenNotToUse:
+      'Do not upscale an image that is already large and sharp: a 12-megapixel photo at 4x becomes a 192-megapixel PNG that is slow to produce, hundreds of megabytes uncompressed, and gains nothing visible. Do not rely on it for faces, text, logos or anything where the exact original must be preserved, because the added detail is predicted, not recovered, and small text can come out as plausible but wrong letters. Heavy motion blur and missed focus are not fixed by resolution. If you only need a specific pixel size from a larger original, the plain resizer is faster and cheaper.',
     primaryKeyword: 'ai image upscaler',
     secondaryKeywords: [
       'upscale image online',
@@ -4545,82 +4661,113 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a photo. Face Blur / Pixelate is already selected and locked. Choose the style, optionally detect faces and select which to hide, then convert.',
     },
     intro:
-      'Posting a photo of a crowd, a classroom or a street scene often means protecting people who never agreed to be shown. This page finds faces with an AI detector and hides them with a blur, a pixel mosaic or a solid black box. You can hide every face in one click, or run detection first and tick only the faces that should be covered.',
+      'Publishing a crowd, classroom or street photo usually means hiding people who never agreed to appear in it. This page finds faces with the YuNet detector running in OpenCV on our own server and covers each one with a Gaussian blur, a pixel mosaic or a solid black rectangle. You can cover every detected face in one step, or run detection first, see the boxes drawn on your photo, and choose only the faces to hide or only the faces to keep. The detector, its confidence threshold and the exact size of each effect are described below so you know what the output will and will not protect.',
     whatItDoes: [
-      'Detects faces in the uploaded photo with an AI model.',
-      'Hides them with a Gaussian blur, a pixelation mosaic, or a solid black box.',
-      'Lets you hide all faces or select individual faces from the detected set.',
-      'Returns a new image; your original upload is not modified.',
+      'Detects faces with OpenCV FaceDetectorYN and the YuNet 2023 model at a confidence threshold of 0.85, then grows each box by 18 percent on every side so hair and jawline are covered too.',
+      'Hides each chosen face with a Gaussian blur whose kernel is a third of the box size, a mosaic of 14 blocks across the box, or a black fill.',
+      'Offers three selection modes: all detected faces, only the faces you ticked, or all except the faces you ticked.',
+      'Stores detection results in a 30 minute session bound to the SHA-256 of your file, so the boxes applied are exactly the boxes you saw.',
+      'Writes a new JPG, PNG or WebP with the same pixel dimensions; the original upload is not altered.',
     ],
     flowSteps: [
-      { title: 'Upload a photo', description: 'Choose a picture that contains the faces you want to protect.' },
-      { title: 'Pick a style', description: 'Blur, pixelate or black box. Face Blur is already selected for you.' },
-      { title: 'Detect and select (optional)', description: 'Run detection and tap the faces to cover, or leave it on all faces.' },
-      { title: 'Download the result', description: 'Save the anonymized image and check every face before posting.' },
+      { title: 'Upload the photo', description: 'JPG, PNG or WebP. Face Blur / Pixelate is preselected and locked on this page.' },
+      { title: 'Choose blur, pixelate or black box', description: 'Blur is preset; a black box removes the pixels entirely.' },
+      { title: 'Optionally detect and select', description: 'Press Detect faces to see numbered boxes, then tick the ones to hide or to keep.' },
+      { title: 'Run the job', description: 'The server applies the effect inside each chosen box and saves a new image.' },
+      { title: 'Check and download', description: 'Zoom to full size and look for missed faces before you post it.' },
     ],
     advancedDetails: [
-      'A solid black box is the most irreversible choice. Light blur on a large, sharp face can sometimes be partly reversed by software, so use a stronger blur or a box for sensitive cases.',
-      'Detectors can miss faces that are tiny, turned away, heavily occluded or in low light. Zoom in and check the output yourself.',
-      'Selected-face mode uses a detection session tied to the exact file you uploaded; choosing a different file means detecting again.',
-      'Other identifying details such as name tags, license plates or screens are not faces. Use the redact text tool or the object remover for those.',
+      'Detection runs face_privacy.py with OpenCV FaceDetectorYN on face_detection_yunet_2023mar.onnx at the full image resolution, score threshold 0.85, NMS threshold 0.3 and up to 5000 candidates. Boxes are padded by 0.18 of their width and height on each side and clamped to the image.',
+      'Blur applies cv2.GaussianBlur with an odd kernel of max(3, longest box side / 3) pixels, so a 300 px face gets a 101 px kernel; the bigger the face, the stronger the blur. Pixelate shrinks the box to 14 blocks across with linear filtering and scales it back with nearest-neighbour, giving visible square tiles. Black box writes (0, 0, 0) into the region.',
+      'When you detect first, the server computes the SHA-256 of the upload, stores the normalised boxes in a session that expires after 30 minutes, and refuses to apply a session whose hash does not match the file you later submit, so boxes cannot be transplanted onto a different picture.',
+      'With no detection session the script redetects at run time and covers every face it finds; the result is identical to running Detect faces and leaving the mode on all.',
+      'The output is written by OpenCV, and the converter exiftool copy-back step does not run on AI outputs, so the result carries none of the original EXIF, GPS or camera tags. It is still not a substitute for the EXIF tool, which lets you see and choose what is removed.',
+      'A light blur on a large, sharp face can be partially reversed with deconvolution tools; the black box is the only choice that destroys the information, and a coarse mosaic is in between.',
     ],
     whyItMatters: [
-      'Sharing photos of other people, especially children, carries real privacy and sometimes legal consequences.',
-      'Editing faces by hand in an image editor is slow when a photo has many people in it.',
-      'Detecting first and selecting lets you keep a friend or family member visible while anonymizing bystanders.',
+      'Photos of other people, and especially of children, carry consent and sometimes legal obligations that a caption cannot fix.',
+      'Hand-editing a photo with 20 faces is slow and inconsistent; detection finds the small ones in the back row.',
+      'Detect-then-select lets you keep your own group visible while anonymising passers-by.',
     ],
     useCases: [
       { title: 'Event and crowd photos', description: 'Hide bystanders before publishing pictures from a public event.' },
       { title: 'School and club posts', description: 'Cover specific children whose families have not given consent.' },
       { title: 'Journalism and reporting', description: 'Protect sources or participants in a documentary still.' },
-      { title: 'Screenshots and evidence', description: 'Anonymize people in an image you need to share with a third party.' },
+      { title: 'Screenshots of video calls', description: 'Anonymise colleagues in a meeting capture before sharing it outside the team.' },
     ],
     whyMediaManipulator: [
-      'Face detection and blurring run on our own GPU, not an outside AI provider.',
-      'You choose which faces to hide instead of an all-or-nothing filter.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The detector, its threshold, the padding and the kernel arithmetic are stated, so you can judge how much protection each style gives.',
+      'Detection boxes are tied to the file hash and expire after 30 minutes, so you select on the exact image that gets processed.',
+      `Face blurring spends one standard operation (5 a day without an account by default, 30 with a free account), not an AI operation, and the Detect faces preview is not counted at all. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Face detection and blurring run as a local OpenCV process on our own hardware; no outside AI service receives your photo, and nothing is used for training. The Detect faces preview saves a temporary copy, hashes it, detects, and deletes the copy before responding; only the box coordinates are kept, for 30 minutes. The uploaded photo lives in uploads/<jobId>/ and the result in outputs/<jobId>/, both in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. As a standard image upload, the photo also passes through our automated content analysis on the same server, where a local vision model writes a short description that stays with the job and is not shared with third parties.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
       {
-        question: 'Does it find every face?',
+        question: 'Which faces will the detector miss?',
         answer:
-          'No detector is perfect. Very small, side-on, covered or poorly lit faces can be missed. Check the result at full size before you share it.',
+          'YuNet is run at a 0.85 confidence threshold, so it skips low-confidence candidates: very small faces, profiles turned away from the camera, faces covered by masks or hands, and faces in deep shadow. Check the result at full size before sharing.',
       },
       {
-        question: 'Can I blur only some of the faces?',
+        question: 'How do I blur only some of the faces?',
         answer:
-          'Yes. Run face detection first, then select the faces to cover. If you skip that step, every detected face is hidden.',
+          'Press Detect faces, tick the numbered boxes, and set the selection mode to only selected faces or all except selected faces. The boxes are stored for 30 minutes against the file hash, so re-detect if you swap the picture.',
       },
       {
-        question: 'Is blur, pixelate or a black box safest?',
+        question: 'How strong is the blur, and can it be undone?',
         answer:
-          'A solid black box is the safest because it removes the pixels completely. A light blur or coarse pixelation on a big, sharp face can occasionally be partly reconstructed, so go heavier for sensitive photos.',
+          'The Gaussian kernel is one third of the box size, so a 300 px face gets a 101 px kernel. Strong blur is hard to reverse but a determined attacker with a sharp large face has a chance; the black box removes the pixels and cannot be undone.',
+      },
+      {
+        question: 'Does the output keep my photo EXIF and GPS data?',
+        answer:
+          'No. The result is written fresh by OpenCV and the metadata copy-back step is skipped for AI outputs, so camera and location tags are not carried over. Use the EXIF tool if you want to inspect or selectively strip tags.',
       },
       {
         question: 'Is my photo sent to an outside AI company?',
         answer:
-          'No. Detection and blurring run on a GPU server we operate. Files are not shared with third-party AI providers.',
+          'No. Detection and the effect run in a local OpenCV process on our own server, and the file is not shared with third-party AI providers.',
       },
       {
-        question: 'What about license plates or name tags?',
+        question: 'Does face blurring use an AI operation from my daily allowance?',
         answer:
-          'Those are not faces. Use the redact text tool for readable text, or the object remover to erase something from the picture.',
+          'No. It goes through the standard upload, which spends one regular operation: 5 a day as a guest by default, 30 with a free account. The Detect faces preview is rate limited but not counted. A failed job is refunded.',
+      },
+      {
+        question: 'What about licence plates, name tags or text on screens?',
+        answer:
+          'Those are not faces and are not detected here. Use the redact text tool for anything readable, or the object remover to erase a plate or a sign from the picture.',
       },
     ],
     related: [
-      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Hide names, numbers and other personal text.' },
-      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase something else that identifies a place or person.' },
+      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Hide emails, phone numbers and other readable text.' },
+      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase a person, plate or sign entirely.' },
       { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip GPS and camera data from the same photo.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the anonymised photo before posting.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Scale the result to the size a platform wants.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 4000 x 3000 group photo with 14 faces, all blurred',
+        body:
+          'Input: a 3.5 MB JPEG of 4000 x 3000 pixels from a phone, with 14 people. Settings: blur, selection mode all, no prior detection. The script runs YuNet over the full 12 megapixel frame; a face whose box is 300 x 360 pixels is padded by 18 percent to about 408 x 490 and blurred with a 163 px Gaussian kernel (490 / 3, rounded to odd), which turns it into a featureless patch. A 60 px face in the back row gets a 27 px kernel, enough to remove features at that size. The output is a 4000 x 3000 JPG written by OpenCV, usually within a few hundred kilobytes of the original size. Detection and blurring take a few seconds; the upload of 3.5 MB usually takes longer.',
+      },
+      {
+        title: 'A 1920 x 1080 video-call screenshot, two of six faces pixelated',
+        body:
+          'Input: a 1.1 MB PNG screenshot of 1920 x 1080 showing six participants. Settings: Detect faces first, selection mode only selected, two faces ticked, pixelate. Detection returns six boxes and stores them in a 30 minute session tied to the file hash. On submit the server verifies the hash, passes the two selected box ids to the script, and each selected box, about 140 x 180 pixels after padding, is reduced to 14 blocks across so every tile is roughly 10 x 13 pixels, then written back as hard squares. The other four faces are untouched. The output is a 1920 x 1080 PNG, and the job runs in a few seconds because no redetection is needed.',
+      },
+    ],
+    whenNotToUse:
+      'Do not rely on this tool for anything where a single missed face is unacceptable, such as a legally mandated redaction; YuNet at a 0.85 threshold skips faces that are tiny, turned away, masked or in deep shadow, and you must check the output yourself. Do not use a light blur on a large face if the person must stay unidentifiable; use the black box. Name tags, licence plates and screens are not faces, so the text redaction tool or the object remover is the right choice for those. And if your goal is to remove a person from the scene entirely rather than hide their face, the object remover does that.',
     primaryKeyword: 'blur faces in photo',
     secondaryKeywords: [
       'face blur online',
@@ -4653,82 +4800,113 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a screenshot or photo. Redact Text / PII is already selected and locked. Choose whether to cover personal data or all text, and the redaction style, then convert.',
     },
     intro:
-      'Screenshots tend to leak things their owners forgot were visible: an email address in a corner, an account number in a table, a name in a chat. This page reads the text in an image with OCR and covers it for you. You can limit it to personal data such as emails, phone numbers and IDs, or cover every piece of text, using a blur or an opaque black box.',
+      'Screenshots leak the things their owners stopped seeing: an email address in a header, an account number in a table, a phone number in a chat bubble. This page reads every piece of text in an image with EasyOCR on our own server and covers the matches with a black rectangle, a blur or a pixel mosaic. In its default mode it only covers text that matches personal-data patterns: email addresses, phone numbers, social-security-style numbers, long card-like digit runs and street addresses. In all-text mode it covers every word it can read, which is the safer choice when you cannot predict what is on the page.',
     whatItDoes: [
-      'Runs text recognition (OCR) over the image to locate words and lines.',
-      'Offers a personal-data mode (names, emails, numbers and similar patterns) and an all-text mode.',
-      'Covers matches with a solid black box or a blur.',
-      'Produces a new image and leaves your upload untouched.',
+      'Runs EasyOCR over the whole image to find text boxes and the text inside them, using the GPU of our server.',
+      'In PII mode covers boxes whose text matches one of five patterns: email, phone number, 3-2-4 digit identifier, 13 to 19 digit card-like run, or a street address ending in Street, Avenue, Road, Drive, Lane, Boulevard, Way, Court, Circle or Place.',
+      'In all-text mode covers every recognised text box regardless of content.',
+      'Pads each box by 8 percent of its larger side (at least 3 pixels) and fills it with black, blurs it with a kernel of a third of its size, or pixelates it into 12 blocks.',
+      'Writes a new JPG, PNG or WebP at the same dimensions and reports how many redactions were made.',
     ],
     flowSteps: [
-      { title: 'Upload the image', description: 'A screenshot, scanned form or photo with readable text.' },
-      { title: 'Choose what to hide', description: 'Redact Text is preselected; pick personal data only or all text.' },
-      { title: 'Pick black box or blur', description: 'A black box is the safer, irreversible option.' },
-      { title: 'Review and download', description: 'Read the result carefully, then save it.' },
+      { title: 'Upload the image', description: 'A screenshot, scanned form or photo with readable text, as JPG, PNG or WebP.' },
+      { title: 'Choose PII only or all text', description: 'Redact Text / PII is preselected and locked on this page; PII only is the default detect mode.' },
+      { title: 'Pick black box, blur or pixelate', description: 'Black box is the default and the only irreversible one.' },
+      { title: 'OCR and redaction run', description: 'EasyOCR reads the image, each matching box is padded and covered, and the result is saved.' },
+      { title: 'Read it carefully and download', description: 'Check for text the OCR did not read, especially small, rotated or handwritten text.' },
     ],
     advancedDetails: [
-      'OCR reads clean, horizontal text best. Handwriting, stylized fonts, tiny print and skewed photos can be missed, so scan the output by eye.',
-      'Personal-data detection is pattern based and cannot know context; a name that does not look like one may stay visible.',
-      'Choose the black box for anything you will publish. Blurred text can sometimes be sharpened back by software.',
-      'Redaction here changes pixels only. It does not touch hidden file metadata; use the EXIF tool for that, or flatten the image first.',
+      'The server runs redact_text_pii.py with --detect pii or all-text, --redaction blackbox, blur or pixelate and --gpu. The script builds an EasyOCR Reader for English (the only language passed today) and calls readtext on the file, which returns a box, the text and a confidence for every line.',
+      'The PII patterns are regular expressions: an email (local part, @, domain with a dot and a 2+ letter TLD); a North American phone number of 10 digits with optional +1, brackets, dots, spaces or dashes; three, two and four digits separated by a dash or space; 13 to 19 digits optionally separated by spaces or dashes (card numbers); and a house number followed by a name and a street-type word. There is no pattern for personal names, dates of birth or non-US identifiers.',
+      'Each matching box is enlarged by max(3, 0.08 x the larger of its width and height) pixels on every side and clamped to the image. Black box uses cv2.rectangle with a filled black interior; pixelate shrinks the region to 12 blocks across and scales back with nearest-neighbour; blur uses a Gaussian kernel of max(11, longest side / 3), made odd.',
+      'OCR reads clean horizontal print best. Handwriting, decorative fonts, very small text, strong skew and low contrast lower the confidence and can be missed entirely. All-text mode does not fix a line the OCR never saw.',
+      'The output is written by OpenCV and the converter exiftool copy-back is skipped for AI outputs, so the original EXIF, GPS and camera tags are not carried over to the result; the pixels, not the metadata, are what this tool is for.',
+      'The script prints redactions=N when it finishes; a result of zero means the OCR found no matching text, not that the image was clean.',
     ],
     whyItMatters: [
-      'Support tickets, bug reports and social posts frequently include screenshots with real customer or account data.',
-      'Covering text by hand with a drawing tool misses lines and leaves inconsistent results.',
-      'Automated detection catches the pieces you stopped noticing after the third read.',
+      'Support tickets, bug reports and social posts routinely carry screenshots with real customer or account data.',
+      'Covering text by hand with a drawing tool misses lines and leaves uneven results; a pattern search finds the third email you stopped noticing.',
+      'An opaque rectangle is the only redaction that survives sharpening, contrast stretching and zoom.',
     ],
     useCases: [
-      { title: 'Bug reports and support', description: 'Share a screenshot without exposing emails, tokens or account numbers.' },
-      { title: 'Documents and forms', description: 'Hide ID numbers and addresses on a scanned page before sending it on.' },
-      { title: 'Social posts', description: 'Remove usernames and phone numbers from a chat screenshot.' },
-      { title: 'Training material', description: 'Turn a real screen capture into a safe example for a tutorial.' },
+      { title: 'Bug reports and support', description: 'Share a screenshot without exposing emails, phone numbers or card digits.' },
+      { title: 'Scanned forms', description: 'Hide identifiers and addresses on a page before forwarding it.' },
+      { title: 'Chat screenshots', description: 'Remove phone numbers and emails from a conversation before posting it.' },
+      { title: 'Training material', description: 'Turn a real screen capture into a safe example with all text covered.' },
     ],
     whyMediaManipulator: [
-      'Text detection and redaction run on our own server, so sensitive screenshots do not go to an outside AI provider.',
-      'Switch between personal-data-only and all-text without re-uploading.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The five PII patterns, the padding and the kernel sizes are written out, so you know exactly which text will be caught and how it will be covered.',
+      'OCR and redaction run in a local process on our own GPU; screenshots full of customer data never leave our hardware.',
+      `Text redaction spends one standard operation of your allowance (5 a day without an account by default, 30 with a free account), not an AI operation, and a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Text recognition and redaction run as a local EasyOCR and OpenCV process on our own GPU server; no outside OCR or AI service receives the image, and the recognised text is used only to decide which boxes to cover and is not stored. The upload lives in uploads/<jobId>/ and the redacted image in outputs/<jobId>/, both registered in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. Like every standard image upload, the file also passes through our automated content analysis on the same server, where a local vision model writes a short description that is kept with the job and not shared with third parties.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
       {
-        question: 'Does it catch all personal information?',
+        question: 'Which personal data does PII mode detect?',
         answer:
-          'No. It finds text with OCR and flags patterns such as emails and numbers. Handwriting, unusual fonts, tiny text and anything that is not text (like a face) can be missed, so review the output before sharing.',
+          'Text matching five patterns: email addresses, North American phone numbers, 3-2-4 digit identifiers, 13 to 19 digit card-like runs, and street addresses ending in a word such as Street, Avenue or Road. Names, dates and non-US identifiers are not matched; use all text for those.',
       },
       {
-        question: 'What is the difference between personal data and all text?',
+        question: 'When should I use all text instead of PII only?',
         answer:
-          'Personal-data mode only covers text that looks like private details. All-text mode covers every word it can read, which is safer when you cannot predict what is on the page.',
+          'Whenever you cannot list in advance what is sensitive: forms, tables, chat logs with names. All text covers every line the OCR reads, so the only remaining risk is text the OCR could not read.',
       },
       {
-        question: 'Should I use blur or a black box?',
+        question: 'Does the tool read languages other than English?',
         answer:
-          'Use the black box for anything you will publish. Blurred text can sometimes be reconstructed by sharpening, while a solid box removes the pixels entirely.',
+          'Not today. The OCR reader is started for English only, so Latin-script text is read reasonably but other scripts can be missed or misread. Review the output when the page is not in English.',
       },
       {
-        question: 'Does this remove hidden metadata too?',
+        question: 'Is a black box safer than blur or pixelate here?',
         answer:
-          'No, it only edits visible pixels. Strip location and camera data with the EXIF metadata tool.',
+          'Yes. The box is filled with solid black, so nothing remains. Blur uses a kernel of a third of the box size with an 11 px minimum, and pixelate leaves 12 blocks across; both can leave short text guessable. Choose the black box for anything you will publish.',
       },
       {
-        question: 'Does the text get uploaded anywhere else?',
+        question: 'Does redaction remove the hidden metadata in my photo?',
         answer:
-          'Recognition runs on a server we operate and the file is not shared with third-party AI providers.',
+          'The result is written fresh by OpenCV without copying the original tags, so EXIF and GPS data are not carried over. For a deliberate, inspectable strip of a file you are not otherwise editing, use the EXIF metadata tool.',
+      },
+      {
+        question: 'Why did some text stay visible?',
+        answer:
+          'Either the OCR did not read it (handwriting, tiny print, skew, low contrast) or, in PII mode, it did not match a pattern. The server reports how many boxes it covered; zero means nothing matched, not that nothing was there.',
+      },
+      {
+        question: 'Is redacting text free, and what counts against my allowance?',
+        answer:
+          'Yes. It is a standard operation, 5 a day without an account by default and 30 with a free account, on images up to 200 MB and 1 GB respectively. It does not use the smaller AI-operation allowance. The pricing page has the live numbers.',
       },
     ],
     related: [
-      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Also hide the people in the same picture.' },
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Hide the people in the same picture.' },
       { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip hidden location and device data.' },
-      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'Turn a scan into searchable text and PDF.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+      { label: 'AI document scan', to: '/tools/ai-document-scan', description: 'Turn a photographed page into a clean, searchable PDF.' },
+      { label: 'Remove object from photo', to: '/tools/remove-object-from-photo', description: 'Erase a logo, plate or badge that is not text.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the redacted screenshot before attaching it.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 1440 x 900 support-ticket screenshot in PII mode',
+        body:
+          'Input: a 400 KB PNG of 1440 x 900 showing a customer record with two email addresses, one phone number written as (555) 123-4567 and a customer name. Settings: PII only, black box. EasyOCR returns about 40 text lines; three of them match the email and phone patterns, the name matches nothing. Each of the three boxes, say 260 x 22 pixels for an email, is padded by 8 percent of 260, about 21 pixels, on every side and filled black, producing a 302 x 64 rectangle. The name stays visible, because there is no name pattern; switch to all text if it must go too. The output is a 1440 x 900 PNG, and the job takes a few seconds, most of it loading the OCR model and reading the page.',
+      },
+      {
+        title: 'A 3024 x 4032 phone photo of a filled form in all-text mode with blur',
+        body:
+          'Input: a 2.1 MB JPEG photo of a printed form, 3024 x 4032 pixels, slightly skewed. Settings: all text, blur. Every line EasyOCR reads is covered: a typed field value of 600 x 40 pixels is padded by 48 pixels a side and blurred with a 201 px kernel (600 / 3, made odd), which removes the lettering completely at that scale; a 120 x 30 label gets the 11 px minimum kernel, which at that size still leaves letter shapes guessable, so pick black box for anything sensitive. Handwritten entries that the OCR cannot read stay as they were and must be checked by eye. The output is a 3024 x 4032 JPG; OCR over a 12 megapixel photo is the slowest step and takes longer than on a screenshot.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use this tool as your only safeguard on a document that must be fully redacted; OCR is best effort, it reads English print only today, and the PII patterns know nothing about names, dates of birth or identifiers from outside North America. Do not use blur on text you will publish, since text blur is the easiest redaction to reverse; use the black box. Faces, logos and photographs are not text and are not touched; the face blur tool and the object remover handle those. And if the sensitive data is in the file metadata rather than the pixels, the EXIF tool is the right place.',
     primaryKeyword: 'redact text in image',
     secondaryKeywords: [
       'censor text in screenshot',
@@ -4761,82 +4939,110 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a photo. Remove Object is already selected and locked. Draw one or more rectangles over what you want gone, then convert.',
     },
     intro:
-      'A stray cable, a photobomber, a trash can at the edge of a landscape: small distractions can spoil a good shot. Upload the photo, drag a rectangle over the thing you want gone, and the LaMa inpainting model repaints that region using the surrounding scene. It works best on simple, repetitive backgrounds like sky, grass, walls and water.',
+      'Upload a photo, drag one or more rectangles over the things you want gone, and convert. The form sends each rectangle as fractions of the image (left, top, width and height between 0 and 1), and our API turns them into a mask: a grayscale PNG the same size as your photo, white inside the rectangles and black everywhere else. A Python script then opens the image and the mask and runs the LaMa inpainting model from the simple_lama_inpainting package on our GPU, which repaints the white regions using the surrounding scene. You get the photo back at full size in the format you chose, with the marked areas filled.',
     whatItDoes: [
-      'Lets you mark one or more rectangular areas on your photo.',
-      'Fills each marked area with generated content that continues the surrounding background.',
-      'Uses the LaMa inpainting model on a GPU server we operate.',
-      'Returns a new image and leaves your original untouched.',
+      'Accepts one or more rectangles drawn on the preview and removes whatever is inside them.',
+      'Builds a pixel-exact mask on the server from the normalized rectangle coordinates, so the mask does not depend on your screen size.',
+      'Runs LaMa inpainting on a GPU we operate and fills the masked areas with content that continues the background.',
+      'Returns the full-resolution image in JPG, PNG, WebP or GIF as selected in the form.',
+      'Counts as one ordinary daily operation, like a plain conversion.',
     ],
     flowSteps: [
-      { title: 'Upload a photo', description: 'Choose the picture with the unwanted object.' },
-      { title: 'Draw rectangles', description: 'Drag a box over the object. Add more boxes for more objects.' },
-      { title: 'AI fills the gap', description: 'The model paints new pixels that blend with what surrounds the box.' },
-      { title: 'Download and inspect', description: 'Zoom in on the repaired area to check the seams.' },
+      { title: 'Upload the photo', description: 'JPG, PNG or WebP. The preview appears with a drawing overlay.' },
+      { title: 'Draw rectangles', description: 'One box per object, slightly larger than the object itself. At least one box is required.' },
+      { title: 'Mask and inpaint', description: 'The server writes a same-size mask PNG, then runs remove_object_lama.py with the image and mask.' },
+      { title: 'Download and inspect', description: 'Zoom into the filled regions to check the seams before you use the image.' },
     ],
     advancedDetails: [
-      'Draw the box a little larger than the object so the model also covers shadows and edge fringes.',
-      'Large boxes over detailed regions (faces, text, intricate patterns) produce visible artifacts because the model has to invent a lot.',
-      'Multiple small passes often look better than one huge rectangle. Remove one object, download, and repeat if needed.',
-      'Rectangles are a coarse selection tool. For irregular shapes, include a little of the background inside the box; the model usually blends it.',
+      'The handler is RemoveObject in ai_tools.go. It reads the image dimensions with ImageMagick identify, rasterizes the rectangles into a grayscale PNG mask in the server temp directory (white inside, black outside, coordinates rounded to whole pixels and clamped to the image), runs the script, and deletes the mask afterward.',
+      'remove_object_lama.py opens the image with Pillow and converts it to RGB, loads the mask as grayscale, resizes the mask to the image if sizes differ, calls SimpleLama(image, mask), and saves the result to the output path. Because of the RGB conversion, a transparent PNG input loses its alpha channel.',
+      'Each rectangle is validated server-side: width and height must be positive and the box must lie inside 0 to 1 on both axes, otherwise the job is rejected before it starts and the operation is refunded.',
+      'The AI path skips the ImageMagick stage, so filters, tint, text overlay, quality and resize settings do not apply, and the exiftool metadata copy does not run; the result carries no EXIF from the original. Pillow saves the file with its own default encoder settings for the chosen format.',
+      'LaMa fills from context, so the quality of the fill depends on what surrounds the box. Sky, grass, sand, water, walls and floors give convincing results; a box that cuts across a face, text or a regular pattern forces the model to invent structure it cannot know.',
     ],
     whyItMatters: [
-      'Retouching with a clone stamp takes skill and patience, especially across textured backgrounds.',
-      'Removing a distraction can rescue an otherwise perfect shot without a reshoot.',
-      'It is also useful for hiding things that should not be visible, like a house number or a screen.',
+      'A clone-stamp retouch across textured background takes practice and time; a rectangle takes two seconds.',
+      'One stray person, cable or sign can be the only thing between a usable shot and a reshoot.',
+      'It doubles as a privacy tool for house numbers, plates and screens that should not be in a shared photo.',
     ],
     useCases: [
-      { title: 'Travel photos', description: 'Remove a stranger, sign or wire from a landscape.' },
-      { title: 'Product pictures', description: 'Erase a dust speck, tag or stand from the shot.' },
-      { title: 'Real estate and listings', description: 'Clear clutter or a car from the edge of the frame.' },
-      { title: 'Privacy', description: 'Remove a visible address, plate or screen from a personal photo.' },
+      { title: 'Travel and landscape', description: 'Remove a tourist, a wire or a bin from an otherwise clean view.' },
+      { title: 'Product photos', description: 'Erase a price tag, a stand or a dust speck from a listing image.' },
+      { title: 'Real estate', description: 'Clear a car, a trash can or clutter from the edge of a frame.' },
+      { title: 'Privacy', description: 'Paint out a street number, a licence plate or a visible monitor.' },
     ],
     whyMediaManipulator: [
-      'Inpainting runs on our own GPU, so your photo is not sent to an outside AI provider.',
-      'The box-drawing overlay is built in; no separate editor to learn.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The mask is built on the server from exact fractions, so what you draw on a phone preview maps to the same pixels as on a desktop.',
+      'The model is named (LaMa through simple_lama_inpainting) and the format and alpha behaviour are documented rather than left to guesswork.',
+      `Runs on our own GPU; the standard tool needs no account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: `Your photo is stored under uploads/<jobId>/ on our server; the rectangle mask is written as a temporary PNG in the server temp directory and deleted as soon as the inpainting script finishes; the filled image goes to outputs/<jobId>/. The rectangle coordinates are kept in the job options so the job can be reported on. LaMa runs on a GPU in the same machine and no part of the image goes to an outside provider. Every image upload, including this one, is also summarized once by an automated analysis step on our server using a local vision model, and that summary stays with the job. The output carries no EXIF because AI operations skip the metadata copy. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Quota and size limits for AI operations depend on your plan and are shown live in the form.',
+        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
       {
-        question: 'How does the object removal work?',
+        question: 'Is object removal free?',
         answer:
-          'You mark an area with a rectangle. An inpainting model then generates new pixels for that area so it matches the nearby texture, colors and lines.',
+          'Yes, within the daily allowance. The job uses the standard upload route and spends an ordinary operation, not the separate AI allowance: 5 per day for guests and 30 with a free account by default, with 200 MB and 1 GB per-file caps; 300 and 700 on Premium and Pro. The numbers in force are on /pricing.',
       },
       {
-        question: 'What kinds of objects can it remove well?',
+        question: 'How precise does the rectangle need to be?',
         answer:
-          'Small to medium objects on simple or repeating backgrounds such as sky, grass, sand, water, walls and floors. Complex scenes and large objects are harder.',
+          'Not very. The mask is the rectangle you drew, rounded to whole pixels, so include a little background around the object and its shadow. The model blends the extra margin.',
       },
       {
-        question: 'Why does the repaired area look smudged?',
+        question: 'Can I remove several objects at once?',
         answer:
-          'The model has to invent detail. Try a tighter box, remove the object in several smaller steps, or choose a photo where the background behind the object is simpler.',
+          'Yes. Every rectangle you draw is painted into the same mask and all of them are filled in one pass. At least one rectangle is required or the job is rejected.',
       },
       {
-        question: 'Do I have to draw a precise outline?',
+        question: 'Why does the filled area look blurry or repeated?',
         answer:
-          'No. Rectangles are enough, and drawing them slightly larger than the object usually gives a cleaner result.',
+          'LaMa fills from the pixels around the box. A box over fine detail or a regular pattern leaves it guessing. Try a tighter box, remove one object at a time, or pick a shot where the background behind the object is simpler.',
       },
       {
-        question: 'Is the removed content stored?',
+        question: 'What format does the result come in?',
         answer:
-          'Only the output you download. The original and result are handled like any other upload and expire according to the retention rules.',
+          'Whatever you chose in the form: JPG, PNG, WebP or GIF. The input is converted to RGB before inpainting, so transparency is not preserved. PNG avoids JPEG artifacts in the filled regions.',
+      },
+      {
+        question: 'Does the result keep my EXIF data?',
+        answer:
+          'No. The AI path skips the exiftool copy the normal converter does, and Pillow writes a fresh file, so no camera, date or GPS tags carry over.',
+      },
+      {
+        question: 'Is the mask or my photo sent anywhere else?',
+        answer:
+          'No. The mask is a temporary file on our server that is deleted after the run, and the inpainting model runs on our own GPU.',
       },
     ],
     related: [
-      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Anonymize people instead of erasing objects.' },
-      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Cut the subject out entirely.' },
-      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up noise and compression afterward.' },
-      { label: 'Image converter', to: '/tools/image-converter', description: 'Every image option in one upload.' },
+      { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Cut the subject out entirely instead of patching one area.' },
+      { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'Hide people without inventing background.' },
+      { label: 'Redact text in image', to: '/tools/redact-text-in-image', description: 'Black out text that OCR can find, rather than inpainting it.' },
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Clean up noise and compression around the repair.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the finished photo for sharing.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'One rectangle on a 4000 x 3000 beach photo',
+        body:
+          'Input: a 5.2 MB, 4000 x 3000 JPEG with a person at the water line. Draw a box starting 60% across and 40% down, 10% wide and 15% tall, and keep JPG as the output. The API multiplies those fractions by the image size and writes a 4000 x 3000 mask with a white 400 x 450 pixel block at (2400, 1200). LaMa runs once over the image and mask on the GPU and the script saves a 4000 x 3000 JPG with the 180,000 masked pixels filled from the surrounding sand and water. The model pass on a 12-megapixel image takes seconds on the GPU; writing and downloading a multi-megabyte JPG is a comparable share of the total.',
+      },
+      {
+        title: 'Two rectangles on a 1920 x 1080 PNG product shot',
+        body:
+          'Input: a 2.3 MB, 1920 x 1080 PNG of a lamp on a table with a cable and a price sticker. Draw two boxes: one over the cable (about 5% by 30%) and one over the sticker (about 8% by 6%). Both are rasterized into the same 1920 x 1080 mask, so a single inpainting pass handles both regions. Choose PNG as the output to avoid JPEG artifacts in the filled areas; the result is a 1920 x 1080 PNG, opaque RGB because Pillow converts the input to RGB before inpainting. At 2 megapixels the GPU pass is quick, and most of the wall-clock time is the upload and the PNG write.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use inpainting on an object that covers a large share of the frame, sits in front of a face, overlaps readable text, or interrupts a regular pattern such as brick, tiles or a keyboard: the model has to fabricate structure and the result will look smeared or repetitive. It is also the wrong tool when you want to keep a transparent PNG intact, since the script flattens the input to RGB, and when the edit must be forensically honest, because the filled region is generated content. For whole-background replacement use the background remover; for faces that merely need hiding, the face blur tool is more appropriate.',
     primaryKeyword: 'remove object from photo',
     secondaryKeywords: [
       'erase object from image',
@@ -4869,42 +5075,46 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a recording. Clean Voice is already applied, so there is no operation menu to set. Choose an output format if you need something other than the default, then convert.',
     },
     intro:
-      'A phone voice memo in an echoey kitchen, a podcast guest on a laptop microphone, a lecture recorded from the back of the room: the words are there, but they are buried under hiss and room sound. Clean Voice processes the recording with an AI speech-enhancement step to bring the speaker forward and quiet what is not speech. It is built for talking, not for music.',
+      'A phone voice memo in an echoey kitchen, a podcast guest on a laptop microphone, a lecture recorded from the back of the room: the words are there, but they sit under hiss and room sound. Clean Voice runs the recording through DeepFilterNet on our GPU, then through a fixed broadcast-style polish chain that trims rumble, caps the top end, brings the level to a consistent loudness and stops peaks from clipping. It is built for talking, not for music.',
     whatItDoes: [
-      'Applies an AI speech-enhancement pass that lifts voice and suppresses steady background sound.',
-      'Reduces hiss, hum, fans, room tone and light reverb in spoken recordings.',
-      'Accepts common audio formats and returns the cleaned audio in the format you select.',
-      'Skips standard bitrate and EQ controls, since the AI pass handles the cleanup.',
+      'Converts your upload to 48 kHz mono with ffmpeg, which is the input DeepFilterNet expects, and hands that WAV to the model on our GPU.',
+      'Suppresses steady background sound (hiss, fans, hum, room tone) while keeping the speech, using the DeepFilterNet enhancement network.',
+      'Applies a polish chain after denoising: an 80 Hz high-pass, a 14 kHz low-pass, loudness normalisation to -16 LUFS with a -1.5 dBTP true-peak ceiling, and a limiter at 0.95.',
+      'Encodes the result in the format you choose: MP3, AAC or OGG at 192 kbps, Opus at 128 kbps, FLAC, or 16-bit WAV.',
+      'Skips the standard bitrate, EQ, effect and trim controls, since the AI path replaces the normal ffmpeg filter pipeline.',
     ],
     flowSteps: [
-      { title: 'Upload a recording', description: 'Voice memos, interview audio, podcast takes or lecture captures.' },
-      { title: 'Clean Voice is preset', description: 'No menu: the page is already set to the voice cleanup operation.' },
-      { title: 'AI enhances the speech', description: 'The model separates the voice from distracting sound and rebalances it.' },
-      { title: 'Download the cleaned audio', description: 'Listen with headphones before using it.' },
+      { title: 'Upload a recording', description: 'Voice memos, interview audio, podcast takes or lecture captures in MP3, WAV, FLAC, M4A, AAC, OGG or Opus.' },
+      { title: 'Clean Voice is preset', description: 'The operation is fixed on this page; the only choice left is the output format.' },
+      { title: 'Normalise, denoise, polish', description: 'ffmpeg makes a 48 kHz mono WAV, DeepFilterNet denoises it, and the polish filters set the tone and loudness.' },
+      { title: 'Download and listen', description: 'Compare with the original on headphones before you publish it.' },
     ],
     advancedDetails: [
-      'Heavy cleanup can make a voice sound slightly processed or watery. If it does, compare against the original and avoid running the result through a second cleanup.',
-      'Competing voices, music or sudden loud noises are harder to separate than steady background sound.',
-      'For music beds under speech, try the vocal isolation tools instead; this operation is tuned for talking.',
-      'Longer files and daily AI usage depend on your plan; the form shows the limits that apply when you upload.',
+      'The polish chain is exactly highpass=f=80,lowpass=f=14000,loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.95, applied once to the denoised WAV. The high-pass removes handling rumble and plosive thumps, the low-pass tames hiss above 14 kHz, and loudnorm brings the integrated loudness to -16 LUFS, the usual target for spoken-word podcasts.',
+      'Output is always mono at 48 kHz because the model runs on a single channel. A stereo interview stays intelligible but loses its left-right placement; if you need stereo, this is the wrong tool.',
+      'Encoder settings come from the output extension: libmp3lame at 192 kbps for MP3, aac at 192 kbps for AAC or M4A, libvorbis at 192 kbps for OGG, libopus at 128 kbps for Opus, flac for FLAC and pcm_s16le for WAV. There is no bitrate selector on the AI path.',
+      'Trim ranges and the usual effects are ignored when an AI operation is selected; the converter routes the file straight to the model and returns. Trim the recording first if you only want part of it cleaned.',
+      'A second pass through Clean Voice re-normalises audio that is already at -16 LUFS and can add a watery quality to consonants. Run it once.',
+      'The model struggles with competing voices, music beds and sudden loud events; those are not "steady background" and are largely left in place.',
     ],
     whyItMatters: [
-      'Listeners abandon audio that is tiring to hear, even when the content is good.',
-      'Clean speech also makes transcription and captions noticeably more accurate.',
-      'A one-step cleanup is faster than learning to tune a noise gate and equalizer by ear.',
+      'Listeners stop a recording that is tiring to hear even when what is being said is worth hearing.',
+      'A consistent -16 LUFS level means an episode plays at the same volume as the ones around it without a manual gain pass.',
+      'Speech that has been lifted out of the noise also transcribes more accurately, so cleaning first improves captions too.',
     ],
     useCases: [
-      { title: 'Podcasts and interviews', description: 'Tidy up a remote guest recorded on a basic microphone.' },
-      { title: 'Voice memos and notes', description: 'Make a phone recording understandable later.' },
-      { title: 'Lectures and meetings', description: 'Improve a recording captured from the back of a room.' },
-      { title: 'Video voice-overs', description: 'Polish narration before adding it to a video project.' },
+      { title: 'Podcasts and interviews', description: 'Tidy a remote guest recorded on a basic microphone and bring them to the same loudness as the host.' },
+      { title: 'Voice memos and dictation', description: 'Make a phone recording understandable later, and loud enough to hear without headphones.' },
+      { title: 'Lectures and meetings', description: 'Lower the air-conditioning hum and projector fan in a recording taken from the back of a room.' },
+      { title: 'Narration for a video', description: 'Polish voice-over before placing it in the Darkroom editor.' },
     ],
     whyMediaManipulator: [
-      'The enhancement runs on our own GPU, so your recording is not sent to an outside AI provider.',
-      'Operation is locked to voice cleanup, so you get the right result with no menu hunting.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'DeepFilterNet and the polish chain run on a GPU we operate; the recording is not sent to an outside speech-enhancement service.',
+      'The page opens with Clean Voice already selected and the operation menu hidden, so the only decision is the output format.',
+      'One cleaning job is one ordinary operation on your daily allowance (5 as a guest, 30 with a free account by default), and a failed job refunds it.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your recording is saved in its job folder, converted by ffmpeg to a temporary 48 kHz mono WAV in a scratch directory, and passed to DeepFilterNet on our own GPU; that scratch directory is deleted as soon as the cleaned file has been encoded. The cleaned output stays with the job for download. Audio uploads also go through an automated analysis pass on our server, which transcribes the recording with Whisper for an internal content review and keeps that result with the job. No third-party AI provider receives the file. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
@@ -4914,32 +5124,56 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'Will it remove all background noise?',
+        question: 'Why does the cleaned file come out mono?',
         answer:
-          'It greatly reduces steady sounds such as hiss, hum and room tone. Sudden noises, other voices and music are harder, so results vary with the recording.',
+          'The pipeline converts every input to one channel at 48 kHz before DeepFilterNet runs, and encodes the model output as it is. A stereo recording therefore returns as mono. For a two-microphone interview, split the channels first and clean each one separately if you need to keep the separation.',
       },
       {
-        question: 'Can it make a bad microphone sound professional?',
+        question: 'What loudness does Clean Voice normalise to?',
         answer:
-          'It can make speech clearer, but it cannot add quality that was never recorded. Distortion or heavy clipping cannot be fully fixed.',
+          'The polish chain uses ffmpeg loudnorm with an integrated target of -16 LUFS, a true-peak ceiling of -1.5 dBTP and a loudness range of 11 LU, followed by a limiter at 0.95. That matches common spoken-word delivery targets, so an episode cleaned here will sit at a similar level to professionally mastered podcasts.',
       },
       {
-        question: 'How is this different from removing background noise?',
+        question: 'Can I set the bitrate or trim the file on this page?',
         answer:
-          'Clean Voice focuses on improving the speech itself, while the background noise tool concentrates on lowering the noise around it. If one does not suit your recording, try the other.',
+          'No. When an AI operation is active the converter routes straight to the model and ignores the bitrate, EQ, effects and trim settings. The output rate is fixed by the format: 192 kbps for MP3, AAC and OGG, 128 kbps for Opus. Trim the recording on another tool first if you only want part of it.',
       },
       {
-        question: 'Does it work on music?',
+        question: 'How is this different from Remove Background Noise?',
         answer:
-          'It is tuned for speech and can damage music. To work with singing, use the vocal isolation or vocal removal tools.',
+          'Both run the same DeepFilterNet model. Clean Voice adds the high-pass, low-pass, loudness normalisation and limiter afterwards; Remove Background Noise stops at the denoised signal and leaves your levels and tone alone. Pick Clean Voice for a finished spoken-word file and the other page when you plan to mix or master it yourself.',
+      },
+      {
+        question: 'Can it fix a recording that is clipped or distorted?',
+        answer:
+          'No. Clipping is missing waveform, not added noise, and the model has nothing to subtract. It can still lower the hiss around a distorted take, but the crunch on loud syllables will remain.',
+      },
+      {
+        question: 'How many recordings can I clean per day, and is it free?',
+        answer:
+          'Clean Voice is submitted through the standard upload endpoint, so it spends one ordinary operation: 5 per day as a guest, 30 with a free account, 300 on Premium and 700 on Pro by default, with file caps of 200 MB, 1 GB and 5 GB and length caps of 5 minutes, 20 minutes and 2 hours. The current table is on /pricing.',
       },
     ],
     related: [
-      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Focus on lowering the noise around the speaker.' },
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
-      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Turn clean speech into text.' },
-      { label: 'Convert WAV to MP3', to: '/tools/convert-wav-to-mp3', description: 'Shrink the cleaned file for sharing.' },
+      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'The same denoiser without the loudness and tone polish.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Turn the cleaned speech into captions or text.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Pull the voice track out of a video before cleaning it.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Place the polished narration on a video timeline.' },
+      { label: 'Remove vocals from a song', to: '/tools/remove-vocals-from-song', description: 'For music rather than speech, separate the singer instead.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 12-minute phone memo (M4A, 128 kbps, about 11 MB) to MP3',
+        body: 'An AAC file at 128 kbps is 16 KB per second, so 720 seconds is about 11.5 MB. Twelve minutes is over the 5-minute guest limit, so this needs a free account (20 minutes). ffmpeg first writes a 48 kHz mono WAV of about 69 MB (96,000 bytes per second) in a temporary folder that is removed when the job ends. DeepFilterNet and the polish chain run on that, and the MP3 encoder writes the result at 192 kbps: about 17 MB, which is larger than the input because 192 kbps is a higher rate than the memo was recorded at. The two ffmpeg steps take seconds; the DeepFilterNet pass dominates and grows with the length of the recording.',
+      },
+      {
+        title: 'A 4-minute stereo WAV interview (44.1 kHz, 16-bit, about 42 MB) to WAV',
+        body: 'Stereo 16-bit 44.1 kHz PCM is 176,400 bytes per second, so 240 seconds is about 42 MB, within the guest limits of 200 MB and 5 minutes. The file is folded to mono and resampled to 48 kHz before the model runs, and the cleaned WAV comes back as 16-bit mono 48 kHz: 96,000 bytes per second, about 23 MB. It is smaller than the input only because it has one channel instead of two. Choosing FLAC instead keeps the same samples losslessly in less space; choosing MP3 gives about 5.8 MB at 192 kbps.',
+      },
+    ],
+    whenNotToUse:
+      'Skip this tool for music, singing or anything where the background is part of the sound you want to keep: the model treats everything that is not speech as noise, and the polish chain cuts below 80 Hz and above 14 kHz, which hollows out instruments. It is also the wrong choice when you need to keep stereo, when the recording is clipped or distorted (that damage is not noise and cannot be filtered out), or when you only want the noise lowered without any change to level or tone, which is what the Remove Background Noise page does instead.',
     primaryKeyword: 'clean up voice recording',
     secondaryKeywords: [
       'improve voice quality online',
@@ -4971,42 +5205,45 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a recording. Remove Background Noise is already selected for you. You can still change the output format, then convert.',
     },
     intro:
-      'Air conditioners, computer fans, street traffic and electrical hum are all steady sounds that sit underneath what you actually meant to record. This page applies an AI denoising model to lower that bed of noise and leave the main audio easier to hear. It suits interviews, voice-overs, field recordings and the audio track pulled from a video.',
+      'Air conditioners, computer fans, street traffic and electrical hum are steady sounds that sit underneath what you actually meant to record. This page runs the file through DeepFilterNet, a deep-learning denoiser, on our GPU and returns the denoised signal with nothing else changed: no loudness normalisation, no equalisation, no limiter. That makes it the right choice when you intend to mix or master the result yourself, or when you want the character of the original left alone.',
     whatItDoes: [
-      'Applies an AI denoiser that estimates the background and subtracts it.',
-      'Reduces constant noise such as hiss, hum, fans and street ambience.',
-      'Keeps the standard format selector so you can choose WAV, MP3 or another output.',
-      'Runs on a GPU server we operate rather than an outside AI service.',
+      'Resamples the upload to 48 kHz mono with ffmpeg and passes that WAV to the DeepFilterNet binary on our GPU.',
+      'Estimates the stationary noise floor and subtracts it, lowering hiss, hum, fans, air handling and constant traffic.',
+      'Returns the raw model output encoded in the format you pick, with the same peak level and tonal balance the model produced; there is no post-processing stage on this page.',
+      'Keeps the operation menu visible, so you can switch to Clean Voice or the vocal tools from the same form.',
     ],
     flowSteps: [
-      { title: 'Upload audio', description: 'Any common audio file, including audio extracted from video.' },
-      { title: 'Denoise is preselected', description: 'The AI operation is already set to Remove Background Noise.' },
-      { title: 'AI lowers the noise', description: 'The model separates steady noise from the foreground sound.' },
-      { title: 'Download and compare', description: 'Listen to the result next to the original before you use it.' },
+      { title: 'Upload audio', description: 'Any common audio file, including a track extracted from a video.' },
+      { title: 'Denoise is preselected', description: 'Remove Background Noise is already chosen; change the output format if you want something other than MP3.' },
+      { title: 'DeepFilterNet runs on our GPU', description: 'The model separates steady noise from the foreground and writes an enhanced WAV.' },
+      { title: 'Encode and download', description: 'ffmpeg writes the enhanced WAV in your chosen format; listen beside the original.' },
     ],
     advancedDetails: [
-      'Steady noise is far easier to remove than random clatter, conversation or music in the background.',
-      'Very aggressive denoising can leave a watery or hollow quality on voices. Always compare against the original.',
-      'Output as WAV if you plan more editing, then export to MP3 at the end so you only compress once.',
-      'AI operations bypass the standard bitrate and EQ controls on the form.',
+      'The only difference between this page and Clean Voice in the API is a single flag: polish=false. The ffmpeg encode step receives no -af filter, so the enhanced WAV is encoded as DeepFilterNet wrote it.',
+      'Input normalisation is ffmpeg -ac 1 -ar 48000: the model runs on one 48 kHz channel, so the output is mono at 48 kHz regardless of the input layout or sample rate.',
+      'Encoders follow the extension: MP3 via libmp3lame at 192 kbps, AAC at 192 kbps, OGG via libvorbis at 192 kbps, Opus via libopus at 128 kbps, FLAC lossless, WAV as pcm_s16le. Pick WAV or FLAC if you are going to edit further so you only pay for a lossy encode once.',
+      'Because no loudness normalisation runs, a quiet recording stays quiet. Denoising removes energy, so the result can be a little lower in level than the input; raise the gain in your editor afterwards if needed.',
+      'DeepFilterNet is trained on stationary and slowly varying noise. Keyboard clicks, door slams, a second speaker or a music bed are mostly preserved, since they look like signal to the model.',
+      'The scratch directory holding the normalised and enhanced WAVs is deleted when the job finishes; only the encoded output stays with the job.',
     ],
     whyItMatters: [
-      'Constant noise fatigues listeners and hides quieter words.',
-      'Many recordings cannot be redone: a wedding, a lecture, a family video.',
-      'Lower noise also helps automatic captions and transcripts catch more words correctly.',
+      'Constant noise masks quiet consonants and tires listeners long before they notice why.',
+      'Many recordings cannot be redone: a wedding speech, a lecture, an interview with someone who is no longer available.',
+      'A denoised track that has not been normalised or limited gives you a clean starting point for your own mix instead of a finished-sounding file you then have to undo.',
     ],
     useCases: [
-      { title: 'Video soundtracks', description: 'Extract the audio from a clip and quiet the fan or wind noise.' },
-      { title: 'Field recordings', description: 'Reduce ambient hum in a recording captured outdoors or on the road.' },
-      { title: 'Calls and meetings', description: 'Tidy up an exported call recording.' },
-      { title: 'Old digitized tapes', description: 'Lower tape hiss in a converted cassette recording.' },
+      { title: 'Audio pulled from a video', description: 'Extract the track, remove the camera fan or wind, then lay it back under the picture in Darkroom.' },
+      { title: 'Field recordings', description: 'Lower the drone of a road or a generator under an outdoor interview.' },
+      { title: 'Call and meeting exports', description: 'Reduce the line hiss in a recorded call before sharing or transcribing it.' },
+      { title: 'Digitised cassettes', description: 'Take the tape hiss down on a converted recording without changing its levels.' },
     ],
     whyMediaManipulator: [
-      'The denoiser runs on our own GPU, so your audio is not sent to an outside AI provider.',
-      'Choose your output format in the same step.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The denoiser runs on a GPU we operate; your audio is not uploaded to a third-party noise-removal service.',
+      'Nothing is added after the model: no loudness change, no EQ, so what you hear is the denoising and only the denoising.',
+      'A denoise job is one ordinary operation from your daily allowance and is refunded if the job fails.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `The file you upload is written to its job folder, resampled by ffmpeg to a temporary mono 48 kHz WAV in a scratch directory, and denoised by DeepFilterNet on our own GPU; the scratch directory is removed once the output has been encoded. The encoded result is kept with the job for download. Like every audio upload, it is also run through an automated analysis step on our server, which transcribes it with Whisper for an internal review that stays with the job. Nothing goes to an outside AI provider. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
@@ -5016,32 +5253,61 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'What kinds of noise does it handle best?',
+        question: 'Which noises does DeepFilterNet handle well, and which does it not?',
         answer:
-          'Steady sounds: hiss, hum, fans, air conditioning, room tone and constant traffic. Sudden bangs, overlapping conversation and music are much harder to remove.',
+          'Steady, slowly changing sound: hiss, mains hum, fans, air conditioning, room tone, a constant road. Short events and anything speech-like (a second person, a television, clicks, bangs) look like foreground to the model and are mostly kept.',
       },
       {
-        question: 'Will my voice sound different afterward?',
+        question: 'Will the level or tone of my recording change?',
         answer:
-          'Possibly a little. Strong denoising can make voices sound thinner or slightly processed, which is why you should compare with the original.',
+          'Only as a side effect of removing noise energy; no normalisation, EQ or limiting is applied on this page. If you want a consistent -16 LUFS spoken-word level and a high-pass and low-pass pass as well, use Clean Voice, which runs the same model with that polish chain added.',
       },
       {
-        question: 'Can I use it on a video?',
+        question: 'Why is the denoised file mono?',
         answer:
-          'Extract the audio from the video first, denoise it here, then put it back with the stitch-audio tool.',
+          'The model takes a single 48 kHz channel, so ffmpeg folds any stereo input to mono first and the output is written that way. A stereo recording with different noise in each channel should be split and denoised one channel at a time if you need to keep it stereo.',
       },
       {
-        question: 'Which output format should I choose?',
+        question: 'Can I denoise the audio of a video directly?',
         answer:
-          'WAV keeps full quality for more editing. MP3 is smaller for sharing. If you will edit again, choose WAV now and compress at the end.',
+          'Upload the audio track rather than the video: extract it with the Extract Audio tool, denoise it here, then combine the cleaned track and the video in Darkroom.',
+      },
+      {
+        question: 'Which output format is best for further editing?',
+        answer:
+          'WAV (16-bit mono 48 kHz, 96 KB per second) or FLAC, which holds the same samples in less space. MP3, AAC and OGG are written at 192 kbps and Opus at 128 kbps; pick those only for the final share so the lossy encode happens once.',
+      },
+      {
+        question: 'Does denoising count against the AI-operation limit?',
+        answer:
+          'No. Audio AI operations are sent through the standard upload route and spend one ordinary operation: 5 a day for a guest, 30 with a free account, 300 on Premium and 700 on Pro by default. Length is capped at 5 minutes for guests and 20 minutes for free accounts; the current limits are on /pricing.',
+      },
+      {
+        question: 'What if the recording is already fairly clean?',
+        answer:
+          'The model still runs and will remove whatever residual floor it finds, but the audible difference will be small and you may prefer the untouched original. Compare the two before replacing anything.',
       },
     ],
     related: [
-      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Improve the speech itself, not just the noise.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'The same denoiser plus loudness and tone polish for speech.' },
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Pull the audio track out of a video first.' },
-      { label: 'Stitch audio to video', to: '/tools/stitch-audio-to-video', description: 'Put the cleaned audio back onto your video.' },
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Lay the denoised track back under the video.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Transcribe the cleaner audio for captions.' },
+      { label: 'Remove vocals from a song', to: '/tools/remove-vocals-from-song', description: 'Separate singing from music with a different model.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'An 18-minute MP3 call recording at 128 kbps (about 17 MB) to FLAC',
+        body: 'At 128 kbps an MP3 is 16 KB per second, so 1,080 seconds is about 17 MB. Eighteen minutes is inside the free-account cap of 20 minutes but over the 5-minute guest cap, so sign in first. ffmpeg writes a 48 kHz mono WAV of about 104 MB (96,000 bytes per second) for the model, and that WAV is discarded after encoding. Choosing FLAC returns the enhanced mono 48 kHz samples losslessly; the FLAC is smaller than the 104 MB WAV by an amount that depends on how much silence and hiss was removed, and the denoising itself usually makes FLAC compress better. Choosing MP3 instead would give about 26 MB at 192 kbps.',
+      },
+      {
+        title: 'A 4-minute 30-second stereo FLAC field recording (about 30 MB) to WAV',
+        body: 'Four and a half minutes and 30 MB are inside the guest limits of 5 minutes and 200 MB, so no account is needed. The stereo file is folded to mono and resampled to 48 kHz, DeepFilterNet lowers the traffic bed, and the WAV output is 16-bit mono 48 kHz: 96,000 bytes per second for 270 seconds, about 26 MB. The level is whatever the model left, with no normalisation applied, so bring it up in your editor if the original was quiet. The two ffmpeg conversions are a few seconds each; the GPU pass scales with duration.',
+      },
+    ],
+    whenNotToUse:
+      'This is not the tool for recordings where the noise is intermittent or is itself a voice: overlapping speakers, a television in the next room, chair scrapes and keyboard clatter are left largely intact because the model is built for steady noise. Do not use it on finished music, where the "noise" it removes may be reverb and room ambience you paid for. If you need the output stereo, it is the wrong choice because the pipeline is mono. And if you want a ready-to-publish spoken-word file at a standard loudness, Clean Voice adds that polish; this page deliberately does not.',
     primaryKeyword: 'remove background noise from audio',
     secondaryKeywords: [
       'audio denoiser online',
@@ -5073,42 +5339,46 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a song. Remove Vocals is already selected, and the instrumental comes back in the same format as your file (MP3 stays MP3); pick FLAC or WAV under Output format for lossless. Press convert.',
     },
     intro:
-      'Karaoke nights, singing practice and cover recordings all need the same thing: the band without the singer. An AI source-separation model splits a finished mix into vocals and accompaniment, and this page hands you the accompaniment. The instrumental comes back in the same format as your file, so an MP3 stays a compact MP3; choose FLAC or WAV when you want a lossless file for editing.',
+      'Karaoke nights, singing practice and cover recordings all need the band without the singer. This page runs the song through Demucs (the htdemucs model) on our GPU in two-stem mode, which splits the mix into "vocals" and "everything else", and returns the everything-else stem. The instrumental comes back in the same format as your file by default, so a 320 kbps MP3 stays a 320 kbps MP3 instead of swelling into a WAV; FLAC and WAV are there when you want a lossless file for editing.',
     whatItDoes: [
-      'Separates the vocal part from the rest of the mix using AI.',
-      'Returns the instrumental (everything but the lead vocal) as a single track.',
-      'Returns the same format as your file by default (MP3 at 320 kbps for MP3s, FLAC for lossless files), with FLAC, WAV and MP3 to choose from.',
-      'Runs on our own GPU, not a third-party service.',
+      'Runs Demucs htdemucs with --two-stems=vocals, so the model estimates only two parts: the lead vocal and the accompaniment.',
+      'Keeps the no_vocals stem and discards the vocal stem; the result is one stereo file with the singing removed.',
+      'Resolves "Same as input" to a concrete format on upload: MP3 stays MP3, AAC/M4A stays AAC/M4A, OGG and Opus stay as they are, and WAV, FLAC, AIFF or ALAC inputs come back as FLAC.',
+      'Writes MP3 and AAC stems at 320 kbps rather than the 192 kbps the other audio tools use, so the encode does not add audible loss on top of the separation.',
+      'Shows an estimated output size for each format choice before you start, based on the length of your file.',
     ],
     flowSteps: [
-      { title: 'Upload a song', description: 'Use a track you own or are licensed to use.' },
-      { title: 'Remove Vocals is preset', description: 'No menu to configure; the page is set to remove the singing.' },
-      { title: 'AI splits the mix', description: 'The model estimates the vocal and the accompaniment separately.' },
-      { title: 'Download the instrumental', description: 'Save it in the format you picked; the size estimate is shown before you start.' },
+      { title: 'Upload a song', description: 'A track you own or are licensed to use, in MP3, WAV, FLAC, M4A, AAC, OGG or Opus.' },
+      { title: 'Remove Vocals is preset', description: 'The operation is fixed; "Output format" defaults to Same as input, with MP3, FLAC and WAV as alternatives.' },
+      { title: 'Demucs separates the mix', description: 'The model works through the song in 7-second segments on our GPU and writes vocals.wav and no_vocals.wav.' },
+      { title: 'Encode and download', description: 'The no_vocals stem is encoded in the resolved format and offered for download.' },
     ],
     advancedDetails: [
-      'Separation is never perfect. Faint vocal ghosts, reverb tails and backing harmonies may remain in the instrumental.',
-      'Mono-recorded or very old songs separate less cleanly than modern stereo productions.',
-      'WAV is very large: an hour-long track is over 600 MB. Keep "Same as input" or pick MP3 if you only need to play it on a phone.',
-      'To get the vocal alone instead, use the isolate vocals page.',
+      'The exact invocation is demucs -n htdemucs --two-stems=vocals --segment 7; the segment length bounds GPU memory and lets long tracks run on a single card. Demucs writes 44.1 kHz stereo stems whatever the input rate or channel count, so a mono or 48 kHz source comes back as 44.1 kHz stereo.',
+      'Stem encoding is libmp3lame -b:a 320k for MP3 and aac -b:a 320k for AAC or M4A; OGG stays at 192 kbps, Opus at 128 kbps, FLAC and WAV are lossless. Every other AI audio operation uses 192 kbps, the 320 kbps rate is specific to stems.',
+      'The "Same as input" rule is: lossy input returns the same container, lossless input returns FLAC, and a video file or anything the server cannot place returns MP3 at 320 kbps. An .m4a is probed with ffprobe before deciding, because it may hold lossless ALAC rather than AAC.',
+      'The rule exists because of a real job: an 87-minute, 68 MB MP3 once came back as an 880 MB WAV. PCM adds no fidelity a lossy source never had, so the default now never upsizes lossy audio to WAV; choosing WAV explicitly is still honoured.',
+      'Separation is never perfect. Reverb tails on the vocal, backing harmonies and anything the model hears as "voice-like" (some synth leads, whistles) can leak into the instrumental, and dense mixes separate worse than modern, well-spaced productions.',
+      'The form warns when a WAV choice would be over 500 MB, since WAV at 44.1 kHz stereo 16-bit is 176,400 bytes per second, about 10.6 MB per minute.',
     ],
     whyItMatters: [
-      'Official karaoke versions do not exist for most songs, especially niche or older ones.',
-      'Musicians use backing tracks to rehearse their own part against the original arrangement.',
-      'Making an instrumental from a song you own is quicker than hunting for a stem pack.',
+      'Official instrumental versions do not exist for most songs, and licensed backing tracks are often re-recorded rather than the original arrangement.',
+      'Singers rehearse against the real arrangement more usefully than against a MIDI approximation.',
+      'Returning the stem in the input format keeps a phone-sized file phone-sized; a 10 MB MP3 should not become a 50 MB download by accident.',
     ],
     useCases: [
-      { title: 'Karaoke at home', description: 'Make a singalong track from a song you already have.' },
-      { title: 'Vocal practice', description: 'Rehearse over the original arrangement without the lead voice.' },
-      { title: 'Covers and remixes', description: 'Use the instrumental as a starting bed for your own recording.' },
-      { title: 'Video background music', description: 'Pull a vocal-free bed from music you are licensed to use.' },
+      { title: 'Karaoke at home', description: 'Make a singalong version of a song you already own.' },
+      { title: 'Vocal practice', description: 'Rehearse your part over the original band without the lead singer in your ear.' },
+      { title: 'Covers and remixes', description: 'Use the instrumental as the bed for your own vocal take.' },
+      { title: 'Background music for video', description: 'Pull a vocal-free bed from music you are licensed to use for a Darkroom project.' },
     ],
     whyMediaManipulator: [
-      'Separation runs on our own GPU, so your music is not sent to an outside AI provider.',
-      'The output matches your file by default, so an MP3 never balloons into a huge WAV; FLAC and WAV are one click away.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'Separation runs on a GPU we operate with the Demucs htdemucs model; your music is not sent to an outside stem service.',
+      'The output follows your file by default, with the encoded MP3 or AAC stem at 320 kbps, and FLAC or WAV one click away.',
+      'The size estimate for each format is shown before you start, so an oversized WAV is a choice, not a surprise.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your song is stored in its job folder and passed to Demucs on our own GPU, which writes the vocal and accompaniment stems into a scratch directory; only the accompaniment is encoded into your download, and the scratch directory (including the discarded vocal stem) is deleted when the job ends. The encoded instrumental is kept with the job. Audio uploads also pass through an automated analysis step on our server that transcribes the file with Whisper for an internal review kept with the job. No third-party AI provider is involved. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'flac', 'wav', 'm4a', 'ogg', 'opus'],
@@ -5118,32 +5388,61 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'Will all the vocals be gone?',
+        question: 'Will every trace of the singer be gone?',
         answer:
-          'Most of the lead vocal, but not always everything. Reverb tails, backing harmonies and bleed can remain, and results vary by song.',
+          'Most of the lead vocal, but rarely all of it. Reverb tails, doubled and harmony vocals, and sounds the model hears as voice-like can remain at a low level. Modern stereo productions separate best; mono or heavily bled live recordings worst.',
       },
       {
-        question: 'What format is the instrumental?',
+        question: 'What format and sample rate does the instrumental come in?',
         answer:
-          'The same format as your file by default: an MP3 comes back as an MP3 at 320 kbps, and a lossless file (WAV, FLAC, AIFF) comes back as FLAC. Under Output format you can pick FLAC or WAV (lossless) or MP3 instead; each option shows its estimated size.',
+          'Demucs writes 44.1 kHz stereo stems, so that is the rate of every output. The container follows your file by default: MP3 in, MP3 out at 320 kbps; AAC or M4A in, the same out at 320 kbps; WAV, FLAC, AIFF or ALAC in, FLAC out. You can pick MP3, FLAC or WAV explicitly instead.',
       },
       {
-        question: 'Can I use this on any song?',
+        question: 'Why is the default no longer WAV?',
         answer:
-          'Only on music you own, have a license for, or can use under fair use where you live. You are responsible for how you use the result.',
+          'Because an 87-minute MP3 of 68 MB used to come back as an 880 MB WAV, and PCM cannot restore detail a lossy source never had. The stem now stays in the input format, with lossy stems written at 320 kbps so the extra encode is not audible. WAV is still available if you ask for it.',
       },
       {
-        question: 'How do I get just the vocals instead?',
+        question: 'Can I get the vocals alone instead of the backing?',
         answer:
-          'Use the isolate vocals page, which returns the vocal stem rather than the instrumental.',
+          'Yes, choose Isolate Vocals in the operation menu of the audio converter; it keeps the vocals.wav stem from the same two-stem Demucs run and discards the accompaniment.',
+      },
+      {
+        question: 'Can I upload a music video instead of an audio file?',
+        answer:
+          'Upload the audio: extract the track from the video first. If a video file does reach this operation, the server resolves Same as input to MP3 at 320 kbps, since the video container is not an audio format.',
+      },
+      {
+        question: 'How many songs a day can I separate for free?',
+        answer:
+          'Vocal removal goes through the standard upload endpoint, so each song spends one ordinary operation: 5 per day without an account, 30 with a free account, 300 on Premium and 700 on Pro by default. Songs are capped at 5 minutes for guests and 20 minutes for free accounts, with 2 hours on paid plans; /pricing has the current table.',
+      },
+      {
+        question: 'Is it legal to make a karaoke track this way?',
+        answer:
+          'Only from music you own, are licensed to use, or may use under an exception where you live. The tool does not check rights; you are responsible for the result and how you distribute it.',
       },
     ],
     related: [
-      { label: 'Isolate vocals from a song', to: '/tools/isolate-vocals-from-song', description: 'Get the vocal stem instead of the instrumental.' },
-      { label: 'Convert WAV to MP3', to: '/tools/convert-wav-to-mp3', description: 'Shrink the instrumental for your phone.' },
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
-      { label: 'Audio waveform generator', to: '/tools/audio-waveform-generator', description: 'Turn the finished track into a waveform video.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Get the audio out of a music video before separating it.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'For speech recordings, use the speech-enhancement model instead.' },
+      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Lower steady noise in a recording without separating it.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Use the instrumental as the music bed in a video edit.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Get the lyrics as text from the original mix.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 4-minute 320 kbps MP3 (about 9.6 MB) with Same as input',
+        body: 'At 320 kbps an MP3 is 40 KB per second, so 240 seconds is about 9.6 MB, well inside the guest limits of 5 minutes and 200 MB. The format resolves to MP3 because the input is MP3. Demucs runs over the song in 7-second windows on our GPU and writes a 44.1 kHz stereo no_vocals.wav of about 42 MB in a scratch folder, which ffmpeg then encodes with libmp3lame at 320 kbps: the instrumental is again about 9.6 MB. The scratch WAV is deleted. The separation pass dominates the run time and grows with the length of the track.',
+      },
+      {
+        title: 'A 4-minute 50-second CD-quality WAV (about 51 MB), default FLAC or explicit WAV',
+        body: 'A 44.1 kHz stereo 16-bit WAV is 176,400 bytes per second, so 290 seconds is about 51 MB, still within the 5-minute guest cap. Because the input is lossless, Same as input resolves to FLAC: the form estimates the FLAC at roughly 55 percent of the PCM size, about 28 MB, and the actual figure depends on the music. Picking WAV instead returns the stem as 16-bit PCM at about 51 MB, the same size as the input; picking MP3 gives about 11.6 MB at 320 kbps. All three come from the same no_vocals stem, only the encoder differs.',
+      },
+    ],
+    whenNotToUse:
+      'Do not run this on music you do not own or hold a licence for; you are responsible for how the result is used. It is also the wrong tool when you want the singer rather than the band (that is the isolate-vocals operation in the same form), when you need a four-way split into drums, bass and other instruments (this page only produces vocals and accompaniment), or when the recording is speech rather than singing, which the Clean Voice and background-noise pages handle better. Very old mono recordings and live bootlegs with the vocal bleeding into every microphone separate poorly, so expect audible ghosts there.',
     primaryKeyword: 'remove vocals from song',
     secondaryKeywords: [
       'karaoke maker online',
@@ -5210,7 +5509,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Free, no signup, no watermarks.',
       'AI tools run on our own GPU server.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is converted, and resized or cropped if you asked, by ImageMagick on our server.'),
     faq: [
       { question: 'What is the best image format?', answer: 'It depends — WebP/AVIF for the web, PNG for transparency, JPG for compatibility.' },
       { question: 'Can I batch-convert?', answer: 'The free tool converts one image at a time. Run multiple conversions sequentially.' },
@@ -5218,14 +5517,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does it work on HEIC?', answer: 'Yes — iPhone HEIC photos convert cleanly to JPG, PNG, or WebP.' },
     ],
     related: [
-      { label: 'JPG converter', to: '/tools/jpg-converter', description: 'Convert any image to a universal JPG.' },
-      { label: 'PNG converter', to: '/tools/png-converter', description: 'Convert any image to a lossless PNG.' },
       { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize to exact pixel dimensions.' },
       { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink image file size for the web.' },
       { label: 'Image to PDF', to: '/tools/image-to-pdf', description: 'Wrap an image into a PDF document.' },
       { label: 'PDF converter', to: '/tools/pdf-converter', description: 'Convert PDFs to images and back.' },
       { label: 'Convert HEIC to JPG', to: '/tools/convert-heic-to-jpg', description: 'Convert iPhone HEIC photos to JPG.' },
-      { label: 'SVG converter', to: '/tools/svg-converter', description: 'Rasterize SVG to PNG or vectorize PNG to SVG.' },
       { label: 'Remove background from image', to: '/tools/remove-background-from-image', description: 'Auto-erase a background into a transparent PNG.' },
       { label: 'Convert WebP to JPG', to: '/tools/convert-webp-to-jpg', description: 'Focused WebP → JPG converter.' },
       { label: 'Image converter tutorial', to: '/tutorials/image/getting-started', description: 'Full walkthrough of every option.' },
@@ -5296,7 +5592,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'AI transcription available on the same file.',
       'Free, no signup, no watermarks.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is re-encoded by FFmpeg on our server into the container and codec you choose.'),
     faq: [
       { question: 'What output format is best?', answer: 'MP4 with H.264 for compatibility, WebM with VP9 for the smallest web files.' },
       { question: 'Can I trim before converting?', answer: 'Yes — the trim section of the form lets you cut the clip down before re-encoding.' },
@@ -5304,13 +5600,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is there a file-size limit?', answer: 'Very large files may be rejected on the free tier. Try lowering the resolution first.' },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert almost any video into a universal MP4.' },
       { label: 'Convert MOV to MP4', to: '/tools/convert-mov-to-mp4', description: 'Make QuickTime/iPhone footage play everywhere.' },
       { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'Turn web video into an editable MP4.' },
       { label: 'Convert MP4 to WebM', to: '/tools/convert-mp4-to-webm', description: 'Shrink MP4 into VP9 WebM for the web.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Focused compressor for shrinking video files.' },
       { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Turn short clips into animated GIFs.' },
-      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'Extract the audio track from an MP4 as MP3.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Save the soundtrack as MP3, WAV or M4A.' },
       { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Cut a clip to the part you want, losslessly.' },
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution to 1080p, 720p, or custom.' },
       { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix sideways or upside-down footage.' },
@@ -5338,7 +5633,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'MP4 Converter',
     h1: 'Free MP4 Converter Online',
     tagline:
-      'Convert almost any video — MOV, WebM, AVI, MKV, FLV, or WMV — into a universally compatible MP4 (H.264 + AAC).',
+      "Convert a video to MP4: the video converter with MP4 preselected.",
     metaTitle: 'Free MP4 Converter Online | Media Manipulator',
     metaDescription:
       `Free online MP4 converter. Convert MOV, WebM, AVI, MKV, FLV, and WMV to MP4 (H.264 + AAC) that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -5355,7 +5650,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any video and convert it to MP4. MP4 is preselected and uses H.264 + AAC by default, but you can switch the output to WebM, MOV, MKV, and more.',
     },
     intro:
-      'MP4 is the format that plays everywhere — phones, browsers, TVs, editors, and social platforms all accept it. If you have a clip in MOV, WebM, AVI, MKV, FLV, or WMV that will not open or upload, converting it to MP4 (H.264 video + AAC audio) is almost always the fix. Media Manipulator re-encodes your video to a clean, broadly compatible MP4 with no watermark.',
+      "This page opens the Media Manipulator video converter with MP4 already selected as the output. It is otherwise the same tool: you can switch the output to WebM, MOV, MKV, AVI or GIF, choose a quality preset, and resize the video in the same upload. MP4 output is encoded with H.264 video and AAC audio, in the yuv420p pixel format that Safari, QuickTime and social platforms expect, with the index moved to the front of the file so playback starts while it downloads. Converting is a re-encode, so the result can be larger or smaller than the source depending on the preset; it will not improve a low-quality original. For a MOV from an iPhone, or a WebM, MKV or AVI that will not open somewhere, MP4 is almost always the fix. The video converter page is the canonical version of this tool, covering every output format and the upload limits for guests and free accounts. Upload a video below to convert it to MP4.",
     whatItDoes: [
       'Converts MOV, WebM, AVI, MKV, FLV, WMV, and more into MP4.',
       'Encodes MP4 with H.264 + AAC, the safe-everywhere default, plus -pix_fmt yuv420p and a faststart flag for instant playback.',
@@ -5412,6 +5707,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 after converting.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container, codec, and audio.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 converter',
     secondaryKeywords: [
       'mp4 converter online',
@@ -5450,7 +5746,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Converts QuickTime / iPhone .mov files to MP4.',
       'Locks the output to MP4 (H.264 + AAC) so the result plays everywhere.',
       'Adds -pix_fmt yuv420p and +faststart so the MP4 plays in browsers and starts instantly.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'Trim the MOV, resize it or pick a quality preset in the same upload.',
     ],
     flowSteps: [
       { title: 'Upload your MOV', description: 'Drop in a .mov file from your iPhone, Mac, or camera.' },
@@ -5477,9 +5773,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Output locked to a known-good MP4 profile — no guessing at settings.',
       'Server-side FFmpeg handles ProRes-in-MOV and HEVC-in-MOV sources too.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your MOV is re-encoded by FFmpeg on our server into an H.264 and AAC MP4.'),
     supportedFormats: {
       supportedInputFormats: ['mov', 'qt'],
       supportedOutputFormats: ['mp4'],
@@ -5493,10 +5788,9 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is there a watermark or signup?', answer: `No watermark and no account required. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for email or the web.' },
       { label: 'Convert video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Trim a clip and export an animated GIF.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container, codec, and audio.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and quality options.' },
     ],
     primaryKeyword: 'mov to mp4',
@@ -5537,7 +5831,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Converts .webm (VP8/VP9 + Vorbis/Opus) video to MP4.',
       'Locks the output to MP4 (H.264 + AAC) for maximum compatibility.',
       'Adds yuv420p and +faststart so the MP4 plays in every browser and starts instantly.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'A WebM screen capture can be trimmed or resized on its way to MP4.',
     ],
     flowSteps: [
       { title: 'Upload your WebM', description: 'Drop in a .webm file downloaded from the web or a screen recorder.' },
@@ -5564,9 +5858,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg decodes VP8 and VP9 reliably.',
       'Output locked to a known-good MP4 profile.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your WebM is re-encoded by FFmpeg on our server from VP8 or VP9 into an H.264 MP4.'),
     supportedFormats: {
       supportedInputFormats: ['webm'],
       supportedOutputFormats: ['mp4'],
@@ -5577,13 +5870,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Why can my editor not open WebM?', answer: 'Most editors do not include VP8/VP9 import. Converting to MP4 (H.264) fixes the import.' },
       { question: 'Will the file get bigger?', answer: 'MP4/H.264 can be slightly larger than VP9 WebM at the same quality. Pick a lower quality preset if size matters.' },
       { question: 'Does it keep the audio?', answer: 'Yes — Vorbis/Opus audio is re-encoded to AAC and stays in sync.' },
-      { question: 'Is it free?', answer: `Yes, free with no watermark and no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Convert MP4 to WebM', to: '/tools/convert-mp4-to-webm', description: 'The reverse — make a small VP9 WebM.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for sharing.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
     ],
     primaryKeyword: 'webm to mp4',
     secondaryKeywords: [
@@ -5622,7 +5913,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Converts legacy .avi (Xvid, DivX, MJPEG, and more) to MP4.',
       'Locks the output to MP4 (H.264 + AAC) for modern playback.',
       'Usually produces a noticeably smaller file than the AVI source.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'An old AVI can be cut down and scaled while it is converted.',
     ],
     flowSteps: [
       { title: 'Upload your AVI', description: 'Drop in an old .avi file from an archive or camera.' },
@@ -5649,9 +5940,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg decodes old AVI codecs other tools choke on.',
       'Output locked to a known-good MP4 profile.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your AVI is re-encoded by FFmpeg on our server into a modern H.264 MP4.'),
     supportedFormats: {
       supportedInputFormats: ['avi'],
       supportedOutputFormats: ['mp4'],
@@ -5662,12 +5952,10 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Will the MP4 be smaller than the AVI?', answer: 'Usually yes. H.264 is far more efficient than the Xvid/DivX codecs most AVIs use.' },
       { question: 'Does it support old DivX/Xvid AVIs?', answer: 'Yes — FFmpeg decodes the common AVI codecs and re-encodes them to H.264.' },
       { question: 'Will I lose quality?', answer: 'Re-encoding is lossy, but at High quality the difference is minimal and the file is still smaller.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 further.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through trim, resize, and deinterlace.' },
     ],
     primaryKeyword: 'avi to mp4',
@@ -5707,7 +5995,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Converts Matroska .mkv files to MP4.',
       'Locks the output to MP4 (H.264 + AAC) for broad device support.',
       'Adds yuv420p and +faststart so the MP4 streams and starts instantly.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'Trim an MKV episode or change its size before the MP4 is written.',
     ],
     flowSteps: [
       { title: 'Upload your MKV', description: 'Drop in a .mkv file.' },
@@ -5734,9 +6022,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Server-side FFmpeg handles MKV with multiple tracks.',
       'Output locked to a known-good MP4 profile.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your MKV is re-encoded by FFmpeg on our server into an MP4 that phones and browsers play.'),
     supportedFormats: {
       supportedInputFormats: ['mkv'],
       supportedOutputFormats: ['mp4'],
@@ -5747,12 +6034,10 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does converting MKV to MP4 lose quality?', answer: 'If the MKV already uses H.264, the result is visually lossless at High quality. Otherwise it is a normal lossy re-encode.' },
       { question: 'What happens to extra audio or subtitle tracks?', answer: 'The converter keeps the main video and the first audio track. For multi-track needs, reach out and we can look at track selection.' },
       { question: 'Why will my MKV not play?', answer: 'Many phones, TVs, browsers, and sites do not support the MKV container even when the codecs inside are common.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the MP4 for sharing.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through every option.' },
     ],
     primaryKeyword: 'mkv to mp4',
@@ -5792,7 +6077,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Converts MP4 (H.264) to WebM (VP9 + Opus).',
       'Locks the output to WebM for consistent open-web embeds.',
       'Typically produces a smaller file than the MP4 at the same visual quality.',
-      'Lets you trim, resize, and pick a quality preset before exporting.',
+      'Shorten or shrink the clip and choose a quality preset before the WebM is made.',
     ],
     flowSteps: [
       { title: 'Upload your MP4', description: 'Drop in an .mp4 file.' },
@@ -5819,9 +6104,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'VP9 + Opus encoding with an automatic VP8 + Vorbis fallback.',
       'Output locked to WebM so the result is predictable.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is re-encoded by FFmpeg on our server into a VP9 WebM.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'm4v'],
       supportedOutputFormats: ['webm'],
@@ -5832,13 +6116,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Is WebM smaller than MP4?', answer: 'At the same visual quality, VP9 WebM is usually 25-50% smaller than H.264 MP4.' },
       { question: 'Do all browsers support WebM?', answer: 'All modern browsers do. For older browsers, provide an MP4 fallback in your <video> tag.' },
       { question: 'Why is WebM encoding slower?', answer: 'VP9 is more computationally intensive than H.264. The payoff is a smaller file.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Convert WebM to MP4', to: '/tools/convert-webm-to-mp4', description: 'The reverse direction.' },
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert any video to MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert any video to MP4.' },
       { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink video without changing the container.' },
-      { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
     ],
     primaryKeyword: 'mp4 to webm',
     secondaryKeywords: [
@@ -5853,7 +6135,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert MP4 to MP3',
     h1: 'Convert MP4 to MP3 Online Free',
     tagline:
-      'Extract the audio track from an MP4 video and save it as a clean MP3 file.',
+      "Get the audio of an MP4 as an MP3: Extract Audio from Video with MP4 in and MP3 out.",
     metaTitle: 'Convert MP4 to MP3 Online Free | Media Manipulator',
     metaDescription:
       `Free online MP4 to MP3 converter. Extract the audio from an MP4 video and save it as MP3. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -5872,7 +6154,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload your .mp4 video. We pull out the audio track and the output is locked to MP3 for this tool.',
     },
     intro:
-      'MP4 to MP3 is really an audio-extraction job: an MP4 is a video container, and you just want the sound. Media Manipulator pulls the first audio track out of your MP4 and re-encodes it to MP3, so you get music, a podcast, a lecture, or a voice memo as a small audio file that plays in any music app.',
+      "This page is Extract Audio from Video with two settings fixed: the input is an MP4 (or M4V) and the output is always MP3. That is the whole difference. An MP4 is a container holding video and sound, and the tool takes the first audio track out of it and encodes it with the LAME MP3 encoder at a variable bitrate of about 190 kbps, a size and quality that suit podcasts, lectures and music alike. If the MP4 has no sound, the tool says so before doing any work. If you need lossless audio for editing, or your file is a MOV or MKV, use the main Extract Audio from Video page, which accepts any common video and also writes WAV, M4A, AAC, FLAC or OGG. That page is the canonical version of this tool and has worked examples with real sizes and the per-plan limits. Upload an MP4 below to get its MP3.",
     whatItDoes: [
       'Extracts the audio stream from an MP4 video.',
       'Encodes the output as MP3 (libmp3lame) at a quality suited to speech and music.',
@@ -5924,6 +6206,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Choose MP3, WAV, M4A, AAC, FLAC, or OGG.' },
       { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the MP3 to other audio formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 to mp3',
     secondaryKeywords: [
       'mp4 to mp3 converter',
@@ -5937,7 +6220,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert Video to MP3',
     h1: 'Convert Video to MP3 Online Free',
     tagline:
-      'Extract the audio from any video — MP4, MOV, MKV, WebM, AVI — and save it as MP3.',
+      "Pull the soundtrack out of a video as an MP3: the same tool as Extract Audio from Video.",
     metaTitle: 'Convert Video to MP3 Online Free | Media Manipulator',
     metaDescription:
       `Free online video to MP3 converter. Extract the audio from MP4, MOV, MKV, WebM, and AVI videos and save it as MP3. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -5955,7 +6238,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any video. We pull out the audio track; MP3 is preselected, and you can switch to WAV, M4A, AAC, FLAC, or OGG.',
     },
     intro:
-      'Sometimes you just want the audio out of a video — and not always from an MP4. Media Manipulator extracts the first audio track from any common video container (MP4, MOV, MKV, WebM, AVI, M4V) and encodes it to MP3 by default, with other audio formats available if you need them.',
+      "Converting a video to MP3 is an audio-extraction job, and this page opens the same tool as Extract Audio from Video, with MP3 preselected. Nothing else differs: you can switch to WAV, M4A, AAC, FLAC or OGG before converting, and any common video format is accepted. The tool reads the first audio track of the file and encodes it on our servers with FFmpeg; MP3 output uses the LAME encoder at a variable bitrate of about 190 kbps, which suits music and speech. A video with no audio track is caught before any work is done and returns a clear error instead of a silent file. If the video carries several language tracks, only the first is extracted. Extract Audio from Video is the canonical version of this tool and explains each output format, with worked examples of real file sizes and the limits for guests and free accounts. Upload a video below to get its sound as an MP3.",
     whatItDoes: [
       'Extracts the audio stream from MP4, MOV, MKV, WebM, AVI, and M4V videos.',
       'Preselects MP3 output and lets you switch to WAV, M4A, AAC, FLAC, or OGG.',
@@ -6007,6 +6290,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Full extract-audio tool with every format.' },
       { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the extracted audio to other formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video to mp3',
     secondaryKeywords: [
       'video to mp3 converter',
@@ -6020,7 +6304,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert MP4 to GIF',
     h1: 'Convert MP4 to GIF Online Free',
     tagline:
-      'Turn a short MP4 clip into a clean, looping animated GIF for chat, forums, and the web.',
+      "Make a looping GIF from an MP4 clip: the animated GIF converter with MP4 input locked.",
     metaTitle: 'Convert MP4 to GIF Online Free | Media Manipulator',
     metaDescription:
       'Free online MP4 to GIF converter. Turn short MP4 clips into looping animated GIFs with control over size and frame rate. No watermark, no signup.',
@@ -6039,7 +6323,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a short .mp4 clip. The output is locked to GIF for this tool — trim to under ~10 seconds and tune width/frame rate in the GIF panel for a small file.',
     },
     intro:
-      'Animated GIFs autoplay and loop inline almost everywhere — chat apps, forums, READMEs, and email. Media Manipulator turns a short MP4 into a clean GIF using a palette-aware FFmpeg pipeline plus gifsicle optimization. For the smallest, sharpest result, trim the clip to a few seconds before converting.',
+      "This page is the Media Manipulator video-to-GIF tool with the input fixed to MP4 (M4V works too) and the output fixed to GIF. Apart from those two locks it is identical to Convert Video to Animated GIF: the same form, the same width and frame-rate controls, and the same pipeline, in which FFmpeg samples the frames and gifsicle builds the palette and optimises the file. The advice is the same as well. Keep the clip short, because a GIF holds every frame as an image and a ten-second clip at full width can come out larger than the MP4 it came from. If your clip is a MOV or WebM, or you want an MP4 or WebM loop instead of a GIF, use the main page. The canonical version, Convert Video to Animated GIF, has the details: how width, frame rate and colour count trade against size, worked examples with real numbers, and the per-plan limits. Upload an MP4 below to make your GIF.",
     whatItDoes: [
       'Converts a short MP4 clip into a looping animated GIF.',
       'Locks the output to GIF and exposes width, frame rate, colors, and optimization controls.',
@@ -6091,6 +6375,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'GIF converter', to: '/tools/gif-converter', description: 'The GIF hub — make and tune GIFs.' },
       { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'Full video-to-GIF tool.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 to gif',
     secondaryKeywords: [
       'mp4 to gif converter',
@@ -6104,7 +6389,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Convert Video to GIF',
     h1: 'Convert Video to GIF Online Free',
     tagline:
-      'Make a looping animated GIF from any short video clip — MP4, MOV, WebM, MKV, or AVI.',
+      "Turn a short clip in any common video format into a looping GIF: the same tool as the animated GIF converter.",
     metaTitle: 'Convert Video to GIF Online Free | Media Manipulator',
     metaDescription:
       'Free online video to GIF converter. Make a looping animated GIF from MP4, MOV, WebM, MKV, or AVI clips. Control size and frame rate. No watermark, no signup.',
@@ -6122,7 +6407,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a short video in any format. The output is locked to GIF — trim to under ~10 seconds and tune width/frame rate in the GIF panel.',
     },
     intro:
-      'Turn any short video clip into a looping animated GIF — not just MP4. Media Manipulator accepts MP4, MOV, WebM, MKV, and AVI and produces a clean GIF using a palette-aware FFmpeg pipeline plus gifsicle. Trim to a few seconds before converting for the smallest, sharpest loop.',
+      "This page makes an animated GIF from a short video, and it is the same tool as Convert Video to Animated GIF with the output fixed to GIF. It accepts MP4, MOV, WebM, MKV and AVI. There is no other difference: the same two-stage pipeline runs on our servers, in which FFmpeg scales the clip and samples it at the frame rate you choose and gifsicle reduces the palette and optimises the file. Trim to a few seconds first, because a GIF stores every frame as a picture and grows quickly with length and width. If you might want an MP4 or WebM loop instead of a GIF, the main page leaves the output unlocked. The animated GIF page is the canonical version of this tool and explains the settings that decide the file size, with worked examples showing real input and output sizes and the limits that apply to guests and free accounts. Upload a clip below to start.",
     whatItDoes: [
       'Converts MP4, MOV, WebM, MKV, AVI, and more into looping animated GIFs.',
       'Locks the output to GIF and exposes width, frame rate, colors, and optimization controls.',
@@ -6174,6 +6459,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'GIF converter', to: '/tools/gif-converter', description: 'The GIF hub — make and tune GIFs.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video to gif',
     secondaryKeywords: [
       'video to gif converter',
@@ -6187,7 +6473,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'GIF Converter',
     h1: 'Free GIF Converter Online',
     tagline:
-      'Make animated GIFs from video clips and tune them — width, frame rate, colors, and optimization — in one place.',
+      "Make and tune animated GIFs from video clips: the animated GIF converter under another name.",
     metaTitle: 'Free GIF Converter Online | Media Manipulator',
     metaDescription:
       `Free online GIF converter. Make animated GIFs from MP4, MOV, WebM, and more and tune width and frame rate. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6205,7 +6491,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a short video clip. GIF is preselected, so you can trim and tune width, frame rate, colors, and optimization — or switch the output to MP4/WebM.',
     },
     intro:
-      'The GIF converter is your hub for turning short video clips into clean, looping animated GIFs. GIF is preselected so you can jump straight into tuning width, frame rate, color count, and optimization — but the output stays unlocked, so you can also export MP4 or WebM from the same clip when a GIF is not the right fit.',
+      "The GIF converter is the same tool as Convert Video to Animated GIF. It opens the same video form with GIF preselected and the output left unlocked, so you can switch the same clip to an MP4 or WebM loop if a GIF turns out too large. It goes one way, from a video clip to an animated GIF; it does not turn an existing GIF back into a video or a still picture. Every control is the same as on the main page: trim range, width, frame rate, colour count and optimisation level, all applied by FFmpeg and gifsicle on our servers. The main page is the canonical version of this tool and is where the full explanation lives, with worked examples showing how big a GIF comes out at a given width and frame rate and what the limits are for guests and free accounts. Upload a short clip below to begin.",
     whatItDoes: [
       'Makes looping animated GIFs from MP4, MOV, WebM, MKV, AVI, and more.',
       'Exposes the full GIF panel: width, frame rate, colors, frame delay, and optimization level.',
@@ -6258,6 +6544,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'The classic video-to-GIF tool.' },
       { label: 'Image converter', to: '/tools/image-converter', description: 'Convert still images between JPG, PNG, WebP, and GIF.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'gif converter',
     secondaryKeywords: [
       'video to gif',
@@ -6274,7 +6561,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Video Compressor',
     h1: 'Compress Video Online Free',
     tagline:
-      'Shrink any video for email, social, and the web with simple presets — no watermark, no signup.',
+      "Shrink a video with a compression preset: the same tool as Compress Video.",
     metaTitle: 'Compress Video Online Free | Media Manipulator',
     metaDescription:
       `Free online video compressor. Reduce video file size with simple presets while keeping good quality. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6293,7 +6580,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video and pick a compression level. Balanced is a great default; choose Smallest for email or High quality to keep more detail. Optionally downscale or drop audio.',
     },
     intro:
-      'Big video files are hard to email, slow to upload, and expensive to host. The Media Manipulator video compressor re-encodes your clip with an efficient codec at the level you choose, so you get a much smaller file that still looks good. Pick a preset, optionally downscale the resolution or strip the audio, and download — no watermark and no account.',
+      "This page opens the same video compressor as the Compress Video page, with the Balanced preset and H.264 preselected. There is no other difference in what it does. The compressor re-encodes your clip with FFmpeg at the level you pick, Smallest, Balanced or High quality, and can also lower the resolution or drop the audio track to save more space. The output is an MP4 with H.264 or H.265 video and AAC audio, or WebM if you choose it, and MP4 output is written so playback can start before the download finishes. Compression is a trade, not free space: each step down in quality removes detail you cannot get back, so keep the original if you might need it later. Compress Video is the canonical version of this tool and has the explanation of each preset, worked examples with real before-and-after sizes and the limits for guests and free accounts. Upload a video below to start.",
     whatItDoes: [
       'Compresses any common video (MP4, MOV, MKV, WebM, AVI) into a smaller MP4 or WebM.',
       'Offers Smallest / Balanced / High quality presets that map to proven CRF settings.',
@@ -6347,6 +6634,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Remove audio from video', to: '/tools/remove-audio-from-video', description: 'Drop the audio track for a smaller file.' },
       { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Walk through every option.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video compressor',
     secondaryKeywords: [
       'compress video',
@@ -6361,7 +6649,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Compress MP4',
     h1: 'Compress MP4 Online Free',
     tagline:
-      'Reduce MP4 file size while keeping H.264 compatibility — perfect for email, social, and the web.',
+      "Make an MP4 smaller and keep it an MP4: Compress Video with the container locked.",
     metaTitle: 'Compress MP4 Online Free | Media Manipulator',
     metaDescription:
       `Free online MP4 compressor. Reduce MP4 file size with simple presets and H.264 + AAC output that plays everywhere. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6381,7 +6669,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an MP4 and pick a compression level. Output is locked to MP4 (H.264 + AAC) so the result plays everywhere. Optionally downscale or remove audio for an even smaller file.',
     },
     intro:
-      'MP4 is the format everyone uses, but the files can be large. This MP4 compressor re-encodes your video with efficient H.264 (or H.265) at the level you choose and keeps the output in a universally compatible MP4 container, so the smaller file still plays on every device and platform.',
+      "This page is the Media Manipulator video compressor with the input and output both fixed to MP4. The result is always an H.264 MP4 with AAC audio, which plays on every phone, browser and editor, and that lock is the only difference from the main Compress Video page. The same presets apply, Smallest, Balanced and High quality, each a different FFmpeg quality target, and you can still lower the resolution or remove the audio for a smaller file. If you would accept a WebM or an H.265 file in exchange for a smaller size, the main page lets you choose those. Re-encoding an MP4 that was already compressed hard saves less, and occasionally nothing; a phone recording at a high bitrate is where the savings are largest. Compress Video is the canonical version of this tool and shows real before-and-after numbers for each preset along with the per-plan limits. Upload an MP4 below to shrink it.",
     whatItDoes: [
       'Compresses MP4 videos into a smaller MP4 with H.264 + AAC.',
       'Offers Smallest / Balanced / High quality presets mapped to CRF values.',
@@ -6434,6 +6722,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut an MP4 down before compressing.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Full control over container and codec.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'compress mp4',
     secondaryKeywords: [
       'mp4 compressor',
@@ -6444,7 +6733,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'video-trimmer',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'Video Trimmer',
     h1: 'Trim Video Online Free',
     tagline:
@@ -6465,59 +6754,105 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video, then set a start and end time (or pick the range visually). We keep the original quality with a fast, lossless cut whenever possible.',
     },
     intro:
-      'Trimming is the most common video edit — keep the good part, drop the rest. The Media Manipulator video trimmer lets you set a start and end time numerically or drag a visual range, then performs a fast stream-copy cut that preserves the original quality with no re-encode when possible. Output defaults to MP4.',
+      'Trimming keeps one stretch of a video and discards the rest. Most online trimmers re-encode the whole clip to do that, which is slow and costs quality. This page does something simpler by default: it asks FFmpeg to seek to your start time and copy the compressed video and audio packets to a new file for the requested duration, without decoding them. That is a stream copy, it is lossless, and it runs about as fast as the file can be read. If the copy cannot work, because the source codec is not allowed in the container you chose, or because you ticked the frame-accurate option, the server re-encodes just the selected stretch instead.',
     whatItDoes: [
-      'Cuts a video to a single start-to-end range.',
-      'Prefers a lossless stream-copy (no re-encode, no quality loss, very fast).',
-      'Falls back to a re-encode automatically when the container/codec needs it.',
-      'Lets you pick the range numerically or with a visual scrubber.',
+      'Cuts a single range out of a video, from a start time to an end time, typed in seconds or picked on a visual timeline.',
+      'Copies the streams without re-encoding whenever the output container accepts the source codecs, so the kept part is bit-for-bit the original.',
+      'Falls back automatically to a re-encode when the copy is refused, and lets you force a re-encode for a cut on the exact frame.',
+      'Writes MP4 by default, or MOV or WebM; MP4 and MOV get the faststart flag so playback starts before the download finishes.',
+      'Checks with ffprobe that the file actually has a video stream and refuses audio-only uploads with a clear message.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
-      { title: 'Set start and end', description: 'Type the times or drag the visual range.' },
-      { title: 'Trim', description: 'We cut losslessly when possible, or re-encode for accuracy.' },
-      { title: 'Download', description: 'Save your trimmed clip.' },
+      { title: 'Upload the video', description: 'MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG or MPG, uploaded straight to our storage bucket.' },
+      { title: 'Set start and end', description: 'Type the seconds or drag the two handles; the panel shows the resulting clip length.' },
+      { title: 'Pick a container and, if needed, frame accuracy', description: 'MP4 is preset. Tick Re-encode for a frame-accurate cut only when the exact frame matters.' },
+      { title: 'FFmpeg cuts', description: 'A stream copy with -ss, -t and -c copy; or a libx264 CRF 18 re-encode when copying is impossible or you asked for it.' },
+      { title: 'Download the clip', description: 'The output carries the _trimmed suffix and lives in the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'The fast path is a stream-copy: ffmpeg seeks to the start and copies the segment without re-encoding, so there is zero quality loss.',
-      'Stream-copy cuts at the nearest keyframe; tick "Re-encode for a frame-accurate cut" when you need the exact frame.',
-      'MP4 re-encode fallback uses H.264 + AAC + yuv420p + faststart.',
+      'The stream-copy command is ffmpeg -ss START -i input -t DURATION -map 0 -c copy -avoid_negative_ts make_zero [-movflags +faststart] output (runTrimVideo in specialized_tools.go). -map 0 keeps every stream, including extra audio tracks and subtitles, and times are written with millisecond precision.',
+      'With -ss placed before -i and no decoding, FFmpeg can only begin at a keyframe, so the copy starts at the nearest keyframe at or before your start time. On a phone recording keyframes are typically 1 to 2 seconds apart, which is the most the beginning can drift; -avoid_negative_ts make_zero then rebases the timestamps so players start cleanly.',
+      'The re-encode path uses buildVideoCodecArgs at the high quality setting: libx264 -crf 18 -pix_fmt yuv420p with AAC for MP4 and MOV, or libvpx-vp9 -b:v 0 -crf 18 with Opus for WebM. Only the first video stream and the first audio stream (if any) are mapped, so extra tracks are dropped on this path.',
+      'Copy mode is sent as auto, which tries the copy and re-encodes on failure. Choosing WebM for an H.264 source always ends up on the re-encode path, because WebM only accepts VP8, VP9 and AV1 video.',
+      'Validation on the server: start must be 0 or later, the clip must be at least 0.1 seconds long and at most 6 hours, and end must be after start. Anything else is rejected before FFmpeg starts and the operation is refunded.',
+      'Because trimming is a specialized mode, the upload skips the automated content analysis that standard conversions receive; the server only runs ffprobe and the cut.',
     ],
     whyItMatters: [
-      'Removing dead air at the start/end makes any clip better.',
-      'A lossless trim keeps the original quality and is nearly instant.',
-      'Trimming first makes converting, compressing, or GIF-ing faster.',
+      'Dead air at the start and a fumbled stop at the end are in nearly every recording, and removing them is the single most common edit.',
+      'A lossless cut means you can trim a master file without creating a second-generation copy.',
+      'Cutting first makes every later step cheaper: compressing, captioning or turning the clip into a GIF only has to touch the part you kept.',
     ],
     useCases: [
-      { title: 'Cut the intro/outro', description: 'Drop the boring beginning or end of a recording.' },
-      { title: 'Clip a highlight', description: 'Keep just the moment you want to share.' },
-      { title: 'Prep for upload', description: 'Trim before posting to social platforms.' },
-      { title: 'Shorten for GIF', description: 'Cut to a few seconds before making a GIF.' },
+      { title: 'Meeting and lecture recordings', description: 'Drop the minutes of people joining before the content begins.' },
+      { title: 'Highlights for social posts', description: 'Keep the 20 seconds that matter and upload only those.' },
+      { title: 'Evidence and bug reports', description: 'Share exactly the moment a problem happened, with the original quality intact.' },
+      { title: 'Preparing a GIF or a restoration snippet', description: 'Cut to a few seconds before feeding the clip to a tool that works best on short input.' },
     ],
     whyMediaManipulator: [
-      'Quality-preserving stream-copy by default.',
-      'Numeric and visual range selection in one panel.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
+      'Lossless stream copy is the default, with the re-encode fallback written down rather than hidden behind a slow-but-safe re-encode of everything.',
+      'The exact FFmpeg flags are on this page, including why a cut may start at the previous keyframe and how to avoid that.',
+      `A trim spends one operation of your daily allowance (5 a day as a guest by default, 30 with a free account), and a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `The trimmer runs ffprobe and one FFmpeg command on our own servers. In the default path the video and audio packets are copied, never decoded, so the server does not reconstruct a single picture from your file; in the re-encode path FFmpeg decodes only the seconds you kept. The upload lives in uploads/<jobId>/ and the clip in outputs/<jobId>/, both registered in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. Trimming is a specialized mode, so the automated content analysis that standard conversions receive is not run on this upload, and nothing is sent to a third-party service.`,
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'mov', 'webm'],
       processingNotes: ['Stream-copy when possible (no quality loss); re-encode fallback uses H.264 + AAC for MP4.'],
     },
     faq: [
-      { question: 'How do I trim a video online?', answer: 'Upload it, set a start and end time (or drag the visual range), and download the trimmed clip.' },
-      { question: 'Does trimming reduce quality?', answer: 'No — the default lossless stream-copy keeps the original quality. Only the frame-accurate re-encode option re-compresses.' },
-      { question: 'Why does my cut start slightly early?', answer: 'Lossless cuts snap to the nearest keyframe. Enable the frame-accurate re-encode option to cut at the exact time.' },
-      { question: 'What output format do I get?', answer: 'MP4 by default; you can also choose MOV or WebM.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
+      {
+        question: 'Does trimming re-encode my video?',
+        answer:
+          'Not by default. The server copies the compressed streams with -c copy, so the kept part is identical to the original. It re-encodes only when you tick the frame-accurate option or when the container you chose cannot hold the source codec, as with WebM for an H.264 file.',
+      },
+      {
+        question: 'Why does my clip start a moment before the time I typed?',
+        answer:
+          'A stream copy can only begin at a keyframe, and FFmpeg picks the nearest one at or before your start time. Keyframes are usually 1 to 2 seconds apart on camera footage. Tick Re-encode for a frame-accurate cut to start on the exact frame.',
+      },
+      {
+        question: 'Which output containers can I choose, and which keep the original quality?',
+        answer:
+          'MP4, MOV and WebM. MP4 and MOV accept the H.264 or HEVC video and AAC audio most cameras produce, so they stay lossless. WebM only accepts VP8, VP9 and AV1, so an H.264 source is re-encoded to VP9 at CRF 18 for that choice.',
+      },
+      {
+        question: 'How long or short can the trimmed clip be?',
+        answer:
+          'At least 0.1 seconds and at most 6 hours, with the end after the start. In practice the upload caps bind first: by default 5 minutes of video for a guest, 20 minutes with a free account, 2 hours on Premium.',
+      },
+      {
+        question: 'Does it keep all the audio tracks and subtitles?',
+        answer:
+          'In the stream-copy path yes: -map 0 copies every stream in the file. In the re-encode path only the first video and first audio stream are kept.',
+      },
+      {
+        question: 'Can I trim a video to multiple parts at once?',
+        answer:
+          'No. One upload produces one clip from one range. For several pieces, run the trimmer once per range, or assemble the parts on a timeline in Darkroom.',
+      },
     ],
     related: [
-      { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Trim MP4 files specifically.' },
-      { label: 'Video cutter', to: '/tools/video-cutter', description: 'Cut a clip out of a video.' },
-      { label: 'Cut video online', to: '/tools/cut-video-online', description: 'Quick browser-based cutting.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the clip after trimming.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the clip after trimming it.' },
+      { label: 'Convert video to animated GIF', to: '/tools/convert-video-to-animated-gif', description: 'Turn the trimmed seconds into a GIF.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Save only the sound of the clip.' },
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'Restoration works on snippets of 15 seconds or less; trim first.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Join several trimmed pieces into one edit.' },
     ],
+    workedExamples: [
+      {
+        title: 'A 30 second stream-copy cut from a 180 MB, 4.5 minute 1080p MP4',
+        body:
+          'Input: a 4 minute 30 second 1920 x 1080 H.264 MP4 of 180 MB, about 5.3 Mbps, which fits the default 200 MB and 5 minute guest caps. Settings: start 45.000, end 75.000, output MP4, re-encode unticked. The server runs the copy command with -ss 45.000 and -t 30.000. Since the packets are copied, the output holds roughly 30 of the 270 seconds of data, about 20 MB, at exactly the original quality, codec and frame rate. The cut begins at the last keyframe before 45 s, so the clip may open up to a second or two early. The job is bound by reading the file, not by computing, and finishes in a few seconds.',
+      },
+      {
+        title: 'A frame-accurate 12 second cut from a 60 MB 1080p MP4',
+        body:
+          'Input: a 2 minute 1920 x 1080 MP4 of 60 MB. Settings: start 30.250, end 42.250, output MP4, Re-encode for a frame-accurate cut ticked. FFmpeg now decodes from 30.250 exactly, encodes 12 seconds (360 frames at 30 fps) with libx264 at CRF 18, yuv420p and faststart, and re-encodes the audio to AAC. CRF 18 keeps the picture visually very close to the source, so the result is in the same order of size per second as the source, a few megabytes for 12 seconds. Only the kept 12 seconds are encoded, never the full 2 minutes, so this is a short encode rather than a few-second copy.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use the trimmer to remove several separate sections from one video; it keeps exactly one range, so a middle cut needs two trims and a join in Darkroom. Do not expect a stream copy to land on the exact frame; if a cut that is a second early matters, tick the re-encode option and accept a short encode. If your real goal is a smaller file, trimming only helps as much as you cut; the compressor changes the bitrate. And if the upload has no video stream, for example an M4A renamed to MP4, the trimmer refuses it; the audio tools handle audio-only files.',
     primaryKeyword: 'video trimmer',
     secondaryKeywords: [
       'trim video online',
@@ -6531,7 +6866,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'MP4 Trimmer',
     h1: 'Trim MP4 Online Free',
     tagline:
-      'Cut an MP4 to the part you want with a fast, lossless trim and an MP4 output.',
+      "The video trimmer with MP4 locked in and out.",
     metaTitle: 'Trim MP4 Online Free | Media Manipulator',
     metaDescription:
       `Free online MP4 trimmer and cutter. Set a start and end time and cut your MP4 losslessly. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6549,7 +6884,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an MP4 and set a start and end time. Output is locked to MP4 and we keep the original quality with a fast, lossless cut whenever possible.',
     },
     intro:
-      'The MP4 trimmer is a focused tool for cutting MP4 videos down to the part you want. Set the start and end, and Media Manipulator performs a fast stream-copy that keeps the original H.264 quality with no re-encode, then hands you a clean MP4.',
+      "This page is the Media Manipulator video trimmer with two settings fixed: it accepts MP4 (and M4V) files, and the result is always an MP4. Nothing else is different. The cut is the same stream-copy the main trimmer uses, so a range taken from an H.264 MP4 keeps the original picture and sound without a re-encode, and it snaps to the nearest keyframe unless you turn on the frame-accurate option, which re-encodes to H.264 with AAC audio. If your clip is a MOV, MKV or WebM, or you would rather keep the source container, use the main video trimmer instead: it takes those formats and lets you pick the output. The full explanation of how the cut works, worked examples with real file sizes, the limits for guests and free accounts, and the questions people ask about keyframes all live on the video trimmer page, which this one points to as its canonical version. Upload an MP4 below, set the start and end, and download the trimmed file.",
     whatItDoes: [
       'Cuts an MP4 to a single start-to-end range.',
       'Keeps the output as MP4 (H.264 + AAC).',
@@ -6602,6 +6937,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Compress MP4', to: '/tools/compress-mp4', description: 'Shrink the MP4 after trimming.' },
       { label: 'Video cutter', to: '/tools/video-cutter', description: 'Cut a clip out of a video.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'mp4 trimmer',
     secondaryKeywords: [
       'trim mp4',
@@ -6615,7 +6951,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Video Cutter',
     h1: 'Cut Video Online Free',
     tagline:
-      'Cut a section out of any video with a fast, quality-preserving trim — straight in your browser.',
+      "Keep one section of a video and drop the rest: the same tool as the video trimmer.",
     metaTitle: 'Cut Video Online Free | Media Manipulator',
     metaDescription:
       `Free online video cutter. Cut a clip from any video by start and end time with a fast, lossless cut. MP4 output, no watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6632,7 +6968,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video, set the start and end of the part you want to keep, and we cut it out — losslessly when possible. Output defaults to MP4.',
     },
     intro:
-      `Cutting a video means keeping a single section and dropping the rest. The Media Manipulator video cutter takes a start and end time and produces just that segment, using a fast stream-copy that preserves the original quality whenever possible. Everything runs server-side. ${RETENTION_PROMISE}.`,
+      "Cutting a video and trimming it are the same job here: you choose a start time and an end time, and Media Manipulator keeps only that section. This page opens the same form as the video trimmer, with MP4 preselected as the output and MOV or WebM available if you switch it, so there is no difference in what you can do or in the result you get. The cut is a stream-copy whenever the format allows, which means no quality loss and a result in seconds, and an optional frame-accurate mode that re-encodes for an exact cut point. It keeps one continuous range; to remove a section from the middle of a clip or join several pieces, use Darkroom, the multi-track editor. Everything about how the cut works, with worked examples and the per-plan file limits, is on the video trimmer page, the canonical version of this tool. Upload a video below and mark the part you want to keep.",
     whatItDoes: [
       'Cuts the selected start-to-end section out of a video.',
       'Prefers a lossless stream-copy (no re-encode).',
@@ -6685,6 +7021,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the cut clip.' },
       { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut MP4 files specifically.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'video cutter',
     secondaryKeywords: [
       'cut video online',
@@ -6698,7 +7035,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
     name: 'Cut Video Online',
     h1: 'Cut Video Online Free',
     tagline:
-      'A quick, no-install way to cut a clip out of any video right in your browser.',
+      "Cut a clip from a video in the browser, with nothing to install: the video trimmer under another name.",
     metaTitle: 'Cut Video Online Free — No Install | Media Manipulator',
     metaDescription:
       `Cut video online free, no install. Set a start and end and cut any clip in your browser with a fast, lossless cut. No watermark, no signup. ${RETENTION_PROMISE}.`,
@@ -6715,7 +7052,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload, mark the part to keep, and download — no app to install. We cut losslessly when possible. Output defaults to MP4.',
     },
     intro:
-      'Sometimes you just need to cut a quick clip without downloading software. This page is the fast, browser-based way to do it: upload a video, mark the part you want, and get a cut clip back in seconds. The actual cut runs on our servers with a quality-preserving stream-copy, so there is nothing to install and nothing to learn.',
+      "People search for a way to cut a video online because they do not want to install an editor for a thirty-second job. This page is that, and it is the same tool as the Media Manipulator video trimmer: the same form, MP4 as the default output, and the same fast stream-copy cut on our servers. You upload the file in the browser, type or drag a start and end point, and download the section you kept. Nothing differs from the main trimmer except this introduction. Because the work happens server-side, an older laptop or a phone cuts a long file as quickly as a desktop. The video trimmer page is the canonical version, and it carries the details this page leaves out: why a stream-copy cut lands on a keyframe, when the frame-accurate option is worth its extra time, worked examples with real sizes, and the limits for guests and free accounts. Start below if you already know the range you want.",
     whatItDoes: [
       'Cuts a clip out of any common video, entirely in the browser flow.',
       'Uses a fast, lossless stream-copy whenever possible.',
@@ -6768,6 +7105,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'MP4 trimmer', to: '/tools/mp4-trimmer', description: 'Cut MP4 files specifically.' },
       { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the clip after cutting.' },
     ],
+    lastReviewed: '2026-10-29',
     primaryKeyword: 'cut video online',
     secondaryKeywords: [
       'cut video free',
@@ -6806,7 +7144,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Exports MP4 (H.264 + AAC) by default.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'MP4, MOV, MKV, WebM, AVI or M4V to crop.' },
       { title: 'Enter the crop rectangle', description: 'Set the X/Y offset and the width/height to keep.' },
       { title: 'Crop', description: 'FFmpeg crops to exactly that region and re-encodes.' },
       { title: 'Download', description: 'Save the cropped video.' },
@@ -6830,9 +7168,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Precise pixel cropping server-side with FFmpeg.',
       'Clean MP4 output, no watermark.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is cropped to the rectangle you drew and re-encoded by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
@@ -6843,13 +7180,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Can I crop to a square or vertical aspect ratio?', answer: 'Yes — set the width and height to the ratio you want (e.g. equal values for square, taller than wide for 9:16).' },
       { question: 'Will cropping lower the quality?', answer: 'Cropping re-encodes, but at our default quality the loss is minimal.' },
       { question: 'Can I crop out a watermark?', answer: 'Yes, if the watermark is near an edge — crop the frame to exclude it.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution instead of cropping.' },
       { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix sideways or upside-down video.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the cropped video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the cropped video.' },
     ],
     primaryKeyword: 'crop video',
     secondaryKeywords: [
@@ -6889,7 +7225,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Exports MP4 (H.264 + AAC) by default.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'Pick the clip you want at a different size.' },
       { title: 'Set the size', description: 'Enter a width and/or height in pixels.' },
       { title: 'Resize', description: 'FFmpeg scales the video and re-encodes it.' },
       { title: 'Download', description: 'Save the resized video.' },
@@ -6913,9 +7249,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Aspect-ratio-aware scaling server-side with FFmpeg.',
       'Clean MP4 output, no watermark.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is scaled to the width and height you set and re-encoded by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
@@ -6926,12 +7261,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'How do I change the resolution to 720p?', answer: 'Set the height to 720 and leave the width blank to scale proportionally.' },
       { question: 'Will resizing keep the aspect ratio?', answer: 'Yes — leave one dimension blank, or keep "Preserve aspect ratio" on so the video is not stretched.' },
       { question: 'Can I upscale a video?', answer: 'You can scale up to a larger size, but upscaling cannot add detail that was not captured.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away edges instead of scaling.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the file with presets.' },
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Convert to MP4.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the file with presets.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Convert to MP4.' },
       { label: 'Rotate video', to: '/tools/rotate-video', description: 'Fix orientation.' },
     ],
     primaryKeyword: 'resize video',
@@ -6973,7 +7307,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Exports MP4 (H.264 + AAC) by default.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'A sideways phone clip, for example.' },
       { title: 'Pick a rotation', description: '90°, 180°, or 270° — and flip if needed.' },
       { title: 'Rotate', description: 'FFmpeg rotates the frames (transpose) and re-encodes.' },
       { title: 'Download', description: 'Save the correctly-oriented video.' },
@@ -6997,9 +7331,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real frame rotation (transpose), not just a metadata flag.',
       'Rotate and flip in one focused panel.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is turned by the angle you pick and re-encoded by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'],
@@ -7010,13 +7343,12 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'How do I fix a sideways phone video?', answer: 'Rotate 90° clockwise or counter-clockwise until it plays upright; the rotation is baked into the frames.' },
       { question: 'Does it really rotate the frames, or just set a flag?', answer: 'It rotates the actual frames (FFmpeg transpose), so the video is upright in every player.' },
       { question: 'Can I flip / mirror the video too?', answer: 'Yes — horizontal and vertical flip options are included.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'Cut away the edges.' },
       { label: 'Resize video', to: '/tools/resize-video', description: 'Change the resolution.' },
       { label: 'Video converter', to: '/tools/video-converter', description: 'Convert between video formats.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the rotated video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the rotated video.' },
     ],
     primaryKeyword: 'rotate video',
     secondaryKeywords: [
@@ -7056,7 +7388,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Outputs MP4 by default (WebM also available).',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop in any common video file.' },
+      { title: 'Upload your video', description: 'The clip whose sound you want gone.' },
       { title: 'Pick the output format', description: 'MP4 (default) or WebM.' },
       { title: 'Remove audio', description: 'FFmpeg drops the audio and keeps the video.' },
       { title: 'Download', description: 'Save the silent, video-only file.' },
@@ -7080,9 +7412,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Quality-preserving stream-copy of the video stream.',
       'Truly silent output (audio track removed, not just lowered).',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video\'s audio track is dropped by FFmpeg on our server and the picture is kept.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm'],
@@ -7093,12 +7424,11 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'Does this mute the video or remove the track?', answer: 'It removes the audio track entirely, so the result is truly silent rather than muted to zero.' },
       { question: 'Will the video quality change?', answer: 'No — we stream-copy the video stream where possible, so the picture is untouched.' },
       { question: 'Why is the file named "_silent"?', answer: 'We add a _silent suffix so you can tell the audio-free copy apart from the original.' },
-      { question: 'Is it free?', answer: `Yes — no watermark, no signup. ${RETENTION_PROMISE}.` },
     ],
     related: [
       { label: 'Remove audio (video-only)', to: '/tools/extract-video-only-from-video', description: 'The same silent-video tool.' },
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Save the audio instead of removing it.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the silent video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the silent video.' },
       { label: 'Stitch audio to video', to: '/tools/stitch-audio-to-video', description: 'Add a new soundtrack to the silent clip.' },
     ],
     primaryKeyword: 'remove audio from video',
@@ -7138,7 +7468,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Outputs valid, ID3-tagged files where applicable.',
     ],
     flowSteps: [
-      { title: 'Upload audio', description: 'Drop in any common audio file.' },
+      { title: 'Upload audio', description: 'MP3, WAV, M4A, FLAC, OGG and more.' },
       { title: 'Pick output format', description: 'MP3, WAV, FLAC, M4A, OGG, OPUS.' },
       { title: 'Tune bitrate and rate', description: 'Trim or run AI cleanup.' },
       { title: 'Download', description: 'Save the converted audio.' },
@@ -7164,7 +7494,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'AI cleanup tools (denoise, isolate vocals, remove vocals) in the same upload.',
       'Free, no signup, no watermarks.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio is decoded and re-encoded by FFmpeg on our server into the format and bitrate you choose.'),
     faq: [
       { question: 'What format is best for music?', answer: 'FLAC for lossless storage, MP3 256–320 kbps for sharing, OPUS for the smallest streamable file.' },
       { question: 'What format is best for voice?', answer: 'MP3 at 96–128 kbps is a great podcast default.' },
@@ -7247,7 +7577,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       `No signup, no watermarks. ${RETENTION_PROMISE}.`,
       'Same transcription engine the rest of the app uses, so accuracy is consistent across SRT, VTT, plain text, and JSON outputs.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('ai', 'Your file\'s speech is transcribed by Whisper on our own GPU server and timed into an SRT subtitle file.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v', 'mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
       supportedOutputFormats: ['srt'],
@@ -7260,7 +7590,6 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { question: 'What is an SRT file?', answer: 'SRT (SubRip) is a plain-text subtitle file with timestamps and cue numbers. It is the default subtitle format accepted by YouTube, most video editors, and most video players.' },
       { question: 'Can I generate subtitles from an MP4?', answer: 'Yes. Upload any MP4 (or MOV, MKV, WebM, AVI, M4V) and we will produce a downloadable .srt subtitle file.' },
       { question: 'Can I use the SRT file on YouTube?', answer: 'Yes — YouTube accepts SRT directly. Upload your video, then add the subtitle file under Subtitles → Add language → Upload file.' },
-      { question: 'Are my uploaded files private?', answer: `Yes. Uploaded media stays on our own server. ${RETENTION_PROMISE}. Transcription runs on a GPU we operate — no third-party AI provider sees your file.` },
       { question: 'What languages are supported?', answer: 'Whisper supports dozens of languages and can auto-detect the spoken language. You can also pass a BCP-47 hint (e.g. en, es, ja) for better accuracy on very short clips.' },
     ],
     related: [
@@ -7337,9 +7666,8 @@ export const TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Local AI translation — your captions never go to a third-party AI provider.',
       'Timing-safe parsing that pins original cue start/end times back even if the model misbehaves.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('ai', 'Only the text of your SRT or VTT file is read: each caption is translated by a language model we run on our own GPU server, and the timings are copied across unchanged.'),
     supportedFormats: {
       supportedInputFormats: ['srt', 'vtt'],
       supportedOutputFormats: ['srt', 'vtt'],
@@ -7432,7 +7760,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Advanced FFmpeg controls exposed safely — every setting is validated server-side before being passed to the filter graph.',
       'Output as MP4, PNG, or a ZIP of both — no need to run a second job.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio is drawn into a waveform image or video by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
       supportedOutputFormats: ['mp4 (video)', 'webm (video)', 'png (image)', 'webp (image)', 'zip (both)'],
@@ -7469,7 +7797,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- EXTRACT AUDIO FROM VIDEO
   {
     slug: 'extract-audio-from-video',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Extract Audio from Video',
     h1: 'Extract Audio from Video',
     tagline:
@@ -7490,40 +7818,47 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload any common video container. Pick MP3 for broad compatibility, WAV for lossless, or M4A/AAC for a compact compressed file. Videos with no audio track return a clear error.',
     },
     intro:
-      'Pulling the audio out of a video is one of the most common editing tasks — for podcasting, voiceover review, transcript preparation, or simply saving a song from a music video. Media Manipulator extracts the first audio track from any common video container and re-encodes it into the format you choose, with no quality loss when the source already matches.',
+      'Every video container carries its audio as a separate stream, so getting the sound out does not involve the picture at all. This page asks FFmpeg to select the first audio stream, ignore the video, and encode that stream into the format you pick: MP3 for anything that plays music, WAV or FLAC when you want the samples untouched, M4A or AAC for a small file that phones handle natively, or OGG Vorbis. Before it starts, the server checks with ffprobe that an audio stream exists, because FFmpeg would otherwise write an empty file without complaint.',
     whatItDoes: [
-      'Extracts the first audio stream from MP4, MOV, MKV, WebM, AVI, and M4V containers.',
-      'Encodes output as MP3 (libmp3lame), WAV (pcm_s16le), M4A/AAC, FLAC, or OGG (libvorbis).',
-      'Detects videos with no audio stream and returns a clear error instead of producing an empty file.',
-      'Preserves the original duration and sample rate.',
+      'Selects the first audio stream (-map 0:a:0) from MP4, MOV, M4V, WebM, MKV, AVI and the other common video containers and discards the video (-vn).',
+      'Encodes MP3 with libmp3lame at quality 2 (variable bitrate averaging about 190 kbps), WAV as 16-bit PCM, M4A or AAC at 192 kbps, FLAC losslessly, or OGG with libvorbis at quality 5.',
+      'Keeps the original sample rate and channel count; nothing is resampled or mixed down.',
+      'Refuses a video with no audio stream up front with the message that there is nothing to extract.',
+      'Returns a single audio file named after the original with the chosen extension.',
     ],
     flowSteps: [
-      { title: 'Upload your video', description: 'Drop any MP4, MOV, MKV, WebM, AVI, or M4V file.' },
-      { title: 'Pick an output format', description: 'MP3 plays everywhere; WAV is lossless; M4A/AAC is a compact default.' },
-      { title: 'We extract', description: 'FFmpeg pulls the first audio stream and encodes it cleanly.' },
-      { title: 'Download', description: 'Save the extracted audio in your chosen format.' },
+      { title: 'Upload the video', description: 'Any common container; the file goes straight to our storage bucket and the API picks it up.' },
+      { title: 'Choose the audio format', description: 'MP3 is preset. WAV and FLAC are lossless; M4A and AAC are compact; OGG is the open lossy option.' },
+      { title: 'ffprobe confirms an audio stream exists', description: 'A silent video stops here with a clear error instead of producing an empty file.' },
+      { title: 'FFmpeg encodes the stream', description: 'One command with -map 0:a:0 -vn and the encoder for your format.' },
+      { title: 'Download the audio', description: 'The file lives in the job folder until its retention window ends.' },
     ],
     advancedDetails: [
-      'We pre-check the source with ffprobe so videos without an audio stream return a useful error instead of an empty file.',
-      'MP3 is rendered with libmp3lame at quality preset 2 (≈190 kbps VBR) — the typical sweet spot for speech and music.',
-      'M4A/AAC uses the native AAC encoder at 192 kbps, suitable for both speech and music.',
+      'The command is ffmpeg -y -i input -map 0:a:0 -vn <encoder args> output (runExtractAudio in specialized_tools.go). -vn means the video stream is never decoded, which is why extraction is fast even on 4K sources.',
+      'MP3 uses -c:a libmp3lame -q:a 2, the LAME V2 variable-bitrate setting, which averages around 190 kbps on music and less on speech. WAV uses -c:a pcm_s16le, so a 44.1 kHz stereo source costs about 10.1 MB per minute and a 48 kHz source about 11 MB per minute.',
+      'M4A and AAC both use the native FFmpeg AAC encoder with -b:a 192k. FLAC is lossless and typically lands at 50 to 70 percent of the WAV size. OGG uses -c:a libvorbis -q:a 5, roughly 160 kbps.',
+      'No -ar or -ac flag is passed, so the output keeps the source sample rate and channel layout; 5.1 surround stays 5.1 in WAV and FLAC, while MP3 will carry at most two channels.',
+      'Only stream 0:a:0 is mapped. A file with a commentary track or a second language keeps whichever track is listed first in the container.',
+      'Extraction is a specialized mode: the upload is not queued for the automated content analysis that standard conversions receive, and the quality, resize and effect controls of the video converter do not apply.',
     ],
     whyItMatters: [
-      'Audio extraction is the first step for podcast repurposing, transcription, music sampling, and voiceover review.',
-      'Having a clean, format-specific audio file decouples the audio from the original video container.',
+      'Podcasters, transcribers and editors usually need the sound without the pixels, and the video is often 20 to 50 times larger than the audio inside it.',
+      'A correctly tagged MP3 or M4A plays on every phone and in every player without the video decoding that drains batteries.',
+      'Lossless WAV or FLAC output is the right input for noise cleaning, vocal separation or a careful transcription.',
     ],
     useCases: [
-      { title: 'Podcasters', description: 'Pull audio out of a video interview before publishing the audio-only episode.' },
-      { title: 'Editors', description: 'Reuse a film or music clip’s soundtrack in a different edit.' },
-      { title: 'Voiceover review', description: 'Send clients a clean audio file from a screen recording.' },
-      { title: 'Transcript prep', description: 'Provide audio-only files to transcription tools that prefer them over video.' },
+      { title: 'Audio-only episodes', description: 'Publish the sound of a recorded video interview as a podcast MP3.' },
+      { title: 'Transcription prep', description: 'Feed an 18 minute recording to a transcriber as a 25 MB MP3 instead of a 540 MB MP4.' },
+      { title: 'Sound design and sampling', description: 'Pull a WAV from a clip to reuse ambience or music in another edit.' },
+      { title: 'Lecture notes', description: 'Keep the audio of a class recording for listening on the go.' },
     ],
     whyMediaManipulator: [
-      'Server-side FFmpeg means no codec headaches in the browser.',
-      'Clear errors when the source video has no audio.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
+      'The encoder settings are stated: LAME V2 for MP3, 192 kbps for AAC, 16-bit PCM for WAV, and the original sample rate throughout.',
+      'A silent video is caught by ffprobe before anything runs, so you never download a zero-length file.',
+      `One extraction is one operation of your daily allowance: 5 a day without an account by default, 30 with a free account; a refused or failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Extraction runs on our own servers as a single FFmpeg command that reads only the first audio stream of your upload; the video frames are never decoded. The uploaded file sits in uploads/<jobId>/ and the audio in outputs/<jobId>/, both registered in the retention ledger and removed when the window ends. ${RETENTION_PROMISE}. Because extraction is a specialized mode, the upload is not run through the automated content analysis that standard conversions receive; it is not transcribed or described, and nothing leaves our hardware.`,
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'],
@@ -7532,20 +7867,58 @@ export const TOOL_PAGES: ToolPageContent[] = [
       ],
     },
     faq: [
-      { question: 'Can I extract audio from an MP4?', answer: 'Yes — MP4 is the most common case. We also support MOV, MKV, WebM, AVI, and M4V.' },
-      { question: 'What audio formats can I export?', answer: 'MP3, WAV, M4A, AAC, FLAC, and OGG.' },
-      { question: 'Does extracting audio reduce quality?', answer: 'Output quality is determined by the format you pick. WAV is lossless. MP3 / AAC / OGG are lossy but at our defaults they sound essentially identical to the source for most listeners.' },
-      { question: 'Can I extract audio from a video with multiple audio tracks?', answer: 'We always pull the first audio stream. If you need a specific alternate language track, please reach out and we will look at adding multi-stream selection.' },
-      { question: 'What if my video has no audio?', answer: 'We detect that up front and return a clear error message instead of producing an empty file.' },
+      {
+        question: 'Which audio formats can I extract to, and which are lossless?',
+        answer:
+          'MP3, WAV, M4A, AAC, FLAC and OGG. WAV and FLAC are lossless copies of the decoded track. MP3 (about 190 kbps VBR), M4A and AAC (192 kbps) and OGG (quality 5) are lossy but above the bitrate of most video sound tracks.',
+      },
+      {
+        question: 'How big will the extracted audio be?',
+        answer:
+          'WAV is about 10.1 MB per minute at 44.1 kHz stereo, or 11 MB at 48 kHz. MP3 at this page setting is about 1.4 MB per minute, M4A and AAC about 1.4 MB per minute at 192 kbps, OGG about 1.2 MB per minute. FLAC usually lands between half and two thirds of the WAV size.',
+      },
+      {
+        question: 'Does extraction change the sample rate or stereo image?',
+        answer:
+          'No. FFmpeg is run without -ar or -ac, so the output keeps the source sample rate and channel layout. A 48 kHz stereo track stays 48 kHz stereo.',
+      },
+      {
+        question: 'What happens if my video has no audio?',
+        answer:
+          'The server probes the file first and stops with the message that there is nothing to extract. The operation is refunded, and no empty file is produced.',
+      },
+      {
+        question: 'My video has two audio tracks; which one do I get?',
+        answer:
+          'The first one in the container, stream 0:a:0. There is no track picker yet. If the one you need is second, remux or re-export the video with that track first.',
+      },
+      {
+        question: 'Is extracting audio free, and how long a video can I upload?',
+        answer:
+          'Yes. By default a guest can run 5 operations a day on files up to 200 MB and 5 minutes; a free account allows 30 a day, 1 GB and 20 minutes; Premium takes 5 GB and 2 hours. Current limits are listed on the pricing page.',
+      },
     ],
     related: [
-      { label: 'MP4 to MP3', to: '/tools/mp4-to-mp3', description: 'Output locked to MP3 for MP4 input.' },
-      { label: 'Video to MP3', to: '/tools/video-to-mp3', description: 'Extract MP3 from any video format.' },
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Convert the extracted audio to other formats.' },
-      { label: 'SRT Generator', to: '/tools/srt-generator', description: 'Transcribe the extracted audio into subtitles.' },
-      { label: 'Audio Waveform Generator', to: '/tools/audio-waveform-generator', description: 'Turn the extracted audio into a waveform visual.' },
-      { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Reuse extracted audio inside a new video.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Skip the audio file and get the words directly.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Denoise and level the extracted speech.' },
+      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Take the hum and hiss out of the extracted track.' },
+      { label: 'Remove vocals from song', to: '/tools/remove-vocals-from-song', description: 'Turn the extracted music into an instrumental.' },
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the video to the part you want before extracting.' },
     ],
+    workedExamples: [
+      {
+        title: 'An 18 minute, 540 MB 720p recording to MP3',
+        body:
+          'Input: an 18 minute 1280 x 720 MP4 of 540 MB (about 4 Mbps), uploaded with a free account because it exceeds the 200 MB and 5 minute guest defaults. Settings: MP3. The server confirms the stereo 48 kHz AAC track with ffprobe and runs libmp3lame -q:a 2. At roughly 190 kbps that is about 1.4 MB per minute, so the result comes out at about 25 MB, about one twentieth of the upload. Because -vn skips the video entirely, the job is a straight audio decode and encode and is quick; uploading 540 MB takes far longer than extracting from it.',
+      },
+      {
+        title: 'A 4 minute, 95 MB 1080p music video to WAV',
+        body:
+          'Input: a 4 minute 1920 x 1080 MP4 of 95 MB with a 44.1 kHz stereo AAC track, within the guest caps. Settings: WAV. FFmpeg decodes the AAC once and writes 16-bit PCM with pcm_s16le, keeping 44.1 kHz and two channels. PCM at that rate is 44,100 x 16 x 2 bits per second, about 10.1 MB per minute, so the file comes out at about 40 MB regardless of how loud or busy the music is. Choosing FLAC instead would compress those same samples losslessly to somewhere around 20 to 28 MB depending on the material. The time is a few seconds of audio decoding; the video is never touched.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use this page to improve the sound; it copies what is there, and a noisy or distant recording stays noisy. The Clean Voice and Remove Background Noise tools are built for that. Do not expect a WAV to recover quality that the video lost; the source track is almost always lossy AAC, so a WAV is a faithful copy of a compressed signal, not a studio master. If the video has two language tracks and you need the second one, this tool only takes the first. And if what you really want is the words, the transcriber reads the audio and gives you text and captions directly.',
     primaryKeyword: 'extract audio from video',
     secondaryKeywords: [
       'video to MP3',
@@ -7614,7 +7987,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Clear, fast, no signup, no watermarks.',
       `Free. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is copied without its audio track by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'webm'],
@@ -7634,7 +8007,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       { label: 'Remove audio from video', to: '/tools/remove-audio-from-video', description: 'The consumer-friendly mute / remove-sound page.' },
       { label: 'Extract Audio from Video', to: '/tools/extract-audio-from-video', description: 'Pull the audio track out as MP3, WAV, etc.' },
       { label: 'Stitch Audio to Video', to: '/tools/stitch-audio-to-video', description: 'Add a new soundtrack to your silent video.' },
-      { label: 'Video compressor', to: '/tools/video-compressor', description: 'Shrink the silent video.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink the silent video.' },
       { label: 'Extract Frames from Video', to: '/tools/extract-frames-from-video', description: 'Pull still images out of the silent video.' },
     ],
     primaryKeyword: 'extract video without audio',
@@ -7703,7 +8076,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'ZIP output keeps the download to one click no matter how many frames you grabbed.',
       'Server-side FFmpeg means consistent output regardless of browser or codec support.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Frames are taken from your video at the rate you pick by FFmpeg on our server and returned as a ZIP of images.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['zip (containing jpg/png/webp frames)'],
@@ -7792,7 +8165,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Stream-copies video where possible — preserves the original video quality.',
       `Free, no signup, server-side FFmpeg. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video and the audio file you add are joined into one MP4 by FFmpeg on our server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v (video)', 'mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg (audio)'],
       supportedOutputFormats: ['mp4'],
@@ -7925,7 +8298,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
       'Uses rife-ncnn-vulkan, a portable Vulkan binary, instead of a heavy PyTorch stack — fewer dependencies, faster cold starts.',
       `Free, no signup, ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote: privacyNoteFor('ai', 'New in-between frames are generated for your video by RIFE on our own GPU server.'),
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4'],
@@ -8036,7 +8409,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-video-restoration',
-    lastReviewed: '2026-08-05',
+    lastReviewed: '2026-10-29',
     name: 'AI Video Restoration',
     h1: 'AI Video Restoration Tool',
     tagline:
@@ -8058,80 +8431,50 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload a video, drag-select a short snippet (10 seconds or less works best), pick the restoration models you want to compare, and download one package with every enhanced result.',
     },
     intro:
-      'AI Video Restoration runs a short snippet of your video through up to six state-of-the-art restoration and super-resolution models — Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT — and packages every result into a single download so you can compare them frame by frame. Different models make very different trade-offs between sharpness, temporal stability, and artifacts; the only reliable way to pick the right one for your footage is to run the same clip through all of them. Everything processes on our own GPU server, never a third-party API.',
+      'Video restoration models disagree with each other. A GAN upscaler such as Real-ESRGAN gives you crisp single frames that can shimmer in motion; a video transformer such as VRT keeps the sequence stable but may soften detail. The only honest way to choose is to run the same footage through all of them and look. This page does exactly that on a snippet of up to 15 seconds: it extracts the frames, runs your choice of six models on our own GPU, stitches each result back into an MP4 at the source frame rate with the original audio, and packages everything, including the untouched snippet, into one archive for side-by-side comparison. Every number below comes from the pipeline as it runs today.',
     whatItDoes: [
-      'Trims the exact snippet you select (up to 15 seconds / 450 frames) with frame accuracy, keeping the audio.',
-      'Runs the snippet through your choice of six models: Real-ESRGAN, SwinIR, and HAT enhance frame by frame, while BasicVSR++, RVRT, and VRT restore the sequence as a whole for better temporal consistency.',
-      'Upscales 2x or 4x automatically based on the source resolution (sources at or below 540p get 4x).',
-      'Stitches every result back into an MP4 at the exact source frame rate, with the original audio re-attached.',
-      'Packages everything — the original snippet, every enhanced MP4, optional enhanced frames, and a machine-readable manifest — into one results archive.',
-      'Keeps going when a single model fails: the package records the failure and still includes every successful result.',
+      'Trims the snippet you select (0.5 to 15 seconds, at most 450 frames at your frame rate) frame-accurately with its audio.',
+      'Runs any combination of Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT and VRT; the first three enhance frame by frame, the last three restore the sequence as a whole.',
+      'Chooses 4x for sources at or below 540p and 2x above that, since every model runs its native 4x network and the 2x result is a Lanczos downscale at stitch time.',
+      'Stitches each result with libx264 at CRF 16 at the exact source frame-rate fraction and re-attaches the audio.',
+      'Packages original/clip.mp4, one folder per model, optional enhanced PNG frames for the frame-by-frame models, manifest.json and README.txt into one tar.gz.',
+      'Carries on when a model fails: its folder gets FAILED.txt, the manifest records the reason, and every other result is still delivered.',
     ],
     flowSteps: [
-      {
-        title: 'Upload a video',
-        description: 'Drop in any common video file — long sources are fine because only the snippet is processed.',
-      },
-      {
-        title: 'Select a snippet',
-        description: 'Drag the start and end handles (or the whole window) to pick up to 15 seconds; 10 seconds or less is recommended.',
-      },
-      {
-        title: 'Choose restoration models',
-        description: 'Pick any combination of Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, and VRT, and whether to include enhanced frames.',
-      },
-      {
-        title: 'Watch the pipeline run',
-        description: 'A live checklist tracks every stage — extraction, each model, packaging — with time estimates per model.',
-      },
-      {
-        title: 'Download and compare',
-        description: 'The results archive downloads automatically: one folder per model plus the original snippet for A/B playback.',
-      },
+      { title: 'Upload a video', description: 'Up to 1920 x 1080; long sources are fine because only the snippet is processed.' },
+      { title: 'Select a snippet', description: 'Drag the handles to pick up to 15 seconds; 10 seconds or less is recommended and the picker warns above that.' },
+      { title: 'Choose models and whether to include frames', description: 'Any of the six; the picker shows a per-model time estimate from the server published seconds-per-frame figures.' },
+      { title: 'Watch the stages', description: 'Download, probe, extract clip, extract frames, then each model from fastest to slowest, then packaging.' },
+      { title: 'Compare and download', description: 'Play each model MP4 next to the original in the viewer, then fetch the archive while its 6 hour link lasts.' },
     ],
     advancedDetails: [
-      'Real-ESRGAN runs the realesrgan-x4plus GAN through a Vulkan binary — the fastest model and a good baseline for every comparison.',
-      'SwinIR uses the large real-world SR GAN (003_realSR_BSRGAN SwinIR-L x4) with tiled inference so high resolutions fit in GPU memory.',
-      'HAT runs Real_HAT_GAN_SRx4, a hybrid attention transformer that often produces the sharpest individual frames.',
-      'BasicVSR++ propagates information between frames recurrently, which keeps textures stable where per-frame models shimmer.',
-      'RVRT and VRT are video restoration transformers that process the sequence with temporal attention — typically the highest quality and by far the slowest.',
-      'Frame extraction uses ffmpeg with vsync 0; stitching re-encodes with libx264 CRF 16 at the exact source frame-rate fraction (e.g. 30000/1001) so audio stays in sync.',
-      'A 2x request still runs each model’s native 4x network and downscales with Lanczos during stitching — quality is identical and the pipeline stays uniform.',
-      'Every model runs under a GPU scheduler lease with per-model VRAM budgets, and one restoration job runs at a time so jobs never starve each other.',
+      'The reference clip is cut with ffmpeg -ss START -i source -t WINDOW -c:v libx264 -crf 10 -preset medium -pix_fmt yuv420p -c:a aac, then frames are extracted with -vsync 0 into numbered PNGs; if the count exceeds 450 the surplus frames are dropped.',
+      'Real-ESRGAN runs realesrgan-ncnn-vulkan with the realesrgan-x4plus model, scale 4 and 256 px tiles. SwinIR uses the 003_realSR_BSRGAN SwinIR-L x4 GAN weights and HAT uses Real_HAT_GAN_SRx4, both through tiled inference (320 px tiles, 32 px overlap) so 1080p frames fit in memory.',
+      'BasicVSR++ runs the REDS4 c64n7 generator through mmagic in windows of 16 frames; RVRT (001_RVRT_videosr_bi_REDS_30frames) and VRT (001_VRT_videosr_bi_REDS_6frames) run through their KAIR test scripts with temporal tiles of 30 and 12 frames and 128 x 128 spatial tiles.',
+      'Stitching is uniform: ffmpeg -framerate FPS_FRACTION -i frames/%06d.png [-i clip.mp4 -map 0:v -map 1:a -c:a aac] [-vf scale=iw/2:ih/2:flags=lanczos] -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart -shortest. The frame-rate fraction, for example 30000/1001, is taken verbatim from ffprobe so the audio stays in sync.',
+      'Models run in a fixed order, Real-ESRGAN, BasicVSR++, SwinIR, RVRT, HAT, VRT, under a GPU scheduler lease with VRAM budgets of 3, 11, 9, 12, 10 and 14 GB respectively, one restoration job at a time server-wide and a 75 minute timeout per model.',
+      'The published per-frame estimates the picker multiplies by your frame count are 0.8 s (Real-ESRGAN), 1.0 s (BasicVSR++), 3.0 s (RVRT), 3.5 s (SwinIR), 5.0 s (HAT) and 7.0 s (VRT); they are server-side defaults that can change, not measurements of your clip.',
+      'Explicit 4x is refused for sources taller than 1080p because the output would exceed 4K; auto mode picks 2x for 541p to 1080p and 4x at or below 540p. Included frames are the native 4x PNGs even on the 2x path, so a 1080p source yields 7680 x 4320 frames.',
     ],
     whyItMatters: [
-      'No single restoration model wins on all footage: GAN upscalers excel on stills but can flicker, while video transformers stay stable but soften fine detail.',
-      'Running one short snippet through every model costs minutes, not hours, and tells you exactly which model deserves the full-length run.',
-      'Old family footage, low-resolution archives, and compressed social exports all degrade differently — side-by-side comparison beats guessing.',
+      'No single restoration model wins on all footage, and still-frame comparisons hide the flicker that only playback reveals.',
+      'A 10 second snippet through every model costs minutes of GPU time and tells you which model deserves a full-length run elsewhere.',
+      'Digitised tapes, early digital camera clips and compressed social exports each degrade differently and respond to different model families.',
     ],
     useCases: [
-      {
-        title: 'Restoring old family videos',
-        description: 'Digitized tapes and early digital camera clips are low-resolution and noisy — compare which model best recovers faces and detail.',
-      },
-      {
-        title: 'Upscaling archive footage',
-        description: 'Evaluate 480p/720p archive material at 4x before committing to a full restoration pass.',
-      },
-      {
-        title: 'Choosing a model before a long render',
-        description: 'Run a representative 10-second snippet through all six models to pick the right one for an hours-long GPU job.',
-      },
-      {
-        title: 'Improving compressed downloads',
-        description: 'Heavily compressed social media exports respond very differently to GAN vs transformer restoration — test both families.',
-      },
-      {
-        title: 'Comparing temporal stability',
-        description: 'Play the per-model MP4s side by side to spot shimmer and flicker that still frames hide.',
-      },
+      { title: 'Old family videos', description: 'See which model recovers faces and fabric on a 480p tape transfer before restoring the whole reel.' },
+      { title: 'Archive footage', description: 'Test 4x on 360p and 480p material and judge the 4K-class output on your own monitor.' },
+      { title: 'Model selection before a long render', description: 'Pick the model for an hours-long job from a representative 10 second test.' },
+      { title: 'Compressed downloads', description: 'Compare GAN sharpening with transformer stability on blocky social media exports.' },
+      { title: 'Temporal stability checks', description: 'Play the per-model MP4s side by side to spot shimmer and flicker that still frames hide.' },
     ],
     whyMediaManipulator: [
-      'Six research-grade models behind one upload — no notebooks, CUDA setup, or model weights to manage.',
-      'Runs entirely on our own GPU server: your video never goes to a third-party AI provider.',
-      'One tidy package with a manifest, the original snippet, and every result — built for honest A/B comparison.',
+      'Six research-grade models behind one upload, with the weights, tile sizes and stitch command named on this page rather than hidden behind a brand name.',
+      'Everything runs on our own GPU; your footage never goes to a third-party AI provider, and nothing is used for training.',
+      `A restoration spends one AI operation of your daily allowance, which is 1 a day without an account by default and 5 with a free account, and is limited to 2 starts an hour per session; a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your upload goes from the browser to our storage bucket and is downloaded to our own GPU server, where FFmpeg cuts the snippet and the six models run as local processes; no outside AI provider is involved and nothing is used for training. Only the selected snippet is decoded into frames; the rest of the source is never processed. The source object, the working frames, the per-model MP4s kept for the comparison viewer and the results archive are all registered in the retention ledger and deleted when the window ends, and the archive link expires after 6 hours. ${RETENTION_PROMISE}. Restoration jobs do not run the automated content analysis that standard conversions receive.`,
     supportedFormats: {
       supportedInputFormats: ['mp4', 'mov', 'webm', 'mkv', 'avi', 'm4v'],
       supportedOutputFormats: ['mp4', 'png'],
@@ -8149,76 +8492,66 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'Which AI video upscaling model is best?',
         answer:
-          'It genuinely depends on the footage — that is the reason this tool exists. GAN upscalers like Real-ESRGAN and HAT produce crisp individual frames but can shimmer in motion; video models like BasicVSR++, RVRT, and VRT use neighboring frames for stability but can look softer. Run your own snippet through all of them and judge with your eyes.',
+          'It depends on the footage, which is why this tool exists. GAN upscalers like Real-ESRGAN and HAT produce crisp frames that can shimmer in motion; sequence models like BasicVSR++, RVRT and VRT use neighbouring frames for stability and can look softer. Run your own snippet through them and judge in motion.',
       },
       {
-        question: 'Why is the clip limited to 15 seconds?',
+        question: 'Why is the clip limited to 15 seconds and 450 frames?',
         answer:
-          'Restoration models are extremely GPU-intensive — VRT can take several seconds per frame at 4x. A short snippet keeps the multi-model comparison fast and is all you need to evaluate quality before committing to a longer restoration elsewhere.',
+          'Restoration is expensive per frame: the published estimate for VRT alone is 7 seconds a frame at 4x. The frame cap is checked against your real frame rate, so a 60 fps source is limited to 7.5 seconds. A short snippet is enough to judge quality before a longer restoration elsewhere.',
       },
       {
-        question: 'What is the difference between the two model groups?',
+        question: 'How does the 2x versus 4x choice work?',
         answer:
-          'Frame-by-frame enhancers (Real-ESRGAN, SwinIR, HAT) upscale each frame independently, so their results include both the enhanced frames and a stitched video. Video restoration models (BasicVSR++, RVRT, VRT) process the sequence as a whole using temporal information, and produce only an enhanced video.',
+          'Auto picks 4x for sources at or below 540p and 2x above that. Every model runs its native 4x network regardless; on the 2x path the stitch halves the frames with a Lanczos filter. Explicit 4x is refused above 1080p because the output would exceed 4K.',
       },
       {
-        question: 'Does the restored video keep my audio?',
+        question: 'Does the restored video keep my audio and frame rate?',
         answer:
-          'Yes. The selected snippet is trimmed with its audio, and every model’s output is stitched back together with that audio at the exact source frame rate, so all results stay in sync for A/B playback.',
+          'Yes. The snippet is cut with its audio, and every stitch uses the exact frame-rate fraction from ffprobe (for example 30000/1001) and re-attaches that audio as AAC, so all results line up for A/B playback.',
       },
       {
-        question: 'What does the results package contain?',
+        question: 'What does the results archive contain, and how large is it?',
         answer:
-          'One folder per model with its enhanced MP4 (frame-by-frame models can also include every enhanced frame as PNGs), the original trimmed snippet for reference, a README, and a manifest.json with per-model timings, output dimensions, and any failures.',
+          'original/clip.mp4, a folder per model with its MP4 (and, for Real-ESRGAN, SwinIR and HAT with frames included, every enhanced PNG at native 4x), manifest.json with timings and dimensions, and README.txt. With frames on, a 10 second clip adds hundreds of large PNGs per model, so expect gigabytes.',
       },
       {
-        question: 'What happens if one model fails?',
+        question: 'What happens if one model fails or times out?',
         answer:
-          'The job keeps going. The failed model’s folder contains a FAILED.txt with the reason, the manifest records it, and every other selected model’s result is still packaged and downloadable.',
-      },
-      {
-        question: 'Is 4x always better than 2x upscaling?',
-        answer:
-          'No. 4x shines on genuinely low-resolution sources (540p and below). On 720p–1080p sources, 4x produces enormous files for little visible gain, which is why auto mode picks 2x there.',
-      },
-      {
-        question: 'Can AI restoration fix any video?',
-        answer:
-          'It can sharpen detail, reduce noise, and upscale resolution, but it cannot reconstruct information that was never captured. Severely blurred motion, extreme compression blocking, or very dark footage will improve — not become pristine.',
+          'The job continues. That model folder holds FAILED.txt with the reason, manifest.json records it, and every other selected model still ships in the archive. Only when all selected models fail does the job fail.',
       },
       {
         question: 'How long does a restoration run take?',
         answer:
-          'It scales with snippet length and model choice. Real-ESRGAN handles a 10-second clip in a few minutes; VRT can take an hour for the same clip. The picker shows a live estimate per model, and the models run fastest-first so early results are never blocked by slow ones.',
+          'Frames times the per-model estimate, summed over the models you picked, since they run one after another: 0.8, 1.0, 3.0, 3.5, 5.0 and 7.0 seconds per frame for Real-ESRGAN, BasicVSR++, RVRT, SwinIR, HAT and VRT. A 300 frame clip through all six is roughly 100 minutes; through Real-ESRGAN alone about 4.',
+      },
+      {
+        question: 'How many restorations can I run, and does it cost an AI operation?',
+        answer:
+          'Starting a restoration spends one AI operation: by default 1 a day without an account, 5 with a free account, 60 on Premium and 120 on Pro, plus a limit of 2 starts an hour per session. A job that fails outright is refunded. See the pricing page for the live numbers.',
       },
     ],
     related: [
+      { label: 'Trim video', to: '/tools/video-trimmer', description: 'Cut the snippet you want to restore before uploading.' },
+      { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'The same model families for a single photo or frame.' },
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink a restored 4K result for sharing.' },
+      { label: 'Transcode to HLS', to: '/tools/transcode-to-hls', description: 'Package a restored clip for adaptive streaming.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Add captions to the restored footage.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Edit the restored snippet into a longer piece.' },
+    ],
+    workedExamples: [
       {
-        label: 'Video trimmer',
-        to: '/tools/video-trimmer',
-        description: 'Cut the perfect snippet before restoring it.',
+        title: 'An 8 second 640 x 480 home video through all six models',
+        body:
+          'Input: a 640 x 480 MP4 at 29.97 fps from a digitised tape, with audio. Settings: an 8 second snippet, all six models, enhanced frames included, scale auto. The pipeline cuts an 8 second reference clip and extracts 240 frames (8 x 29.97, rounded). At 480p the auto rule picks 4x, so every model writes 2560 x 1920 frames and the stitched MP4s are 2560 x 1920 at 30000/1001 fps with the original audio. The picker estimate is the frame count times the published seconds per frame: about 3.2 minutes for Real-ESRGAN, 4 minutes for BasicVSR++, 12 for RVRT, 14 for SwinIR, 20 for HAT and 28 for VRT, about 81 minutes in total because models run one after another. Including frames adds 3 x 240 PNGs of 2560 x 1920 to the archive, which is why the download is measured in gigabytes rather than megabytes.',
       },
       {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink the restored output for sharing.',
-      },
-      {
-        label: 'Transcode to HLS',
-        to: '/tools/transcode-to-hls',
-        description: 'Package the restored video for adaptive streaming.',
-      },
-      {
-        label: 'Transcribe video',
-        to: '/tools/transcribe-video',
-        description: 'Generate captions for the restored clip.',
-      },
-      {
-        label: 'Darkroom',
-        to: '/tools/content-studio',
-        description: 'Edit the restored snippet into a full piece.',
+        title: 'A 10 second 1080p clip at auto scale with Real-ESRGAN and BasicVSR++',
+        body:
+          'Input: a 1920 x 1080 30 fps MP4 of 90 MB, the largest source resolution the tool accepts. Settings: a 10 second snippet, Real-ESRGAN and BasicVSR++, frames excluded, scale auto. Extraction yields 300 frames, within the 450 cap (at 60 fps the same cap would limit the snippet to 7.5 seconds). Above 540p auto picks 2x, so each model still runs its native 4x network, producing 7680 x 4320 frames, and the stitch applies scale=iw/2:ih/2:flags=lanczos to deliver 3840 x 2160 MP4s at CRF 16. The published estimates give about 4 minutes for Real-ESRGAN (0.8 s x 300) and 5 minutes for BasicVSR++ (1.0 s x 300), so the job finishes in well under the 75 minute per-model timeout and the archive holds two 4K MP4s, the original clip, manifest.json and README.txt.',
       },
     ],
+    whenNotToUse:
+      'Do not use this page to restore a whole film; it is a comparison tool capped at 15 seconds and 450 frames, and the archive for even that can be gigabytes. Do not expect it to invent what was never recorded: severe motion blur, extreme compression blocking and very dark footage improve but do not become pristine. Sources above 1920 x 1080 are refused, because restoration targets low-resolution material and 2x of 1080p is already 4K. If your clip only needs a smaller file, a format change or a cut, the compressor, converter and trimmer do that in seconds without a GPU.',
     primaryKeyword: 'AI video restoration',
     secondaryKeywords: [
       'AI video upscaler',
@@ -8238,7 +8571,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-image-restoration',
-    lastReviewed: '2026-06-12',
+    lastReviewed: '2026-10-29',
     name: 'AI Image Restoration & Upscaling',
     h1: 'AI Image Restoration & Upscaling Tool',
     tagline:
@@ -8259,84 +8592,51 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Upload an image, optionally crop to a region, optionally pre-clean it, pick the upscaling and face-enhancement models you want to compare, and download one package with every result.',
     },
     intro:
-      'AI Image Restoration & Upscaling runs one photo through a configurable pipeline of up to eight models and shows every result next to the original. A fidelity-preserving pre-clean stage (FBCNN for JPEG artifacts, SCUNet for noise, NAFNet for motion blur) removes degradation without inventing detail; general upscalers (Real-ESRGAN, SwinIR, HAT) then enlarge 2x or 4x; and optional face enhancement (GFPGAN, CodeFormer) reconstructs faces. Pre-clean is non-generative — it filters the existing signal. Face enhancement is generative — it synthesizes plausible detail and must not be treated as a faithful recovery of the source. Everything runs on our own GPU server, never a third-party API.',
+      'AI Image Restoration runs one photo through a configurable pipeline of up to eight models and shows every result next to the original. A fidelity-preserving pre-clean stage (FBCNN for JPEG artifacts, SCUNet for noise, NAFNet for motion blur) removes degradation without inventing detail; general upscalers (Real-ESRGAN, SwinIR, HAT) then enlarge 2x or 4x; and optional face enhancement (GFPGAN, CodeFormer) reconstructs faces. Pre-clean is non-generative: it filters the signal that is there. Face enhancement is generative: it synthesises plausible detail and must not be treated as a faithful recovery of the source. Every model runs on our own GPU server.',
     whatItDoes: [
-      'Lets you focus restoration on a drag-selected crop region (applied server-side on the original bytes for no quality loss) or keep the whole image.',
-      'Optionally pre-cleans the image first: FBCNN removes JPEG/compression artifacts (with an optional manual quality factor), SCUNet denoises (PSNR-trained, no hallucinated texture), and NAFNet deblurs — always in that fixed order, each on the previous result.',
-      'Runs your choice of general upscalers — Real-ESRGAN, SwinIR, HAT — at 2x or 4x (native x4 networks; 2x is a Lanczos downscale of the x4 output).',
-      'Optionally adds face enhancement (GFPGAN and/or CodeFormer, with a fidelity dial), and can chain the face models onto each upscaler’s output as well as the source.',
-      'Packages everything — the prepared original, every output, and a manifest — into one results archive, and shows an inline comparison grid so you can A/B each result against the original.',
-      'Keeps going when a single model fails: the package records the failure and still includes every successful result.',
+      'Lets you drag-select a crop so the pixel budget and GPU time go to the region you care about; the crop is applied server-side on the auto-oriented original, so no quality is lost in the browser.',
+      'Optionally pre-cleans first, always in the order FBCNN, SCUNet, NAFNet, each model working on the previous one\'s output; the cleaned image becomes the base every later model starts from.',
+      'Runs any combination of Real-ESRGAN, SwinIR and HAT at 2x or 4x. All three are native x4 networks; a 2x result is the x4 output downscaled to 50 percent with a Lanczos filter.',
+      'Optionally runs GFPGAN v1.4 and, where it is enabled on the server, CodeFormer with a fidelity weight, on the source and, with Chain on, on each upscaler\'s result as well.',
+      'Packages the prepared original, every output PNG, a manifest.json and a README into one .tar.gz, and shows an inline comparison grid while the archive is served from the job.',
+      'Records a failed model as a failed entry with a user-safe reason and still packages every result that succeeded.',
     ],
     flowSteps: [
-      {
-        title: 'Upload an image',
-        description: 'Drop in a PNG, JPEG, WebP, TIFF, or BMP. Old, low-resolution, and compressed photos are exactly the target.',
-      },
-      {
-        title: 'Crop or keep the whole image',
-        description: 'Optionally drag-select a region to focus on (great for a face or a license plate), or restore the entire image.',
-      },
-      {
-        title: 'Optionally pre-clean',
-        description: 'Turn on pre-clean to strip artifacts, noise, and blur before enhancement — the cleaned image becomes the base every model runs on.',
-      },
-      {
-        title: 'Pick models / face enhancement / chain',
-        description: 'Choose any combination of upscalers and face models, set the scale, and optionally chain face restoration onto each upscaled result.',
-      },
-      {
-        title: 'Watch the pipeline run',
-        description: 'A live checklist tracks every stage — pre-clean, each model, packaging — with per-unit failure badges.',
-      },
-      {
-        title: 'Compare & download',
-        description: 'Every result appears in an inline grid next to the original; download the full results archive when you’re ready.',
-      },
+      { title: 'Upload an image', description: 'PNG, JPEG, WebP, TIFF or BMP up to 12,000 pixels on each side; old, small and over-compressed photos are the target.' },
+      { title: 'Crop or keep the whole frame', description: 'Drag a region (a face, a plate, a sign) or leave the crop off to restore everything.' },
+      { title: 'Choose pre-clean, upscalers, faces, scale', description: 'Tick the models you want; the picker shows how many outputs the selection will produce out of the 12 allowed.' },
+      { title: 'Watch the stages', description: 'The job queues for the single restoration slot, prepares the image, then runs each unit with its own progress and failure badge.' },
+      { title: 'Compare and download', description: 'Each result sits beside the original in the grid; download the archive when you have decided which pipeline won.' },
     ],
     advancedDetails: [
-      'FBCNN predicts the JPEG quality factor blindly, or you can override it manually (lower assumes heavier compression) — useful for stubborn blocking artifacts.',
-      'SCUNet uses the PSNR-trained real-denoise weights, not the GAN variant: the GAN model hallucinates texture, while the PSNR model is a pure filter — the right forensic default.',
-      'NAFNet uses the GoPro motion-deblur weights; it targets motion blur specifically, not defocus or compression softness.',
-      'The fixed pre-clean order (artifact removal → denoise → deblur) is deliberate: compression artifacts must come off before denoising, and deblurring runs last on the cleanest signal.',
-      'General models run their native x4 networks; a 2x request downscales the x4 output with Lanczos, mirroring the video pipeline for uniform quality. Large inputs are tiled to stay within GPU memory.',
-      'GFPGAN uses the clean v1.4 architecture; CodeFormer exposes a fidelity weight (w) where lower is prettier and higher stays closer to the input. Background up-sampling is disabled on face models so the comparison stays honest.',
-      'Chaining runs each face model on every upscaler’s output (a pure face pass at 1x) in addition to running it on the source, so you can see face enhancement layered on top of each upscaler.',
-      'Pre-clean output is a filtered version of the source signal (non-generative). Face-enhancement output is generative reconstruction — synthesized detail suitable for clarity and leads, not identification evidence.',
+      'The prepare stage runs ImageMagick -auto-orient to a normalised PNG, reads its dimensions, rejects anything over 12,000 x 12,000, converts your normalised crop rectangle to whole pixels and writes working_source.png. That file is also saved as original.png in the results, so what you compare against is exactly what the models received.',
+      'Auto scale picks 4x when the crop is 540 pixels tall or less and 2x otherwise. Whatever the scale, the output is checked against a budget of 67,108,864 pixels (about 64 megapixels): a 6,000 x 4,000 whole image at 2x is 96 megapixels and is refused with a message telling you to choose 2x or a smaller crop.',
+      'Real-ESRGAN runs the realesrgan-x4plus network through realesrgan-ncnn-vulkan with 256-pixel tiles. SwinIR uses the 003_realSR_BSRGAN SwinIR-L x4 GAN weights and HAT the Real_HAT_GAN_SRx4 weights, both through the same per-frame script as AI Video Restoration with 320-pixel tiles and a 32-pixel overlap, so large crops never exceed GPU memory.',
+      'Pre-clean weights are fbcnn_color.pth, scunet_color_real_psnr.pth (the PSNR-trained real-noise model, not the GAN variant that invents texture) and NAFNet-GoPro-width64.pth (motion deblur, not defocus). They run in 512-pixel tiles with a 32-pixel overlap and never change dimensions. FBCNN predicts the JPEG quality factor blindly unless you set one from 1 to 100; a lower number assumes heavier compression.',
+      'GFPGAN uses the clean v1.4 architecture with background up-sampling disabled, so outside the faces the image is plainly resized by the scale factor rather than model-enhanced; that keeps the comparison honest. CodeFormer takes a fidelity weight w from 0 to 1 (default 0.7): lower is prettier, higher stays closer to the input. CodeFormer ships under a non-commercial licence and is behind a server flag that is off by default.',
+      'Chain re-runs each face model at 1x on every upscaler\'s output in addition to the source, so the output count is pre-clean + general + face + face x general. The server caps a job at 12 outputs, runs one restoration job at a time, and gives each model 1,800 seconds before marking it timed out.',
+      'The server estimates run time per model from its own seconds-per-megapixel defaults: FBCNN 3, SCUNet 8, NAFNet 6, Real-ESRGAN 2, SwinIR 12, HAT 18, GFPGAN 6, CodeFormer 8. These feed the progress weights and the UI estimate; they are tuning values, not a guarantee.',
+      'Results are not uploaded to object storage: the .tar.gz and the result PNGs stay in the job\'s output folder and are served from the job for the retention window.',
     ],
     whyItMatters: [
-      'No single model wins on every photo: artifact removal, denoising, upscaling, and face reconstruction each fix different damage, and the right combination depends on how the image was degraded.',
-      'Restoring one image through several models takes a minute or two and shows exactly which pipeline recovers the most usable detail.',
-      'The non-generative vs generative distinction matters: pre-clean gives you a faithful, filtered image, while face enhancement gives you a plausible reconstruction — knowing which is which is essential for investigative and archival work.',
+      'No single model wins on every photo: artifact removal, denoising, upscaling and face reconstruction each fix different damage, and the right order depends on how the image was degraded.',
+      'Running several models on one upload and seeing them side by side answers the question "which one, and at what scale?" before you commit to a larger batch.',
+      'The non-generative versus generative distinction matters: a pre-cleaned image is a filtered copy of the evidence, a face-enhanced one is a plausible reconstruction, and the page labels which is which.',
     ],
     useCases: [
-      {
-        title: 'Restoring old or scanned photos',
-        description: 'Pre-clean compression and scanner noise, then upscale — and optionally reconstruct faces — to bring a low-resolution photo back to life.',
-      },
-      {
-        title: 'Enhancing low-resolution or CCTV stills',
-        description: 'Crop to the region of interest, remove artifacts, and upscale; chain face enhancement for visual clarity (as a lead, never as identification evidence).',
-      },
-      {
-        title: 'Fixing blurry or compressed downloads',
-        description: 'Heavily compressed social exports respond well to FBCNN + SCUNet followed by a GAN upscaler.',
-      },
-      {
-        title: 'Comparing upscalers before a batch',
-        description: 'Run one representative image through Real-ESRGAN, SwinIR, and HAT to pick the best model for a larger set.',
-      },
-      {
-        title: 'Recovering detail in a specific region',
-        description: 'Drag-select just a face or sign so the full pixel budget and GPU time go to the part you care about.',
-      },
+      { title: 'Restoring old or scanned photos', description: 'Pre-clean scanner noise and compression, then upscale and, if you choose, reconstruct faces.' },
+      { title: 'Enhancing low-resolution stills', description: 'Crop to the region of interest, remove artifacts and upscale; chain face enhancement for clarity, never as identification evidence.' },
+      { title: 'Fixing compressed downloads', description: 'Heavily recompressed social exports respond well to FBCNN then SCUNet, followed by a GAN upscaler.' },
+      { title: 'Comparing upscalers before a batch', description: 'Run one representative image through Real-ESRGAN, SwinIR and HAT to choose the model for a larger set.' },
+      { title: 'Spending the budget on one region', description: 'Drag-select just a face or a sign so the 64-megapixel budget and the GPU time go where it counts.' },
     ],
     whyMediaManipulator: [
-      'Eight research-grade models behind one upload — no notebooks, CUDA setup, or model weights to manage.',
-      'Runs entirely on our own GPU server: your image never goes to a third-party AI provider.',
-      'Honest by design: pre-clean is labeled non-generative, face enhancement is labeled generative reconstruction, and the original is always shown for side-by-side comparison.',
+      'Eight research models behind one upload, with no notebooks, CUDA setup or weight files to manage.',
+      'Every model runs on a GPU server we operate; the image is not sent to a third-party AI service.',
+      'The page keeps the distinction honest: pre-clean outputs carry a fidelity note, face outputs a generative note, and the prepared original is always in the grid.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your image is saved in its job folder, auto-oriented and cropped by ImageMagick into a working PNG, and processed by the selected models on our own GPU. When the job ends the upload folder and the working tree are deleted; what remains with the job is the prepared original, each result PNG, the manifest and the packaged .tar.gz, served from the job for download and for the comparison grid. Face-model outputs are labelled as generative reconstructions in that manifest. No third-party AI provider receives the image. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp'],
       supportedOutputFormats: ['png'],
@@ -8352,73 +8652,66 @@ export const TOOL_PAGES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'What is the difference between pre-clean and the upscaling/face models?',
+        question: 'What is the difference between pre-clean and the upscaling or face models?',
         answer:
-          'Pre-clean models (FBCNN, SCUNet, NAFNet) are non-generative: they remove compression artifacts, noise, and motion blur by filtering the existing signal, without inventing new detail. Upscalers add resolution, and the face models (GFPGAN, CodeFormer) are generative — they synthesize plausible facial detail. That is why pre-clean output is a faithful filtered image while face output is a reconstruction.',
+          'Pre-clean models (FBCNN, SCUNet, NAFNet) are non-generative: they remove compression artifacts, noise and motion blur by filtering the existing signal at 1x. Upscalers add resolution, and the face models (GFPGAN, CodeFormer) are generative, synthesising plausible facial detail. A pre-clean output is a faithful filtered image; a face output is a reconstruction.',
       },
       {
-        question: 'Can AI face enhancement be used as identification evidence?',
+        question: 'Can an enhanced face be used as identification evidence?',
         answer:
-          'No. GFPGAN and CodeFormer synthesize plausible facial detail from a learned prior; they do not recover the true face. The output is useful for visual clarity and investigative leads, but it must never be treated as a faithful recovery of the source for identification.',
+          'No. GFPGAN and CodeFormer produce plausible faces from a learned prior; they do not recover the true face. The manifest marks every face output with a generative note for exactly this reason. Use them for visual clarity and leads only.',
       },
       {
-        question: 'Why do the pre-clean models always run in the same order?',
+        question: 'Why do the pre-clean models run in a fixed order whatever I tick?',
         answer:
-          'Compression artifacts must be removed before denoising (otherwise the denoiser treats blocking as signal), and deblurring works best on the cleanest input, so the pipeline always runs FBCNN → SCUNet → NAFNet regardless of the order you select them.',
+          'Compression artifacts have to come off before denoising, otherwise the denoiser treats blocking as signal, and deblurring works best on the cleanest input, so the server always runs FBCNN, then SCUNet, then NAFNet, each on the previous result. If one of them fails, the next continues from the last successful step.',
       },
       {
-        question: 'What does the Chain option do?',
+        question: 'How does Auto decide between 2x and 4x, and what is the size limit?',
         answer:
-          'With chaining on, each selected face model runs on every upscaler’s output in addition to running on the source. For example, two upscalers and two face models with chaining produce the two upscaled images, each face model on the source, and each face model on each upscaler’s result.',
+          'Auto picks 4x when the crop is at most 540 pixels tall and 2x otherwise. The output is then checked against a budget of about 64 megapixels (67,108,864 pixels); a request over it is refused with the megapixel count and a suggestion to choose 2x or a smaller crop. Sources over 12,000 pixels on either side are rejected before that.',
       },
       {
-        question: 'Should I use 2x or 4x?',
+        question: 'What does Chain do to the number of outputs?',
         answer:
-          'The models run native 4x networks; a 2x request downscales the 4x output with Lanczos for identical quality at half the dimensions. Auto picks 4x for small crops and 2x for larger ones, and an output pixel budget prevents accidentally enormous results.',
+          'With Chain on, each face model also runs at 1x on every upscaler\'s result, so outputs = pre-clean + general + face + face x general. Two upscalers and two face models with chaining is 2 + 2 + 4 = 8 outputs before any pre-clean; the server allows 12 per job.',
       },
       {
-        question: 'What happens if a model fails?',
+        question: 'What happens if one image model fails or times out?',
         answer:
-          'The job keeps going. The failed model’s entry records a user-safe reason, the manifest notes it, and every other result is still packaged and shown in the comparison grid.',
+          'The job carries on. The unit is marked failed with a user-safe reason (for example a timeout after 1,800 seconds suggesting a smaller crop or 2x), the manifest records it, and every other result is still packaged and shown. Only when every selected model fails does the job fail, and then the AI operation is refunded.',
       },
       {
-        question: 'Why is CodeFormer sometimes unavailable?',
+        question: 'Why is CodeFormer greyed out?',
         answer:
-          'CodeFormer is under a non-commercial license, so it is gated behind a server flag and may be disabled on this deployment. GFPGAN (Apache-2.0) and the pre-clean models (Apache-2.0/MIT) are always available when installed.',
+          'CodeFormer is licensed for non-commercial use, so it sits behind a server flag that is off by default; capabilities then report it as currently disabled. GFPGAN and the three pre-clean models have permissive licences and are available whenever their weights are installed.',
       },
       {
-        question: 'Does it keep my original image?',
+        question: 'How many restorations can I run, and is it free?',
         answer:
-          'The prepared (cropped) original is included in the results package and shown alongside every output so you can A/B each result honestly.',
+          'Starting a restoration spends one AI operation: 1 per day as a guest, 5 with a free account, 60 on Premium and 120 on Pro by default, regardless of how many models you tick in that job. There is also a dedicated limit of 6 starts per session per hour. The upload cap is 200 MB for guests and 1 GB with a free account; /pricing shows the current numbers.',
       },
     ],
     related: [
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'The moving-image sibling: the same upscalers on a short clip.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'A single Real-ESRGAN pass when you only need a bigger image.' },
+      { label: 'Remove background', to: '/tools/remove-background-from-image', description: 'Cut out the subject after restoring it.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the restored PNG for sharing.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize the restored image to exact dimensions.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip metadata from the result before posting it.' },
+    ],
+    workedExamples: [
       {
-        label: 'AI Video Restoration',
-        to: '/tools/ai-video-restoration',
-        description: 'The moving-image sibling — restore and upscale a video snippet.',
+        title: 'A 1,200 x 800 JPEG (about 350 KB), whole frame, auto scale, FBCNN + Real-ESRGAN + GFPGAN',
+        body: 'The crop is the full 0.96-megapixel frame and its height of 800 pixels is over 540, so auto scale resolves to 2x. FBCNN runs first at 1x and its output becomes the working source. Real-ESRGAN upscales that to 4,800 x 3,200 with realesrgan-x4plus, then ImageMagick resizes it to 50 percent with Lanczos for a 2,400 x 1,600 PNG. GFPGAN runs on the pre-cleaned source at upscale 2, giving another 2,400 x 1,600 PNG with the faces reconstructed and the rest plainly resized. That is three outputs out of the 12 allowed. By the server\'s own per-megapixel estimates the model time is about 0.96 x (3 + 2 + 6), around 11 seconds, plus a few seconds of preparation and packaging; waiting for the single restoration slot can add more. One job spends one AI operation.',
       },
       {
-        label: 'Remove background',
-        to: '/tools/remove-background-from-image',
-        description: 'Cut out the subject after restoring it.',
-      },
-      {
-        label: 'Compress image',
-        to: '/tools/compress-image',
-        description: 'Shrink the restored image for sharing.',
-      },
-      {
-        label: 'Image resizer',
-        to: '/tools/image-resizer',
-        description: 'Resize the restored image to exact dimensions.',
-      },
-      {
-        label: 'Remove EXIF metadata',
-        to: '/tools/remove-exif-metadata',
-        description: 'Strip metadata from the restored image before sharing.',
+        title: 'A 300 x 400 face crop from a 640 x 480 still, pre-clean, three upscalers, GFPGAN with Chain',
+        body: 'The crop is 0.12 megapixels and 400 pixels tall, so auto scale picks 4x and every upscaled result is 1,200 x 1,600 (1.92 megapixels), far inside the 64-megapixel budget. With FBCNN and SCUNet pre-clean, Real-ESRGAN, SwinIR and HAT, and GFPGAN chained, the job produces 2 + 3 + 1 + 1 x 3 = 9 outputs: two pre-clean steps, three upscales, GFPGAN on the cleaned source, and GFPGAN on each upscaled result at 1x. The pre-clean and upscale passes on 0.12 megapixels are each a few seconds by the server\'s estimates, while the three chained face passes run on the 1.92-megapixel results and take proportionally longer. Each face output carries a generative note in the manifest, because what you see in those faces is reconstruction, not recovery.',
       },
     ],
+    whenNotToUse:
+      'Do not use face enhancement for identification: GFPGAN and CodeFormer draw plausible faces from a learned prior, so a reconstructed face is a lead at most and never proof of who was in the picture. Skip the tool for images that are already large and sharp, where a 2x pass mostly adds GAN texture, and for photos larger than 12,000 pixels on a side, which are refused. If you only need a bigger copy of a clean image without pre-clean, face models or a comparison grid, the AI Image Upscaler is cheaper in time. And if your damage is defocus blur rather than motion blur, NAFNet\'s GoPro weights are the wrong model for it.',
     primaryKeyword: 'AI image restoration',
     secondaryKeywords: [
       'AI image upscaler',
@@ -8437,7 +8730,7 @@ export const TOOL_PAGES: ToolPageContent[] = [
   },
   {
     slug: 'ai-document-scan',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'AI Document Scan',
     h1: 'AI Document Scan — Scanned Pages & Handwriting to Searchable PDF / Word',
     tagline:
@@ -8457,79 +8750,79 @@ export const TOOL_PAGES: ToolPageContent[] = [
         'Add one or more scanned page images (printed documents or handwritten notes), reorder them if needed, choose a content mode and outputs, and get a searchable PDF plus an optional Word document.',
     },
     intro:
-      'AI Document Scan turns one or more scanned pages into a searchable, multi-page PDF and, optionally, an editable Word (DOCX) document. It handles two very different kinds of page and is honest about the difference. Printed/typed pages go through deterministic OCR (OCRmyPDF + Tesseract): the PDF is the original scan with an invisible, searchable text layer grafted underneath — the resolution is untouched and nothing is rewritten. Handwritten pages (detective field notes, a notebook, scratch paper, a napkin) are read by a vision-language AI that transcribes the writing verbatim, marking anything it cannot read as [illegible] and uncertain words as [?: best guess] — it never invents or "cleans up" what you wrote. A single job can mix both, page by page, and assemble one ordered output. Everything runs on our own GPU server, never a third-party API.',
+      'AI Document Scan turns one or more photographed or scanned pages into a searchable, multi-page PDF and, if you ask for it, an editable Word document. It treats two kinds of page differently and tells you which is which. Printed or typed pages go through OCRmyPDF and Tesseract: the output page is your scan, untouched, with an invisible text layer underneath so you can search, select and copy. Handwritten pages are read by a vision-language model running on our own GPU, which transcribes the writing word for word, marks what it cannot read as [illegible] and wraps a doubtful word as [?: best guess], and is told never to complete, correct or tidy anything. A single job can mix both kinds, page by page, in the order you set, and the result names the engine and the confidence for every page.',
     whatItDoes: [
-      'Converts a scanned image (or many) into a searchable, multi-page PDF — selectable, copy-pasteable text over the original scan.',
-      'Transcribes handwritten notes to text: the PDF keeps the original scan as the visible page and overlays an invisible machine-transcription layer so it is searchable, clearly labeled as a machine transcription.',
-      'Optionally produces an editable Word (DOCX) document — printed pages reconstructed with structure (headings, lists, tables), handwriting as the verbatim transcription, each labeled a reconstruction.',
-      'Auto mode classifies each page as printed or handwritten and routes it to the right engine, so mixed documents come out as one ordered file.',
-      'Lets you drag-reorder pages before processing and pick output language(s) for printed OCR.',
-      'Preserves uncertainty: [illegible] and [?: guess] markers survive end to end, and a per-page confidence note is shown — nothing is fabricated.',
+      'Accepts up to 50 page images per job (PNG, JPEG, WebP, TIFF, BMP or HEIC, 25 MB each by default), normalises each to an upright PNG, and lets you drag them into reading order first.',
+      'In Auto mode asks the vision model one question per page (printed or handwritten?) and routes the page accordingly; Printed and Handwriting modes force the answer.',
+      'Builds a PDF/A in which every printed page is the original scan plus a Tesseract text layer, and every handwritten page is the scan plus an invisible machine-transcription layer placed line by line, with a visible footer saying so.',
+      'Optionally builds a Word document: printed pages reconstructed as headings, lists and tables by PaddleOCR-VL (or Docling), handwritten pages as the verbatim transcription under a bold verify-against-the-scan note, rendered by Pandoc.',
+      'Reports, per page, the engine used, a confidence of high, medium or low, and the number of uncertainty markers, so you know where to look.',
+      'Can run a verification pass that re-reads only the flagged tokens, an independent second opinion that flags disagreements as [?: vlm | other], and a separately labelled AI summary, when the server has those engines enabled.',
     ],
     flowSteps: [
       {
         title: 'Add your pages',
-        description: 'Drop in one or more scanned images (PNG, JPEG, WebP, TIFF, BMP, HEIC) — printed pages, handwritten notes, or a mix.',
+        description: 'Drop in one page image per file, printed or handwritten or a mix, and drag them into order.',
       },
       {
-        title: 'Reorder if needed',
-        description: 'Drag pages into the right reading order before anything is processed.',
+        title: 'Choose mode and outputs',
+        description: 'Auto, Printed or Handwriting; PDF always, Word optionally; the Tesseract language for printed pages; deskew and auto-rotate for printed OCR.',
       },
       {
-        title: 'Choose mode & outputs',
-        description: 'Pick Auto, Printed, or Handwriting; choose a searchable PDF and optionally a Word document, plus language(s) for printed OCR.',
+        title: 'Prepare and read',
+        description: 'Pages are auto-oriented and, for handwriting, upscaled 2x with Real-ESRGAN before the model reads them; printed pages wait for Tesseract in the PDF step.',
       },
       {
-        title: 'Watch the pipeline run',
-        description: 'A live checklist tracks classification, reading, verification, and packaging with rising progress.',
+        title: 'Build the files',
+        description: 'OCRmyPDF and reportlab make the per-page PDFs, pikepdf merges them; the Word document is assembled from Markdown by Pandoc.',
       },
       {
-        title: 'Review & download',
-        description: 'A built-in PDF viewer opens on completion; download the searchable PDF and, if requested, the Word document and a separate AI summary.',
+        title: 'Review and download',
+        description: 'A viewer opens on the PDF; download it, the Word file if requested, and the manifest that records each page\'s engine and confidence.',
       },
     ],
     advancedDetails: [
-      'Printed PDF is faithful: OCRmyPDF grafts an invisible Tesseract text layer under the original scan and outputs PDF/A — the scanned pixels are never altered, only made searchable.',
-      'Handwriting PDF is the original scan plus an invisible machine-transcription layer positioned per line from the vision model’s grounding boxes (a full-page invisible block when boxes are unavailable), with a visible "machine transcription — verify against original" stamp.',
-      'Handwriting is read by a general vision-language model (qwen3-vl) tuned for verbatim transcription; an optional second-opinion engine (PaddleOCR-VL, or TrOCR as a lighter fallback) independently re-reads the page and disagreements are flagged [?: vlm | other], never silently merged.',
-      'An optional verification pass re-reads only the tokens you flagged as uncertain and may resolve them from the image — but it is instructed to leave confident text untouched and never add content that is not visibly written.',
-      'DOCX is a reconstruction: printed pages are parsed to structured Markdown (PaddleOCR-VL preferred, Docling fallback) preserving tables and headings; handwriting sections carry the verbatim transcription with a bold "verify against the original scan" note; Pandoc renders the final .docx.',
-      'The optional AI summary is written to a separate, clearly-labeled file ("AI-generated summary — not a verbatim transcription") and never modifies the verbatim outputs.',
-      'Capabilities degrade gracefully: if the handwriting engine is offline, printed OCR still works; if no structure engine is reachable, DOCX is disabled but the PDF still ships.',
+      'Printed pages: the normalised PNG is wrapped losslessly with img2pdf, then OCRmyPDF runs Tesseract with your language code(s), deskew and rotate_pages when ticked, output_type pdfa and force_ocr, and writes the text layer under the image. If OCRmyPDF fails on a page the image-only page is kept, so the PDF is still complete.',
+      'Handwritten pages: the model is qwen3-vl (8B, instruct, q8_0 quantisation) served by Ollama at temperature 0.1, prompted to transcribe verbatim, keep line breaks, mark [illegible] and [?: guess], note marks such as (arrow) or (circled), and return JSON with the full text and one bounding box per line.',
+      'The handwriting PDF page is drawn with reportlab at the image\'s pixel size: the scan is the visible page, each transcribed line is placed at its bounding box in text render mode 3 (searchable, never drawn) in Helvetica sized to the line height between 6 and 48 points, with a full-page invisible block as fallback when no boxes came back, and a grey 8-point footer reading "Machine transcription, verify against original".',
+      'Confidence is computed, not guessed: high when a page has no markers, medium when fewer than 15 percent of its lines carry one, low otherwise. The verify pass (on by default) sends the page and the draft back to the model with instructions to resolve only marked tokens and change nothing else; if it fails the draft is kept.',
+      'Pre-cleaning for handwriting is realesrgan-x4plus at scale 2 on the Vulkan GPU, on by default for Auto and Handwriting and off for Printed; it is best effort and the originals are kept if it fails. The Word document is built from GitHub-flavoured Markdown by Pandoc; the optional summary uses a separate text model and is written to its own file with an AI-generated label.',
+      'One document job runs at a time on the server by default, each model call has a 40-minute ceiling, and the uploads and the working folder are deleted the moment the job ends; only the results folder (PDF, DOCX, manifest.json, README.txt) stays for the retention window.',
     ],
     whyItMatters: [
-      'A photo of a document is not a document: without an OCR text layer you cannot search, select, or quote it. This adds that layer while keeping the original scan as the authoritative page.',
-      'Handwritten notes are some of the hardest pages to digitize; a verbatim, uncertainty-marked transcription is far more useful — and more honest — than a confident guess.',
-      'The faithful-vs-reconstructed distinction matters for investigative and archival work: the printed PDF is faithful, the DOCX and any summary are reconstructions you should verify against the scan.',
+      'A photo of a page is not a document until it can be searched and quoted. The PDF adds that without touching the pixels, so the scan remains the authority.',
+      'Handwriting recognition that guesses confidently is worse than none. Explicit [illegible] and [?: guess] markers, a per-page confidence and a visible label make the transcription usable as a draft and never mistakable for the original.',
+      'Printed and handwritten pages need different engines. Routing each page to the right one, inside one ordered job, is what makes a notebook with a printed form and handwritten answers come out as a single file.',
     ],
     useCases: [
       {
-        title: 'Make scanned paperwork searchable',
-        description: 'Turn a stack of scanned contracts, forms, or receipts into one searchable PDF you can grep and quote.',
+        title: 'Searchable paperwork',
+        description: 'Scanned contracts, receipts and forms become one PDF/A you can search and copy from, page images untouched.',
       },
       {
-        title: 'Transcribe handwritten field notes',
-        description: 'Convert detective notes, lab notebooks, or interview scribbles into editable text with uncertainty preserved, not fabricated.',
+        title: 'Field and lab notebooks',
+        description: 'Handwritten notes become a searchable PDF and a Word draft with every uncertain word marked for you to check.',
       },
       {
-        title: 'Image to Word (OCR)',
-        description: 'Get an editable .docx from a scanned printed page, with headings, lists, and tables reconstructed.',
+        title: 'Image to Word',
+        description: 'A printed page photographed with a phone becomes an editable .docx with its headings, lists and tables reconstructed.',
       },
       {
-        title: 'OCR notebook pages',
-        description: 'Digitize mixed notebook pages — a printed form with handwritten answers — into one ordered, searchable document.',
+        title: 'Mixed documents',
+        description: 'A printed questionnaire with handwritten answers goes through both engines and comes back as a single ordered file.',
       },
       {
-        title: 'Archive and quote old documents',
-        description: 'Add a searchable text layer to scanned archival pages without touching the original scanned image.',
+        title: 'Archives',
+        description: 'Old typed letters and minutes gain a text layer for indexing while the scan stays exactly as it was.',
       },
     ],
     whyMediaManipulator: [
-      'Honest by design: the printed PDF is faithful (original scan + searchable layer), while the Word document and any AI summary are labeled reconstructions you should verify against the scan.',
-      'Verbatim, never fabricated: handwriting is transcribed exactly, with [illegible] and [?: guess] markers preserved and surfaced as a per-page confidence note — and an optional independent second opinion flags disagreements instead of hiding them.',
-      'Runs entirely on our own GPU server: your scans and notes never go to a third-party AI provider, and no login is required.',
+      'The printed PDF is faithful by construction: OCRmyPDF places text under an untouched page image and outputs PDF/A, nothing is redrawn.',
+      'Handwriting is verbatim with evidence: the prompt forbids invention, uncertainty is marked in the text, confidence is counted from those marks, and the page says it is a machine transcription.',
+      'Every engine is ours: Tesseract on CPU, qwen3-vl and the text model through Ollama, PaddleOCR-VL and Real-ESRGAN on our GPUs. No page goes to a third-party AI service.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your page images are saved to uploads/<jobId>/src/ and normalised copies to a working folder; handwritten pages are sent to the qwen3-vl model served by Ollama on our own GPU, printed pages are read by Tesseract on the CPU, and the per-page transcription drafts are kept as JSON in that working folder while the job runs. When the job ends, both the uploads and the working folder are deleted immediately; what remains is the results folder in outputs/<jobId>/ with the PDF, the Word file if requested, the manifest (per-page engine, confidence and marker counts) and a README, and that folder is removed when the retention window ends. ${RETENTION_PROMISE}. The transcribed text lives inside the PDF text layer and the DOCX you download. Nothing is sent to a third-party AI provider and nothing is used for training.`,
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp', 'heic'],
       supportedOutputFormats: ['pdf', 'docx'],
@@ -8547,61 +8840,80 @@ export const TOOL_PAGES: ToolPageContent[] = [
       {
         question: 'What is the difference between the PDF and the Word document?',
         answer:
-          'The PDF is the original scan with a searchable text layer. For printed pages that layer is a faithful Tesseract OCR layer; for handwriting it is a machine transcription overlaid invisibly, and the scan stays the visible, authoritative page. The Word document is a separate, editable reconstruction — printed pages with structure (headings/lists/tables) and handwriting as the verbatim transcription — which you should verify against the scan.',
+          'The PDF is your scan with a searchable text layer: a Tesseract layer under a printed page, an invisible machine transcription under a handwritten one, in both cases with the original image as the visible page. The Word document is a separate reconstruction: printed pages as headings, lists and tables produced by PaddleOCR-VL or Docling, handwritten pages as the verbatim transcription under a bold note telling you to verify it. Treat the PDF image as the authority and the DOCX as a draft.',
       },
       {
-        question: 'Does it transcribe handwriting, and can I trust it?',
+        question: 'How reliable is the handwriting transcription?',
         answer:
-          'Yes — handwritten pages are transcribed verbatim by a vision-language AI. It marks anything it cannot read as [illegible] and uncertain words as [?: best guess], and it does not invent or correct text. A per-page confidence note shows how many tokens are uncertain. Treat the transcription as a careful machine reading to verify against the original, not as ground truth.',
+          'It is a careful machine reading, not a certified transcript. The model is instructed to copy exactly what is written, to mark anything unreadable as [illegible] and any doubtful word as [?: best guess], and never to invent or correct. Each page gets a confidence (high with no markers, medium under 15 percent of lines marked, low above) and a marker count, and the PDF page carries a visible machine-transcription footer. Read the flagged words against the scan.',
       },
       {
-        question: 'Can I scan a document that mixes printed text and handwriting?',
+        question: 'Can I mix printed pages and handwritten pages?',
         answer:
-          'Yes. In Auto mode each page is classified as printed or handwritten and routed to the right engine, then everything is assembled into one ordered PDF (and Word document). A notebook with a printed form and handwritten answers is exactly the target.',
+          'Yes. In Auto mode the vision model is asked, for every page, whether it is primarily printed or handwritten, and the page goes to Tesseract or to the handwriting model accordingly. The manifest records the answer per page, and the final PDF and Word file keep the order you set before starting.',
       },
       {
-        question: 'Can I reorder the pages?',
+        question: 'Which languages does printed OCR support?',
         answer:
-          'Yes. On the dedicated tool page you can drag pages into the correct reading order before processing; the final PDF and Word document follow that order.',
+          'Tesseract language codes, joined with a plus sign for mixed pages (for example eng+fra). The codes the server offers are listed in the form; English is installed by default and others appear as they are added. Handwriting is read by a vision model and does not use these codes.',
       },
       {
-        question: 'What languages are supported for printed OCR?',
+        question: 'What are the limits per job?',
         answer:
-          'Printed OCR uses Tesseract, which supports many languages. The available language packs depend on the server; you can select one or combine several (e.g. English + French) for the printed pages.',
+          'By default 50 images and 100 pages per job, 25 MB per image, one running job at a time per server (others wait in the queue), and a 40-minute ceiling per model stage. Each job spends one AI operation: 1 a day without an account, 5 with a free account, 60 with Premium and 120 with Pro, with the unit refunded when a job fails. Live numbers are on the pricing page.',
       },
       {
-        question: 'Is the searchable PDF a faithful copy of my scan?',
+        question: 'Why does my handwriting PDF have a footer, and can I remove it?',
         answer:
-          'Yes for printed pages: OCRmyPDF adds an invisible text layer under the untouched scan and outputs PDF/A. For handwriting pages the original scan is still the visible page; the transcription is an invisible, clearly-labeled machine layer.',
+          'Every handwritten page carries a small grey "Machine transcription, verify against original" line, and the Word section has a bold equivalent, because a searchable copy of handwriting can be mistaken for a verified one. They are part of the output by design and cannot be switched off. Printed pages, whose layer is deterministic Tesseract output, carry no stamp.',
       },
       {
-        question: 'Do my files go to a third-party AI service?',
+        question: 'Do my pages leave your servers?',
         answer:
-          `No. All processing — OCR and the handwriting AI — runs on our own GPU server. ${RETENTION_PROMISE}. No account is required.`,
+          'No. Tesseract runs on the CPU, the handwriting and classification model runs through Ollama on our GPU, and the structure engine and upscaler run on a second GPU in the same machine. The uploads and working files are deleted as soon as the job finishes.',
       },
     ],
     related: [
       {
         label: 'Image to PDF',
         to: '/tools/image-to-pdf',
-        description: 'Combine images into a PDF without an OCR text layer.',
+        description: 'Bind page images into a PDF without a text layer, using an ordinary operation.',
       },
       {
         label: 'PDF to JPG',
         to: '/tools/pdf-to-jpg',
-        description: 'Go the other way — render PDF pages to images.',
+        description: 'Render an existing PDF to page images you can feed into the scan.',
       },
       {
-        label: 'AI Image Restoration',
+        label: 'AI image restoration',
         to: '/tools/ai-image-restoration',
-        description: 'Clean up and upscale a low-resolution scan before transcribing it.',
+        description: 'Repair a faded or blurry scan before transcribing it.',
       },
       {
         label: 'Remove EXIF metadata',
         to: '/tools/remove-exif-metadata',
-        description: 'Strip metadata from a scanned image before sharing.',
+        description: 'Strip location and device tags from phone photos of documents.',
+      },
+      {
+        label: 'Redact text in an image',
+        to: '/tools/redact-text-in-image',
+        description: 'Black out names or numbers on a page before you share the scan.',
       },
     ],
+    workedExamples: [
+      {
+        title: 'Three printed A4 pages at 300 dpi',
+        body:
+          'Three 2480 x 3508 JPEG scans in Printed mode, PDF only, language eng, deskew and auto-rotate on. No model is involved: each page is wrapped by img2pdf, then OCRmyPDF runs Tesseract and writes an invisible text layer, outputs PDF/A, and pikepdf merges the three into document.pdf. The text layer adds only kilobytes per page, so the PDF is roughly the size of the three page images (a straightened page is re-rendered, an untouched one is embedded as is). The job spends one AI operation (refunded if it fails) and its time is Tesseract on the CPU, page after page, plus any wait in the queue, since one document job runs at a time by default.',
+      },
+      {
+        title: 'Two handwritten pages from a phone, with Word',
+        body:
+          'Two 4032 x 3024 phone photos of notebook pages in Auto mode with PDF and DOCX. Prepare auto-orients both to PNG and, because the mode is not Printed, upscales them 2x with realesrgan-x4plus to 8064 x 6048. Classify asks qwen3-vl one question per page, recognise returns the transcription with a bounding box per line, and verify re-reads only the flagged tokens. If a page has 30 lines and 2 of them carry [?: ...] markers, 2 / 30 is under 15 percent and the page is marked medium confidence with illegibleCount 2. The PDF pages are the processed images with invisible Helvetica lines at those boxes and the footer stamp; the Word file holds the verbatim text under the bold verify note. The time is three sequential vision-model passes per page on our GPU; nothing is run elsewhere.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use this when you need the text to be authoritative without checking it: handwriting output is a machine reading with marked gaps, and the Word document and summary are reconstructions, so verify them against the scan before quoting them. It is not a PDF-to-PDF OCR tool: inputs are page images, so render an existing PDF to images first, and it is not a translator. If you only need the pages bound into a PDF with no text layer, the plain image-to-PDF tool does that with an ordinary operation instead of an AI one, which matters on the guest allowance of one AI operation a day.',
     primaryKeyword: 'scanned image to searchable PDF',
     secondaryKeywords: [
       'convert scanned document to PDF',
@@ -8622,6 +8934,18 @@ export const TOOL_PAGES: ToolPageContent[] = [
   // MM78 voices.
   ...VOICE_TOOL_PAGES,
 ];
+
+/**
+ * Every tool page. MM84: `aliasOf` is stamped here from content/toolAliases.ts
+ * (the one place the alias map lives) rather than repeated in each entry.
+ */
+export const TOOL_PAGES: ToolPageContent[] = TOOL_PAGE_ENTRIES.map((tool) => {
+  const aliasOf = aliasTargetOf(tool.slug);
+  return aliasOf ? { ...tool, aliasOf } : tool;
+});
+
+/** The pages that render in full: every tool page that is not an alias. */
+export const PRIMARY_TOOL_PAGES: ToolPageContent[] = TOOL_PAGES.filter((tool) => !tool.aliasOf);
 
 export const TOOL_PAGE_MAP: Record<string, ToolPageContent> = TOOL_PAGES.reduce(
   (acc, tool) => {

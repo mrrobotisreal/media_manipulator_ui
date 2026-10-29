@@ -2074,7 +2074,8 @@
       "ai": "KI-Werkzeuge",
       "privacy": "Datenschutz",
       "editor": "Editoren"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} weitere"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Brotkrumen-Navigation",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "Häufig gestellte Fragen",
     "faqHeading": "Häufig gestellte Fragen",
     "relatedToolsAriaLabel": "Verwandte Werkzeuge",
-    "relatedToolsHeading": "Verwandte Werkzeuge"
+    "relatedToolsHeading": "Verwandte Werkzeuge",
+    "aliasHeading": "Vollständige Anleitung, Beispiele und FAQ",
+    "aliasLink": "Die vollständige Anleitung zu {{name}} lesen",
+    "workedExamplesHeading": "Rechenbeispiele",
+    "whenNotToUseHeading": "Wann Sie dieses Tool nicht verwenden sollten"
   },
   "contentStudioGuide": {
     "summaryTitle": "So funktioniert Darkroom — Kurzanleitung",

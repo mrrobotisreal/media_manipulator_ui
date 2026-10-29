@@ -16,6 +16,7 @@ const frToolPages = {
   pages: {
     // MM48/MM57: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: 'Dessinez ou importez un SVG, animez-le sur une timeline d’images clés et exportez en SVG animé, Lottie, React, JavaScript, Flutter ou GIF, le tout dans votre navigateur.',
       intro: 'Motion est un éditeur SVG doté d’une timeline d’animation, intégré à Media Manipulator. Ouvrez un fichier SVG (ou une animation Lottie) et chaque forme devient un calque que vous pouvez sélectionner, déplacer, recolorer et animer, ou partez d’une zone de dessin vierge et dessinez avec les outils rectangle, ellipse, ligne, plume et texte. Chaque propriété animée reçoit sa propre piste d’images clés, avec des préréglages d’accélération, un éditeur de courbe pour une accélération personnalisée et des clés de maintien pour les sauts instantanés. Des animateurs en un clic ajoutent le tracé progressif du contour, le déplacement le long d’une trajectoire, le morphing de formes, les changements de couleur de dégradé, l’animation de masque et le flou. Quand le mouvement vous convient, exportez-le en SVG animé, fichier Lottie, composant React, module JavaScript ou TypeScript, widget Flutter ou GIF. L’édition et chaque export s’exécutent dans votre navigateur : votre dessin n’est donc jamais envoyé sur nos serveurs pour être exporté.',
       whatItDoes: [
@@ -553,6 +554,145 @@ const frToolPages = {
       name: 'Changeur de voix',
       tagline:
         'Décalez instantanément la hauteur et le caractère d\'un enregistrement, ou convertissez la parole vers une voix enregistrée ou prédéfinie grâce à l\'IA.',
+    },
+    // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
+    'content-studio': {
+      name: 'Darkroom',
+      tagline: 'Montez, superposez et mixez vidéo et audio sur une timeline multipiste, puis exportez en MP4. Un éditeur de type Premiere Pro, directement dans votre navigateur.',
+      metaTitle: 'Darkroom : éditeur vidéo multipiste gratuit en ligne | Media Manipulator',
+      metaDescription: 'Montez, superposez et mixez vidéo et audio sur une timeline multipiste, puis exportez en MP4 : un éditeur vidéo gratuit de type Premiere Pro qui fonctionne directement dans votre navigateur. Sans inscription ni installation.',
+    },
+    'remove-exif-metadata': {
+      name: 'Supprimer les métadonnées EXIF des images',
+      tagline: 'Supprimez la localisation GPS et les données d’appareil, de caméra et d’horodatage de vos photos avant de les partager.',
+      metaTitle: 'Supprimer les métadonnées EXIF d’images en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Outil en ligne gratuit pour supprimer les métadonnées EXIF, GPS, IPTC et d’appareil photo des images JPG, PNG, WebP et HEIC. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'compress-image': {
+      name: 'Compresser une image',
+      tagline: 'Réduisez le poids des fichiers JPG, PNG et WebP pour des sites plus rapides, des envois plus légers et un partage plus simple.',
+      metaTitle: 'Compresser une image en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Compresseur d’images en ligne gratuit. Réduisez le poids des fichiers JPG, PNG et WebP tout en gardant une bonne qualité. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'image-resizer': {
+      name: 'Redimensionner une image',
+      tagline: 'Redimensionnez des images JPG, PNG, WebP et GIF aux dimensions exactes en pixels tout en conservant les proportions.',
+      metaTitle: 'Redimensionner une image en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour redimensionner des images. Redimensionnez des images JPG, PNG, WebP et GIF aux dimensions exactes en pixels en conservant les proportions. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'remove-background-from-image': {
+      name: 'Supprimer l’arrière-plan d’une image',
+      tagline: 'Effacez automatiquement l’arrière-plan de n’importe quelle photo et téléchargez un détourage PNG net et transparent.',
+      metaTitle: 'Supprimer l’arrière-plan d’une image en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Suppression d’arrière-plan gratuite en ligne. Effacez automatiquement l’arrière-plan de n’importe quelle photo et téléchargez un PNG transparent. Fonctionne sur notre propre GPU, sans IA tierce. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'image-to-pdf': {
+      name: 'Image en PDF',
+      tagline: 'Transformez des images JPG, PNG et autres en un document PDF propre et facile à partager, en un clic.',
+      metaTitle: 'Convertir une image en PDF en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur d’image en PDF gratuit en ligne. Transformez des images JPG, PNG et autres en un document PDF propre. Sans inscription ni filigrane. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'pdf-to-jpg': {
+      name: 'PDF en JPG',
+      tagline: 'Convertissez chaque page d’un PDF en images JPG de haute qualité que vous pouvez partager, modifier ou publier.',
+      metaTitle: 'Convertir un PDF en JPG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur de PDF en JPG gratuit en ligne. Convertissez chaque page d’un PDF en images JPG de haute qualité, téléchargées dans un ZIP. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'compress-video': {
+      name: 'Compresser une vidéo',
+      tagline: 'Réduisez le poids de vos fichiers MP4, WebM, MOV, MKV et AVI pour le web, l’e-mail, les réseaux sociaux et le cloud.',
+      metaTitle: 'Compresser une vidéo en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Compresseur vidéo gratuit en ligne. Réduisez le poids des fichiers MP4, WebM, MOV, MKV et AVI tout en gardant une bonne qualité. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'video-trimmer': {
+      name: 'Découper une vidéo',
+      tagline: 'Coupez un clip pour ne garder que la partie voulue, avec un découpage rapide qui préserve la qualité, sans réencodage lorsque c’est possible.',
+      metaTitle: 'Découper une vidéo en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour découper une vidéo. Définissez un début et une fin et coupez votre clip avec un découpage rapide et sans perte. Sortie MP4, sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'extract-audio-from-video': {
+      name: 'Extraire l’audio d’une vidéo',
+      tagline: 'Enregistrez la piste audio de n’importe quelle vidéo en fichier MP3, WAV, M4A, AAC, FLAC ou OGG propre.',
+      metaTitle: 'Extraire l’audio d’une vidéo : MP3, WAV, M4A et plus | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour extraire l’audio de n’importe quel fichier vidéo (MP4, MOV, MKV, WebM, AVI). Sortie en MP3, WAV, M4A, AAC, FLAC ou OGG. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'convert-video-to-animated-gif': {
+      name: 'Convertir une vidéo en GIF animé',
+      tagline: 'Transformez en quelques secondes de courts clips MP4, WebM, MOV ou MKV en GIF animés faciles à partager.',
+      metaTitle: 'Convertir une vidéo en GIF animé en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Convertisseur de vidéo en GIF gratuit en ligne. Transformez de courts clips MP4, WebM, MOV et MKV en GIF animés, avec contrôle de la taille et de la fréquence d’images.',
+    },
+    'transcribe-video': {
+      name: 'Transcrire une vidéo',
+      tagline: 'Extrayez les paroles d’une vidéo ou d’un fichier audio sous forme de sous-titres WebVTT ou SRT, de texte brut ou de JSON horodaté.',
+      metaTitle: 'Transcrire une vidéo en texte en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Transcription vidéo gratuite en ligne. Convertissez des fichiers MP4, MOV, WebM, MKV et audio en texte consultable, en sous-titres VTT ou en transcriptions JSON.',
+    },
+    'transcode-to-hls': {
+      name: 'Transcoder une vidéo en HLS',
+      tagline: 'Empaquetez n’importe quelle vidéo en un lot Apple HLS VOD : master.m3u8 et segments .ts par rendition, prêts pour le web.',
+      metaTitle: 'Transcoder une vidéo en HLS en ligne | Outil de streaming adaptatif gratuit',
+      metaDescription: 'Transcodeur HLS gratuit en ligne. Convertissez MP4, MOV, WebM et MKV en un paquet HLS VOD avec des renditions 360p/480p/720p, sous-titres et storyboards en option.',
+    },
+    'ai-video-restoration': {
+      name: 'Restauration vidéo par IA',
+      tagline: 'Agrandissez et restaurez un court extrait vidéo avec jusqu’à six modèles d’IA (Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT et VRT) et comparez chaque résultat côte à côte.',
+      metaTitle: 'Restauration vidéo par IA : comparez 6 modèles d’upscaling en ligne | Media Manipulator',
+      metaDescription: 'Outil gratuit de restauration vidéo par IA. Passez un court clip dans les modèles de super-résolution Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT et VRT sur notre propre GPU et téléchargez tous les résultats dans un seul paquet.',
+    },
+    'ai-image-restoration': {
+      name: 'Restauration et upscaling d’images par IA',
+      tagline: 'Nettoyez, agrandissez et restaurez une photo avec jusqu’à huit modèles d’IA : pré-nettoyage fidèle (FBCNN, SCUNet, NAFNet), upscalers généralistes (Real-ESRGAN, SwinIR, HAT) et amélioration des visages (GFPGAN, CodeFormer), et comparez chaque résultat à l’original.',
+      metaTitle: 'Restauration et upscaling d’images par IA : 8 modèles à comparer | Media Manipulator',
+      metaDescription: 'Restauration et agrandissement de photos par IA, gratuits. Supprimez les artefacts JPEG, le bruit et le flou, agrandissez jusqu’en 4K/8K avec Real-ESRGAN, SwinIR ou HAT et améliorez les visages avec GFPGAN/CodeFormer, le tout sur notre propre GPU et comparé côte à côte.',
+    },
+    'ai-document-scan': {
+      name: 'Numérisation de documents par IA',
+      tagline: 'Transformez des documents numérisés et des notes manuscrites en un PDF multipage consultable et un document Word modifiable : les pages imprimées reçoivent une couche de texte Tesseract fidèle, l’écriture manuscrite est transcrite par une IA de vision, avec l’incertitude signalée et jamais inventée.',
+      metaTitle: 'Numérisation de documents par IA : pages scannées et écriture manuscrite en PDF/Word | Media Manipulator',
+      metaDescription: 'Numérisation de documents par IA, gratuite : convertissez des images scannées en PDF consultable et en Word par OCR, et transcrivez des notes manuscrites en texte. Réorganisez les pages, mélangez imprimé et manuscrit, le tout sur notre propre GPU, mot pour mot, avec l’incertitude signalée.',
+    },
+    'ai-image-upscaler': {
+      name: 'Upscaler d’images par IA',
+      tagline: 'Agrandissez une photo petite ou floue avec un modèle Real-ESRGAN qui reconstruit les détails fins au lieu de simplement étirer les pixels.',
+      metaTitle: 'Upscaler d’images par IA : agrandissez vos photos en 2x ou 4x | Media Manipulator',
+      metaDescription: 'Agrandissez une photo basse résolution en 2x ou 4x avec une IA qui restaure les contours et les textures. Fonctionne sur notre propre GPU, sortie en PNG. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'blur-faces-in-photo': {
+      name: 'Flouter les visages sur une photo',
+      tagline: 'Détectez automatiquement les visages, puis floutez-les, pixelisez-les ou masquez-les en noir, tous ou seulement ceux que vous choisissez.',
+      metaTitle: 'Flouter les visages d’une photo en ligne | Media Manipulator',
+      metaDescription: 'Floutez, pixelisez ou masquez en noir les visages d’une photo. Détectez chaque visage, puis choisissez ceux à cacher. L’IA fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'redact-text-in-image': {
+      name: 'Masquer du texte dans une image',
+      tagline: 'Repérez le texte lisible dans une capture d’écran ou une photo et couvrez les données personnelles, ou tout le texte, avec un flou ou un rectangle noir.',
+      metaTitle: 'Masquer du texte dans une image en ligne | Media Manipulator',
+      metaDescription: 'Repérez automatiquement le texte d’une image et masquez en noir ou floutez les noms, e-mails, numéros et autres données personnelles. IA sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'remove-object-from-photo': {
+      name: 'Supprimer un objet d’une photo',
+      tagline: 'Tracez un cadre autour de ce que vous ne voulez pas voir sur l’image : un modèle d’inpainting comble le vide avec un arrière-plan cohérent.',
+      metaTitle: 'Supprimer un objet d’une photo en ligne | Media Manipulator',
+      metaDescription: 'Effacez les objets indésirables d’une photo. Tracez un rectangle et l’inpainting par IA remplit l’espace pour l’accorder à l’arrière-plan. Fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'clean-voice-audio': {
+      name: 'Nettoyer l’audio d’une voix',
+      tagline: 'Rendez la parole plus claire en réduisant le souffle, l’ambiance de la pièce et les grondements dans les podcasts, interviews et mémos vocaux.',
+      metaTitle: 'Nettoyer un enregistrement vocal avec l’IA | Media Manipulator',
+      metaDescription: 'Nettoyez un enregistrement vocal avec l’IA. Réduisez le souffle, le ronflement et le bruit de la pièce pour mieux entendre la voix. Fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'remove-background-noise': {
+      name: 'Supprimer le bruit de fond',
+      tagline: 'Réduisez le souffle, le ronflement, la circulation et le bruit de la pièce dans un enregistrement grâce à un débruiteur IA, en gardant le son principal au premier plan.',
+      metaTitle: 'Supprimer le bruit de fond d’un audio en ligne | Media Manipulator',
+      metaDescription: 'Supprimez le bruit de fond d’un audio. Un débruiteur IA atténue le souffle, le ronflement et les sons ambiants des enregistrements. Fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+    },
+    'remove-vocals-from-song': {
+      name: 'Supprimer la voix d’une chanson',
+      tagline: 'Retirez le chant d’un morceau et gardez la musique, pour le karaoké, l’entraînement et les pistes d’accompagnement. À utiliser uniquement sur de la musique dont vous détenez les droits.',
+      metaTitle: 'Supprimer la voix d’une chanson : créateur de karaoké | Media Manipulator',
+      metaDescription: 'Supprimez la voix d’une chanson avec l’IA et téléchargez l’instrumental dans le même format que votre fichier, ou en FLAC ou WAV. Pistes de karaoké et d’entraînement, sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
     },
   },
 } as const;

@@ -16,6 +16,7 @@ const koToolPages = {
   pages: {
     // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: 'SVG를 그리거나 가져와 키프레임 타임라인에서 애니메이션하고, 애니메이션 SVG, Lottie, React, JavaScript, Flutter 또는 GIF로 내보내세요. 모두 브라우저 안에서 이루어져요.',
       intro: 'Motion은 Media Manipulator에 내장된 애니메이션 타임라인이 있는 SVG 편집기예요. SVG 파일(또는 Lottie 애니메이션)을 열면 모든 도형이 선택하고, 옮기고, 색을 바꾸고, 애니메이션할 수 있는 레이어가 돼요. 빈 캔버스에서 시작해 사각형, 타원, 선, 펜, 텍스트 도구로 그릴 수도 있어요. 애니메이션하는 각 속성은 이징 프리셋, 맞춤 이징을 위한 커브 편집기, 즉시 전환되는 홀드 키를 갖춘 자신만의 키프레임 트랙을 가져요. 원클릭 애니메이터로 선 그리기, 경로를 따라 이동, 모양 모프, 그라데이션 색 변화, 마스크 애니메이션, 흐림을 추가할 수 있어요. 원하는 대로 움직이면 애니메이션 SVG, Lottie 파일, React 컴포넌트, JavaScript 또는 TypeScript 모듈, Flutter 위젯 또는 GIF로 내보내세요. 편집과 모든 내보내기는 브라우저에서 실행되므로 내보내기를 위해 아트워크가 업로드되는 일은 없어요.',
       whatItDoes: [
@@ -553,6 +554,145 @@ const koToolPages = {
       name: '음성 변경기',
       tagline:
         '녹음의 음높이와 성격을 즉시 바꾸거나, AI로 말소리를 저장한 음성이나 프리셋 음성으로 변환하세요.',
+    },
+    // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
+    'content-studio': {
+      name: 'Darkroom',
+      tagline: '멀티트랙 타임라인에서 영상과 오디오를 편집하고, 겹치고, 믹싱한 다음 MP4로 내보내세요. 브라우저에서 바로 쓰는 Premiere Pro 스타일 편집기입니다.',
+      metaTitle: 'Darkroom: 무료 온라인 멀티트랙 동영상 편집기 | Media Manipulator',
+      metaDescription: '멀티트랙 타임라인에서 영상과 오디오를 편집하고, 겹치고, 믹싱한 다음 MP4로 내보내세요. 브라우저에서 바로 실행되는 무료 Premiere Pro 스타일 동영상 편집기입니다. 가입도 설치도 필요 없습니다.',
+    },
+    'remove-exif-metadata': {
+      name: '이미지에서 EXIF 메타데이터 삭제',
+      tagline: '사진을 어디에 공유하기 전에 GPS 위치, 기기, 카메라, 촬영 시각 데이터를 제거하세요.',
+      metaTitle: '이미지 EXIF 메타데이터 온라인 삭제 (무료) | Media Manipulator',
+      metaDescription: 'JPG, PNG, WebP, HEIC 이미지에서 EXIF, GPS, IPTC, 카메라 메타데이터를 삭제하는 무료 온라인 도구입니다. 가입이 필요 없습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'compress-image': {
+      name: '이미지 압축',
+      tagline: 'JPG, PNG, WebP 파일 크기를 줄여 웹사이트를 더 빠르게 하고, 업로드 용량을 줄이고, 더 쉽게 공유하세요.',
+      metaTitle: '이미지 온라인 무료 압축 | Media Manipulator',
+      metaDescription: '무료 온라인 이미지 압축기입니다. 좋은 화질을 유지하면서 JPG, PNG, WebP 파일 크기를 줄이세요. 가입이 필요 없습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'image-resizer': {
+      name: '이미지 크기 조절',
+      tagline: 'JPG, PNG, WebP, GIF 이미지를 가로세로 비율을 유지한 채 정확한 픽셀 크기로 조절하세요.',
+      metaTitle: '이미지 온라인 무료 크기 조절 | Media Manipulator',
+      metaDescription: '무료 온라인 이미지 크기 조절 도구입니다. JPG, PNG, WebP, GIF 이미지를 가로세로 비율을 유지한 채 정확한 픽셀 크기로 조절하세요. 가입이 필요 없습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'remove-background-from-image': {
+      name: '이미지 배경 제거',
+      tagline: '어떤 사진이든 배경을 자동으로 지우고 깔끔한 투명 PNG 누끼 이미지를 내려받으세요.',
+      metaTitle: '이미지 배경 온라인 무료 제거 | Media Manipulator',
+      metaDescription: '무료 온라인 배경 제거 도구입니다. 어떤 사진이든 배경을 자동으로 지우고 투명 PNG를 내려받으세요. 자체 GPU에서 실행되며 외부 AI를 쓰지 않습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'image-to-pdf': {
+      name: '이미지를 PDF로',
+      tagline: 'JPG, PNG 등의 이미지를 깔끔하고 공유하기 쉬운 PDF 문서로 한 번에 바꾸세요.',
+      metaTitle: '이미지를 PDF로 온라인 무료 변환 | Media Manipulator',
+      metaDescription: '무료 온라인 이미지 PDF 변환기입니다. JPG, PNG 등의 이미지를 깔끔한 PDF 문서로 바꾸세요. 가입도 워터마크도 없습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'pdf-to-jpg': {
+      name: 'PDF를 JPG로',
+      tagline: 'PDF의 모든 페이지를 공유, 편집, 게시할 수 있는 고화질 JPG 이미지로 변환하세요.',
+      metaTitle: 'PDF를 JPG로 온라인 무료 변환 | Media Manipulator',
+      metaDescription: '무료 온라인 PDF JPG 변환기입니다. PDF의 모든 페이지를 고화질 JPG 이미지로 변환해 ZIP으로 내려받으세요. 가입이 필요 없습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'compress-video': {
+      name: '동영상 압축',
+      tagline: '웹, 이메일, 소셜 미디어, 클라우드 업로드에 맞게 MP4, WebM, MOV, MKV, AVI 파일 크기를 줄이세요.',
+      metaTitle: '동영상 온라인 압축 (무료) | Media Manipulator',
+      metaDescription: '무료 온라인 동영상 압축기입니다. 좋은 화질을 유지하면서 MP4, WebM, MOV, MKV, AVI 파일 크기를 줄이세요. 가입이 필요 없습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'video-trimmer': {
+      name: '동영상 자르기',
+      tagline: '빠르고 화질이 유지되는 트리밍으로 클립에서 원하는 부분만 잘라내세요. 가능하면 다시 인코딩하지 않습니다.',
+      metaTitle: '동영상 온라인 무료 자르기 | Media Manipulator',
+      metaDescription: '무료 온라인 동영상 자르기 도구입니다. 시작 시간과 종료 시간을 정하고 빠르고 손실 없는 트리밍으로 클립을 자르세요. MP4 출력, 워터마크 없음, 가입 불필요. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'extract-audio-from-video': {
+      name: '동영상에서 오디오 추출',
+      tagline: '어떤 동영상이든 오디오 트랙을 깔끔한 MP3, WAV, M4A, AAC, FLAC, OGG 파일로 저장하세요.',
+      metaTitle: '동영상에서 오디오 추출: MP3, WAV, M4A 등 | Media Manipulator',
+      metaDescription: '모든 동영상 파일(MP4, MOV, MKV, WebM, AVI)에서 오디오를 추출하는 무료 온라인 도구입니다. MP3, WAV, M4A, AAC, FLAC, OGG로 출력할 수 있습니다. 가입이 필요 없습니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'convert-video-to-animated-gif': {
+      name: '동영상을 움직이는 GIF로 변환',
+      tagline: '짧은 MP4, WebM, MOV, MKV 클립을 공유하기 좋은 움직이는 GIF로 몇 초 만에 바꾸세요.',
+      metaTitle: '동영상을 움직이는 GIF로 온라인 변환 (무료) | Media Manipulator',
+      metaDescription: '무료 온라인 동영상 GIF 변환기입니다. 짧은 MP4, WebM, MOV, MKV 클립을 크기와 프레임 속도를 조절해 움직이는 GIF로 바꾸세요.',
+    },
+    'transcribe-video': {
+      name: '동영상 텍스트 변환',
+      tagline: '동영상이나 오디오 파일 속 음성을 WebVTT 또는 SRT 자막, 일반 텍스트, 타임스탬프가 있는 JSON으로 추출하세요.',
+      metaTitle: '동영상을 텍스트로 온라인 변환 (무료) | Media Manipulator',
+      metaDescription: '무료 온라인 동영상 받아쓰기 도구입니다. MP4, MOV, WebM, MKV, 오디오 파일을 검색 가능한 텍스트, VTT 자막, JSON 스크립트로 변환하세요.',
+    },
+    'transcode-to-hls': {
+      name: '동영상을 HLS로 트랜스코딩',
+      tagline: '모든 동영상을 Apple HLS VOD 번들로 패키징하세요. master.m3u8과 화질별 .ts 세그먼트로, 바로 웹에서 쓸 수 있습니다.',
+      metaTitle: '동영상을 HLS로 온라인 트랜스코딩 | 무료 적응형 스트리밍 도구',
+      metaDescription: '무료 온라인 HLS 트랜스코더입니다. MP4, MOV, WebM, MKV를 360p/480p/720p 화질과 선택형 자막, 스토리보드를 갖춘 HLS VOD 패키지로 변환하세요.',
+    },
+    'ai-video-restoration': {
+      name: 'AI 동영상 복원',
+      tagline: '최대 6개의 AI 모델(Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, VRT)로 짧은 동영상을 업스케일하고 복원하며, 모든 결과를 나란히 비교하세요.',
+      metaTitle: 'AI 동영상 복원 도구: 업스케일링 모델 6종 온라인 비교 | Media Manipulator',
+      metaDescription: '무료 AI 동영상 복원 도구입니다. 짧은 클립을 자체 GPU에서 Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, VRT 초해상도 모델로 처리하고 모든 결과를 하나의 패키지로 내려받으세요.',
+    },
+    'ai-image-restoration': {
+      name: 'AI 이미지 복원 및 업스케일링',
+      tagline: '최대 8개의 AI 모델로 사진을 정리하고, 업스케일하고, 복원하세요. 원본 충실도를 지키는 사전 정리(FBCNN, SCUNet, NAFNet), 범용 업스케일러(Real-ESRGAN, SwinIR, HAT), 얼굴 보정(GFPGAN, CodeFormer)을 지원하며, 모든 결과를 원본과 비교할 수 있습니다.',
+      metaTitle: 'AI 이미지 복원 및 업스케일러: 모델 8종 온라인 비교 | Media Manipulator',
+      metaDescription: '무료 AI 사진 복원 및 업스케일링입니다. JPEG 노이즈를 없애고, 잡음과 흐림을 줄인 다음 Real-ESRGAN, SwinIR, HAT로 4K/8K까지 업스케일하고 GFPGAN/CodeFormer로 얼굴을 보정하세요. 모두 자체 GPU에서 처리되며 나란히 비교할 수 있습니다.',
+    },
+    'ai-document-scan': {
+      name: 'AI 문서 스캔',
+      tagline: '스캔한 문서와 손으로 쓴 메모를 검색 가능한 여러 페이지 PDF와 편집 가능한 Word 문서로 바꾸세요. 인쇄된 페이지에는 Tesseract의 충실한 텍스트 레이어가 입혀지고, 손글씨는 비전 AI가 받아 적으며 불확실한 부분은 표시할 뿐 지어내지 않습니다.',
+      metaTitle: 'AI 문서 스캔: 스캔한 페이지와 손글씨를 PDF/Word로 | Media Manipulator',
+      metaDescription: '무료 AI 문서 스캔입니다. 스캔한 이미지를 검색 가능한 PDF와 이미지 Word OCR로 변환하고, 손으로 쓴 메모도 텍스트로 옮기세요. 페이지 순서 변경, 인쇄물과 손글씨 혼합도 가능하며, 모두 자체 GPU에서 원문 그대로 처리하고 불확실한 부분은 표시합니다.',
+    },
+    'ai-image-upscaler': {
+      name: 'AI 이미지 업스케일러',
+      tagline: '작거나 흐릿한 사진을 단순히 픽셀을 늘리는 대신 세부 묘사를 다시 만들어 내는 Real-ESRGAN 모델로 확대하세요.',
+      metaTitle: 'AI 이미지 업스케일러: 사진을 2배 또는 4배로 확대 | Media Manipulator',
+      metaDescription: '저해상도 사진을 윤곽과 질감을 되살리는 AI로 2배 또는 4배 업스케일하세요. 자체 GPU에서 실행되며 PNG로 출력합니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'blur-faces-in-photo': {
+      name: '사진 속 얼굴 흐리게 처리',
+      tagline: '얼굴을 자동으로 감지한 다음, 모든 얼굴 또는 선택한 얼굴만 흐리게, 모자이크로, 검게 가리세요.',
+      metaTitle: '사진 속 얼굴 온라인 흐리게 처리 | Media Manipulator',
+      metaDescription: '사진 속 얼굴을 흐리게, 모자이크로, 검게 가리세요. 모든 얼굴을 감지한 다음 가릴 얼굴을 고르세요. AI는 자체 GPU에서 실행됩니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'redact-text-in-image': {
+      name: '이미지 속 텍스트 가리기',
+      tagline: '스크린샷이나 사진에서 읽을 수 있는 텍스트를 찾아 개인 정보 또는 모든 텍스트를 흐림 효과나 검은 상자로 가리세요.',
+      metaTitle: '이미지 속 텍스트 온라인 가리기 | Media Manipulator',
+      metaDescription: '이미지에서 텍스트를 자동으로 찾아 이름, 이메일, 번호 등 개인 정보를 검게 가리거나 흐리게 처리하세요. AI는 자체 GPU에서 실행됩니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'remove-object-from-photo': {
+      name: '사진에서 개체 제거',
+      tagline: '사진에 넣고 싶지 않은 대상 주위에 상자를 그리면 인페인팅 모델이 어울리는 배경으로 빈 곳을 채웁니다.',
+      metaTitle: '사진에서 개체 온라인 제거 | Media Manipulator',
+      metaDescription: '사진에서 원치 않는 개체를 지우세요. 사각형을 그리면 AI 인페인팅이 배경에 맞춰 빈 곳을 채웁니다. 자체 GPU에서 실행됩니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'clean-voice-audio': {
+      name: '음성 오디오 정리',
+      tagline: '팟캐스트, 인터뷰, 음성 메모에서 쉭쉭거리는 소리, 방 울림, 낮은 웅웅거림을 줄여 말소리를 더 또렷하게 만드세요.',
+      metaTitle: 'AI로 음성 녹음 정리하기 | Media Manipulator',
+      metaDescription: 'AI로 음성 녹음을 정리하세요. 쉭쉭거리는 소리, 험 노이즈, 방 소음을 줄여 말소리를 더 잘 들리게 합니다. 자체 GPU에서 실행됩니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'remove-background-noise': {
+      name: '배경 소음 제거',
+      tagline: 'AI 노이즈 제거기로 녹음 속 쉭쉭거리는 소리, 험 노이즈, 교통 소음, 방 소음을 낮추고 주된 소리는 앞에 유지하세요.',
+      metaTitle: '오디오 배경 소음 온라인 제거 | Media Manipulator',
+      metaDescription: '오디오에서 배경 소음을 제거하세요. AI 노이즈 제거기가 녹음 속 쉭쉭거리는 소리, 험 노이즈, 주변 소리를 낮춥니다. 자체 GPU에서 실행됩니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
+    },
+    'remove-vocals-from-song': {
+      name: '노래에서 보컬 제거',
+      tagline: '트랙에서 노래를 빼고 음악만 남겨 노래방, 연습, 반주 트랙에 쓰세요. 사용 권한이 있는 음악에만 사용하세요.',
+      metaTitle: '노래에서 보컬 제거: 노래방 메이커 | Media Manipulator',
+      metaDescription: 'AI로 노래에서 보컬을 제거하고 인스트루멘털을 원본 파일과 같은 형식이나 FLAC, WAV로 내려받으세요. 노래방 및 연습용 트랙을 자체 GPU에서 만듭니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
     },
   },
 } as const;

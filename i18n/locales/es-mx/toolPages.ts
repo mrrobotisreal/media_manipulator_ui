@@ -16,6 +16,7 @@ const esMxToolPages = {
   pages: {
     // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: 'Dibuja o importa un SVG, anímalo en una línea de tiempo de fotogramas clave y exporta SVG animado, Lottie, React, JavaScript, Flutter o GIF, todo en tu navegador.',
       intro: 'Motion es un editor de SVG con línea de tiempo de animación, integrado en Media Manipulator. Abre un archivo SVG (o una animación Lottie) y cada forma se convierte en una capa que puedes seleccionar, mover, cambiar de color y animar, o empieza con un lienzo en blanco y dibuja con las herramientas de rectángulo, elipse, línea, pluma y texto. Cada propiedad animada tiene su propia pista de fotogramas clave, con preajustes de suavizado, un editor de curvas para suavizados personalizados y fotogramas de retención para saltos instantáneos. Los animadores de un clic agregan dibujo progresivo del trazo, movimiento a lo largo de un trazado, morfosis de formas, cambios de color en degradados, animación de máscaras y desenfoque. Cuando se mueva como quieres, expórtalo como SVG animado, archivo Lottie, componente React, módulo JavaScript o TypeScript, widget de Flutter o GIF. La edición y todas las exportaciones se ejecutan en tu navegador, así que tu ilustración nunca se sube para exportarla.',
       whatItDoes: [
@@ -168,81 +169,113 @@ const esMxToolPages = {
       ogDescription: 'Anima SVG en tu navegador: fotogramas clave, suavizado, retenciones, trayectorias y morfosis. Exporta SVG animado, Lottie JSON, React, JS, Flutter o GIF.',
     },
     'content-studio': {
+      metaTitle: 'Darkroom: editor de video multipista gratis en línea | Media Manipulator',
+      metaDescription: 'Edita, superpón y mezcla video y audio en una línea de tiempo multipista y luego exporta MP4: un editor de video gratuito al estilo de Premiere Pro que funciona directamente en tu navegador. Sin registro ni instalación.',
       name: 'Darkroom',
       tagline:
         'Edita, superpón y mezcla video y audio en una línea de tiempo multipista, y exporta en MP4. Un editor al estilo de Premiere Pro, directamente en tu navegador.',
     },
     'remove-exif-metadata': {
+      metaTitle: 'Eliminar metadatos EXIF de imágenes en línea (gratis) | Media Manipulator',
+      metaDescription: 'Herramienta gratuita en línea para eliminar metadatos EXIF, GPS, IPTC y de cámara de imágenes JPG, PNG, WebP y HEIC. Sin registro. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Eliminar metadatos EXIF de imágenes',
       tagline:
         'Elimina la ubicación GPS y los datos de dispositivo, cámara y fecha de tus fotos antes de compartirlas.',
     },
     'compress-image': {
+      metaTitle: 'Comprimir imágenes en línea gratis | Media Manipulator',
+      metaDescription: 'Compresor de imágenes gratuito en línea. Reduce el tamaño de archivos JPG, PNG y WebP manteniendo una buena calidad. Sin registro. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Comprimir imagen',
       tagline:
         'Reduce el tamaño de tus archivos JPG, PNG y WebP para sitios más rápidos, subidas más ligeras y un compartir más fácil.',
     },
     'image-resizer': {
+      metaTitle: 'Redimensionar imágenes en línea gratis | Media Manipulator',
+      metaDescription: 'Redimensionador de imágenes gratuito en línea. Cambia el tamaño de imágenes JPG, PNG, WebP y GIF a dimensiones exactas en píxeles manteniendo la proporción. Sin registro. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Redimensionar imagen',
       tagline:
         'Cambia el tamaño de imágenes JPG, PNG, WebP y GIF a dimensiones exactas en píxeles manteniendo la relación de aspecto.',
     },
     'remove-background-from-image': {
+      metaTitle: 'Eliminar el fondo de una imagen en línea gratis | Media Manipulator',
+      metaDescription: 'Eliminador de fondos gratuito en línea. Borra automáticamente el fondo de cualquier foto y descarga un PNG transparente. Funciona en nuestra propia GPU, sin IA de terceros. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Eliminar el fondo de una imagen',
       tagline:
         'Borra automáticamente el fondo de cualquier foto y descarga un recorte PNG limpio y transparente.',
     },
     'image-to-pdf': {
+      metaTitle: 'Convertir imágenes a PDF en línea gratis | Media Manipulator',
+      metaDescription: 'Conversor gratuito en línea de imagen a PDF. Convierte JPG, PNG y otras imágenes en un documento PDF limpio. Sin registro ni marcas de agua. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Imagen a PDF',
       tagline:
         'Convierte JPG, PNG y otras imágenes en un documento PDF limpio y listo para compartir con un solo clic.',
     },
     'pdf-to-jpg': {
+      metaTitle: 'Convertir PDF a JPG en línea gratis | Media Manipulator',
+      metaDescription: 'Conversor gratuito en línea de PDF a JPG. Convierte cada página de un PDF en imágenes JPG de alta calidad y descárgalas en un ZIP. Sin registro. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'PDF a JPG',
       tagline:
         'Convierte cada página de un PDF en imágenes JPG de alta calidad para compartir, editar o publicar.',
     },
     'compress-video': {
+      metaTitle: 'Comprimir video en línea (gratis) | Media Manipulator',
+      metaDescription: 'Compresor de video gratuito en línea. Reduce el tamaño de archivos MP4, WebM, MOV, MKV y AVI manteniendo una buena calidad. Sin registro. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Comprimir video',
       tagline:
         'Reduce archivos MP4, WebM, MOV, MKV y AVI para la web, el correo, las redes sociales y la nube.',
     },
     'video-trimmer': {
+      metaTitle: 'Recortar video en línea gratis | Media Manipulator',
+      metaDescription: 'Recortador de video gratuito en línea. Define un tiempo de inicio y fin y corta tu clip con un recorte rápido y sin pérdida. Salida en MP4, sin marca de agua y sin registro. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Recortar video',
       tagline:
         'Corta el fragmento que quieras con un recorte rápido que conserva la calidad — sin recodificar cuando es posible.',
     },
     'extract-audio-from-video': {
+      metaTitle: 'Extraer audio de un video: MP3, WAV, M4A y más | Media Manipulator',
+      metaDescription: 'Herramienta gratuita en línea para extraer el audio de cualquier archivo de video (MP4, MOV, MKV, WebM, AVI). Salida en MP3, WAV, M4A, AAC, FLAC u OGG. Sin registro. Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años.',
       name: 'Extraer audio de un video',
       tagline:
         'Guarda la pista de audio de cualquier video como un archivo MP3, WAV, M4A, AAC, FLAC u OGG limpio.',
     },
     'convert-video-to-animated-gif': {
+      metaTitle: 'Convertir video a GIF animado en línea (gratis) | Media Manipulator',
+      metaDescription: 'Conversor gratuito en línea de video a GIF. Convierte clips cortos de MP4, WebM, MOV y MKV en GIF animados con control del tamaño y la tasa de fotogramas.',
       name: 'Convertir video en GIF animado',
       tagline:
         'Convierte clips cortos MP4, WebM, MOV o MKV en GIF animados listos para compartir en cuestión de segundos.',
     },
     'transcribe-video': {
+      metaTitle: 'Transcribir video a texto en línea (gratis) | Media Manipulator',
+      metaDescription: 'Transcripción de video gratuita en línea. Convierte archivos MP4, MOV, WebM, MKV y de audio en texto con búsqueda, subtítulos VTT o transcripciones JSON.',
       name: 'Transcribir video',
       tagline:
         'Extrae las palabras habladas de tus videos como texto con búsqueda, subtítulos o JSON estructurado.',
     },
     'transcode-to-hls': {
+      metaTitle: 'Transcodificar video a HLS en línea | Herramienta gratuita de streaming adaptativo',
+      metaDescription: 'Transcodificador HLS gratuito en línea. Convierte MP4, MOV, WebM y MKV en un paquete HLS VOD con versiones de 360p/480p/720p, y con subtítulos y storyboards opcionales.',
       name: 'Transcodificar video a HLS',
       tagline:
         'Empaqueta cualquier video como un paquete HLS VOD de Apple: master.m3u8 y segmentos .ts por calidad, listo para la web.',
     },
     'ai-video-restoration': {
+      metaTitle: 'Restauración de video con IA: compara 6 modelos de escalado en línea | Media Manipulator',
+      metaDescription: 'Herramienta gratuita de restauración de video con IA. Pasa un clip corto por los modelos de superresolución Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT y VRT en nuestra propia GPU y descarga todos los resultados en un solo paquete.',
       name: 'Restauración de video con IA',
       tagline:
         'Escala y restaura un fragmento corto de video con hasta seis modelos de IA — Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT y VRT — y compara todos los resultados lado a lado.',
     },
     'ai-image-restoration': {
+      metaTitle: 'Restauración y escalado de imágenes con IA: compara 8 modelos en línea | Media Manipulator',
+      metaDescription: 'Restauración y escalado de fotos con IA, gratis. Elimina artefactos JPEG, reduce el ruido y el desenfoque, escala a 4K/8K con Real-ESRGAN, SwinIR o HAT y mejora los rostros con GFPGAN/CodeFormer, todo en nuestra propia GPU y con comparación lado a lado.',
       name: 'Restauración y escalado de imágenes con IA',
       tagline:
         'Limpia, escala y restaura una foto con hasta ocho modelos de IA — limpieza previa fiel (FBCNN, SCUNet, NAFNet), escaladores generales (Real-ESRGAN, SwinIR, HAT) y mejora de rostros (GFPGAN, CodeFormer) — y compara cada resultado con el original.',
     },
     'ai-document-scan': {
+      metaTitle: 'Escaneo de documentos con IA: páginas escaneadas y manuscritos a PDF/Word | Media Manipulator',
+      metaDescription: 'Escaneo de documentos con IA, gratis: convierte imágenes escaneadas en un PDF con búsqueda y OCR de imagen a Word, y transcribe notas manuscritas a texto. Reordena páginas, combina texto impreso y manuscrito, todo en nuestra propia GPU, de forma literal y con la incertidumbre marcada.',
       name: 'Escaneo de documentos con IA',
       tagline:
         'Convierte documentos escaneados y notas manuscritas en un PDF de varias páginas con búsqueda y un documento de Word editable — las páginas impresas reciben una capa de texto fiel de Tesseract y la escritura a mano la transcribe una IA visual que marca sus dudas, sin inventar nada.',

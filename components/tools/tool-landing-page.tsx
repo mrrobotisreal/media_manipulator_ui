@@ -13,6 +13,7 @@ import { Panel } from '@/components/darkroom/panel';
 import { localizeHref } from '@/i18n/locales';
 import { getServerT } from '@/lib/i18n/server';
 import { getToolPanelShellLabels } from '@/components/tools/tool-panel-shell-labels';
+import { getLocalizedToolBySlug } from '@/i18n/toolPageContent';
 
 /**
  * Server-rendered tool landing page. All marketing/SEO copy (intro, formats,
@@ -59,6 +60,9 @@ export default function ToolLandingPage({
   const loc = locale ?? 'en-US';
   const t = getServerT('interface', loc);
   const inContentSlot = getReviewToolInContentAdSlot(tool.slug);
+  // MM84: an alias page renders its intro and panel, then points at the primary
+  // page instead of repeating its body (content/toolAliases.ts).
+  const aliasPrimary = tool.aliasOf ? getLocalizedToolBySlug(tool.aliasOf, loc) : undefined;
   // During review, only surface related links that point to review-safe pages
   // (core/blog/tutorials + allowlisted tools) so review pages never link into
   // the noindex / non-allowlisted tool inventory.
@@ -173,6 +177,21 @@ export default function ToolLandingPage({
 
           {afterPanelExtra}
 
+          {aliasPrimary ? (
+            <section className="mt-12" aria-label={t('toolLandingPage.aliasHeading')} data-testid="tool-alias-primary">
+              <SectionHeading>{t('toolLandingPage.aliasHeading')}</SectionHeading>
+              <Link
+                href={localizeHref(`/tools/${aliasPrimary.slug}`, loc)}
+                className="block rounded-md border border-edge bg-surface-2/40 p-4 transition-colors duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:border-edge-strong hover:bg-surface-2"
+              >
+                <span className="font-medium text-card-foreground">
+                  {t('toolLandingPage.aliasLink', { values: { name: aliasPrimary.name } })}
+                </span>
+                <span className="block text-sm text-muted-foreground mt-1">{aliasPrimary.tagline}</span>
+              </Link>
+            </section>
+          ) : (
+          <>
           {/* Supported formats */}
           {hasFormats && sf ? (
             <section className="mt-12" aria-label={t('toolLandingPage.supportedFormatsAriaLabel')}>
@@ -281,6 +300,28 @@ export default function ToolLandingPage({
             </div>
           </section>
 
+          {/* MM84 copy bar: worked examples with real numbers, then when not to use it. */}
+          {tool.workedExamples && tool.workedExamples.length > 0 && (
+            <section className="mt-12" aria-label={t('toolLandingPage.workedExamplesHeading')}>
+              <SectionHeading>{t('toolLandingPage.workedExamplesHeading')}</SectionHeading>
+              <div className="grid gap-3 md:grid-cols-2">
+                {tool.workedExamples.map((example) => (
+                  <div key={example.title} className="rounded-md border border-edge bg-surface-2/40 p-4">
+                    <h3 className="font-medium text-card-foreground">{example.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{example.body}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {tool.whenNotToUse ? (
+            <section className="mt-12" aria-label={t('toolLandingPage.whenNotToUseHeading')}>
+              <SectionHeading>{t('toolLandingPage.whenNotToUseHeading')}</SectionHeading>
+              <p className="text-card-foreground">{tool.whenNotToUse}</p>
+            </section>
+          ) : null}
+
           {/* Single guarded in-content ad — after substantial body copy, far
               from the tool panel/action buttons. Disabled by default via env.
               MM88: AdSlotFrame reserves the 280/300px box only when ads are on;
@@ -384,6 +425,8 @@ export default function ToolLandingPage({
                 ))}
               </div>
             </section>
+          )}
+          </>
           )}
         
       </Panel>

@@ -2074,7 +2074,8 @@
       "ai": "כלי AI",
       "privacy": "פרטיות",
       "editor": "עורכים"
-    }
+    },
+    "moreTools": "{{category}}: עוד {{count}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "פירורי לחם",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "שאלות נפוצות",
     "faqHeading": "שאלות נפוצות",
     "relatedToolsAriaLabel": "כלים קשורים",
-    "relatedToolsHeading": "כלים קשורים"
+    "relatedToolsHeading": "כלים קשורים",
+    "aliasHeading": "מדריך מלא, דוגמאות ושאלות נפוצות",
+    "aliasLink": "קראו את המדריך המלא ל-{{name}}",
+    "workedExamplesHeading": "דוגמאות עם מספרים אמיתיים",
+    "whenNotToUseHeading": "מתי לא להשתמש בכלי הזה"
   },
   "contentStudioGuide": {
     "summaryTitle": "איך Darkroom עובד — מדריך מהיר",

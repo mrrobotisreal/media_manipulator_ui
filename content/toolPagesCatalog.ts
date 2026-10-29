@@ -16,17 +16,11 @@
 
 import type { ToolPageContent } from '@/content/toolPages';
 import { RETENTION_PROMISE } from '@/content/retentionPromise';
-
-const privacyNote = `Your uploads are processed on our own servers. ${RETENTION_PROMISE}. We do not share your files with third-party AI providers, and AI features run on a local GPU server we operate. No login or account is required.`;
+import { privacyNoteFor } from '@/content/toolPrivacy';
 
 const AUDIO_INPUTS = ['mp3', 'wav', 'm4a', 'aac', 'ogg', 'opus', 'flac', 'alac', 'ac3', 'wma'];
 const VIDEO_INPUTS = ['mp4', 'mov', 'mkv', 'webm', 'avi', 'm4v', 'flv', 'wmv'];
 const IMAGE_INPUTS = ['jpg', 'png', 'webp', 'gif', 'avif', 'heic', 'bmp', 'tiff'];
-
-const AUDIO_FAQ_FREE = {
-  question: 'Is it free?',
-  answer: `Yes. No watermark, no signup. ${RETENTION_PROMISE}.`,
-};
 
 const audioRelated = (...skip: string[]) =>
   [
@@ -58,6 +52,87 @@ const imageRelated = (...skip: string[]) =>
     { label: 'Image filters', to: '/tools/image-filters', description: 'Sepia, sketch, emboss and more.' },
     { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip location and device data.' },
   ].filter((r) => !skip.some((s) => r.to.endsWith(s)));
+
+/**
+ * MM84 S3: the lines the five audio-target pages used to share verbatim, written
+ * per target so no sentence repeats across all five.
+ */
+const AUDIO_TARGET_LINES: Record<string, { extras: string; ai: string; upload: string; batch: string; cleanup: string; control: string; sameUpload: string; trimA: string; artQ: string; artA: string; art: string }> = {
+  'convert-audio-to-wav': {
+    extras: 'Trim, volume, normalisation, EQ and effects can be applied before the PCM is written.',
+    ai: 'AI cleanup is on the same form: remove background noise, clean up a voice, or isolate or remove vocals before saving as WAV.',
+    upload: 'Any common audio file, compressed or not.',
+    batch: 'Turn a folder of voice memos into WAV one at a time, trimming each as you go.',
+    cleanup: 'Strip hiss from a field recording on its way to an uncompressed master.',
+    control: 'Sample rate and channel layout are kept unless you choose otherwise.',
+    sameUpload: 'Normalise and trim a take in the same upload that makes the WAV.',
+    trimA: 'Yes. Set the start and end in the trim section and only that span is written to the WAV.',
+    artQ: 'My MP3 has album art. Can it still become a WAV?',
+    artA: 'Yes. The art is recognised as a picture rather than a video track, so the upload is accepted and the audio is decoded to PCM as usual.',
+    art: 'Album art in an MP3 or M4A source is recognised as a still picture, so validation does not mistake the file for a video.',
+  },
+  'convert-audio-to-flac': {
+    extras: 'Volume, trim, normalisation and EQ can be applied before FLAC compresses the result.',
+    ai: 'Noise removal, voice cleanup and vocal isolation run on the same upload if you want a cleaned lossless copy.',
+    upload: 'WAV, AIFF-style PCM, MP3, M4A and the rest.',
+    batch: 'Archive a set of recordings losslessly, one upload each.',
+    cleanup: 'Remove background noise first and keep the cleaned result as FLAC.',
+    control: 'Pick a sample rate or channel layout, or leave both as the source has them.',
+    sameUpload: 'Level a quiet master and archive it as FLAC in one step.',
+    trimA: 'Yes. The trim section sets a start and end, and FLAC encodes only that range.',
+    artQ: 'Will an MP3 with cover art convert to FLAC?',
+    artA: 'Yes. Embedded art is read as a picture, not as video, so validation passes and the audio is encoded as usual.',
+    art: 'An MP3 or M4A with embedded cover art passes validation: the art is treated as a picture, not a video stream.',
+  },
+  'convert-audio-to-ogg': {
+    extras: 'Trimming, volume, loudness normalisation and EQ happen in the same FFmpeg pass as the Vorbis encode.',
+    ai: 'Clean a voice or remove background noise with AI before the Vorbis encoder runs.',
+    upload: 'An MP3, WAV, FLAC or other audio file for your game or site.',
+    batch: 'Prepare sound effects for a game engine one file at a time.',
+    cleanup: 'Take the hum out of a recording before it ships as an OGG asset.',
+    control: 'Bitrate, sample rate and channels are yours to set for each OGG.',
+    sameUpload: 'Trim silence off a sound effect while it becomes OGG.',
+    trimA: 'Yes. Mark the start and end and the OGG contains only that part.',
+    artQ: 'Can I convert an M4A that has album art to OGG?',
+    artA: 'Yes. The cover is seen as an image attachment rather than a video track, so the job proceeds and produces audio-only Vorbis.',
+    art: 'Cover art in the source is recognised as an image attachment and does not trip the video-track check.',
+  },
+  'convert-audio-to-m4a': {
+    extras: 'Trim, gain, normalisation, EQ and effects go into the same encode as the AAC.',
+    ai: 'AI tools on the form can clean a voice memo or remove vocals before the AAC is written.',
+    upload: 'A WAV master, an MP3 or a voice memo.',
+    batch: 'Convert voice memos for an iPhone library, trimming dead air as you go.',
+    cleanup: 'Run voice cleanup on a podcast take and save it straight to M4A.',
+    control: 'Bitrate, sample rate and channel count are adjustable for the AAC output.',
+    sameUpload: 'Normalise an episode and turn it into M4A without a second upload.',
+    trimA: 'Yes. Set the range in the trim section; the M4A starts and ends where you said.',
+    artQ: 'Does the album art in my MP3 break the conversion to M4A?',
+    artA: 'No. The art stream is identified as a picture, not as video, and the AAC encode runs normally.',
+    art: 'An embedded album cover is recognised as a picture and never mistaken for a video track.',
+  },
+  'convert-audio-to-opus': {
+    extras: 'Trim, volume, normalisation and EQ apply in the same pass as the Opus encode.',
+    ai: 'Before encoding, the form can remove background noise or clean up speech with AI on our GPU.',
+    upload: 'Voice notes, podcasts, music or any common audio.',
+    batch: 'Shrink a series of lectures to Opus one by one.',
+    cleanup: 'Clean a noisy call recording and keep it as a small Opus file.',
+    control: 'Choose the Opus bitrate, sample rate and channels, or keep the defaults.',
+    sameUpload: 'Trim and normalise a voice note on its way to Opus.',
+    trimA: 'Yes. Only the span between the start and end you set is encoded to Opus.',
+    artQ: 'Will an audio file with cover art convert to Opus?',
+    artA: 'Yes. Cover art is detected as a picture, not a video stream, so the file is accepted and only the audio is encoded.',
+    art: 'Album art in a source file is detected as a picture and does not stop the conversion.',
+  },
+};
+
+/** MM84: the page-specific first sentence of each audio-target page's privacy note. */
+const AUDIO_TARGET_PRIVACY: Record<string, string> = {
+  'convert-audio-to-wav': 'Your audio is decoded by FFmpeg on our server and written out as uncompressed PCM WAV.',
+  'convert-audio-to-flac': 'Your audio is compressed losslessly to FLAC by FFmpeg on our server.',
+  'convert-audio-to-ogg': 'Your audio is encoded to OGG Vorbis by FFmpeg on our server.',
+  'convert-audio-to-m4a': 'Your audio is encoded to AAC in an M4A file by FFmpeg on our server.',
+  'convert-audio-to-opus': 'Your audio is encoded to Opus by FFmpeg on our server.',
+};
 
 /** Audio format → human facts used by the five "convert audio to X" pages. */
 const audioTargets: Array<{
@@ -142,7 +217,9 @@ const audioTargets: Array<{
   },
 ];
 
-const audioTargetPages: ToolPageContent[] = audioTargets.map(({ slug, task, ext, name, what, why, whenNot, lossless }) => ({
+const audioTargetPages: ToolPageContent[] = audioTargets.map(({ slug, task, ext, name, what, why, whenNot, lossless }) => {
+  const line = AUDIO_TARGET_LINES[slug];
+  return {
   slug,
   name: `Convert Audio to ${name}`,
   h1: `Convert Audio to ${name} Online Free`,
@@ -163,11 +240,11 @@ const audioTargetPages: ToolPageContent[] = audioTargets.map(({ slug, task, ext,
   whatItDoes: [
     `Converts MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 and WMA to ${name}.`,
     lossless ? 'Keeps every sample: the output decodes to exactly what went in.' : 'Lets you pick the bitrate, sample rate and channel layout.',
-    'Optional trim, volume, normalisation, EQ and effects in the same pass.',
-    'Optional AI cleanup: remove background noise, clean up a voice, isolate or remove vocals.',
+    line.extras,
+    line.ai,
   ],
   flowSteps: [
-    { title: 'Upload audio', description: 'Drop in any common audio file.' },
+    { title: 'Upload audio', description: line.upload },
     { title: 'Adjust if needed', description: lossless ? 'Trim, normalise or apply effects.' : 'Pick the bitrate; trim or apply effects.' },
     { title: 'Convert', description: `FFmpeg encodes ${name} on our servers.` },
     { title: 'Download', description: `Save the ${name} file.` },
@@ -177,21 +254,20 @@ const audioTargetPages: ToolPageContent[] = audioTargets.map(({ slug, task, ext,
       ? `${name} output is encoded with FFmpeg's native ${ext === 'wav' ? 'pcm_s16le' : 'flac'} encoder at the source sample rate.`
       : `${name} output uses FFmpeg's ${ext === 'ogg' ? 'libvorbis' : ext === 'opus' ? 'libopus' : 'aac'} encoder; 192 kbps is the default and a safe choice for music.`,
     whenNot,
-    'Embedded cover art in the source is ignored during validation and not treated as a video track.',
+    line.art,
   ],
   whyItMatters: why,
   useCases: [
     { title: 'Switch formats for a device', description: `Make a ${name} copy for a player that needs it.` },
     { title: 'Prepare for editing', description: lossless ? 'Hand a lossless file to a DAW or video editor.' : 'Make a small, compatible file for a project.' },
-    { title: 'Batch of voice notes', description: 'Convert one at a time, with trim and normalise if you like.' },
-    { title: 'Clean up on the way', description: 'Turn on noise removal or voice cleanup in the same upload.' },
+    { title: 'One file at a time', description: line.batch },
+    { title: 'Clean up on the way', description: line.cleanup },
   ],
   whyMediaManipulator: [
-    'Full control over bitrate, sample rate and channels, not a one-button black box.',
-    'Trim, normalise, EQ and AI cleanup in the same upload.',
-    `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
+    line.control,
+    line.sameUpload,
   ],
-  privacyNote,
+  privacyNote: privacyNoteFor('audio', AUDIO_TARGET_PRIVACY[slug]),
   supportedFormats: {
     supportedInputFormats: AUDIO_INPUTS,
     supportedOutputFormats: [ext],
@@ -200,14 +276,14 @@ const audioTargetPages: ToolPageContent[] = audioTargets.map(({ slug, task, ext,
   faq: [
     { question: `What is ${name}?`, answer: what },
     { question: `Will converting to ${name} improve the sound?`, answer: `No. ${whenNot}` },
-    { question: 'Can I trim the audio at the same time?', answer: 'Yes. Set a start and end in the trim section before converting.' },
-    { question: 'Does cover art in my MP3 cause problems?', answer: 'No. Embedded album art is recognised as a picture, not a video track, and the conversion proceeds normally.' },
-    AUDIO_FAQ_FREE,
+    { question: `Can I trim the audio while converting to ${name}?`, answer: line.trimA },
+    { question: line.artQ, answer: line.artA },
   ],
   related: audioRelated(slug),
   primaryKeyword: `convert audio to ${name.toLowerCase()}`,
   secondaryKeywords: [`${ext} converter`, `mp3 to ${ext}`, `online ${ext} converter`, `convert to ${name.toLowerCase()} free`],
-}));
+  };
+});
 
 // ------------------------------------------------------------------ VOICES (MM78)
 // Clone, design and change a voice (design docs/design/VOICES.md §4.1, ADR-0015).
@@ -217,7 +293,7 @@ const audioTargetPages: ToolPageContent[] = audioTargets.map(({ slug, task, ext,
 // conversions (not on shifted audio), own voice or permission only, no training, our
 // own servers, and no claim that a voice is indistinguishable from the real person.
 
-const voicePrivacyNote = `Voice recordings and saved voices are processed on our own servers; nothing is sent to a third-party AI provider and nothing is used to train any model. A saved voice (its reference recording and preview) is stored in your account, follows the retention period you choose and can be deleted from Account, Voices at any time; it is deleted with your account. Generated audio is kept like any other result: ${RETENTION_PROMISE}.`;
+const voicePrivacyBody = `Voice recordings and saved voices are processed on our own servers; nothing is sent to a third-party AI provider and nothing is used to train any model. A saved voice (its reference recording and preview) is stored in your account, follows the retention period you choose and can be deleted from Account, Voices at any time; it is deleted with your account. Generated audio is kept like any other result: ${RETENTION_PROMISE}.`;
 
 const voiceRelated = (...skip: string[]) =>
   [
@@ -286,7 +362,7 @@ export const VOICE_TOOL_PAGES: ToolPageContent[] = [
       'Explicit consent before any voice is created, recorded with the voice.',
       'Watermarked output and your own delete button for every saved voice.',
     ],
-    privacyNote: voicePrivacyNote,
+    privacyNote: `The 5 to 60 seconds of speech you record or upload become a saved voice in your account; that reference recording is what the model reads every time the voice speaks. ${voicePrivacyBody}`,
     supportedFormats: {
       supportedInputFormats: ['webm', 'm4a', 'mp3', 'wav', 'ogg', 'flac', 'mp4'],
       supportedOutputFormats: ['mp3', 'wav'],
@@ -361,7 +437,7 @@ export const VOICE_TOOL_PAGES: ToolPageContent[] = [
       'Free previews before anything is counted.',
       'Watermarked output and a delete button for every kept voice.',
     ],
-    privacyNote: voicePrivacyNote,
+    privacyNote: `Only the text description you write is sent to the voice model; the previews it makes are audio we generate, and the one you keep is stored by its seed. ${voicePrivacyBody}`,
     supportedFormats: {
       supportedInputFormats: ['text'],
       supportedOutputFormats: ['mp3', 'wav'],
@@ -433,7 +509,7 @@ export const VOICE_TOOL_PAGES: ToolPageContent[] = [
       'AI conversion runs on our own GPU server, not a third-party service.',
       'Built-in A/B comparison of the original and the result.',
     ],
-    privacyNote: voicePrivacyNote,
+    privacyNote: `The recording you upload is either shifted with rubberband or converted to another voice by an AI model, depending on the mode you choose. ${voicePrivacyBody}`,
     supportedFormats: {
       supportedInputFormats: [...AUDIO_INPUTS, 'webm', 'mp4', 'mov'],
       supportedOutputFormats: ['mp3', 'wav'],
@@ -512,7 +588,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Privacy-sensitive entries are flagged, with a direct path to stripping them.',
       `No conversion, no account. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('metadata', 'Your file is read by ExifTool and ffprobe on our server, the report comes back to your browser, and the temporary copy is deleted as soon as the report is made.'),
     supportedFormats: {
       supportedInputFormats: [...IMAGE_INPUTS, ...VIDEO_INPUTS, 'mp3', 'wav', 'm4a', 'flac', 'ogg', 'pdf'],
       processingNotes: ['Inspection is read-only and does not count as a conversion.'],
@@ -586,16 +662,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Writes EXIF, IPTC and XMP together, not just one of them.',
       'Before-and-after diff so you can see exactly what changed.',
-      `Free, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('metadata', 'Your image\'s tags are rewritten by ExifTool on our server with the values you typed; the pixels are left as they are.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Will editing metadata re-encode my JPG?', answer: 'Only if you change the output format or resize. With the same format and no edits to the pixels, the image data is copied and only the tags are rewritten.' },
       { question: 'Can I remove the location but keep everything else?', answer: 'Yes. Tick "remove location data" and leave the other fields untouched.' },
       { question: 'Can I edit a tag that is not listed?', answer: 'Yes. Expand the advanced section and set any EXIF or IPTC tag by name.' },
       { question: 'How do I remove everything instead?', answer: 'Use the Remove EXIF metadata tool, which strips every tag in one click.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Inspect metadata', to: '/tools/inspect-metadata', description: 'See what is in the file first.' },
@@ -660,16 +734,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Audio is re-timed with pitch preserved, not left behind or chipmunked.',
       'Pair with reverse, trim and colour on the same form.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is sped up or slowed down by FFmpeg on our server, with the audio tempo changed to match.'),
     supportedFormats: { supportedInputFormats: VIDEO_INPUTS, supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv', 'gif'] },
     faq: [
       { question: 'Does the audio stay in sync?', answer: 'Yes. The audio is tempo-scaled by the same factor, with the pitch preserved.' },
       { question: 'What is the maximum speed?', answer: '4x faster and 0.25x slower in one pass. For more, run the result through the tool again.' },
       { question: 'Will slow motion look smooth?', answer: 'Slowing down repeats frames. For true smooth slow motion, slow the clip here and then use AI frame interpolation.' },
       { question: 'Can I mute the audio instead?', answer: 'Yes, use the Remove audio from video tool first, or export as GIF which has no audio.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'AI frame interpolation', to: '/tools/ai-frame-interpolation', description: 'Smooth slow motion with generated frames.' },
@@ -731,16 +803,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Reverse and ping-pong in one switch, with audio handled correctly.',
       'Trim first and export GIF on the same form.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('video', 'Your clip is decoded and played backwards into a new file by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: VIDEO_INPUTS, supportedOutputFormats: ['mp4', 'webm', 'mov', 'gif'] },
     faq: [
       { question: 'Is the audio reversed too?', answer: 'Yes, by default. Remove the audio first if you want a silent clip.' },
       { question: 'What is ping-pong?', answer: 'The clip plays forward, then backward, so it loops without a visible jump.' },
       { question: 'Is there a length limit?', answer: 'Reversing holds the whole clip in memory. Clips of a minute or two are fine; trim longer videos first.' },
       { question: 'Can I get a GIF?', answer: 'Yes. Pick GIF as the output format; it is ideal for a ping-pong loop.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Video to GIF', to: '/tools/convert-video-to-animated-gif', description: 'Make a looping GIF.' },
@@ -802,16 +872,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Flip and rotate in one transform section, baked into the frames.',
       'Trim, resize and colour in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is mirrored horizontally or vertically by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: VIDEO_INPUTS, supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'] },
     faq: [
       { question: 'Mirror or flip, what is the difference?', answer: 'Mirror (horizontal flip) swaps left and right. Vertical flip swaps top and bottom.' },
       { question: 'Is the flip permanent?', answer: 'Yes. The frames are re-encoded with the flip applied, so every player shows it.' },
       { question: 'Can I rotate as well?', answer: 'Yes. Rotation lives in the same Transform section, or use the dedicated Rotate video tool.' },
       { question: 'Does flipping reduce quality?', answer: 'Re-encoding has a small cost; choose high quality to keep it negligible.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Rotate video', to: '/tools/rotate-video', description: '90°, 180°, 270°.' },
@@ -873,16 +941,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real motion compensation, with the strength exposed rather than hidden.',
       'Trim, speed and colour on the same form.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('video', 'Your footage is analysed for shake and smoothed by FFmpeg\'s deshake filter on our server.'),
     supportedFormats: { supportedInputFormats: VIDEO_INPUTS, supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'] },
     faq: [
       { question: 'Will it crop my video?', answer: 'Slightly. The stabiliser shifts frames to cancel shake and zooms a little to hide the moving edges.' },
       { question: 'Can it fix blur?', answer: 'No. Blur inside a frame cannot be undone; stabilisation only steadies the motion between frames.' },
       { question: 'What settings should I use?', answer: 'Start with the defaults. Raise shakiness for very rough footage; raise accuracy if the result still drifts.' },
       { question: 'Does it work on 4K?', answer: 'Yes, but processing takes longer. Consider resizing to 1080p in the same pass.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'Denoise, deblur and upscale with AI.' },
@@ -944,16 +1010,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Exact timestamp-based resampling, with duration and audio untouched.',
       'AI interpolation available when you need more frames rather than fewer.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is re-timed to the frame rate you pick by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: VIDEO_INPUTS, supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv'] },
     faq: [
       { question: 'Does the video get shorter or longer?', answer: 'No. Duration is preserved; frames are dropped or repeated to hit the new rate.' },
       { question: 'Will 30 to 60 fps look smoother?', answer: 'Not with this tool, which duplicates frames. Use AI frame interpolation to generate real in-between frames.' },
       { question: 'What frame rate should I pick?', answer: '30 fps for most web and phone content, 24 for a film look, 25 or 50 for PAL broadcast, 60 for gaming and sports.' },
       { question: 'Is the audio affected?', answer: 'No. The audio stream is copied or re-encoded at the same timing.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'AI frame interpolation', to: '/tools/ai-frame-interpolation', description: 'Generate frames up to 120 fps.' },
@@ -1016,16 +1080,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Tonal, colour and effect controls in one section, not a single "enhance" button.',
       'Use Darkroom for timeline grading with LUTs when you need more.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video\'s brightness, contrast, saturation and gamma are changed by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: VIDEO_INPUTS, supportedOutputFormats: ['mp4', 'webm', 'mov', 'mkv', 'gif'] },
     faq: [
       { question: 'Can I preview the result?', answer: 'The sliders show their values; the full grade is applied on conversion. Trim to a few seconds to test quickly, then run the whole clip.' },
       { question: 'Can I apply a LUT?', answer: 'Not here. Darkroom, our multi-track editor, supports 3D LUTs and per-clip grading.' },
       { question: 'Will this fix overexposed footage?', answer: 'It can bring highlights down, but detail that was clipped to white cannot be recovered.' },
       { question: 'Can I sharpen a soft clip?', answer: 'Yes. Use the unsharp mask controls; for real detail recovery try AI video restoration.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Darkroom video editor', to: '/tools/content-studio', description: 'Grade with LUTs on a timeline.' },
@@ -1090,20 +1152,18 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'x265 with sensible CRF presets and Apple-compatible tagging.',
       'The same panel compresses to H.264, VP9 or AV1 if you need those instead.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('video', 'Your video is re-encoded to H.265 (HEVC) by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: VIDEO_INPUTS, supportedOutputFormats: ['mp4'], processingNotes: ['HEVC encoding is CPU-heavy; expect several minutes for long or 4K sources.'] },
     faq: [
       { question: 'Will HEVC play everywhere?', answer: 'iPhone, Mac, Windows 10+, Android 5+, modern TVs and Safari/Edge play it. Chrome and Firefox and old devices usually do not; keep H.264 for those.' },
       { question: 'How much smaller will the file be?', answer: 'Typically 40 to 50 percent smaller than H.264 at the same quality; more for simple content.' },
       { question: 'Is the quality worse?', answer: 'At the balanced preset the difference is not visible for most content. Pick high quality for footage you will edit again.' },
       { question: 'Why is it slow?', answer: 'x265 does far more work per frame than x264. It is the price of the smaller file.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Compress video', to: '/tools/compress-video', description: 'H.264, VP9 or AV1 compression.' },
-      { label: 'MP4 converter', to: '/tools/mp4-converter', description: 'Standard H.264 MP4.' },
+      { label: 'Video converter', to: '/tools/video-converter', description: 'Standard H.264 MP4.' },
       ...videoRelated('/convert-video-to-hevc', '/compress-video'),
     ],
     primaryKeyword: 'convert video to HEVC',
@@ -1160,15 +1220,13 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Keeps the original sample rate and channels.',
       'Cover art in the MP3 is handled correctly.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your MP3 is decoded once by FFmpeg on our server into a 16-bit PCM WAV.'),
     supportedFormats: { supportedInputFormats: ['mp3'], supportedOutputFormats: ['wav'] },
     faq: [
       { question: 'Will WAV sound better than the MP3?', answer: 'No. It sounds identical; the point is that further editing will not degrade it.' },
       { question: 'Why is the WAV so much bigger?', answer: 'WAV is uncompressed: about 10 MB per minute of stereo CD-quality audio.' },
       { question: 'My MP3 has album art. Is that a problem?', answer: 'No. Embedded cover art is recognised as a picture and ignored.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Convert audio to WAV', to: '/tools/convert-audio-to-wav', description: 'Any format to WAV.' },
@@ -1231,16 +1289,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Pitch is preserved by default; no chipmunk or slowed-tape sound.',
       'Any output format, plus trim and normalise in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your recording is sped up or slowed down by FFmpeg on our server, using rubberband or atempo depending on the mode you pick.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'opus'] },
     faq: [
       { question: 'Does the pitch change?', answer: 'No. The tempo filter keeps the pitch exactly as it was.' },
       { question: 'How fast can I go?', answer: '4x in one pass. Run the result again for more.' },
       { question: 'Will slowed audio sound robotic?', answer: 'Down to 0.5x it is clean; below that some phasing is audible.' },
       { question: 'Can I change speed and pitch together?', answer: 'Yes. Use the Change audio pitch tool, which has a time-stretch control.' },
-      AUDIO_FAQ_FREE,
     ],
     related: audioRelated('/change-audio-speed'),
     primaryKeyword: 'change audio speed',
@@ -1272,7 +1328,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Transposes audio up or down by up to 12 semitones (an octave).',
       'Keeps the duration the same, so the track still fits.',
       'Optional time-stretch to change length independently.',
-      'Exports MP3, WAV, FLAC, M4A, OGG or Opus.',
+      'Writes the shifted audio as MP3, WAV, FLAC, M4A, OGG or Opus.',
     ],
     flowSteps: [
       { title: 'Upload audio', description: 'Any common audio format.' },
@@ -1299,16 +1355,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Semitone control with duration preserved, and time-stretch when you want it.',
       'Any output format, plus trim and normalise in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio is shifted up or down by the number of semitones you choose, by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'opus'] },
     faq: [
       { question: 'Does the speed change?', answer: 'No. Duration is preserved. Use the time-stretch control if you want it to.' },
       { question: 'How far can I shift?', answer: 'Up to 12 semitones (one octave) up or down.' },
       { question: 'Will a shifted voice sound natural?', answer: 'For one to three semitones, yes. Larger shifts become audible; formant preservation keeps it from sounding like a cartoon.' },
       { question: 'Can I shift by cents?', answer: 'Not yet; the control is in whole semitones.' },
-      AUDIO_FAQ_FREE,
     ],
     related: audioRelated('/change-audio-pitch'),
     primaryKeyword: 'change audio pitch',
@@ -1340,7 +1394,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Measures integrated loudness and normalises to a broadcast-standard target.',
       'Limits true peaks so the output never clips.',
       'Optional gain, fade in/out and dynamic-range compression in the same section.',
-      'Exports MP3, WAV, FLAC, M4A, OGG or Opus.',
+      'Saves the levelled file in MP3, WAV, FLAC, M4A, OGG or Opus.',
     ],
     flowSteps: [
       { title: 'Upload audio', description: 'Any common format.' },
@@ -1367,16 +1421,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Real EBU R128 loudness measurement, not just a peak scan.',
       'Fades, gain and compression in the same section.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio\'s loudness is measured and evened out by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'opus'] },
     faq: [
       { question: 'What target loudness is used?', answer: '-24 LUFS integrated with a -2 dBTP true-peak ceiling, the EBU R128 default. Podcast platforms typically target -16 to -19 LUFS; add a few dB of amplify if you want it louder.' },
       { question: 'Will it make everything the same volume within the file?', answer: 'No. It levels the file as a whole. Turn on the compressor as well to reduce variation inside it.' },
       { question: 'Can it clip?', answer: 'No. The true-peak limiter keeps peaks below the ceiling.' },
       { question: 'Can I just make it louder?', answer: 'Yes. Use the Adjust volume tool for a fixed gain change.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Adjust volume', to: '/tools/adjust-audio-volume', description: 'Fixed gain up or down.' },
@@ -1438,16 +1490,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Multiplier or decibels, plus fades, in one place.',
       'Normalise and compress in the same pass to prevent clipping.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio is made louder or quieter by the amount you set, by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'opus'] },
     faq: [
       { question: 'What is the maximum boost?', answer: '2x with the multiplier, or up to +60 dB with the amplify slider. Large boosts clip unless normalise is on.' },
       { question: 'Will it distort?', answer: 'Only if the boosted signal exceeds full scale. Turn on normalise, which limits true peaks.' },
       { question: 'Multiplier or decibels?', answer: 'They do the same job. 2x equals +6 dB; 0.5x equals -6 dB.' },
       { question: 'Can I even out the volume instead?', answer: 'Yes. Use Normalize audio for a consistent perceived loudness.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Normalize audio', to: '/tools/normalize-audio', description: 'Consistent loudness.' },
@@ -1482,7 +1532,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Presets: bass boost, treble boost, vocal, rock, jazz, classical.',
       'High-pass and low-pass filters with adjustable cut-off frequencies.',
       'Combine with volume, normalise, compression and reverb.',
-      'Exports MP3, WAV, FLAC, M4A, OGG or Opus.',
+      'The equalised result can be MP3, WAV, FLAC, M4A, OGG or Opus.',
     ],
     flowSteps: [
       { title: 'Upload audio', description: 'Any common format.' },
@@ -1509,16 +1559,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Presets and explicit filter cut-offs in one section.',
       'Chain with normalise, compression and reverb in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio\'s bass, mids and treble are reshaped by FFmpeg\'s equaliser on our server.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'opus'] },
     faq: [
       { question: 'Can I set my own bands?', answer: 'Presets plus high-pass and low-pass cut-offs are exposed; per-band gain is on the roadmap.' },
       { question: 'What does a high-pass filter do?', answer: 'It removes everything below the cut-off frequency: rumble, handling noise, plosive thumps.' },
       { question: 'Can EQ fix a muffled recording?', answer: 'A treble boost helps if the highs are merely quiet. If they were never captured, EQ cannot invent them; try AI voice cleanup.' },
       { question: 'Will EQ clip?', answer: 'Boosts can. Turn on normalise, which includes a true-peak limiter.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'AI voice enhancement.' },
@@ -1553,7 +1601,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Room, hall, plate and spring reverb types with room size, damping and wet/dry mix.',
       'Echo, multi-tap and ping-pong delay with time and feedback.',
       'Chorus, flanger, phaser and tremolo modulation in the same section.',
-      'Exports MP3, WAV, FLAC, M4A, OGG or Opus.',
+      'Choose MP3, WAV, FLAC, M4A, OGG or Opus for the wet version.',
     ],
     flowSteps: [
       { title: 'Upload audio', description: 'A dry vocal or instrument works best.' },
@@ -1580,16 +1628,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Four reverb types, three delay types and four modulation effects in one section.',
       'Combine with EQ, normalise and pitch in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Reverb is added to your audio by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'opus'] },
     faq: [
       { question: 'Which reverb should I use for voice?', answer: 'Plate or a small room at 20 to 30 percent wet. Hall is for music and effects.' },
       { question: 'Can I remove reverb?', answer: 'Not here. The AI voice cleanup tool reduces room sound on speech.' },
       { question: 'Can I add both reverb and delay?', answer: 'Yes. Both are in the same section and can be enabled together.' },
       { question: 'Is the effect reversible?', answer: 'No. It is rendered into the file; keep your dry original.' },
-      AUDIO_FAQ_FREE,
     ],
     related: audioRelated('/add-reverb-to-audio'),
     primaryKeyword: 'add reverb to audio online',
@@ -1620,7 +1666,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whatItDoes: [
       'Cuts any audio file to a start and end time chosen on a waveform.',
       'Fade in and fade out so the cut does not click.',
-      'Exports MP3, WAV, FLAC, M4A, OGG or Opus.',
+      'The cut comes back as MP3, WAV, FLAC, M4A, OGG or Opus.',
       'Combine with volume, normalise and EQ in the same pass.',
     ],
     flowSteps: [
@@ -1648,16 +1694,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Waveform editing with draggable markers, not typed timestamps.',
       'Fades, normalise and any output format in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('audio', 'Your audio is cut to the start and end you set by FFmpeg on our server.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['mp3', 'wav', 'flac', 'aac', 'ogg', 'opus'] },
     faq: [
       { question: 'Can I type exact times?', answer: 'Yes. The trim dialog has start and end fields as well as the draggable markers.' },
       { question: 'Will the cut click?', answer: 'Add a short fade in and out in Basic processing to avoid it.' },
       { question: 'Can I keep the original quality?', answer: 'Choose WAV or FLAC output to avoid a lossy re-encode.' },
       { question: 'Can I cut out the middle?', answer: 'One range per pass; run the tool twice and join the parts in Darkroom.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'The same for video.' },
@@ -1720,9 +1764,8 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Whisper on hardware we run; your audio is never sent to a third-party AI.',
       'Four output formats and a built-in transcript viewer.',
-      `No signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('ai', 'Your recording is transcribed by Whisper on our own GPU server, and the text is kept with the job.'),
     supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['txt', 'vtt', 'srt', 'json'], processingNotes: ['Counts as one operation; failed jobs are not counted.'] },
     faq: [
       { question: 'Which languages are supported?', answer: 'Whisper handles dozens of languages and detects the language automatically.' },
@@ -1794,16 +1837,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Fill, outline, font and nine-point placement, not just a text box.',
       'Resize, crop and convert in the same upload.',
-      `Free, no watermark of ours, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('image', 'The text you typed is drawn onto your image by ImageMagick on our server.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Can I add more than one line?', answer: 'One text block per pass; a line break in the text renders on a new line. Run the tool again for a second block.' },
       { question: 'Can I use my own font?', answer: 'Six bundled fonts are available; custom font upload is not supported.' },
       { question: 'How do I place text exactly?', answer: 'Pick an anchor and add x/y offsets in pixels.' },
       { question: 'Will it reduce quality?', answer: 'The image is re-encoded; choose PNG or a high JPG quality to keep it sharp.' },
-      AUDIO_FAQ_FREE,
     ],
     related: imageRelated('/add-text-to-image'),
     primaryKeyword: 'add text to image',
@@ -1834,7 +1875,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Visual crop box with drag handles on the actual image.',
       'Exact crop coordinates shown and editable.',
       'Combine with resize to a target width and height after cropping.',
-      'Output in JPG, PNG, WebP, AVIF or GIF.',
+      'Save the cropped area as JPG, PNG, WebP, AVIF or GIF.',
     ],
     flowSteps: [
       { title: 'Upload an image', description: 'Any common format.' },
@@ -1861,16 +1902,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Visual cropper with exact coordinates, plus resize and convert in the same pass.',
       'Metadata kept or stripped as you choose.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is cut to the area you selected by ImageMagick on our server.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Can I crop to a fixed ratio?', answer: 'Drag the box to the ratio you need; the width and height are shown as you go.' },
       { question: 'Does cropping lose quality?', answer: 'The remaining pixels are untouched. Choose PNG or a high JPG quality for the re-encode.' },
       { question: 'Can I crop a video?', answer: 'Yes, with the Crop video tool.' },
       { question: 'Can I rotate first?', answer: 'Use the Rotate image tool, then crop.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Crop video', to: '/tools/crop-video', description: 'The same for video.' },
@@ -1904,7 +1943,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Converts a colour image to grayscale with correct luminance weighting.',
       'Sepia and vintage alternatives for a warm or aged tone.',
       'Combine with crop, resize, text and format conversion.',
-      'Output in JPG, PNG, WebP, AVIF or GIF.',
+      'The monochrome copy can be JPG, PNG, WebP, AVIF or GIF.',
     ],
     flowSteps: [
       { title: 'Upload an image', description: 'Any common format.' },
@@ -1931,16 +1970,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Luminance-correct grayscale plus sepia and vintage.',
       'Crop, resize and convert in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image\'s colour is removed by ImageMagick on our server.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Grayscale or desaturate?', answer: 'This is a luminance-weighted grayscale, which looks more natural than simply removing saturation.' },
       { question: 'Can I get a sepia tone?', answer: 'Yes. Pick sepia or vintage in the filter select.' },
       { question: 'Can I do this to a video?', answer: 'Yes. Use Adjust video colour and set saturation to -100.' },
       { question: 'Is the original colour recoverable?', answer: 'No. Keep the original file.' },
-      AUDIO_FAQ_FREE,
     ],
     related: imageRelated('/grayscale-image'),
     primaryKeyword: 'convert image to black and white',
@@ -1998,16 +2035,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Twelve artistic and corrective filters in one select.',
       'Crop, resize, caption and convert in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('image', 'The filter you choose is applied to your image by ImageMagick on our server.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Can I adjust the strength?', answer: 'The filters use fixed, tuned strengths. Resize the image larger or smaller to change how strong a radius-based effect looks.' },
       { question: 'Can I stack filters?', answer: 'One filter per pass; run the result through the tool again for a second.' },
       { question: 'Is there an AI style transfer?', answer: 'No. These are classic ImageMagick effects, which run instantly.' },
       { question: 'Which filter works for a logo?', answer: 'Emboss or charcoal on a high-contrast logo.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Black and white', to: '/tools/grayscale-image', description: 'Grayscale and sepia.' },
@@ -2043,7 +2078,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Rotates by 90° (clockwise), 180°, 270° (counter-clockwise) or 45°.',
       'Bakes the rotation into the pixels and clears the EXIF orientation tag.',
       'Combine with crop, resize and format conversion.',
-      'Output in JPG, PNG, WebP, AVIF or GIF.',
+      'Write the turned image as JPG, PNG, WebP, AVIF or GIF.',
     ],
     flowSteps: [
       { title: 'Upload an image', description: 'Any common format.' },
@@ -2070,16 +2105,14 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Rotation applied to the pixels, with the orientation tag handled correctly.',
       'Crop, resize and convert in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is turned by the angle you pick by ImageMagick on our server.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Why does my photo look upright on my phone but sideways elsewhere?', answer: 'Your phone wrote an orientation tag that the other app ignores. Rotating here bakes the orientation into the pixels.' },
       { question: 'Does rotating lose quality?', answer: 'Rotation by 90° multiples is lossless in geometry; the re-encode is the only cost. Use PNG or high JPG quality.' },
       { question: 'Can I rotate by an arbitrary angle?', answer: 'Only 45° plus the 90° multiples are offered.' },
       { question: 'Can I mirror instead?', answer: 'Not here; mirroring is not currently offered for images.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Rotate video', to: '/tools/rotate-video', description: 'The same for video.' },
@@ -2111,7 +2144,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whatItDoes: [
       'Applies a tuned unsharp-mask sharpen to any image.',
       'Combine with resize: sharpen after downscaling for crisp thumbnails.',
-      'Output in JPG, PNG, WebP, AVIF or GIF.',
+      'Download the sharpened result as JPG, PNG, WebP, AVIF or GIF.',
       'Compare original and result side by side.',
     ],
     flowSteps: [
@@ -2139,15 +2172,13 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Tuned unsharp mask with resize in the same pass.',
       'AI restoration available when sharpening is not enough.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is sharpened by ImageMagick on our server at the strength you set.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Will it fix a blurry photo?', answer: 'It helps with mild softness. For real blur, use AI image restoration, which reconstructs detail.' },
       { question: 'Can I control the strength?', answer: 'The strength is fixed and tuned; run twice for more, or use a smaller output size for a stronger relative effect.' },
       { question: 'Does it add noise?', answer: 'Sharpening can emphasise existing grain. Use a high JPG quality to avoid compounding it.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'AI image restoration', to: '/tools/ai-image-restoration', description: 'Recover real detail with AI.' },
@@ -2181,7 +2212,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whatItDoes: [
       'Applies a Gaussian blur to the entire image.',
       'Combine with resize for a tiny blurred placeholder.',
-      'Output in JPG, PNG, WebP, AVIF or GIF.',
+      'The softened image comes back as JPG, PNG, WebP, AVIF or GIF.',
       'Related tools blur faces or redact text selectively.',
     ],
     flowSteps: [
@@ -2209,15 +2240,13 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Whole-image blur here; face blur and text redaction as dedicated AI tools.',
       'Resize and convert in the same upload.',
-      `Free, no watermark, no signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('image', 'Your image is blurred by ImageMagick on our server at the radius you set.'),
     supportedFormats: { supportedInputFormats: IMAGE_INPUTS, supportedOutputFormats: ['jpg', 'png', 'webp', 'avif', 'gif'] },
     faq: [
       { question: 'Can I blur only part of the image?', answer: 'Use Blur faces in photo for faces or Redact text in image for text and licence plates.' },
       { question: 'Is blur enough to hide text?', answer: 'Not reliably. Use the redaction tool, which paints over the region.' },
       { question: 'Can I control the blur amount?', answer: 'The radius is fixed; resize smaller before blurring for a stronger effect.' },
-      AUDIO_FAQ_FREE,
     ],
     related: [
       { label: 'Blur faces in photo', to: '/tools/blur-faces-in-photo', description: 'AI face blur.' },
@@ -2283,9 +2312,8 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Whisper on our own hardware; nothing sent to a third-party AI.',
       'Caption viewer to check timing before download.',
-      `No signup. ${RETENTION_PROMISE}.`,
     ],
-    privacyNote,
+    privacyNote: privacyNoteFor('ai', 'Your file\'s speech is transcribed by Whisper on our own GPU server and timed into WebVTT captions.'),
     supportedFormats: { supportedInputFormats: [...VIDEO_INPUTS, 'mp3', 'wav', 'm4a'], supportedOutputFormats: ['vtt', 'srt', 'txt', 'json'], processingNotes: ['Counts as one operation; failed jobs are not counted.'] },
     faq: [
       { question: 'VTT or SRT?', answer: 'VTT for web players and YouTube; SRT for video editors and some older platforms. Both are offered.' },
@@ -2356,10 +2384,9 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Whisper and the vision and language models run on hardware we operate; your video is never sent to a third-party AI.',
       'Chapters that seek your own video, right in the result viewer.',
-      `Markdown and JSON downloads. ${RETENTION_PROMISE}.`,
     ],
     privacyNote:
-      `Summaries need a free account, so the job is attached to it. Your file is processed on our own servers, and the AI models run on a GPU server we operate; nothing is sent to a third-party AI provider. ${RETENTION_PROMISE}.`,
+      `Your video's speech goes to Whisper and frames sampled where the picture changes go to a vision model, both on a GPU server we operate. Summaries need a free account, so the job is attached to it, and nothing is sent to a third-party AI provider. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: [...VIDEO_INPUTS, 'mp3', 'wav', 'm4a'],
       supportedOutputFormats: ['md', 'json'],
@@ -2435,10 +2462,9 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Whisper and the language model run on hardware we operate; your recording is never sent to a third-party AI.',
       'Chapters that seek your own recording, right in the result viewer.',
-      `Markdown and JSON downloads. ${RETENTION_PROMISE}.`,
     ],
     privacyNote:
-      `Summaries need a free account, so the job is attached to it. Your file is processed on our own servers, and the AI models run on a GPU server we operate; nothing is sent to a third-party AI provider. ${RETENTION_PROMISE}.`,
+      `Your recording is transcribed by Whisper and the transcript is summarised by a language model, both on a GPU server we operate. Summaries need a free account, so the job is attached to it, and nothing is sent to a third-party AI provider. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: AUDIO_INPUTS,
       supportedOutputFormats: ['md', 'json'],

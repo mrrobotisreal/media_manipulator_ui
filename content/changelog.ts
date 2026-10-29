@@ -23,6 +23,15 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM84: the copy bar, aliases and the catalog review mode.
+  {
+    id: '2026-10-29-tool-pages-rewritten',
+    date: '2026-10-29',
+    title: 'Rewrote the most-used tool pages with worked examples and tool-specific privacy notes',
+    body: 'The 24 most-used tool pages, from Compress Video and Remove EXIF Metadata to the AI restoration, transcription and vocal-removal tools, have been rewritten from the code that runs them. Each now has two worked examples with real numbers (what goes in, the settings, what comes out and what decides the time), a "When not to use this" paragraph, technical details that name the actual commands and models, and a privacy note that says what that tool does with your file. Several pages that were the same tool under another name (MP4 Trimmer, Video Cutter, Video to GIF, JPG Converter and others) now point to their main page, and the catalog lists the main tools first with the rest in a collapsible list per category; search still finds every tool, including by its other names.',
+    tags: ['improved'],
+    links: [{ label: 'Browse the tools', href: '/tools' }],
+  },
   // MM88: mobile polish and home first-load.
   {
     id: '2026-10-28-faster-first-load',

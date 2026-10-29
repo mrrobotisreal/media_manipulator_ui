@@ -11,7 +11,8 @@ describe('changelog data', () => {
     // 2026-10-26: MM70 (Darkroom playback fix), MM71 (rebuild old previews).
     // 2026-10-27: MM60–MM67 and MM72 (the last eight locales) merged to UI main.
     // 2026-10-28: MM73 (quota refunds, cover-art probe fix, full /tools catalog).
-    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28']).toContain(d);
+    // 2026-10-29: MM84 (tool copy bar, alias pages, /tools review mode).
+    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29']).toContain(d);
   });
 
   it('does not announce email as being sent (sending is off until configured)', () => {

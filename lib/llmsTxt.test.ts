@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { llmsFullMarkdown, llmsIndexMarkdown } from '@/lib/llmsTxt';
-import { TOOL_PAGES } from '@/content/toolPages';
+import { PRIMARY_TOOL_PAGES as TOOL_PAGES } from '@/content/toolPages';
+import { TOOL_ALIAS_OF } from '@/content/toolAliases';
 import { locales } from '@/i18n/locales';
 
 describe('llms.txt', () => {
@@ -40,6 +41,15 @@ describe('llms.txt', () => {
     for (const tool of TOOL_PAGES) {
       const url = `](https://www.media-manipulator.com/tools/${tool.slug})`;
       expect(index.split(url).length - 1, tool.slug).toBe(1);
+    }
+  });
+
+  it('never lists an alias page (MM84)', () => {
+    for (const text of [index, llmsFullMarkdown()]) {
+      for (const alias of Object.keys(TOOL_ALIAS_OF)) {
+        expect(text, alias).not.toContain(`/tools/${alias})`);
+        expect(text, alias).not.toContain(`/tools/${alias}\n`);
+      }
     }
   });
 

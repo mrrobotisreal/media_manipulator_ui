@@ -2074,7 +2074,8 @@
       "ai": "AI टूल",
       "privacy": "गोपनीयता",
       "editor": "एडिटर"
-    }
+    },
+    "moreTools": "{{category}}: {{count}} और"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "ब्रेडक्रम",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "अक्सर पूछे जाने वाले सवाल",
     "faqHeading": "अक्सर पूछे जाने वाले सवाल",
     "relatedToolsAriaLabel": "संबंधित टूल",
-    "relatedToolsHeading": "संबंधित टूल"
+    "relatedToolsHeading": "संबंधित टूल",
+    "aliasHeading": "पूरी गाइड, उदाहरण और FAQ",
+    "aliasLink": "{{name}} की पूरी गाइड पढ़ें",
+    "workedExamplesHeading": "व्यावहारिक उदाहरण",
+    "whenNotToUseHeading": "यह टूल कब इस्तेमाल न करें"
   },
   "contentStudioGuide": {
     "summaryTitle": "Darkroom कैसे काम करता है — त्वरित गाइड",

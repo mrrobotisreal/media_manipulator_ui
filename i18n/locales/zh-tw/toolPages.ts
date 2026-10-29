@@ -16,6 +16,7 @@ const zhTwToolPages = {
   pages: {
     // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: '繪製或匯入 SVG，在關鍵影格時間軸上製作動畫，然後匯出為動態 SVG、Lottie、React、JavaScript、Flutter 或 GIF，全部在你的瀏覽器中完成。',
       intro: 'Motion 是內建於 Media Manipulator 的 SVG 編輯器，附有動畫時間軸。開啟一個 SVG 檔案（或 Lottie 動畫），其中的每個形狀都會成為可選取、移動、變色與製作動畫的圖層；你也可以從空白畫布開始，用矩形、橢圓、線條、鋼筆與文字工具繪圖。你製作動畫的每個屬性都有自己的關鍵影格軌道，並提供緩動預設組、用於自訂緩動的曲線編輯器，以及瞬間切換的保持關鍵影格。一鍵動畫器可加入線條描繪動畫、沿路徑移動、形狀變形、漸層變色、遮罩動畫與模糊。當動態符合你的想法後，就能匯出為動態 SVG、Lottie 檔案、React 元件、JavaScript 或 TypeScript 模組、Flutter 小工具或 GIF。編輯與所有匯出都在瀏覽器中執行，所以你的作品絕不會為了匯出而被上傳。',
       whatItDoes: [
@@ -553,6 +554,145 @@ const zhTwToolPages = {
       name: '變聲器',
       tagline:
         '即時調整錄音的音高與特色，或使用 AI 將語音轉換為已儲存或預設的語音。',
+    },
+    // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
+    'content-studio': {
+      name: 'Darkroom',
+      tagline: '在多軌時間軸上剪輯、疊加與混合影片和音訊，然後匯出 MP4。Premiere Pro 風格的編輯器，直接在瀏覽器中使用。',
+      metaTitle: 'Darkroom：免費線上多軌影片編輯器 | Media Manipulator',
+      metaDescription: '在多軌時間軸上剪輯、疊加與混合影片和音訊，然後匯出 MP4。一款在瀏覽器中執行的免費 Premiere Pro 風格影片編輯器，無需註冊，無需安裝。',
+    },
+    'remove-exif-metadata': {
+      name: '移除圖片中的 EXIF 中繼資料',
+      tagline: '在分享相片之前，清除其中的 GPS 位置、裝置、相機和時間戳記資料。',
+      metaTitle: '線上移除圖片 EXIF 中繼資料（免費） | Media Manipulator',
+      metaDescription: '免費線上工具，可移除 JPG、PNG、WebP 和 HEIC 圖片中的 EXIF、GPS、IPTC 和相機中繼資料。無需註冊。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'compress-image': {
+      name: '壓縮圖片',
+      tagline: '縮小 JPG、PNG 和 WebP 檔案大小，讓網站更快、上傳更小、分享更輕鬆。',
+      metaTitle: '線上免費壓縮圖片 | Media Manipulator',
+      metaDescription: '免費線上圖片壓縮工具。在維持良好畫質的同時縮小 JPG、PNG 和 WebP 檔案大小。無需註冊。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'image-resizer': {
+      name: '圖片尺寸調整',
+      tagline: '將 JPG、PNG、WebP 和 GIF 圖片調整為精確的像素尺寸，同時維持長寬比。',
+      metaTitle: '線上免費調整圖片尺寸 | Media Manipulator',
+      metaDescription: '免費線上圖片尺寸調整工具。將 JPG、PNG、WebP 和 GIF 圖片調整為精確的像素尺寸，同時維持長寬比。無需註冊。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'remove-background-from-image': {
+      name: '移除圖片背景',
+      tagline: '自動擦除任何相片的背景，下載乾淨的透明 PNG 去背圖。',
+      metaTitle: '線上免費移除圖片背景 | Media Manipulator',
+      metaDescription: '免費線上背景移除工具。自動擦除任何相片的背景，下載透明 PNG。執行在我們自己的 GPU 上，不使用第三方 AI。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'image-to-pdf': {
+      name: '圖片轉 PDF',
+      tagline: '一鍵將 JPG、PNG 等圖片變成整潔、方便分享的 PDF 文件。',
+      metaTitle: '線上免費將圖片轉換為 PDF | Media Manipulator',
+      metaDescription: '免費線上圖片轉 PDF 工具。將 JPG、PNG 等圖片變成整潔的 PDF 文件。無需註冊，無浮水印。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'pdf-to-jpg': {
+      name: 'PDF 轉 JPG',
+      tagline: '將 PDF 的每一頁轉為高品質 JPG 圖片，方便分享、編輯或發布。',
+      metaTitle: '線上免費將 PDF 轉換為 JPG | Media Manipulator',
+      metaDescription: '免費線上 PDF 轉 JPG 工具。將 PDF 的每一頁轉為高品質 JPG 圖片，並以 ZIP 下載。無需註冊。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'compress-video': {
+      name: '壓縮影片',
+      tagline: '縮小 MP4、WebM、MOV、MKV 和 AVI 檔案大小，適用於網頁、電子郵件、社群媒體和雲端上傳。',
+      metaTitle: '線上壓縮影片（免費） | Media Manipulator',
+      metaDescription: '免費線上影片壓縮工具。在維持良好畫質的同時縮小 MP4、WebM、MOV、MKV 和 AVI 檔案大小。無需註冊。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'video-trimmer': {
+      name: '影片裁剪',
+      tagline: '透過快速且保持畫質的裁剪，把片段剪成你想要的部分，盡可能不重新編碼。',
+      metaTitle: '線上免費裁剪影片 | Media Manipulator',
+      metaDescription: '免費線上影片裁剪工具。設定開始和結束時間，透過快速無損的裁剪剪出片段。輸出 MP4，無浮水印，無需註冊。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'extract-audio-from-video': {
+      name: '從影片擷取音訊',
+      tagline: '將任何影片的音軌儲存為乾淨的 MP3、WAV、M4A、AAC、FLAC 或 OGG 檔案。',
+      metaTitle: '從影片擷取音訊：MP3、WAV、M4A 等 | Media Manipulator',
+      metaDescription: '免費線上工具，可從任何影片檔案（MP4、MOV、MKV、WebM、AVI）擷取音訊。可輸出 MP3、WAV、M4A、AAC、FLAC 或 OGG。無需註冊。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'convert-video-to-animated-gif': {
+      name: '將影片轉換為動態 GIF',
+      tagline: '幾秒內把簡短的 MP4、WebM、MOV 或 MKV 片段變成方便分享的動態 GIF。',
+      metaTitle: '線上將影片轉換為動態 GIF（免費） | Media Manipulator',
+      metaDescription: '免費線上影片轉 GIF 工具。將簡短的 MP4、WebM、MOV 和 MKV 片段變成動態 GIF，並可控制尺寸與影格率。',
+    },
+    'transcribe-video': {
+      name: '影片轉錄',
+      tagline: '把影片或音訊檔案中的語音擷取為 WebVTT 或 SRT 字幕、純文字或附時間戳記的 JSON。',
+      metaTitle: '線上將影片轉錄為文字（免費） | Media Manipulator',
+      metaDescription: '免費線上影片轉錄工具。將 MP4、MOV、WebM、MKV 和音訊檔案轉換為可搜尋的文字、VTT 字幕或 JSON 逐字稿。',
+    },
+    'transcode-to-hls': {
+      name: '將影片轉碼為 HLS',
+      tagline: '把任何影片封裝成 Apple HLS VOD 套件：master.m3u8 和依解析度劃分的 .ts 片段，可直接用於網頁。',
+      metaTitle: '線上將影片轉碼為 HLS | 免費自適應串流工具',
+      metaDescription: '免費線上 HLS 轉碼工具。將 MP4、MOV、WebM、MKV 轉換為包含 360p/480p/720p 解析度的 HLS VOD 套件，可選字幕和分鏡腳本。',
+    },
+    'ai-video-restoration': {
+      name: 'AI 影片修復',
+      tagline: '使用最多六種 AI 模型（Real-ESRGAN、SwinIR、HAT、BasicVSR++、RVRT 和 VRT）放大並修復簡短的影片片段，並將所有結果並排比較。',
+      metaTitle: 'AI 影片修復工具：線上比較 6 種放大模型 | Media Manipulator',
+      metaDescription: '免費 AI 影片修復工具。讓簡短片段在我們自己的 GPU 上通過 Real-ESRGAN、SwinIR、HAT、BasicVSR++、RVRT 和 VRT 超解析度模型處理，並將所有結果打包下載。',
+    },
+    'ai-image-restoration': {
+      name: 'AI 圖片修復與放大',
+      tagline: '使用最多八種 AI 模型清理、放大並修復相片：保真預清理（FBCNN、SCUNet、NAFNet）、通用放大器（Real-ESRGAN、SwinIR、HAT）以及人臉增強（GFPGAN、CodeFormer），並將每個結果與原圖比較。',
+      metaTitle: 'AI 圖片修復與放大器：線上比較 8 種模型 | Media Manipulator',
+      metaDescription: '免費 AI 相片修復與放大。去除 JPEG 壓縮瑕疵、降噪並去模糊，然後用 Real-ESRGAN、SwinIR 或 HAT 放大到 4K/8K，再用 GFPGAN/CodeFormer 增強人臉，全部在我們自己的 GPU 上完成，並可並排比較。',
+    },
+    'ai-document-scan': {
+      name: 'AI 文件掃描',
+      tagline: '將掃描文件和手寫筆記變成可搜尋的多頁 PDF 和可編輯的 Word 文件：印刷頁面會取得忠實的 Tesseract 文字層，手寫內容由視覺 AI 轉錄，並標出不確定之處，絕不憑空捏造。',
+      metaTitle: 'AI 文件掃描：將掃描頁面和手寫內容轉為 PDF/Word | Media Manipulator',
+      metaDescription: '免費 AI 文件掃描：將掃描圖片轉換為可搜尋的 PDF 和圖片轉 Word OCR，並將手寫筆記轉錄為文字。可調整頁面順序，印刷體與手寫混合也沒問題，全部在我們自己的 GPU 上完成，忠於原文並標出不確定之處。',
+    },
+    'ai-image-upscaler': {
+      name: 'AI 圖片放大器',
+      tagline: '使用 Real-ESRGAN 模型放大較小或模糊的相片，它會重建細節，而不是單純拉伸像素。',
+      metaTitle: 'AI 圖片放大器：將相片放大 2 倍或 4 倍 | Media Manipulator',
+      metaDescription: '用能還原邊緣和紋理的 AI 將低解析度相片放大 2 倍或 4 倍。執行在我們自己的 GPU 上，輸出 PNG。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'blur-faces-in-photo': {
+      name: '模糊相片中的人臉',
+      tagline: '自動偵測人臉，然後對全部人臉或你選擇的人臉進行模糊、馬賽克或塗黑。',
+      metaTitle: '線上模糊相片中的人臉 | Media Manipulator',
+      metaDescription: '對相片中的人臉進行模糊、馬賽克或塗黑。偵測每一張人臉，再選擇要隱藏的人臉。AI 執行在我們自己的 GPU 上。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'redact-text-in-image': {
+      name: '遮蓋圖片中的文字',
+      tagline: '在螢幕截圖或相片中找出可讀文字，並用模糊或黑色方框遮蓋個人資料或全部文字。',
+      metaTitle: '線上遮蓋圖片中的文字 | Media Manipulator',
+      metaDescription: '自動找出圖片中的文字，並將姓名、電子郵件、號碼等個人資料塗黑或模糊。AI 執行在我們自己的 GPU 上。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'remove-object-from-photo': {
+      name: '移除相片中的物件',
+      tagline: '在不想出現在畫面中的物件周圍畫一個框，修補模型就會用相符的背景填補空缺。',
+      metaTitle: '線上移除相片中的物件 | Media Manipulator',
+      metaDescription: '擦除相片中不需要的物件。畫一個矩形，AI 修補會依背景填補空白。執行在我們自己的 GPU 上。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'clean-voice-audio': {
+      name: '人聲音訊降噪',
+      tagline: '減少 Podcast、訪談和語音備忘錄中的嘶嘶聲、房間底噪和低頻隆隆聲，讓語音更清晰。',
+      metaTitle: '用 AI 清理人聲錄音 | Media Manipulator',
+      metaDescription: '用 AI 清理人聲錄音。減少嘶嘶聲、嗡嗡聲和房間雜訊，讓語音更容易聽清。執行在我們自己的 GPU 上。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'remove-background-noise': {
+      name: '去除背景雜音',
+      tagline: '用 AI 降噪器降低錄音中的嘶嘶聲、嗡嗡聲、車流聲和房間雜訊，讓主要聲音更突出。',
+      metaTitle: '線上去除音訊背景雜音 | Media Manipulator',
+      metaDescription: '去除音訊中的背景雜音。AI 降噪器會降低錄音中的嘶嘶聲、嗡嗡聲和環境音。執行在我們自己的 GPU 上。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
+    },
+    'remove-vocals-from-song': {
+      name: '去除歌曲人聲',
+      tagline: '去掉音軌中的歌聲並保留音樂，用於卡拉 OK、練習和伴奏。請僅用於你擁有權利的音樂。',
+      metaTitle: '去除歌曲人聲：卡拉 OK 製作器 | Media Manipulator',
+      metaDescription: '用 AI 去除歌曲中的人聲，並以與原檔案相同的格式或 FLAC、WAV 下載伴奏。在我們自己的 GPU 上製作卡拉 OK 和練習音軌。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
     },
   },
 } as const;

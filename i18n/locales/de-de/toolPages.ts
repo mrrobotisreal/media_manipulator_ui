@@ -16,6 +16,7 @@ const deToolPages = {
   pages: {
     // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: 'Zeichnen oder importieren Sie ein SVG, animieren Sie es auf einer Keyframe-Zeitleiste und exportieren Sie animiertes SVG, Lottie, React, JavaScript, Flutter oder GIF, alles in Ihrem Browser.',
       intro: 'Motion ist ein SVG-Editor mit Animationszeitleiste, integriert in Media Manipulator. Öffnen Sie eine SVG-Datei (oder eine Lottie-Animation), und jede Form wird zu einer Ebene, die Sie auswählen, verschieben, umfärben und animieren können, oder beginnen Sie mit einer leeren Zeichenfläche und zeichnen Sie mit den Werkzeugen für Rechteck, Ellipse, Linie, Zeichenstift und Text. Jede animierte Eigenschaft erhält eine eigene Keyframe-Spur, mit Easing-Vorgaben, einem Kurveneditor für eigenes Easing und Hold-Keys für sofortige Sprünge. Ein-Klick-Animatoren fügen Konturzeichnung, Bewegung entlang eines Pfads, Form-Morphing, Farbverläufe, Maskenanimation und Weichzeichner hinzu. Wenn es sich so bewegt, wie Sie möchten, exportieren Sie es als animiertes SVG, Lottie-Datei, React-Komponente, JavaScript- oder TypeScript-Modul, Flutter-Widget oder GIF. Bearbeitung und jeder Export laufen in Ihrem Browser, Ihre Grafik wird also nie hochgeladen, um sie zu exportieren.',
       whatItDoes: [
@@ -168,81 +169,113 @@ const deToolPages = {
       ogDescription: 'Animieren Sie SVG im Browser: Keyframes, Easing, Holds, Konturzeichnung, Bewegungspfade und Morphing. Export als animiertes SVG, Lottie JSON, React, JS, Flutter oder GIF.',
     },
     'content-studio': {
+      metaTitle: 'Darkroom: kostenloser Online-Videoeditor mit mehreren Spuren | Media Manipulator',
+      metaDescription: 'Bearbeiten, schichten und mischen Sie Video und Audio auf einer Mehrspur-Zeitleiste und exportieren Sie anschließend MP4 – ein kostenloser Videoeditor im Stil von Premiere Pro, der direkt in Ihrem Browser läuft. Ohne Anmeldung, ohne Installation.',
       name: 'Darkroom',
       tagline:
         'Schneiden, überlagern und mischen Sie Video und Audio auf einer Mehrspur-Timeline – und exportieren Sie als MP4. Ein Editor im Stil von Premiere Pro, direkt im Browser.',
     },
     'remove-exif-metadata': {
+      metaTitle: 'EXIF-Metadaten aus Bildern entfernen – online & kostenlos | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Entfernen von EXIF-, GPS-, IPTC- und Kamerametadaten aus JPG-, PNG-, WebP- und HEIC-Bildern. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'EXIF-Metadaten aus Bildern entfernen',
       tagline:
         'Entfernen Sie GPS-Koordinaten, Geräte-, Kamera- und Aufnahmedaten aus Ihren Fotos, bevor Sie sie teilen.',
     },
     'compress-image': {
+      metaTitle: 'Bilder online kostenlos komprimieren | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Bildkompressor. Verkleinern Sie JPG-, PNG- und WebP-Dateien bei guter Qualität. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'Bild komprimieren',
       tagline:
         'Verkleinern Sie JPG-, PNG- und WebP-Dateien für schnellere Websites, kleinere Uploads und einfaches Teilen.',
     },
     'image-resizer': {
+      metaTitle: 'Bildgröße online kostenlos ändern | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Bildgrößenänderer. Ändern Sie die Größe von JPG-, PNG-, WebP- und GIF-Bildern auf exakte Pixelmaße und behalten Sie dabei das Seitenverhältnis bei. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'Bildgröße ändern',
       tagline:
         'Skalieren Sie JPG, PNG, WebP und GIF pixelgenau – mit Beibehaltung des Seitenverhältnisses.',
     },
     'remove-background-from-image': {
+      metaTitle: 'Hintergrund aus Bild online kostenlos entfernen | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Hintergrundentferner. Löschen Sie den Hintergrund jedes Fotos automatisch und laden Sie ein transparentes PNG herunter. Läuft auf unserer eigenen GPU – ohne KI von Drittanbietern. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'Hintergrund aus Bild entfernen',
       tagline:
         'Entfernen Sie automatisch den Hintergrund aus jedem Foto und laden Sie ein sauberes PNG mit Transparenz herunter.',
     },
     'image-to-pdf': {
+      metaTitle: 'Bild online kostenlos in PDF umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von Bild zu PDF. Wandeln Sie JPG, PNG und andere Bilder in ein sauberes PDF-Dokument um. Ohne Anmeldung, ohne Wasserzeichen. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'Bilder in PDF umwandeln',
       tagline:
         'Verwandeln Sie JPG, PNG und andere Bilder mit einem Klick in ein ordentliches PDF-Dokument.',
     },
     'pdf-to-jpg': {
+      metaTitle: 'PDF online kostenlos in JPG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von PDF zu JPG. Rendern Sie jede Seite eines PDFs als hochwertiges JPG-Bild und laden Sie alles als ZIP herunter. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'PDF in JPG umwandeln',
       tagline:
         'Wandeln Sie jede PDF-Seite in hochwertige JPG-Bilder um – zum Teilen, Bearbeiten und Veröffentlichen.',
     },
     'compress-video': {
+      metaTitle: 'Video online komprimieren (kostenlos) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Videokompressor. Verkleinern Sie MP4-, WebM-, MOV-, MKV- und AVI-Dateien bei guter Qualität. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'Video komprimieren',
       tagline:
         'Verkleinern Sie MP4, WebM, MOV, MKV und AVI für Web, E-Mail, soziale Netzwerke und Cloud-Uploads.',
     },
     'video-trimmer': {
+      metaTitle: 'Video online kostenlos schneiden | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Videotrimmer. Legen Sie Start- und Endzeit fest und schneiden Sie Ihren Clip schnell und verlustfrei zu. MP4-Ausgabe, ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'Video zuschneiden',
       tagline:
         'Schneiden Sie den gewünschten Abschnitt schnell und ohne Qualitätsverlust aus – wenn möglich ganz ohne Neukodierung.',
     },
     'extract-audio-from-video': {
+      metaTitle: 'Audio aus Video extrahieren – MP3, WAV, M4A und mehr | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Extrahieren der Tonspur aus jeder Videodatei (MP4, MOV, MKV, WebM, AVI). Ausgabe als MP3, WAV, M4A, AAC, FLAC oder OGG. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       name: 'Audio aus Video extrahieren',
       tagline:
         'Speichern Sie die Tonspur eines beliebigen Videos als sauberes MP3, WAV, M4A, AAC, FLAC oder OGG.',
     },
     'convert-video-to-animated-gif': {
+      metaTitle: 'Video online in animiertes GIF umwandeln (kostenlos) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von Video zu GIF. Wandeln Sie kurze MP4-, WebM-, MOV- und MKV-Clips in animierte GIFs um – mit Kontrolle über Größe und Bildrate.',
       name: 'Video in animiertes GIF umwandeln',
       tagline:
         'Verwandeln Sie kurze Clips aus MP4, WebM, MOV oder MKV in Sekundenschnelle in animierte GIFs.',
     },
     'transcribe-video': {
+      metaTitle: 'Video online in Text transkribieren (kostenlos) | Media Manipulator',
+      metaDescription: 'Kostenlose Online-Videotranskription. Wandeln Sie MP4-, MOV-, WebM-, MKV- und Audiodateien in durchsuchbaren Text, VTT-Untertitel oder JSON-Transkripte um.',
       name: 'Video transkribieren',
       tagline:
         'Extrahieren Sie gesprochene Worte aus Videos als durchsuchbaren Text, Untertitel oder strukturiertes JSON.',
     },
     'transcode-to-hls': {
+      metaTitle: 'Video online in HLS transcodieren | Kostenloses Adaptive-Streaming-Tool',
+      metaDescription: 'Kostenloser Online-HLS-Transcoder. Wandeln Sie MP4, MOV, WebM und MKV in ein HLS-VOD-Paket mit 360p-/480p-/720p-Varianten um, optional mit Untertiteln und Storyboards.',
       name: 'Video in HLS transkodieren',
       tagline:
         'Verpacken Sie jedes Video als Apple-HLS-VOD-Bundle: master.m3u8 und .ts-Segmente in mehreren Qualitätsstufen – bereit fürs Web.',
     },
     'ai-video-restoration': {
+      metaTitle: 'KI-Videorestaurierung – 6 Upscaling-Modelle online vergleichen | Media Manipulator',
+      metaDescription: 'Kostenloses KI-Tool zur Videorestaurierung. Schicken Sie einen kurzen Clip durch die Super-Resolution-Modelle Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT und VRT auf unserer eigenen GPU und laden Sie alle Ergebnisse in einem Paket herunter.',
       name: 'KI-Videorestaurierung',
       tagline:
         'Verbessern und restaurieren Sie einen kurzen Videoabschnitt mit bis zu sechs KI-Modellen – Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT und VRT – und vergleichen Sie alle Ergebnisse nebeneinander.',
     },
     'ai-image-restoration': {
+      metaTitle: 'KI-Bildrestaurierung & Upscaler – 8 Modelle online vergleichen | Media Manipulator',
+      metaDescription: 'Kostenlose KI-Fotorestaurierung und -Vergrößerung. Entfernen Sie JPEG-Artefakte, Rauschen und Unschärfe, vergrößern Sie mit Real-ESRGAN, SwinIR oder HAT auf 4K/8K und verbessern Sie Gesichter mit GFPGAN/CodeFormer – alles auf unserer eigenen GPU, nebeneinander verglichen.',
       name: 'KI-Bildrestaurierung und -Upscaling',
       tagline:
         'Bereinigen, vergrößern und restaurieren Sie Fotos mit bis zu acht KI-Modellen – schonende Vorverarbeitung (FBCNN, SCUNet, NAFNet), universelle Upscaler (Real-ESRGAN, SwinIR, HAT) und Gesichtsverbesserung (GFPGAN, CodeFormer) – und vergleichen Sie jedes Ergebnis mit dem Original.',
     },
     'ai-document-scan': {
+      metaTitle: 'KI-Dokumentenscan – gescannte Seiten & Handschrift in PDF/Word | Media Manipulator',
+      metaDescription: 'Kostenloser KI-Dokumentenscan: Wandeln Sie gescannte Bilder in ein durchsuchbares PDF und per Bild-zu-Word-OCR um und transkribieren Sie handschriftliche Notizen in Text. Ordnen Sie Seiten neu an, mischen Sie Gedrucktes und Handschrift – alles auf unserer eigenen GPU, wortgetreu und mit markierter Unsicherheit.',
       name: 'KI-Dokumentenscan',
       tagline:
         'Verwandeln Sie Dokumentscans und handschriftliche Notizen in ein durchsuchbares mehrseitiges PDF und ein bearbeitbares Word-Dokument – gedruckte Seiten erhalten eine präzise Tesseract-Textebene, Handschrift entziffert eine visuelle KI mit Unsicherheitsmarkierungen, ohne etwas hinzuzuerfinden.',

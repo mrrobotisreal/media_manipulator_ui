@@ -2074,7 +2074,8 @@
       "ai": "ИИ-инструменты",
       "privacy": "Приватность",
       "editor": "Редакторы"
-    }
+    },
+    "moreTools": "{{category}}: еще {{count}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Хлебные крошки",
@@ -2100,7 +2101,11 @@
     "faqAriaLabel": "Часто задаваемые вопросы",
     "faqHeading": "Часто задаваемые вопросы",
     "relatedToolsAriaLabel": "Похожие инструменты",
-    "relatedToolsHeading": "Похожие инструменты"
+    "relatedToolsHeading": "Похожие инструменты",
+    "aliasHeading": "Полное руководство, примеры и FAQ",
+    "aliasLink": "Прочитайте полное руководство по «{{name}}»",
+    "workedExamplesHeading": "Примеры с реальными числами",
+    "whenNotToUseHeading": "Когда этот инструмент не подходит"
   },
   "contentStudioGuide": {
     "summaryTitle": "Как работает Darkroom — краткое руководство",
