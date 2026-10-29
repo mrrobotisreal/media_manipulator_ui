@@ -150,6 +150,7 @@
   },
   "quotaMeter": {
     "label": "Сегодня",
+    "aiLabel": "ИИ",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "Осталось {{remaining}} из {{limit}} на сегодня",

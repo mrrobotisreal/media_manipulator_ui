@@ -154,6 +154,7 @@
   },
   "quotaMeter": {
     "label": "اليوم",
+    "aiLabel": "AI",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "متبقٍ {{remaining}} من {{limit}} اليوم",

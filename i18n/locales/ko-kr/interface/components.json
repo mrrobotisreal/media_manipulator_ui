@@ -144,6 +144,7 @@
   },
   "quotaMeter": {
     "label": "오늘",
+    "aiLabel": "AI",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "오늘 {{limit}}회 중 {{remaining}}회 남음",

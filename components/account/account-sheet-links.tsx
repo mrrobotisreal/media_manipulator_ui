@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 
+import { QuotaMeter } from '@/components/account/quota-meter';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -31,6 +32,12 @@ export const AccountSheetLinks: React.FC<{ onNavigate: () => void }> = ({ onNavi
   return (
     <>
       <span aria-hidden="true" className="my-1 h-px bg-edge" />
+      {/* MM90: below md the nav row has room for the everyday meter only, so the sheet
+          shows both allowances side by side (they are separate counters). */}
+      <div data-sheet-meters className="flex items-center justify-center gap-2 md:hidden">
+        <QuotaMeter onActivate={onNavigate} />
+        <QuotaMeter metric="ai_ops" onActivate={onNavigate} />
+      </div>
       <Link href={localized('/pricing')} onClick={onNavigate} className={ROW}>
         {t('interface:authModal.plans.comparePlans')}
       </Link>

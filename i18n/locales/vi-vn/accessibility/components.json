@@ -36,6 +36,7 @@
   "quotaMeter": {
     "gauge": "Đã dùng {{used}} / {{limit}} thao tác trong ngày",
     "gaugeUnlimited": "Không giới hạn thao tác trong ngày",
+    "aiGauge": "{{label}} {{used}} / {{limit}} tác vụ AI trong ngày đã dùng",
     "openUpgrade": "Xem cách tăng hạn mức hằng ngày",
     "openAccount": "Mở tài khoản của bạn"
   },

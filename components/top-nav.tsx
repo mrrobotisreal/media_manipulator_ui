@@ -138,7 +138,13 @@ const TopNav: React.FC = () => {
               fits the 288px a 320px phone leaves inside px-4. The type (~150px
               at 18px semibold) plus its 10px gap makes it 440px, which fits
               from 472px, hence 480. The
-              link's aria-label names it at every width. */}
+              link's aria-label names it at every width.
+
+              MM90: the AI meter (100px + an 8px gap) joins the row from md
+              (768px): 440 + 108 = 548 signed in, and signed out with the
+              longest "Sign in" label (~120px, es/pt) 36 + 3 x 36 + 68 + 100 +
+              120 + 5 x 8 + 160 = 632, both inside the 736px md leaves. Below
+              md the nav sheet shows both meters. */}
           <Wordmark size="sm" animated text={t("interface:common.brand")} textClassName="hidden min-[480px]:inline" />
           <span className="hidden border-s border-edge ps-3 text-xs text-muted-foreground 2xl:block">
             {t("interface:common.brandTagline")}

@@ -36,6 +36,7 @@
   "quotaMeter": {
     "gauge": "{{used}} / {{limit}} daily operations used",
     "gaugeUnlimited": "No daily operation limit",
+    "aiGauge": "{{label}} {{used}} / {{limit}} daily AI jobs used",
     "openUpgrade": "See how to get a bigger daily allowance",
     "openAccount": "Open your account"
   },

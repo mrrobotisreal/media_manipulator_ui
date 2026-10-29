@@ -36,6 +36,7 @@
   "quotaMeter": {
     "gauge": "{{used}} von {{limit}} täglichen Vorgängen genutzt",
     "gaugeUnlimited": "Kein tägliches Vorgangslimit",
+    "aiGauge": "{{label}} {{used}} / {{limit}} tägliche KI-Aufträge genutzt",
     "openUpgrade": "So erhalten Sie ein größeres Tageskontingent",
     "openAccount": "Ihr Konto öffnen"
   },

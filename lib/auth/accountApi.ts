@@ -199,10 +199,18 @@ export const QUOTA_HEADERS = {
   remaining: 'X-MM-Quota-Remaining',
   reset: 'X-MM-Quota-Reset',
   tier: 'X-MM-Tier',
+  /**
+   * MM90: which allowance the limit/remaining headers describe (`ops`, `ai_ops`, `export`,
+   * `vector_export`). One endpoint (/api/upload) can spend either `ops` or `ai_ops`, so the
+   * metric is never assumed.
+   */
+  metric: 'X-MM-Quota-Metric',
 } as const;
 
 export interface QuotaHeaderState {
   tier?: Tier;
+  /** The allowance `limit` and `remaining` describe. Absent from an API before MM90. */
+  metric?: string;
   limit?: number;
   remaining?: number;
   resetsAt?: string;
@@ -220,10 +228,12 @@ export function readQuotaHeaders(response: Response): QuotaHeaderState | null {
   const limit = response.headers.get(QUOTA_HEADERS.limit);
   const remaining = response.headers.get(QUOTA_HEADERS.remaining);
   const resetsAt = response.headers.get(QUOTA_HEADERS.reset);
+  const metric = response.headers.get(QUOTA_HEADERS.metric);
   if (!tier && !limit && !remaining && !resetsAt) return null;
 
   const state: QuotaHeaderState = {};
   if (isTier(tier)) state.tier = tier;
+  if (metric) state.metric = metric;
   if (limit !== null && Number.isFinite(Number(limit))) state.limit = Number(limit);
   if (remaining !== null && Number.isFinite(Number(remaining))) state.remaining = Number(remaining);
   if (resetsAt) state.resetsAt = resetsAt;

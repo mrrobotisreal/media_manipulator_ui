@@ -53,6 +53,7 @@ import {
 import type { InterstitialDetail } from '@/components/account/upgrade-interstitial';
 import { claimInterstitial, limitKeyOf } from './interstitialGate';
 import { formatResetsIn } from './formatLimits';
+import { observedFor, withObservation, type ObservedQuota } from './observedQuota';
 import { useLocalization } from '@/i18n/useLocalization';
 
 /** How the account panel should be opened when something asks for it. */
@@ -161,6 +162,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Quota state observed on ordinary API responses, which is fresher than the
   // last snapshot fetch and costs no extra request.
   const [observed, setObserved] = useState(lastQuotaState);
+  // MM90: the same observations, per allowance (`ops` and `ai_ops` are separate counters).
+  const [observedByMetric, setObservedByMetric] = useState<ObservedQuota>(() => withObservation({}, lastQuotaState()));
   const [prompt, setPrompt] = useState<AuthPromptState>(CLOSED_PROMPT);
   const [interstitial, setInterstitial] = useState<InterstitialDetail | null>(null);
   const syncedUidRef = useRef<string | null>(null);
@@ -175,12 +178,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         syncedUidRef.current = next?.uid ?? null;
         resetQuotaState();
         setObserved(null);
+        setObservedByMetric({});
       }
     });
     return unsubscribe;
   }, []);
 
-  useEffect(() => subscribeQuotaState(setObserved), []);
+  useEffect(
+    () =>
+      subscribeQuotaState((state) => {
+        setObserved(state);
+        setObservedByMetric((previous) => withObservation(previous, state));
+      }),
+    [],
+  );
 
   // The API refunded a unit (a refused request, a failed job). The headers
   // observed so far overstate usage, so they are dropped and the snapshot is
@@ -189,6 +200,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () =>
       subscribeQuotaRefund(() => {
         setObserved(null);
+        setObservedByMetric({});
         void queryClient.invalidateQueries({ queryKey: ['account-snapshot'] });
       }),
     [queryClient],
@@ -285,23 +297,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const allowanceOf = useCallback(
     (metric: UsageMetric) => {
-      if (observed?.tier === tier && observed.limit !== undefined && metric === 'ops') {
-        return observed.limit;
-      }
+      const o = observedFor(observedByMetric, metric, tier);
+      if (o?.limit !== undefined) return o.limit;
       return allowanceFor(limits ?? undefined, metric);
     },
-    [limits, observed, tier],
+    [limits, observedByMetric, tier],
   );
 
   const usage = useMemo<Partial<Record<UsageMetric, number>>>(() => {
     const base = { ...(snapshot?.usage ?? {}) };
     // A remaining count from the last gated response is newer than the
-    // snapshot, so derive `ops` used from it when the tiers agree.
-    if (observed?.tier === tier && observed.remaining !== undefined && observed.limit !== undefined) {
-      base.ops = Math.max(0, observed.limit - observed.remaining);
+    // snapshot, so derive that allowance's used count from it when the tiers
+    // agree. Each allowance only ever reads its own headers (MM90): an AI job
+    // never moves the everyday count, and an everyday job never moves the AI one.
+    for (const metric of Object.keys(observedByMetric) as UsageMetric[]) {
+      const o = observedFor(observedByMetric, metric, tier);
+      if (o && o.remaining !== undefined && o.limit !== undefined) {
+        base[metric] = Math.max(0, o.limit - o.remaining);
+      }
     }
     return base;
-  }, [observed, snapshot, tier]);
+  }, [observedByMetric, snapshot, tier]);
 
   const remainingFor = useCallback(
     (metric: UsageMetric): number | null => {
@@ -370,6 +386,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     analytics.reset();
     resetQuotaState();
     setObserved(null);
+    setObservedByMetric({});
     refresh();
   }, [refresh]);
 

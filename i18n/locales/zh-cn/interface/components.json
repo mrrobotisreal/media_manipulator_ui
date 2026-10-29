@@ -144,6 +144,7 @@
   },
   "quotaMeter": {
     "label": "今天",
+    "aiLabel": "AI",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "今天还剩{{remaining}}/{{limit}}次",

@@ -144,6 +144,7 @@
   },
   "quotaMeter": {
     "label": "今日",
+    "aiLabel": "AI",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "本日残り{{remaining}} / {{limit}}",

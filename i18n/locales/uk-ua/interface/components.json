@@ -150,6 +150,7 @@
   },
   "quotaMeter": {
     "label": "Сьогодні",
+    "aiLabel": "ШІ",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "Залишилося {{remaining}} із {{limit}} на сьогодні",

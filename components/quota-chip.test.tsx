@@ -47,6 +47,37 @@ describe('quotaMetricForTask / quotaChipTone', () => {
     expect(quotaMetricForTask('studio_export')).toBe('export');
   });
 
+  // MM90 decisions 2 and 3: the chip names the allowance the API charges. AI jobs spend the
+  // AI allowance, a separate counter; they never spend an everyday job.
+  it.each([
+    // decision 2: model-run tools
+    ['image_converter', { aiOperation: 'ai_upscale' }, 'ai_ops'],
+    ['image_converter', { aiOperation: 'face_privacy' }, 'ai_ops'],
+    ['image_converter', { aiOperation: 'redact_text' }, 'ai_ops'],
+    ['image_converter', { aiOperation: 'remove_object' }, 'ai_ops'],
+    ['isolate_vocals', { aiOperation: 'isolate_vocals' }, 'ai_ops'],
+    ['audio_converter', { aiOperation: 'remove_vocals' }, 'ai_ops'],
+    ['ai_frame_interpolation', { aiOperation: 'frame_interpolation' }, 'ai_ops'],
+    ['transcribe_video', { transcribe: true }, 'ai_ops'],
+    ['srt_generator', { transcribe: true }, 'ai_ops'],
+    ['transcribe_audio', { transcribe: true }, 'ai_ops'],
+    ['generate_vtt_captions', { transcribe: true }, 'ai_ops'],
+    ['caption_translator', {}, 'ai_ops'],
+    ['isolate_vocals', {}, 'ai_ops'],
+    ['ai_frame_interpolation', {}, 'ai_ops'],
+    // decision 3: kept on the everyday allowance on purpose
+    ['remove_background', { aiOperation: 'remove_background' }, 'ops'],
+    ['audio_converter', { aiOperation: 'clean_voice' }, 'ops'],
+    ['audio_converter', { aiOperation: 'remove_background_noise' }, 'ops'],
+    // non-AI
+    ['image_converter', { aiOperation: 'none' }, 'ops'],
+    ['compress_image', {}, 'ops'],
+    ['stitch_audio_to_video', {}, 'ops'],
+    ['transcode_to_hls', {}, 'ops'],
+  ] as const)('%s %o spends %s', (task, context, metric) => {
+    expect(quotaMetricForTask(task, context)).toBe(metric);
+  });
+
   it('shifts tone at 20 percent remaining and at zero', () => {
     expect(quotaChipTone(3, 10)).toBe('calm');
     expect(quotaChipTone(2, 10)).toBe('low');

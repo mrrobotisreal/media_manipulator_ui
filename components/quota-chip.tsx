@@ -24,11 +24,61 @@ import { cn } from '@/lib/utils';
  * resolving it renders a skeleton of the same box, so resolving shifts nothing.
  */
 
-/** Tasks that spend the AI allowance, matching the API's `ai_ops` routes. */
-const AI_TASKS = new Set(['ai_video_restoration', 'image_restoration', 'document_scan', 'voice_clone', 'voice_design', 'summarize_video', 'summarize_audio']);
+/**
+ * Tasks that spend the AI allowance, matching the API's `ai_ops` routes (`cmd/api/main.go`
+ * `quotaRoutes`) and, for /api/upload, `handlers.QuotaMetricForJob` (MM90 decision 2):
+ * restoration, document scan, voices, summaries, caption translation, vocal separation,
+ * frame interpolation and every transcription task.
+ *
+ * The AI allowance is its own counter, separate from the everyday one: these tasks never
+ * spend an everyday job.
+ */
+const AI_TASKS = new Set([
+  'ai_video_restoration',
+  'image_restoration',
+  'document_scan',
+  'voice_clone',
+  'voice_design',
+  'summarize_video',
+  'summarize_audio',
+  // MM90
+  'caption_translator',
+  'isolate_vocals',
+  'ai_frame_interpolation',
+  'transcribe_video',
+  'transcribe_audio',
+  'audio_to_text',
+  'video_to_text',
+  'srt_generator',
+  'generate_vtt_captions',
+]);
+
+/**
+ * The `ai.operation` values that spend the AI allowance through /api/upload (MM90 decision
+ * 2). AI background removal, Clean Voice and background-noise removal are deliberately NOT
+ * here (decision 3): they spend an everyday job.
+ */
+const AI_UPLOAD_OPERATIONS = new Set([
+  'ai_upscale',
+  'face_privacy',
+  'redact_text',
+  'remove_object',
+  'isolate_vocals',
+  'remove_vocals',
+  'frame_interpolation',
+]);
+
+export interface QuotaTaskContext {
+  /** The AI operation a page locks or presets (e.g. the upscaler's `ai_upscale`). */
+  aiOperation?: string;
+  /** The page submits a transcription (Whisper). */
+  transcribe?: boolean;
+}
 
 /** Which allowance a tool task spends. Everything else is an everyday conversion (`ops`). */
-export function quotaMetricForTask(task?: string): UsageMetric {
+export function quotaMetricForTask(task?: string, context: QuotaTaskContext = {}): UsageMetric {
+  if (context.transcribe) return 'ai_ops';
+  if (context.aiOperation && AI_UPLOAD_OPERATIONS.has(context.aiOperation)) return 'ai_ops';
   if (!task) return 'ops';
   if (AI_TASKS.has(task)) return 'ai_ops';
   if (task === 'studio_export') return 'export';
@@ -54,17 +104,19 @@ const TONE_CLASS: Record<QuotaChipTone, string> = {
 export interface QuotaChipProps {
   /** The tool's task; picks the metric. Ignored when `metric` is given. */
   task?: string;
+  /** The page's locked/preset AI operation or transcription mode, read with `task`. */
+  taskContext?: QuotaTaskContext;
   metric?: UsageMetric;
   /** While a job uploads or runs the chip keeps its space but is not shown. */
   busy?: boolean;
   className?: string;
 }
 
-export const QuotaChip: React.FC<QuotaChipProps> = ({ task, metric: metricProp, busy, className }) => {
+export const QuotaChip: React.FC<QuotaChipProps> = ({ task, taskContext, metric: metricProp, busy, className }) => {
   const auth = useAuth();
   const { t } = useLocalization(['interface']);
   const localized = useLocalizedHref();
-  const metric = metricProp ?? quotaMetricForTask(task);
+  const metric = metricProp ?? quotaMetricForTask(task, taskContext);
 
   // Outside the provider (/embed, /dr) there is no allowance to show.
   if (!auth) return null;
