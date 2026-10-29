@@ -14,7 +14,9 @@ import { cn } from '@/lib/utils';
 import { NAV_HIT_EXTENSION } from '@/components/nav-control';
 
 /**
- * The daily-allowance readout in the nav.
+ * The daily-allowance readouts in the nav: the everyday allowance (`ops`) and, beside it
+ * since MM90, the AI allowance (`ai_ops`, labelled "AI"). They are two separate counters,
+ * so they are two separate meters: an AI job moves only the AI meter.
  *
  * This is the conversion surface: it makes the value of an account visible
  * BEFORE the visitor hits a wall, which is the difference between an upgrade
@@ -47,19 +49,26 @@ interface GaugeProps {
   pending?: boolean;
 }
 
-const Gauge: React.FC<GaugeProps> = ({ used, limit, tone, pending }) => {
+interface GaugeLabelProps {
+  /** A short prefix naming the allowance ("AI"); the everyday meter has none. */
+  label?: string;
+}
+
+const Gauge: React.FC<GaugeProps & GaugeLabelProps> = ({ used, limit, tone, pending, label }) => {
   const unlimited = isUnlimited(limit);
   const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+  const count = pending ? '— / —' : unlimited ? '∞' : `${used} / ${limit}`;
   return (
     <span className={cn('flex w-full flex-col items-stretch gap-1', tone)}>
       {/* This readout is what WCAG 2.5.3 Label in Name calls the visible label
           of the control that wraps it, so the accessible name has to contain it
           verbatim — which is why `accessibility:quotaMeter.gauge` is phrased
-          "{{used}} / {{limit}} daily operations used" rather than "… 0 of 5 …".
+          "{{used}} / {{limit}} daily operations used" rather than "… 0 of 5 …",
+          and `aiGauge` starts with the same "AI 0 / 3" the AI meter shows.
           Hiding this text instead does NOT satisfy the rule: axe compares the
           accessible name against text visible on screen, aria-hidden or not. */}
-      <span className="num text-[11px] leading-none">
-        {pending ? '— / —' : unlimited ? '∞' : `${used} / ${limit}`}
+      <span className={cn('num text-[11px] leading-none', label && 'whitespace-nowrap')} data-testid="quota-meter-readout">
+        {label ? `${label} ${count}` : count}
       </span>
       <span
         aria-hidden="true"
@@ -80,6 +89,18 @@ const Gauge: React.FC<GaugeProps> = ({ used, limit, tone, pending }) => {
  * <a>/<button> with no extra node between it and the nav's flex row.
  */
 const SHELL = 'flex h-9 w-[68px] shrink-0 flex-col justify-center rounded-md px-2 py-1';
+
+/**
+ * MM90: the AI meter's box. Same height, padding and grammar; wider, because its readout
+ * carries the "AI" label: "AI 200 / 200" is 12 monospace characters, 12 x 0.6em x 11px
+ * = 80px, plus 16px padding and the 2px border = 98px; 100px leaves the -0.01em tracking
+ * and a localized two-letter label ("KI", "ИИ", "ШІ", "IA") the same room. Fixed in every
+ * state like SHELL, so resolving the tier moves nothing.
+ */
+const AI_SHELL = 'flex h-9 w-[100px] shrink-0 flex-col justify-center rounded-md px-2 py-1';
+
+/** What each meter reads and says. Only `ops` and `ai_ops` have a nav meter. */
+type MeterMetric = 'ops' | 'ai_ops';
 
 /**
  * `quota_warning_shown`, at most once per session per metric.
@@ -108,12 +129,23 @@ function warnOnce(metric: string, emit: () => void): void {
   emit();
 }
 
-export const QuotaMeter: React.FC = () => {
+export interface QuotaMeterProps {
+  /** Which allowance this meter reads. Defaults to the everyday allowance. */
+  metric?: MeterMetric;
+  /** Extra classes for the control (e.g. a responsive `hidden md:flex`). */
+  className?: string;
+  /** Called when the meter is activated (the nav sheet closes itself with it). */
+  onActivate?: () => void;
+}
+
+export const QuotaMeter: React.FC<QuotaMeterProps> = ({ metric = 'ops', className, onActivate }) => {
   const auth = useAuth();
   const { t } = useLocalization(['interface', 'accessibility']);
   const localized = useLocalizedHref();
+  const ai = metric === 'ai_ops';
   // Only the signed-out button upgrades from here; signed-in callers get a link to /account.
-  const upgrade = useUpgradeAction('quota_meter');
+  // The placement says which meter was pressed.
+  const upgrade = useUpgradeAction(ai ? 'quota_meter_ai' : 'quota_meter');
 
   // THE WARNING EFFECT LIVES ABOVE EVERY EARLY RETURN. This component returns early three
   // times (no provider, still loading, signed in), so an effect declared further down would
@@ -123,9 +155,9 @@ export const QuotaMeter: React.FC = () => {
   // Two thresholds, not one: 20% covers generous allowances, and "1 left" covers small ones
   // where 20% of 5 never trips before zero. At-limit is deliberately NOT warned here — that
   // is `quota_exceeded_shown`, emitted from the 429 subscriber in AuthProvider, where the
-  // block actually happens.
-  const warnLimit = auth?.allowanceOf('ops') ?? 0;
-  const warnUsed = auth?.usage.ops ?? 0;
+  // block actually happens. Each meter warns about its own allowance, once per session.
+  const warnLimit = auth?.allowanceOf(metric) ?? 0;
+  const warnUsed = auth?.usage[metric] ?? 0;
   const warnRemaining = Math.max(0, warnLimit - warnUsed);
   // `warnLimit > 0` also rules out the unlimited (negative) allowance.
   const nearLimit =
@@ -136,36 +168,40 @@ export const QuotaMeter: React.FC = () => {
     (warnRemaining / warnLimit <= 0.2 || warnRemaining <= 1);
   React.useEffect(() => {
     if (!nearLimit) return;
-    warnOnce('ops', () =>
+    warnOnce(metric, () =>
       analytics.track(EVENTS.QUOTA_WARNING_SHOWN, {
         limit: warnLimit,
         remaining: warnRemaining,
-        scope: 'ops',
+        scope: metric,
       }),
     );
-  }, [nearLimit, warnLimit, warnRemaining]);
+  }, [nearLimit, warnLimit, warnRemaining, metric]);
 
   // Outside the provider (the chromeless /embed and /dr trees) there is no
   // allowance to show and nothing to reserve space for.
   if (!auth) return null;
 
-  const limit = auth.allowanceOf('ops');
-  const used = auth.usage.ops ?? 0;
+  const limit = auth.allowanceOf(metric);
+  const used = auth.usage[metric] ?? 0;
   const unlimited = isUnlimited(limit);
+  // MM90: an unlimited AI allowance (operator) has nothing worth a second box.
+  if (ai && unlimited && !auth.loading) return null;
   // An unlimited allowance (operator) is a resolved state with nothing to
   // fill, not a pending one: it links to the account like any signed-in meter.
   const pending = auth.loading || (limit <= 0 && !unlimited);
   const tone = pending ? 'text-muted-foreground' : unlimited ? 'text-data' : toneFor(used, limit);
   const remaining = unlimited ? Number.POSITIVE_INFINITY : Math.max(0, limit - used);
   const atLimit = !pending && remaining === 0;
+  const label = ai ? t('interface:quotaMeter.aiLabel') : undefined;
+  const shell = ai ? AI_SHELL : SHELL;
 
-  const gauge = <Gauge used={used} limit={limit} tone={tone} pending={pending} />;
+  const gauge = <Gauge used={used} limit={limit} tone={tone} pending={pending} label={label} />;
 
   if (pending) {
     // Not a button yet: nothing to open, and a control that does nothing is
     // worse than a readout. Same box, so resolving costs no layout.
     return (
-      <span aria-hidden="true" className={cn(SHELL, 'opacity-60')}>
+      <span aria-hidden="true" data-quota-meter={metric} className={cn(shell, 'opacity-60', className)}>
         {gauge}
       </span>
     );
@@ -174,17 +210,28 @@ export const QuotaMeter: React.FC = () => {
   const resets = formatResetsIn(auth.resetsAt);
   const description = unlimited
     ? t('interface:quotaMeter.unlimited')
-    : atLimit
-      ? [t('interface:quotaMeter.atLimit'), resets && t('interface:quotaMeter.resets', { when: resets })]
+    : ai
+      ? [
+          atLimit
+            ? t('interface:quotaChip.ai_ops.empty', { limit })
+            : t('interface:quotaChip.ai_ops.remaining', { remaining, limit }),
+          atLimit && resets ? t('interface:quotaMeter.resets', { when: resets }) : '',
+        ]
           .filter(Boolean)
           .join(' · ')
-      : t('interface:quotaMeter.remaining', { remaining, limit });
-  const gaugeLabel = unlimited
-    ? t('accessibility:quotaMeter.gaugeUnlimited')
-    : t('accessibility:quotaMeter.gauge', { used, limit });
+      : atLimit
+        ? [t('interface:quotaMeter.atLimit'), resets && t('interface:quotaMeter.resets', { when: resets })]
+            .filter(Boolean)
+            .join(' · ')
+        : t('interface:quotaMeter.remaining', { remaining, limit });
+  const gaugeLabel = ai
+    ? t('accessibility:quotaMeter.aiGauge', { label, used, limit })
+    : unlimited
+      ? t('accessibility:quotaMeter.gaugeUnlimited')
+      : t('accessibility:quotaMeter.gauge', { used, limit });
 
   const shellClass = cn(
-    SHELL,
+    shell,
     // 36px tall like the icon controls; the same 4px extension makes the tap
     // target 44px (MM88).
     NAV_HIT_EXTENSION,
@@ -192,6 +239,7 @@ export const QuotaMeter: React.FC = () => {
     'duration-[var(--dur-base)] ease-[var(--ease-instrument)]',
     'hover:border-edge hover:bg-surface-2',
     atLimit && 'border-primary/40',
+    className,
   );
 
   // Signed in: the meter links to the account, where the numbers have room to
@@ -203,7 +251,9 @@ export const QuotaMeter: React.FC = () => {
         href={localized('/account')}
         title={description}
         aria-label={`${gaugeLabel}. ${t('accessibility:quotaMeter.openAccount')}`}
+        data-quota-meter={metric}
         className={shellClass}
+        onClick={onActivate}
       >
         {gauge}
       </Link>
@@ -213,9 +263,13 @@ export const QuotaMeter: React.FC = () => {
   return (
     <button
       type="button"
-      onClick={upgrade.run}
+      onClick={() => {
+        onActivate?.();
+        upgrade.run();
+      }}
       title={description}
-      aria-label={`${t('accessibility:quotaMeter.gauge', { used, limit })}. ${t('accessibility:quotaMeter.openUpgrade')}`}
+      aria-label={`${gaugeLabel}. ${t('accessibility:quotaMeter.openUpgrade')}`}
+      data-quota-meter={metric}
       className={shellClass}
     >
       {gauge}

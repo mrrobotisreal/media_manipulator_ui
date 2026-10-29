@@ -12,8 +12,8 @@ import { NAV_HIT_EXTENSION } from '@/components/nav-control';
 import { cn } from '@/lib/utils';
 
 /**
- * The nav's account slot: the daily-allowance meter, then either a sign-in
- * button or the account menu.
+ * The nav's account slot: the everyday and AI allowance meters, then either a
+ * sign-in button or the account menu.
  *
  * Phase 2 reserved 88px here precisely so filling it now costs no layout shift.
  * Every state is 36px tall and the container holds a minimum width, so the
@@ -40,6 +40,10 @@ export const AccountMenu: React.FC = () => {
     // gap-2: two 4px hit-area extensions (MM88, components/nav-control.ts).
     <div className="flex items-center gap-2">
       <QuotaMeter />
+      {/* MM90: the AI allowance, a separate counter, beside the everyday one. From md up:
+          below that the row has no room for a second meter at 44px targets (the budget is
+          in top-nav.tsx), and the nav sheet shows both meters instead. */}
+      <QuotaMeter metric="ai_ops" className="hidden md:flex" />
       {auth.user ? (
         <AccountDropdown />
       ) : (

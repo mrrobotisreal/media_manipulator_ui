@@ -286,7 +286,7 @@ const deToolPages = {
         },
         {
           question: 'Wie werden Untertitel erzeugt?',
-          answer: '„Untertitel generieren“ sendet das Timeline-Audio an Whisper auf unserem GPU-Server. Die Segmente kommen als Cues zurück, die Sie in der Untertitelspur bearbeiten können, und werden dann ins Bild eingebrannt (eine ASS-Untertitelspur, die in die Bilder gerendert wird) oder als SRT- oder VTT-Datei neben dem Video exportiert. Das Erzeugen von Untertiteln zählt als ein KI-Vorgang.',
+          answer: '„Untertitel generieren“ sendet das Timeline-Audio an Whisper auf unserem GPU-Server. Die Segmente kommen als Cues zurück, die Sie in der Untertitelspur bearbeiten können, und werden dann ins Bild eingebrannt (eine ASS-Untertitelspur, die in die Bilder gerendert wird) oder als SRT- oder VTT-Datei neben dem Video exportiert. Das Erzeugen von Untertiteln zählt als ein KI-Auftrag aus dem KI-Kontingent.',
         },
         {
           question: 'Stimmt der Export mit der Vorschau überein?',
@@ -302,7 +302,7 @@ const deToolPages = {
           'Quell- und Exportdateien werden auf unseren Servern verarbeitet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
         ],
         processingNotes: [
-          'Die Vorschau wird im Browser zusammengesetzt; der endgültige Export wird als H.264-MP4 kodiert.',
+          'Die Vorschau wird im Browser zusammengesetzt; der endgültige Export wird auf dem Server als H.264- oder HEVC-MP4 oder als MP3- oder WAV-Audio kodiert.',
         ],
       },
       related: [
@@ -423,7 +423,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Sie sehen die Beweise. Der Inspektor listet jeden Tag vor dem Entfernen auf, und ein Vergleich belegt danach, was weg ist, statt eines grünen Häkchens und eines Versprechens.',
         'Ein Durchgang, jede Gruppe. ExifTool -all= entfernt EXIF, GPS, XMP, IPTC, Photoshop, ICC, Herstellernotizen und das Vorschaubild zusammen; nichts muss Block für Block angehakt werden.',
-        'Die Ausrichtung wird berücksichtigt. Der Rotations-Tag wird auf die Pixel angewendet, bevor er entfernt wird, denn genau so landet ein bereinigtes Handyfoto anderswo üblicherweise auf der Seite.',
+        'Die Ausrichtung wird berücksichtigt. Der Rotations-Tag wird auf die Pixel angewendet, bevor er entfernt wird, damit ein bereinigtes Handyfoto anderswo nicht auf der Seite liegt, was üblicherweise passiert, wenn der Tag entfernt wird, ohne die Pixel zu drehen.',
       ],
       privacyNote: 'Dieses Tool entfernt aus der zurückgegebenen Kopie die EXIF-Blöcke (Kameramarke, Modell, Seriennummer, Objektiv, Belichtung, Daten), den GPS-Block, das IFD1-Vorschaubild, XMP- und IPTC-Datensätze, Photoshop-Ressourcen, Herstellernotizen und das ICC-Profil. Dafür muss der Server sie zuerst lesen: Der Upload wird mit ExifTool untersucht, der Bericht wird als metadata.json im Auftragsordner gespeichert, und nach dem Entfernen wird ein zweiter Bericht über das Ergebnis daneben abgelegt, damit die Vergleichsansicht den Unterschied zeigen kann. Beide Berichte und beide Dateien liegen in uploads/<jobId>/ und outputs/<jobId>/ und werden gemeinsam gelöscht, wenn die Aufbewahrungsfrist endet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Der eigenständige Inspektor (Lesen einer Datei ohne Konvertierung) entfernt seine temporäre Kopie, sobald der Bericht erstellt ist. Bilder durchlaufen außerdem einen automatisierten Analyseschritt auf unserem eigenen Server; nichts wird an Dritte gesendet.',
       faq: [
@@ -800,7 +800,7 @@ const deToolPages = {
         'Schreibt immer PNG, weil Transparenz einen Alphakanal braucht und die API für diese Operation die Endung .png erzwingt.',
         'Behält die vollen Pixelmaße Ihres Uploads; der Ausschnitt wird weder skaliert noch zugeschnitten.',
         'Läuft auf unserer eigenen GPU über ONNX Runtime mit CUDA; kein Bild wird an einen externen KI-Dienst gesendet.',
-        'Zählt als ein gewöhnlicher täglicher Vorgang, dieselbe Einheit wie eine einfache Formatkonvertierung.',
+        'Zählt als ein Standardauftrag, dieselbe Einheit wie eine einfache Formatkonvertierung, nicht als KI-Auftrag.',
       ],
       flowSteps: [
         {
@@ -870,7 +870,7 @@ const deToolPages = {
       faq: [
         {
           question: 'Ist das Entfernen des Hintergrunds kostenlos?',
-          answer: 'Ja, innerhalb des Tageskontingents. Da der Auftrag über den Standard-Upload-Weg läuft, verbraucht er einen gewöhnlichen Vorgang, nicht das separate KI-Kontingent: standardmäßig 5 pro Tag für Gäste und 30 mit einem kostenlosen Konto, mit Grenzen von 200 MB und 1 GB pro Datei. Premium und Pro erhalten 300 und 700. Die aktuellen Zahlen stehen auf /pricing.',
+          answer: 'Ja, innerhalb des Tageskontingents. Das Entfernen des Hintergrunds zählt bewusst als Standardauftrag, nicht als Auftrag aus dem separaten KI-Kontingent: standardmäßig 5 pro Tag für Gäste und 30 mit einem kostenlosen Konto, mit Grenzen von 200 MB und 1 GB pro Datei. Premium und Pro erhalten 300 und 700. Die aktuellen Zahlen stehen auf /pricing.',
         },
         {
           question: 'Welches Modell soll ich wählen?',
@@ -1908,7 +1908,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Sie wählen VTT, SRT, TXT oder JSON vor dem Upload, es gibt also keinen zweiten Konvertierungsschritt, nachdem das Transkript existiert.',
         'Whisper läuft auf unserer eigenen GPU mit dem Modell-Cache im Offline-Modus; kein externer Sprachdienst erhält das Audio.',
-        'Die Transkription zählt als gewöhnlicher Vorgang, nicht als KI-Vorgangseinheit, ein Gast kann also standardmäßig 5 pro Tag ausführen und ein kostenloses Konto 30 (siehe /pricing).',
+        'Die Transkription zählt als ein KI-Auftrag aus dem KI-Kontingent, das vom Standardkontingent getrennt ist: standardmäßig 3 pro Tag als Gast und 10 mit einem kostenlosen Konto, und Ihre Standardaufträge bleiben unberührt (siehe /pricing).',
       ],
       privacyNote: 'Ihre Video- oder Audiodatei wird in ihrem Auftragsordner auf unserem Server gespeichert. ffmpeg schreibt ein temporäres Mono-WAV mit 16 kHz, das Whisper auf unserer GPU liest, und dieses WAV wird gelöscht, wenn der Auftrag abgeschlossen ist. Die Transkriptdatei und eine Kopie der Segmente als transcribe_result.json bleiben beim Auftrag, und der Transkripttext wird außerdem an ein Sprachmodell auf unserer eigenen Hardware übergeben, für eine automatisierte Zusammenfassung und Sicherheitsprüfung, deren Ergebnis beim Auftrag aufbewahrt wird. Nichts wird an einen externen KI-Anbieter gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       faq: [
@@ -1933,8 +1933,8 @@ const deToolPages = {
           answer: 'Ja. Geben Sie im Sprachfeld einen zweibuchstabigen Sprachcode wie en, de oder es ein, und Whisper transkribiert in dieser Sprache. Lassen Sie es leer für automatische Erkennung, die bei Clips von mehr als ein paar Sekunden gut funktioniert.',
         },
         {
-          question: 'Verbraucht die Transkription mein KI-Vorgangskontingent?',
-          answer: 'Nein. Sie wird über den Standard-Upload-Endpunkt eingereicht und zählt als ein gewöhnlicher Vorgang: standardmäßig 5 pro Tag als Gast, 30 mit einem kostenlosen Konto, 300 bei Premium und 700 bei Pro. Ein fehlgeschlagener Auftrag erstattet die Einheit zurück.',
+          question: 'Verbraucht die Transkription mein KI-Kontingent?',
+          answer: 'Ja. Jede Transkription ist ein KI-Auftrag: standardmäßig 3 pro Tag als Gast, 10 mit einem kostenlosen Konto, 100 bei Premium und 200 bei Pro. Das KI-Kontingent ist ein eigener Zähler, die Transkription verbraucht also nie das Standardkontingent für Konvertierungen. Ein fehlgeschlagener Auftrag erstattet die Einheit zurück.',
         },
         {
           question: 'Welches Modell wird verwendet, und kann ich ein größeres wählen?',
@@ -2217,7 +2217,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Sechs Modelle auf Forschungsniveau hinter einem Upload, mit Gewichten, Kachelgrößen und Stitch-Befehl auf dieser Seite benannt, statt hinter einem Markennamen versteckt.',
         'Alles läuft auf unserer eigenen GPU; Ihr Material geht nie an einen externen KI-Anbieter, und nichts wird zum Trainieren verwendet.',
-        'Eine Restaurierung verbraucht einen KI-Vorgang Ihres Tageskontingents, standardmäßig 1 pro Tag ohne Konto und 5 mit einem kostenlosen Konto, und ist auf 2 Starts pro Stunde und Sitzung begrenzt; ein fehlgeschlagener Auftrag wird zurückerstattet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+        'Eine Restaurierung verbraucht einen KI-Auftrag Ihres täglichen KI-Kontingents, standardmäßig 3 pro Tag ohne Konto und 10 mit einem kostenlosen Konto, und ist auf 2 Starts pro Stunde und Sitzung begrenzt; ein fehlgeschlagener Auftrag wird zurückerstattet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       ],
       privacyNote: 'Ihr Upload geht vom Browser in unseren Speicher-Bucket und wird auf unseren eigenen GPU-Server heruntergeladen, wo FFmpeg den Ausschnitt schneidet und die sechs Modelle als lokale Prozesse laufen; kein externer KI-Anbieter ist beteiligt, und nichts wird zum Trainieren verwendet. Nur der gewählte Ausschnitt wird in Bilder dekodiert; der Rest der Quelle wird nie verarbeitet. Das Quellobjekt, die Arbeitsbilder, die für den Vergleichs-Viewer aufbewahrten MP4s pro Modell und das Ergebnisarchiv sind alle im Aufbewahrungsregister eingetragen und werden gelöscht, wenn die Frist endet, und der Archivlink läuft nach 6 Stunden ab. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Restaurierungsaufträge führen nicht die automatisierte Inhaltsanalyse aus, die Standardkonvertierungen erhalten.',
       faq: [
@@ -2250,8 +2250,8 @@ const deToolPages = {
           answer: 'Bilder mal die Schätzung pro Modell, summiert über die gewählten Modelle, da sie nacheinander laufen: 0,8, 1,0, 3,0, 3,5, 5,0 und 7,0 Sekunden pro Bild für Real-ESRGAN, BasicVSR++, RVRT, SwinIR, HAT und VRT. Ein Clip mit 300 Bildern durch alle sechs dauert grob 100 Minuten; durch Real-ESRGAN allein etwa 4.',
         },
         {
-          question: 'Wie viele Restaurierungen kann ich ausführen, und kostet es einen KI-Vorgang?',
-          answer: 'Das Starten einer Restaurierung verbraucht einen KI-Vorgang: standardmäßig 1 pro Tag ohne Konto, 5 mit einem kostenlosen Konto, 60 bei Premium und 120 bei Pro, plus ein Limit von 2 Starts pro Stunde und Sitzung. Ein Auftrag, der komplett fehlschlägt, wird zurückerstattet. Die aktuellen Zahlen stehen auf der Preisseite.',
+          question: 'Wie viele Restaurierungen kann ich ausführen, und kostet es einen KI-Auftrag?',
+          answer: 'Das Starten einer Restaurierung verbraucht einen KI-Auftrag: standardmäßig 3 pro Tag ohne Konto, 10 mit einem kostenlosen Konto, 100 bei Premium und 200 bei Pro, plus ein Limit von 2 Starts pro Stunde und Sitzung. Ein Auftrag, der komplett fehlschlägt, wird zurückerstattet. Die aktuellen Zahlen stehen auf der Preisseite.',
         },
       ],
       supportedFormats: {
@@ -2381,7 +2381,7 @@ const deToolPages = {
       workedExamples: [
         {
           title: 'Ein JPEG mit 1.200 x 800 (etwa 350 KB), ganzes Bild, Skalierung auto, FBCNN + Real-ESRGAN + GFPGAN',
-          body: 'Der Zuschnitt ist das volle Bild mit 0,96 Megapixeln, und seine Höhe von 800 Pixeln liegt über 540, die automatische Skalierung ergibt also 2x. FBCNN läuft zuerst bei 1x, und seine Ausgabe wird zur Arbeitsquelle. Real-ESRGAN skaliert diese mit realesrgan-x4plus auf 4.800 x 3.200 hoch, dann verkleinert ImageMagick sie mit Lanczos auf 50 Prozent für ein PNG mit 2.400 x 1.600. GFPGAN läuft auf der vorbereinigten Quelle mit Upscale 2 und ergibt ein weiteres PNG mit 2.400 x 1.600 mit rekonstruierten Gesichtern und schlicht vergrößertem Rest. Das sind drei Ausgaben von den 12 erlaubten. Nach den eigenen Schätzungen des Servers pro Megapixel beträgt die Modellzeit etwa 0,96 x (3 + 2 + 6), rund 11 Sekunden, plus ein paar Sekunden für Vorbereitung und Verpackung; das Warten auf den einzelnen Restaurierungsplatz kann mehr hinzufügen. Ein Auftrag verbraucht einen KI-Vorgang.',
+          body: 'Der Zuschnitt ist das volle Bild mit 0,96 Megapixeln, und seine Höhe von 800 Pixeln liegt über 540, die automatische Skalierung ergibt also 2x. FBCNN läuft zuerst bei 1x, und seine Ausgabe wird zur Arbeitsquelle. Real-ESRGAN skaliert diese mit realesrgan-x4plus auf 4.800 x 3.200 hoch, dann verkleinert ImageMagick sie mit Lanczos auf 50 Prozent für ein PNG mit 2.400 x 1.600. GFPGAN läuft auf der vorbereinigten Quelle mit Upscale 2 und ergibt ein weiteres PNG mit 2.400 x 1.600 mit rekonstruierten Gesichtern und schlicht vergrößertem Rest. Das sind drei Ausgaben von den 12 erlaubten. Nach den eigenen Schätzungen des Servers pro Megapixel beträgt die Modellzeit etwa 0,96 x (3 + 2 + 6), rund 11 Sekunden, plus ein paar Sekunden für Vorbereitung und Verpackung; das Warten auf den einzelnen Restaurierungsplatz kann mehr hinzufügen. Ein Auftrag verbraucht einen KI-Auftrag aus dem KI-Kontingent.',
         },
         {
           title: 'Ein Gesichtszuschnitt mit 300 x 400 aus einem Standbild mit 640 x 480, Vorbereinigung, drei Upscaler, GFPGAN mit „Verketten“',
@@ -2418,7 +2418,7 @@ const deToolPages = {
         },
         {
           question: 'Was passiert, wenn ein Bildmodell fehlschlägt oder das Zeitlimit überschreitet?',
-          answer: 'Der Auftrag läuft weiter. Die Einheit wird mit einer nutzerfreundlichen Begründung als fehlgeschlagen markiert (zum Beispiel eine Zeitüberschreitung nach 1.800 Sekunden mit dem Vorschlag eines kleineren Zuschnitts oder 2x), das Manifest hält sie fest, und jedes andere Ergebnis wird trotzdem verpackt und angezeigt. Nur wenn jedes gewählte Modell fehlschlägt, schlägt der Auftrag fehl, und dann wird der KI-Vorgang zurückerstattet.',
+          answer: 'Der Auftrag läuft weiter. Die Einheit wird mit einer nutzerfreundlichen Begründung als fehlgeschlagen markiert (zum Beispiel eine Zeitüberschreitung nach 1.800 Sekunden mit dem Vorschlag eines kleineren Zuschnitts oder 2x), das Manifest hält sie fest, und jedes andere Ergebnis wird trotzdem verpackt und angezeigt. Nur wenn jedes gewählte Modell fehlschlägt, schlägt der Auftrag fehl, und dann wird der KI-Auftrag zurückerstattet.',
         },
         {
           question: 'Warum ist CodeFormer ausgegraut?',
@@ -2426,7 +2426,7 @@ const deToolPages = {
         },
         {
           question: 'Wie viele Restaurierungen kann ich ausführen, und ist es kostenlos?',
-          answer: 'Das Starten einer Restaurierung verbraucht einen KI-Vorgang: standardmäßig 1 pro Tag als Gast, 5 mit einem kostenlosen Konto, 60 bei Premium und 120 bei Pro, unabhängig davon, wie viele Modelle Sie in diesem Auftrag anhaken. Außerdem gibt es ein eigenes Limit von 6 Starts pro Sitzung und Stunde. Die Upload-Grenze beträgt 200 MB für Gäste und 1 GB mit einem kostenlosen Konto; /pricing zeigt die aktuellen Zahlen.',
+          answer: 'Das Starten einer Restaurierung verbraucht einen KI-Auftrag: standardmäßig 3 pro Tag als Gast, 10 mit einem kostenlosen Konto, 100 bei Premium und 200 bei Pro, unabhängig davon, wie viele Modelle Sie in diesem Auftrag anhaken. Außerdem gibt es ein eigenes Limit von 6 Starts pro Sitzung und Stunde. Die Upload-Grenze beträgt 200 MB für Gäste und 1 GB mit einem kostenlosen Konto; /pricing zeigt die aktuellen Zahlen.',
         },
       ],
       supportedFormats: {
@@ -2554,14 +2554,14 @@ const deToolPages = {
       workedExamples: [
         {
           title: 'Drei gedruckte A4-Seiten mit 300 dpi',
-          body: 'Drei JPEG-Scans mit 2480 x 3508 im Modus Gedruckt, nur PDF, Sprache eng, Begradigen und automatisches Drehen an. Kein Modell ist beteiligt: Jede Seite wird von img2pdf verpackt, dann führt OCRmyPDF Tesseract aus und schreibt eine unsichtbare Textebene, gibt PDF/A aus, und pikepdf führt die drei zu document.pdf zusammen. Die Textebene fügt nur Kilobytes pro Seite hinzu, das PDF hat also grob die Größe der drei Seitenbilder (eine begradigte Seite wird neu gerendert, eine unveränderte unverändert eingebettet). Der Auftrag verbraucht einen KI-Vorgang (zurückerstattet, wenn er fehlschlägt), und seine Zeit ist Tesseract auf der CPU, Seite nach Seite, plus etwaiges Warten in der Warteschlange, da standardmäßig ein Dokumentauftrag gleichzeitig läuft.',
+          body: 'Drei JPEG-Scans mit 2480 x 3508 im Modus Gedruckt, nur PDF, Sprache eng, Begradigen und automatisches Drehen an. Kein Modell ist beteiligt: Jede Seite wird von img2pdf verpackt, dann führt OCRmyPDF Tesseract aus und schreibt eine unsichtbare Textebene, gibt PDF/A aus, und pikepdf führt die drei zu document.pdf zusammen. Die Textebene fügt nur Kilobytes pro Seite hinzu, das PDF hat also grob die Größe der drei Seitenbilder (eine begradigte Seite wird neu gerendert, eine unveränderte unverändert eingebettet). Der Auftrag verbraucht einen KI-Auftrag (zurückerstattet, wenn er fehlschlägt), und seine Zeit ist Tesseract auf der CPU, Seite nach Seite, plus etwaiges Warten in der Warteschlange, da standardmäßig ein Dokumentauftrag gleichzeitig läuft.',
         },
         {
           title: 'Zwei handschriftliche Seiten vom Telefon, mit Word',
           body: 'Zwei Handyfotos mit 4032 x 3024 von Notizbuchseiten im Modus Auto mit PDF und DOCX. Die Vorbereitung richtet beide automatisch zu PNG aus und skaliert sie, weil der Modus nicht Gedruckt ist, mit realesrgan-x4plus 2x auf 8064 x 6048 hoch. Die Klassifizierung stellt qwen3-vl eine Frage pro Seite, die Erkennung liefert die Transkription mit einem Begrenzungsrahmen pro Zeile, und die Prüfung liest nur die markierten Tokens erneut. Hat eine Seite 30 Zeilen und 2 davon tragen [?: ...]-Marker, liegt 2 / 30 unter 15 Prozent, und die Seite wird mit mittlerer Konfidenz und illegibleCount 2 markiert. Die PDF-Seiten sind die verarbeiteten Bilder mit unsichtbaren Helvetica-Zeilen an diesen Rahmen und dem Fußzeilenstempel; die Word-Datei enthält den wortgetreuen Text unter dem fett gesetzten Prüfhinweis. Die Zeit sind drei aufeinanderfolgende Bildmodell-Durchläufe pro Seite auf unserer GPU; nichts läuft anderswo.',
         },
       ],
-      whenNotToUse: 'Verwenden Sie dies nicht, wenn der Text ohne Prüfung verbindlich sein muss: Die Handschriftausgabe ist eine Maschinenlesung mit markierten Lücken, und das Word-Dokument und die Zusammenfassung sind Rekonstruktionen, prüfen Sie sie also gegen den Scan, bevor Sie sie zitieren. Es ist kein OCR-Tool von PDF zu PDF: Eingaben sind Seitenbilder, rendern Sie ein vorhandenes PDF also zuerst in Bilder, und es ist kein Übersetzer. Wenn Sie die Seiten nur ohne Textebene zu einem PDF binden müssen, erledigt das einfache Tool „Bild in PDF“ das mit einem gewöhnlichen Vorgang statt einem KI-Vorgang, was beim Gastkontingent von einem KI-Vorgang pro Tag zählt.',
+      whenNotToUse: 'Verwenden Sie dies nicht, wenn der Text ohne Prüfung verbindlich sein muss: Die Handschriftausgabe ist eine Maschinenlesung mit markierten Lücken, und das Word-Dokument und die Zusammenfassung sind Rekonstruktionen, prüfen Sie sie also gegen den Scan, bevor Sie sie zitieren. Es ist kein OCR-Tool von PDF zu PDF: Eingaben sind Seitenbilder, rendern Sie ein vorhandenes PDF also zuerst in Bilder, und es ist kein Übersetzer. Wenn Sie die Seiten nur ohne Textebene zu einem PDF binden müssen, erledigt das einfache Tool „Bild in PDF“ das als Standardauftrag statt als KI-Auftrag, womit das Gastkontingent von drei KI-Aufträgen pro Tag für Arbeit frei bleibt, die ein Modell braucht.',
       whyMediaManipulator: [
         'Das PDF gedruckter Seiten ist von Konstruktion her getreu: OCRmyPDF legt Text unter ein unverändertes Seitenbild und gibt PDF/A aus, nichts wird neu gezeichnet.',
         'Handschrift ist wortgetreu mit Belegen: Der Prompt verbietet Erfindungen, Unsicherheit ist im Text markiert, die Konfidenz wird aus diesen Markern gezählt, und die Seite sagt, dass sie eine Maschinentranskription ist.',
@@ -2587,7 +2587,7 @@ const deToolPages = {
         },
         {
           question: 'Welche Limits gelten pro Auftrag?',
-          answer: 'Standardmäßig 50 Bilder und 100 Seiten pro Auftrag, 25 MB pro Bild, ein laufender Auftrag gleichzeitig pro Server (andere warten in der Warteschlange) und eine Obergrenze von 40 Minuten pro Modellphase. Jeder Auftrag verbraucht einen KI-Vorgang: 1 pro Tag ohne Konto, 5 mit einem kostenlosen Konto, 60 mit Premium und 120 mit Pro, wobei die Einheit zurückerstattet wird, wenn ein Auftrag fehlschlägt. Die aktuellen Zahlen stehen auf der Preisseite.',
+          answer: 'Standardmäßig bis zu 50 Seitenbilder pro Auftrag (jedes Bild ist eine Seite, 50 ist in der Praxis also auch das Seitenlimit), 25 MB pro Bild, ein laufender Auftrag gleichzeitig pro Server (andere warten in der Warteschlange) und eine Obergrenze von 40 Minuten pro Modellphase. Jeder Auftrag verbraucht einen KI-Auftrag: 3 pro Tag ohne Konto, 10 mit einem kostenlosen Konto, 100 mit Premium und 200 mit Pro, wobei die Einheit zurückerstattet wird, wenn ein Auftrag fehlschlägt. Die aktuellen Zahlen stehen auf der Preisseite.',
         },
         {
           question: 'Warum hat mein Handschrift-PDF eine Fußzeile, und kann ich sie entfernen?',
@@ -2600,7 +2600,7 @@ const deToolPages = {
       ],
       supportedFormats: {
         maxFileNotes: [
-          'Fügen Sie viele Seiten pro Auftrag hinzu; jedes Seitenbild hat eine eigene Größengrenze (~25 MB).',
+          'Fügen Sie standardmäßig bis zu 50 Seitenbilder pro Auftrag hinzu; jedes Seitenbild hat eine eigene Größengrenze (~25 MB).',
           'Ein durchsuchbares PDF wird immer erzeugt; das bearbeitbare Word-Dokument ist optional.',
         ],
         processingNotes: [
@@ -2613,7 +2613,7 @@ const deToolPages = {
         {
           label: 'Bild in PDF',
           to: '/tools/image-to-pdf',
-          description: 'Binden Sie Seitenbilder ohne Textebene zu einem PDF, mit einem gewöhnlichen Vorgang.',
+          description: 'Binden Sie Seitenbilder ohne Textebene zu einem PDF, als Standardauftrag.',
         },
         {
           label: 'PDF in JPG',
@@ -2655,7 +2655,7 @@ const deToolPages = {
         'Lässt Sie im Formular zwischen einem Fotomodell und zwei Modellen im Anime-Stil wählen; 4x und das Fotomodell sind vorausgewählt.',
         'Gibt immer PNG aus; die API erzwingt für diese Operation die Endung .png.',
         'Kachelt das Bild auf der GPU automatisch, damit großen Eingaben nicht der Grafikspeicher ausgeht.',
-        'Verbraucht einen gewöhnlichen täglichen Vorgang, weil der Auftrag über den Standard-Upload-Weg läuft.',
+        'Verbraucht einen KI-Auftrag aus dem täglichen KI-Kontingent, einem eigenen Zähler; das Standardkontingent für Konvertierungen bleibt unberührt.',
       ],
       flowSteps: [
         {
@@ -2726,7 +2726,7 @@ const deToolPages = {
       faq: [
         {
           question: 'Ist der KI-Upscaler kostenlos nutzbar?',
-          answer: 'Ja, innerhalb des Tageskontingents. Der Auftrag läuft über den Standard-Upload-Weg und verbraucht daher einen gewöhnlichen Vorgang statt des separaten KI-Kontingents: standardmäßig 5 pro Tag für Gäste und 30 mit einem kostenlosen Konto, mit Grenzen von 200 MB und 1 GB pro Datei; 300 und 700 bei Premium und Pro. Die aktuellen Zahlen stehen auf /pricing.',
+          answer: 'Ja, innerhalb des täglichen KI-Kontingents. Jedes Hochskalieren verbraucht einen KI-Auftrag: standardmäßig 3 pro Tag für Gäste und 10 mit einem kostenlosen Konto, mit Grenzen von 200 MB und 1 GB pro Datei; 100 und 200 bei Premium und Pro. Dieses Kontingent ist vom Standardkontingent getrennt, Ihre Konvertierungen bleiben also unberührt. Die aktuellen Zahlen stehen auf /pricing.',
         },
         {
           question: 'Wie unterscheidet sich das vom Bildgrößen-Änderer?',
@@ -2755,7 +2755,7 @@ const deToolPages = {
       ],
       supportedFormats: {
         processingNotes: [
-          'Die Ausgabe ist PNG. Größenlimits und tägliche KI-Kontingente hängen von Ihrem Tarif ab und werden im Formular angezeigt, nicht fest auf dieser Seite.',
+          'Die Ausgabe ist PNG. Größenlimits und das tägliche KI-Kontingent hängen von Ihrem Tarif ab und werden im Formular angezeigt, nicht fest auf dieser Seite.',
         ],
       },
       related: [
@@ -2873,7 +2873,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Der Detektor, seine Schwelle, die Erweiterung und die Kernel-Arithmetik sind angegeben, sodass Sie beurteilen können, wie viel Schutz jeder Stil bietet.',
         'Die Erkennungsrahmen sind an den Datei-Hash gebunden und laufen nach 30 Minuten ab, sodass Sie auf genau dem Bild auswählen, das verarbeitet wird.',
-        'Das Unkenntlichmachen von Gesichtern verbraucht einen Standardvorgang (standardmäßig 5 pro Tag ohne Konto, 30 mit einem kostenlosen Konto), keinen KI-Vorgang, und die Vorschau „Gesichter erkennen“ wird gar nicht gezählt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+        'Das Unkenntlichmachen von Gesichtern verbraucht einen KI-Auftrag aus dem täglichen KI-Kontingent (standardmäßig 3 pro Tag ohne Konto, 10 mit einem kostenlosen Konto), das vom Standardkontingent getrennt geführt wird, und die Vorschau „Gesichter erkennen“ wird gar nicht gezählt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       ],
       privacyNote: 'Gesichtserkennung und Weichzeichnen laufen als lokaler OpenCV-Prozess auf unserer eigenen Hardware; kein externer KI-Dienst erhält Ihr Foto, und nichts wird zum Trainieren verwendet. Die Vorschau „Gesichter erkennen“ speichert eine temporäre Kopie, berechnet ihren Hash, erkennt und löscht die Kopie vor der Antwort; nur die Rahmenkoordinaten werden behalten, für 30 Minuten. Das hochgeladene Foto liegt in uploads/<jobId>/ und das Ergebnis in outputs/<jobId>/, beide im Aufbewahrungsregister und gelöscht, wenn die Frist endet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Als Standard-Bild-Upload durchläuft das Foto außerdem unsere automatisierte Inhaltsanalyse auf demselben Server, wo ein lokales Bildmodell eine kurze Beschreibung schreibt, die beim Auftrag bleibt und nicht an Dritte weitergegeben wird.',
       faq: [
@@ -2898,8 +2898,8 @@ const deToolPages = {
           answer: 'Nein. Erkennung und Effekt laufen in einem lokalen OpenCV-Prozess auf unserem eigenen Server, und die Datei wird nicht an externe KI-Anbieter weitergegeben.',
         },
         {
-          question: 'Verbraucht das Unkenntlichmachen von Gesichtern einen KI-Vorgang meines Tageskontingents?',
-          answer: 'Nein. Es läuft über den Standard-Upload, der einen regulären Vorgang verbraucht: standardmäßig 5 pro Tag als Gast, 30 mit einem kostenlosen Konto. Die Vorschau „Gesichter erkennen“ ist ratenbegrenzt, wird aber nicht gezählt. Ein fehlgeschlagener Auftrag wird zurückerstattet.',
+          question: 'Verbraucht das Unkenntlichmachen von Gesichtern mein tägliches KI-Kontingent?',
+          answer: 'Ja. Jedes unkenntlich gemachte Foto ist ein KI-Auftrag: standardmäßig 3 pro Tag als Gast, 10 mit einem kostenlosen Konto. Es greift nie auf das Standardkontingent zu. Die Vorschau „Gesichter erkennen“ ist ratenbegrenzt, wird aber nicht gezählt. Ein fehlgeschlagener Auftrag wird zurückerstattet.',
         },
         {
           question: 'Was ist mit Kennzeichen, Namensschildern oder Text auf Bildschirmen?',
@@ -2908,7 +2908,7 @@ const deToolPages = {
       ],
       supportedFormats: {
         processingNotes: [
-          'Jeder Auftrag verbraucht einen gewöhnlichen Vorgang Ihres Tageskontingents; das Dateigrößenlimit Ihres Tarifs wird im Formular angezeigt.',
+          'Jeder Auftrag verbraucht einen KI-Auftrag Ihres täglichen KI-Kontingents; das Dateigrößenlimit Ihres Tarifs wird im Formular angezeigt.',
         ],
       },
       related: [
@@ -3026,7 +3026,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Die fünf PII-Muster, die Erweiterung und die Kernelgrößen sind ausgeschrieben, sodass Sie genau wissen, welcher Text erfasst wird und wie er verdeckt wird.',
         'OCR und Schwärzung laufen in einem lokalen Prozess auf unserer eigenen GPU; Screenshots voller Kundendaten verlassen unsere Hardware nie.',
-        'Die Textschwärzung verbraucht einen Standardvorgang Ihres Kontingents (standardmäßig 5 pro Tag ohne Konto, 30 mit einem kostenlosen Konto), keinen KI-Vorgang, und ein fehlgeschlagener Auftrag wird zurückerstattet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+        'Die Textschwärzung verbraucht einen KI-Auftrag (standardmäßig 3 pro Tag ohne Konto, 10 mit einem kostenlosen Konto), der auf das KI-Kontingent und nicht auf das Standardkontingent angerechnet wird, und ein fehlgeschlagener Auftrag wird zurückerstattet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       ],
       privacyNote: 'Texterkennung und Schwärzung laufen als lokaler EasyOCR- und OpenCV-Prozess auf unserem eigenen GPU-Server; kein externer OCR- oder KI-Dienst erhält das Bild, und der erkannte Text wird nur verwendet, um zu entscheiden, welche Rahmen verdeckt werden, und nicht gespeichert. Der Upload liegt in uploads/<jobId>/ und das geschwärzte Bild in outputs/<jobId>/, beide im Aufbewahrungsregister eingetragen und gelöscht, wenn die Frist endet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Wie jeder Standard-Bild-Upload durchläuft die Datei außerdem unsere automatisierte Inhaltsanalyse auf demselben Server, wo ein lokales Bildmodell eine kurze Beschreibung schreibt, die beim Auftrag aufbewahrt und nicht an Dritte weitergegeben wird.',
       faq: [
@@ -3056,12 +3056,12 @@ const deToolPages = {
         },
         {
           question: 'Ist das Schwärzen von Text kostenlos, und was zählt gegen mein Kontingent?',
-          answer: 'Ja. Es ist ein Standardvorgang, standardmäßig 5 pro Tag ohne Konto und 30 mit einem kostenlosen Konto, bei Bildern bis 200 MB bzw. 1 GB. Es verbraucht nicht das kleinere KI-Vorgangskontingent. Die Preisseite hat die aktuellen Zahlen.',
+          answer: 'Ja. Es ist ein KI-Auftrag, standardmäßig 3 pro Tag ohne Konto und 10 mit einem kostenlosen Konto, bei Bildern bis 200 MB bzw. 1 GB. Es verbraucht ausschließlich das KI-Kontingent, nie das Standardkontingent. Die Preisseite hat die aktuellen Zahlen.',
         },
       ],
       supportedFormats: {
         processingNotes: [
-          'Jeder Auftrag verbraucht einen gewöhnlichen Vorgang Ihres Tageskontingents; das Dateigrößenlimit Ihres Tarifs wird im Formular angezeigt.',
+          'Jeder Auftrag verbraucht einen KI-Auftrag Ihres täglichen KI-Kontingents; das Dateigrößenlimit Ihres Tarifs wird im Formular angezeigt.',
         ],
       },
       related: [
@@ -3110,7 +3110,7 @@ const deToolPages = {
         'Erstellt auf dem Server aus den normalisierten Rechteckkoordinaten eine pixelgenaue Maske, sodass die Maske nicht von Ihrer Bildschirmgröße abhängt.',
         'Führt LaMa-Inpainting auf einer von uns betriebenen GPU aus und füllt die maskierten Bereiche mit Inhalt, der den Hintergrund fortsetzt.',
         'Liefert das Bild in voller Auflösung als JPG, PNG, WebP oder GIF, wie im Formular gewählt.',
-        'Zählt als ein gewöhnlicher täglicher Vorgang, wie eine einfache Konvertierung.',
+        'Zählt als ein KI-Auftrag auf das tägliche KI-Kontingent; einfache Konvertierungen nutzen ein anderes, separates Kontingent.',
       ],
       flowSteps: [
         {
@@ -3180,7 +3180,7 @@ const deToolPages = {
       faq: [
         {
           question: 'Ist das Entfernen von Objekten kostenlos?',
-          answer: 'Ja, innerhalb des Tageskontingents. Der Auftrag nutzt den Standard-Upload-Weg und verbraucht einen gewöhnlichen Vorgang, nicht das separate KI-Kontingent: standardmäßig 5 pro Tag für Gäste und 30 mit einem kostenlosen Konto, mit Grenzen von 200 MB und 1 GB pro Datei; 300 und 700 bei Premium und Pro. Die geltenden Zahlen stehen auf /pricing.',
+          answer: 'Ja, innerhalb des täglichen KI-Kontingents. Jedes Entfernen verbraucht einen KI-Auftrag: standardmäßig 3 pro Tag für Gäste und 10 mit einem kostenlosen Konto, mit Grenzen von 200 MB und 1 GB pro Datei; 100 und 200 bei Premium und Pro. Ihr Standardkontingent für Konvertierungen ist davon getrennt und bleibt, wie es war. Die geltenden Zahlen stehen auf /pricing.',
         },
         {
           question: 'Wie genau muss das Rechteck sein?',
@@ -3209,7 +3209,7 @@ const deToolPages = {
       ],
       supportedFormats: {
         processingNotes: [
-          'Jeder Auftrag verbraucht einen gewöhnlichen Vorgang Ihres Tageskontingents; das Dateigrößenlimit Ihres Tarifs wird im Formular angezeigt.',
+          'Jeder Auftrag verbraucht einen KI-Auftrag Ihres täglichen KI-Kontingents; das Dateigrößenlimit Ihres Tarifs wird im Formular angezeigt.',
         ],
       },
       related: [
@@ -3323,7 +3323,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'DeepFilterNet und die Nachbearbeitungskette laufen auf einer GPU, die wir betreiben; die Aufnahme wird nicht an einen externen Sprachverbesserungsdienst gesendet.',
         'Die Seite öffnet mit bereits gewähltem „Stimme säubern“ und ausgeblendetem Operationsmenü, die einzige Entscheidung ist also das Ausgabeformat.',
-        'Ein Säuberungsauftrag ist ein gewöhnlicher Vorgang Ihres Tageskontingents (standardmäßig 5 als Gast, 30 mit einem kostenlosen Konto), und ein fehlgeschlagener Auftrag erstattet ihn zurück.',
+        'Ein Säuberungsauftrag ist ein Standardauftrag Ihres Tageskontingents (standardmäßig 5 als Gast, 30 mit einem kostenlosen Konto), kein KI-Auftrag, und ein fehlgeschlagener Auftrag erstattet ihn zurück.',
       ],
       privacyNote: 'Ihre Aufnahme wird in ihrem Auftragsordner gespeichert, von ffmpeg in ein temporäres Mono-WAV mit 48 kHz in einem Arbeitsverzeichnis umgewandelt und an DeepFilterNet auf unserer eigenen GPU übergeben; dieses Arbeitsverzeichnis wird gelöscht, sobald die gesäuberte Datei kodiert ist. Die gesäuberte Ausgabe bleibt zum Download beim Auftrag. Audio-Uploads durchlaufen außerdem einen automatisierten Analysedurchlauf auf unserem Server, der die Aufnahme mit Whisper für eine interne Inhaltsprüfung transkribiert und dieses Ergebnis beim Auftrag aufbewahrt. Kein externer KI-Anbieter erhält die Datei. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       faq: [
@@ -3349,12 +3349,12 @@ const deToolPages = {
         },
         {
           question: 'Wie viele Aufnahmen kann ich pro Tag säubern, und ist es kostenlos?',
-          answer: '„Stimme säubern“ wird über den Standard-Upload-Endpunkt eingereicht und verbraucht daher einen gewöhnlichen Vorgang: standardmäßig 5 pro Tag als Gast, 30 mit einem kostenlosen Konto, 300 bei Premium und 700 bei Pro, mit Dateigrenzen von 200 MB, 1 GB und 5 GB und Längengrenzen von 5 Minuten, 20 Minuten und 2 Stunden. Die aktuelle Tabelle steht auf /pricing.',
+          answer: '„Stimme säubern“ zählt bewusst als Standardauftrag und verbraucht daher einen Auftrag aus dem Standardkontingent: standardmäßig 5 pro Tag als Gast, 30 mit einem kostenlosen Konto, 300 bei Premium und 700 bei Pro, mit Dateigrenzen von 200 MB, 1 GB und 5 GB und Längengrenzen von 5 Minuten, 20 Minuten und 2 Stunden. Die aktuelle Tabelle steht auf /pricing.',
         },
       ],
       supportedFormats: {
         processingNotes: [
-          'Kontingent- und Längenlimits für KI-Operationen hängen von Ihrem Tarif ab und werden live im Formular angezeigt.',
+          '„Stimme säubern“ nutzt das Standardkontingent; die Längenlimits hängen von Ihrem Tarif ab und werden live im Formular angezeigt.',
         ],
       },
       related: [
@@ -3467,7 +3467,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Der Entrauscher läuft auf einer GPU, die wir betreiben; Ihr Audio wird nicht zu einem externen Rauschentfernungsdienst hochgeladen.',
         'Nach dem Modell wird nichts hinzugefügt: keine Lautheitsänderung, kein EQ, was Sie hören, ist also das Entrauschen und nur das Entrauschen.',
-        'Ein Entrauschungsauftrag ist ein gewöhnlicher Vorgang Ihres Tageskontingents und wird zurückerstattet, wenn der Auftrag fehlschlägt.',
+        'Ein Entrauschungsauftrag ist ein Standardauftrag Ihres Tageskontingents, kein KI-Auftrag, und wird zurückerstattet, wenn der Auftrag fehlschlägt.',
       ],
       privacyNote: 'Die hochgeladene Datei wird in ihren Auftragsordner geschrieben, von ffmpeg in ein temporäres Mono-WAV mit 48 kHz in einem Arbeitsverzeichnis neu abgetastet und von DeepFilterNet auf unserer eigenen GPU entrauscht; das Arbeitsverzeichnis wird entfernt, sobald die Ausgabe kodiert ist. Das kodierte Ergebnis bleibt zum Download beim Auftrag. Wie jeder Audio-Upload durchläuft sie außerdem einen automatisierten Analyseschritt auf unserem Server, der sie mit Whisper für eine interne Prüfung transkribiert, die beim Auftrag bleibt. Nichts geht an einen externen KI-Anbieter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       faq: [
@@ -3492,8 +3492,8 @@ const deToolPages = {
           answer: 'WAV (16-Bit-Mono mit 48 kHz, 96 KB pro Sekunde) oder FLAC, das dieselben Samples auf weniger Platz hält. MP3, AAC und OGG werden mit 192 kbps und Opus mit 128 kbps geschrieben; wählen Sie diese nur für die endgültige Weitergabe, damit die verlustbehaftete Kodierung einmal erfolgt.',
         },
         {
-          question: 'Zählt das Entrauschen gegen das KI-Vorgangslimit?',
-          answer: 'Nein. Audio-KI-Operationen werden über den Standard-Upload-Weg gesendet und verbrauchen einen gewöhnlichen Vorgang: standardmäßig 5 pro Tag für einen Gast, 30 mit einem kostenlosen Konto, 300 bei Premium und 700 bei Pro. Die Länge ist für Gäste auf 5 Minuten und für kostenlose Konten auf 20 Minuten begrenzt; die aktuellen Limits stehen auf /pricing.',
+          question: 'Zählt das Entrauschen gegen das KI-Kontingent?',
+          answer: 'Nein. Das Entfernen von Hintergrundgeräuschen zählt bewusst als Standardauftrag, wie „Stimme säubern“: standardmäßig 5 pro Tag für einen Gast, 30 mit einem kostenlosen Konto, 300 bei Premium und 700 bei Pro. (Das Isolieren oder Entfernen von Gesang ist etwas anderes: Jedes davon ist ein KI-Auftrag.) Die Länge ist für Gäste auf 5 Minuten und für kostenlose Konten auf 20 Minuten begrenzt; die aktuellen Limits stehen auf /pricing.',
         },
         {
           question: 'Was ist, wenn die Aufnahme schon ziemlich sauber ist?',
@@ -3502,7 +3502,7 @@ const deToolPages = {
       ],
       supportedFormats: {
         processingNotes: [
-          'Kontingent- und Längenlimits für KI-Operationen hängen von Ihrem Tarif ab und werden live im Formular angezeigt.',
+          'Das Entrauschen nutzt das Standardkontingent; die Längenlimits hängen von Ihrem Tarif ab und werden live im Formular angezeigt.',
         ],
       },
       related: [
@@ -3642,7 +3642,7 @@ const deToolPages = {
         },
         {
           question: 'Wie viele Songs pro Tag kann ich kostenlos trennen?',
-          answer: 'Das Entfernen von Gesang läuft über den Standard-Upload-Endpunkt, jeder Song verbraucht also einen gewöhnlichen Vorgang: standardmäßig 5 pro Tag ohne Konto, 30 mit einem kostenlosen Konto, 300 bei Premium und 700 bei Pro. Songs sind für Gäste auf 5 Minuten und für kostenlose Konten auf 20 Minuten begrenzt, mit 2 Stunden bei bezahlten Tarifen; /pricing hat die aktuelle Tabelle.',
+          answer: 'Jeder Song ist ein KI-Auftrag: standardmäßig 3 pro Tag ohne Konto, 10 mit einem kostenlosen Konto, 100 bei Premium und 200 bei Pro. Das KI-Kontingent wird separat gezählt, das Trennen von Songs lässt Ihr Standardkontingent also unangetastet. Songs sind für Gäste auf 5 Minuten und für kostenlose Konten auf 20 Minuten begrenzt, mit 2 Stunden bei bezahlten Tarifen; /pricing hat die aktuelle Tabelle.',
         },
         {
           question: 'Ist es legal, auf diese Weise eine Karaoke-Version zu erstellen?',
@@ -3651,7 +3651,7 @@ const deToolPages = {
       ],
       supportedFormats: {
         processingNotes: [
-          'Kontingent- und Längenlimits für KI-Operationen hängen von Ihrem Tarif ab und werden live im Formular angezeigt.',
+          'Das Entfernen von Gesang nutzt das KI-Kontingent; dieses und die Längenlimits hängen von Ihrem Tarif ab und werden live im Formular angezeigt.',
         ],
       },
       related: [

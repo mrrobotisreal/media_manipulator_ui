@@ -150,6 +150,7 @@
   },
   "quotaMeter": {
     "label": "היום",
+    "aiLabel": "AI",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "{{remaining}} מתוך {{limit}} נותרו היום",

@@ -1596,8 +1596,8 @@
       "pro": "Tout Premium, des limites quotidiennes bien plus élevées pour les opérations, les tâches IA et les exports, et le plus grand quota Motion."
     },
     "rows": {
-      "opsPerDay": "Opérations par jour",
-      "aiOpsPerDay": "Opérations IA par jour",
+      "opsPerDay": "Tâches standard par jour",
+      "aiOpsPerDay": "Tâches IA par jour",
       "maxFileBytes": "Taille maximale des fichiers",
       "maxVideoSeconds": "Durée maximale des vidéos",
       "maxOutputHeight": "Résolution de sortie maximale",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "Nous n'avons pas pu joindre le service des offres. Tous les outils fonctionnent ; rechargez dans un instant pour voir le comparatif.",
     "faqTitle": "Les questions qu'on nous pose vraiment",
     "faq": {
-      "q1": "Qu'est-ce qui compte comme une opération ?",
-      "a1": "Une conversion, un transcodage, un export ou une tâche IA. Les aperçus, les analyses et les téléchargements sont gratuits : seul le travail réellement effectué par le serveur est décompté.",
+      "q1": "Qu'est-ce qui compte dans mon quota quotidien ?",
+      "a1": "Chaque offre comprend deux quotas quotidiens distincts qui s'additionnent. Une tâche standard correspond à une conversion, une compression, un transcodage ou un autre outil standard. Une tâche IA correspond à une exécution d'un outil qui utilise un modèle d'IA, comme la transcription, l'upscaling ou la suppression des voix. Une tâche IA ne consomme jamais une tâche standard : vous pouvez donc utiliser toutes vos tâches IA et conserver toutes vos tâches standard. Les exports Darkroom ont leur propre quota. Les aperçus, les analyses et les téléchargements sont gratuits : seul le travail réellement effectué par le serveur est décompté.",
       "q2": "Que se passe-t-il quand j'ai tout utilisé ?",
       "a2": "Rien ne casse. L'outil vous indique que le quota est épuisé et vous propose l'offre supérieure. Votre quota se réinitialise à minuit UTC.",
       "q3": "Les comptes gratuits voient-ils des publicités ?",

@@ -941,7 +941,21 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
       />
       {/* MM78: the voice panels render their own chip (ai_ops, or ops / ai_ops by mode).
           MM75: so does the summarize panel (its shell's chip, shown only once it can run). */}
-      {showQuotaChip ? <QuotaChip task={defaultTask} busy={isProcessing} className="mb-4" /> : null}
+      {showQuotaChip ? (
+        <QuotaChip
+          task={defaultTask}
+          // MM90: the upscaler, face blur, redaction, object removal and vocal pages run a
+          // generic converter task with a preset AI operation; that operation picks the metric.
+          taskContext={{
+            aiOperation:
+              defaultAIImageOperation ??
+              (preset && 'aiOperation' in preset ? preset.aiOperation : undefined),
+            transcribe: transcribeMode,
+          }}
+          busy={isProcessing}
+          className="mb-4"
+        />
+      ) : null}
 
       <ToolPanelFormats
         labels={{

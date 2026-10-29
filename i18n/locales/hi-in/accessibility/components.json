@@ -36,6 +36,7 @@
   "quotaMeter": {
     "gauge": "{{used}} / {{limit}} दैनिक ऑपरेशन इस्तेमाल हुए",
     "gaugeUnlimited": "दैनिक ऑपरेशन की कोई सीमा नहीं",
+    "aiGauge": "{{label}} {{used}} / {{limit}} दैनिक AI जॉब इस्तेमाल हुए",
     "openUpgrade": "देखें कि बड़ा दैनिक कोटा कैसे पाएँ",
     "openAccount": "अपना अकाउंट खोलें"
   },

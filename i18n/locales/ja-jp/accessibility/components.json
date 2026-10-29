@@ -36,6 +36,7 @@
   "quotaMeter": {
     "gauge": "1日の操作回数：{{used}} / {{limit}}使用済み",
     "gaugeUnlimited": "1日の操作回数に上限はありません",
+    "aiGauge": "{{label}} {{used}} / {{limit}}：1日のAIジョブ使用数",
     "openUpgrade": "1日の利用枠を増やす方法を見る",
     "openAccount": "アカウントを開く"
   },

@@ -1596,8 +1596,8 @@
       "pro": "Mọi thứ trong Premium, giới hạn hằng ngày cao hơn nhiều cho thao tác, tác vụ AI và xuất, cùng hạn mức Motion lớn nhất."
     },
     "rows": {
-      "opsPerDay": "Thao tác mỗi ngày",
-      "aiOpsPerDay": "Thao tác AI mỗi ngày",
+      "opsPerDay": "Tác vụ thường mỗi ngày",
+      "aiOpsPerDay": "Tác vụ AI mỗi ngày",
       "maxFileBytes": "Kích thước tệp tối đa",
       "maxVideoSeconds": "Độ dài video tối đa",
       "maxOutputHeight": "Độ phân giải đầu ra tối đa",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "Chúng tôi không kết nối được với dịch vụ gói. Mọi công cụ vẫn hoạt động — hãy tải lại sau giây lát để xem bảng so sánh.",
     "faqTitle": "Những câu hỏi mọi người thực sự hỏi",
     "faq": {
-      "q1": "Thế nào được tính là một thao tác?",
-      "a1": "Một lượt chuyển đổi, chuyển mã, xuất hoặc tác vụ AI. Xem trước, phân tích và tải xuống đều miễn phí — bạn chỉ bị tính cho việc máy chủ thực sự làm.",
+      "q1": "Những gì được tính vào hạn mức hằng ngày của tôi?",
+      "a1": "Mỗi gói có hai hạn mức hằng ngày riêng biệt và cộng dồn với nhau. Một tác vụ thường là một lượt chuyển đổi, nén, chuyển mã hoặc công cụ tiêu chuẩn khác. Một tác vụ AI là một lần chạy công cụ sử dụng mô hình AI, chẳng hạn như chuyển giọng nói thành văn bản, nâng cấp độ phân giải hoặc tách giọng hát. Tác vụ AI không bao giờ tiêu tốn tác vụ thường, nên bạn có thể dùng hết mọi tác vụ AI mà vẫn còn đủ mọi tác vụ thường. Xuất từ Darkroom có hạn mức riêng. Xem trước, phân tích và tải xuống đều miễn phí — bạn chỉ bị tính cho việc máy chủ thực sự làm.",
       "q2": "Điều gì xảy ra khi tôi dùng hết?",
       "a2": "Không có gì hỏng cả. Công cụ cho bạn biết hạn mức đã hết và gợi ý gói cao hơn. Hạn mức của bạn được đặt lại vào nửa đêm UTC.",
       "q3": "Tài khoản miễn phí có thấy quảng cáo không?",

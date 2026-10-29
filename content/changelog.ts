@@ -23,6 +23,15 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM90: model-run tools spend the AI allowance; higher AI limits; AI meter in the nav.
+  {
+    id: '2026-10-29-ai-allowance',
+    date: '2026-10-29',
+    title: 'AI tools now have their own, larger daily allowance',
+    body: 'Every plan now has two separate daily allowances that add up: everyday jobs for conversions and the other standard tools, and AI jobs for the tools that run an AI model. Transcription, caption translation, AI upscaling, face blurring, text redaction, object removal, vocal isolation and removal, and frame interpolation now count as AI jobs, alongside restoration, document scan, summaries and voices; background removal, Clean Voice and background-noise removal stay everyday jobs. An AI job never uses up an everyday job, so Premium\'s 300 everyday jobs and 100 AI jobs are 400 jobs a day. The AI allowance is larger too: 3 a day without an account (was 1), 10 with a free account (was 5), 100 on Premium (was 60) and 200 on Pro (was 120). The top bar now shows the AI allowance next to the everyday one, so you can see both at a glance.',
+    tags: ['improved'],
+    links: [{ label: 'Compare plans', href: '/pricing' }],
+  },
   // MM86: reviewed locales and translated tool bodies.
   {
     id: '2026-10-29-tool-pages-translated',

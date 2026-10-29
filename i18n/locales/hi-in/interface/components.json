@@ -146,6 +146,7 @@
   },
   "quotaMeter": {
     "label": "आज",
+    "aiLabel": "AI",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "आज {{limit}} में से {{remaining}} बाकी",

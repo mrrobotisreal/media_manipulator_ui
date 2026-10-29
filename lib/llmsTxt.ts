@@ -64,32 +64,32 @@ function planPriceText(plan: keyof typeof PRICE_NUMERALS): string {
 }
 
 /**
- * Plan limits as served by the API's public GET /api/tiers (checked live on
- * 2026-10-23). Those numbers are env-configurable, so the text points readers
+ * Plan limits as served by the API's public GET /api/tiers (the defaults since
+ * MM90, 2026-10-29). Those numbers are env-configurable, so the text points readers
  * at /pricing for the current values.
  */
 const PLANS = [
   {
     name: 'No account',
-    ops: '5 operations a day, 1 of them AI',
+    ops: '5 everyday jobs and 3 AI jobs a day (two separate allowances)',
     file: '200 MB per file, video up to 5 minutes, output up to 1080p',
     extras: 'results kept 24 hours, 1 Darkroom project',
   },
   {
     name: 'Free account',
-    ops: '30 operations a day, 5 of them AI',
+    ops: '30 everyday jobs and 10 AI jobs a day (two separate allowances)',
     file: '1 GB per file, video up to 20 minutes, output up to 1440p',
     extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), 5 saved Darkroom projects',
   },
   {
     name: `Premium (${planPriceText('premium')}, cancel any time)`,
-    ops: '300 operations a day, 60 of them AI',
+    ops: '300 everyday jobs and 100 AI jobs a day (two separate allowances, 400 jobs in all)',
     file: '5 GB per file, video up to 2 hours, output up to 4K (2160p)',
     extras: 'you choose how long results are kept (24 hours to 2 years, default 6 months), unlimited Darkroom projects, priority GPU queue, no ads',
   },
   {
     name: `Pro (${planPriceText('pro')}, cancel any time)`,
-    ops: '700 operations a day, 120 of them AI',
+    ops: '700 everyday jobs and 200 AI jobs a day (two separate allowances)',
     file: 'the same file, length and output limits as Premium',
     extras: 'everything in Premium, and the largest Motion allowance as the Motion editor rolls out',
   },
@@ -155,7 +155,7 @@ function plansSection(): string[] {
   return [
     '## Plans and limits',
     '',
-    'All plans use the same tools on the same hardware. An operation is one conversion, transcode, export or AI job; previews, probes and downloads are not counted. Allowances reset at midnight UTC.',
+    'All plans use the same tools on the same hardware. Every plan has two separate daily allowances that add up: everyday jobs (conversions, transcodes, compression and the other standard tools, plus AI background removal, Clean Voice and background-noise removal) and AI jobs (transcription, caption translation, upscaling, face blur, text redaction, object removal, vocal isolation and removal, frame interpolation, restoration, document scan, summaries and voices). An AI job uses one AI job and never an everyday job, so using every AI job still leaves every everyday job. Darkroom exports have their own allowance. Previews, probes and downloads are not counted. Allowances reset at midnight UTC.',
     '',
     ...PLANS.map((p) => `- ${p.name}: ${p.ops}; ${p.file}; ${p.extras}.`),
     '',

@@ -36,6 +36,7 @@
   "quotaMeter": {
     "gauge": "{{used}} / {{limit}} operaciones diarias utilizadas",
     "gaugeUnlimited": "Sin límite diario de operaciones",
+    "aiGauge": "{{label}} {{used}} / {{limit}} trabajos de IA diarios utilizados",
     "openUpgrade": "Descubre cómo conseguir un límite diario más alto",
     "openAccount": "Abrir tu cuenta"
   },

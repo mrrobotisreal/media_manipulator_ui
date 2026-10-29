@@ -36,6 +36,7 @@
   "quotaMeter": {
     "gauge": "已使用 {{used}} / {{limit}} 次每日操作",
     "gaugeUnlimited": "沒有每日操作上限",
+    "aiGauge": "{{label}} {{used}} / {{limit}}：已使用的每日 AI 工作",
     "openUpgrade": "了解如何取得更高的每日額度",
     "openAccount": "開啟你的帳號"
   },

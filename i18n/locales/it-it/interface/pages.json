@@ -1596,8 +1596,8 @@
       "pro": "Tutto ciò che c'è in Premium, limiti giornalieri molto più alti per operazioni, lavori IA ed esportazioni, e la quota Motion più ampia."
     },
     "rows": {
-      "opsPerDay": "Operazioni al giorno",
-      "aiOpsPerDay": "Operazioni IA al giorno",
+      "opsPerDay": "Lavori standard al giorno",
+      "aiOpsPerDay": "Lavori IA al giorno",
       "maxFileBytes": "Dimensione massima del file",
       "maxVideoSeconds": "Durata massima del video",
       "maxOutputHeight": "Risoluzione massima di output",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "Non siamo riusciti a raggiungere il servizio dei piani. Tutti gli strumenti funzionano comunque: ricarica tra un attimo per vedere il confronto.",
     "faqTitle": "Le domande che la gente fa davvero",
     "faq": {
-      "q1": "Cosa conta come operazione?",
-      "a1": "Una conversione, una transcodifica, un'esportazione o un lavoro IA. Anteprime, analisi e download sono gratuiti: ti viene addebitato solo il lavoro che il server svolge davvero.",
+      "q1": "Cosa conta ai fini della mia quota giornaliera?",
+      "a1": "Ogni piano ha due quote giornaliere separate che si sommano. Un lavoro standard è una conversione, una compressione, una transcodifica o un altro strumento standard. Un lavoro IA è un'esecuzione di uno strumento che usa un modello di IA, come la trascrizione, l'upscaling o la rimozione della voce. Un lavoro IA non consuma mai un lavoro standard, quindi puoi usare tutti i lavori IA e avere ancora tutti i lavori standard. Le esportazioni di Darkroom hanno una quota a parte. Anteprime, analisi e download sono gratuiti: ti viene addebitato solo il lavoro che il server svolge davvero.",
       "q2": "Cosa succede quando finisco la quota?",
       "a2": "Non si rompe nulla. Lo strumento ti avvisa che la quota è esaurita e ti propone il piano superiore. La quota si rinnova a mezzanotte UTC.",
       "q3": "Gli account gratuiti vedono la pubblicità?",

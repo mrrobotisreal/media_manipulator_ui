@@ -364,7 +364,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How are captions made?',
         answer:
-          'Generate captions sends the timeline audio to Whisper on our GPU server. The segments come back as cues you can edit in the captions lane, then export burned into the picture (an ASS subtitle track rendered into the frames) or as an SRT or VTT file next to the video. Generating captions counts as one AI operation.',
+          'Generate captions sends the timeline audio to Whisper on our GPU server. The segments come back as cues you can edit in the captions lane, then export burned into the picture (an ASS subtitle track rendered into the frames) or as an SRT or VTT file next to the video. Generating captions counts as one AI job, from the AI allowance.',
       },
       {
         question: 'Does the export match the preview?',
@@ -444,7 +444,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         `Source and exported files are processed on our servers. ${RETENTION_PROMISE}.`,
       ],
       processingNotes: [
-        'Preview composites in the browser; the final export is encoded to H.264 MP4.',
+        'Preview composites in the browser; the final export is encoded on the server to H.264 or HEVC MP4, or to MP3 or WAV audio.',
       ],
     },
   },
@@ -750,7 +750,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'You see the evidence. The inspector lists every tag before you strip and a diff proves what went after, rather than a green tick and a promise.',
       'One pass, every group. ExifTool -all= removes EXIF, GPS, XMP, IPTC, Photoshop, ICC, maker notes and the preview thumbnail together; nothing has to be ticked one block at a time.',
-      'Orientation is handled. The rotation tag is applied to the pixels before it is removed, which is the usual way a stripped phone photo ends up on its side elsewhere.',
+      'Orientation is handled. The rotation tag is applied to the pixels before it is removed, so a stripped phone photo does not end up on its side elsewhere, which is what usually happens when the tag is dropped without rotating the pixels.',
     ],
     privacyNote:
       `This tool removes, from the copy it returns, the EXIF blocks (camera make, model, serial number, lens, exposure, dates), the GPS block, the IFD1 preview thumbnail, XMP and IPTC records, Photoshop resources, maker notes and the ICC profile. To do that the server has to read them first: the upload is inspected with ExifTool and the report is written to the job folder as metadata.json, and after the strip a second report of the result is kept beside it so the Compare view can show the difference. Both reports and both files live in uploads/<jobId>/ and outputs/<jobId>/ and are deleted together when the retention window ends. ${RETENTION_PROMISE}. The stand-alone inspector (reading a file without converting it) removes its temporary copy as soon as the report is produced. Images also pass through an automated analysis step on our own server; nothing is sent to a third party.`,
@@ -984,7 +984,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     h1: 'Transcode Video to HLS Online',
     tagline:
       'Package any video into an Apple HLS VOD bundle: master.m3u8, per-rendition .ts segments, ready for the web.',
-    metaTitle: 'Transcode Video to HLS Online | Free Adaptive Streaming Tool',
+    metaTitle: 'Transcode Video to HLS Online | Free Adaptive Streaming Tool | Media Manipulator',
     metaDescription:
       'Free online HLS transcoder. Convert MP4, MOV, WebM, MKV into an HLS VOD package with 360p/480p/720p renditions, optional captions and storyboards.',
     ogTitle: 'Transcode Video to HLS Online',
@@ -1420,7 +1420,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'You choose VTT, SRT, TXT or JSON before uploading, so there is no second conversion step after the transcript exists.',
       'Whisper runs on our own GPU with the model cache set to offline mode; no outside speech service receives the audio.',
-      'Transcription counts as an ordinary operation, not an AI-operation unit, so a guest can run 5 a day and a free account 30 by default (see /pricing).',
+      'Transcription counts as one AI job, drawn from the AI allowance, which is separate from the everyday one: by default 3 a day for a guest and 10 with a free account, and your everyday jobs stay untouched (see /pricing).',
     ],
     privacyNote:
       `Your video or audio file is stored under its job folder on our server. ffmpeg writes a temporary 16 kHz mono WAV that Whisper reads on our GPU, and that WAV is deleted when the job finishes. The transcript file and a transcribe_result.json copy of the segments stay with the job, and the transcript text is also passed to a language model running on our own hardware for an automated summary and safety review whose result is kept with the job. Nothing is sent to a third-party AI provider. ${RETENTION_PROMISE}.`,
@@ -1451,9 +1451,9 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
           'Yes. Type a two-letter language code such as en, de or es in the language field and Whisper will transcribe in that language. Leave it blank for automatic detection, which works well on clips longer than a few seconds.',
       },
       {
-        question: 'Does transcription use my AI-operation allowance?',
+        question: 'Does transcription use my AI allowance?',
         answer:
-          'No. It is submitted through the standard upload endpoint and counts as one ordinary operation: 5 per day as a guest, 30 with a free account, 300 on Premium and 700 on Pro by default. A job that fails refunds the unit.',
+          'Yes. Each transcription is one AI job: by default 3 per day as a guest, 10 with a free account, 100 on Premium and 200 on Pro. The AI allowance is its own counter, so transcribing never uses up the everyday allowance for conversions. A job that fails refunds the unit.',
       },
       {
         question: 'What model is used, and can I pick a bigger one?',
@@ -2692,7 +2692,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Always writes PNG, because transparency needs an alpha channel and the API forces the .png extension for this operation.',
       'Keeps the full pixel dimensions of your upload; the cutout is not resized or cropped.',
       'Executes on our own GPU through ONNX Runtime with CUDA; no image is sent to an outside AI service.',
-      'Counts as one ordinary daily operation, the same unit as a plain format conversion.',
+      'Counts as one everyday job, the same unit as a plain format conversion, not an AI job.',
     ],
     flowSteps: [
       { title: 'Upload a JPG, PNG or WebP', description: 'A single clear subject gives the cleanest mask.' },
@@ -2735,7 +2735,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'Is background removal free?',
         answer:
-          'Yes, within the daily allowance. Because the job goes through the standard upload route it spends an ordinary operation, not the separate AI allowance: 5 per day for guests and 30 with a free account by default, with per-file caps of 200 MB and 1 GB. Premium and Pro get 300 and 700. The current figures are on /pricing.',
+          'Yes, within the daily allowance. Background removal deliberately counts as an everyday job, not as one from the separate AI allowance: 5 per day for guests and 30 with a free account by default, with per-file caps of 200 MB and 1 GB. Premium and Pro get 300 and 700. The current figures are on /pricing.',
       },
       {
         question: 'Which model should I choose?',
@@ -4530,7 +4530,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Lets you choose between a photo model and two anime-style models in the form; 4x and the photo model are preselected.',
       'Always outputs PNG; the API forces the .png extension for this operation.',
       'Tiles the image automatically on the GPU so large inputs do not run out of video memory.',
-      'Spends one ordinary daily operation, because the job travels through the standard upload route.',
+      'Spends one AI job from the daily AI allowance, a counter of its own; the everyday allowance for conversions is not touched.',
     ],
     flowSteps: [
       { title: 'Upload a small or soft image', description: 'JPG, PNG or WebP. The smaller the input, the more the model has to invent.' },
@@ -4567,14 +4567,14 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['png'],
       processingNotes: [
-        'Output is PNG. Size limits and daily AI quotas depend on your plan and are shown in the form, not fixed on this page.',
+        'Output is PNG. Size limits and the daily AI allowance depend on your plan and are shown in the form, not fixed on this page.',
       ],
     },
     faq: [
       {
         question: 'Is the AI upscaler free to use?',
         answer:
-          'Yes within the daily allowance. The job goes through the standard upload route, so it spends an ordinary operation rather than the separate AI allowance: 5 per day for guests and 30 with a free account by default, with 200 MB and 1 GB per-file caps; 300 and 700 on Premium and Pro. The live numbers are on /pricing.',
+          'Yes, within the daily AI allowance. Each upscale spends one AI job: by default 3 per day for guests and 10 with a free account, with 200 MB and 1 GB per-file caps; 100 and 200 on Premium and Pro. That allowance is separate from the everyday one, so your conversions are unaffected. The live numbers are on /pricing.',
       },
       {
         question: 'How is this different from the image resizer?',
@@ -4698,7 +4698,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'The detector, its threshold, the padding and the kernel arithmetic are stated, so you can judge how much protection each style gives.',
       'Detection boxes are tied to the file hash and expire after 30 minutes, so you select on the exact image that gets processed.',
-      `Face blurring spends one standard operation (5 a day without an account by default, 30 with a free account), not an AI operation, and the Detect faces preview is not counted at all. ${RETENTION_PROMISE}.`,
+      `Face blurring spends one AI job from the daily AI allowance (3 a day without an account by default, 10 with a free account), which is kept apart from the everyday allowance, and the Detect faces preview is not counted at all. ${RETENTION_PROMISE}.`,
     ],
     privacyNote:
       `Face detection and blurring run as a local OpenCV process on our own hardware; no outside AI service receives your photo, and nothing is used for training. The Detect faces preview saves a temporary copy, hashes it, detects, and deletes the copy before responding; only the box coordinates are kept, for 30 minutes. The uploaded photo lives in uploads/<jobId>/ and the result in outputs/<jobId>/, both in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. As a standard image upload, the photo also passes through our automated content analysis on the same server, where a local vision model writes a short description that stays with the job and is not shared with third parties.`,
@@ -4706,7 +4706,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
+        'Each job spends one AI job from your daily AI allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
@@ -4736,9 +4736,9 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
           'No. Detection and the effect run in a local OpenCV process on our own server, and the file is not shared with third-party AI providers.',
       },
       {
-        question: 'Does face blurring use an AI operation from my daily allowance?',
+        question: 'Does face blurring use my daily AI allowance?',
         answer:
-          'No. It goes through the standard upload, which spends one regular operation: 5 a day as a guest by default, 30 with a free account. The Detect faces preview is rate limited but not counted. A failed job is refunded.',
+          'Yes. Each blurred photo is one AI job: 3 a day as a guest by default, 10 with a free account. It never draws on the everyday allowance. The Detect faces preview is rate limited but not counted. A failed job is refunded.',
       },
       {
         question: 'What about licence plates, name tags or text on screens?',
@@ -4837,7 +4837,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'The five PII patterns, the padding and the kernel sizes are written out, so you know exactly which text will be caught and how it will be covered.',
       'OCR and redaction run in a local process on our own GPU; screenshots full of customer data never leave our hardware.',
-      `Text redaction spends one standard operation of your allowance (5 a day without an account by default, 30 with a free account), not an AI operation, and a failed job is refunded. ${RETENTION_PROMISE}.`,
+      `Text redaction spends one AI job (3 a day without an account by default, 10 with a free account), counted on the AI allowance rather than the everyday one, and a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
     privacyNote:
       `Text recognition and redaction run as a local EasyOCR and OpenCV process on our own GPU server; no outside OCR or AI service receives the image, and the recognised text is used only to decide which boxes to cover and is not stored. The upload lives in uploads/<jobId>/ and the redacted image in outputs/<jobId>/, both registered in the retention ledger and deleted when the window ends. ${RETENTION_PROMISE}. Like every standard image upload, the file also passes through our automated content analysis on the same server, where a local vision model writes a short description that is kept with the job and not shared with third parties.`,
@@ -4845,7 +4845,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
+        'Each job spends one AI job from your daily AI allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
@@ -4882,7 +4882,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'Is redacting text free, and what counts against my allowance?',
         answer:
-          'Yes. It is a standard operation, 5 a day without an account by default and 30 with a free account, on images up to 200 MB and 1 GB respectively. It does not use the smaller AI-operation allowance. The pricing page has the live numbers.',
+          'Yes. It is an AI job, 3 a day without an account by default and 10 with a free account, on images up to 200 MB and 1 GB respectively. It uses the AI allowance only, never the everyday one. The pricing page has the live numbers.',
       },
     ],
     related: [
@@ -4945,7 +4945,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       'Builds a pixel-exact mask on the server from the normalized rectangle coordinates, so the mask does not depend on your screen size.',
       'Runs LaMa inpainting on a GPU we operate and fills the masked areas with content that continues the background.',
       'Returns the full-resolution image in JPG, PNG, WebP or GIF as selected in the form.',
-      'Counts as one ordinary daily operation, like a plain conversion.',
+      'Counts as one AI job on the daily AI allowance; plain conversions use a different, separate allowance.',
     ],
     flowSteps: [
       { title: 'Upload the photo', description: 'JPG, PNG or WebP. The preview appears with a drawing overlay.' },
@@ -4981,14 +4981,14 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['jpg', 'jpeg', 'png', 'webp'],
       supportedOutputFormats: ['jpg', 'png', 'webp'],
       processingNotes: [
-        'Each job spends one ordinary operation from your daily allowance; the per-file size limit for your plan is shown in the form.',
+        'Each job spends one AI job from your daily AI allowance; the per-file size limit for your plan is shown in the form.',
       ],
     },
     faq: [
       {
         question: 'Is object removal free?',
         answer:
-          'Yes, within the daily allowance. The job uses the standard upload route and spends an ordinary operation, not the separate AI allowance: 5 per day for guests and 30 with a free account by default, with 200 MB and 1 GB per-file caps; 300 and 700 on Premium and Pro. The numbers in force are on /pricing.',
+          'Yes, within the daily AI allowance. Each removal spends one AI job: by default 3 per day for guests and 10 with a free account, with 200 MB and 1 GB per-file caps; 100 and 200 on Premium and Pro. Your everyday allowance for conversions is separate and stays as it was. The numbers in force are on /pricing.',
       },
       {
         question: 'How precise does the rectangle need to be?',
@@ -5111,7 +5111,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'DeepFilterNet and the polish chain run on a GPU we operate; the recording is not sent to an outside speech-enhancement service.',
       'The page opens with Clean Voice already selected and the operation menu hidden, so the only decision is the output format.',
-      'One cleaning job is one ordinary operation on your daily allowance (5 as a guest, 30 with a free account by default), and a failed job refunds it.',
+      'One cleaning job is one everyday job on your daily allowance (5 as a guest, 30 with a free account by default), not an AI job, and a failed job refunds it.',
     ],
     privacyNote:
       `Your recording is saved in its job folder, converted by ffmpeg to a temporary 48 kHz mono WAV in a scratch directory, and passed to DeepFilterNet on our own GPU; that scratch directory is deleted as soon as the cleaned file has been encoded. The cleaned output stays with the job for download. Audio uploads also go through an automated analysis pass on our server, which transcribes the recording with Whisper for an internal content review and keeps that result with the job. No third-party AI provider receives the file. ${RETENTION_PROMISE}.`,
@@ -5119,7 +5119,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
       processingNotes: [
-        'Quota and length limits for AI operations depend on your plan and are shown live in the form.',
+        'Clean Voice uses the everyday allowance; length limits depend on your plan and are shown live in the form.',
       ],
     },
     faq: [
@@ -5151,7 +5151,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How many recordings can I clean per day, and is it free?',
         answer:
-          'Clean Voice is submitted through the standard upload endpoint, so it spends one ordinary operation: 5 per day as a guest, 30 with a free account, 300 on Premium and 700 on Pro by default, with file caps of 200 MB, 1 GB and 5 GB and length caps of 5 minutes, 20 minutes and 2 hours. The current table is on /pricing.',
+          'Clean Voice is deliberately counted as an everyday job, so it spends one from the everyday allowance: 5 per day as a guest, 30 with a free account, 300 on Premium and 700 on Pro by default, with file caps of 200 MB, 1 GB and 5 GB and length caps of 5 minutes, 20 minutes and 2 hours. The current table is on /pricing.',
       },
     ],
     related: [
@@ -5240,7 +5240,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'The denoiser runs on a GPU we operate; your audio is not uploaded to a third-party noise-removal service.',
       'Nothing is added after the model: no loudness change, no EQ, so what you hear is the denoising and only the denoising.',
-      'A denoise job is one ordinary operation from your daily allowance and is refunded if the job fails.',
+      'A denoise job is one everyday job from your daily allowance, not an AI job, and is refunded if the job fails.',
     ],
     privacyNote:
       `The file you upload is written to its job folder, resampled by ffmpeg to a temporary mono 48 kHz WAV in a scratch directory, and denoised by DeepFilterNet on our own GPU; the scratch directory is removed once the output has been encoded. The encoded result is kept with the job for download. Like every audio upload, it is also run through an automated analysis step on our server, which transcribes it with Whisper for an internal review that stays with the job. Nothing goes to an outside AI provider. ${RETENTION_PROMISE}.`,
@@ -5248,7 +5248,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
       processingNotes: [
-        'Quota and length limits for AI operations depend on your plan and are shown live in the form.',
+        'Denoising uses the everyday allowance; length limits depend on your plan and are shown live in the form.',
       ],
     },
     faq: [
@@ -5278,9 +5278,9 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
           'WAV (16-bit mono 48 kHz, 96 KB per second) or FLAC, which holds the same samples in less space. MP3, AAC and OGG are written at 192 kbps and Opus at 128 kbps; pick those only for the final share so the lossy encode happens once.',
       },
       {
-        question: 'Does denoising count against the AI-operation limit?',
+        question: 'Does denoising count against the AI allowance?',
         answer:
-          'No. Audio AI operations are sent through the standard upload route and spend one ordinary operation: 5 a day for a guest, 30 with a free account, 300 on Premium and 700 on Pro by default. Length is capped at 5 minutes for guests and 20 minutes for free accounts; the current limits are on /pricing.',
+          'No. Background-noise removal is deliberately counted as an everyday job, like Clean Voice: 5 a day for a guest, 30 with a free account, 300 on Premium and 700 on Pro by default. (Isolating or removing vocals is different: each of those is one AI job.) Length is capped at 5 minutes for guests and 20 minutes for free accounts; the current limits are on /pricing.',
       },
       {
         question: 'What if the recording is already fairly clean?',
@@ -5383,7 +5383,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'flac', 'wav', 'm4a', 'ogg', 'opus'],
       processingNotes: [
-        'Quota and length limits for AI operations depend on your plan and are shown live in the form.',
+        'Vocal removal uses the AI allowance; it and the length limits depend on your plan and are shown live in the form.',
       ],
     },
     faq: [
@@ -5415,7 +5415,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How many songs a day can I separate for free?',
         answer:
-          'Vocal removal goes through the standard upload endpoint, so each song spends one ordinary operation: 5 per day without an account, 30 with a free account, 300 on Premium and 700 on Pro by default. Songs are capped at 5 minutes for guests and 20 minutes for free accounts, with 2 hours on paid plans; /pricing has the current table.',
+          'Each song is one AI job: by default 3 per day without an account, 10 with a free account, 100 on Premium and 200 on Pro. The AI allowance is counted separately, so separating songs leaves your everyday allowance intact. Songs are capped at 5 minutes for guests and 20 minutes for free accounts, with 2 hours on paid plans; /pricing has the current table.',
       },
       {
         question: 'Is it legal to make a karaoke track this way?',
@@ -8471,7 +8471,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'Six research-grade models behind one upload, with the weights, tile sizes and stitch command named on this page rather than hidden behind a brand name.',
       'Everything runs on our own GPU; your footage never goes to a third-party AI provider, and nothing is used for training.',
-      `A restoration spends one AI operation of your daily allowance, which is 1 a day without an account by default and 5 with a free account, and is limited to 2 starts an hour per session; a failed job is refunded. ${RETENTION_PROMISE}.`,
+      `A restoration spends one AI job from your daily AI allowance, which is 3 a day without an account by default and 10 with a free account, and is limited to 2 starts an hour per session; a failed job is refunded. ${RETENTION_PROMISE}.`,
     ],
     privacyNote:
       `Your upload goes from the browser to our storage bucket and is downloaded to our own GPU server, where FFmpeg cuts the snippet and the six models run as local processes; no outside AI provider is involved and nothing is used for training. Only the selected snippet is decoded into frames; the rest of the source is never processed. The source object, the working frames, the per-model MP4s kept for the comparison viewer and the results archive are all registered in the retention ledger and deleted when the window ends, and the archive link expires after 6 hours. ${RETENTION_PROMISE}. Restoration jobs do not run the automated content analysis that standard conversions receive.`,
@@ -8525,9 +8525,9 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
           'Frames times the per-model estimate, summed over the models you picked, since they run one after another: 0.8, 1.0, 3.0, 3.5, 5.0 and 7.0 seconds per frame for Real-ESRGAN, BasicVSR++, RVRT, SwinIR, HAT and VRT. A 300 frame clip through all six is roughly 100 minutes; through Real-ESRGAN alone about 4.',
       },
       {
-        question: 'How many restorations can I run, and does it cost an AI operation?',
+        question: 'How many restorations can I run, and does it cost an AI job?',
         answer:
-          'Starting a restoration spends one AI operation: by default 1 a day without an account, 5 with a free account, 60 on Premium and 120 on Pro, plus a limit of 2 starts an hour per session. A job that fails outright is refunded. See the pricing page for the live numbers.',
+          'Starting a restoration spends one AI job: by default 3 a day without an account, 10 with a free account, 100 on Premium and 200 on Pro, plus a limit of 2 starts an hour per session. A job that fails outright is refunded. See the pricing page for the live numbers.',
       },
     ],
     related: [
@@ -8679,7 +8679,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'What happens if one image model fails or times out?',
         answer:
-          'The job carries on. The unit is marked failed with a user-safe reason (for example a timeout after 1,800 seconds suggesting a smaller crop or 2x), the manifest records it, and every other result is still packaged and shown. Only when every selected model fails does the job fail, and then the AI operation is refunded.',
+          'The job carries on. The unit is marked failed with a user-safe reason (for example a timeout after 1,800 seconds suggesting a smaller crop or 2x), the manifest records it, and every other result is still packaged and shown. Only when every selected model fails does the job fail, and then the AI job is refunded.',
       },
       {
         question: 'Why is CodeFormer greyed out?',
@@ -8689,7 +8689,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'How many restorations can I run, and is it free?',
         answer:
-          'Starting a restoration spends one AI operation: 1 per day as a guest, 5 with a free account, 60 on Premium and 120 on Pro by default, regardless of how many models you tick in that job. There is also a dedicated limit of 6 starts per session per hour. The upload cap is 200 MB for guests and 1 GB with a free account; /pricing shows the current numbers.',
+          'Starting a restoration spends one AI job: 3 per day as a guest, 10 with a free account, 100 on Premium and 200 on Pro by default, regardless of how many models you tick in that job. There is also a dedicated limit of 6 starts per session per hour. The upload cap is 200 MB for guests and 1 GB with a free account; /pricing shows the current numbers.',
       },
     ],
     related: [
@@ -8703,7 +8703,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     workedExamples: [
       {
         title: 'A 1,200 x 800 JPEG (about 350 KB), whole frame, auto scale, FBCNN + Real-ESRGAN + GFPGAN',
-        body: 'The crop is the full 0.96-megapixel frame and its height of 800 pixels is over 540, so auto scale resolves to 2x. FBCNN runs first at 1x and its output becomes the working source. Real-ESRGAN upscales that to 4,800 x 3,200 with realesrgan-x4plus, then ImageMagick resizes it to 50 percent with Lanczos for a 2,400 x 1,600 PNG. GFPGAN runs on the pre-cleaned source at upscale 2, giving another 2,400 x 1,600 PNG with the faces reconstructed and the rest plainly resized. That is three outputs out of the 12 allowed. By the server\'s own per-megapixel estimates the model time is about 0.96 x (3 + 2 + 6), around 11 seconds, plus a few seconds of preparation and packaging; waiting for the single restoration slot can add more. One job spends one AI operation.',
+        body: 'The crop is the full 0.96-megapixel frame and its height of 800 pixels is over 540, so auto scale resolves to 2x. FBCNN runs first at 1x and its output becomes the working source. Real-ESRGAN upscales that to 4,800 x 3,200 with realesrgan-x4plus, then ImageMagick resizes it to 50 percent with Lanczos for a 2,400 x 1,600 PNG. GFPGAN runs on the pre-cleaned source at upscale 2, giving another 2,400 x 1,600 PNG with the faces reconstructed and the rest plainly resized. That is three outputs out of the 12 allowed. By the server\'s own per-megapixel estimates the model time is about 0.96 x (3 + 2 + 6), around 11 seconds, plus a few seconds of preparation and packaging; waiting for the single restoration slot can add more. One job spends one AI job.',
       },
       {
         title: 'A 300 x 400 face crop from a 640 x 480 still, pre-clean, three upscalers, GFPGAN with Chain',
@@ -8827,7 +8827,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp', 'heic'],
       supportedOutputFormats: ['pdf', 'docx'],
       maxFileNotes: [
-        'Add up to many pages per job; each page image has an individual size cap (~25 MB).',
+        'Add up to 50 page images per job by default; each page image has an individual size cap (~25 MB).',
         'A searchable PDF is always produced; the editable Word document is optional.',
       ],
       processingNotes: [
@@ -8860,7 +8860,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'What are the limits per job?',
         answer:
-          'By default 50 images and 100 pages per job, 25 MB per image, one running job at a time per server (others wait in the queue), and a 40-minute ceiling per model stage. Each job spends one AI operation: 1 a day without an account, 5 with a free account, 60 with Premium and 120 with Pro, with the unit refunded when a job fails. Live numbers are on the pricing page.',
+          'By default up to 50 page images per job (each image is one page, so 50 is also the page limit in practice), 25 MB per image, one running job at a time per server (others wait in the queue), and a 40-minute ceiling per model stage. Each job spends one AI job: 3 a day without an account, 10 with a free account, 100 with Premium and 200 with Pro, with the unit refunded when a job fails. Live numbers are on the pricing page.',
       },
       {
         question: 'Why does my handwriting PDF have a footer, and can I remove it?',
@@ -8877,7 +8877,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         label: 'Image to PDF',
         to: '/tools/image-to-pdf',
-        description: 'Bind page images into a PDF without a text layer, using an ordinary operation.',
+        description: 'Bind page images into a PDF without a text layer, as an everyday job.',
       },
       {
         label: 'PDF to JPG',
@@ -8904,7 +8904,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         title: 'Three printed A4 pages at 300 dpi',
         body:
-          'Three 2480 x 3508 JPEG scans in Printed mode, PDF only, language eng, deskew and auto-rotate on. No model is involved: each page is wrapped by img2pdf, then OCRmyPDF runs Tesseract and writes an invisible text layer, outputs PDF/A, and pikepdf merges the three into document.pdf. The text layer adds only kilobytes per page, so the PDF is roughly the size of the three page images (a straightened page is re-rendered, an untouched one is embedded as is). The job spends one AI operation (refunded if it fails) and its time is Tesseract on the CPU, page after page, plus any wait in the queue, since one document job runs at a time by default.',
+          'Three 2480 x 3508 JPEG scans in Printed mode, PDF only, language eng, deskew and auto-rotate on. No model is involved: each page is wrapped by img2pdf, then OCRmyPDF runs Tesseract and writes an invisible text layer, outputs PDF/A, and pikepdf merges the three into document.pdf. The text layer adds only kilobytes per page, so the PDF is roughly the size of the three page images (a straightened page is re-rendered, an untouched one is embedded as is). The job spends one AI job (refunded if it fails) and its time is Tesseract on the CPU, page after page, plus any wait in the queue, since one document job runs at a time by default.',
       },
       {
         title: 'Two handwritten pages from a phone, with Word',
@@ -8913,7 +8913,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       },
     ],
     whenNotToUse:
-      'Do not use this when you need the text to be authoritative without checking it: handwriting output is a machine reading with marked gaps, and the Word document and summary are reconstructions, so verify them against the scan before quoting them. It is not a PDF-to-PDF OCR tool: inputs are page images, so render an existing PDF to images first, and it is not a translator. If you only need the pages bound into a PDF with no text layer, the plain image-to-PDF tool does that with an ordinary operation instead of an AI one, which matters on the guest allowance of one AI operation a day.',
+      'Do not use this when you need the text to be authoritative without checking it: handwriting output is a machine reading with marked gaps, and the Word document and summary are reconstructions, so verify them against the scan before quoting them. It is not a PDF-to-PDF OCR tool: inputs are page images, so render an existing PDF to images first, and it is not a translator. If you only need the pages bound into a PDF with no text layer, the plain image-to-PDF tool does that as an everyday job instead of an AI job, which keeps the guest allowance of three AI jobs a day for work that needs a model.',
     primaryKeyword: 'scanned image to searchable PDF',
     secondaryKeywords: [
       'convert scanned document to PDF',

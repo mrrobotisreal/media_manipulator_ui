@@ -102,13 +102,13 @@ describe('three-column pricing (MM40 decision 1)', () => {
     expect(off).toContain('data-plan-island="premium" data-purchasable="true"');
   });
 
-  it('every limit cell is the served value (Pro ops 700, AI 120, Motion 30/25)', () => {
+  it('every limit cell is the served value (Pro ops 700, AI 200, Motion 30/25)', () => {
     const cell = (tier: string, row: string) => {
       const m = html.match(new RegExp(`data-tier="${tier}" data-row="${row}"><span[^>]*>([^<]*)<`));
       return m?.[1];
     };
     expect(cell('pro', 'opsPerDay')).toBe('700');
-    expect(cell('pro', 'aiOpsPerDay')).toBe('120');
+    expect(cell('pro', 'aiOpsPerDay')).toBe('200');
     expect(cell('pro', 'exportsPerDay')).toBe('700');
     expect(cell('premium', 'opsPerDay')).toBe('300');
     expect(cell('pro', 'vectorExportsPerDay')).toBe('30');
@@ -155,7 +155,7 @@ describe('no numeric literal for limits or prices in views/pricing.tsx (MM40 acc
     .replace(/className=("[^"]*"|\{[^}]*\})/g, '');
 
   it('names no price and no limit value', () => {
-    for (const n of ['8', '80', '15', '150', '300', '700', '60', '120', '1080', '1440', '2160']) {
+    for (const n of ['8', '80', '15', '150', '300', '700', '60', '120', '100', '200', '1080', '1440', '2160']) {
       expect(source).not.toMatch(new RegExp(`[^\\w.-]${n}[^\\w.%-]`));
     }
     expect(source).not.toMatch(/\$\d/);

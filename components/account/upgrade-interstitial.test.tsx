@@ -217,7 +217,7 @@ describe('Premium callers: "Upgrade to Pro" only where Pro raises the limit (MM4
 
   it('quotes what Pro changes from the served table, only for the daily allowances', () => {
     expect(proChange('quota_ops', served)).toEqual({ key: 'interface:upgradeInterstitial.proChange.ops', values: { value: 700 } });
-    expect(proChange('quota_ai_ops', served)).toEqual({ key: 'interface:upgradeInterstitial.proChange.aiOps', values: { value: 120 } });
+    expect(proChange('quota_ai_ops', served)).toEqual({ key: 'interface:upgradeInterstitial.proChange.aiOps', values: { value: 200 } });
     expect(proChange('file_too_large', served)).toBeNull();
   });
 

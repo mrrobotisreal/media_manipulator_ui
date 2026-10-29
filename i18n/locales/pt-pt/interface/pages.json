@@ -1596,8 +1596,8 @@
       "pro": "Tudo o que está no Premium, limites diários muito mais altos para operações, tarefas de IA e exportações, e a maior quota do Motion."
     },
     "rows": {
-      "opsPerDay": "Operações por dia",
-      "aiOpsPerDay": "Operações de IA por dia",
+      "opsPerDay": "Tarefas normais por dia",
+      "aiOpsPerDay": "Tarefas de IA por dia",
       "maxFileBytes": "Tamanho máximo de ficheiro",
       "maxVideoSeconds": "Duração máxima de vídeo",
       "maxOutputHeight": "Resolução máxima de saída",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "Não foi possível contactar o serviço de planos. Todas as ferramentas continuam a funcionar; recarregue dentro de instantes para ver a comparação.",
     "faqTitle": "Perguntas que as pessoas realmente fazem",
     "faq": {
-      "q1": "O que conta como uma operação?",
-      "a1": "Uma conversão, transcodificação, exportação ou tarefa de IA. As pré-visualizações, as análises e as transferências são gratuitas: só lhe é cobrado o trabalho que o servidor efetivamente faz.",
+      "q1": "O que conta para a minha quota diária?",
+      "a1": "Cada plano tem duas quotas diárias separadas que se somam. Uma tarefa normal é uma conversão, compressão, transcodificação ou outra ferramenta padrão. Uma tarefa de IA é uma execução de uma ferramenta que usa um modelo de IA, como transcrição, aumento de resolução ou remoção de vozes. Uma tarefa de IA nunca consome uma tarefa normal, por isso pode usar todas as tarefas de IA e continuar a ter todas as tarefas normais. As exportações do Darkroom têm a sua própria quota. As pré-visualizações, as análises e as transferências são gratuitas: só lhe é cobrado o trabalho que o servidor efetivamente faz.",
       "q2": "O que acontece quando esgoto a quota?",
       "a2": "Nada se estraga. A ferramenta informa-o de que a quota foi gasta e propõe o plano seguinte. A sua quota é reposta à meia-noite UTC.",
       "q3": "As contas gratuitas veem anúncios?",

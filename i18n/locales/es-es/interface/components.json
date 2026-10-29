@@ -146,6 +146,7 @@
   },
   "quotaMeter": {
     "label": "Hoy",
+    "aiLabel": "IA",
     "readout": "{{used}} / {{limit}}",
     "empty": "—",
     "remaining": "Te quedan {{remaining}} de {{limit}} hoy",

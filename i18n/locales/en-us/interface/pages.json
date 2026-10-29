@@ -1596,8 +1596,8 @@
       "pro": "Everything in Premium, much higher daily limits for operations, AI jobs and exports, and the largest Motion allowance."
     },
     "rows": {
-      "opsPerDay": "Operations per day",
-      "aiOpsPerDay": "AI operations per day",
+      "opsPerDay": "Everyday jobs per day",
+      "aiOpsPerDay": "AI jobs per day",
       "maxFileBytes": "Maximum file size",
       "maxVideoSeconds": "Maximum video length",
       "maxOutputHeight": "Maximum output resolution",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
     "faqTitle": "Questions people actually ask",
     "faq": {
-      "q1": "What counts as an operation?",
-      "a1": "One conversion, transcode, export, or AI job. Previews, probes and downloads are free — you are only charged for work the server actually does.",
+      "q1": "What counts toward my daily allowance?",
+      "a1": "Each plan has two separate daily allowances that add up. An everyday job is one conversion, compression, transcode or other standard tool. An AI job is one run of a tool that uses an AI model, such as transcription, upscaling or vocal removal. An AI job never uses up an everyday job, so you can use every AI job and still have every everyday job. Darkroom exports have their own allowance. Previews, probes and downloads are free — you are only charged for work the server actually does.",
       "q2": "What happens when I run out?",
       "a2": "Nothing breaks. The tool tells you the allowance is spent and offers the next tier up. Your allowance resets at midnight UTC.",
       "q3": "Do free accounts see ads?",
