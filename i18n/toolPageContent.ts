@@ -18,6 +18,12 @@
  * This module is framework-agnostic (no React) so `src/lib/seo.ts` can localize
  * SEO metadata at route-change time, and `useLocalizedToolPages` (a thin hook)
  * can drive the React pages.
+ *
+ * MM86: `localeBodyCoverage(slug, locale)` reports which rendered body fields
+ * a locale's override supplies. A tool page whose coverage is incomplete
+ * renders English prose under a translated URL, so it is `noindex, follow`
+ * with no hreflang there (`buildToolMetadata` in `lib/metadata.ts`), and the
+ * sitemap lists only fully covered locales as its alternates.
  */
 import {
   TOOL_PAGES,
@@ -25,6 +31,7 @@ import {
   type ToolPageContent,
 } from "@/content/toolPages";
 import { toolPageOverrideModules } from "@/i18n/generated/toolPages.generated";
+import { defaultLocale, reviewedLocales } from "@/i18n/locales";
 
 /** Recursive deep-partial so overrides only need the fields they change. */
 type DeepPartial<T> = T extends (infer U)[]
@@ -112,3 +119,124 @@ export const getLocalizedToolCategories = (langCode: string) => {
     };
   });
 };
+
+/**
+ * MM86: every field `ToolLandingPage` renders as prose (plus the panel's
+ * heading and the page's own <title>/description). A locale fully covers a
+ * page when its override supplies each of these that the English entry has.
+ * Decision 3 named the seven original body fields; MM84 added worked
+ * examples, "When not to use this", technical details and page-specific
+ * notes, which render too, so they count.
+ */
+export const TOOL_BODY_FIELDS = [
+  "name",
+  "h1",
+  "tagline",
+  "metaTitle",
+  "metaDescription",
+  "intro",
+  "whatItDoes",
+  "flowSteps",
+  "advancedDetails",
+  "whyItMatters",
+  "useCases",
+  "workedExamples",
+  "whenNotToUse",
+  "whyMediaManipulator",
+  "privacyNote",
+  "faq",
+  "supportedFormats",
+  "related",
+  "embed",
+  "featureList",
+] as const;
+
+export type ToolBodyField = (typeof TOOL_BODY_FIELDS)[number];
+
+export interface LocaleBodyCoverage {
+  /** Fields the English page renders (what a full translation must supply). */
+  required: ToolBodyField[];
+  /** Required fields the locale's override supplies. */
+  covered: ToolBodyField[];
+  /** Required fields that fall back to English. */
+  missing: ToolBodyField[];
+  /** True when nothing on the page falls back to English. */
+  complete: boolean;
+}
+
+const nonEmpty = (v: unknown): boolean =>
+  Array.isArray(v) ? v.length > 0 : typeof v === "string" ? v.trim().length > 0 : v !== undefined && v !== null;
+
+/** Does the English entry render this field? */
+const englishHas = (tool: ToolPageContent, field: ToolBodyField): boolean => {
+  if (field === "supportedFormats") {
+    const sf = tool.supportedFormats;
+    return !!sf && (nonEmpty(sf.maxFileNotes) || nonEmpty(sf.processingNotes));
+  }
+  if (field === "embed") return nonEmpty(tool.embed.title) || nonEmpty(tool.embed.description);
+  return nonEmpty(tool[field]);
+};
+
+/** Does the override supply this field in full (arrays as long as English)? */
+const overrideSupplies = (tool: ToolPageContent, override: ToolPageOverride, field: ToolBodyField): boolean => {
+  if (field === "supportedFormats") {
+    const sf = override.supportedFormats;
+    const en = tool.supportedFormats;
+    if (!sf || !en) return false;
+    return (["maxFileNotes", "processingNotes"] as const).every(
+      (k) => !nonEmpty(en[k]) || (Array.isArray(sf[k]) && sf[k]!.length === en[k]!.length),
+    );
+  }
+  if (field === "embed") {
+    const e = override.embed;
+    return !!e && (!nonEmpty(tool.embed.title) || nonEmpty(e.title)) && (!nonEmpty(tool.embed.description) || nonEmpty(e.description));
+  }
+  const value = override[field];
+  const en = tool[field];
+  if (Array.isArray(en)) return Array.isArray(value) && value.length === en.length && en.every((item, i) => sameShape(item, value[i]));
+  return nonEmpty(value);
+};
+
+/**
+ * Arrays are replaced wholesale by `deepMerge`, so an override item must carry
+ * every non-empty string the English item has (a FAQ item without its answer
+ * would render blank, not English).
+ */
+const sameShape = (en: unknown, item: unknown): boolean => {
+  if (typeof en === "string") return typeof item === "string" && (en.trim() === "" || item.trim().length > 0);
+  if (!en || typeof en !== "object") return true;
+  if (!item || typeof item !== "object") return false;
+  return Object.entries(en as Record<string, unknown>).every(
+    ([k, v]) => typeof v !== "string" || v.trim() === "" || nonEmpty((item as Record<string, unknown>)[k]),
+  );
+};
+
+/**
+ * MM86: which rendered body fields `locale`'s override supplies for `slug`.
+ * English is always complete; an unknown slug is never complete.
+ */
+export function localeBodyCoverage(slug: string, locale: string): LocaleBodyCoverage {
+  const tool = TOOL_PAGES.find((t) => t.slug === slug);
+  if (!tool) return { required: [], covered: [], missing: [], complete: false };
+  const required = TOOL_BODY_FIELDS.filter((f) => englishHas(tool, f));
+  if (locale === defaultLocale) return { required, covered: required, missing: [], complete: true };
+  const override = TOOL_PAGE_OVERRIDES[locale]?.pages?.[slug] ?? {};
+  const covered = required.filter((f) => overrideSupplies(tool, override, f));
+  const missing = required.filter((f) => !covered.includes(f));
+  return { required, covered, missing, complete: missing.length === 0 };
+}
+
+/**
+ * MM86: the public locales (translated and reviewed) whose override fully
+ * covers `slug`, English first. These are a tool page's hreflang alternates
+ * and the only locales in which it may be indexed.
+ */
+export function fullyCoveredLocaleCodes(slug: string): string[] {
+  return reviewedLocales.filter((l) => localeBodyCoverage(slug, l.code).complete).map((l) => l.code);
+}
+
+/** MM86: the raw override's own OG lines, so metadata can tell "supplied" from "inherited". */
+export function toolOverrideOg(slug: string, locale: string): { ogTitle?: string; ogDescription?: string } {
+  const o = TOOL_PAGE_OVERRIDES[locale]?.pages?.[slug];
+  return { ogTitle: o?.ogTitle, ogDescription: o?.ogDescription };
+}

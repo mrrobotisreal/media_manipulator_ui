@@ -3,6 +3,7 @@ import { REVIEW_INDEXED_TOOL_SLUGS } from '@/content/reviewAllowlist';
 import { TOOL_PAGES } from '@/content/toolPages';
 import { BLOG_POSTS } from '@/lib/blogPosts';
 import { languageAlternates } from '@/lib/metadata';
+import { fullyCoveredLocaleCodes } from '@/i18n/toolPageContent';
 import { SITE_ORIGIN } from '@/lib/seo';
 import { isSeoFullIndex } from '@/lib/seoFlags';
 import { CHANGELOG } from '@/content/changelog';
@@ -52,8 +53,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (isTranslatorEnv()) return [];
 
   // Each path is emitted once, with English as the primary URL and hreflang
-  // alternates for the TRANSLATED locales only (all 18 since MM68, driven by
-  // the `translated` flag in i18n/locales.ts) plus x-default → English.
+  // alternates for the PUBLIC locales only (MM86: `translated && reviewed` in
+  // i18n/locales.ts) plus x-default → English. A tool page lists only the
+  // public locales whose override covers its whole body (MM86 Decision 3,
+  // `fullyCoveredLocaleCodes`), the same set its page head advertises.
   const entry = (
     path: string,
     lastModified: string,
@@ -64,7 +67,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(lastModified),
     changeFrequency,
     priority,
-    alternates: { languages: languageAlternates(path) },
+    alternates: {
+      languages: path.startsWith('/tools/')
+        ? languageAlternates(path, fullyCoveredLocaleCodes(path.slice('/tools/'.length)))
+        : languageAlternates(path),
+    },
   });
 
   const coreEntries = CORE_ROUTES.map((route) =>

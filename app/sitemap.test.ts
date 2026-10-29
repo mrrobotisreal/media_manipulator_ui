@@ -13,6 +13,7 @@ import {
 } from '@/content/reviewAllowlist';
 import { PUBLIC_ROUTES } from '@/lib/seo';
 import { locales } from '@/i18n/locales';
+import { fullyCoveredLocaleCodes } from '@/i18n/toolPageContent';
 import { CHANGELOG } from '@/content/changelog';
 
 // The URLs the review-safe sitemap emitted on main before MM34 (10 core routes
@@ -98,7 +99,11 @@ describe('MM34 flag off (default)', () => {
       const entries = sitemap().filter((e) => e.url === u);
       expect(entries, u).toHaveLength(1);
       const langs = Object.keys(entries[0].alternates?.languages ?? {}).sort();
-      expect(langs).toEqual([...locales.filter((l) => l.translated && l.reviewed).map((l) => l.code), 'x-default'].sort());
+      // MM86: /tools/motion lists only the reviewed locales covering its whole body.
+      const codes = u.endsWith('/tools/motion')
+        ? fullyCoveredLocaleCodes('motion')
+        : locales.filter((l) => l.translated && l.reviewed).map((l) => l.code);
+      expect(langs).toEqual([...codes, 'x-default'].sort());
     }
     // MM85: tutorials are in the review sitemap now.
     expect(urls()).toContain(new URL('/tutorials/motion', ORIGIN).toString());

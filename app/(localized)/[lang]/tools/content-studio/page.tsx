@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Info } from 'lucide-react';
-import { buildMetadata } from '@/lib/metadata';
-import { JsonLd } from '@/components/seo/json-ld';
+import { buildToolMetadata } from '@/lib/metadata';
+import { ToolJsonLd } from '@/components/seo/tool-json-ld';
 import ToolLandingPage from '@/components/tools/tool-landing-page';
 import StudioHostClient from '@/components/content-studio/studio-host-client';
 import VoiceShowcaseSection from '@/components/voices/voice-showcase-section';
-import { TOOL_PAGES } from '@/content/toolPages';
+import { getLocalizedToolBySlug } from '@/i18n/toolPageContent';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { getServerT } from '@/lib/i18n/server';
 
@@ -14,7 +14,7 @@ type PageParams = { params: Promise<{ lang: string }> };
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang } = await params;
-  return buildMetadata('/tools/content-studio', resolveLangParam(lang));
+  return buildToolMetadata('content-studio', resolveLangParam(lang));
 }
 
 /**
@@ -80,12 +80,13 @@ function StudioGuide({ locale }: { locale: string }) {
 export default async function ContentStudioRoute({ params }: PageParams) {
   const { lang } = await params;
   const locale = resolveLangParam(lang);
-  const tool = TOOL_PAGES.find((t) => t.slug === 'content-studio');
+  // MM86: the localized entry (English where the locale has no override).
+  const tool = getLocalizedToolBySlug('content-studio', locale);
   if (!tool) notFound();
 
   return (
     <>
-      <JsonLd path="/tools/content-studio" />
+      <ToolJsonLd tool={tool} locale={locale} />
       <ToolLandingPage
         tool={tool}
         panel={<StudioHostClient />}

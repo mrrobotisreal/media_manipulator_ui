@@ -24,6 +24,9 @@ import { getSeoForPath, SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
 import { getSeoOverride } from '@/lib/seoOverrides';
 import { defaultLocale, isIndexableLocale, localizeHref, reviewedLocales } from '@/i18n/locales';
 import { TRANSLATOR_ROBOTS, translatorRobots } from '@/lib/translator/mode';
+import { fullyCoveredLocaleCodes, getLocalizedToolBySlug, localeBodyCoverage, toolOverrideOg } from '@/i18n/toolPageContent';
+import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
+import { TOOL_PAGES } from '@/content/toolPages';
 
 const localizedUrl = (path: string, locale: string): string => {
   const localizedPath = localizeHref(path, locale);
@@ -104,6 +107,68 @@ export function buildMetadata(path: string, locale: string = defaultLocale): Met
       images: [seo.ogImage],
     },
   };
+}
+
+/**
+ * MM86: may `/tools/<slug>` be indexed in `locale`? English follows the review
+ * allowlist (or the full-index flag); any other locale must also be public
+ * (translated and reviewed) and fully cover the page body
+ * (`localeBodyCoverage`), so no indexable URL renders English prose under a
+ * translated address. Alias pages are never indexable.
+ */
+export function isToolPageIndexable(slug: string, locale: string): boolean {
+  const tool = TOOL_PAGES.find((t) => t.slug === slug);
+  if (!tool || tool.aliasOf || !isReviewIndexedToolSlug(slug)) return false;
+  if (locale === defaultLocale) return true;
+  return isIndexableLocale(locale) && localeBodyCoverage(slug, locale).complete;
+}
+
+/**
+ * MM86 Decision 3: metadata for a tool landing page.
+ *
+ * - hreflang lists only English plus the public locales that fully cover the
+ *   body (`fullyCoveredLocaleCodes`), with x-default; a page that is not
+ *   indexable in `locale` advertises nothing.
+ * - A non-English page whose body falls back to English is `noindex, follow`,
+ *   even in a reviewed locale.
+ * - Titles: a fully covered, public locale uses its own translated
+ *   metaTitle/metaDescription (the body is translated, so the head may be
+ *   too); everything else keeps buildMetadata's English-or-seoOverride title,
+ *   the rule in lib/seoOverrides.ts.
+ * - Alias pages keep their canonical to the primary and are `noindex, follow`.
+ * - Slugs outside the review allowlist stay `noindex, nofollow` (MM34).
+ */
+export function buildToolMetadata(slug: string, locale: string = defaultLocale): Metadata {
+  const path = `/tools/${slug}`;
+  const meta = buildMetadata(path, locale);
+  const tool = TOOL_PAGES.find((t) => t.slug === slug);
+  if (!tool) return meta;
+  if (tool.aliasOf) {
+    meta.robots = translatorRobots({ index: false, follow: true });
+    if (meta.alternates) meta.alternates.languages = undefined;
+    return meta;
+  }
+  if (!isReviewIndexedToolSlug(slug)) {
+    meta.robots = translatorRobots({ index: false, follow: false });
+    if (meta.alternates) meta.alternates.languages = undefined;
+    return meta;
+  }
+  const indexable = isToolPageIndexable(slug, locale);
+  meta.robots = translatorRobots(indexable ? { index: true, follow: true } : { index: false, follow: true });
+  if (meta.alternates) {
+    meta.alternates.languages = indexable ? languageAlternates(path, fullyCoveredLocaleCodes(slug)) : undefined;
+  }
+  if (indexable && locale !== defaultLocale) {
+    const localized = getLocalizedToolBySlug(slug, locale)!;
+    const og = toolOverrideOg(slug, locale);
+    const ogTitle = og.ogTitle ?? localized.metaTitle;
+    const ogDescription = og.ogDescription ?? localized.metaDescription;
+    meta.title = localized.metaTitle;
+    meta.description = localized.metaDescription;
+    meta.openGraph = { ...meta.openGraph, title: ogTitle, description: ogDescription };
+    meta.twitter = { ...meta.twitter, title: ogTitle, description: ogDescription };
+  }
+  return meta;
 }
 
 export { SITE_ORIGIN, SITE_NAME };

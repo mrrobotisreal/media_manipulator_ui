@@ -10,6 +10,8 @@
  */
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
+import { auditLocalePages } from './lib/audit-locales.mjs';
+import { loadLocales } from './lib/load-locales.mjs';
 
 const ROOT = process.cwd();
 const SCAN_DIRS = ['app', 'components', 'content', 'lib', 'schemas', 'views', 'public'];
@@ -382,6 +384,21 @@ if (existsSync(builtAppDir)) {
   if (infoPages.length) {
     notes.push(`not enforced, links to non-allowlisted tool pages: ${infoPages.join(', ')}`);
   }
+
+  // MM86 decision 6: every locale's built HTML. A non-English allowlisted tool
+  // page is noindex or carries no English privacy note; an indexable page
+  // advertises hreflang only to reviewed locales; an unreviewed locale has no
+  // indexable page.
+  const { locales: localeDefs } = await loadLocales(ROOT);
+  const allHtml = collectHtml(builtAppDir).map(relOf);
+  const localeAudit = auditLocalePages({
+    readHtml: (rel) => (existsSync(join(builtAppDir, rel)) ? readFileSync(join(builtAppDir, rel), 'utf8') : null),
+    relPaths: allHtml,
+    slugs: [...ALLOWED_SLUGS],
+    locales: localeDefs,
+  });
+  for (const v of localeAudit.violations) fail('.next/server/app/' + v.split(':')[0], v.slice(v.indexOf(':') + 2));
+  notes.push(...localeAudit.notes);
 } else {
   console.warn(
     '! Built-HTML checks skipped: run `npm run build` first (no .next/server/app).',

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { buildMetadata } from '@/lib/metadata';
-import { JsonLd } from '@/components/seo/json-ld';
+import { buildToolMetadata } from '@/lib/metadata';
+import { ToolJsonLd } from '@/components/seo/tool-json-ld';
 import ToolLandingPage from '@/components/tools/tool-landing-page';
 import DocumentScanHostClient from '@/components/document-scan/document-scan-host-client';
-import { TOOL_PAGES } from '@/content/toolPages';
+import { getLocalizedToolBySlug } from '@/i18n/toolPageContent';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 
 type PageParams = { params: Promise<{ lang: string }> };
@@ -16,18 +16,19 @@ type PageParams = { params: Promise<{ lang: string }> };
 // app/tools/[slug]/page.tsx excludes this slug so this route owns the URL.
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang } = await params;
-  return buildMetadata('/tools/ai-document-scan', resolveLangParam(lang));
+  return buildToolMetadata('ai-document-scan', resolveLangParam(lang));
 }
 
 export default async function AiDocumentScanRoute({ params }: PageParams) {
   const { lang } = await params;
   const locale = resolveLangParam(lang);
-  const tool = TOOL_PAGES.find((t) => t.slug === 'ai-document-scan');
+  // MM86: the localized entry (English where the locale has no override).
+  const tool = getLocalizedToolBySlug('ai-document-scan', locale);
   if (!tool) notFound();
 
   return (
     <>
-      <JsonLd path="/tools/ai-document-scan" />
+      <ToolJsonLd tool={tool} locale={locale} />
       <ToolLandingPage tool={tool} panel={<DocumentScanHostClient />} locale={locale} />
     </>
   );
