@@ -117,3 +117,20 @@ describe('MM84 tool copy: the copy bar (decision 1)', () => {
     expect(norm('  Hello   World. ')).toBe(norm('hello world'));
   });
 });
+
+describe('MM84 tool copy: locale lines (decision 7)', () => {
+  it('every locale has name, tagline, metaTitle and metaDescription for the 24 copy-bar pages', async () => {
+    const { toolPageOverrideModules } = await import('@/i18n/generated/toolPages.generated');
+    const mods = toolPageOverrideModules as Record<string, { pages?: Record<string, Record<string, unknown>> }>;
+    expect(Object.keys(mods)).toHaveLength(17);
+    for (const [loc, m] of Object.entries(mods)) {
+      for (const slug of REVIEW_CATALOG_SLUGS) {
+        for (const field of ['name', 'tagline', 'metaTitle', 'metaDescription']) {
+          const v = m.pages?.[slug]?.[field];
+          expect(typeof v === 'string' && v.length > 0, `${loc} ${slug}.${field}`).toBe(true);
+        }
+        expect(m.pages?.[slug]?.metaTitle, `${loc} ${slug}`).not.toBe(page(slug).metaTitle);
+      }
+    }
+  });
+});

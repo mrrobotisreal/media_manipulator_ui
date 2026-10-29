@@ -26,8 +26,8 @@ export const PAGE_DATES = {
   '/privacy-policy': '2026-10-28',
   // MM78 voices terms (section 8.11).
   '/terms-of-service': '2026-10-28',
-  // The catalog rebuild that lists every tool.
-  '/tools': '2026-10-28',
+  // MM84: review mode (copy-bar tools first, the rest collapsed) and aliases.
+  '/tools': '2026-10-29',
   // MM69 currency toggle.
   '/pricing': '2026-10-26',
   // MM78 voice pages and results.

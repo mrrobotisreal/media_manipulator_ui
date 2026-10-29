@@ -32,7 +32,7 @@ This repository is the **frontend** for [media-manipulator.com](https://www.medi
 
 - ⚡ **Next.js 16 App Router** — public pages are **server‑rendered/statically generated**, so titles, copy, FAQs, and JSON‑LD are present in view‑source for SEO. Interactive tools load as client‑only islands.
 - 🎬 **Content Studio** — a Premiere‑style multi‑track timeline editor (video + image + audio layers → MP4 export), entirely in the browser.
-- 🧰 **65 single‑purpose tools** across image, video, audio, AI, and privacy/metadata categories, each with a unique landing page.
+- 🧰 **98 tools** (`TOOL_PAGES` in `content/toolPages.ts`: 112 pages, of which 14 are thin alias pages for duplicate‑intent slugs that canonicalise to their primary, `content/toolAliases.ts`) across image, video, audio, AI, and privacy/metadata categories, each with a unique landing page. The 24 allowlisted and pending pages meet the MM84 copy bar (`content/toolCopy.test.ts`).
 - 🌍 **i18n‑ready** via `i18next` / `react-i18next` with feature‑sharded locale bundles.
 - 🔒 **AdSense‑review‑safe by design** — ads are disabled by default, hard‑guarded to a single in‑content placement, and a CI‑style audit (`npm run audit:ads`) blocks regressions.
 - 🎨 **Tailwind CSS v4** + **Radix UI** primitives, dark/light theming, and a custom “sci‑fi frame” visual language.

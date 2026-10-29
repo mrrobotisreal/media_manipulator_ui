@@ -16,6 +16,7 @@ const zhCnToolPages = {
   pages: {
     // MM48: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: '绘制或导入SVG，在关键帧时间线上制作动画，然后导出动画SVG、Lottie、React、JavaScript、Flutter或GIF，全部在你的浏览器中完成。',
       intro: 'Motion是内置于Media Manipulator的带动画时间线的SVG编辑器。打开一个SVG文件（或Lottie动画），每个形状都会变成一个可以选择、移动、改色和制作动画的图层；也可以从空白画布开始，用矩形、椭圆、直线、钢笔和文本工具绘制。每个动画属性都有自己的关键帧轨道，配有缓动预设、用于自定义缓动的曲线编辑器，以及用于瞬间跳变的保持关键帧。一键动画器可添加描边绘制、沿路径运动、形状变形、渐变颜色变化、蒙版动画和模糊。当它按你想要的方式运动时，将其导出为动画SVG、Lottie文件、React组件、JavaScript或TypeScript模块、Flutter组件或GIF。编辑和每一次导出都在你的浏览器中运行，因此你的作品绝不会为了导出而被上传。',
       whatItDoes: [
@@ -553,6 +554,145 @@ const zhCnToolPages = {
       name: '变声器',
       tagline:
         '即时调整录音的音高和特色，或使用AI将语音转换为已保存或预设的声音。',
+    },
+    // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
+    'content-studio': {
+      name: 'Darkroom',
+      tagline: '在多轨时间线上编辑、叠加和混合视频与音频，然后导出MP4。像Premiere Pro一样的编辑器，直接在浏览器中使用。',
+      metaTitle: 'Darkroom：免费在线多轨视频编辑器 | Media Manipulator',
+      metaDescription: '在多轨时间线上编辑、叠加和混合视频与音频，然后导出MP4。一款在浏览器中运行的免费Premiere Pro风格视频编辑器，无需注册，无需安装。',
+    },
+    'remove-exif-metadata': {
+      name: '移除图片中的EXIF元数据',
+      tagline: '在分享照片之前，清除其中的GPS位置、设备、相机和时间戳数据。',
+      metaTitle: '在线移除图片EXIF元数据（免费） | Media Manipulator',
+      metaDescription: '免费在线工具，可移除JPG、PNG、WebP和HEIC图片中的EXIF、GPS、IPTC和相机元数据。无需注册。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'compress-image': {
+      name: '压缩图片',
+      tagline: '缩小JPG、PNG和WebP文件体积，让网站更快、上传更小、分享更轻松。',
+      metaTitle: '在线免费压缩图片 | Media Manipulator',
+      metaDescription: '免费在线图片压缩工具。在保持良好画质的同时缩小JPG、PNG和WebP文件体积。无需注册。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'image-resizer': {
+      name: '图片尺寸调整',
+      tagline: '将JPG、PNG、WebP和GIF图片调整为精确的像素尺寸，同时保持宽高比。',
+      metaTitle: '在线免费调整图片尺寸 | Media Manipulator',
+      metaDescription: '免费在线图片尺寸调整工具。将JPG、PNG、WebP和GIF图片调整为精确的像素尺寸，同时保持宽高比。无需注册。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'remove-background-from-image': {
+      name: '移除图片背景',
+      tagline: '自动擦除任意照片的背景，下载干净的透明PNG抠图。',
+      metaTitle: '在线免费移除图片背景 | Media Manipulator',
+      metaDescription: '免费在线背景移除工具。自动擦除任意照片的背景，下载透明PNG。运行在我们自己的GPU上，不使用第三方AI。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'image-to-pdf': {
+      name: '图片转PDF',
+      tagline: '一键将JPG、PNG等图片变成整洁、便于分享的PDF文档。',
+      metaTitle: '在线免费将图片转换为PDF | Media Manipulator',
+      metaDescription: '免费在线图片转PDF工具。将JPG、PNG等图片变成整洁的PDF文档。无需注册，无水印。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'pdf-to-jpg': {
+      name: 'PDF转JPG',
+      tagline: '将PDF的每一页渲染为高质量JPG图片，方便分享、编辑或发布。',
+      metaTitle: '在线免费将PDF转换为JPG | Media Manipulator',
+      metaDescription: '免费在线PDF转JPG工具。将PDF的每一页渲染为高质量JPG图片，并以ZIP下载。无需注册。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'compress-video': {
+      name: '压缩视频',
+      tagline: '缩小MP4、WebM、MOV、MKV和AVI文件体积，适用于网页、电子邮件、社交媒体和云端上传。',
+      metaTitle: '在线压缩视频（免费） | Media Manipulator',
+      metaDescription: '免费在线视频压缩工具。在保持良好画质的同时缩小MP4、WebM、MOV、MKV和AVI文件体积。无需注册。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'video-trimmer': {
+      name: '视频剪辑',
+      tagline: '通过快速且保持画质的裁剪，把片段剪成你想要的部分，尽可能不重新编码。',
+      metaTitle: '在线免费裁剪视频 | Media Manipulator',
+      metaDescription: '免费在线视频裁剪工具。设置开始和结束时间，通过快速无损的裁剪剪出片段。输出MP4，无水印，无需注册。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'extract-audio-from-video': {
+      name: '从视频中提取音频',
+      tagline: '将任意视频的音轨保存为干净的MP3、WAV、M4A、AAC、FLAC或OGG文件。',
+      metaTitle: '从视频中提取音频：MP3、WAV、M4A等 | Media Manipulator',
+      metaDescription: '免费在线工具，可从任意视频文件（MP4、MOV、MKV、WebM、AVI）中提取音频。可输出MP3、WAV、M4A、AAC、FLAC或OGG。无需注册。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'convert-video-to-animated-gif': {
+      name: '将视频转换为动态GIF',
+      tagline: '几秒钟内把短小的MP4、WebM、MOV或MKV片段变成便于分享的动态GIF。',
+      metaTitle: '在线将视频转换为动态GIF（免费） | Media Manipulator',
+      metaDescription: '免费在线视频转GIF工具。将短小的MP4、WebM、MOV和MKV片段变成动态GIF，并可控制尺寸和帧率。',
+    },
+    'transcribe-video': {
+      name: '视频转录',
+      tagline: '把视频或音频文件中的语音提取为WebVTT或SRT字幕、纯文本或带时间戳的JSON。',
+      metaTitle: '在线将视频转录为文字（免费） | Media Manipulator',
+      metaDescription: '免费在线视频转录工具。将MP4、MOV、WebM、MKV和音频文件转换为可搜索的文本、VTT字幕或JSON转录稿。',
+    },
+    'transcode-to-hls': {
+      name: '将视频转码为HLS',
+      tagline: '把任意视频打包成Apple HLS VOD包：master.m3u8和按清晰度划分的.ts分片，可直接用于网页。',
+      metaTitle: '在线将视频转码为HLS | 免费自适应流媒体工具',
+      metaDescription: '免费在线HLS转码工具。将MP4、MOV、WebM、MKV转换为包含360p/480p/720p清晰度的HLS VOD包，可选字幕和故事板。',
+    },
+    'ai-video-restoration': {
+      name: 'AI视频修复',
+      tagline: '使用最多六种AI模型（Real-ESRGAN、SwinIR、HAT、BasicVSR++、RVRT和VRT）放大并修复短视频片段，并将所有结果并排对比。',
+      metaTitle: 'AI视频修复工具：在线对比6种放大模型 | Media Manipulator',
+      metaDescription: '免费AI视频修复工具。让短片段在我们自己的GPU上通过Real-ESRGAN、SwinIR、HAT、BasicVSR++、RVRT和VRT超分辨率模型处理，并将所有结果打包下载。',
+    },
+    'ai-image-restoration': {
+      name: 'AI图片修复与放大',
+      tagline: '使用最多八种AI模型清理、放大并修复照片：保真预清理（FBCNN、SCUNet、NAFNet）、通用放大器（Real-ESRGAN、SwinIR、HAT）以及人脸增强（GFPGAN、CodeFormer），并将每个结果与原图对比。',
+      metaTitle: 'AI图片修复与放大器：在线对比8种模型 | Media Manipulator',
+      metaDescription: '免费AI照片修复与放大。去除JPEG伪影、降噪并去模糊，然后用Real-ESRGAN、SwinIR或HAT放大到4K/8K，再用GFPGAN/CodeFormer增强人脸，全部在我们自己的GPU上完成，并可并排对比。',
+    },
+    'ai-document-scan': {
+      name: 'AI文档扫描',
+      tagline: '将扫描文档和手写笔记变成可搜索的多页PDF和可编辑的Word文档：印刷页面会获得忠实的Tesseract文字层，手写内容由视觉AI转录，并标出不确定之处，绝不凭空编造。',
+      metaTitle: 'AI文档扫描：将扫描页面和手写内容转为PDF/Word | Media Manipulator',
+      metaDescription: '免费AI文档扫描：将扫描图片转换为可搜索的PDF和图片转Word OCR，并将手写笔记转录为文字。可调整页面顺序，印刷体与手写混合也没问题，全部在我们自己的GPU上完成，忠实原文并标出不确定之处。',
+    },
+    'ai-image-upscaler': {
+      name: 'AI图片放大器',
+      tagline: '使用Real-ESRGAN模型放大较小或模糊的照片，它会重建细节，而不是简单地拉伸像素。',
+      metaTitle: 'AI图片放大器：将照片放大2倍或4倍 | Media Manipulator',
+      metaDescription: '用能还原边缘和纹理的AI将低分辨率照片放大2倍或4倍。运行在我们自己的GPU上，输出PNG。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'blur-faces-in-photo': {
+      name: '模糊照片中的人脸',
+      tagline: '自动检测人脸，然后对全部人脸或你选择的人脸进行模糊、马赛克或涂黑。',
+      metaTitle: '在线模糊照片中的人脸 | Media Manipulator',
+      metaDescription: '对照片中的人脸进行模糊、马赛克或涂黑。检测每一张人脸，再选择要隐藏的人脸。AI运行在我们自己的GPU上。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'redact-text-in-image': {
+      name: '遮盖图片中的文字',
+      tagline: '在截图或照片中找出可读文字，并用模糊或黑色方框遮盖个人信息或全部文字。',
+      metaTitle: '在线遮盖图片中的文字 | Media Manipulator',
+      metaDescription: '自动找出图片中的文字，并将姓名、电子邮箱、号码等个人数据涂黑或模糊。AI运行在我们自己的GPU上。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'remove-object-from-photo': {
+      name: '移除照片中的物体',
+      tagline: '在不想出现在画面中的物体周围画一个框，修复模型就会用匹配的背景填补空缺。',
+      metaTitle: '在线移除照片中的物体 | Media Manipulator',
+      metaDescription: '擦除照片中不需要的物体。画一个矩形，AI修复会按背景填补空白。运行在我们自己的GPU上。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'clean-voice-audio': {
+      name: '人声音频降噪',
+      tagline: '减少播客、访谈和语音备忘录中的嘶嘶声、房间底噪和低频隆隆声，让语音更清晰。',
+      metaTitle: '用AI清理人声录音 | Media Manipulator',
+      metaDescription: '用AI清理人声录音。减少嘶嘶声、嗡嗡声和房间噪声，让语音更容易听清。运行在我们自己的GPU上。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'remove-background-noise': {
+      name: '去除背景噪音',
+      tagline: '用AI降噪器降低录音中的嘶嘶声、嗡嗡声、交通声和房间噪音，让主要声音更突出。',
+      metaTitle: '在线去除音频背景噪音 | Media Manipulator',
+      metaDescription: '去除音频中的背景噪音。AI降噪器会降低录音中的嘶嘶声、嗡嗡声和环境声。运行在我们自己的GPU上。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
+    },
+    'remove-vocals-from-song': {
+      name: '去除歌曲人声',
+      tagline: '去掉音轨中的歌声并保留音乐，用于卡拉OK、练习和伴奏。请仅用于你拥有权利的音乐。',
+      metaTitle: '去除歌曲人声：卡拉OK制作器 | Media Manipulator',
+      metaDescription: '用AI去除歌曲中的人声，并以与原文件相同的格式或FLAC、WAV下载伴奏。在我们自己的GPU上制作卡拉OK和练习音轨。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
     },
   },
 } as const;

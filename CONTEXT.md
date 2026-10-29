@@ -131,6 +131,19 @@ _Avoid_: "ad page", "monetised page".
 **Ad unit**:
 The one `<ins class="adsbygoogle">` an ad-eligible page may render (`components/ad-banner.tsx`). Its existence is gated on tier (anonymous and free only; nothing while auth loads or when a signed-in visitor's snapshot is missing), path, placement and a real slot id (`lib/adSlots.ts`), never on consent. Consent steers personalisation only: the first-party advertising switch outside the EEA, Google's consent message (Privacy & messaging) inside it (`ownsAdSignals()` in `lib/consent/index.ts`).
 
+### Tool pages for review (MM84, ADR-0016 ¶4)
+
+**Copy bar**:
+The writing standard the 24 allowlisted + pending tool pages (`REVIEW_CATALOG_SLUGS` in `content/reviewAllowlist.ts`) meet: ≥ 900 words of English prose, ≥ 700 of them in sentences no other tool page has, a page-specific `privacyNote`, 6–8 FAQ with at most one question shared with another page, two `workedExamples` with numbers taken from the API code, a `whenNotToUse` paragraph, `advancedDetails` naming the real ffmpeg/exiftool/model behaviour, and 4–6 related links inside the 24. Enforced by `content/toolCopy.test.ts` (measurement in `content/toolCopyMetrics.ts`), which also holds the site-wide limits: no `privacyNote` on two pages, no FAQ answer on three, no sentence of six or more words on five (the retention promise and the bulk privacy templates in `content/toolPrivacy.ts` excepted).
+_Avoid_: "SEO copy", "long-form pages".
+
+**Alias page**:
+A thin tool page for a duplicate-intent slug (`mp4-trimmer` → `video-trimmer` and 13 others, `TOOL_ALIAS_OF` in `content/toolAliases.ts`, stamped onto `ToolPageContent.aliasOf`). It keeps its URL, H1, a 120–200 word intro and its own panel (so `tool_viewed` fires with its own slug), links its primary instead of repeating the body, canonicalises to the primary, is `noindex, follow` with no hreflang or JSON-LD in every mode, and is never in `/tools`, the sitemap or llms.txt. Search on `/tools` finds the primary under the alias's name. Not a tool: counts of tools exclude aliases. `npm run audit:ads` fails a build that links one.
+_Avoid_: "redirect" (it is not one), "duplicate page".
+
+**Review mode (`/tools`)**:
+While `NEXT_PUBLIC_SEO_FULL_INDEX` is off, `/tools` shows the copy-bar tools as full cards and every other non-alias tool in a closed, server-rendered `<details>` per category whose links carry `rel="nofollow"` (`buildCatalogTools` in `components/tools/tool-catalog-data.ts`). A search opens the lists. With the flag on, everything is a full card.
+
 ### Site chrome and the ad-slot frame (MM88)
 
 **Ad-slot frame**:

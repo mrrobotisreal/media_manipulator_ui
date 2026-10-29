@@ -16,6 +16,7 @@ const viToolPages = {
   pages: {
     // MM48/MM67: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
+      name: 'Motion',
       tagline: 'Vẽ hoặc nhập SVG, tạo hoạt ảnh trên dòng thời gian keyframe và xuất thành SVG động, Lottie, React, JavaScript, Flutter hoặc GIF, tất cả ngay trong trình duyệt của bạn.',
       intro: 'Motion là trình biên tập SVG có dòng thời gian hoạt ảnh, tích hợp trong Media Manipulator. Mở một tệp SVG (hoặc hoạt ảnh Lottie) và mỗi hình trở thành một lớp bạn có thể chọn, di chuyển, đổi màu và tạo hoạt ảnh, hoặc bắt đầu từ vùng vẽ trống và vẽ bằng các công cụ hình chữ nhật, hình elip, đường thẳng, bút và văn bản. Mỗi thuộc tính được tạo hoạt ảnh có track keyframe riêng, với các thiết lập easing, trình chỉnh sửa đường cong cho easing tùy chỉnh, và khóa giữ cho các bước nhảy tức thì. Các bộ tạo hoạt ảnh một chạm thêm hiệu ứng vẽ dần nét, di chuyển theo đường, biến hình, đổi màu chuyển màu, hoạt ảnh mặt nạ và làm mờ. Khi chuyển động đã như ý, hãy xuất thành SVG động, tệp Lottie, component React, module JavaScript hoặc TypeScript, widget Flutter hoặc GIF. Việc chỉnh sửa và mọi lần xuất đều chạy trong trình duyệt của bạn, nên đồ họa của bạn không bao giờ bị tải lên để xuất.',
       whatItDoes: [
@@ -553,6 +554,145 @@ const viToolPages = {
       name: 'Đổi giọng nói',
       tagline:
         'Đổi cao độ và đặc trưng của bản ghi âm tức thì, hoặc dùng AI chuyển lời nói sang một giọng nói đã lưu hoặc có sẵn.',
+    },
+    // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
+    'content-studio': {
+      name: 'Darkroom',
+      tagline: 'Chỉnh sửa, xếp lớp và trộn video và âm thanh trên dòng thời gian nhiều track, rồi xuất MP4. Trình chỉnh sửa kiểu Premiere Pro, chạy ngay trong trình duyệt.',
+      metaTitle: 'Darkroom: Trình chỉnh sửa video nhiều track trực tuyến miễn phí | Media Manipulator',
+      metaDescription: 'Chỉnh sửa, xếp lớp và trộn video và âm thanh trên dòng thời gian nhiều track, rồi xuất MP4. Trình chỉnh sửa video miễn phí kiểu Premiere Pro chạy ngay trong trình duyệt. Không cần đăng ký, không cần cài đặt.',
+    },
+    'remove-exif-metadata': {
+      name: 'Xóa siêu dữ liệu EXIF khỏi ảnh',
+      tagline: 'Xóa dữ liệu vị trí GPS, thiết bị, máy ảnh và dấu thời gian khỏi ảnh trước khi bạn chia sẻ ở bất cứ đâu.',
+      metaTitle: 'Xóa siêu dữ liệu EXIF khỏi ảnh trực tuyến (miễn phí) | Media Manipulator',
+      metaDescription: 'Công cụ trực tuyến miễn phí để xóa siêu dữ liệu EXIF, GPS, IPTC và máy ảnh khỏi ảnh JPG, PNG, WebP và HEIC. Không cần đăng ký. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'compress-image': {
+      name: 'Nén ảnh',
+      tagline: 'Giảm dung lượng tệp JPG, PNG và WebP để trang web nhanh hơn, tải lên nhẹ hơn và chia sẻ dễ hơn.',
+      metaTitle: 'Nén ảnh trực tuyến miễn phí | Media Manipulator',
+      metaDescription: 'Công cụ nén ảnh trực tuyến miễn phí. Giảm dung lượng tệp JPG, PNG và WebP mà vẫn giữ chất lượng tốt. Không cần đăng ký. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'image-resizer': {
+      name: 'Đổi kích thước ảnh',
+      tagline: 'Đổi kích thước ảnh JPG, PNG, WebP và GIF về số điểm ảnh chính xác mà vẫn giữ tỷ lệ khung hình.',
+      metaTitle: 'Đổi kích thước ảnh trực tuyến miễn phí | Media Manipulator',
+      metaDescription: 'Công cụ đổi kích thước ảnh trực tuyến miễn phí. Đổi kích thước ảnh JPG, PNG, WebP và GIF về số điểm ảnh chính xác mà vẫn giữ tỷ lệ khung hình. Không cần đăng ký. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'remove-background-from-image': {
+      name: 'Xóa nền ảnh',
+      tagline: 'Tự động xóa nền của mọi bức ảnh và tải về ảnh cắt PNG trong suốt, sạch sẽ.',
+      metaTitle: 'Xóa nền ảnh trực tuyến miễn phí | Media Manipulator',
+      metaDescription: 'Công cụ xóa nền ảnh trực tuyến miễn phí. Tự động xóa nền của mọi bức ảnh và tải về PNG trong suốt. Chạy trên GPU của chúng tôi, không dùng AI của bên thứ ba. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'image-to-pdf': {
+      name: 'Ảnh sang PDF',
+      tagline: 'Chuyển ảnh JPG, PNG và các ảnh khác thành tài liệu PDF gọn gàng, dễ chia sẻ chỉ với một lần bấm.',
+      metaTitle: 'Chuyển ảnh sang PDF trực tuyến miễn phí | Media Manipulator',
+      metaDescription: 'Công cụ chuyển ảnh sang PDF trực tuyến miễn phí. Chuyển ảnh JPG, PNG và các ảnh khác thành tài liệu PDF gọn gàng. Không cần đăng ký, không có hình mờ. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'pdf-to-jpg': {
+      name: 'PDF sang JPG',
+      tagline: 'Kết xuất từng trang của tệp PDF thành ảnh JPG chất lượng cao để bạn chia sẻ, chỉnh sửa hoặc đăng tải.',
+      metaTitle: 'Chuyển PDF sang JPG trực tuyến miễn phí | Media Manipulator',
+      metaDescription: 'Công cụ chuyển PDF sang JPG trực tuyến miễn phí. Kết xuất từng trang của tệp PDF thành ảnh JPG chất lượng cao, tải về dưới dạng ZIP. Không cần đăng ký. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'compress-video': {
+      name: 'Nén video',
+      tagline: 'Giảm dung lượng tệp MP4, WebM, MOV, MKV và AVI cho web, email, mạng xã hội và tải lên đám mây.',
+      metaTitle: 'Nén video trực tuyến (miễn phí) | Media Manipulator',
+      metaDescription: 'Công cụ nén video trực tuyến miễn phí. Giảm dung lượng tệp MP4, WebM, MOV, MKV và AVI mà vẫn giữ chất lượng tốt. Không cần đăng ký. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'video-trimmer': {
+      name: 'Cắt video',
+      tagline: 'Cắt đoạn clip về phần bạn muốn bằng thao tác cắt nhanh, giữ nguyên chất lượng, không cần mã hóa lại khi có thể.',
+      metaTitle: 'Cắt video trực tuyến miễn phí | Media Manipulator',
+      metaDescription: 'Công cụ cắt video trực tuyến miễn phí. Đặt thời điểm bắt đầu và kết thúc rồi cắt clip nhanh, không giảm chất lượng. Xuất MP4, không hình mờ, không cần đăng ký. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'extract-audio-from-video': {
+      name: 'Tách âm thanh khỏi video',
+      tagline: 'Lưu track âm thanh của bất kỳ video nào thành tệp MP3, WAV, M4A, AAC, FLAC hoặc OGG sạch.',
+      metaTitle: 'Tách âm thanh khỏi video: MP3, WAV, M4A và hơn thế | Media Manipulator',
+      metaDescription: 'Công cụ trực tuyến miễn phí để tách âm thanh khỏi mọi tệp video (MP4, MOV, MKV, WebM, AVI). Xuất ra MP3, WAV, M4A, AAC, FLAC hoặc OGG. Không cần đăng ký. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'convert-video-to-animated-gif': {
+      name: 'Chuyển video sang GIF động',
+      tagline: 'Biến các clip MP4, WebM, MOV hoặc MKV ngắn thành ảnh GIF động dễ chia sẻ chỉ trong vài giây.',
+      metaTitle: 'Chuyển video sang GIF động trực tuyến (miễn phí) | Media Manipulator',
+      metaDescription: 'Công cụ chuyển video sang GIF trực tuyến miễn phí. Biến các clip MP4, WebM, MOV và MKV ngắn thành GIF động, có thể điều chỉnh kích thước và tốc độ khung hình.',
+    },
+    'transcribe-video': {
+      name: 'Chuyển video thành văn bản',
+      tagline: 'Trích lời nói trong tệp video hoặc âm thanh thành phụ đề WebVTT hoặc SRT, văn bản thuần hoặc JSON có dấu thời gian.',
+      metaTitle: 'Chuyển video thành văn bản trực tuyến (miễn phí) | Media Manipulator',
+      metaDescription: 'Công cụ chuyển video thành văn bản trực tuyến miễn phí. Chuyển tệp MP4, MOV, WebM, MKV và âm thanh thành văn bản có thể tìm kiếm, phụ đề VTT hoặc bản chép JSON.',
+    },
+    'transcode-to-hls': {
+      name: 'Chuyển mã video sang HLS',
+      tagline: 'Đóng gói mọi video thành gói Apple HLS VOD: master.m3u8 và các phân đoạn .ts theo từng độ phân giải, sẵn sàng cho web.',
+      metaTitle: 'Chuyển mã video sang HLS trực tuyến | Công cụ phát trực tuyến thích ứng miễn phí',
+      metaDescription: 'Công cụ chuyển mã HLS trực tuyến miễn phí. Chuyển MP4, MOV, WebM, MKV thành gói HLS VOD với các độ phân giải 360p/480p/720p, kèm phụ đề và storyboard tùy chọn.',
+    },
+    'ai-video-restoration': {
+      name: 'Phục hồi video bằng AI',
+      tagline: 'Nâng độ phân giải và phục hồi một đoạn video ngắn với tối đa sáu mô hình AI (Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT và VRT), rồi so sánh mọi kết quả cạnh nhau.',
+      metaTitle: 'Công cụ phục hồi video bằng AI: So sánh 6 mô hình nâng độ phân giải trực tuyến | Media Manipulator',
+      metaDescription: 'Công cụ phục hồi video bằng AI miễn phí. Cho một clip ngắn chạy qua các mô hình siêu phân giải Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT và VRT trên GPU của chúng tôi và tải mọi kết quả về trong một gói.',
+    },
+    'ai-image-restoration': {
+      name: 'Phục hồi và nâng độ phân giải ảnh bằng AI',
+      tagline: 'Làm sạch, nâng độ phân giải và phục hồi ảnh với tối đa tám mô hình AI: làm sạch sơ bộ giữ nguyên độ trung thực (FBCNN, SCUNet, NAFNet), công cụ nâng độ phân giải đa dụng (Real-ESRGAN, SwinIR, HAT) và tăng cường khuôn mặt (GFPGAN, CodeFormer), rồi so sánh từng kết quả với ảnh gốc.',
+      metaTitle: 'Phục hồi và nâng độ phân giải ảnh bằng AI: So sánh 8 mô hình trực tuyến | Media Manipulator',
+      metaDescription: 'Phục hồi và nâng độ phân giải ảnh bằng AI miễn phí. Loại bỏ nhiễu JPEG, khử nhiễu và làm nét, rồi nâng lên 4K/8K bằng Real-ESRGAN, SwinIR hoặc HAT và tăng cường khuôn mặt bằng GFPGAN/CodeFormer, tất cả trên GPU của chúng tôi và so sánh cạnh nhau.',
+    },
+    'ai-document-scan': {
+      name: 'Quét tài liệu bằng AI',
+      tagline: 'Biến tài liệu quét và ghi chú viết tay thành PDF nhiều trang có thể tìm kiếm và tài liệu Word có thể chỉnh sửa: trang in được gắn lớp văn bản Tesseract trung thực, chữ viết tay được AI thị giác chép lại, đánh dấu chỗ chưa chắc chắn và không bao giờ bịa ra.',
+      metaTitle: 'Quét tài liệu bằng AI: Trang quét và chữ viết tay sang PDF/Word | Media Manipulator',
+      metaDescription: 'Quét tài liệu bằng AI miễn phí: chuyển ảnh quét thành PDF có thể tìm kiếm và OCR ảnh sang Word, đồng thời chép ghi chú viết tay thành văn bản. Sắp xếp lại trang, trộn bản in và chữ viết tay, tất cả trên GPU của chúng tôi, nguyên văn và đánh dấu chỗ chưa chắc chắn.',
+    },
+    'ai-image-upscaler': {
+      name: 'Nâng độ phân giải ảnh bằng AI',
+      tagline: 'Phóng to ảnh nhỏ hoặc bị mềm bằng mô hình Real-ESRGAN tái tạo chi tiết mịn thay vì chỉ kéo giãn điểm ảnh.',
+      metaTitle: 'Nâng độ phân giải ảnh bằng AI: Phóng to ảnh 2x hoặc 4x | Media Manipulator',
+      metaDescription: 'Phóng to ảnh độ phân giải thấp 2x hoặc 4x bằng AI khôi phục đường nét và kết cấu. Chạy trên GPU của chúng tôi, xuất PNG. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'blur-faces-in-photo': {
+      name: 'Làm mờ khuôn mặt trong ảnh',
+      tagline: 'Tự động phát hiện khuôn mặt, rồi làm mờ, pixel hóa hoặc che đen toàn bộ hoặc chỉ những khuôn mặt bạn chọn.',
+      metaTitle: 'Làm mờ khuôn mặt trong ảnh trực tuyến | Media Manipulator',
+      metaDescription: 'Làm mờ, pixel hóa hoặc che đen khuôn mặt trong ảnh. Phát hiện mọi khuôn mặt rồi chọn khuôn mặt cần ẩn. AI chạy trên GPU của chúng tôi. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'redact-text-in-image': {
+      name: 'Che văn bản trong ảnh',
+      tagline: 'Tìm văn bản đọc được trong ảnh chụp màn hình hoặc ảnh và che thông tin cá nhân, hoặc toàn bộ văn bản, bằng hiệu ứng làm mờ hoặc ô đen.',
+      metaTitle: 'Che văn bản trong ảnh trực tuyến | Media Manipulator',
+      metaDescription: 'Tự động tìm văn bản trong ảnh và che đen hoặc làm mờ tên, email, số và dữ liệu cá nhân khác. AI chạy trên GPU của chúng tôi. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'remove-object-from-photo': {
+      name: 'Xóa vật thể khỏi ảnh',
+      tagline: 'Vẽ một khung quanh thứ bạn không muốn có trong ảnh, mô hình inpainting sẽ lấp chỗ trống bằng nền phù hợp.',
+      metaTitle: 'Xóa vật thể khỏi ảnh trực tuyến | Media Manipulator',
+      metaDescription: 'Xóa các vật thể không mong muốn khỏi ảnh. Vẽ một hình chữ nhật và inpainting bằng AI sẽ lấp khoảng trống cho khớp với nền. Chạy trên GPU của chúng tôi. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'clean-voice-audio': {
+      name: 'Làm sạch âm thanh giọng nói',
+      tagline: 'Giúp giọng nói rõ hơn bằng cách giảm tiếng xì, tiếng vang phòng và tiếng ù trầm trong podcast, phỏng vấn và ghi chú giọng nói.',
+      metaTitle: 'Làm sạch bản ghi âm giọng nói bằng AI | Media Manipulator',
+      metaDescription: 'Làm sạch bản ghi âm giọng nói bằng AI. Giảm tiếng xì, tiếng ù và tạp âm phòng để giọng nói dễ nghe hơn. Chạy trên GPU của chúng tôi. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'remove-background-noise': {
+      name: 'Loại bỏ tiếng ồn nền',
+      tagline: 'Giảm tiếng xì, tiếng ù, tiếng xe cộ và tiếng ồn phòng trong bản ghi âm bằng bộ khử nhiễu AI, giữ âm thanh chính nổi bật.',
+      metaTitle: 'Loại bỏ tiếng ồn nền khỏi âm thanh trực tuyến | Media Manipulator',
+      metaDescription: 'Loại bỏ tiếng ồn nền khỏi âm thanh. Bộ khử nhiễu AI giảm tiếng xì, tiếng ù và âm thanh xung quanh trong bản ghi âm. Chạy trên GPU của chúng tôi. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
+    },
+    'remove-vocals-from-song': {
+      name: 'Tách giọng hát khỏi bài hát',
+      tagline: 'Loại bỏ giọng hát khỏi bản nhạc và giữ lại phần nhạc, dùng cho karaoke, luyện tập và nhạc nền. Chỉ dùng với nhạc mà bạn có quyền.',
+      metaTitle: 'Tách giọng hát khỏi bài hát: Tạo nhạc karaoke | Media Manipulator',
+      metaDescription: 'Tách giọng hát khỏi bài hát bằng AI và tải bản nhạc nền về cùng định dạng với tệp của bạn, hoặc FLAC hoặc WAV. Bản karaoke và bản luyện tập, trên GPU của chúng tôi. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
     },
   },
 } as const;
