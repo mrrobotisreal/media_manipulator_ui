@@ -17,7 +17,7 @@ import { BLOG_POSTS } from '@/lib/blogPosts';
 import { ROUTE_SEO_MAP, SITE_NAME, SITE_ORIGIN, ORG_NAME } from '@/lib/seo';
 import { PRIMARY_TOOL_PAGES as TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
-import { translatedLocales } from '@/i18n/locales';
+import { reviewedLocales, unreviewedLocales } from '@/i18n/locales';
 import { VOICES, VOICE_DEMO_LANGUAGES } from '@/content/voices';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 
@@ -114,11 +114,13 @@ function ownerSection(): string[] {
 }
 
 function keyFactsSection(): string[] {
-  // Translated locales only (MM51): byte-copy locales serve English and are
-  // noindex, so claiming them as site languages would be false.
-  const languages = translatedLocales
+  // MM86: public (translated and reviewed) locales are named with their URL
+  // prefix; translated-but-unreviewed ones are noindex, so they are named
+  // without a URL and labelled as pending native review.
+  const languages = reviewedLocales
     .map((l) => (l.prefix === 'en' ? `${l.englishLabel} (${SITE_ORIGIN}/)` : `${l.englishLabel} (/${l.prefix}/)`))
     .join(', ');
+  const alsoAvailable = unreviewedLocales.map((l) => l.englishLabel).join(', ');
   return [
     '## Key facts',
     '',
@@ -129,6 +131,9 @@ function keyFactsSection(): string[] {
     '- Standard processing uses FFmpeg, ImageMagick and gifsicle. AI models include Whisper (whisper-ctranslate2), Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT, VRT, GFPGAN, CodeFormer, RIFE, BiRefNet, Demucs, DeepFilterNet and LaMa.',
     '- The free service is supported by ads; only Premium and Pro remove them. There are no forced waits or countdowns.',
     `- The site is available in ${languages}.`,
+    ...(alsoAvailable
+      ? [`- Also available, machine-translated and pending native review: ${alsoAvailable}.`]
+      : []),
     `- Support: support@media-manipulator.com. Privacy requests: privacy@media-manipulator.com.`,
   ];
 }

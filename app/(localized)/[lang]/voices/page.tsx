@@ -3,12 +3,11 @@ import type { Metadata } from 'next';
 import { JsonLdBlocks } from '@/components/seo/json-ld';
 import VoicesPage from '@/views/voices';
 import { VOICES } from '@/content/voices';
-import { getLocaleDef, localizeHref } from '@/i18n/locales';
+import { localizeHref } from '@/i18n/locales';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { getServerMetadataT } from '@/lib/i18n/server';
-import { languageAlternates } from '@/lib/metadata';
+import { localeIndexing } from '@/lib/metadata';
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_ORIGIN, type JsonLd } from '@/lib/seo';
-import { translatorRobots } from '@/lib/translator/mode';
 
 // Metadata is written here, like /pricing's: lib/seo.ts's map falls back to the
 // noindex 404 entry for any path it does not know. The <title> and description
@@ -27,13 +26,14 @@ export async function generateMetadata({ params }: PageParams): Promise<Metadata
   const title = `${t('interface:voices.title')} — ${SITE_NAME}`;
   const description = t('interface:voices.intro');
   const canonical = canonicalFor(locale);
-  const isTranslated = getLocaleDef(locale)?.translated ?? false;
+  // MM86: public (translated + reviewed) locales only; others are noindex with no hreflang.
+  const indexing = localeIndexing('/voices', locale);
 
   return {
     title,
     description,
-    alternates: { canonical, languages: languageAlternates('/voices') },
-    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
+    alternates: { canonical, languages: indexing.languages },
+    robots: indexing.robots,
     openGraph: { title, description, url: canonical, siteName: SITE_NAME, type: 'website', images: [{ url: DEFAULT_OG_IMAGE }] },
     twitter: { card: 'summary_large_image', title, description, images: [DEFAULT_OG_IMAGE] },
   };

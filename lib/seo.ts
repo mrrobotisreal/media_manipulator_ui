@@ -14,7 +14,7 @@ import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { cleanFaqEntries, cleanSteps, cleanStringArray } from '@/lib/schema';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 import { PLAN_PRICES } from '@/lib/billing/planPrices';
-import { locales } from '@/i18n/locales';
+import { locales, localizeHref } from '@/i18n/locales';
 import { TUTORIAL_DATES, type TutorialPath } from '@/content/pageDates';
 
 export const SITE_ORIGIN = 'https://www.media-manipulator.com';
@@ -182,11 +182,15 @@ const articleLd = (params: {
 // MM48: a tool that lists its shipped features (Motion) is described as a
 // SoftwareApplication with a featureList; every other tool keeps the
 // WebApplication block below.
-const softwareApplicationToolLd = (tool: ToolPageContent, featureList: string[]): JsonLd => ({
+const softwareApplicationToolLd = (
+  tool: ToolPageContent,
+  featureList: string[],
+  url: string = buildCanonical(`/tools/${tool.slug}`),
+): JsonLd => ({
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: `${SITE_NAME} ${tool.name}`,
-  url: buildCanonical(`/tools/${tool.slug}`),
+  url,
   applicationCategory: 'DesignApplication',
   operatingSystem: 'Web',
   description: tool.metaDescription,
@@ -199,11 +203,11 @@ const softwareApplicationToolLd = (tool: ToolPageContent, featureList: string[])
   },
 });
 
-const webApplicationToolLd = (tool: ToolPageContent): JsonLd => ({
+const webApplicationToolLd = (tool: ToolPageContent, url: string = buildCanonical(`/tools/${tool.slug}`)): JsonLd => ({
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: `${SITE_NAME} — ${tool.name}`,
-  url: buildCanonical(`/tools/${tool.slug}`),
+  url,
   applicationCategory: 'MultimediaApplication',
   operatingSystem: 'Web',
   description: tool.metaDescription,
@@ -241,13 +245,17 @@ const faqPageLd = (tool: ToolPageContent): JsonLd | null => {
 // from the snippet).
 // Returns a HowTo block only when there are 3+ real (non-empty) steps —
 // otherwise null. A single-step "flow" doesn't qualify for the rich result.
-const howToLd = (tool: ToolPageContent): JsonLd | null => {
+const howToLd = (
+  tool: ToolPageContent,
+  url: string = buildCanonical(`/tools/${tool.slug}`),
+  name: string = `How to use ${tool.name}`,
+): JsonLd | null => {
   const steps = cleanSteps(tool.flowSteps);
   if (steps.length < 3) return null;
   return {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
-    name: `How to use ${tool.name}`,
+    name,
     description: tool.tagline,
     totalTime: 'PT2M',
     step: steps.map((step, idx) => ({
@@ -255,7 +263,7 @@ const howToLd = (tool: ToolPageContent): JsonLd | null => {
       position: idx + 1,
       name: step.title,
       text: step.description || step.title,
-      url: `${buildCanonical(`/tools/${tool.slug}`)}#step-${idx + 1}`,
+      url: `${url}#step-${idx + 1}`,
     })),
   };
 };
@@ -309,6 +317,34 @@ const buildToolRouteSeo = (tool: ToolPageContent): RouteSeo => {
     ].filter((block): block is JsonLd => block !== null),
   };
 };
+
+/**
+ * MM86: the structured data of a tool page rendered in another locale, built
+ * from the localized entry (`getLocalizedToolBySlug`) so the FAQ, steps and
+ * names match what the page shows, with the locale's own URLs. Only emitted
+ * on pages that are indexable in that locale (fully translated body, reviewed
+ * locale); English pages keep `getSeoForPath(path).jsonLd`.
+ */
+export function localizedToolJsonLd(
+  tool: ToolPageContent,
+  loc: { locale: string; home: string; tools: string; howToName: string },
+): JsonLd[] {
+  const href = (path: string) => localizeHref(path, loc.locale);
+  const path = `/tools/${tool.slug}`;
+  const url = buildCanonical(href(path));
+  return [
+    tool.featureList && cleanStringArray(tool.featureList).length > 0
+      ? softwareApplicationToolLd(tool, cleanStringArray(tool.featureList), url)
+      : webApplicationToolLd(tool, url),
+    breadcrumbList([
+      { name: loc.home, path: href('/') },
+      { name: loc.tools, path: href('/tools') },
+      { name: tool.name, path: href(path) },
+    ]),
+    faqPageLd(tool),
+    howToLd(tool, url, loc.howToName),
+  ].filter((block): block is JsonLd => block !== null);
+}
 
 const techArticleLd = (params: {
   path: string;

@@ -11,11 +11,13 @@
  * static output is reached via a proxy rewrite and never exposed publicly);
  * every other locale is served under its short prefix (`/ru/...`, `/he/...`).
  *
- * `translated` gates the SEO surface, not availability: a locale whose shard
- * files are still byte-copies of en-US stays fully routable and selectable,
- * but is kept out of the sitemap + hreflang alternates and marked `noindex`
- * until its real translations land. Flipping this flag is the ONE switch a
- * later translation session throws after overwriting the locale's files.
+ * `translated` and `reviewed` gate the SEO surface, not availability: a locale
+ * whose shard files are still byte-copies of en-US (`translated: false`), or
+ * whose translation no human has signed off yet (`reviewed: false`, MM86),
+ * stays fully routable and selectable, but is kept out of the sitemap +
+ * hreflang alternates and marked `noindex`. A tool page is additionally
+ * `noindex` under a locale whose override does not cover its whole body
+ * (`localeBodyCoverage` in `i18n/toolPageContent.ts`).
  *
  * NOTE: this module must stay dependency-free (no JSON imports, no i18next) —
  * it is imported by `proxy.ts` and by server + client code alike. It must also
@@ -46,29 +48,39 @@ export interface LocaleDef {
    * sitemap/hreflang allowlist and per-page `noindex` for copied locales.
    */
   translated: boolean;
+  /**
+   * MM86: true once a human who reads the language has signed off the UI,
+   * legal pages and indexed pages. Indexability of a locale is
+   * `translated && reviewed`: an unreviewed locale still routes and is still
+   * selectable, but every page is `noindex, follow`, it advertises no hreflang
+   * and it is left out of the sitemap, `llms.txt` and humans.txt "Languages".
+   * Mitch decides the value per locale (MM86 ticket log); the translator
+   * workbench's native sign-off is what flips the rest.
+   */
+  reviewed: boolean;
 }
 
 export const locales: LocaleDef[] = [
-  { code: "en-US", prefix: "en", label: "English", englishLabel: "English", flag: "🇺🇸", dir: "ltr", translated: true },
-  { code: "uk-UA", prefix: "uk", label: "Українська", englishLabel: "Ukrainian", flag: "🇺🇦", dir: "ltr", translated: true },
-  { code: "ru-RU", prefix: "ru", label: "Русский", englishLabel: "Russian", flag: "🇷🇺", dir: "ltr", translated: true },
-  { code: "he-IL", prefix: "he", label: "עברית", englishLabel: "Hebrew", flag: "🇮🇱", dir: "rtl", translated: true },
-  { code: "de-DE", prefix: "de", label: "Deutsch", englishLabel: "German", flag: "🇩🇪", dir: "ltr", translated: true },
-  { code: "es-ES", prefix: "es", label: "Español (España)", englishLabel: "Spanish (Spain)", flag: "🇪🇸", dir: "ltr", translated: true },
+  { code: "en-US", prefix: "en", label: "English", englishLabel: "English", flag: "🇺🇸", dir: "ltr", translated: true, reviewed: true },
+  { code: "uk-UA", prefix: "uk", label: "Українська", englishLabel: "Ukrainian", flag: "🇺🇦", dir: "ltr", translated: true, reviewed: true },
+  { code: "ru-RU", prefix: "ru", label: "Русский", englishLabel: "Russian", flag: "🇷🇺", dir: "ltr", translated: true, reviewed: true },
+  { code: "he-IL", prefix: "he", label: "עברית", englishLabel: "Hebrew", flag: "🇮🇱", dir: "rtl", translated: true, reviewed: false },
+  { code: "de-DE", prefix: "de", label: "Deutsch", englishLabel: "German", flag: "🇩🇪", dir: "ltr", translated: true, reviewed: true },
+  { code: "es-ES", prefix: "es", label: "Español (España)", englishLabel: "Spanish (Spain)", flag: "🇪🇸", dir: "ltr", translated: true, reviewed: false },
   // MM72: Latin-American Spanish, adapted from es-ES (prefix `es-mx`; es-ES keeps `/es`).
-  { code: "es-MX", prefix: "es-mx", label: "Español (Latinoamérica)", englishLabel: "Spanish (Latin America)", flag: "🇲🇽", dir: "ltr", translated: true },
+  { code: "es-MX", prefix: "es-mx", label: "Español (Latinoamérica)", englishLabel: "Spanish (Latin America)", flag: "🇲🇽", dir: "ltr", translated: true, reviewed: false },
   // MM51: byte-copies of en-US until their translation sessions (MM57–MM67).
-  { code: "fr-FR", prefix: "fr", label: "Français", englishLabel: "French", flag: "🇫🇷", dir: "ltr", translated: true },
-  { code: "it-IT", prefix: "it", label: "Italiano", englishLabel: "Italian", flag: "🇮🇹", dir: "ltr", translated: true },
-  { code: "ja-JP", prefix: "ja", label: "日本語", englishLabel: "Japanese", flag: "🇯🇵", dir: "ltr", translated: true },
-  { code: "zh-CN", prefix: "zh-cn", label: "简体中文", englishLabel: "Chinese (Simplified)", flag: "🇨🇳", dir: "ltr", translated: true },
-  { code: "zh-TW", prefix: "zh-tw", label: "繁體中文", englishLabel: "Chinese (Traditional)", flag: "🇹🇼", dir: "ltr", translated: true },
-  { code: "ko-KR", prefix: "ko", label: "한국어", englishLabel: "Korean", flag: "🇰🇷", dir: "ltr", translated: true },
-  { code: "ar-SA", prefix: "ar", label: "العربية", englishLabel: "Arabic", flag: "🇸🇦", dir: "rtl", translated: true },
-  { code: "hi-IN", prefix: "hi", label: "हिन्दी", englishLabel: "Hindi", flag: "🇮🇳", dir: "ltr", translated: true },
-  { code: "pt-PT", prefix: "pt-pt", label: "Português (Portugal)", englishLabel: "Portuguese (Portugal)", flag: "🇵🇹", dir: "ltr", translated: true },
-  { code: "pt-BR", prefix: "pt-br", label: "Português (Brasil)", englishLabel: "Portuguese (Brazil)", flag: "🇧🇷", dir: "ltr", translated: true },
-  { code: "vi-VN", prefix: "vi", label: "Tiếng Việt", englishLabel: "Vietnamese", flag: "🇻🇳", dir: "ltr", translated: true },
+  { code: "fr-FR", prefix: "fr", label: "Français", englishLabel: "French", flag: "🇫🇷", dir: "ltr", translated: true, reviewed: false },
+  { code: "it-IT", prefix: "it", label: "Italiano", englishLabel: "Italian", flag: "🇮🇹", dir: "ltr", translated: true, reviewed: false },
+  { code: "ja-JP", prefix: "ja", label: "日本語", englishLabel: "Japanese", flag: "🇯🇵", dir: "ltr", translated: true, reviewed: false },
+  { code: "zh-CN", prefix: "zh-cn", label: "简体中文", englishLabel: "Chinese (Simplified)", flag: "🇨🇳", dir: "ltr", translated: true, reviewed: false },
+  { code: "zh-TW", prefix: "zh-tw", label: "繁體中文", englishLabel: "Chinese (Traditional)", flag: "🇹🇼", dir: "ltr", translated: true, reviewed: false },
+  { code: "ko-KR", prefix: "ko", label: "한국어", englishLabel: "Korean", flag: "🇰🇷", dir: "ltr", translated: true, reviewed: false },
+  { code: "ar-SA", prefix: "ar", label: "العربية", englishLabel: "Arabic", flag: "🇸🇦", dir: "rtl", translated: true, reviewed: false },
+  { code: "hi-IN", prefix: "hi", label: "हिन्दी", englishLabel: "Hindi", flag: "🇮🇳", dir: "ltr", translated: true, reviewed: false },
+  { code: "pt-PT", prefix: "pt-pt", label: "Português (Portugal)", englishLabel: "Portuguese (Portugal)", flag: "🇵🇹", dir: "ltr", translated: true, reviewed: false },
+  { code: "pt-BR", prefix: "pt-br", label: "Português (Brasil)", englishLabel: "Portuguese (Brazil)", flag: "🇧🇷", dir: "ltr", translated: true, reviewed: false },
+  { code: "vi-VN", prefix: "vi", label: "Tiếng Việt", englishLabel: "Vietnamese", flag: "🇻🇳", dir: "ltr", translated: true, reviewed: false },
 ];
 
 export const defaultLocale = "en-US";
@@ -90,8 +102,23 @@ export const publicLocalePrefixes = locales.filter((l) => l.code !== defaultLoca
  */
 export const translatorLocales = locales.filter((l) => l.code !== defaultLocale);
 
-/** Locales allowed into sitemap/hreflang (en + genuinely translated ones). */
+/** Locales whose files hold real text (routable, selectable; MM51). */
 export const translatedLocales = locales.filter((l) => l.translated);
+
+/**
+ * MM86: the public locales, the only ones allowed into the sitemap, hreflang,
+ * `llms.txt` and humans.txt "Languages": translated AND reviewed by a human.
+ */
+export const reviewedLocales = locales.filter((l) => l.translated && l.reviewed);
+
+/** MM86: translated but not yet reviewed: routable, but `noindex` everywhere. */
+export const unreviewedLocales = locales.filter((l) => l.translated && !l.reviewed);
+
+/** MM86: may pages in this locale be indexed (`translated && reviewed`)? */
+export function isIndexableLocale(code: string): boolean {
+  const def = byCode.get(code);
+  return !!def && def.translated && def.reviewed;
+}
 
 export function isSupportedPrefix(prefix: string): boolean {
   return byPrefix.has(prefix);

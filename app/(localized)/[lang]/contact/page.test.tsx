@@ -38,7 +38,15 @@ describe('/contact (MM85 acceptance 1)', () => {
     expect(html).not.toContain('{{');
     const meta = await generateMetadata({ params: Promise.resolve({ lang: prefix }) });
     expect(typeof meta.title).toBe('string');
-    expect(meta.robots).toEqual({ index: true, follow: true });
-    expect(Object.keys(meta.alternates?.languages ?? {})).toHaveLength(locales.length + 1);
+    // MM86: indexable with hreflang only in reviewed locales (4 + x-default).
+    const def = locales.find((l) => l.prefix === prefix)!;
+    const reviewed = locales.filter((l) => l.translated && l.reviewed);
+    if (def.reviewed) {
+      expect(meta.robots).toEqual({ index: true, follow: true });
+      expect(Object.keys(meta.alternates?.languages ?? {})).toHaveLength(reviewed.length + 1);
+    } else {
+      expect(meta.robots).toEqual({ index: false, follow: true });
+      expect(meta.alternates?.languages).toBeUndefined();
+    }
   });
 });

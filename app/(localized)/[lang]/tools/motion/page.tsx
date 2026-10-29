@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { buildMetadata } from '@/lib/metadata';
-import { JsonLd } from '@/components/seo/json-ld';
+import { buildToolMetadata } from '@/lib/metadata';
+import { ToolJsonLd } from '@/components/seo/tool-json-ld';
 import ToolLandingPage from '@/components/tools/tool-landing-page';
 import MotionLauncher from '@/components/vector/landing/recent-projects';
 import { MotionGuide, MotionPlans } from '@/components/vector/landing/motion-landing';
@@ -14,9 +14,8 @@ import { MOTION_BRAND } from '@/lib/vector/brand';
 
 // MM48: Motion's public landing page. The editor itself is the chromeless
 // /motion/[projectId] route (no ads, noindex); this page is a normal localized,
-// indexable tool page with original copy, a guide, the plan table and a FAQ.
-const PATH = '/tools/motion';
-
+// indexable tool page (`/tools/motion`) with original copy, a guide, the plan
+// table and a FAQ.
 // The plan table comes from GET /api/tiers, revalidated like /pricing.
 export const revalidate = 300;
 
@@ -24,7 +23,7 @@ type PageParams = { params: Promise<{ lang: string }> };
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang } = await params;
-  return buildMetadata(PATH, resolveLangParam(lang));
+  return buildToolMetadata('motion', resolveLangParam(lang));
 }
 
 export default async function MotionToolRoute({ params }: PageParams) {
@@ -39,7 +38,7 @@ export default async function MotionToolRoute({ params }: PageParams) {
 
   return (
     <div dir={getLocaleDef(locale)?.dir ?? 'ltr'} data-testid="motion-page">
-      <JsonLd path={PATH} />
+      <ToolJsonLd tool={tool} locale={locale} />
       <ToolLandingPage
         tool={tool}
         locale={locale}

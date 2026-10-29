@@ -11,11 +11,12 @@ GitHub: https://github.com/mrrobotisreal
 Thanks to all the devs who came before me that taught me what I know and developed the powerful languages and tools, which made this project possible.
 
 /* SITE */
-Last update: 2026-10-27
+Last update: 2026-10-29
 Standards: HTML5, CSS3, ES2022+
 Language: TypeScript
 Doctype: HTML5
-Languages: English, Ukrainian, Russian, Hebrew, German, Spanish (Spain), Spanish (Latin America), French, Italian, Japanese, Chinese (Simplified), Chinese (Traditional), Korean, Arabic, Hindi, Portuguese (Portugal), Portuguese (Brazil), Vietnamese
+Languages: English, Ukrainian, Russian, German
+Also available: Hebrew, Spanish (Spain), Spanish (Latin America), French, Italian, Japanese, Chinese (Simplified), Chinese (Traditional), Korean, Arabic, Hindi, Portuguese (Portugal), Portuguese (Brazil), Vietnamese
 For language models: https://www.media-manipulator.com/llms.txt
 
 /* TECHNOLOGIES */

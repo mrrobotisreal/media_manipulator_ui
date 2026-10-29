@@ -160,11 +160,19 @@ One of the four icon buttons in the sticky header (menu, theme, language, accoun
 ### Localization
 
 **Locale registry**:
-`i18n/locales.ts`, the one place a locale is registered (code, URL prefix, native label, flag, direction, `translated`). `npm run i18n:gen` (`scripts/gen-i18n-registry.mjs`) turns it into the checked-in `i18n/generated/*.generated.ts` files that every shard consumer imports. Adding a locale = one row + a copy of `i18n/locales/en-us/` (minus `interface/metadata.json`) + `npm run i18n:gen`; `i18n/generated/registry.test.ts` fails when the generated files are stale.
+`i18n/locales.ts`, the one place a locale is registered (code, URL prefix, native label, flag, direction, `translated`, `reviewed`). `npm run i18n:gen` (`scripts/gen-i18n-registry.mjs`) turns it into the checked-in `i18n/generated/*.generated.ts` files that every shard consumer imports. Adding a locale = one row + a copy of `i18n/locales/en-us/` (minus `interface/metadata.json`) + `npm run i18n:gen`; `i18n/generated/registry.test.ts` fails when the generated files are stale.
 _Avoid_: hand-listing locales or locale directories anywhere else.
 
 **Byte-copy locale**:
 A registered locale whose shard files are still exact copies of en-US, with `translated: false`. It is routable and selectable, but noindex, absent from the sitemap, hreflang and `llms.txt`. A translation session overwrites its files and flips the flag.
+
+**Reviewed locale** (MM86):
+A locale with `translated: true` and `reviewed: true`: a human who reads the language signed off its UI, legal pages and indexed pages. Only reviewed locales are **public**: indexable, in the sitemap and hreflang (`reviewedLocales`, `isIndexableLocale`), named with their URL in `llms.txt` and under "Languages" in `humans.txt`. A translated, unreviewed locale routes and stays in the language menu but is `noindex, follow` everywhere with no hreflang. Today: en-US, uk-UA, ru-RU, de-DE.
+_Avoid_: "translated" for "public"; `translated` only means the files hold text.
+
+**Body coverage** (MM86):
+`localeBodyCoverage(slug, locale)` in `i18n/toolPageContent.ts`: which rendered fields of a tool page a locale's override supplies (every prose field `ToolLandingPage` shows, arrays item for item). A tool page is indexable under a non-English URL only when its locale is reviewed and its coverage is complete (`isToolPageIndexable` / `buildToolMetadata` in `lib/metadata.ts`); otherwise it is `noindex, follow` with no hreflang, its title stays English, and it emits no structured data. A tool page's hreflang and sitemap alternates are English plus the reviewed, fully covered locales (`fullyCoveredLocaleCodes`). Checked by `i18n/toolPageCoverage.test.ts` and, over the built HTML, by `scripts/lib/audit-locales.mjs` (in `npm run audit:ads` and `npm test`).
+_Avoid_: "English fallback" as a feature; it is what makes a page noindex.
 
 **Client bundle (i18n)**:
 Only English's eager shards ship in client JS. Every other locale's eager bundle is read on the server by the `[lang]` layout (`i18n/localeResources.ts`) and passed to `<Providers resources>`, so first-load JS does not grow with the locale count. `forms`/`panels` stay lazy (`lib/i18n/ensureShard.ts`); `pages`/`articles` are server-only.

@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import type { TiersResponse } from '@/lib/auth/accountApi';
 import { tiersFixture } from '@/lib/billing/test-utils';
 import { locales } from '@/i18n/locales';
+import { localeBodyCoverage } from '@/i18n/toolPageContent';
 
 const tiers = vi.hoisted(() => ({ value: null as unknown }));
 vi.mock('@/lib/auth/loadTiers', () => ({ loadPublicTiers: async () => tiers.value }));
@@ -95,12 +96,13 @@ describe('/tools/motion page (MM48 acceptance 2)', () => {
     expect(html).not.toContain('data-testid="ad"');
   });
 
-  it('is indexable in translated locales and noindex in byte-copy locales', async () => {
+  it('is indexable only in reviewed locales that cover the whole body (MM86)', async () => {
     for (const l of locales) {
       const meta = await generateMetadata({ params: Promise.resolve({ lang: l.prefix }) });
-      expect(meta.robots, l.code).toEqual({ index: l.translated, follow: true });
+      const indexable = l.code === 'en-US' || (l.translated && l.reviewed && localeBodyCoverage('motion', l.code).complete);
+      expect(meta.robots, l.code).toEqual({ index: indexable, follow: true });
       const langs = Object.keys(meta.alternates?.languages ?? {});
-      for (const u of locales.filter((x) => !x.translated)) expect(langs).not.toContain(u.code);
+      for (const u of locales.filter((x) => !(x.translated && x.reviewed))) expect(langs).not.toContain(u.code);
     }
   });
 

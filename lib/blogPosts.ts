@@ -18,10 +18,9 @@ import {
   publisherLd,
   type JsonLd,
 } from '@/lib/seo';
-import { languageAlternates } from '@/lib/metadata';
+import { localeIndexing } from '@/lib/metadata';
 import { getSeoOverride } from '@/lib/seoOverrides';
-import { defaultLocale, getLocaleDef, localizeHref } from '@/i18n/locales';
-import { translatorRobots } from '@/lib/translator/mode';
+import { defaultLocale, localizeHref } from '@/i18n/locales';
 
 export interface BlogPost {
   path: string;
@@ -98,7 +97,8 @@ const url = (path: string) => new URL(path, SITE_ORIGIN).toString();
 
 export function blogPostMetadata(post: BlogPost, locale: string = defaultLocale): Metadata {
   const canonicalUrl = url(localizeHref(post.path, locale));
-  const isTranslated = getLocaleDef(locale)?.translated ?? false;
+  // MM86: public (translated + reviewed) locales only; others are noindex with no hreflang.
+  const indexing = localeIndexing(post.path, locale);
   const override = getSeoOverride(post.path, locale);
   const title = override?.title ?? post.title;
   const description = override?.description ?? post.description;
@@ -108,9 +108,9 @@ export function blogPostMetadata(post: BlogPost, locale: string = defaultLocale)
     keywords: post.keywords,
     alternates: {
       canonical: canonicalUrl,
-      languages: languageAlternates(post.path),
+      languages: indexing.languages,
     },
-    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
+    robots: indexing.robots,
     openGraph: {
       title,
       description,
@@ -173,15 +173,16 @@ export function blogIndexMetadata(locale: string = defaultLocale): Metadata {
     override?.description ??
     'Learn how media formats, compression, metadata, transcription, and FFmpeg-powered file processing work with practical guides from Media Manipulator.';
   const canonicalUrl = url(localizeHref('/blog', locale));
-  const isTranslated = getLocaleDef(locale)?.translated ?? false;
+  // MM86: public (translated + reviewed) locales only; others are noindex with no hreflang.
+  const indexing = localeIndexing('/blog', locale);
   return {
     title,
     description,
     alternates: {
       canonical: canonicalUrl,
-      languages: languageAlternates('/blog'),
+      languages: indexing.languages,
     },
-    robots: translatorRobots(isTranslated ? { index: true, follow: true } : { index: false, follow: true }),
+    robots: indexing.robots,
     openGraph: {
       title,
       description,
