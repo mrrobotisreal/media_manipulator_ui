@@ -271,123 +271,159 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Create a new project (or reopen a recent one), drag video, image, and audio files into the media bin, then drop them onto the multi-track timeline. Trim, split, and arrange clips, layer overlays and titles, mix audio, and export a finished MP4 — all in your browser.',
     },
     intro:
-      "Darkroom is a free, browser-based multi-track video editor. Instead of converting one file at a time, you build a complete edit: lay video, image, and audio clips across stacked timeline tracks, trim and split them on a frame-accurate timeline, layer titles and overlays on top, mix audio, and export the whole thing to MP4. It's the closest thing to a Premiere Pro–style timeline that runs entirely in your web browser — no install, no signup, and nothing to learn before you start.",
+      'Darkroom is a multi-track video editor that runs in a browser tab. You create a project with a canvas and a frame rate, drop video, image and audio files into a media bin, lay them out on stacked tracks, trim and split them at frame boundaries, grade and key them, add titles, transitions and captions, mix the audio with a per-track mixer, and then hand the finished timeline to our render server, where ffmpeg builds the whole edit as one filter graph and encodes it to H.264 or HEVC in MP4, or to MP3 or WAV when the project is audio only. The preview you edit against is composited live on your GPU in WebGL2; the export is checked against that preview so what you saw is what you get.',
     whatItDoes: [
-      'Hosts a multi-track timeline where video, image, and audio clips stack on separate layers and play back together.',
-      'Lets you trim clip in/out points, split clips at the playhead, and ripple-delete to close gaps.',
-      'Layers overlays — additional video, images, and titles render on top of the base track in stacking order.',
-      'Mixes multiple audio tracks alongside your video and previews the composite in real time.',
-      'Exports the finished sequence as a single MP4 you can download and share.',
+      'Runs a frame-accurate multi-track timeline: trim, split, ripple delete, razor, slip, slide, roll and ripple edits, markers, groups, track lock, solo and hide, and detaching audio from video.',
+      'Composites tracks in stacking order with crop, fit, transform, a Lumetri-style colour grade (exposure, contrast, saturation, temperature, tint, vibrance), 3D LUTs, chroma key with an eyedropper, opacity and eight blend modes.',
+      'Animates position, scale, rotation, opacity, volume, pan and effect parameters with keyframes and five easing curves; adds fifteen transitions and title clips built from text and shape layers.',
+      'Mixes audio through a per-track fader, pan, three-band EQ and compressor with live meters, plus ducking and streaming, podcast and broadcast loudness presets on the master bus.',
+      'Generates captions with Whisper on our GPU, lets you edit them in a captions lane, and exports them burned into the picture or as an SRT or VTT sidecar.',
+      'Exports H.264 or HEVC MP4 with AAC audio, or MP3 or WAV, at the canvas size or scaled to 720, 1080, 1440 or 2160 lines, and keeps an exports panel with progress and re-render.',
     ],
     flowSteps: [
       {
         title: 'Create a project',
-        description: 'Name it and pick a resolution (up to 4K) and frame rate (24/30/60 fps).',
+        description: 'Pick a canvas (16:9 at 1920 x 1080, 9:16 at 1080 x 1920, 1:1, 4:5 or a custom size) and a frame rate of 24, 30 or 60.',
       },
       {
         title: 'Import media',
-        description: 'Drag video, image, and audio files into the media bin.',
+        description: 'Upload video, images and audio to the media bin. The server renders a preview proxy with a keyframe every second so scrubbing stays cheap.',
       },
       {
-        title: 'Build the timeline',
-        description: 'Drop clips onto tracks, then trim, split, and arrange them around the playhead.',
+        title: 'Cut and layer',
+        description: 'Place clips on tracks, trim and split at the playhead, stack overlays and titles above the base footage, and hold still images for any length.',
       },
       {
-        title: 'Layer & mix',
-        description: 'Stack overlays and titles, add extra audio tracks, and preview the result.',
+        title: 'Grade, key and mix',
+        description: 'Adjust colour, apply a LUT, key out a background, keyframe what should move, and balance the audio tracks on the mixer.',
       },
       {
-        title: 'Export MP4',
-        description: 'Render the sequence to an MP4 and download it.',
+        title: 'Export',
+        description: 'Choose format, quality, output height, captions mode and loudness preset. ffmpeg renders the timeline on our server and the file appears in the exports panel.',
       },
     ],
     advancedDetails: [
-      'The timeline is frame-accurate: the playhead, clip boundaries, and split points snap to the project frame rate so cuts land where you expect.',
-      'Tracks composite in stacking order — higher tracks render over lower ones — which is how overlays, picture-in-picture, and titles sit on top of your base footage.',
-      'Preview playback is driven by a browser preview engine that composites the active clips on a canvas; the final export is encoded to H.264 MP4 with AAC audio.',
-      'Projects, media references, and edit decisions are stored per project, so you can close the tab and reopen a recent project to keep working.',
+      'The export is one ffmpeg invocation: every source is an input, the timeline becomes a filter_complex graph (trim, scale, overlay, drawtext for titles, eq and colour filters, amix with normalize=0 for audio) and the output is encoded in a single pass. Keyframed parameters ride a sendcmd sidecar on the graph, which needs ffmpeg 4.4 or newer on the render host.',
+      'H.264 uses the h264_nvenc hardware encoder when a probe encode succeeds on the render GPU, otherwise libx264. Quality presets map to NVENC preset p4 at constant quality 23 (Medium), p5 at CQ 19 (High) and p4 at CQ 28 (Low); on libx264 they are preset medium CRF 23, slow CRF 18 and veryfast CRF 28. Both pin yuv420p.',
+      'HEVC uses hevc_nvenc or libx265 at CQ or CRF values five points higher (28, 24, 33 on NVENC; 28, 24, 32 on libx265), which is the usual offset for equal perceived quality, and tags the stream hvc1 so the MP4 plays in Safari and QuickTime. If neither encoder is available the export fails loudly instead of handing back H.264 under an HEVC name.',
+      'Audio is resampled to 48 kHz stereo inside the graph and encoded as AAC at 192 kb/s for video exports; MP3 exports use libmp3lame at 192 kb/s and WAV exports are 16-bit PCM. The loudness presets are ffmpeg loudnorm: streaming I=-14 LUFS TP=-1.5 LRA=11, podcast I=-16 TP=-1.5 LRA=11, broadcast I=-23 TP=-2 LRA=7.',
+      'Choosing an output height scales the composed frame as the last filter (lanczos, square pixels, width rounded to an even number), after captions are burned in, so text is scaled with the picture rather than redrawn. A height your plan cannot render is refused with an error, never silently downgraded.',
+      'MP4 files are written with -movflags +faststart so the index sits at the front and the file starts playing before it has fully downloaded. Still images on the timeline become inputs with -loop 1 -framerate <project fps> -t <hold>, so a held photo costs no more to decode than its frames.',
     ],
     whyItMatters: [
-      'Most online media tools only do one operation at a time; real content needs several clips cut, layered, and mixed together.',
-      'A timeline editor lets you tell a story — intro, b-roll, titles, music — instead of just converting a single file.',
-      'Doing it in the browser means no multi-gigabyte install and no account, so you can go from raw clips to an exported MP4 in minutes.',
+      'A conversion tool changes one file. An edit combines several: the b-roll under the interview, the title over the opening, the music bed under both, each trimmed to the frame.',
+      'Preview and export usually drift apart in browser editors. Darkroom renders the preview on your GPU and the export on ours, and keeps the two inside a documented tolerance with a golden-image harness.',
+      'The heavy work stays off your laptop. A 4K export, a Whisper transcription or a LUT-graded multi-layer composite runs on a GPU render server, so a thin notebook can finish the job.',
     ],
     useCases: [
       {
-        title: 'Short-form social videos',
-        description: 'Cut clips, add a title card and background music, and export a vertical or square MP4.',
+        title: 'Vertical clips for short-form platforms',
+        description: 'A 1080 x 1920 canvas, a punch-in on the speaker, a title card, music ducked under the voice and captions burned in.',
       },
       {
         title: 'Tutorials and screen recordings',
-        description: 'Trim dead air, stitch takes together, and overlay callout titles.',
+        description: 'Cut dead air, stitch takes, overlay a webcam picture-in-picture, add callouts and export at 1080p with a sidecar caption file.',
       },
       {
-        title: 'Highlight reels',
-        description: 'Assemble the best moments from several clips into one continuous edit.',
+        title: 'Interview and podcast episodes',
+        description: 'Two camera angles cut to the speaker, a loudness-normalised mix, and an MP3 export of the same timeline for the audio feed.',
       },
       {
-        title: 'Simple promos',
-        description: 'Layer a logo or text overlay over b-roll and mix in a voiceover or music bed.',
+        title: 'Promos and product videos',
+        description: 'Chroma-keyed footage over a background plate, a LUT for the look, keyframed logo moves and a 15-second cut at 4K for the wall screen.',
       },
     ],
     whyMediaManipulator: [
-      'A genuine multi-track timeline — not a single-clip trimmer dressed up as an editor.',
-      'Runs in your browser with no install and no signup, and your media is processed on our own servers.',
-      'Pairs with the rest of Media Manipulator: compress, transcode, transcribe, or strip metadata from your source or exported files in the same place.',
+      'Real editing primitives: razor, slip, slide, roll, ripple, markers, groups, keyframes with easing, a mixer with EQ and compression, not a trimmer with a title field.',
+      'Honest exports: hardware or software encoding is chosen by a live probe, HEVC refuses rather than lies, and a resolution your plan cannot render is an error, not a quiet downgrade.',
+      'One account, one place: transcribe, compress or strip metadata from the same files you edit, and generate voiceover or captions on the same GPU server.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Darkroom keeps your media on our servers for as long as the project exists: uploads go to the media bin as assets, the server renders preview proxies, filmstrips and waveform peaks from them, and exports are built by ffmpeg into outputs/<jobId>/ on the render host. When you ask for captions, the audio is sent to Whisper on our own GPU and the resulting cues are stored with the project. The project document, its assets, versions and exports can be deleted from the editor or your Account page. ${RETENTION_PROMISE}. Uploaded video and audio also pass through an automated analysis step on our own server. Nothing is sent to a third-party AI provider and no file is used to train anything.`,
     faq: [
       {
         question: 'Is Darkroom free?',
-        answer: 'Yes. Darkroom is free to use with no signup or account required.',
+        answer:
+          'Yes. Without an account you can keep one project and render 5 exports a day, with uploads up to 200 MB per file and output up to 1080 lines. A free account raises that to 5 projects, 30 exports a day, 1 GB files and 1440 lines; Premium gives unlimited projects, 300 exports a day, 5 GB files and 2160-line output; Pro raises exports to 700 a day. Exports have their own daily counter and do not consume the general operations allowance. These are the defaults; the pricing page shows the live numbers.',
       },
       {
-        question: 'Do I need to install anything?',
-        answer: 'No. It runs entirely in your web browser — there is nothing to download or install.',
+        question: 'What can I export?',
+        answer:
+          'MP4 with H.264 or HEVC video and AAC audio, or MP3 or WAV for audio-only projects. Video can go out at the canvas size or scaled to 720, 1080, 1440 or 2160 lines, with captions burned in, as an SRT or VTT sidecar, or omitted, and with a streaming, podcast or broadcast loudness preset on the mix.',
       },
       {
-        question: 'What can I put on the timeline?',
-        answer: 'Video clips, images, and audio files. They stack on separate tracks and play back together.',
+        question: 'Which quality preset should I pick?',
+        answer:
+          'Medium is CRF 23 on libx264 or constant quality 23 on NVENC and is the sensible default for upload to a platform that re-encodes anyway. High (CRF 18 or CQ 19, preset slow or p5) is for a master you will edit again or show on a large screen. Low (CRF 28 or CQ 28, veryfast or p4) is for a quick preview to send to a colleague.',
       },
       {
-        question: 'What format does it export?',
-        answer: 'Darkroom exports your finished sequence as an MP4 (H.264 video with AAC audio).',
+        question: 'Why did my HEVC export fail?',
+        answer:
+          'HEVC needs either hevc_nvenc on the render GPU or libx265 in the ffmpeg build. If the server has neither the export fails with an unsupported-encoder message instead of returning an H.264 file labelled HEVC. Switch the format to H.264 and the same timeline will render.',
       },
       {
-        question: 'What resolutions and frame rates are supported?',
-        answer: 'You can create projects at up to 4K (3840×2160), including vertical 1080×1920, at 24, 30, or 60 fps.',
+        question: 'How are captions made?',
+        answer:
+          'Generate captions sends the timeline audio to Whisper on our GPU server. The segments come back as cues you can edit in the captions lane, then export burned into the picture (an ASS subtitle track rendered into the frames) or as an SRT or VTT file next to the video. Generating captions counts as one AI operation.',
       },
       {
-        question: 'Are my files kept private?',
-        answer: `Your media is processed on our own servers. ${RETENTION_PROMISE}. We do not share files with third-party providers.`,
+        question: 'Does the export match the preview?',
+        answer:
+          'That is the point of the design. The preview composites in WebGL2 in the same order the server filter graph uses (crop, fit, transform, grade, LUT, key, opacity, blend), and a golden-image harness compares frames from both within a documented tolerance. Solo and hide apply to the export exactly as they do to the preview.',
       },
       {
         question: 'Can I come back to a project later?',
-        answer: 'Yes. Recent projects appear on the Darkroom start screen so you can reopen one and keep editing.',
+        answer:
+          'Yes. Projects are saved with revision numbers, so a stale tab cannot overwrite newer work, and version history keeps checkpoints you can return to. A draft is also kept in your browser for crash recovery. Signed-in users can open recent projects from any device; guest projects stay with the browser session and the 24-hour retention window.',
       },
     ],
     related: [
       {
-        label: 'Compress Video',
+        label: 'Compress video',
         to: '/tools/compress-video',
-        description: 'Shrink your exported MP4 for faster uploads and sharing.',
+        description: 'Shrink an export further for email or a slow connection.',
       },
       {
-        label: 'Transcribe Video',
+        label: 'Transcribe video',
         to: '/tools/transcribe-video',
-        description: 'Generate a transcript or captions from your finished video.',
+        description: 'Get a full transcript of a finished edit, not just captions.',
       },
       {
-        label: 'Extract Audio from Video',
+        label: 'Extract audio from video',
         to: '/tools/extract-audio-from-video',
-        description: 'Pull the audio track out of a clip as MP3 or WAV.',
+        description: 'Pull the soundtrack out of a clip before you bring it into the timeline.',
+      },
+      {
+        label: 'Video trimmer',
+        to: '/tools/video-trimmer',
+        description: 'When a single cut is all you need.',
+      },
+      {
+        label: `${MOTION_BRAND}`,
+        to: '/tools/motion',
+        description: 'Animate a logo or lower third as SVG, then export a GIF for the timeline.',
       },
       {
         label: 'Darkroom tutorial',
         to: '/tutorials/content-studio',
-        description: 'A step-by-step walkthrough of building an edit and exporting MP4.',
+        description: 'Build an edit from empty project to exported MP4, step by step.',
       },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 90-second 1080p30 cut at the Medium preset',
+        body:
+          'Two 1080p clips, a music track and a title card on a 1920 x 1080 canvas at 30 fps, exported as H.264 at Medium. On the render server with a working NVENC this is h264_nvenc preset p4 at constant quality 23 with yuv420p; without it, libx264 preset medium CRF 23. The audio mix is encoded as AAC at 192 kb/s, which for 90 seconds is 192,000 x 90 / 8, about 2.2 MB of audio regardless of content. The video side is quality-targeted rather than bitrate-targeted, so its size follows the footage: static talking-head material at CQ 23 encodes small, handheld motion encodes large. The render time scales with timeline length and the number of clips visible at once, because every frame of every visible clip is decoded and composited before the encoder sees it.',
+      },
+      {
+        title: 'A 20-minute podcast exported as MP3 and as WAV',
+        body:
+          'An audio-only project (two voice tracks, an intro sting, podcast loudness preset) skips the video graph entirely. Exported as MP3 the file is libmp3lame at a constant 192 kb/s: 192,000 x 1,200 / 8 = 28.8 MB, so about 29 MB. Exported as WAV it is 16-bit PCM at the graph\'s 48 kHz stereo: 48,000 x 2 channels x 2 bytes = 192,000 bytes a second, 230 MB for 20 minutes. The loudnorm stage targets -16 LUFS integrated with a -1.5 dBTP ceiling and 11 LU of loudness range. With no frames to composite the job is bounded by decoding the sources and the audio filters, so it finishes well inside the length of the episode.',
+      },
+    ],
+    whenNotToUse:
+      'Darkroom is the wrong tool for a one-step job. If you only need to cut the start and end off a clip, change its format or shrink it, the single-purpose video trimmer and compressor pages do that with one upload and no project. It is also not a place for footage you cannot upload: every source is sent to our server for proxies and rendering, so material that must never leave your machine belongs in a desktop editor. Projects on a guest session are limited to one and last 24 hours; sign in before starting anything you want to return to next week.',
     primaryKeyword: 'online video editor',
     secondaryKeywords: [
       'multi-track video editor',
@@ -438,13 +474,13 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Start a new drawing or reopen a recent one. The editor opens full screen; your work is kept in this browser, and signed-in users can save it to their account.',
     },
     intro:
-      `${MOTION_BRAND} is an SVG editor with an animation timeline, built into Media Manipulator. Open an SVG file (or a Lottie animation) and every shape becomes a layer you can select, move, recolour and animate, or start from a blank canvas and draw with the rectangle, ellipse, line, pen and text tools. Each animated property gets its own track of keyframes, with easing presets, a curve editor for custom easing, and hold keys for instant jumps. One-click animators add stroke draw-on, motion along a path, shape morphing, gradient colour changes, mask animation and blur. When it moves the way you want, export it as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. Editing and every export run in your browser, so your artwork is never uploaded to export it.`,
+      `${MOTION_BRAND} is an SVG editor with an animation timeline, built into Media Manipulator. Open an SVG file (or a Lottie animation) and every shape becomes a layer you can select, move, recolour and animate, or start from a blank canvas and draw with the rectangle, ellipse, line, pen and text tools. Each animated property gets its own track of keyframes, with easing presets, a curve editor for custom easing, and hold keys for instant jumps. One-click animators add stroke draw-on, motion along a path, shape morphing, gradient colour changes, mask animation and blur. When it moves the way you want, export it as an animated SVG, a Lottie file, a React component, a JavaScript or TypeScript module, a Flutter widget or a GIF. Editing and every export run in your browser, so your artwork is never uploaded to export it; the server is only asked to count the export against your daily allowance.`,
     whatItDoes: [
-      'Imports SVG files into an editable layer tree (groups, paths, shapes, text, images, gradients, masks and clip paths) and imports Lottie JSON animations with their keyframes.',
+      'Imports SVG files into an editable layer tree (groups, paths, shapes, text, images, gradients, masks and clip paths) and imports Lottie JSON animations with their keyframes, each file up to 4 MB.',
       'Draws new artwork with rectangle, ellipse, line, pen (Bézier) and text tools, and edits path nodes directly on the canvas.',
       'Animates position, scale, rotation, skew, opacity, fill, stroke and stroke width on a keyframe timeline with linear, ease-in, ease-out, ease-in-out, custom cubic-bezier and hold easing.',
-      'Adds advanced animation in one click: stroke draw-on, motion along a path with optional auto-rotate, shape morphing, gradient stop colours, mask and clip-path animation, and blur.',
-      'Exports a static SVG (always free), an animated SVG that plays without any library, Lottie JSON, a React component, a JavaScript or TypeScript module, a Flutter widget and an animated GIF.',
+      'Adds six one-click animators: stroke draw-on, motion along a path with optional auto-rotate, shape morphing, gradient stop colours, mask and clip-path animation, and blur.',
+      'Exports a static SVG (always free and never counted), an animated SVG that plays without any library, Lottie JSON, a React component, a JavaScript or TypeScript module, a Flutter widget and an animated GIF, all generated on your machine.',
     ],
     flowSteps: [
       {
@@ -461,20 +497,21 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       },
       {
         title: 'Export',
-        description: 'Download animated SVG, Lottie, React, JS/TS, Flutter or GIF, made in your browser.',
+        description: 'Choose a format; the server counts one export, then your browser builds and downloads the file.',
       },
     ],
     advancedDetails: [
-      'The animated SVG export uses pure CSS keyframes whenever every effect can be expressed in CSS in Chrome, Firefox and Safari. Shape morphs, moving gradient stops and blur need a small script, so those files embed a trimmed copy of anime.js (MIT licence, about 14 KB compressed) with its licence notice at the top.',
+      'The animated SVG export uses pure CSS keyframes whenever every effect can be expressed in CSS in Chrome, Firefox and Safari. Shape morphs, moving gradient stops and blur need a script, so those files embed a trimmed copy of anime.js (MIT licence, about 31 KB of script, roughly 13 KB after gzip) with its licence notice at the top.',
       'Shape morphing normalises both shapes to the same number of curve segments and lines up their start points and winding, so the morph does not twist. Two shapes that cannot be matched hold instead of morphing.',
-      'The Lottie writer targets the Lottie 1.0.1 specification and the LottieFiles "Basic" feature set. Anything Lottie cannot carry (such as filters, text or advanced masks) is listed after the download; nothing is dropped silently.',
-      'GIF export uses an encoder written for Media Manipulator, with one global palette built from frames across the animation, so flat vector art keeps its exact colours.',
-      'Imported SVGs are cleaned on the way in: scripts, event handlers, external references and other unsafe content are removed, and the editor rebuilds unsupported markup from an allow-list instead of inserting it as HTML.',
+      'The Lottie writer targets the Lottie 1.0.1 specification and the LottieFiles "Basic" feature set. Anything Lottie cannot carry (such as filters, text or advanced masks) is listed after the download; nothing is dropped silently. The reader uses the same list in the other direction.',
+      'GIF export renders frames one at a time, transfers each to a Worker, and encodes with an encoder written for Media Manipulator: one global palette sampled from five frames spread across the span, dithering off by default (flat vector art has few colours and dither adds noise), a frame delay of round(100 / fps) centiseconds, and transparency kept only when the canvas background is transparent. Output is capped at 2 GB and the dialog shows a size estimate before you start.',
+      'Imported SVGs are cleaned on the way in: scripts, event handlers, external references and other unsafe content are removed, and the editor rebuilds unsupported markup from an allow-list instead of inserting it as HTML. Markup it cannot model is kept as an opaque layer that round-trips unchanged.',
+      'The export counter is a single database transaction: the format lock and the caps are checked, then the counter and an export row are written together. A refused export writes nothing and costs nothing; an export the browser then cancels or fails has already been counted.',
     ],
     whyItMatters: [
       'Animated SVGs stay sharp at every size and are usually far smaller than a video or GIF of the same animation, which makes them ideal for logos, icons, loaders and illustrations on the web.',
       'Developers need animation as code, not just as a video: a React component, a JavaScript module, a Lottie file or a Flutter widget drops straight into an app.',
-      'Doing the export in the browser means your artwork stays on your device; only a count of each export is sent to us, to enforce the daily allowance.',
+      'Doing the export in the browser means your artwork stays on your device; only the format, size, length and time of each export are sent to us, to enforce the daily allowance.',
     ],
     useCases: [
       {
@@ -495,44 +532,52 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       },
     ],
     whyMediaManipulator: [
-      'A real layer-and-keyframe editor with holds, custom curves and advanced animators, not a template gallery.',
+      'A real layer-and-keyframe editor with holds, custom curves and six animators, not a template gallery.',
       'Exports for designers and developers alike: animated SVG, Lottie, React, JavaScript or TypeScript, Flutter and GIF from one project.',
       'Exports are made in your browser, and the only third-party code an export uses is permissively licensed (anime.js under MIT; flutter_svg and webview_flutter for Flutter), with its licence notice kept in the file.',
     ],
     privacyNote:
-      'Editing and exporting happen in your browser; your artwork is not uploaded to export it. Without an account, projects are kept only in this browser. If you sign in and save a project to your account, it is stored on our servers like a Darkroom project, follows the retention period you choose, and can be deleted from your Account page. For each export we record only its format, size, length and time, to enforce the daily allowance.',
+      'Editing and exporting happen in your browser; your artwork is not uploaded to export it. Without an account, projects are kept only in this browser. If you sign in and save a project to your account, the sanitised document (up to 4 MB) and a thumbnail are stored on our servers like a Darkroom project, follow the retention period you choose, and can be deleted from your Account page. For each counted export we record only its format, height, frame rate, length and time, with your account or session as the owner, to enforce the daily allowance; the export row never contains the artwork.',
     faq: [
       {
         question: `Is ${MOTION_BRAND} free?`,
-        answer: `Yes. Opening ${MOTION_BRAND}, drawing, animating, saving and exporting a static SVG are free and unlimited, with no account. Animated exports count toward a daily allowance that depends on your plan; the plan table on this page shows each plan's allowance and formats.`,
+        answer:
+          `Yes. Opening ${MOTION_BRAND}, drawing, animating, saving in this browser and exporting a static SVG are free, unlimited and need no account. Animated exports count toward a daily allowance that depends on your plan: by default 2 a day without an account (animated SVG only), 5 with a free account, 30 with Premium and 150 with Pro. The plan table on this page shows each plan's live allowance and formats.`,
       },
       {
         question: 'Which formats can I export?',
-        answer: 'Static SVG, animated SVG (CSS, or a small inline script when needed), Lottie JSON, a React component (.tsx), a JavaScript or TypeScript module, a Flutter widget (.dart) and an animated GIF. Which of these your plan includes, and the daily number of exports, are shown in the plan table on this page.',
+        answer:
+          'Static SVG, animated SVG (CSS, or a small inline script when needed), Lottie JSON, a React component (.tsx), a JavaScript or TypeScript module, a Flutter widget (.dart) and an animated GIF. By default animated SVG is on every plan, Lottie from the free account up, and React, JS/TS, Flutter and GIF from Premium up. Which of these your plan includes, and the daily number of exports, are shown in the plan table on this page.',
       },
       {
         question: 'What are the limits?',
-        answer: 'Animated exports are counted per day and reset at midnight UTC. Visitors without an account can save projects only in their browser; signed-in plans save a number of projects to the account. Visitors also have a maximum animation length for export, and GIF export has a size and length cap. Every current number is in the plan table on this page and on the pricing page.',
+        answer:
+          'Animated exports are counted per day and reset at midnight UTC; a refused export is not counted, but an export you cancel after the count has been taken is. Visitors without an account save projects only in their browser and can export animations up to 10 seconds long; a free account saves 3 projects to the account, Premium 25, Pro without limit. SVG and Lottie imports are capped at 4 MB each, GIF export at 50 fps and 2 GB of output. Every current number is in the plan table on this page and on the pricing page.',
       },
       {
         question: 'Can I animate an SVG I already have?',
-        answer: 'Yes. Import any SVG and its groups, paths, shapes, text, gradients, masks and clip paths become editable layers. Parts the editor cannot edit, such as patterns or complex filters, are kept and exported unchanged, and anything unsafe (scripts or external links) is removed and listed after the import.',
+        answer:
+          'Yes. Import any SVG and its groups, paths, shapes, text, gradients, masks and clip paths become editable layers. Parts the editor cannot edit, such as patterns or complex filters, are kept and exported unchanged, and anything unsafe (scripts, event handlers or external links) is removed and listed after the import.',
       },
       {
         question: 'Does it support Lottie?',
-        answer: 'Yes, in both directions. You can import a Lottie JSON file to edit it, and export your animation as Lottie JSON for lottie-web and the iOS, Android and Flutter Lottie players. Features one side cannot represent are listed in the dialog instead of being dropped silently.',
+        answer:
+          'Yes, in both directions. You can import a Lottie JSON file to edit it (the import counts as one unit on the free plan and up), and export your animation as Lottie JSON for lottie-web and the iOS, Android and Flutter Lottie players. Features one side cannot represent are listed in the dialog instead of being dropped silently.',
       },
       {
         question: 'Which browsers support video export?',
-        answer: 'GIF export works in all modern browsers. MP4 and WebM export rely on WebCodecs, the browser\'s built-in video encoder, which is available in Chrome and Edge and in recent versions of Safari and Firefox depending on the codec; the export dialog checks your browser and says when it cannot encode. The plan table on this page shows which plan includes each video format.',
+        answer:
+          'GIF export works in all modern browsers. MP4 and WebM export rely on WebCodecs, the browser\'s built-in video encoder, which is available in Chrome and Edge and in recent versions of Safari and Firefox depending on the codec; the export dialog checks your browser and says when it cannot encode. The plan table on this page shows which plan includes each video format.',
       },
       {
         question: 'What licence applies to the exported code?',
-        answer: 'Your animation belongs to you. When an animated SVG or a code export needs a runtime, it uses anime.js, which is MIT-licensed; its copyright notice is written at the top of the file and must be kept there. Flutter exports use the flutter_svg (MIT) or webview_flutter (BSD-3-Clause) package. Everything else in the file is generated from your project. The open-source libraries the editor uses are listed on our licences page.',
+        answer:
+          'Your animation belongs to you. When an animated SVG or a code export needs a runtime, it uses anime.js, which is MIT-licensed; its copyright notice is written at the top of the file and must be kept there. Flutter exports use the flutter_svg (MIT) or webview_flutter (BSD-3-Clause) package. Everything else in the file is generated from your project. The open-source libraries the editor uses are listed on our licences page.',
       },
       {
         question: 'Where are my projects stored?',
-        answer: 'Without an account, projects are kept only in this browser, so clearing your browser data removes them. When you are signed in you can save a project to your account; it then syncs between devices, autosaves while you work, follows the retention period you chose and can be deleted from your Account page.',
+        answer:
+          'Without an account, projects are kept only in this browser, so clearing your browser data removes them. When you are signed in you can save a project to your account; it then syncs between devices, autosaves while you work, follows the retention period you chose and can be deleted from your Account page.',
       },
     ],
     related: [
@@ -547,7 +592,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         description: 'Edit video on a multi-track timeline and export MP4.',
       },
       {
-        label: 'Convert Video to Animated GIF',
+        label: 'Convert video to animated GIF',
         to: '/tools/convert-video-to-animated-gif',
         description: 'Turn a video clip into a GIF when your animation started as footage.',
       },
@@ -557,6 +602,21 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         description: 'The libraries the editor runs and writes into your exports.',
       },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 2-second logo draw-on as animated SVG',
+        body:
+          'A wordmark of a few paths with the Draw on animator across 2,000 ms, exported as animated SVG. Draw-on is a stroke-dasharray and stroke-dashoffset animation, which CSS can express in every major browser, so the exporter writes a <style> block of @keyframes and no script at all. The file is your SVG plus a few hundred bytes of CSS, it plays the moment it is in the page, and it counts as one svg_animated export: without an account that is one of 2 a day and within the 10-second length cap for visitors; with a free account one of 5. The export is a string transform in your browser and completes at once.',
+      },
+      {
+        title: 'A 400 x 400 morph loop as a GIF',
+        body:
+          'A 2-second shape morph on a 400 x 400 canvas exported as GIF at 25 fps on a Premium plan (GIF is a Premium format by default). The dialog clamps to the plan\'s height and frame-rate presets, 25 fps giving a delay of round(100 / 25) = 4 centiseconds per frame and 50 frames in all. Its size estimate is pixels x frames x 0.25 bytes + 1 KB: 160,000 x 50 x 0.25 is about 2 MB, deliberately on the high side, and flat two-colour art usually lands well under it. Frames render on the main thread and encode in a Worker one at a time, so memory stays at a couple of frames plus the growing file; the time is spent rasterising 50 frames of SVG, a few seconds on a laptop.',
+      },
+    ],
+    whenNotToUse:
+      `${MOTION_BRAND} animates vector artwork; it does not edit video or photographs. If your starting point is footage, Darkroom is the editor and the video-to-GIF page turns a clip into a GIF. It is also not a vectoriser for complex raster images: a photograph traced to paths will be heavy and the result will not animate meaningfully. Animations that depend on filters, text effects or advanced masks will not survive a Lottie export intact (the dialog lists what was dropped), so for those targets keep to the animated SVG, React or JavaScript exports. And MP4 or WebM output depends on your browser's WebCodecs support and on your plan, so check the plan table before planning a video deliverable.`,
     primaryKeyword: 'svg animation editor',
     secondaryKeywords: [
       'animate svg online',
@@ -606,7 +666,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   // ----------------------------------------------------------------------- METADATA / PRIVACY
   {
     slug: 'remove-exif-metadata',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Remove EXIF Metadata from Images',
     h1: 'Remove EXIF Metadata from Images Online',
     tagline:
@@ -628,110 +688,150 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a JPG, PNG, WebP, or HEIC photo. We show every tag it carries, then press Strip everything to remove them all and see exactly what was removed.',
     },
     intro:
-      'Every photo you take stores hidden information about it — the camera you used, the exact time, and often the GPS coordinates of where the photo was taken. This metadata can leak your home address, daily routine, or device details whenever you share a picture online. Media Manipulator strips all of that out and gives you a clean image safe to publish.',
+      'A photo carries a second document inside it. Alongside the pixels, a phone or camera writes the make and model of the device, often its serial number, the lens, the exposure, the exact second the shutter fired, the software that last saved the file, a small preview thumbnail, and, when location services were on, the latitude, longitude and altitude of the spot you were standing on. This tool reads all of that out of a JPG, PNG, WebP or HEIC, shows you every tag grouped by what it reveals, and then removes the lot with a single pass of ExifTool so the copy you share carries only the picture.',
     whatItDoes: [
-      'Removes EXIF tags including camera make/model, exposure settings, and embedded thumbnails.',
-      'Strips GPS location data: latitude, longitude, altitude, capture direction, and GPS timestamps.',
-      'Removes IPTC and XMP metadata such as author, copyright, keywords, and descriptions.',
-      'Preserves the original visual content — only the hidden metadata sidecar is touched.',
+      'Inspects the upload with ExifTool and lists every tag it finds, grouped into categories (camera, lens, GPS, date and time, XMP, IPTC, thumbnail, colour, maker notes and more) with location, identity, device and history tags flagged.',
+      'Removes the EXIF blocks (IFD0 and ExifIFD: make, model, body serial number, lens model, exposure, ISO, focal length, capture and modification dates) and the GPS IFD (latitude, longitude, altitude, their reference tags, GPS timestamps).',
+      'Removes the IFD1 embedded preview thumbnail, which is a separate small copy of the image that survives cropping in many editors.',
+      'Removes XMP packets (creator tool, edit history, keywords, ratings), IPTC records (author, copyright, caption), Photoshop resource blocks, vendor maker notes and the ICC colour profile.',
+      'Applies the EXIF orientation to the pixels first, so a phone photo that relied on the rotation tag does not come out sideways once the tag is gone.',
+      'Counts what was removed by comparing the before and after reports and shows the number, with a note when location tags were among them.',
     ],
     flowSteps: [
       {
-        title: 'Upload image',
-        description: 'Drop in any JPG, PNG, WebP, or HEIC photo.',
+        title: 'Upload the photo',
+        description: 'Drop in a JPG, PNG, WebP or HEIC. The server runs ExifTool twice (a readable pass and a numeric pass for GPS and exposure values) and returns the report.',
       },
       {
-        title: 'Read metadata',
-        description: 'We read EXIF/IPTC/XMP fields on our servers and list them, with the private ones flagged.',
+        title: 'Read the report',
+        description: 'Tags are grouped by category; GPS coordinates are plotted on a locator so you can see exactly what the file gives away.',
       },
       {
-        title: 'Remove private fields',
-        description: 'GPS, device, and timestamp tags are stripped.',
+        title: 'Strip everything',
+        description: 'One click re-saves the image with ImageMagick and runs exiftool -all= over the result.',
       },
       {
-        title: 'Download clean image',
-        description: 'Save the metadata-free copy for safe sharing.',
+        title: 'Compare and download',
+        description: 'The result screen reports how many tags went, offers a side-by-side diff of the two reports, and gives you the clean file.',
       },
     ],
     advancedDetails: [
-      'Stripping is performed with ImageMagick + exiftool on the server, ensuring every common metadata profile (EXIF, IPTC, XMP, ICC, MakerNote) is removed.',
-      'The output container is preserved by default — JPG stays JPG, PNG stays PNG — so re-encoding artifacts are minimal.',
-      'If you want to keep ICC color profiles but drop everything else, use the Metadata section\'s "Custom" mode to keep only the fields you care about.',
+      'The pixel pass is ImageMagick: convert <input> -auto-orient -quality 85 <output>, with the output container matching the input for JPG, PNG, WebP, GIF and AVIF. HEIC, TIFF and BMP have no same-container path on this page and come back as JPG.',
+      'The metadata pass is exiftool -overwrite_original -all= on the converted file. -all= removes every writable group in one go: EXIF (IFD0, ExifIFD, GPS, InteropIFD), the IFD1 thumbnail, XMP, IPTC, Photoshop IRB, ICC_Profile, maker notes and any APP segments ExifTool knows how to write. The JFIF and Adobe APP14 segments a JPEG decoder needs are left in place; they describe pixel layout, not you.',
+      'Because the image is re-encoded, a JPG is written again at quality 85 and a PNG is written again losslessly. The strip is not a byte-for-byte copy with the metadata cut out.',
+      'The before and after reports are the same MetadataDocument the inspector builds: group-keyed entries such as GPS:GPSLatitude or XMP-xmpMM:History, each classified by a catalogue of about 1,800 tags into 22 categories and four privacy classes (location, identity, device, history).',
+      'The removed count excludes rows that change on every conversion (file name, size, modification date, MIME type, image size), so it reflects metadata that was actually dropped rather than bookkeeping.',
+      'Video and audio containers can be stripped too, from the video and audio converters: ffmpeg is run with -map_metadata -1 -map_chapters -1, and for MP4, MOV, M4A and M4V an exiftool -all= pass follows because ffmpeg leaves QuickTime keys and XMP behind.',
     ],
     whyItMatters: [
-      'Photos uploaded straight from a phone can reveal the exact GPS coordinates of your home or workplace.',
-      'EXIF data persists when you message, email, or upload an image to most websites — even some social networks keep it intact.',
-      'Stripping metadata is the simplest way to make a photo safe to share without changing what it looks like.',
+      'GPS tags resolve to a street address. A photo of a sofa for sale, posted from home, can tell a stranger where the sofa is.',
+      'Device and serial-number tags link photos to each other and to you. Two images with the same BodySerialNumber were taken with the same camera, whatever account posted them.',
+      'The IFD1 thumbnail is a copy of the original frame. Crop a face or a document out of the picture and the preview may still show it.',
+      'Many sites strip EXIF on upload and many do not. Messaging apps, email attachments, cloud shares and marketplaces frequently pass the file through untouched.',
     ],
     useCases: [
       {
-        title: 'Posting on forums or marketplaces',
-        description: 'Hide your home GPS coordinates from buyers, members, or strangers.',
+        title: 'Marketplace and classified listings',
+        description: 'Remove the location and capture time from product photos taken at home before buyers see them.',
       },
       {
-        title: 'Sharing photos publicly',
-        description: 'Remove camera serial numbers, lens info, and capture times from publicly posted photos.',
+        title: 'Photos of documents',
+        description: 'A snapshot of a form or a letter also records when and where it was photographed; strip that before sending it on.',
       },
       {
-        title: 'Journalism and source protection',
-        description: 'Scrub identifying device/GPS metadata before publishing a sensitive image.',
+        title: 'Publishing from a sensitive location',
+        description: 'Drop device identifiers and coordinates from an image before it leaves your control, and verify with the diff that they are gone.',
       },
       {
-        title: 'Selling a product',
-        description: 'Remove the embedded thumbnail and EXIF data before listing on a marketplace.',
+        title: 'Cleaning an edited image',
+        description: 'Editors append XMP history and keep the original thumbnail; remove both so the file only shows what you intended.',
       },
     ],
     whyMediaManipulator: [
-      'Runs entirely on our own infrastructure — no third-party metadata service sees your photo.',
-      'Strips every common metadata profile, not just the EXIF block.',
-      `Free, no signup, no watermarks. ${RETENTION_PROMISE}.`,
+      'You see the evidence. The inspector lists every tag before you strip and a diff proves what went after, rather than a green tick and a promise.',
+      'One pass, every group. ExifTool -all= removes EXIF, GPS, XMP, IPTC, Photoshop, ICC, maker notes and the preview thumbnail together; nothing has to be ticked one block at a time.',
+      'Orientation is handled. The rotation tag is applied to the pixels before it is removed, which is the usual way a stripped phone photo ends up on its side elsewhere.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `This tool removes, from the copy it returns, the EXIF blocks (camera make, model, serial number, lens, exposure, dates), the GPS block, the IFD1 preview thumbnail, XMP and IPTC records, Photoshop resources, maker notes and the ICC profile. To do that the server has to read them first: the upload is inspected with ExifTool and the report is written to the job folder as metadata.json, and after the strip a second report of the result is kept beside it so the Compare view can show the difference. Both reports and both files live in uploads/<jobId>/ and outputs/<jobId>/ and are deleted together when the retention window ends. ${RETENTION_PROMISE}. The stand-alone inspector (reading a file without converting it) removes its temporary copy as soon as the report is produced. Images also pass through an automated analysis step on our own server; nothing is sent to a third party.`,
     faq: [
       {
-        question: 'What metadata gets removed?',
+        question: 'Exactly which metadata groups are removed?',
         answer:
-          'EXIF (camera, exposure, GPS, timestamps), IPTC (author, copyright, keywords), XMP, embedded thumbnails, and most MakerNote vendor blocks.',
+          'Everything ExifTool can write: EXIF (IFD0, ExifIFD, InteropIFD), the GPS IFD, the IFD1 thumbnail, XMP in all its namespaces (xmp, dc, xmpMM, photoshop, and so on), IPTC IIM records, Photoshop resource blocks, maker notes from Apple, Canon, Nikon, Sony and other vendors, and the ICC colour profile. For PNG that includes the tEXt, iTXt, zTXt, eXIf and iCCP chunks; for WebP the EXIF, XMP and ICCP chunks.',
       },
       {
-        question: 'Will the image quality change?',
+        question: 'Does the image get re-encoded?',
         answer:
-          'No — we keep the original encoding when possible. JPG stays JPG without re-compressing twice, PNG stays PNG.',
+          'Yes. The file goes through ImageMagick (which also applies the orientation tag to the pixels) before ExifTool removes the tags. A JPG is rewritten at quality 85, a PNG is rewritten losslessly, a WebP at quality 85. Visually the JPG re-encode is hard to tell from the original at normal viewing sizes, but it is not the identical bitstream.',
       },
       {
-        question: 'Can I keep some metadata, like copyright?',
+        question: 'Why did my HEIC come back as a JPG?',
         answer:
-          'Yes. Use the "Custom" metadata mode in the form and keep only the IPTC fields you want to publish.',
+          'The one-click strip keeps the container for JPG, PNG, WebP, GIF and AVIF. HEIC, TIFF and BMP are decoded and written as JPG so the result opens everywhere. If you need a HEIC back, convert it in the image converter with metadata set to Strip.',
       },
       {
-        question: 'Are my uploads kept?',
+        question: 'Will the colour profile be removed, and does that matter?',
         answer:
-          `No — files are never shared with third-party providers. ${RETENTION_PROMISE}.`,
+          'Yes, exiftool -all= removes the ICC profile. For a standard sRGB photo nothing changes, because viewers assume sRGB when no profile is present. For a wide-gamut Display P3 photo from a recent phone, colours may look slightly less saturated in software that honours profiles. If that matters to you, use the image converter\'s Custom metadata mode and keep the profile there.',
+      },
+      {
+        question: 'Can I keep a copyright line or a title?',
+        answer:
+          'Not with the one-click strip, which removes everything. The image converter\'s metadata section has a Custom mode that strips the file and then writes back only what you type: title, author, description, copyright, comment, keywords and chosen EXIF or GPS fields. Use that when you want a clean file that still names you.',
+      },
+      {
+        question: 'How do I know it worked?',
+        answer:
+          'The result screen gives the number of tags removed and flags when location data was among them. Open Compare for the full before and after: it is the same ExifTool report run on the output file, so a GPS or serial-number row that survived would show up there.',
+      },
+      {
+        question: 'Is it free, and how many photos can I strip?',
+        answer:
+          'Yes. Each strip is one upload through the standard converter, so it counts against the daily operations allowance: by default 5 a day without an account and up to 200 MB per file, 30 a day with a free account and files up to 1 GB, 300 with Premium and 700 with Pro. A job that fails gives its unit back. The live numbers are on the pricing page.',
       },
     ],
     related: [
       {
-        label: 'Image converter',
-        to: '/tools/image-converter',
-        description: 'Convert between JPG, PNG, WebP, AVIF, GIF, and more.',
+        label: 'Blur faces in a photo',
+        to: '/tools/blur-faces-in-photo',
+        description: 'Metadata is only half the story; hide the faces the picture itself shows.',
       },
-      // Hidden during AdSense review — re-enable when the blog returns.
-      // {
-      //   label: 'Image optimization guide',
-      //   to: '/blog/image/image-optimization-guide',
-      //   description: 'JPG vs PNG vs WebP and how to shrink images for the web.',
-      // },
       {
-        label: 'Image converter tutorial',
-        to: '/tutorials/image/getting-started',
-        description: 'Full walkthrough of every option in the image converter.',
+        label: 'Redact text in an image',
+        to: '/tools/redact-text-in-image',
+        description: 'Black out names, addresses and numbers printed in the picture.',
+      },
+      {
+        label: 'Compress image',
+        to: '/tools/compress-image',
+        description: 'Shrink the cleaned photo before posting it.',
+      },
+      {
+        label: 'Image to PDF',
+        to: '/tools/image-to-pdf',
+        description: 'Bundle stripped photos of documents into one PDF.',
       },
       {
         label: 'Privacy policy',
         to: '/privacy-policy',
-        description: 'How uploaded files are processed and deleted.',
+        description: 'How uploads, reports and results are stored and deleted.',
       },
     ],
+    workedExamples: [
+      {
+        title: 'A 12-megapixel iPhone JPEG with GPS',
+        body:
+          'A 4032 x 3024 JPEG straight from an iPhone 15 Pro carries, in a typical case, 5 IFD0 tags (make, model, orientation, software, modify date), 7 ExifIFD tags including the body serial number and lens model, 5 GPS tags, 4 XMP entries including edit history, 2 ICC profile entries, the 3 IFD1 thumbnail entries (about 5 KB of preview JPEG) and a derived GPSPosition. The result screen reports 27 tags removed, including location: those 27 are every entry except the file name, size, date and type rows and the image size, which exist on any file. The output is a JPG re-encoded at quality 85 with the orientation baked into the pixels; the re-encode decides the final size. The job is a single ImageMagick decode and encode plus one ExifTool rewrite, so it finishes in a few seconds and the time is spent on the pixels, not the tags.',
+      },
+      {
+        title: 'A HEIC from a recent phone',
+        body:
+          'HEIC has no same-container path on this page, so a 12-megapixel HEIC is decoded by ImageMagick and written as a JPG at quality 85, then stripped with exiftool -all=. You lose the HEIC container and its colour profile and gain a file every browser and marketplace accepts. Expect a larger file than the HEIC you uploaded, because the JPEG re-encode at quality 85 is the only compression applied and it decides the size. The report lists the Apple maker notes and GPS block before, and nothing but file and image-size rows after. The HEIC decode is the slow part; it is still a matter of seconds for one photo.',
+      },
+    ],
+    whenNotToUse:
+      'Do not strip a photo you still need to edit or prove the provenance of. Camera RAW files are not accepted here and should not be stripped with -all= anyway, because their maker notes hold data the RAW converter needs. If you want to keep a copyright notice or a title while dropping GPS and device tags, use the image converter\'s Custom metadata mode instead, which strips everything and writes back only the fields you fill in. And remember that removing metadata does not remove what is visible in the picture: a street sign, a reflection or a face still says where you were; the face blur and text redaction tools handle those.',
     primaryKeyword: 'remove EXIF metadata',
     secondaryKeywords: [
       'strip GPS from photo',
@@ -8630,7 +8730,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'ai-document-scan',
-    lastReviewed: '2026-10-23',
+    lastReviewed: '2026-10-29',
     name: 'AI Document Scan',
     h1: 'AI Document Scan — Scanned Pages & Handwriting to Searchable PDF / Word',
     tagline:
@@ -8650,79 +8750,79 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Add one or more scanned page images (printed documents or handwritten notes), reorder them if needed, choose a content mode and outputs, and get a searchable PDF plus an optional Word document.',
     },
     intro:
-      'AI Document Scan turns one or more scanned pages into a searchable, multi-page PDF and, optionally, an editable Word (DOCX) document. It handles two very different kinds of page and is honest about the difference. Printed/typed pages go through deterministic OCR (OCRmyPDF + Tesseract): the PDF is the original scan with an invisible, searchable text layer grafted underneath — the resolution is untouched and nothing is rewritten. Handwritten pages (detective field notes, a notebook, scratch paper, a napkin) are read by a vision-language AI that transcribes the writing verbatim, marking anything it cannot read as [illegible] and uncertain words as [?: best guess] — it never invents or "cleans up" what you wrote. A single job can mix both, page by page, and assemble one ordered output. Everything runs on our own GPU server, never a third-party API.',
+      'AI Document Scan turns one or more photographed or scanned pages into a searchable, multi-page PDF and, if you ask for it, an editable Word document. It treats two kinds of page differently and tells you which is which. Printed or typed pages go through OCRmyPDF and Tesseract: the output page is your scan, untouched, with an invisible text layer underneath so you can search, select and copy. Handwritten pages are read by a vision-language model running on our own GPU, which transcribes the writing word for word, marks what it cannot read as [illegible] and wraps a doubtful word as [?: best guess], and is told never to complete, correct or tidy anything. A single job can mix both kinds, page by page, in the order you set, and the result names the engine and the confidence for every page.',
     whatItDoes: [
-      'Converts a scanned image (or many) into a searchable, multi-page PDF — selectable, copy-pasteable text over the original scan.',
-      'Transcribes handwritten notes to text: the PDF keeps the original scan as the visible page and overlays an invisible machine-transcription layer so it is searchable, clearly labeled as a machine transcription.',
-      'Optionally produces an editable Word (DOCX) document — printed pages reconstructed with structure (headings, lists, tables), handwriting as the verbatim transcription, each labeled a reconstruction.',
-      'Auto mode classifies each page as printed or handwritten and routes it to the right engine, so mixed documents come out as one ordered file.',
-      'Lets you drag-reorder pages before processing and pick output language(s) for printed OCR.',
-      'Preserves uncertainty: [illegible] and [?: guess] markers survive end to end, and a per-page confidence note is shown — nothing is fabricated.',
+      'Accepts up to 50 page images per job (PNG, JPEG, WebP, TIFF, BMP or HEIC, 25 MB each by default), normalises each to an upright PNG, and lets you drag them into reading order first.',
+      'In Auto mode asks the vision model one question per page (printed or handwritten?) and routes the page accordingly; Printed and Handwriting modes force the answer.',
+      'Builds a PDF/A in which every printed page is the original scan plus a Tesseract text layer, and every handwritten page is the scan plus an invisible machine-transcription layer placed line by line, with a visible footer saying so.',
+      'Optionally builds a Word document: printed pages reconstructed as headings, lists and tables by PaddleOCR-VL (or Docling), handwritten pages as the verbatim transcription under a bold verify-against-the-scan note, rendered by Pandoc.',
+      'Reports, per page, the engine used, a confidence of high, medium or low, and the number of uncertainty markers, so you know where to look.',
+      'Can run a verification pass that re-reads only the flagged tokens, an independent second opinion that flags disagreements as [?: vlm | other], and a separately labelled AI summary, when the server has those engines enabled.',
     ],
     flowSteps: [
       {
         title: 'Add your pages',
-        description: 'Drop in one or more scanned images (PNG, JPEG, WebP, TIFF, BMP, HEIC) — printed pages, handwritten notes, or a mix.',
+        description: 'Drop in one page image per file, printed or handwritten or a mix, and drag them into order.',
       },
       {
-        title: 'Reorder if needed',
-        description: 'Drag pages into the right reading order before anything is processed.',
+        title: 'Choose mode and outputs',
+        description: 'Auto, Printed or Handwriting; PDF always, Word optionally; the Tesseract language for printed pages; deskew and auto-rotate for printed OCR.',
       },
       {
-        title: 'Choose mode & outputs',
-        description: 'Pick Auto, Printed, or Handwriting; choose a searchable PDF and optionally a Word document, plus language(s) for printed OCR.',
+        title: 'Prepare and read',
+        description: 'Pages are auto-oriented and, for handwriting, upscaled 2x with Real-ESRGAN before the model reads them; printed pages wait for Tesseract in the PDF step.',
       },
       {
-        title: 'Watch the pipeline run',
-        description: 'A live checklist tracks classification, reading, verification, and packaging with rising progress.',
+        title: 'Build the files',
+        description: 'OCRmyPDF and reportlab make the per-page PDFs, pikepdf merges them; the Word document is assembled from Markdown by Pandoc.',
       },
       {
-        title: 'Review & download',
-        description: 'A built-in PDF viewer opens on completion; download the searchable PDF and, if requested, the Word document and a separate AI summary.',
+        title: 'Review and download',
+        description: 'A viewer opens on the PDF; download it, the Word file if requested, and the manifest that records each page\'s engine and confidence.',
       },
     ],
     advancedDetails: [
-      'Printed PDF is faithful: OCRmyPDF grafts an invisible Tesseract text layer under the original scan and outputs PDF/A — the scanned pixels are never altered, only made searchable.',
-      'Handwriting PDF is the original scan plus an invisible machine-transcription layer positioned per line from the vision model’s grounding boxes (a full-page invisible block when boxes are unavailable), with a visible "machine transcription — verify against original" stamp.',
-      'Handwriting is read by a general vision-language model (qwen3-vl) tuned for verbatim transcription; an optional second-opinion engine (PaddleOCR-VL, or TrOCR as a lighter fallback) independently re-reads the page and disagreements are flagged [?: vlm | other], never silently merged.',
-      'An optional verification pass re-reads only the tokens you flagged as uncertain and may resolve them from the image — but it is instructed to leave confident text untouched and never add content that is not visibly written.',
-      'DOCX is a reconstruction: printed pages are parsed to structured Markdown (PaddleOCR-VL preferred, Docling fallback) preserving tables and headings; handwriting sections carry the verbatim transcription with a bold "verify against the original scan" note; Pandoc renders the final .docx.',
-      'The optional AI summary is written to a separate, clearly-labeled file ("AI-generated summary — not a verbatim transcription") and never modifies the verbatim outputs.',
-      'Capabilities degrade gracefully: if the handwriting engine is offline, printed OCR still works; if no structure engine is reachable, DOCX is disabled but the PDF still ships.',
+      'Printed pages: the normalised PNG is wrapped losslessly with img2pdf, then OCRmyPDF runs Tesseract with your language code(s), deskew and rotate_pages when ticked, output_type pdfa and force_ocr, and writes the text layer under the image. If OCRmyPDF fails on a page the image-only page is kept, so the PDF is still complete.',
+      'Handwritten pages: the model is qwen3-vl (8B, instruct, q8_0 quantisation) served by Ollama at temperature 0.1, prompted to transcribe verbatim, keep line breaks, mark [illegible] and [?: guess], note marks such as (arrow) or (circled), and return JSON with the full text and one bounding box per line.',
+      'The handwriting PDF page is drawn with reportlab at the image\'s pixel size: the scan is the visible page, each transcribed line is placed at its bounding box in text render mode 3 (searchable, never drawn) in Helvetica sized to the line height between 6 and 48 points, with a full-page invisible block as fallback when no boxes came back, and a grey 8-point footer reading "Machine transcription, verify against original".',
+      'Confidence is computed, not guessed: high when a page has no markers, medium when fewer than 15 percent of its lines carry one, low otherwise. The verify pass (on by default) sends the page and the draft back to the model with instructions to resolve only marked tokens and change nothing else; if it fails the draft is kept.',
+      'Pre-cleaning for handwriting is realesrgan-x4plus at scale 2 on the Vulkan GPU, on by default for Auto and Handwriting and off for Printed; it is best effort and the originals are kept if it fails. The Word document is built from GitHub-flavoured Markdown by Pandoc; the optional summary uses a separate text model and is written to its own file with an AI-generated label.',
+      'One document job runs at a time on the server by default, each model call has a 40-minute ceiling, and the uploads and the working folder are deleted the moment the job ends; only the results folder (PDF, DOCX, manifest.json, README.txt) stays for the retention window.',
     ],
     whyItMatters: [
-      'A photo of a document is not a document: without an OCR text layer you cannot search, select, or quote it. This adds that layer while keeping the original scan as the authoritative page.',
-      'Handwritten notes are some of the hardest pages to digitize; a verbatim, uncertainty-marked transcription is far more useful — and more honest — than a confident guess.',
-      'The faithful-vs-reconstructed distinction matters for investigative and archival work: the printed PDF is faithful, the DOCX and any summary are reconstructions you should verify against the scan.',
+      'A photo of a page is not a document until it can be searched and quoted. The PDF adds that without touching the pixels, so the scan remains the authority.',
+      'Handwriting recognition that guesses confidently is worse than none. Explicit [illegible] and [?: guess] markers, a per-page confidence and a visible label make the transcription usable as a draft and never mistakable for the original.',
+      'Printed and handwritten pages need different engines. Routing each page to the right one, inside one ordered job, is what makes a notebook with a printed form and handwritten answers come out as a single file.',
     ],
     useCases: [
       {
-        title: 'Make scanned paperwork searchable',
-        description: 'Turn a stack of scanned contracts, forms, or receipts into one searchable PDF you can grep and quote.',
+        title: 'Searchable paperwork',
+        description: 'Scanned contracts, receipts and forms become one PDF/A you can search and copy from, page images untouched.',
       },
       {
-        title: 'Transcribe handwritten field notes',
-        description: 'Convert detective notes, lab notebooks, or interview scribbles into editable text with uncertainty preserved, not fabricated.',
+        title: 'Field and lab notebooks',
+        description: 'Handwritten notes become a searchable PDF and a Word draft with every uncertain word marked for you to check.',
       },
       {
-        title: 'Image to Word (OCR)',
-        description: 'Get an editable .docx from a scanned printed page, with headings, lists, and tables reconstructed.',
+        title: 'Image to Word',
+        description: 'A printed page photographed with a phone becomes an editable .docx with its headings, lists and tables reconstructed.',
       },
       {
-        title: 'OCR notebook pages',
-        description: 'Digitize mixed notebook pages — a printed form with handwritten answers — into one ordered, searchable document.',
+        title: 'Mixed documents',
+        description: 'A printed questionnaire with handwritten answers goes through both engines and comes back as a single ordered file.',
       },
       {
-        title: 'Archive and quote old documents',
-        description: 'Add a searchable text layer to scanned archival pages without touching the original scanned image.',
+        title: 'Archives',
+        description: 'Old typed letters and minutes gain a text layer for indexing while the scan stays exactly as it was.',
       },
     ],
     whyMediaManipulator: [
-      'Honest by design: the printed PDF is faithful (original scan + searchable layer), while the Word document and any AI summary are labeled reconstructions you should verify against the scan.',
-      'Verbatim, never fabricated: handwriting is transcribed exactly, with [illegible] and [?: guess] markers preserved and surfaced as a per-page confidence note — and an optional independent second opinion flags disagreements instead of hiding them.',
-      'Runs entirely on our own GPU server: your scans and notes never go to a third-party AI provider, and no login is required.',
+      'The printed PDF is faithful by construction: OCRmyPDF places text under an untouched page image and outputs PDF/A, nothing is redrawn.',
+      'Handwriting is verbatim with evidence: the prompt forbids invention, uncertainty is marked in the text, confidence is counted from those marks, and the page says it is a machine transcription.',
+      'Every engine is ours: Tesseract on CPU, qwen3-vl and the text model through Ollama, PaddleOCR-VL and Real-ESRGAN on our GPUs. No page goes to a third-party AI service.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your page images are saved to uploads/<jobId>/src/ and normalised copies to a working folder; handwritten pages are sent to the qwen3-vl model served by Ollama on our own GPU, printed pages are read by Tesseract on the CPU, and the per-page transcription drafts are kept as JSON in that working folder while the job runs. When the job ends, both the uploads and the working folder are deleted immediately; what remains is the results folder in outputs/<jobId>/ with the PDF, the Word file if requested, the manifest (per-page engine, confidence and marker counts) and a README, and that folder is removed when the retention window ends. ${RETENTION_PROMISE}. The transcribed text lives inside the PDF text layer and the DOCX you download. Nothing is sent to a third-party AI provider and nothing is used for training.`,
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp', 'heic'],
       supportedOutputFormats: ['pdf', 'docx'],
@@ -8740,61 +8840,80 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       {
         question: 'What is the difference between the PDF and the Word document?',
         answer:
-          'The PDF is the original scan with a searchable text layer. For printed pages that layer is a faithful Tesseract OCR layer; for handwriting it is a machine transcription overlaid invisibly, and the scan stays the visible, authoritative page. The Word document is a separate, editable reconstruction — printed pages with structure (headings/lists/tables) and handwriting as the verbatim transcription — which you should verify against the scan.',
+          'The PDF is your scan with a searchable text layer: a Tesseract layer under a printed page, an invisible machine transcription under a handwritten one, in both cases with the original image as the visible page. The Word document is a separate reconstruction: printed pages as headings, lists and tables produced by PaddleOCR-VL or Docling, handwritten pages as the verbatim transcription under a bold note telling you to verify it. Treat the PDF image as the authority and the DOCX as a draft.',
       },
       {
-        question: 'Does it transcribe handwriting, and can I trust it?',
+        question: 'How reliable is the handwriting transcription?',
         answer:
-          'Yes — handwritten pages are transcribed verbatim by a vision-language AI. It marks anything it cannot read as [illegible] and uncertain words as [?: best guess], and it does not invent or correct text. A per-page confidence note shows how many tokens are uncertain. Treat the transcription as a careful machine reading to verify against the original, not as ground truth.',
+          'It is a careful machine reading, not a certified transcript. The model is instructed to copy exactly what is written, to mark anything unreadable as [illegible] and any doubtful word as [?: best guess], and never to invent or correct. Each page gets a confidence (high with no markers, medium under 15 percent of lines marked, low above) and a marker count, and the PDF page carries a visible machine-transcription footer. Read the flagged words against the scan.',
       },
       {
-        question: 'Can I scan a document that mixes printed text and handwriting?',
+        question: 'Can I mix printed pages and handwritten pages?',
         answer:
-          'Yes. In Auto mode each page is classified as printed or handwritten and routed to the right engine, then everything is assembled into one ordered PDF (and Word document). A notebook with a printed form and handwritten answers is exactly the target.',
+          'Yes. In Auto mode the vision model is asked, for every page, whether it is primarily printed or handwritten, and the page goes to Tesseract or to the handwriting model accordingly. The manifest records the answer per page, and the final PDF and Word file keep the order you set before starting.',
       },
       {
-        question: 'Can I reorder the pages?',
+        question: 'Which languages does printed OCR support?',
         answer:
-          'Yes. On the dedicated tool page you can drag pages into the correct reading order before processing; the final PDF and Word document follow that order.',
+          'Tesseract language codes, joined with a plus sign for mixed pages (for example eng+fra). The codes the server offers are listed in the form; English is installed by default and others appear as they are added. Handwriting is read by a vision model and does not use these codes.',
       },
       {
-        question: 'What languages are supported for printed OCR?',
+        question: 'What are the limits per job?',
         answer:
-          'Printed OCR uses Tesseract, which supports many languages. The available language packs depend on the server; you can select one or combine several (e.g. English + French) for the printed pages.',
+          'By default 50 images and 100 pages per job, 25 MB per image, one running job at a time per server (others wait in the queue), and a 40-minute ceiling per model stage. Each job spends one AI operation: 1 a day without an account, 5 with a free account, 60 with Premium and 120 with Pro, with the unit refunded when a job fails. Live numbers are on the pricing page.',
       },
       {
-        question: 'Is the searchable PDF a faithful copy of my scan?',
+        question: 'Why does my handwriting PDF have a footer, and can I remove it?',
         answer:
-          'Yes for printed pages: OCRmyPDF adds an invisible text layer under the untouched scan and outputs PDF/A. For handwriting pages the original scan is still the visible page; the transcription is an invisible, clearly-labeled machine layer.',
+          'Every handwritten page carries a small grey "Machine transcription, verify against original" line, and the Word section has a bold equivalent, because a searchable copy of handwriting can be mistaken for a verified one. They are part of the output by design and cannot be switched off. Printed pages, whose layer is deterministic Tesseract output, carry no stamp.',
       },
       {
-        question: 'Do my files go to a third-party AI service?',
+        question: 'Do my pages leave your servers?',
         answer:
-          `No. All processing — OCR and the handwriting AI — runs on our own GPU server. ${RETENTION_PROMISE}. No account is required.`,
+          'No. Tesseract runs on the CPU, the handwriting and classification model runs through Ollama on our GPU, and the structure engine and upscaler run on a second GPU in the same machine. The uploads and working files are deleted as soon as the job finishes.',
       },
     ],
     related: [
       {
         label: 'Image to PDF',
         to: '/tools/image-to-pdf',
-        description: 'Combine images into a PDF without an OCR text layer.',
+        description: 'Bind page images into a PDF without a text layer, using an ordinary operation.',
       },
       {
         label: 'PDF to JPG',
         to: '/tools/pdf-to-jpg',
-        description: 'Go the other way — render PDF pages to images.',
+        description: 'Render an existing PDF to page images you can feed into the scan.',
       },
       {
-        label: 'AI Image Restoration',
+        label: 'AI image restoration',
         to: '/tools/ai-image-restoration',
-        description: 'Clean up and upscale a low-resolution scan before transcribing it.',
+        description: 'Repair a faded or blurry scan before transcribing it.',
       },
       {
         label: 'Remove EXIF metadata',
         to: '/tools/remove-exif-metadata',
-        description: 'Strip metadata from a scanned image before sharing.',
+        description: 'Strip location and device tags from phone photos of documents.',
+      },
+      {
+        label: 'Redact text in an image',
+        to: '/tools/redact-text-in-image',
+        description: 'Black out names or numbers on a page before you share the scan.',
       },
     ],
+    workedExamples: [
+      {
+        title: 'Three printed A4 pages at 300 dpi',
+        body:
+          'Three 2480 x 3508 JPEG scans in Printed mode, PDF only, language eng, deskew and auto-rotate on. No model is involved: each page is wrapped by img2pdf, then OCRmyPDF runs Tesseract and writes an invisible text layer, outputs PDF/A, and pikepdf merges the three into document.pdf. The text layer adds only kilobytes per page, so the PDF is roughly the size of the three page images (a straightened page is re-rendered, an untouched one is embedded as is). The job spends one AI operation (refunded if it fails) and its time is Tesseract on the CPU, page after page, plus any wait in the queue, since one document job runs at a time by default.',
+      },
+      {
+        title: 'Two handwritten pages from a phone, with Word',
+        body:
+          'Two 4032 x 3024 phone photos of notebook pages in Auto mode with PDF and DOCX. Prepare auto-orients both to PNG and, because the mode is not Printed, upscales them 2x with realesrgan-x4plus to 8064 x 6048. Classify asks qwen3-vl one question per page, recognise returns the transcription with a bounding box per line, and verify re-reads only the flagged tokens. If a page has 30 lines and 2 of them carry [?: ...] markers, 2 / 30 is under 15 percent and the page is marked medium confidence with illegibleCount 2. The PDF pages are the processed images with invisible Helvetica lines at those boxes and the footer stamp; the Word file holds the verbatim text under the bold verify note. The time is three sequential vision-model passes per page on our GPU; nothing is run elsewhere.',
+      },
+    ],
+    whenNotToUse:
+      'Do not use this when you need the text to be authoritative without checking it: handwriting output is a machine reading with marked gaps, and the Word document and summary are reconstructions, so verify them against the scan before quoting them. It is not a PDF-to-PDF OCR tool: inputs are page images, so render an existing PDF to images first, and it is not a translator. If you only need the pages bound into a PDF with no text layer, the plain image-to-PDF tool does that with an ordinary operation instead of an AI one, which matters on the guest allowance of one AI operation a day.',
     primaryKeyword: 'scanned image to searchable PDF',
     secondaryKeywords: [
       'convert scanned document to PDF',

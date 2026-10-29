@@ -34,9 +34,7 @@ const exempt = exemptSentences(Object.values(PRIVACY_TEMPLATES));
  * All 24 copy-bar pages are rewritten (S4-S7), so the site-wide limits and the
  * copy bar are asserted over every tool page.
  */
-const REWRITTEN: readonly string[] = REVIEW_CATALOG_SLUGS.filter(
-  (s) => !['remove-exif-metadata', 'content-studio', 'motion', 'ai-document-scan'].includes(s),
-);
+const REWRITTEN: readonly string[] = REVIEW_CATALOG_SLUGS;
 const measured = TOOL_PAGES.filter((t) => !REVIEW_CATALOG_SLUGS.includes(t.slug) || REWRITTEN.includes(t.slug));
 const idx = sentenceIndex(TOOL_PAGES);
 const page = (slug: string) => TOOL_PAGES.find((t) => t.slug === slug)!;
