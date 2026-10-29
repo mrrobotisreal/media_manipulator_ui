@@ -1596,8 +1596,8 @@
       "pro": "Tudo do Premium, limites diários muito maiores para operações, trabalhos de IA e exportações, e a maior cota do Motion."
     },
     "rows": {
-      "opsPerDay": "Operações por dia",
-      "aiOpsPerDay": "Operações de IA por dia",
+      "opsPerDay": "Trabalhos comuns por dia",
+      "aiOpsPerDay": "Trabalhos de IA por dia",
       "maxFileBytes": "Tamanho máximo de arquivo",
       "maxVideoSeconds": "Duração máxima de vídeo",
       "maxOutputHeight": "Resolução máxima de saída",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "Não conseguimos acessar o serviço de planos. Todas as ferramentas continuam funcionando. Recarregue daqui a pouco para ver a comparação.",
     "faqTitle": "Perguntas que as pessoas realmente fazem",
     "faq": {
-      "q1": "O que conta como uma operação?",
-      "a1": "Uma conversão, transcodificação, exportação ou trabalho de IA. Pré-visualizações, análises e downloads são gratuitos: você só é cobrado pelo trabalho que o servidor realmente faz.",
+      "q1": "O que conta na minha cota diária?",
+      "a1": "Cada plano tem duas cotas diárias separadas que se somam. Um trabalho comum é uma conversão, compressão, transcodificação ou outra ferramenta padrão. Um trabalho de IA é uma execução de uma ferramenta que usa um modelo de IA, como transcrição, upscaling ou remoção de vocais. Um trabalho de IA nunca consome um trabalho comum, então você pode usar todos os trabalhos de IA e ainda ter todos os trabalhos comuns. As exportações do Darkroom têm cota própria. Pré-visualizações, análises e downloads são gratuitos: você só é cobrado pelo trabalho que o servidor realmente faz.",
       "q2": "O que acontece quando acaba?",
       "a2": "Nada quebra. A ferramenta avisa que a cota acabou e oferece o próximo nível. Sua cota é renovada à meia-noite UTC.",
       "q3": "Contas gratuitas veem anúncios?",

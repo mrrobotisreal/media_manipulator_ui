@@ -1748,7 +1748,7 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
     advancedDetails: [
       'Uses whisper-ctranslate2 with a large multilingual model; accuracy is best on clear speech with little background noise.',
       'Run the Remove background noise tool first on noisy recordings for a better transcript.',
-      'Transcription counts as one operation from your daily allowance; a failed job is not counted.',
+      'Transcription counts as one AI job, from the daily AI allowance rather than the everyday one; a failed job is not counted.',
     ],
     whyItMatters: [
       'Text is searchable and skimmable; audio is not.',
@@ -1766,13 +1766,13 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Four output formats and a built-in transcript viewer.',
     ],
     privacyNote: privacyNoteFor('ai', 'Your recording is transcribed by Whisper on our own GPU server, and the text is kept with the job.'),
-    supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['txt', 'vtt', 'srt', 'json'], processingNotes: ['Counts as one operation; failed jobs are not counted.'] },
+    supportedFormats: { supportedInputFormats: AUDIO_INPUTS, supportedOutputFormats: ['txt', 'vtt', 'srt', 'json'], processingNotes: ['Counts as one AI job; failed jobs are not counted.'] },
     faq: [
       { question: 'Which languages are supported?', answer: 'Whisper handles dozens of languages and detects the language automatically.' },
       { question: 'How accurate is it?', answer: 'Very good on clear speech. Background noise, crosstalk and heavy accents lower accuracy; denoise first if you can.' },
       { question: 'Is my recording sent to OpenAI?', answer: 'No. The model runs on our own GPU server.' },
       { question: 'Can I get speaker labels?', answer: 'Not yet. The JSON output has word-level timestamps you can segment by.' },
-      { question: 'Does this count against my allowance?', answer: 'Yes, as one operation. Failed jobs are not counted.' },
+      { question: 'Does this count against my allowance?', answer: 'Yes, as one AI job on the AI allowance, which is separate from the everyday one. Failed jobs are not counted.' },
     ],
     related: [
       { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'The same for video files.' },
@@ -2314,13 +2314,13 @@ export const CATALOG_TOOL_PAGES: ToolPageContent[] = [
       'Caption viewer to check timing before download.',
     ],
     privacyNote: privacyNoteFor('ai', 'Your file\'s speech is transcribed by Whisper on our own GPU server and timed into WebVTT captions.'),
-    supportedFormats: { supportedInputFormats: [...VIDEO_INPUTS, 'mp3', 'wav', 'm4a'], supportedOutputFormats: ['vtt', 'srt', 'txt', 'json'], processingNotes: ['Counts as one operation; failed jobs are not counted.'] },
+    supportedFormats: { supportedInputFormats: [...VIDEO_INPUTS, 'mp3', 'wav', 'm4a'], supportedOutputFormats: ['vtt', 'srt', 'txt', 'json'], processingNotes: ['Each caption file counts as one AI job; failed jobs are not counted.'] },
     faq: [
       { question: 'VTT or SRT?', answer: 'VTT for web players and YouTube; SRT for video editors and some older platforms. Both are offered.' },
       { question: 'Can I edit the captions?', answer: 'Download the .vtt and edit it in any text editor; the format is plain text.' },
       { question: 'Can I translate them?', answer: 'Yes, with the Caption translator tool.' },
       { question: 'Is my video sent to a third party?', answer: 'No. Transcription runs on our own GPU server.' },
-      { question: 'Does this count against my allowance?', answer: 'Yes, as one operation. Failed jobs are not counted.' },
+      { question: 'Does this count against my allowance?', answer: 'Each VTT file is one AI job, taken from the AI allowance and never from the everyday one. Failed jobs are not counted.' },
     ],
     related: [
       { label: 'SRT generator', to: '/tools/srt-generator', description: 'SubRip format.' },

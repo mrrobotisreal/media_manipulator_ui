@@ -1596,8 +1596,8 @@
       "pro": "Alles aus Premium, deutlich höhere Tageslimits für Operationen, KI-Aufträge und Exporte sowie das größte Motion-Kontingent."
     },
     "rows": {
-      "opsPerDay": "Operationen pro Tag",
-      "aiOpsPerDay": "KI-Operationen pro Tag",
+      "opsPerDay": "Standardaufträge pro Tag",
+      "aiOpsPerDay": "KI-Aufträge pro Tag",
       "maxFileBytes": "Maximale Dateigröße",
       "maxVideoSeconds": "Maximale Videolänge",
       "maxOutputHeight": "Maximale Ausgabeauflösung",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "Wir konnten den Plandienst nicht erreichen. Alle Werkzeuge funktionieren weiterhin — laden Sie die Seite gleich neu, um den Vergleich zu sehen.",
     "faqTitle": "Fragen, die tatsächlich gestellt werden",
     "faq": {
-      "q1": "Was zählt als Operation?",
-      "a1": "Eine Konvertierung, Umkodierung, ein Export oder KI-Auftrag. Vorschauen, Prüfungen und Downloads sind kostenlos — berechnet wird nur Arbeit, die der Server tatsächlich ausführt.",
+      "q1": "Was zählt zu meinem Tageskontingent?",
+      "a1": "Jeder Tarif hat zwei getrennte Tageskontingente, die sich addieren. Ein Standardauftrag ist eine Konvertierung, Komprimierung, Umkodierung oder ein anderes Standardwerkzeug. Ein KI-Auftrag ist ein Durchlauf eines Werkzeugs, das ein KI-Modell nutzt, etwa Transkription, Hochskalierung oder Gesangsentfernung. Ein KI-Auftrag verbraucht niemals einen Standardauftrag — Sie können also alle KI-Aufträge nutzen und haben trotzdem noch alle Standardaufträge. Darkroom-Exporte haben ihr eigenes Kontingent. Vorschauen, Prüfungen und Downloads sind kostenlos — berechnet wird nur Arbeit, die der Server tatsächlich ausführt.",
       "q2": "Was passiert, wenn ich mein Kontingent aufgebraucht habe?",
       "a2": "Nichts geht kaputt. Das Werkzeug informiert Sie, dass das Kontingent aufgebraucht ist, und bietet die nächsthöhere Stufe an. Ihr Kontingent wird um Mitternacht UTC zurückgesetzt.",
       "q3": "Sehen kostenlose Konten Werbung?",

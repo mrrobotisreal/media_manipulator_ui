@@ -39,7 +39,7 @@ describe('planLadderRows: four rows, numbers from /api/tiers (MM40 decision 6)',
     expect(rows.free.price).toBe('interface:planSummary.free');
     expect(rows.premium.ops).toBe('interface:planSummary.ops|300');
     expect(rows.pro.ops).toBe('interface:planSummary.ops|700');
-    expect(rows.pro.aiOps).toBe('interface:planSummary.aiOps|120');
+    expect(rows.pro.aiOps).toBe('interface:planSummary.aiOps|200');
     expect(rows.anonymous.fileSize).toBe('interface:planSummary.fileSize|200 MB');
   });
 

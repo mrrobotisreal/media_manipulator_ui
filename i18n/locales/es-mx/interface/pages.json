@@ -1596,8 +1596,8 @@
       "pro": "Todo lo de Premium, límites diarios mucho más altos de operaciones, trabajos de IA y exportaciones, y la mayor asignación de Motion."
     },
     "rows": {
-      "opsPerDay": "Operaciones al día",
-      "aiOpsPerDay": "Operaciones de IA al día",
+      "opsPerDay": "Trabajos estándar al día",
+      "aiOpsPerDay": "Trabajos de IA al día",
       "maxFileBytes": "Tamaño de archivo máximo",
       "maxVideoSeconds": "Duración de video máxima",
       "maxOutputHeight": "Resolución de salida máxima",
@@ -1623,8 +1623,8 @@
     "unavailableBody": "No pudimos contactar al servicio de planes. Todas las herramientas siguen funcionando: recarga en un momento para ver la comparación.",
     "faqTitle": "Preguntas que la gente hace de verdad",
     "faq": {
-      "q1": "¿Qué cuenta como una operación?",
-      "a1": "Una conversión, transcodificación, exportación o trabajo de IA. Las vistas previas, análisis y descargas son gratuitos: solo se te cobra por el trabajo que el servidor realmente hace.",
+      "q1": "¿Qué cuenta para mi límite diario?",
+      "a1": "Cada plan tiene dos límites diarios independientes que se suman. Un trabajo estándar es una conversión, compresión, transcodificación u otra herramienta estándar. Un trabajo de IA es una ejecución de una herramienta que usa un modelo de IA, como la transcripción, el escalado o la eliminación de voces. Un trabajo de IA nunca consume un trabajo estándar, así que puedes usar todos los trabajos de IA y seguir teniendo todos los trabajos estándar. Las exportaciones de Darkroom tienen su propio límite. Las vistas previas, análisis y descargas son gratuitos: solo se te cobra por el trabajo que el servidor realmente hace.",
       "q2": "¿Qué pasa cuando se me acaba?",
       "a2": "Nada se rompe. La herramienta te avisa de que se agotó el límite y te ofrece el siguiente nivel. Tu límite se restablece a medianoche UTC.",
       "q3": "¿Las cuentas gratuitas ven anuncios?",

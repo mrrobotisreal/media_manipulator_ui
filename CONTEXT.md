@@ -4,6 +4,12 @@ The customer-facing Next.js app for media-manipulator.com: media tool pages, the
 
 ## Language
 
+### Allowances
+
+**Everyday allowance / AI allowance** (MM90):
+Two separate daily counters the API keeps per subject: `ops` (everyday jobs: conversions and the other standard tools, plus AI background removal, Clean Voice and background-noise removal) and `ai_ops` (AI jobs: every tool that runs a model, including transcription, caption translation, upscale, face blur, text redaction, object removal, vocal isolation/removal, frame interpolation, restoration, document scan, summaries, voices). They add up and never draw on each other: Premium's 300 everyday + 100 AI jobs are 400 a day. The nav shows both meters (`components/account/quota-meter.tsx`, `metric="ops" | "ai_ops"`); quota headers are kept per allowance by `X-MM-Quota-Metric` (`lib/auth/observedQuota.ts`); the tool chip picks its allowance from the task plus the page's preset AI operation (`quotaMetricForTask`).
+_Avoid_: copy that calls AI jobs part of, or a subset of, the everyday total ("5 operations, 1 of them AI"); "ordinary operation" for an AI job.
+
 ### Naming: the editor
 
 **Darkroom**:
