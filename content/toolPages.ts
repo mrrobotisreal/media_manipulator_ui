@@ -444,7 +444,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         `Source and exported files are processed on our servers. ${RETENTION_PROMISE}.`,
       ],
       processingNotes: [
-        'Preview composites in the browser; the final export is encoded to H.264 MP4.',
+        'Preview composites in the browser; the final export is encoded on the server to H.264 or HEVC MP4, or to MP3 or WAV audio.',
       ],
     },
   },
@@ -750,7 +750,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     whyMediaManipulator: [
       'You see the evidence. The inspector lists every tag before you strip and a diff proves what went after, rather than a green tick and a promise.',
       'One pass, every group. ExifTool -all= removes EXIF, GPS, XMP, IPTC, Photoshop, ICC, maker notes and the preview thumbnail together; nothing has to be ticked one block at a time.',
-      'Orientation is handled. The rotation tag is applied to the pixels before it is removed, which is the usual way a stripped phone photo ends up on its side elsewhere.',
+      'Orientation is handled. The rotation tag is applied to the pixels before it is removed, so a stripped phone photo does not end up on its side elsewhere, which is what usually happens when the tag is dropped without rotating the pixels.',
     ],
     privacyNote:
       `This tool removes, from the copy it returns, the EXIF blocks (camera make, model, serial number, lens, exposure, dates), the GPS block, the IFD1 preview thumbnail, XMP and IPTC records, Photoshop resources, maker notes and the ICC profile. To do that the server has to read them first: the upload is inspected with ExifTool and the report is written to the job folder as metadata.json, and after the strip a second report of the result is kept beside it so the Compare view can show the difference. Both reports and both files live in uploads/<jobId>/ and outputs/<jobId>/ and are deleted together when the retention window ends. ${RETENTION_PROMISE}. The stand-alone inspector (reading a file without converting it) removes its temporary copy as soon as the report is produced. Images also pass through an automated analysis step on our own server; nothing is sent to a third party.`,
@@ -984,7 +984,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     h1: 'Transcode Video to HLS Online',
     tagline:
       'Package any video into an Apple HLS VOD bundle: master.m3u8, per-rendition .ts segments, ready for the web.',
-    metaTitle: 'Transcode Video to HLS Online | Free Adaptive Streaming Tool',
+    metaTitle: 'Transcode Video to HLS Online | Free Adaptive Streaming Tool | Media Manipulator',
     metaDescription:
       'Free online HLS transcoder. Convert MP4, MOV, WebM, MKV into an HLS VOD package with 360p/480p/720p renditions, optional captions and storyboards.',
     ogTitle: 'Transcode Video to HLS Online',
@@ -8827,7 +8827,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
       supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp', 'heic'],
       supportedOutputFormats: ['pdf', 'docx'],
       maxFileNotes: [
-        'Add up to many pages per job; each page image has an individual size cap (~25 MB).',
+        'Add up to 50 page images per job by default; each page image has an individual size cap (~25 MB).',
         'A searchable PDF is always produced; the editable Word document is optional.',
       ],
       processingNotes: [

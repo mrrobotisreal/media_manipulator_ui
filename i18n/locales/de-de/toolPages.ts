@@ -302,7 +302,7 @@ const deToolPages = {
           'Quell- und Exportdateien werden auf unseren Servern verarbeitet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
         ],
         processingNotes: [
-          'Die Vorschau wird im Browser zusammengesetzt; der endgültige Export wird als H.264-MP4 kodiert.',
+          'Die Vorschau wird im Browser zusammengesetzt; der endgültige Export wird auf dem Server als H.264- oder HEVC-MP4 oder als MP3- oder WAV-Audio kodiert.',
         ],
       },
       related: [
@@ -423,7 +423,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Sie sehen die Beweise. Der Inspektor listet jeden Tag vor dem Entfernen auf, und ein Vergleich belegt danach, was weg ist, statt eines grünen Häkchens und eines Versprechens.',
         'Ein Durchgang, jede Gruppe. ExifTool -all= entfernt EXIF, GPS, XMP, IPTC, Photoshop, ICC, Herstellernotizen und das Vorschaubild zusammen; nichts muss Block für Block angehakt werden.',
-        'Die Ausrichtung wird berücksichtigt. Der Rotations-Tag wird auf die Pixel angewendet, bevor er entfernt wird, denn genau so landet ein bereinigtes Handyfoto anderswo üblicherweise auf der Seite.',
+        'Die Ausrichtung wird berücksichtigt. Der Rotations-Tag wird auf die Pixel angewendet, bevor er entfernt wird, damit ein bereinigtes Handyfoto anderswo nicht auf der Seite liegt, was üblicherweise passiert, wenn der Tag entfernt wird, ohne die Pixel zu drehen.',
       ],
       privacyNote: 'Dieses Tool entfernt aus der zurückgegebenen Kopie die EXIF-Blöcke (Kameramarke, Modell, Seriennummer, Objektiv, Belichtung, Daten), den GPS-Block, das IFD1-Vorschaubild, XMP- und IPTC-Datensätze, Photoshop-Ressourcen, Herstellernotizen und das ICC-Profil. Dafür muss der Server sie zuerst lesen: Der Upload wird mit ExifTool untersucht, der Bericht wird als metadata.json im Auftragsordner gespeichert, und nach dem Entfernen wird ein zweiter Bericht über das Ergebnis daneben abgelegt, damit die Vergleichsansicht den Unterschied zeigen kann. Beide Berichte und beide Dateien liegen in uploads/<jobId>/ und outputs/<jobId>/ und werden gemeinsam gelöscht, wenn die Aufbewahrungsfrist endet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Der eigenständige Inspektor (Lesen einer Datei ohne Konvertierung) entfernt seine temporäre Kopie, sobald der Bericht erstellt ist. Bilder durchlaufen außerdem einen automatisierten Analyseschritt auf unserem eigenen Server; nichts wird an Dritte gesendet.',
       faq: [
@@ -2600,7 +2600,7 @@ const deToolPages = {
       ],
       supportedFormats: {
         maxFileNotes: [
-          'Fügen Sie viele Seiten pro Auftrag hinzu; jedes Seitenbild hat eine eigene Größengrenze (~25 MB).',
+          'Fügen Sie standardmäßig bis zu 50 Seitenbilder pro Auftrag hinzu; jedes Seitenbild hat eine eigene Größengrenze (~25 MB).',
           'Ein durchsuchbares PDF wird immer erzeugt; das bearbeitbare Word-Dokument ist optional.',
         ],
         processingNotes: [
