@@ -39,6 +39,8 @@ const exempt = exemptSentences(Object.values(PRIVACY_TEMPLATES));
 const REWRITTEN: readonly string[] = [
   // S4 image
   'compress-image', 'image-resizer', 'remove-background-from-image', 'image-to-pdf', 'pdf-to-jpg', 'ai-image-upscaler', 'remove-object-from-photo',
+  // S6 audio / ai
+  'transcribe-video', 'clean-voice-audio', 'remove-background-noise', 'remove-vocals-from-song', 'ai-image-restoration',
 ];
 const measured = TOOL_PAGES.filter((t) => !REVIEW_CATALOG_SLUGS.includes(t.slug) || REWRITTEN.includes(t.slug));
 const idx = sentenceIndex(TOOL_PAGES);

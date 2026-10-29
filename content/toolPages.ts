@@ -1293,11 +1293,11 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'transcribe-video',
-    lastReviewed: '2026-10-24',
+    lastReviewed: '2026-10-29',
     name: 'Transcribe Video',
     h1: 'Transcribe Video to Text Online',
     tagline:
-      'Pull spoken words out of video files into searchable text, captions, or structured JSON.',
+      'Pull the spoken words out of a video or audio file as WebVTT or SRT captions, plain text, or timestamped JSON.',
     metaTitle: 'Transcribe Video to Text Online (Free) | Media Manipulator',
     metaDescription:
       'Free online video transcription. Convert MP4, MOV, WebM, MKV, and audio files into searchable text, VTT captions, or JSON transcripts.',
@@ -1314,109 +1314,103 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a video. The AI transcription model runs on our local GPU server and exports as VTT captions, plain text, or JSON: VTT for captions, plain text for an article, JSON for downstream tooling.',
     },
     intro:
-      'Whether you are adding accessibility captions, building a searchable archive, or just want to skim a long video, transcription unlocks the speech inside your file. Media Manipulator transcribes your video locally on our own GPU server — no third-party AI provider sees your media.',
+      'Transcribe Video takes an MP4, MOV, WebM, MKV or a plain audio file, separates the audio track, and runs it through Whisper on a GPU server we operate. You choose the shape of the result before you upload: a WebVTT or SRT caption file with cue timings, a plain text file with just the words, or a JSON document with every segment and its start and end time to the millisecond. The language is detected automatically, or you can type a two-letter code to pin it.',
     whatItDoes: [
-      'Extracts audio from your video and runs speech-to-text on it.',
-      'Exports captions in WebVTT (.vtt), plain text, or structured JSON.',
-      'Supports many spoken languages with automatic language detection.',
-      'Runs locally on our GPU server — no third-party AI provider involved.',
+      'Decodes the audio track with ffmpeg into a 16 kHz mono WAV, the sample rate Whisper expects, and deletes that intermediate when the job finishes.',
+      'Runs whisper-ctranslate2 with the medium Whisper model in float16 on our GPU, with voice-activity filtering switched on so silence and long stretches of music are skipped.',
+      'Writes one file named transcript.vtt, transcript.srt, transcript.txt or transcript.json, depending on the format you picked.',
+      'Detects the spoken language from the audio itself; a language code you type in the form overrides detection for short or mixed clips.',
+      'Reports honestly when there is nothing to transcribe: a video with no audio stream, or audio with no recognizable speech, still completes with a short message instead of an empty file.',
     ],
     flowSteps: [
-      {
-        title: 'Upload video',
-        description: 'Drop in any MP4, MOV, WebM, or MKV file.',
-      },
-      {
-        title: 'Extract audio',
-        description: 'FFmpeg pulls a clean audio track from the video.',
-      },
-      {
-        title: 'Local AI transcription',
-        description: 'whisper-ctranslate2 runs on our GPU server.',
-      },
-      {
-        title: 'Download transcript',
-        description: 'Save as VTT captions, plain text, or JSON.',
-      },
+      { title: 'Upload video or audio', description: 'MP4, MOV, WebM, MKV, AVI, or an audio file such as MP3, WAV, M4A or FLAC.' },
+      { title: 'Pick a format', description: 'VTT or SRT for captions, TXT for a readable transcript, JSON for timestamps you can process.' },
+      { title: 'ffmpeg extracts the audio', description: 'The track is converted to 16 kHz mono PCM; the video frames are never decoded.' },
+      { title: 'Whisper transcribes on our GPU', description: 'The job waits for a free GPU slot, then the medium model runs over the whole file in one pass.' },
+      { title: 'Download the transcript', description: 'The file appears with the job and can be downloaded as long as the job is kept.' },
     ],
     advancedDetails: [
-      'Transcripts come from whisper-ctranslate2 (a faster Whisper implementation) running on a local GPU we operate.',
-      'VTT output is the right pick for video captions — it works with HTML <track> elements, YouTube, and most video editors.',
-      'JSON output includes per-segment start/end timestamps and confidence values, useful for building search indexes or summarization pipelines.',
+      'The exact extraction command is ffmpeg -vn -acodec pcm_s16le -ar 16000 -ac 1, so a stereo 48 kHz track is folded to mono and resampled before Whisper sees it. That intermediate costs 32 KB per second (about 1.9 MB per minute) of disk while the job runs and is removed afterwards.',
+      'whisper-ctranslate2 is launched with --model medium --device cuda --compute_type float16 --vad_filter True and --output_format json; the API parses that JSON and renders your chosen format itself. The model is a server setting (WHISPER_CT2_MODEL), so medium is the default, not a promise.',
+      'VTT output starts with the WEBVTT header and numbers each cue; timestamps are HH:MM:SS.mmm. SRT is the same cue list with comma millisecond separators. A segment whose end equals its start is given half a second so players still display it.',
+      'JSON output contains language, hasAudio, hasSpeech, transcript, durationSeconds and a segments array of {id, start, end, text} with times rounded to the millisecond. There are no per-word timings and no confidence scores in this output.',
+      'Only one Whisper process runs at a time by default (WHISPER_GPU_CONCURRENCY=1), and the GPU scheduler checks free VRAM before starting; the medium model in float16 needs about 3.5 GB plus a 512 MB margin. If the card is busy your job waits in the queue rather than failing.',
+      'With the VAD filter on, a file that is all music or very faint speech can come back with "Audio was detected but no recognizable speech was found." That message is written into the transcript file so the download is never empty.',
     ],
     whyItMatters: [
-      'Captions make your video accessible to deaf and hard-of-hearing viewers — and to anyone watching on mute.',
-      'Search engines and AI agents can index a transcribed video far better than a raw video file.',
-      'Internal teams can search across recorded calls, demos, and tutorials when transcripts exist.',
+      'A caption file is the difference between a video that can be watched on mute, searched, or quoted and one that cannot.',
+      'Timestamped segments let you jump to the moment a phrase was said, which is what turns a two-hour recording into something you can actually use.',
+      'Keeping the transcription on hardware we run means the audio is not handed to an outside speech API.',
     ],
     useCases: [
-      {
-        title: 'Adding captions',
-        description: 'Generate VTT files for accessibility and silent autoplay.',
-      },
-      {
-        title: 'Searchable archive',
-        description: 'Index recorded meetings, calls, or training videos.',
-      },
-      {
-        title: 'Content repurposing',
-        description: 'Turn a video into a blog post or summary with a quick start.',
-      },
-      {
-        title: 'Compliance and notes',
-        description: 'Keep written records of recorded interviews or interactions.',
-      },
+      { title: 'Captions for a published video', description: 'Export VTT for HTML video and most web players, or SRT for editing suites and TV-style subtitle workflows.' },
+      { title: 'Meeting and interview notes', description: 'Take the TXT output into a document and edit from there instead of typing from scratch.' },
+      { title: 'Indexing a recording archive', description: 'Use the JSON segments to build a search index that points at the exact second a word was spoken.' },
+      { title: 'A first draft of an article', description: 'Transcribe a talk or screencast, then rewrite the plain text into prose.' },
     ],
     whyMediaManipulator: [
-      'Runs entirely on our own GPU server — no OpenAI/Anthropic/Google sees your audio.',
-      'Outputs the format you actually need: VTT, text, or JSON.',
-      'Same upload and retention privacy model as the rest of the toolset.',
+      'You choose VTT, SRT, TXT or JSON before uploading, so there is no second conversion step after the transcript exists.',
+      'Whisper runs on our own GPU with the model cache set to offline mode; no outside speech service receives the audio.',
+      'Transcription counts as an ordinary operation, not an AI-operation unit, so a guest can run 5 a day and a free account 30 by default (see /pricing).',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your video or audio file is stored under its job folder on our server. ffmpeg writes a temporary 16 kHz mono WAV that Whisper reads on our GPU, and that WAV is deleted when the job finishes. The transcript file and a transcribe_result.json copy of the segments stay with the job, and the transcript text is also passed to a language model running on our own hardware for an automated summary and safety review whose result is kept with the job. Nothing is sent to a third-party AI provider. ${RETENTION_PROMISE}.`,
     faq: [
       {
-        question: 'Which video formats are supported?',
+        question: 'Which caption format should I pick, VTT or SRT?',
         answer:
-          'MP4, MOV, WebM, MKV, AVI, FLV, and most other common containers. Audio files can also be transcribed directly.',
+          'VTT if the captions are for the web (HTML video, most players) and SRT if they are going into a video editor or a broadcast-style workflow. Both contain the same cues; only the header and the millisecond separator differ, a period in VTT and a comma in SRT.',
       },
       {
-        question: 'How accurate is the transcript?',
+        question: 'Does the JSON transcript include confidence scores or word timings?',
         answer:
-          'Word-error rates are typically a few percent for clear speech. Heavy background music, overlapping voices, or strong accents lower accuracy.',
+          'No. Each segment has an id, a start and end time in seconds (rounded to the millisecond) and its text. The file also records the detected language, the duration and whether speech was found, but there are no per-word timings and no probabilities.',
       },
       {
-        question: 'Can I get timestamps?',
+        question: 'How long a file can I transcribe?',
         answer:
-          'Yes — VTT and JSON outputs both include per-segment timestamps.',
+          'Audio-only uploads are held to the same duration cap as video: 5 minutes for a guest, 20 minutes with a free account, 2 hours on Premium and Pro by default, and 200 MB, 1 GB or 5 GB per file respectively. The form shows the limits that apply to you, and /pricing lists the current numbers.',
       },
       {
-        question: 'Does my video leave your servers?',
+        question: 'Why did I get "no recognizable speech was found"?',
         answer:
-          `No — transcription happens on a GPU server we operate. The original file and the transcript follow the same retention rule: ${RETENTION_PROMISE}.`,
+          'Whisper runs with voice-activity detection switched on, so a file that is music, ambient sound, silence or very faint speech can be trimmed to nothing. The message is written into the transcript file itself so the download still works. Re-record louder or trim to the spoken part and try again.',
+      },
+      {
+        question: 'Can I force the language instead of letting it detect?',
+        answer:
+          'Yes. Type a two-letter language code such as en, de or es in the language field and Whisper will transcribe in that language. Leave it blank for automatic detection, which works well on clips longer than a few seconds.',
+      },
+      {
+        question: 'Does transcription use my AI-operation allowance?',
+        answer:
+          'No. It is submitted through the standard upload endpoint and counts as one ordinary operation: 5 per day as a guest, 30 with a free account, 300 on Premium and 700 on Pro by default. A job that fails refunds the unit.',
+      },
+      {
+        question: 'What model is used, and can I pick a bigger one?',
+        answer:
+          'The service runs whisper-ctranslate2 with the medium model in float16 on a CUDA GPU by default. There is no model picker in the form; the model is set on the server, so very fast or very large variants are not something you can request per job.',
       },
     ],
     related: [
+      { label: 'Compress video', to: '/tools/compress-video', description: 'Shrink a large recording before uploading it for a transcript.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Pull out the audio track if you want to keep a copy of it as well.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Lift a noisy recording before transcribing it.' },
+      { label: 'Video trimmer', to: '/tools/video-trimmer', description: 'Cut the file down to the spoken part first.' },
+      { label: 'Video converter tutorial', to: '/tutorials/video/getting-started', description: 'Prepare and convert the video before transcribing.' },
+    ],
+    workedExamples: [
       {
-        label: 'Compress video',
-        to: '/tools/compress-video',
-        description: 'Shrink the video first if you only need the transcript.',
+        title: 'A 9-minute 1080p MP4 of 120 MB, as VTT captions',
+        body: 'The 120 MB is under the 200 MB guest cap, but 9 minutes is over the 5-minute guest limit, so this one needs a free account, which allows 20 minutes by default. ffmpeg writes a 16 kHz mono WAV of about 17 MB (32,000 bytes per second for 540 seconds), which is deleted after the run. Whisper medium then produces numbered cues with HH:MM:SS.mmm timings, and the resulting transcript.vtt is a few kilobytes, because it holds only text and timestamps. Uploading 120 MB on a home connection usually takes longer than the extraction, which is a few seconds; the Whisper pass is the rest and scales with the length of the speech, not the size of the video.',
       },
       {
-        label: 'Audio converter',
-        to: '/tools/audio-converter',
-        description: 'Extract a clean audio track for transcription.',
-      },
-      {
-        label: 'Video converter tutorial',
-        to: '/tutorials/video/getting-started',
-        description: 'Trim and clean up the video before transcribing.',
-      },
-      {
-        label: 'How it works',
-        to: '/how-it-works',
-        description: 'See how local AI transcription is wired up.',
+        title: 'An 18-minute podcast MP3 of about 26 MB, as JSON',
+        body: 'A 192 kbps MP3 is 24 KB per second, so 1,080 seconds comes to about 26 MB. Audio-only files are held to the same duration limit as video, so 18 minutes needs a free account (20-minute cap) rather than a guest session (5 minutes). There is no video to skip, but the file is still converted to 16 kHz mono PCM first (about 35 MB on disk, removed afterwards). The language is detected from the audio and written into the JSON as a two-letter code, and each segment carries its own start and end time. The JSON is larger than the TXT of the same recording because every segment is wrapped in its own object, but still well under a megabyte.',
       },
     ],
+    whenNotToUse:
+      'Do not use this when you need per-word timings, speaker labels, or confidence scores: the output has none of those, only segment-level timestamps. It is also the wrong tool for a file whose audio is music with no speech, since the voice-activity filter will skip it and you will get a short message instead of lyrics. If you only need to listen to the file, or you want captions translated into another language, you are after a different step. And if the recording is longer than your plan allows (5 minutes as a guest, 20 minutes on a free account by default), trim it first or sign in.',
     primaryKeyword: 'transcribe video online',
     secondaryKeywords: [
       'video to text',
@@ -4950,42 +4944,46 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a recording. Clean Voice is already applied, so there is no operation menu to set. Choose an output format if you need something other than the default, then convert.',
     },
     intro:
-      'A phone voice memo in an echoey kitchen, a podcast guest on a laptop microphone, a lecture recorded from the back of the room: the words are there, but they are buried under hiss and room sound. Clean Voice processes the recording with an AI speech-enhancement step to bring the speaker forward and quiet what is not speech. It is built for talking, not for music.',
+      'A phone voice memo in an echoey kitchen, a podcast guest on a laptop microphone, a lecture recorded from the back of the room: the words are there, but they sit under hiss and room sound. Clean Voice runs the recording through DeepFilterNet on our GPU, then through a fixed broadcast-style polish chain that trims rumble, caps the top end, brings the level to a consistent loudness and stops peaks from clipping. It is built for talking, not for music.',
     whatItDoes: [
-      'Applies an AI speech-enhancement pass that lifts voice and suppresses steady background sound.',
-      'Reduces hiss, hum, fans, room tone and light reverb in spoken recordings.',
-      'Accepts common audio formats and returns the cleaned audio in the format you select.',
-      'Skips standard bitrate and EQ controls, since the AI pass handles the cleanup.',
+      'Converts your upload to 48 kHz mono with ffmpeg, which is the input DeepFilterNet expects, and hands that WAV to the model on our GPU.',
+      'Suppresses steady background sound (hiss, fans, hum, room tone) while keeping the speech, using the DeepFilterNet enhancement network.',
+      'Applies a polish chain after denoising: an 80 Hz high-pass, a 14 kHz low-pass, loudness normalisation to -16 LUFS with a -1.5 dBTP true-peak ceiling, and a limiter at 0.95.',
+      'Encodes the result in the format you choose: MP3, AAC or OGG at 192 kbps, Opus at 128 kbps, FLAC, or 16-bit WAV.',
+      'Skips the standard bitrate, EQ, effect and trim controls, since the AI path replaces the normal ffmpeg filter pipeline.',
     ],
     flowSteps: [
-      { title: 'Upload a recording', description: 'Voice memos, interview audio, podcast takes or lecture captures.' },
-      { title: 'Clean Voice is preset', description: 'No menu: the page is already set to the voice cleanup operation.' },
-      { title: 'AI enhances the speech', description: 'The model separates the voice from distracting sound and rebalances it.' },
-      { title: 'Download the cleaned audio', description: 'Listen with headphones before using it.' },
+      { title: 'Upload a recording', description: 'Voice memos, interview audio, podcast takes or lecture captures in MP3, WAV, FLAC, M4A, AAC, OGG or Opus.' },
+      { title: 'Clean Voice is preset', description: 'The operation is fixed on this page; the only choice left is the output format.' },
+      { title: 'Normalise, denoise, polish', description: 'ffmpeg makes a 48 kHz mono WAV, DeepFilterNet denoises it, and the polish filters set the tone and loudness.' },
+      { title: 'Download and listen', description: 'Compare with the original on headphones before you publish it.' },
     ],
     advancedDetails: [
-      'Heavy cleanup can make a voice sound slightly processed or watery. If it does, compare against the original and avoid running the result through a second cleanup.',
-      'Competing voices, music or sudden loud noises are harder to separate than steady background sound.',
-      'For music beds under speech, try the vocal isolation tools instead; this operation is tuned for talking.',
-      'Longer files and daily AI usage depend on your plan; the form shows the limits that apply when you upload.',
+      'The polish chain is exactly highpass=f=80,lowpass=f=14000,loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.95, applied once to the denoised WAV. The high-pass removes handling rumble and plosive thumps, the low-pass tames hiss above 14 kHz, and loudnorm brings the integrated loudness to -16 LUFS, the usual target for spoken-word podcasts.',
+      'Output is always mono at 48 kHz because the model runs on a single channel. A stereo interview stays intelligible but loses its left-right placement; if you need stereo, this is the wrong tool.',
+      'Encoder settings come from the output extension: libmp3lame at 192 kbps for MP3, aac at 192 kbps for AAC or M4A, libvorbis at 192 kbps for OGG, libopus at 128 kbps for Opus, flac for FLAC and pcm_s16le for WAV. There is no bitrate selector on the AI path.',
+      'Trim ranges and the usual effects are ignored when an AI operation is selected; the converter routes the file straight to the model and returns. Trim the recording first if you only want part of it cleaned.',
+      'A second pass through Clean Voice re-normalises audio that is already at -16 LUFS and can add a watery quality to consonants. Run it once.',
+      'The model struggles with competing voices, music beds and sudden loud events; those are not "steady background" and are largely left in place.',
     ],
     whyItMatters: [
-      'Listeners abandon audio that is tiring to hear, even when the content is good.',
-      'Clean speech also makes transcription and captions noticeably more accurate.',
-      'A one-step cleanup is faster than learning to tune a noise gate and equalizer by ear.',
+      'Listeners stop a recording that is tiring to hear even when what is being said is worth hearing.',
+      'A consistent -16 LUFS level means an episode plays at the same volume as the ones around it without a manual gain pass.',
+      'Speech that has been lifted out of the noise also transcribes more accurately, so cleaning first improves captions too.',
     ],
     useCases: [
-      { title: 'Podcasts and interviews', description: 'Tidy up a remote guest recorded on a basic microphone.' },
-      { title: 'Voice memos and notes', description: 'Make a phone recording understandable later.' },
-      { title: 'Lectures and meetings', description: 'Improve a recording captured from the back of a room.' },
-      { title: 'Video voice-overs', description: 'Polish narration before adding it to a video project.' },
+      { title: 'Podcasts and interviews', description: 'Tidy a remote guest recorded on a basic microphone and bring them to the same loudness as the host.' },
+      { title: 'Voice memos and dictation', description: 'Make a phone recording understandable later, and loud enough to hear without headphones.' },
+      { title: 'Lectures and meetings', description: 'Lower the air-conditioning hum and projector fan in a recording taken from the back of a room.' },
+      { title: 'Narration for a video', description: 'Polish voice-over before placing it in the Darkroom editor.' },
     ],
     whyMediaManipulator: [
-      'The enhancement runs on our own GPU, so your recording is not sent to an outside AI provider.',
-      'Operation is locked to voice cleanup, so you get the right result with no menu hunting.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'DeepFilterNet and the polish chain run on a GPU we operate; the recording is not sent to an outside speech-enhancement service.',
+      'The page opens with Clean Voice already selected and the operation menu hidden, so the only decision is the output format.',
+      'One cleaning job is one ordinary operation on your daily allowance (5 as a guest, 30 with a free account by default), and a failed job refunds it.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your recording is saved in its job folder, converted by ffmpeg to a temporary 48 kHz mono WAV in a scratch directory, and passed to DeepFilterNet on our own GPU; that scratch directory is deleted as soon as the cleaned file has been encoded. The cleaned output stays with the job for download. Audio uploads also go through an automated analysis pass on our server, which transcribes the recording with Whisper for an internal content review and keeps that result with the job. No third-party AI provider receives the file. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
@@ -4995,32 +4993,56 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'Will it remove all background noise?',
+        question: 'Why does the cleaned file come out mono?',
         answer:
-          'It greatly reduces steady sounds such as hiss, hum and room tone. Sudden noises, other voices and music are harder, so results vary with the recording.',
+          'The pipeline converts every input to one channel at 48 kHz before DeepFilterNet runs, and encodes the model output as it is. A stereo recording therefore returns as mono. For a two-microphone interview, split the channels first and clean each one separately if you need to keep the separation.',
       },
       {
-        question: 'Can it make a bad microphone sound professional?',
+        question: 'What loudness does Clean Voice normalise to?',
         answer:
-          'It can make speech clearer, but it cannot add quality that was never recorded. Distortion or heavy clipping cannot be fully fixed.',
+          'The polish chain uses ffmpeg loudnorm with an integrated target of -16 LUFS, a true-peak ceiling of -1.5 dBTP and a loudness range of 11 LU, followed by a limiter at 0.95. That matches common spoken-word delivery targets, so an episode cleaned here will sit at a similar level to professionally mastered podcasts.',
       },
       {
-        question: 'How is this different from removing background noise?',
+        question: 'Can I set the bitrate or trim the file on this page?',
         answer:
-          'Clean Voice focuses on improving the speech itself, while the background noise tool concentrates on lowering the noise around it. If one does not suit your recording, try the other.',
+          'No. When an AI operation is active the converter routes straight to the model and ignores the bitrate, EQ, effects and trim settings. The output rate is fixed by the format: 192 kbps for MP3, AAC and OGG, 128 kbps for Opus. Trim the recording on another tool first if you only want part of it.',
       },
       {
-        question: 'Does it work on music?',
+        question: 'How is this different from Remove Background Noise?',
         answer:
-          'It is tuned for speech and can damage music. To work with singing, use the vocal isolation or vocal removal tools.',
+          'Both run the same DeepFilterNet model. Clean Voice adds the high-pass, low-pass, loudness normalisation and limiter afterwards; Remove Background Noise stops at the denoised signal and leaves your levels and tone alone. Pick Clean Voice for a finished spoken-word file and the other page when you plan to mix or master it yourself.',
+      },
+      {
+        question: 'Can it fix a recording that is clipped or distorted?',
+        answer:
+          'No. Clipping is missing waveform, not added noise, and the model has nothing to subtract. It can still lower the hiss around a distorted take, but the crunch on loud syllables will remain.',
+      },
+      {
+        question: 'How many recordings can I clean per day, and is it free?',
+        answer:
+          'Clean Voice is submitted through the standard upload endpoint, so it spends one ordinary operation: 5 per day as a guest, 30 with a free account, 300 on Premium and 700 on Pro by default, with file caps of 200 MB, 1 GB and 5 GB and length caps of 5 minutes, 20 minutes and 2 hours. The current table is on /pricing.',
       },
     ],
     related: [
-      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Focus on lowering the noise around the speaker.' },
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
-      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Turn clean speech into text.' },
-      { label: 'Convert WAV to MP3', to: '/tools/convert-wav-to-mp3', description: 'Shrink the cleaned file for sharing.' },
+      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'The same denoiser without the loudness and tone polish.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Turn the cleaned speech into captions or text.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Pull the voice track out of a video before cleaning it.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Place the polished narration on a video timeline.' },
+      { label: 'Remove vocals from a song', to: '/tools/remove-vocals-from-song', description: 'For music rather than speech, separate the singer instead.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 12-minute phone memo (M4A, 128 kbps, about 11 MB) to MP3',
+        body: 'An AAC file at 128 kbps is 16 KB per second, so 720 seconds is about 11.5 MB. Twelve minutes is over the 5-minute guest limit, so this needs a free account (20 minutes). ffmpeg first writes a 48 kHz mono WAV of about 69 MB (96,000 bytes per second) in a temporary folder that is removed when the job ends. DeepFilterNet and the polish chain run on that, and the MP3 encoder writes the result at 192 kbps: about 17 MB, which is larger than the input because 192 kbps is a higher rate than the memo was recorded at. The two ffmpeg steps take seconds; the DeepFilterNet pass dominates and grows with the length of the recording.',
+      },
+      {
+        title: 'A 4-minute stereo WAV interview (44.1 kHz, 16-bit, about 42 MB) to WAV',
+        body: 'Stereo 16-bit 44.1 kHz PCM is 176,400 bytes per second, so 240 seconds is about 42 MB, within the guest limits of 200 MB and 5 minutes. The file is folded to mono and resampled to 48 kHz before the model runs, and the cleaned WAV comes back as 16-bit mono 48 kHz: 96,000 bytes per second, about 23 MB. It is smaller than the input only because it has one channel instead of two. Choosing FLAC instead keeps the same samples losslessly in less space; choosing MP3 gives about 5.8 MB at 192 kbps.',
+      },
+    ],
+    whenNotToUse:
+      'Skip this tool for music, singing or anything where the background is part of the sound you want to keep: the model treats everything that is not speech as noise, and the polish chain cuts below 80 Hz and above 14 kHz, which hollows out instruments. It is also the wrong choice when you need to keep stereo, when the recording is clipped or distorted (that damage is not noise and cannot be filtered out), or when you only want the noise lowered without any change to level or tone, which is what the Remove Background Noise page does instead.',
     primaryKeyword: 'clean up voice recording',
     secondaryKeywords: [
       'improve voice quality online',
@@ -5052,42 +5074,45 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a recording. Remove Background Noise is already selected for you. You can still change the output format, then convert.',
     },
     intro:
-      'Air conditioners, computer fans, street traffic and electrical hum are all steady sounds that sit underneath what you actually meant to record. This page applies an AI denoising model to lower that bed of noise and leave the main audio easier to hear. It suits interviews, voice-overs, field recordings and the audio track pulled from a video.',
+      'Air conditioners, computer fans, street traffic and electrical hum are steady sounds that sit underneath what you actually meant to record. This page runs the file through DeepFilterNet, a deep-learning denoiser, on our GPU and returns the denoised signal with nothing else changed: no loudness normalisation, no equalisation, no limiter. That makes it the right choice when you intend to mix or master the result yourself, or when you want the character of the original left alone.',
     whatItDoes: [
-      'Applies an AI denoiser that estimates the background and subtracts it.',
-      'Reduces constant noise such as hiss, hum, fans and street ambience.',
-      'Keeps the standard format selector so you can choose WAV, MP3 or another output.',
-      'Runs on a GPU server we operate rather than an outside AI service.',
+      'Resamples the upload to 48 kHz mono with ffmpeg and passes that WAV to the DeepFilterNet binary on our GPU.',
+      'Estimates the stationary noise floor and subtracts it, lowering hiss, hum, fans, air handling and constant traffic.',
+      'Returns the raw model output encoded in the format you pick, with the same peak level and tonal balance the model produced; there is no post-processing stage on this page.',
+      'Keeps the operation menu visible, so you can switch to Clean Voice or the vocal tools from the same form.',
     ],
     flowSteps: [
-      { title: 'Upload audio', description: 'Any common audio file, including audio extracted from video.' },
-      { title: 'Denoise is preselected', description: 'The AI operation is already set to Remove Background Noise.' },
-      { title: 'AI lowers the noise', description: 'The model separates steady noise from the foreground sound.' },
-      { title: 'Download and compare', description: 'Listen to the result next to the original before you use it.' },
+      { title: 'Upload audio', description: 'Any common audio file, including a track extracted from a video.' },
+      { title: 'Denoise is preselected', description: 'Remove Background Noise is already chosen; change the output format if you want something other than MP3.' },
+      { title: 'DeepFilterNet runs on our GPU', description: 'The model separates steady noise from the foreground and writes an enhanced WAV.' },
+      { title: 'Encode and download', description: 'ffmpeg writes the enhanced WAV in your chosen format; listen beside the original.' },
     ],
     advancedDetails: [
-      'Steady noise is far easier to remove than random clatter, conversation or music in the background.',
-      'Very aggressive denoising can leave a watery or hollow quality on voices. Always compare against the original.',
-      'Output as WAV if you plan more editing, then export to MP3 at the end so you only compress once.',
-      'AI operations bypass the standard bitrate and EQ controls on the form.',
+      'The only difference between this page and Clean Voice in the API is a single flag: polish=false. The ffmpeg encode step receives no -af filter, so the enhanced WAV is encoded as DeepFilterNet wrote it.',
+      'Input normalisation is ffmpeg -ac 1 -ar 48000: the model runs on one 48 kHz channel, so the output is mono at 48 kHz regardless of the input layout or sample rate.',
+      'Encoders follow the extension: MP3 via libmp3lame at 192 kbps, AAC at 192 kbps, OGG via libvorbis at 192 kbps, Opus via libopus at 128 kbps, FLAC lossless, WAV as pcm_s16le. Pick WAV or FLAC if you are going to edit further so you only pay for a lossy encode once.',
+      'Because no loudness normalisation runs, a quiet recording stays quiet. Denoising removes energy, so the result can be a little lower in level than the input; raise the gain in your editor afterwards if needed.',
+      'DeepFilterNet is trained on stationary and slowly varying noise. Keyboard clicks, door slams, a second speaker or a music bed are mostly preserved, since they look like signal to the model.',
+      'The scratch directory holding the normalised and enhanced WAVs is deleted when the job finishes; only the encoded output stays with the job.',
     ],
     whyItMatters: [
-      'Constant noise fatigues listeners and hides quieter words.',
-      'Many recordings cannot be redone: a wedding, a lecture, a family video.',
-      'Lower noise also helps automatic captions and transcripts catch more words correctly.',
+      'Constant noise masks quiet consonants and tires listeners long before they notice why.',
+      'Many recordings cannot be redone: a wedding speech, a lecture, an interview with someone who is no longer available.',
+      'A denoised track that has not been normalised or limited gives you a clean starting point for your own mix instead of a finished-sounding file you then have to undo.',
     ],
     useCases: [
-      { title: 'Video soundtracks', description: 'Extract the audio from a clip and quiet the fan or wind noise.' },
-      { title: 'Field recordings', description: 'Reduce ambient hum in a recording captured outdoors or on the road.' },
-      { title: 'Calls and meetings', description: 'Tidy up an exported call recording.' },
-      { title: 'Old digitized tapes', description: 'Lower tape hiss in a converted cassette recording.' },
+      { title: 'Audio pulled from a video', description: 'Extract the track, remove the camera fan or wind, then lay it back under the picture in Darkroom.' },
+      { title: 'Field recordings', description: 'Lower the drone of a road or a generator under an outdoor interview.' },
+      { title: 'Call and meeting exports', description: 'Reduce the line hiss in a recorded call before sharing or transcribing it.' },
+      { title: 'Digitised cassettes', description: 'Take the tape hiss down on a converted recording without changing its levels.' },
     ],
     whyMediaManipulator: [
-      'The denoiser runs on our own GPU, so your audio is not sent to an outside AI provider.',
-      'Choose your output format in the same step.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'The denoiser runs on a GPU we operate; your audio is not uploaded to a third-party noise-removal service.',
+      'Nothing is added after the model: no loudness change, no EQ, so what you hear is the denoising and only the denoising.',
+      'A denoise job is one ordinary operation from your daily allowance and is refunded if the job fails.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `The file you upload is written to its job folder, resampled by ffmpeg to a temporary mono 48 kHz WAV in a scratch directory, and denoised by DeepFilterNet on our own GPU; the scratch directory is removed once the output has been encoded. The encoded result is kept with the job for download. Like every audio upload, it is also run through an automated analysis step on our server, which transcribes it with Whisper for an internal review that stays with the job. Nothing goes to an outside AI provider. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'wav', 'flac', 'm4a', 'ogg'],
@@ -5097,32 +5122,61 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'What kinds of noise does it handle best?',
+        question: 'Which noises does DeepFilterNet handle well, and which does it not?',
         answer:
-          'Steady sounds: hiss, hum, fans, air conditioning, room tone and constant traffic. Sudden bangs, overlapping conversation and music are much harder to remove.',
+          'Steady, slowly changing sound: hiss, mains hum, fans, air conditioning, room tone, a constant road. Short events and anything speech-like (a second person, a television, clicks, bangs) look like foreground to the model and are mostly kept.',
       },
       {
-        question: 'Will my voice sound different afterward?',
+        question: 'Will the level or tone of my recording change?',
         answer:
-          'Possibly a little. Strong denoising can make voices sound thinner or slightly processed, which is why you should compare with the original.',
+          'Only as a side effect of removing noise energy; no normalisation, EQ or limiting is applied on this page. If you want a consistent -16 LUFS spoken-word level and a high-pass and low-pass pass as well, use Clean Voice, which runs the same model with that polish chain added.',
       },
       {
-        question: 'Can I use it on a video?',
+        question: 'Why is the denoised file mono?',
         answer:
-          'Extract the audio from the video first, denoise it here, then put it back with the stitch-audio tool.',
+          'The model takes a single 48 kHz channel, so ffmpeg folds any stereo input to mono first and the output is written that way. A stereo recording with different noise in each channel should be split and denoised one channel at a time if you need to keep it stereo.',
       },
       {
-        question: 'Which output format should I choose?',
+        question: 'Can I denoise the audio of a video directly?',
         answer:
-          'WAV keeps full quality for more editing. MP3 is smaller for sharing. If you will edit again, choose WAV now and compress at the end.',
+          'Upload the audio track rather than the video: extract it with the Extract Audio tool, denoise it here, then combine the cleaned track and the video in Darkroom.',
+      },
+      {
+        question: 'Which output format is best for further editing?',
+        answer:
+          'WAV (16-bit mono 48 kHz, 96 KB per second) or FLAC, which holds the same samples in less space. MP3, AAC and OGG are written at 192 kbps and Opus at 128 kbps; pick those only for the final share so the lossy encode happens once.',
+      },
+      {
+        question: 'Does denoising count against the AI-operation limit?',
+        answer:
+          'No. Audio AI operations are sent through the standard upload route and spend one ordinary operation: 5 a day for a guest, 30 with a free account, 300 on Premium and 700 on Pro by default. Length is capped at 5 minutes for guests and 20 minutes for free accounts; the current limits are on /pricing.',
+      },
+      {
+        question: 'What if the recording is already fairly clean?',
+        answer:
+          'The model still runs and will remove whatever residual floor it finds, but the audible difference will be small and you may prefer the untouched original. Compare the two before replacing anything.',
       },
     ],
     related: [
-      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'Improve the speech itself, not just the noise.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'The same denoiser plus loudness and tone polish for speech.' },
       { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Pull the audio track out of a video first.' },
-      { label: 'Stitch audio to video', to: '/tools/stitch-audio-to-video', description: 'Put the cleaned audio back onto your video.' },
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Lay the denoised track back under the video.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Transcribe the cleaner audio for captions.' },
+      { label: 'Remove vocals from a song', to: '/tools/remove-vocals-from-song', description: 'Separate singing from music with a different model.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'An 18-minute MP3 call recording at 128 kbps (about 17 MB) to FLAC',
+        body: 'At 128 kbps an MP3 is 16 KB per second, so 1,080 seconds is about 17 MB. Eighteen minutes is inside the free-account cap of 20 minutes but over the 5-minute guest cap, so sign in first. ffmpeg writes a 48 kHz mono WAV of about 104 MB (96,000 bytes per second) for the model, and that WAV is discarded after encoding. Choosing FLAC returns the enhanced mono 48 kHz samples losslessly; the FLAC is smaller than the 104 MB WAV by an amount that depends on how much silence and hiss was removed, and the denoising itself usually makes FLAC compress better. Choosing MP3 instead would give about 26 MB at 192 kbps.',
+      },
+      {
+        title: 'A 4-minute 30-second stereo FLAC field recording (about 30 MB) to WAV',
+        body: 'Four and a half minutes and 30 MB are inside the guest limits of 5 minutes and 200 MB, so no account is needed. The stereo file is folded to mono and resampled to 48 kHz, DeepFilterNet lowers the traffic bed, and the WAV output is 16-bit mono 48 kHz: 96,000 bytes per second for 270 seconds, about 26 MB. The level is whatever the model left, with no normalisation applied, so bring it up in your editor if the original was quiet. The two ffmpeg conversions are a few seconds each; the GPU pass scales with duration.',
+      },
+    ],
+    whenNotToUse:
+      'This is not the tool for recordings where the noise is intermittent or is itself a voice: overlapping speakers, a television in the next room, chair scrapes and keyboard clatter are left largely intact because the model is built for steady noise. Do not use it on finished music, where the "noise" it removes may be reverb and room ambience you paid for. If you need the output stereo, it is the wrong choice because the pipeline is mono. And if you want a ready-to-publish spoken-word file at a standard loudness, Clean Voice adds that polish; this page deliberately does not.',
     primaryKeyword: 'remove background noise from audio',
     secondaryKeywords: [
       'audio denoiser online',
@@ -5154,42 +5208,46 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload a song. Remove Vocals is already selected, and the instrumental comes back in the same format as your file (MP3 stays MP3); pick FLAC or WAV under Output format for lossless. Press convert.',
     },
     intro:
-      'Karaoke nights, singing practice and cover recordings all need the same thing: the band without the singer. An AI source-separation model splits a finished mix into vocals and accompaniment, and this page hands you the accompaniment. The instrumental comes back in the same format as your file, so an MP3 stays a compact MP3; choose FLAC or WAV when you want a lossless file for editing.',
+      'Karaoke nights, singing practice and cover recordings all need the band without the singer. This page runs the song through Demucs (the htdemucs model) on our GPU in two-stem mode, which splits the mix into "vocals" and "everything else", and returns the everything-else stem. The instrumental comes back in the same format as your file by default, so a 320 kbps MP3 stays a 320 kbps MP3 instead of swelling into a WAV; FLAC and WAV are there when you want a lossless file for editing.',
     whatItDoes: [
-      'Separates the vocal part from the rest of the mix using AI.',
-      'Returns the instrumental (everything but the lead vocal) as a single track.',
-      'Returns the same format as your file by default (MP3 at 320 kbps for MP3s, FLAC for lossless files), with FLAC, WAV and MP3 to choose from.',
-      'Runs on our own GPU, not a third-party service.',
+      'Runs Demucs htdemucs with --two-stems=vocals, so the model estimates only two parts: the lead vocal and the accompaniment.',
+      'Keeps the no_vocals stem and discards the vocal stem; the result is one stereo file with the singing removed.',
+      'Resolves "Same as input" to a concrete format on upload: MP3 stays MP3, AAC/M4A stays AAC/M4A, OGG and Opus stay as they are, and WAV, FLAC, AIFF or ALAC inputs come back as FLAC.',
+      'Writes MP3 and AAC stems at 320 kbps rather than the 192 kbps the other audio tools use, so the encode does not add audible loss on top of the separation.',
+      'Shows an estimated output size for each format choice before you start, based on the length of your file.',
     ],
     flowSteps: [
-      { title: 'Upload a song', description: 'Use a track you own or are licensed to use.' },
-      { title: 'Remove Vocals is preset', description: 'No menu to configure; the page is set to remove the singing.' },
-      { title: 'AI splits the mix', description: 'The model estimates the vocal and the accompaniment separately.' },
-      { title: 'Download the instrumental', description: 'Save it in the format you picked; the size estimate is shown before you start.' },
+      { title: 'Upload a song', description: 'A track you own or are licensed to use, in MP3, WAV, FLAC, M4A, AAC, OGG or Opus.' },
+      { title: 'Remove Vocals is preset', description: 'The operation is fixed; "Output format" defaults to Same as input, with MP3, FLAC and WAV as alternatives.' },
+      { title: 'Demucs separates the mix', description: 'The model works through the song in 7-second segments on our GPU and writes vocals.wav and no_vocals.wav.' },
+      { title: 'Encode and download', description: 'The no_vocals stem is encoded in the resolved format and offered for download.' },
     ],
     advancedDetails: [
-      'Separation is never perfect. Faint vocal ghosts, reverb tails and backing harmonies may remain in the instrumental.',
-      'Mono-recorded or very old songs separate less cleanly than modern stereo productions.',
-      'WAV is very large: an hour-long track is over 600 MB. Keep "Same as input" or pick MP3 if you only need to play it on a phone.',
-      'To get the vocal alone instead, use the isolate vocals page.',
+      'The exact invocation is demucs -n htdemucs --two-stems=vocals --segment 7; the segment length bounds GPU memory and lets long tracks run on a single card. Demucs writes 44.1 kHz stereo stems whatever the input rate or channel count, so a mono or 48 kHz source comes back as 44.1 kHz stereo.',
+      'Stem encoding is libmp3lame -b:a 320k for MP3 and aac -b:a 320k for AAC or M4A; OGG stays at 192 kbps, Opus at 128 kbps, FLAC and WAV are lossless. Every other AI audio operation uses 192 kbps, the 320 kbps rate is specific to stems.',
+      'The "Same as input" rule is: lossy input returns the same container, lossless input returns FLAC, and a video file or anything the server cannot place returns MP3 at 320 kbps. An .m4a is probed with ffprobe before deciding, because it may hold lossless ALAC rather than AAC.',
+      'The rule exists because of a real job: an 87-minute, 68 MB MP3 once came back as an 880 MB WAV. PCM adds no fidelity a lossy source never had, so the default now never upsizes lossy audio to WAV; choosing WAV explicitly is still honoured.',
+      'Separation is never perfect. Reverb tails on the vocal, backing harmonies and anything the model hears as "voice-like" (some synth leads, whistles) can leak into the instrumental, and dense mixes separate worse than modern, well-spaced productions.',
+      'The form warns when a WAV choice would be over 500 MB, since WAV at 44.1 kHz stereo 16-bit is 176,400 bytes per second, about 10.6 MB per minute.',
     ],
     whyItMatters: [
-      'Official karaoke versions do not exist for most songs, especially niche or older ones.',
-      'Musicians use backing tracks to rehearse their own part against the original arrangement.',
-      'Making an instrumental from a song you own is quicker than hunting for a stem pack.',
+      'Official instrumental versions do not exist for most songs, and licensed backing tracks are often re-recorded rather than the original arrangement.',
+      'Singers rehearse against the real arrangement more usefully than against a MIDI approximation.',
+      'Returning the stem in the input format keeps a phone-sized file phone-sized; a 10 MB MP3 should not become a 50 MB download by accident.',
     ],
     useCases: [
-      { title: 'Karaoke at home', description: 'Make a singalong track from a song you already have.' },
-      { title: 'Vocal practice', description: 'Rehearse over the original arrangement without the lead voice.' },
-      { title: 'Covers and remixes', description: 'Use the instrumental as a starting bed for your own recording.' },
-      { title: 'Video background music', description: 'Pull a vocal-free bed from music you are licensed to use.' },
+      { title: 'Karaoke at home', description: 'Make a singalong version of a song you already own.' },
+      { title: 'Vocal practice', description: 'Rehearse your part over the original band without the lead singer in your ear.' },
+      { title: 'Covers and remixes', description: 'Use the instrumental as the bed for your own vocal take.' },
+      { title: 'Background music for video', description: 'Pull a vocal-free bed from music you are licensed to use for a Darkroom project.' },
     ],
     whyMediaManipulator: [
-      'Separation runs on our own GPU, so your music is not sent to an outside AI provider.',
-      'The output matches your file by default, so an MP3 never balloons into a huge WAV; FLAC and WAV are one click away.',
-      `Free to try without an account. ${RETENTION_PROMISE}.`,
+      'Separation runs on a GPU we operate with the Demucs htdemucs model; your music is not sent to an outside stem service.',
+      'The output follows your file by default, with the encoded MP3 or AAC stem at 320 kbps, and FLAC or WAV one click away.',
+      'The size estimate for each format is shown before you start, so an oversized WAV is a choice, not a surprise.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your song is stored in its job folder and passed to Demucs on our own GPU, which writes the vocal and accompaniment stems into a scratch directory; only the accompaniment is encoded into your download, and the scratch directory (including the discarded vocal stem) is deleted when the job ends. The encoded instrumental is kept with the job. Audio uploads also pass through an automated analysis step on our server that transcribes the file with Whisper for an internal review kept with the job. No third-party AI provider is involved. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['mp3', 'wav', 'flac', 'm4a', 'aac', 'ogg', 'opus'],
       supportedOutputFormats: ['mp3', 'flac', 'wav', 'm4a', 'ogg', 'opus'],
@@ -5199,32 +5257,61 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'Will all the vocals be gone?',
+        question: 'Will every trace of the singer be gone?',
         answer:
-          'Most of the lead vocal, but not always everything. Reverb tails, backing harmonies and bleed can remain, and results vary by song.',
+          'Most of the lead vocal, but rarely all of it. Reverb tails, doubled and harmony vocals, and sounds the model hears as voice-like can remain at a low level. Modern stereo productions separate best; mono or heavily bled live recordings worst.',
       },
       {
-        question: 'What format is the instrumental?',
+        question: 'What format and sample rate does the instrumental come in?',
         answer:
-          'The same format as your file by default: an MP3 comes back as an MP3 at 320 kbps, and a lossless file (WAV, FLAC, AIFF) comes back as FLAC. Under Output format you can pick FLAC or WAV (lossless) or MP3 instead; each option shows its estimated size.',
+          'Demucs writes 44.1 kHz stereo stems, so that is the rate of every output. The container follows your file by default: MP3 in, MP3 out at 320 kbps; AAC or M4A in, the same out at 320 kbps; WAV, FLAC, AIFF or ALAC in, FLAC out. You can pick MP3, FLAC or WAV explicitly instead.',
       },
       {
-        question: 'Can I use this on any song?',
+        question: 'Why is the default no longer WAV?',
         answer:
-          'Only on music you own, have a license for, or can use under fair use where you live. You are responsible for how you use the result.',
+          'Because an 87-minute MP3 of 68 MB used to come back as an 880 MB WAV, and PCM cannot restore detail a lossy source never had. The stem now stays in the input format, with lossy stems written at 320 kbps so the extra encode is not audible. WAV is still available if you ask for it.',
       },
       {
-        question: 'How do I get just the vocals instead?',
+        question: 'Can I get the vocals alone instead of the backing?',
         answer:
-          'Use the isolate vocals page, which returns the vocal stem rather than the instrumental.',
+          'Yes, choose Isolate Vocals in the operation menu of the audio converter; it keeps the vocals.wav stem from the same two-stem Demucs run and discards the accompaniment.',
+      },
+      {
+        question: 'Can I upload a music video instead of an audio file?',
+        answer:
+          'Upload the audio: extract the track from the video first. If a video file does reach this operation, the server resolves Same as input to MP3 at 320 kbps, since the video container is not an audio format.',
+      },
+      {
+        question: 'How many songs a day can I separate for free?',
+        answer:
+          'Vocal removal goes through the standard upload endpoint, so each song spends one ordinary operation: 5 per day without an account, 30 with a free account, 300 on Premium and 700 on Pro by default. Songs are capped at 5 minutes for guests and 20 minutes for free accounts, with 2 hours on paid plans; /pricing has the current table.',
+      },
+      {
+        question: 'Is it legal to make a karaoke track this way?',
+        answer:
+          'Only from music you own, are licensed to use, or may use under an exception where you live. The tool does not check rights; you are responsible for the result and how you distribute it.',
       },
     ],
     related: [
-      { label: 'Isolate vocals from a song', to: '/tools/isolate-vocals-from-song', description: 'Get the vocal stem instead of the instrumental.' },
-      { label: 'Convert WAV to MP3', to: '/tools/convert-wav-to-mp3', description: 'Shrink the instrumental for your phone.' },
-      { label: 'Audio converter', to: '/tools/audio-converter', description: 'Change format, bitrate and more.' },
-      { label: 'Audio waveform generator', to: '/tools/audio-waveform-generator', description: 'Turn the finished track into a waveform video.' },
+      { label: 'Extract audio from video', to: '/tools/extract-audio-from-video', description: 'Get the audio out of a music video before separating it.' },
+      { label: 'Clean voice audio', to: '/tools/clean-voice-audio', description: 'For speech recordings, use the speech-enhancement model instead.' },
+      { label: 'Remove background noise', to: '/tools/remove-background-noise', description: 'Lower steady noise in a recording without separating it.' },
+      { label: 'Darkroom', to: '/tools/content-studio', description: 'Use the instrumental as the music bed in a video edit.' },
+      { label: 'Transcribe video', to: '/tools/transcribe-video', description: 'Get the lyrics as text from the original mix.' },
     ],
+    lastReviewed: '2026-10-29',
+    workedExamples: [
+      {
+        title: 'A 4-minute 320 kbps MP3 (about 9.6 MB) with Same as input',
+        body: 'At 320 kbps an MP3 is 40 KB per second, so 240 seconds is about 9.6 MB, well inside the guest limits of 5 minutes and 200 MB. The format resolves to MP3 because the input is MP3. Demucs runs over the song in 7-second windows on our GPU and writes a 44.1 kHz stereo no_vocals.wav of about 42 MB in a scratch folder, which ffmpeg then encodes with libmp3lame at 320 kbps: the instrumental is again about 9.6 MB. The scratch WAV is deleted. The separation pass dominates the run time and grows with the length of the track.',
+      },
+      {
+        title: 'A 4-minute 50-second CD-quality WAV (about 51 MB), default FLAC or explicit WAV',
+        body: 'A 44.1 kHz stereo 16-bit WAV is 176,400 bytes per second, so 290 seconds is about 51 MB, still within the 5-minute guest cap. Because the input is lossless, Same as input resolves to FLAC: the form estimates the FLAC at roughly 55 percent of the PCM size, about 28 MB, and the actual figure depends on the music. Picking WAV instead returns the stem as 16-bit PCM at about 51 MB, the same size as the input; picking MP3 gives about 11.6 MB at 320 kbps. All three come from the same no_vocals stem, only the encoder differs.',
+      },
+    ],
+    whenNotToUse:
+      'Do not run this on music you do not own or hold a licence for; you are responsible for how the result is used. It is also the wrong tool when you want the singer rather than the band (that is the isolate-vocals operation in the same form), when you need a four-way split into drums, bass and other instruments (this page only produces vocals and accompaniment), or when the recording is speech rather than singing, which the Clean Voice and background-noise pages handle better. Very old mono recordings and live bootlegs with the vocal bleeding into every microphone separate poorly, so expect audible ghosts there.',
     primaryKeyword: 'remove vocals from song',
     secondaryKeywords: [
       'karaoke maker online',
@@ -8297,7 +8384,7 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   },
   {
     slug: 'ai-image-restoration',
-    lastReviewed: '2026-06-12',
+    lastReviewed: '2026-10-29',
     name: 'AI Image Restoration & Upscaling',
     h1: 'AI Image Restoration & Upscaling Tool',
     tagline:
@@ -8318,84 +8405,51 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
         'Upload an image, optionally crop to a region, optionally pre-clean it, pick the upscaling and face-enhancement models you want to compare, and download one package with every result.',
     },
     intro:
-      'AI Image Restoration & Upscaling runs one photo through a configurable pipeline of up to eight models and shows every result next to the original. A fidelity-preserving pre-clean stage (FBCNN for JPEG artifacts, SCUNet for noise, NAFNet for motion blur) removes degradation without inventing detail; general upscalers (Real-ESRGAN, SwinIR, HAT) then enlarge 2x or 4x; and optional face enhancement (GFPGAN, CodeFormer) reconstructs faces. Pre-clean is non-generative — it filters the existing signal. Face enhancement is generative — it synthesizes plausible detail and must not be treated as a faithful recovery of the source. Everything runs on our own GPU server, never a third-party API.',
+      'AI Image Restoration runs one photo through a configurable pipeline of up to eight models and shows every result next to the original. A fidelity-preserving pre-clean stage (FBCNN for JPEG artifacts, SCUNet for noise, NAFNet for motion blur) removes degradation without inventing detail; general upscalers (Real-ESRGAN, SwinIR, HAT) then enlarge 2x or 4x; and optional face enhancement (GFPGAN, CodeFormer) reconstructs faces. Pre-clean is non-generative: it filters the signal that is there. Face enhancement is generative: it synthesises plausible detail and must not be treated as a faithful recovery of the source. Every model runs on our own GPU server.',
     whatItDoes: [
-      'Lets you focus restoration on a drag-selected crop region (applied server-side on the original bytes for no quality loss) or keep the whole image.',
-      'Optionally pre-cleans the image first: FBCNN removes JPEG/compression artifacts (with an optional manual quality factor), SCUNet denoises (PSNR-trained, no hallucinated texture), and NAFNet deblurs — always in that fixed order, each on the previous result.',
-      'Runs your choice of general upscalers — Real-ESRGAN, SwinIR, HAT — at 2x or 4x (native x4 networks; 2x is a Lanczos downscale of the x4 output).',
-      'Optionally adds face enhancement (GFPGAN and/or CodeFormer, with a fidelity dial), and can chain the face models onto each upscaler’s output as well as the source.',
-      'Packages everything — the prepared original, every output, and a manifest — into one results archive, and shows an inline comparison grid so you can A/B each result against the original.',
-      'Keeps going when a single model fails: the package records the failure and still includes every successful result.',
+      'Lets you drag-select a crop so the pixel budget and GPU time go to the region you care about; the crop is applied server-side on the auto-oriented original, so no quality is lost in the browser.',
+      'Optionally pre-cleans first, always in the order FBCNN, SCUNet, NAFNet, each model working on the previous one\'s output; the cleaned image becomes the base every later model starts from.',
+      'Runs any combination of Real-ESRGAN, SwinIR and HAT at 2x or 4x. All three are native x4 networks; a 2x result is the x4 output downscaled to 50 percent with a Lanczos filter.',
+      'Optionally runs GFPGAN v1.4 and, where it is enabled on the server, CodeFormer with a fidelity weight, on the source and, with Chain on, on each upscaler\'s result as well.',
+      'Packages the prepared original, every output PNG, a manifest.json and a README into one .tar.gz, and shows an inline comparison grid while the archive is served from the job.',
+      'Records a failed model as a failed entry with a user-safe reason and still packages every result that succeeded.',
     ],
     flowSteps: [
-      {
-        title: 'Upload an image',
-        description: 'Drop in a PNG, JPEG, WebP, TIFF, or BMP. Old, low-resolution, and compressed photos are exactly the target.',
-      },
-      {
-        title: 'Crop or keep the whole image',
-        description: 'Optionally drag-select a region to focus on (great for a face or a license plate), or restore the entire image.',
-      },
-      {
-        title: 'Optionally pre-clean',
-        description: 'Turn on pre-clean to strip artifacts, noise, and blur before enhancement — the cleaned image becomes the base every model runs on.',
-      },
-      {
-        title: 'Pick models / face enhancement / chain',
-        description: 'Choose any combination of upscalers and face models, set the scale, and optionally chain face restoration onto each upscaled result.',
-      },
-      {
-        title: 'Watch the pipeline run',
-        description: 'A live checklist tracks every stage — pre-clean, each model, packaging — with per-unit failure badges.',
-      },
-      {
-        title: 'Compare & download',
-        description: 'Every result appears in an inline grid next to the original; download the full results archive when you’re ready.',
-      },
+      { title: 'Upload an image', description: 'PNG, JPEG, WebP, TIFF or BMP up to 12,000 pixels on each side; old, small and over-compressed photos are the target.' },
+      { title: 'Crop or keep the whole frame', description: 'Drag a region (a face, a plate, a sign) or leave the crop off to restore everything.' },
+      { title: 'Choose pre-clean, upscalers, faces, scale', description: 'Tick the models you want; the picker shows how many outputs the selection will produce out of the 12 allowed.' },
+      { title: 'Watch the stages', description: 'The job queues for the single restoration slot, prepares the image, then runs each unit with its own progress and failure badge.' },
+      { title: 'Compare and download', description: 'Each result sits beside the original in the grid; download the archive when you have decided which pipeline won.' },
     ],
     advancedDetails: [
-      'FBCNN predicts the JPEG quality factor blindly, or you can override it manually (lower assumes heavier compression) — useful for stubborn blocking artifacts.',
-      'SCUNet uses the PSNR-trained real-denoise weights, not the GAN variant: the GAN model hallucinates texture, while the PSNR model is a pure filter — the right forensic default.',
-      'NAFNet uses the GoPro motion-deblur weights; it targets motion blur specifically, not defocus or compression softness.',
-      'The fixed pre-clean order (artifact removal → denoise → deblur) is deliberate: compression artifacts must come off before denoising, and deblurring runs last on the cleanest signal.',
-      'General models run their native x4 networks; a 2x request downscales the x4 output with Lanczos, mirroring the video pipeline for uniform quality. Large inputs are tiled to stay within GPU memory.',
-      'GFPGAN uses the clean v1.4 architecture; CodeFormer exposes a fidelity weight (w) where lower is prettier and higher stays closer to the input. Background up-sampling is disabled on face models so the comparison stays honest.',
-      'Chaining runs each face model on every upscaler’s output (a pure face pass at 1x) in addition to running it on the source, so you can see face enhancement layered on top of each upscaler.',
-      'Pre-clean output is a filtered version of the source signal (non-generative). Face-enhancement output is generative reconstruction — synthesized detail suitable for clarity and leads, not identification evidence.',
+      'The prepare stage runs ImageMagick -auto-orient to a normalised PNG, reads its dimensions, rejects anything over 12,000 x 12,000, converts your normalised crop rectangle to whole pixels and writes working_source.png. That file is also saved as original.png in the results, so what you compare against is exactly what the models received.',
+      'Auto scale picks 4x when the crop is 540 pixels tall or less and 2x otherwise. Whatever the scale, the output is checked against a budget of 67,108,864 pixels (about 64 megapixels): a 6,000 x 4,000 whole image at 2x is 96 megapixels and is refused with a message telling you to choose 2x or a smaller crop.',
+      'Real-ESRGAN runs the realesrgan-x4plus network through realesrgan-ncnn-vulkan with 256-pixel tiles. SwinIR uses the 003_realSR_BSRGAN SwinIR-L x4 GAN weights and HAT the Real_HAT_GAN_SRx4 weights, both through the same per-frame script as AI Video Restoration with 320-pixel tiles and a 32-pixel overlap, so large crops never exceed GPU memory.',
+      'Pre-clean weights are fbcnn_color.pth, scunet_color_real_psnr.pth (the PSNR-trained real-noise model, not the GAN variant that invents texture) and NAFNet-GoPro-width64.pth (motion deblur, not defocus). They run in 512-pixel tiles with a 32-pixel overlap and never change dimensions. FBCNN predicts the JPEG quality factor blindly unless you set one from 1 to 100; a lower number assumes heavier compression.',
+      'GFPGAN uses the clean v1.4 architecture with background up-sampling disabled, so outside the faces the image is plainly resized by the scale factor rather than model-enhanced; that keeps the comparison honest. CodeFormer takes a fidelity weight w from 0 to 1 (default 0.7): lower is prettier, higher stays closer to the input. CodeFormer ships under a non-commercial licence and is behind a server flag that is off by default.',
+      'Chain re-runs each face model at 1x on every upscaler\'s output in addition to the source, so the output count is pre-clean + general + face + face x general. The server caps a job at 12 outputs, runs one restoration job at a time, and gives each model 1,800 seconds before marking it timed out.',
+      'The server estimates run time per model from its own seconds-per-megapixel defaults: FBCNN 3, SCUNet 8, NAFNet 6, Real-ESRGAN 2, SwinIR 12, HAT 18, GFPGAN 6, CodeFormer 8. These feed the progress weights and the UI estimate; they are tuning values, not a guarantee.',
+      'Results are not uploaded to object storage: the .tar.gz and the result PNGs stay in the job\'s output folder and are served from the job for the retention window.',
     ],
     whyItMatters: [
-      'No single model wins on every photo: artifact removal, denoising, upscaling, and face reconstruction each fix different damage, and the right combination depends on how the image was degraded.',
-      'Restoring one image through several models takes a minute or two and shows exactly which pipeline recovers the most usable detail.',
-      'The non-generative vs generative distinction matters: pre-clean gives you a faithful, filtered image, while face enhancement gives you a plausible reconstruction — knowing which is which is essential for investigative and archival work.',
+      'No single model wins on every photo: artifact removal, denoising, upscaling and face reconstruction each fix different damage, and the right order depends on how the image was degraded.',
+      'Running several models on one upload and seeing them side by side answers the question "which one, and at what scale?" before you commit to a larger batch.',
+      'The non-generative versus generative distinction matters: a pre-cleaned image is a filtered copy of the evidence, a face-enhanced one is a plausible reconstruction, and the page labels which is which.',
     ],
     useCases: [
-      {
-        title: 'Restoring old or scanned photos',
-        description: 'Pre-clean compression and scanner noise, then upscale — and optionally reconstruct faces — to bring a low-resolution photo back to life.',
-      },
-      {
-        title: 'Enhancing low-resolution or CCTV stills',
-        description: 'Crop to the region of interest, remove artifacts, and upscale; chain face enhancement for visual clarity (as a lead, never as identification evidence).',
-      },
-      {
-        title: 'Fixing blurry or compressed downloads',
-        description: 'Heavily compressed social exports respond well to FBCNN + SCUNet followed by a GAN upscaler.',
-      },
-      {
-        title: 'Comparing upscalers before a batch',
-        description: 'Run one representative image through Real-ESRGAN, SwinIR, and HAT to pick the best model for a larger set.',
-      },
-      {
-        title: 'Recovering detail in a specific region',
-        description: 'Drag-select just a face or sign so the full pixel budget and GPU time go to the part you care about.',
-      },
+      { title: 'Restoring old or scanned photos', description: 'Pre-clean scanner noise and compression, then upscale and, if you choose, reconstruct faces.' },
+      { title: 'Enhancing low-resolution stills', description: 'Crop to the region of interest, remove artifacts and upscale; chain face enhancement for clarity, never as identification evidence.' },
+      { title: 'Fixing compressed downloads', description: 'Heavily recompressed social exports respond well to FBCNN then SCUNet, followed by a GAN upscaler.' },
+      { title: 'Comparing upscalers before a batch', description: 'Run one representative image through Real-ESRGAN, SwinIR and HAT to choose the model for a larger set.' },
+      { title: 'Spending the budget on one region', description: 'Drag-select just a face or a sign so the 64-megapixel budget and the GPU time go where it counts.' },
     ],
     whyMediaManipulator: [
-      'Eight research-grade models behind one upload — no notebooks, CUDA setup, or model weights to manage.',
-      'Runs entirely on our own GPU server: your image never goes to a third-party AI provider.',
-      'Honest by design: pre-clean is labeled non-generative, face enhancement is labeled generative reconstruction, and the original is always shown for side-by-side comparison.',
+      'Eight research models behind one upload, with no notebooks, CUDA setup or weight files to manage.',
+      'Every model runs on a GPU server we operate; the image is not sent to a third-party AI service.',
+      'The page keeps the distinction honest: pre-clean outputs carry a fidelity note, face outputs a generative note, and the prepared original is always in the grid.',
     ],
-    privacyNote: sharedPrivacyNote,
+    privacyNote:
+      `Your image is saved in its job folder, auto-oriented and cropped by ImageMagick into a working PNG, and processed by the selected models on our own GPU. When the job ends the upload folder and the working tree are deleted; what remains with the job is the prepared original, each result PNG, the manifest and the packaged .tar.gz, served from the job for download and for the comparison grid. Face-model outputs are labelled as generative reconstructions in that manifest. No third-party AI provider receives the image. ${RETENTION_PROMISE}.`,
     supportedFormats: {
       supportedInputFormats: ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'bmp'],
       supportedOutputFormats: ['png'],
@@ -8411,73 +8465,66 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
     },
     faq: [
       {
-        question: 'What is the difference between pre-clean and the upscaling/face models?',
+        question: 'What is the difference between pre-clean and the upscaling or face models?',
         answer:
-          'Pre-clean models (FBCNN, SCUNet, NAFNet) are non-generative: they remove compression artifacts, noise, and motion blur by filtering the existing signal, without inventing new detail. Upscalers add resolution, and the face models (GFPGAN, CodeFormer) are generative — they synthesize plausible facial detail. That is why pre-clean output is a faithful filtered image while face output is a reconstruction.',
+          'Pre-clean models (FBCNN, SCUNet, NAFNet) are non-generative: they remove compression artifacts, noise and motion blur by filtering the existing signal at 1x. Upscalers add resolution, and the face models (GFPGAN, CodeFormer) are generative, synthesising plausible facial detail. A pre-clean output is a faithful filtered image; a face output is a reconstruction.',
       },
       {
-        question: 'Can AI face enhancement be used as identification evidence?',
+        question: 'Can an enhanced face be used as identification evidence?',
         answer:
-          'No. GFPGAN and CodeFormer synthesize plausible facial detail from a learned prior; they do not recover the true face. The output is useful for visual clarity and investigative leads, but it must never be treated as a faithful recovery of the source for identification.',
+          'No. GFPGAN and CodeFormer produce plausible faces from a learned prior; they do not recover the true face. The manifest marks every face output with a generative note for exactly this reason. Use them for visual clarity and leads only.',
       },
       {
-        question: 'Why do the pre-clean models always run in the same order?',
+        question: 'Why do the pre-clean models run in a fixed order whatever I tick?',
         answer:
-          'Compression artifacts must be removed before denoising (otherwise the denoiser treats blocking as signal), and deblurring works best on the cleanest input, so the pipeline always runs FBCNN → SCUNet → NAFNet regardless of the order you select them.',
+          'Compression artifacts have to come off before denoising, otherwise the denoiser treats blocking as signal, and deblurring works best on the cleanest input, so the server always runs FBCNN, then SCUNet, then NAFNet, each on the previous result. If one of them fails, the next continues from the last successful step.',
       },
       {
-        question: 'What does the Chain option do?',
+        question: 'How does Auto decide between 2x and 4x, and what is the size limit?',
         answer:
-          'With chaining on, each selected face model runs on every upscaler’s output in addition to running on the source. For example, two upscalers and two face models with chaining produce the two upscaled images, each face model on the source, and each face model on each upscaler’s result.',
+          'Auto picks 4x when the crop is at most 540 pixels tall and 2x otherwise. The output is then checked against a budget of about 64 megapixels (67,108,864 pixels); a request over it is refused with the megapixel count and a suggestion to choose 2x or a smaller crop. Sources over 12,000 pixels on either side are rejected before that.',
       },
       {
-        question: 'Should I use 2x or 4x?',
+        question: 'What does Chain do to the number of outputs?',
         answer:
-          'The models run native 4x networks; a 2x request downscales the 4x output with Lanczos for identical quality at half the dimensions. Auto picks 4x for small crops and 2x for larger ones, and an output pixel budget prevents accidentally enormous results.',
+          'With Chain on, each face model also runs at 1x on every upscaler\'s result, so outputs = pre-clean + general + face + face x general. Two upscalers and two face models with chaining is 2 + 2 + 4 = 8 outputs before any pre-clean; the server allows 12 per job.',
       },
       {
-        question: 'What happens if a model fails?',
+        question: 'What happens if one image model fails or times out?',
         answer:
-          'The job keeps going. The failed model’s entry records a user-safe reason, the manifest notes it, and every other result is still packaged and shown in the comparison grid.',
+          'The job carries on. The unit is marked failed with a user-safe reason (for example a timeout after 1,800 seconds suggesting a smaller crop or 2x), the manifest records it, and every other result is still packaged and shown. Only when every selected model fails does the job fail, and then the AI operation is refunded.',
       },
       {
-        question: 'Why is CodeFormer sometimes unavailable?',
+        question: 'Why is CodeFormer greyed out?',
         answer:
-          'CodeFormer is under a non-commercial license, so it is gated behind a server flag and may be disabled on this deployment. GFPGAN (Apache-2.0) and the pre-clean models (Apache-2.0/MIT) are always available when installed.',
+          'CodeFormer is licensed for non-commercial use, so it sits behind a server flag that is off by default; capabilities then report it as currently disabled. GFPGAN and the three pre-clean models have permissive licences and are available whenever their weights are installed.',
       },
       {
-        question: 'Does it keep my original image?',
+        question: 'How many restorations can I run, and is it free?',
         answer:
-          'The prepared (cropped) original is included in the results package and shown alongside every output so you can A/B each result honestly.',
+          'Starting a restoration spends one AI operation: 1 per day as a guest, 5 with a free account, 60 on Premium and 120 on Pro by default, regardless of how many models you tick in that job. There is also a dedicated limit of 6 starts per session per hour. The upload cap is 200 MB for guests and 1 GB with a free account; /pricing shows the current numbers.',
       },
     ],
     related: [
+      { label: 'AI video restoration', to: '/tools/ai-video-restoration', description: 'The moving-image sibling: the same upscalers on a short clip.' },
+      { label: 'AI image upscaler', to: '/tools/ai-image-upscaler', description: 'A single Real-ESRGAN pass when you only need a bigger image.' },
+      { label: 'Remove background', to: '/tools/remove-background-from-image', description: 'Cut out the subject after restoring it.' },
+      { label: 'Compress image', to: '/tools/compress-image', description: 'Shrink the restored PNG for sharing.' },
+      { label: 'Image resizer', to: '/tools/image-resizer', description: 'Resize the restored image to exact dimensions.' },
+      { label: 'Remove EXIF metadata', to: '/tools/remove-exif-metadata', description: 'Strip metadata from the result before posting it.' },
+    ],
+    workedExamples: [
       {
-        label: 'AI Video Restoration',
-        to: '/tools/ai-video-restoration',
-        description: 'The moving-image sibling — restore and upscale a video snippet.',
+        title: 'A 1,200 x 800 JPEG (about 350 KB), whole frame, auto scale, FBCNN + Real-ESRGAN + GFPGAN',
+        body: 'The crop is the full 0.96-megapixel frame and its height of 800 pixels is over 540, so auto scale resolves to 2x. FBCNN runs first at 1x and its output becomes the working source. Real-ESRGAN upscales that to 4,800 x 3,200 with realesrgan-x4plus, then ImageMagick resizes it to 50 percent with Lanczos for a 2,400 x 1,600 PNG. GFPGAN runs on the pre-cleaned source at upscale 2, giving another 2,400 x 1,600 PNG with the faces reconstructed and the rest plainly resized. That is three outputs out of the 12 allowed. By the server\'s own per-megapixel estimates the model time is about 0.96 x (3 + 2 + 6), around 11 seconds, plus a few seconds of preparation and packaging; waiting for the single restoration slot can add more. One job spends one AI operation.',
       },
       {
-        label: 'Remove background',
-        to: '/tools/remove-background-from-image',
-        description: 'Cut out the subject after restoring it.',
-      },
-      {
-        label: 'Compress image',
-        to: '/tools/compress-image',
-        description: 'Shrink the restored image for sharing.',
-      },
-      {
-        label: 'Image resizer',
-        to: '/tools/image-resizer',
-        description: 'Resize the restored image to exact dimensions.',
-      },
-      {
-        label: 'Remove EXIF metadata',
-        to: '/tools/remove-exif-metadata',
-        description: 'Strip metadata from the restored image before sharing.',
+        title: 'A 300 x 400 face crop from a 640 x 480 still, pre-clean, three upscalers, GFPGAN with Chain',
+        body: 'The crop is 0.12 megapixels and 400 pixels tall, so auto scale picks 4x and every upscaled result is 1,200 x 1,600 (1.92 megapixels), far inside the 64-megapixel budget. With FBCNN and SCUNet pre-clean, Real-ESRGAN, SwinIR and HAT, and GFPGAN chained, the job produces 2 + 3 + 1 + 1 x 3 = 9 outputs: two pre-clean steps, three upscales, GFPGAN on the cleaned source, and GFPGAN on each upscaled result at 1x. The pre-clean and upscale passes on 0.12 megapixels are each a few seconds by the server\'s estimates, while the three chained face passes run on the 1.92-megapixel results and take proportionally longer. Each face output carries a generative note in the manifest, because what you see in those faces is reconstruction, not recovery.',
       },
     ],
+    whenNotToUse:
+      'Do not use face enhancement for identification: GFPGAN and CodeFormer draw plausible faces from a learned prior, so a reconstructed face is a lead at most and never proof of who was in the picture. Skip the tool for images that are already large and sharp, where a 2x pass mostly adds GAN texture, and for photos larger than 12,000 pixels on a side, which are refused. If you only need a bigger copy of a clean image without pre-clean, face models or a comparison grid, the AI Image Upscaler is cheaper in time. And if your damage is defocus blur rather than motion blur, NAFNet\'s GoPro weights are the wrong model for it.',
     primaryKeyword: 'AI image restoration',
     secondaryKeywords: [
       'AI image upscaler',
