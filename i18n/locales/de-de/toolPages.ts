@@ -4,9 +4,9 @@
  *
  * Scope: MM86 (2026-10-29) added full bodies (h1, intro, sections, worked
  * examples, FAQ, related, embed) for the 24 copy-bar pages
- * (`REVIEW_CATALOG_SLUGS`), model-written by Fable 5.1 from MM84's English;
- * the other slugs keep `name` + `tagline` only (the fields surfaced on the
- * home page's "Popular conversions" grid and the /tools index).
+ * (`REVIEW_CATALOG_SLUGS`), model-written by Fable 5.1 from MM84's English.
+ * MM93 (2026-10-31) added full bodies for every remaining non-alias tool page
+ * (74 more), model-written by Fable 5.1; native review pending for those.
  *
  * Register: formal "Sie"; brand names, formats and codecs stay untranslated;
  * "Darkroom" stays "Darkroom".
@@ -3689,158 +3689,3877 @@ const deToolPages = {
     // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
     'inspect-metadata': {
       name: 'Metadaten-Prüfer',
-      tagline:
-        'Sehen Sie jedes Tag, das in einem Foto, Video, einer Audiodatei oder einem PDF steckt: EXIF, GPS-Standort, Kamera, Codecs, ID3, XMP und mehr, bevor Sie die Datei teilen.',
+      h1: 'Dateimetadaten online prüfen',
+      tagline: 'Sehen Sie jedes Tag, das in einem Foto, Video, einer Audiodatei oder einem PDF steckt: EXIF, GPS-Standort, Kamera, Codecs, ID3, XMP und mehr, bevor Sie die Datei teilen.',
+      metaTitle: 'Dateimetadaten online prüfen: EXIF, GPS, Codecs, ID3 | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Metadaten-Prüfer für Bilder, Video, Audio und PDF. Sehen Sie EXIF, GPS-Koordinaten auf einer Karte, Kamera und Objektiv, Codecs und Bitraten, ID3-Tags, XMP und IPTC. Ohne Anmeldung.',
+      ogTitle: 'Dateimetadaten online prüfen',
+      ogDescription: 'Jedes EXIF-, GPS-, Codec-, ID3- und XMP-Tag in Ihrer Datei, gruppiert und durchsuchbar, mit markierten privaten Einträgen.',
+      intro: 'Dateien tragen mehr in sich als ihre Pixel und Samples. Ein Handyfoto hält fest, wo, wann und mit welchem Gerät es aufgenommen wurde; ein Video nennt seinen Encoder und seine Bitraten; eine MP3 trägt ID3-Tags und Albumcover; ein PDF speichert seinen Autor und die Software, die es erzeugt hat. Der Metadaten-Prüfer von Media Manipulator liest all das auf unseren Servern mit ExifTool und ffprobe, gruppiert es in die Bereiche Kamera, Standort, Gerät, Zeit, Codec und Dokument und hebt die Einträge hervor, die Sie identifizieren könnten, damit Sie entscheiden können, was Sie entfernen, bevor eine Datei Ihre Hände verlässt.',
+      whatItDoes: [
+        'Liest EXIF-, GPS-, IPTC-, XMP- und ICC-Daten aus JPG, PNG, WebP, HEIC, AVIF, TIFF und aus RAW abgeleiteten Bildern.',
+        'Liest Container-, Stream-, Codec-, Bitraten-, Bildraten- und Kapiteldaten aus MP4, MOV, MKV, WebM und anderen Videodateien.',
+        'Liest ID3-, Vorbis- und MP4-Tags, Cover-Art und Encoder-Einstellungen aus MP3, M4A, FLAC, OGG und WAV.',
+        'Liest Autor, Producer, Erstellungsdaten und Seitenzahl aus PDFs.',
+        'Zeigt GPS-Koordinaten auf einem Kartenumriss und markiert jeden datenschutzrelevanten Eintrag.',
+        'Bietet die Rohausgabe von ExifTool und ffprobe und das Kopieren jedes Blocks mit einem Klick.',
+      ],
+      flowSteps: [
+        {
+          title: 'Datei hochladen',
+          description: 'Bild, Video, Audio oder PDF.',
+        },
+        {
+          title: 'Wir lesen sie',
+          description: 'ExifTool und ffprobe laufen auf unseren Servern.',
+        },
+        {
+          title: 'Bericht durchsehen',
+          description: 'Gruppiert, durchsuchbar, mit markierten privaten Einträgen.',
+        },
+        {
+          title: 'Entscheiden',
+          description: 'Entfernen Sie bei Bedarf die Metadaten mit dem EXIF-Tool.',
+        },
+      ],
+      advancedDetails: [
+        'Bilder und PDFs werden automatisch geprüft; Video und Audio über 100 MB warten auf einen Klick, damit eine große Datei nicht versehentlich hochgeladen wird.',
+        'Eingebettete Cover-Art in Audiodateien wird als Bildeintrag gemeldet, nicht als Videostream.',
+        'Der Bericht verwendet denselben Metadatenkatalog, der auch das EXIF-Entfernungstool und den Ergebnis-Prüfer bei jeder Konvertierung antreibt.',
+      ],
+      whyItMatters: [
+        'Ein vom Handy geteiltes Foto kann über seine GPS-Tags Ihre Wohnadresse verraten.',
+        'Den echten Codec, die Bitrate und die Bildrate eines Videos zu kennen erklärt, warum es irgendwo abgespielt wird oder nicht.',
+        'Dokumentmetadaten nennen Autoren und Bearbeitungssoftware, was bei allem zählt, was Sie anonym veröffentlichen.',
+      ],
+      useCases: [
+        {
+          title: 'Vor dem Posten eines Fotos',
+          description: 'Prüfen Sie auf GPS-Koordinaten und die Seriennummer des Geräts.',
+        },
+        {
+          title: 'Fehlersuche bei einem Video',
+          description: 'Sehen Sie den echten Codec, das Profil, die Bildrate und das Audio-Layout.',
+        },
+        {
+          title: 'Eine Musikdatei prüfen',
+          description: 'Bestätigen Sie Tags, Bitrate und ob sie aus einer niedrigeren Bitrate transkodiert wurde.',
+        },
+        {
+          title: 'Ein PDF durchsehen',
+          description: 'Sehen Sie, wen das Autorfeld nennt und welche Software es erzeugt hat.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Ein Prüfer für Bilder, Video, Audio und PDF, nicht vier getrennte Tools.',
+        'Datenschutzrelevante Einträge werden markiert, mit direktem Weg zu ihrer Entfernung.',
+        'Keine Konvertierung, kein Konto. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ],
+      privacyNote: 'Ihre Datei wird von ExifTool und ffprobe auf unserem Server gelesen, der Bericht kommt zurück in Ihren Browser, und die temporäre Kopie wird gelöscht, sobald der Bericht erstellt ist. Kein Dritter sieht die Datei oder ihre Tags. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Verändert das Prüfen eine Datei?',
+          answer: 'Nein. Die Datei wird gelesen, ausgewertet und nach der Analyse gelöscht. Nichts wird zurückgeschrieben.',
+        },
+        {
+          question: 'Kann ich entfernen, was der Prüfer findet?',
+          answer: 'Ja. Verwenden Sie für Bilder das Tool „EXIF-Metadaten entfernen“; es entfernt alles und zeigt einen Vorher-Nachher-Vergleich.',
+        },
+        {
+          question: 'Warum braucht ein großes Video einen Klick?',
+          answer: 'Video und Audio über 100 MB werden nur hochgeladen, wenn Sie es anfordern, damit Sie nie versehentlich eine große Datei senden.',
+        },
+        {
+          question: 'Zählt das gegen meine täglichen Konvertierungen?',
+          answer: 'Nein. Die Prüfung ist kostenlos und verbraucht keinen Vorgang.',
+        },
+        {
+          question: 'Werden die Daten an einen Dritten gesendet?',
+          answer: 'Nein. ExifTool und ffprobe laufen auf unseren eigenen Servern, und die Datei wird danach gelöscht.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Prüfung ist schreibgeschützt und zählt nicht als Konvertierung.',
+        ],
+      },
+      related: [
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Entfernen Sie alles, was der Prüfer gefunden hat.',
+        },
+        {
+          label: 'Bild-Metadaten bearbeiten',
+          to: '/tools/edit-image-metadata',
+          description: 'Schreiben Sie Titel, Autor, Copyright und GPS neu.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie mit oder ohne Metadaten.',
+        },
+      ],
+      embed: {
+        title: 'Eine Datei prüfen',
+        description: 'Ziehen Sie ein Bild, ein Video, eine Audiodatei oder ein PDF hinein. Der Bericht gruppiert jedes Tag nach Kategorie, markiert die, die Sie oder Ihren Standort identifizieren, und bietet eine Rohansicht von ExifTool und ffprobe.',
+      },
     },
     'edit-image-metadata': {
       name: 'Bild-Metadaten bearbeiten',
-      tagline:
-        'Legen Sie Titel, Autor, Copyright, Schlagwörter und Beschreibung eines Fotos fest, korrigieren oder entfernen Sie den GPS-Standort und schreiben Sie EXIF- und IPTC-Tags neu.',
+      h1: 'Bild-Metadaten online bearbeiten',
+      tagline: 'Legen Sie Titel, Autor, Copyright, Schlagwörter und Beschreibung eines Fotos fest, korrigieren oder entfernen Sie den GPS-Standort und schreiben Sie EXIF- und IPTC-Tags neu.',
+      metaTitle: 'Bild-Metadaten online bearbeiten: EXIF, IPTC, Copyright, GPS | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Editor für Bild-Metadaten. Legen Sie Titel, Autor, Copyright, Beschreibung und Schlagwörter fest, ersetzen oder entfernen Sie den GPS-Standort und bearbeiten Sie EXIF- und IPTC-Tags in JPG, PNG, WebP und mehr.',
+      ogTitle: 'Bild-Metadaten online bearbeiten',
+      ogDescription: 'Schreiben Sie einen Copyright-Hinweis, korrigieren Sie den Standort, setzen Sie Schlagwörter. Kostenlos, ohne Anmeldung.',
+      intro: 'Fotografen brauchen einen Copyright-Hinweis und Kontaktdaten in jeder Datei, die sie liefern. Agenturen wollen IPTC-Schlagwörter und Bildunterschriften. Wer ein Foto teilt, möchte den Standort vielleicht entfernt haben oder auf eine Stadt statt auf eine Haustür gesetzt. Media Manipulator schreibt EXIF-, IPTC- und XMP-Felder auf unseren Servern mit ExifTool direkt in der Datei neu, lässt die Bilddaten unangetastet und zeigt Ihnen den Vorher-Nachher-Vergleich.',
+      whatItDoes: [
+        'Legt Titel, Autor/Künstler, Beschreibung, Copyright, Kommentar und Schlagwörter fest.',
+        'Entfernt den GPS-Standort oder ersetzt ihn durch Koordinaten Ihrer Wahl.',
+        'Bearbeitet einzelne EXIF/TIFF-, IPTC- und erweiterte Tags nach Namen.',
+        'Lässt die Pixel unangetastet; konvertiert optional im selben Durchgang das Format.',
+        'Zeigt nach dem Auftrag einen Vergleich dessen, was sich geändert hat.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'JPG, PNG, WebP, HEIC, TIFF.',
+        },
+        {
+          title: 'Felder ausfüllen',
+          description: 'Titel, Autor, Copyright, Schlagwörter, Standort.',
+        },
+        {
+          title: 'Anwenden',
+          description: 'ExifTool schreibt die Tags auf unseren Servern neu.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Vergleichen Sie vorher und nachher, dann speichern Sie.',
+        },
+      ],
+      advancedDetails: [
+        'Der Modus für eigene Metadaten schreibt die Standard-Gegenstücke in EXIF (Artist, Copyright, ImageDescription), IPTC (Keywords, Caption) und XMP (dc:title, dc:creator) gemeinsam, sodass jeder Viewer dasselbe anzeigt.',
+        'Beim Ersetzen des GPS-Standorts werden GPSLatitude/GPSLongitude mit den richtigen Referenz-Hemisphären geschrieben; beim Entfernen wird jedes GPS-Tag gelöscht.',
+        'PNG und WebP tragen Metadaten in Text-Chunks und XMP; dieselben Felder werden dort geschrieben.',
+      ],
+      whyItMatters: [
+        'Ein in die Datei eingebetteter Copyright-Hinweis wandert mit, wenn sie erneut gepostet wird.',
+        'Schlagwörter und Bildunterschriften in IPTC sind das, was Stockagenturen und DAM-Systeme indexieren.',
+        'Ein auf eine Stadt gesetzter Standort schützt Ihr Zuhause und hält das Foto trotzdem geogetaggt.',
+      ],
+      useCases: [
+        {
+          title: 'Kundenfotos liefern',
+          description: 'Betten Sie Ihren Namen, Copyright und Kontakt in jede Datei ein.',
+        },
+        {
+          title: 'Stock-Einreichungen',
+          description: 'Fügen Sie IPTC-Schlagwörter und eine Bildunterschrift hinzu.',
+        },
+        {
+          title: 'Grober Geotag',
+          description: 'Ersetzen Sie eine präzise GPS-Position durch das Stadtzentrum.',
+        },
+        {
+          title: 'Falsches Tag korrigieren',
+          description: 'Korrigieren Sie den Autor oder das Datum, das ein Scanner geschrieben hat.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Schreibt EXIF, IPTC und XMP gemeinsam, nicht nur eines davon.',
+        'Vorher-Nachher-Vergleich, damit Sie genau sehen, was sich geändert hat.',
+      ],
+      privacyNote: 'Die Tags Ihres Bildes werden von ExifTool auf unserem Server mit den von Ihnen eingegebenen Werten neu geschrieben; die Pixel bleiben, wie sie sind. Kein Dritter sieht die Datei oder ihre Tags. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Wird mein JPG beim Bearbeiten der Metadaten neu kodiert?',
+          answer: 'Nur wenn Sie das Ausgabeformat ändern oder die Größe anpassen. Bei gleichem Format und ohne Änderungen an den Pixeln werden die Bilddaten kopiert und nur die Tags neu geschrieben.',
+        },
+        {
+          question: 'Kann ich den Standort entfernen, aber alles andere behalten?',
+          answer: 'Ja. Haken Sie „Standortdaten entfernen“ an und lassen Sie die anderen Felder unangetastet.',
+        },
+        {
+          question: 'Kann ich ein Tag bearbeiten, das nicht aufgeführt ist?',
+          answer: 'Ja. Klappen Sie den erweiterten Bereich auf und setzen Sie jedes beliebige EXIF- oder IPTC-Tag nach Namen.',
+        },
+        {
+          question: 'Wie entferne ich stattdessen alles?',
+          answer: 'Verwenden Sie das Tool „EXIF-Metadaten entfernen“, das jedes Tag mit einem Klick entfernt.',
+        },
+      ],
+      related: [
+        {
+          label: 'Metadaten prüfen',
+          to: '/tools/inspect-metadata',
+          description: 'Sehen Sie zuerst, was in der Datei steckt.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Entfernen Sie alles.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen Bildformaten.',
+        },
+        {
+          label: 'Bild zuschneiden',
+          to: '/tools/crop-image',
+          description: 'Schneiden Sie auf einen Bereich zu.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Ändern Sie die Abmessungen.',
+        },
+        {
+          label: 'Text zu Bild hinzufügen',
+          to: '/tools/add-text-to-image',
+          description: 'Beschriftung oder Wasserzeichen.',
+        },
+        {
+          label: 'Bildfilter',
+          to: '/tools/image-filters',
+          description: 'Sepia, Skizze, Relief und mehr.',
+        },
+      ],
+      embed: {
+        title: 'Die Metadaten eines Bildes bearbeiten',
+        description: 'Laden Sie ein Bild hoch. Der Metadatenbereich öffnet sich im Modus für eigene Metadaten: Füllen Sie Titel, Autor, Copyright und Schlagwörter aus, ersetzen oder entfernen Sie den GPS-Standort und klappen Sie bei Bedarf die erweiterten Tags auf. Die Bildpixel bleiben, wie sie sind, sofern Sie nicht auch das Format ändern.',
+      },
     },
     'change-video-speed': {
       name: 'Videogeschwindigkeit ändern',
-      tagline:
-        'Erstellen Sie einen Zeitraffer mit 2x, 4x oder schneller oder verlangsamen Sie einen Clip auf 0.5x oder 0.25x, mit synchron bleibendem Ton.',
+      h1: 'Videogeschwindigkeit online ändern: beschleunigen oder verlangsamen',
+      tagline: 'Erstellen Sie einen Zeitraffer mit 2x, 4x oder schneller oder verlangsamen Sie einen Clip auf 0.5x oder 0.25x, mit synchron bleibendem Ton.',
+      metaTitle: 'Videogeschwindigkeit kostenlos ändern: Zeitraffer & Zeitlupe | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Ändern der Videogeschwindigkeit. Beschleunigen Sie ein Video auf 1.5x, 2x oder 4x für einen Zeitraffer oder verlangsamen Sie es auf 0.5x oder 0.25x. Der Ton bleibt synchron. MP4-Ausgabe, ohne Wasserzeichen.',
+      ogTitle: 'Videogeschwindigkeit online kostenlos ändern',
+      ogDescription: 'Beschleunigen oder verlangsamen Sie jedes Video von 0.25x bis 4x. Der Ton bleibt synchron. Kostenlos, ohne Anmeldung.',
+      intro: 'Eine Bildschirmaufnahme, die sich zieht, ein Sonnenuntergang, der zu einem zehnsekündigen Zeitraffer werden soll, ein Skateboard-Trick, der Zeitlupe verdient: Die Wiedergabegeschwindigkeit zu ändern ist einer der häufigsten Videoschnitte, und dafür sollte kein Desktop-Editor nötig sein. Media Manipulator passt Bild und Ton auf unseren Servern mit FFmpeg zeitlich neu an, von einem Viertel bis zum Vierfachen der Geschwindigkeit, und exportiert ein MP4, das überall im neuen Tempo abspielt.',
+      whatItDoes: [
+        'Beschleunigt (1.25x bis 4x) oder verlangsamt (0.25x bis 0.9x) jedes Video.',
+        'Passt den Ton mit tonhöhenerhaltender Tempoänderung an, damit Stimmen natürlich bleiben.',
+        'Behält Auflösung und Qualität; exportiert standardmäßig MP4 oder jeden unterstützten Container.',
+        'Kombinieren Sie das mit Trimmen, Skalieren oder Farbanpassungen im selben Durchgang.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Jedes gängige Videoformat.',
+        },
+        {
+          title: 'Geschwindigkeit festlegen',
+          description: '0.25x bis 4x; 2x ist vorausgewählt.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg passt Video und Audio zeitlich neu an.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das neue MP4.',
+        },
+      ],
+      advancedDetails: [
+        'Das Video verwendet setpts, um die Präsentationszeitstempel zu skalieren; das Audio verwendet atempo, verkettet für Faktoren außerhalb von 0.5 bis 2.0.',
+        'Verlangsamen erfindet keine Bilder; für flüssige Zeitlupe nutzen Sie nach dem Verlangsamen des Clips die KI-Frame-Interpolation.',
+        'Die Bildrate bleibt erhalten, ein 4x-Zeitraffer hat also ein Viertel der ursprünglichen Bilder.',
+      ],
+      whyItMatters: [
+        'Zeitraffer und Zusammenfassungen sind bei 2x bis 4x deutlich angenehmer anzusehen.',
+        'Zeitlupe macht Sport- und Actionclips lesbar.',
+        'Tutorials und Bildschirmaufnahmen sind oft bei 1.25x bis 1.5x besser.',
+      ],
+      useCases: [
+        {
+          title: 'Zeitraffer',
+          description: 'Verdichten Sie eine Stunde Bauen, Kochen oder Malen auf Minuten.',
+        },
+        {
+          title: 'Zeitlupe',
+          description: 'Verlangsamen Sie einen Sport- oder Haustierclip auf halbe Geschwindigkeit.',
+        },
+        {
+          title: 'Schnelleres Tutorial',
+          description: 'Beschleunigen Sie eine Bildschirmaufnahme ohne Micky-Maus-Stimme.',
+        },
+        {
+          title: 'An einen Musiktitel anpassen',
+          description: 'Schieben Sie einen Clip auf 1.1x, damit er zum Beat passt.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Das Audio wird mit erhaltener Tonhöhe zeitlich angepasst, nicht zurückgelassen oder zur Micky-Maus-Stimme verzerrt.',
+        'Kombinieren Sie es mit Rückwärtslauf, Trimmen und Farbe im selben Formular.',
+      ],
+      privacyNote: 'Ihr Video wird von FFmpeg auf unserem Server beschleunigt oder verlangsamt, wobei das Audiotempo passend geändert wird. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst Dritter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Bleibt der Ton synchron?',
+          answer: 'Ja. Das Audio wird im Tempo um denselben Faktor skaliert, mit erhaltener Tonhöhe.',
+        },
+        {
+          question: 'Was ist die maximale Geschwindigkeit?',
+          answer: '4x schneller und 0.25x langsamer in einem Durchgang. Für mehr lassen Sie das Ergebnis erneut durch das Tool laufen.',
+        },
+        {
+          question: 'Sieht die Zeitlupe flüssig aus?',
+          answer: 'Verlangsamen wiederholt Bilder. Für wirklich flüssige Zeitlupe verlangsamen Sie den Clip hier und nutzen dann die KI-Frame-Interpolation.',
+        },
+        {
+          question: 'Kann ich den Ton stattdessen stummschalten?',
+          answer: 'Ja, verwenden Sie zuerst das Tool „Audio aus Video entfernen“ oder exportieren Sie als GIF, das keinen Ton hat.',
+        },
+      ],
+      related: [
+        {
+          label: 'KI-Frame-Interpolation',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Flüssige Zeitlupe mit generierten Bildern.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Video rückwärts abspielen',
+          to: '/tools/reverse-video',
+          description: 'Spielen Sie einen Clip rückwärts ab.',
+        },
+        {
+          label: 'Video spiegeln',
+          to: '/tools/flip-video',
+          description: 'Horizontal oder vertikal spiegeln.',
+        },
+        {
+          label: 'Video stabilisieren',
+          to: '/tools/stabilize-video',
+          description: 'Glätten Sie verwackeltes Material.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Datei.',
+        },
+        {
+          label: 'Video trimmen',
+          to: '/tools/video-trimmer',
+          description: 'Auf einen Bereich schneiden.',
+        },
+      ],
+      embed: {
+        title: 'Die Geschwindigkeit eines Videos ändern',
+        description: 'Laden Sie ein Video hoch und legen Sie einen Geschwindigkeitsfaktor fest: über 1 ist schneller, unter 1 langsamer. 2x ist vorausgewählt. Das Audio wird passend zeitlich angepasst, sodass eine beschleunigte Stimme verständlich bleibt.',
+      },
     },
     'reverse-video': {
       name: 'Video rückwärts abspielen',
-      tagline:
-        'Spielen Sie jeden Clip rückwärts ab, mit oder ohne umgekehrten Ton, und lassen Sie ihn auf Wunsch im Ping-Pong-Stil erst vor- und dann zurücklaufen.',
+      h1: 'Video online kostenlos rückwärts abspielen',
+      tagline: 'Spielen Sie jeden Clip rückwärts ab, mit oder ohne umgekehrten Ton, und lassen Sie ihn auf Wunsch im Ping-Pong-Stil erst vor- und dann zurücklaufen.',
+      metaTitle: 'Video kostenlos rückwärts abspielen: Ping-Pong-Schleife | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Rückwärtsabspielen von Videos. Spielen Sie ein Video rückwärts ab, kehren Sie auch den Ton um oder erstellen Sie eine Ping-Pong-Schleife, die erst vor- und dann zurückläuft. MP4- oder GIF-Ausgabe, ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'Video online kostenlos rückwärts abspielen',
+      ogDescription: 'Spielen Sie einen Clip rückwärts ab oder erstellen Sie eine Schleife, die erst vor- und dann zurückläuft. Kostenlos, ohne Anmeldung.',
+      intro: 'Der Effekt des rückwärts laufenden Videos ist älter als das Internet und funktioniert noch immer: zersplittertes Glas, das sich wieder zusammensetzt, ein Taucher, der aus dem Becken springt, eine Menschenmenge, die sich wieder sammelt. Media Manipulator kehrt die Bilder und optional den Ton jedes Clips auf unseren Servern mit FFmpeg um, und die Ping-Pong-Option hängt die Vorwärtskopie an, sodass das Ergebnis nahtlos in Schleife läuft, was die meisten Social-Media- und GIF-Anwendungen wollen.',
+      whatItDoes: [
+        'Kehrt die Videobilder jedes Clips um.',
+        'Kehrt den Ton mit um oder verwirft ihn für ein stummes Ergebnis.',
+        'Der Ping-Pong-Modus läuft erst vor- und dann rückwärts für eine nahtlose Schleife.',
+        'Exportiert MP4, WebM oder ein animiertes GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Clip hochladen',
+          description: 'Kurze Clips eignen sich am besten; das Umkehren lädt den gesamten Clip in den Speicher.',
+        },
+        {
+          title: 'Rückwärts oder Ping-Pong wählen',
+          description: 'Rückwärts ist vorausgewählt.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg kehrt Bilder und Ton um.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'MP4 für Video, GIF für eine Schleife.',
+        },
+      ],
+      advancedDetails: [
+        'Das Umkehren puffert jedes Bild des Clips, sehr lange oder 4K-Clips brauchen also länger und mehr Speicher; trimmen Sie für beste Ergebnisse zuerst.',
+        'Der Ton verwendet den areverse-Filter; für einen stummen umgekehrten Clip entfernen Sie zuerst den Ton.',
+        'Ping-Pong verkettet den Vorwärts- und den Rückwärtsstream und verdoppelt die Dauer.',
+      ],
+      whyItMatters: [
+        'Rückwärts- und Boomerang-Clips gehören zum festen Repertoire von Kurzvideos in sozialen Medien.',
+        'Eine Ping-Pong-Schleife verbirgt den Schnitt, den eine einfache Schleife zeigen würde.',
+        'Umkehren ist außerdem ein günstiger Weg zu einem „Rewind“-Übergang.',
+      ],
+      useCases: [
+        {
+          title: 'Schleife im Boomerang-Stil',
+          description: 'Verwandeln Sie einen zweisekündigen Clip in ein nahtloses Hin und Her.',
+        },
+        {
+          title: 'Umgekehrte Enthüllung',
+          description: 'Spielen Sie ein Unboxing oder einen Aufbau rückwärts ab.',
+        },
+        {
+          title: 'Rewind-Übergang',
+          description: 'Kehren Sie ein paar Sekunden um, um zwischen Szenen zu schneiden.',
+        },
+        {
+          title: 'Umgekehrtes GIF',
+          description: 'Exportieren Sie direkt als GIF für Chats und Foren.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Rückwärts und Ping-Pong mit einem Schalter, mit korrekt behandeltem Ton.',
+        'Zuerst trimmen und als GIF exportieren im selben Formular.',
+      ],
+      privacyNote: 'Ihr Clip wird von FFmpeg auf unserem Server dekodiert und rückwärts in eine neue Datei geschrieben. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst Dritter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wird der Ton auch umgekehrt?',
+          answer: 'Ja, standardmäßig. Entfernen Sie zuerst den Ton, wenn Sie einen stummen Clip wollen.',
+        },
+        {
+          question: 'Was ist Ping-Pong?',
+          answer: 'Der Clip läuft erst vorwärts, dann rückwärts, sodass er ohne sichtbaren Sprung in Schleife läuft.',
+        },
+        {
+          question: 'Gibt es eine Längenbegrenzung?',
+          answer: 'Das Umkehren hält den gesamten Clip im Speicher. Clips von ein bis zwei Minuten sind unproblematisch; trimmen Sie längere Videos zuerst.',
+        },
+        {
+          question: 'Kann ich ein GIF bekommen?',
+          answer: 'Ja. Wählen Sie GIF als Ausgabeformat; es ist ideal für eine Ping-Pong-Schleife.',
+        },
+      ],
+      related: [
+        {
+          label: 'Video in GIF',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Erstellen Sie ein GIF in Schleife.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Videogeschwindigkeit ändern',
+          to: '/tools/change-video-speed',
+          description: 'Zeitraffer oder Zeitlupe.',
+        },
+        {
+          label: 'Video spiegeln',
+          to: '/tools/flip-video',
+          description: 'Horizontal oder vertikal spiegeln.',
+        },
+        {
+          label: 'Video stabilisieren',
+          to: '/tools/stabilize-video',
+          description: 'Glätten Sie verwackeltes Material.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Datei.',
+        },
+        {
+          label: 'Video trimmen',
+          to: '/tools/video-trimmer',
+          description: 'Auf einen Bereich schneiden.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video rückwärts abspielen',
+        description: 'Laden Sie einen Clip hoch. Der Rückwärtslauf ist im Abschnitt „Zeitliche Effekte“ bereits eingeschaltet; schalten Sie stattdessen Ping-Pong ein für eine Schleife, die erst vor- und dann zurückläuft. Exportieren Sie MP4 oder GIF.',
+      },
     },
     'flip-video': {
       name: 'Video spiegeln & drehen',
-      tagline:
-        'Spiegeln Sie ein Video horizontal, um eine seitenverkehrte Webcam oder ein Selfie zu korrigieren, oder kippen Sie es vertikal, mit einem Klick.',
+      h1: 'Video online kostenlos spiegeln oder kippen',
+      tagline: 'Spiegeln Sie ein Video horizontal, um eine seitenverkehrte Webcam oder ein Selfie zu korrigieren, oder kippen Sie es vertikal, mit einem Klick.',
+      metaTitle: 'Video online kostenlos spiegeln oder kippen | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Spiegeln von Videos. Spiegeln Sie ein Video horizontal (korrigieren Sie seitenverkehrte Selfie- und Webcam-Aufnahmen) oder kippen Sie es vertikal. MP4-Ausgabe, ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'Video online kostenlos spiegeln oder kippen',
+      ogDescription: 'Entspiegeln Sie ein Selfie-Video oder stellen Sie einen Clip auf den Kopf. Kostenlos, ohne Anmeldung.',
+      intro: 'Frontkameras und Webcams nehmen oft ein Spiegelbild auf: Text liest sich verkehrt herum, und Ihr Scheitel sitzt auf der falschen Seite. Den Clip einmal zu spiegeln bringt es in Ordnung. Media Manipulator spiegelt Video horizontal oder vertikal auf unseren Servern mit FFmpeg, kodiert neu, sodass die Spiegelung fest in die Bilder eingebrannt ist, und exportiert MP4, das in jedem Player korrekt abspielt.',
+      whatItDoes: [
+        'Spiegelt ein Video horizontal (links-rechts) oder kippt es vertikal (oben-unten).',
+        'Kombinieren Sie das mit einer Drehung um 90°, 180° oder 270° im selben Durchgang.',
+        'Brennt die Transformation in die Bilder ein; keine Abhängigkeit von einem Rotations-Flag.',
+        'Exportiert standardmäßig MP4 oder jeden unterstützten Container.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Spiegelung wählen',
+          description: 'Horizontal ist vorausgewählt; ergänzen Sie vertikal oder eine Drehung.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg wendet hflip/vflip an und kodiert neu.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das korrigierte MP4.',
+        },
+      ],
+      advancedDetails: [
+        'Horizontales Spiegeln verwendet den hflip-Filter, vertikales vflip; beide sind geometrisch verlustfrei und kodieren die Bilder neu.',
+        'Spiegelung plus eine Drehung um 180° entspricht einem vertikalen Kippen; das Panel lässt Sie beides frei kombinieren.',
+        'Die MP4-Ausgabe verwendet H.264 + AAC + yuv420p + faststart.',
+      ],
+      whyItMatters: [
+        'Gespiegeltes Selfie-Video macht eingeblendeten Text unlesbar.',
+        'Manche kopfüber montierten Actionkameras brauchen ein vertikales Kippen statt einer Drehung.',
+        'Eine gespiegelte Kopie ist ein schneller Weg, ein Tanz- oder Fitness-Tutorial leichter nachvollziehbar zu machen.',
+      ],
+      useCases: [
+        {
+          title: 'Selfie entspiegeln',
+          description: 'Lassen Sie Text und Logos richtig herum lesbar werden.',
+        },
+        {
+          title: 'Kopfüber-Montage',
+          description: 'Kippen Sie Material von einer umgedreht montierten Kamera.',
+        },
+        {
+          title: 'Für ein Tutorial spiegeln',
+          description: 'Spiegeln Sie eine Vorführung, damit Zuschauer sie direkt nachmachen können.',
+        },
+        {
+          title: 'Eine Einstellung anpassen',
+          description: 'Spiegeln Sie einen Clip, damit das Motiv in die andere Richtung blickt.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Spiegeln und Drehen in einem Transformationsabschnitt, fest in die Bilder eingebrannt.',
+        'Trimmen, Skalieren und Farbe im selben Upload.',
+      ],
+      privacyNote: 'Ihr Video wird von FFmpeg auf unserem Server horizontal oder vertikal gespiegelt. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst Dritter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Spiegeln oder kippen, was ist der Unterschied?',
+          answer: 'Spiegeln (horizontales Kippen) tauscht links und rechts. Vertikales Kippen tauscht oben und unten.',
+        },
+        {
+          question: 'Ist die Spiegelung dauerhaft?',
+          answer: 'Ja. Die Bilder werden mit angewendeter Spiegelung neu kodiert, sodass jeder Player sie zeigt.',
+        },
+        {
+          question: 'Kann ich auch drehen?',
+          answer: 'Ja. Die Drehung befindet sich im selben Abschnitt „Transformation“, oder Sie nutzen das eigene Tool „Video drehen“.',
+        },
+        {
+          question: 'Verringert Spiegeln die Qualität?',
+          answer: 'Die Neukodierung kostet ein wenig; wählen Sie hohe Qualität, damit es vernachlässigbar bleibt.',
+        },
+      ],
+      related: [
+        {
+          label: 'Video drehen',
+          to: '/tools/rotate-video',
+          description: '90°, 180°, 270°.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Videogeschwindigkeit ändern',
+          to: '/tools/change-video-speed',
+          description: 'Zeitraffer oder Zeitlupe.',
+        },
+        {
+          label: 'Video rückwärts abspielen',
+          to: '/tools/reverse-video',
+          description: 'Spielen Sie einen Clip rückwärts ab.',
+        },
+        {
+          label: 'Video stabilisieren',
+          to: '/tools/stabilize-video',
+          description: 'Glätten Sie verwackeltes Material.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Datei.',
+        },
+        {
+          label: 'Video trimmen',
+          to: '/tools/video-trimmer',
+          description: 'Auf einen Bereich schneiden.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video spiegeln oder kippen',
+        description: 'Laden Sie ein Video hoch. Horizontales Spiegeln (Spiegelbild) ist im Abschnitt „Transformation“ vorausgewählt; schalten Sie stattdessen oder zusätzlich vertikales Spiegeln ein. Die Drehung ist im selben Abschnitt verfügbar.',
+      },
     },
     'stabilize-video': {
       name: 'Video stabilisieren',
-      tagline:
-        'Glätten Sie Handverwackelungen und Gehschwankungen mit einem Zwei-Pass-Stabilisator, ohne Stativ und ohne Desktop-Editor.',
+      h1: 'Verwackeltes Video online kostenlos stabilisieren',
+      tagline: 'Glätten Sie Handverwackelungen und Gehschwankungen mit einem Zwei-Pass-Stabilisator, ohne Stativ und ohne Desktop-Editor.',
+      metaTitle: 'Verwackeltes Video online kostenlos stabilisieren | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Videostabilisator. Reduzieren Sie Handverwackelungen und Gehschwankungen mit der Bewegungsglättung von FFmpeg. Einstellbare Stärke, MP4-Ausgabe, ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'Verwackeltes Video online kostenlos stabilisieren',
+      ogDescription: 'Glätten Sie Kamerawackeln in jedem Clip. Kostenlos, ohne Anmeldung.',
+      intro: 'Handaufnahmen wackeln, und ein wenig Wackeln wird auf einem großen Bildschirm zu viel. Softwarestabilisierung verfolgt die Bewegung zwischen den Bildern, glättet den Kamerapfad und schneidet an den Rändern ein wenig ab, um die Korrektur zu verbergen. Media Manipulator führt den Bewegungskompensations-Stabilisator von FFmpeg auf unseren Servern mit einstellbarer Stärke aus, sodass ein Vlog im Gehen oder ein herangezoomter Handy-Clip spürbar ruhiger herauskommt.',
+      whatItDoes: [
+        'Analysiert die Bewegung von Bild zu Bild und glättet den Kamerapfad.',
+        'Einstellbare Verwacklung (wie viel Wackeln zu erwarten ist) und Genauigkeit (wie intensiv gesucht wird).',
+        'Schneidet leicht zu, um die Korrektur zu verbergen; der Zoom wird automatisch angewendet.',
+        'Exportiert standardmäßig MP4; kombinieren Sie es mit Trimmen und Farbe im selben Durchgang.',
+      ],
+      flowSteps: [
+        {
+          title: 'Verwackelten Clip hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Stärke beibehalten oder anpassen',
+          description: 'Die Standardwerte passen zu Handyaufnahmen aus der Hand.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg schätzt und kompensiert die Bewegung.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Vergleichen Sie das ruhigere Ergebnis.',
+        },
+      ],
+      advancedDetails: [
+        'Verwendet den deshake-Bewegungskompensationsfilter von FFmpeg; der Wert für Verwacklung legt den Suchbereich fest, die Genauigkeit die Suchtiefe.',
+        'Stabilisierung kann Bewegungsunschärfe, die bereits in den Bildern steckt, nicht beheben; sie entfernt nur das Zittern zwischen ihnen.',
+        'Rechnen Sie mit einem kleinen Beschnitt an den Rändern, proportional dazu, wie stark sich die Kamera bewegt hat.',
+      ],
+      whyItMatters: [
+        'Ruhiges Material wirkt professioneller und ist leichter anzusehen.',
+        'Handy-Clips, die im Gehen aufgenommen wurden, sind der häufigste Fall und reagieren gut.',
+        'Ein stabilisierter Clip komprimiert besser, weil sich von Bild zu Bild weniger ändert.',
+      ],
+      useCases: [
+        {
+          title: 'Vlog im Gehen',
+          description: 'Nehmen Sie das Schwanken aus einem aus der Hand gefilmten Vlog im Gehen.',
+        },
+        {
+          title: 'Gezoomtes Handyvideo',
+          description: 'Beruhigen Sie einen Konzert- oder Wildtierclip, der mit vollem Zoom aufgenommen wurde.',
+        },
+        {
+          title: 'Auto- oder Fahrradhalterung',
+          description: 'Reduzieren Sie Vibrationen von einer Armaturenbrett- oder Lenkerhalterung.',
+        },
+        {
+          title: 'Vor einem GIF',
+          description: 'Stabilisieren Sie zuerst, damit die Schleife nicht zittert.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Echte Bewegungskompensation, mit offengelegter statt versteckter Stärke.',
+        'Trimmen, Geschwindigkeit und Farbe im selben Formular.',
+      ],
+      privacyNote: 'Ihr Material wird vom deshake-Filter von FFmpeg auf unserem Server auf Verwacklung analysiert und geglättet. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst Dritter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wird mein Video beschnitten?',
+          answer: 'Leicht. Der Stabilisator verschiebt die Bilder, um das Wackeln auszugleichen, und zoomt ein wenig hinein, um die wandernden Ränder zu verbergen.',
+        },
+        {
+          question: 'Kann er Unschärfe beheben?',
+          answer: 'Nein. Unschärfe innerhalb eines Bildes lässt sich nicht rückgängig machen; die Stabilisierung beruhigt nur die Bewegung zwischen den Bildern.',
+        },
+        {
+          question: 'Welche Einstellungen soll ich verwenden?',
+          answer: 'Beginnen Sie mit den Standardwerten. Erhöhen Sie die Verwacklung bei sehr unruhigem Material; erhöhen Sie die Genauigkeit, wenn das Ergebnis noch driftet.',
+        },
+        {
+          question: 'Funktioniert es mit 4K?',
+          answer: 'Ja, aber die Verarbeitung dauert länger. Erwägen Sie, im selben Durchgang auf 1080p zu skalieren.',
+        },
+      ],
+      related: [
+        {
+          label: 'KI-Videorestaurierung',
+          to: '/tools/ai-video-restoration',
+          description: 'Rauschen und Unschärfe entfernen und mit KI hochskalieren.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Videogeschwindigkeit ändern',
+          to: '/tools/change-video-speed',
+          description: 'Zeitraffer oder Zeitlupe.',
+        },
+        {
+          label: 'Video rückwärts abspielen',
+          to: '/tools/reverse-video',
+          description: 'Spielen Sie einen Clip rückwärts ab.',
+        },
+        {
+          label: 'Video spiegeln',
+          to: '/tools/flip-video',
+          description: 'Horizontal oder vertikal spiegeln.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Datei.',
+        },
+        {
+          label: 'Video trimmen',
+          to: '/tools/video-trimmer',
+          description: 'Auf einen Bereich schneiden.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video stabilisieren',
+        description: 'Laden Sie einen verwackelten Clip hoch. Die Stabilisierung ist im Abschnitt „Zeitliche Effekte“ bereits eingeschaltet; passen Sie Verwacklung und Genauigkeit an, wenn der Standard zu mild ist oder zu viel beschneidet.',
+      },
     },
     'change-video-frame-rate': {
       name: 'Videobildrate ändern',
-      tagline:
-        'Wandeln Sie ein Video in 24, 25, 30 oder 60 fps um, reduzieren Sie einen 60-fps-Clip für eine kleinere Datei auf 30 oder passen Sie die Bildrate eines Projekts an.',
+      h1: 'Videobildrate online ändern',
+      tagline: 'Wandeln Sie ein Video in 24, 25, 30 oder 60 fps um, reduzieren Sie einen 60-fps-Clip für eine kleinere Datei auf 30 oder passen Sie die Bildrate eines Projekts an.',
+      metaTitle: 'Videobildrate online ändern (24, 30, 60 fps) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Bildratenkonverter. Wandeln Sie ein Video in 24, 25, 30, 50 oder 60 fps um, reduzieren Sie 60 fps für eine kleinere Datei auf 30 oder passen Sie es an eine Schnitt-Timeline an. MP4-Ausgabe, ohne Anmeldung.',
+      ogTitle: 'Videobildrate online ändern',
+      ogDescription: 'Wandeln Sie jedes Video in 24, 25, 30 oder 60 fps um. Kostenlos, ohne Anmeldung.',
+      intro: 'Die Bildrate entscheidet, wie sich ein Video anfühlt und wie groß es ist. Film hat 24 fps, europäisches Fernsehen 25, die meisten Telefone 30 oder 60, und sie in einer Timeline zu mischen verursacht Ruckeln. Media Manipulator rechnet jedes Video auf unseren Servern mit FFmpeg auf die Bildrate um, die Sie brauchen, lässt Bilder exakt weg oder wiederholt sie und exportiert MP4. Wenn Sie mehr statt weniger Bilder wollen, erzeugt das Tool KI-Frame-Interpolation die Zwischenbilder.',
+      whatItDoes: [
+        'Rechnet ein Video auf jede Bildrate von 1 bis 120 fps um.',
+        'Halbiert 60 fps auf 30 für eine deutlich kleinere Datei, bei den meisten Inhalten ohne sichtbare Änderung.',
+        'Passt an eine Projektbildrate (24, 25, 29.97, 30, 50, 60) an, bevor Sie in einen Editor importieren.',
+        'Lässt Auflösung, Audio und Dauer unverändert.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Ziel-fps festlegen',
+          description: '30 ist vorausgewählt.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg lässt Bilder weg oder dupliziert sie, um die Rate zu treffen.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das umgerechnete MP4.',
+        },
+      ],
+      advancedDetails: [
+        'Verwendet den fps-Filter: Bilder werden nach Zeitstempel weggelassen oder dupliziert, sodass Dauer und Audiosynchronität exakt erhalten bleiben.',
+        'Nach oben (30 auf 60) werden Bilder dupliziert, und es sieht nicht flüssiger aus; nutzen Sie die KI-Frame-Interpolation für echte neue Bilder.',
+        'Nach unten werden Daten entfernt, und das ist nicht umkehrbar; behalten Sie das Original.',
+      ],
+      whyItMatters: [
+        'Ein 60-fps-Handy-Clip ist bei den meisten Inhalten doppelt so groß wie 30 fps, bei gleicher sichtbarer Qualität.',
+        'Gemischte Bildraten in einer Schnitt-Timeline verursachen Stottern; sie vorher anzupassen vermeidet das.',
+        'Manche Plattformen und Geräte begrenzen oder verlangen eine bestimmte Bildrate.',
+      ],
+      useCases: [
+        {
+          title: 'Einen 60-fps-Clip verkleinern',
+          description: 'Reduzieren Sie auf 30 fps für E-Mail, Chat oder einen kleineren Upload.',
+        },
+        {
+          title: 'Für den Schnitt anpassen',
+          description: 'Bringen Sie jeden Clip auf die Projektrate.',
+        },
+        {
+          title: 'Film-Look',
+          description: 'Wandeln Sie in 24 fps um für eine kinoartige Kadenz.',
+        },
+        {
+          title: 'Broadcast-Lieferung',
+          description: 'Wandeln Sie in 25 oder 50 fps für PAL-Regionen um.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Exakte zeitstempelbasierte Umrechnung, mit unangetasteter Dauer und unangetastetem Audio.',
+        'KI-Interpolation verfügbar, wenn Sie mehr statt weniger Bilder brauchen.',
+      ],
+      privacyNote: 'Ihr Video wird von FFmpeg auf unserem Server auf die gewählte Bildrate umgerechnet. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst Dritter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wird das Video kürzer oder länger?',
+          answer: 'Nein. Die Dauer bleibt erhalten; Bilder werden weggelassen oder wiederholt, um die neue Rate zu treffen.',
+        },
+        {
+          question: 'Sieht 30 auf 60 fps flüssiger aus?',
+          answer: 'Nicht mit diesem Tool, das Bilder dupliziert. Nutzen Sie die KI-Frame-Interpolation, um echte Zwischenbilder zu erzeugen.',
+        },
+        {
+          question: 'Welche Bildrate soll ich wählen?',
+          answer: '30 fps für die meisten Web- und Handyinhalte, 24 für einen Film-Look, 25 oder 50 für PAL-Fernsehen, 60 für Gaming und Sport.',
+        },
+        {
+          question: 'Ist das Audio betroffen?',
+          answer: 'Nein. Der Audiostream wird kopiert oder mit demselben Timing neu kodiert.',
+        },
+      ],
+      related: [
+        {
+          label: 'KI-Frame-Interpolation',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Erzeugen Sie Bilder bis 120 fps.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Videogeschwindigkeit ändern',
+          to: '/tools/change-video-speed',
+          description: 'Zeitraffer oder Zeitlupe.',
+        },
+        {
+          label: 'Video rückwärts abspielen',
+          to: '/tools/reverse-video',
+          description: 'Spielen Sie einen Clip rückwärts ab.',
+        },
+        {
+          label: 'Video spiegeln',
+          to: '/tools/flip-video',
+          description: 'Horizontal oder vertikal spiegeln.',
+        },
+        {
+          label: 'Video stabilisieren',
+          to: '/tools/stabilize-video',
+          description: 'Glätten Sie verwackeltes Material.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Datei.',
+        },
+        {
+          label: 'Video trimmen',
+          to: '/tools/video-trimmer',
+          description: 'Auf einen Bereich schneiden.',
+        },
+      ],
+      embed: {
+        title: 'Die Bildrate eines Videos ändern',
+        description: 'Laden Sie ein Video hoch und legen Sie die Ziel-Bildrate im Abschnitt „Zeitliche Effekte“ fest; 30 fps ist vorausgewählt. Bilder werden weggelassen oder dupliziert, um das Ziel zu treffen. Für eine höhere Rate mit erzeugten Zwischenbildern nutzen Sie stattdessen die KI-Frame-Interpolation.',
+      },
     },
     'adjust-video-color': {
       name: 'Videohelligkeit & -farbe anpassen',
-      tagline:
-        'Hellen Sie einen dunklen Clip auf, ergänzen Sie Kontrast und Sättigung, verschieben Sie den Farbton oder wenden Sie Unschärfe oder einen künstlerischen Look an, mit Reglern und Live-Vorschau.',
+      h1: 'Videohelligkeit, -kontrast und -farbe online anpassen',
+      tagline: 'Hellen Sie einen dunklen Clip auf, ergänzen Sie Kontrast und Sättigung, verschieben Sie den Farbton oder wenden Sie Unschärfe oder einen künstlerischen Look an, mit Reglern und Live-Vorschau.',
+      metaTitle: 'Videohelligkeit, Kontrast & Sättigung online anpassen | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zur Farbanpassung von Videos. Korrigieren Sie Helligkeit, Kontrast, Sättigung, Farbton, Gamma und Belichtung, fügen Sie Weichzeichnung oder Schärfung hinzu oder wenden Sie einen künstlerischen Look an. MP4-Ausgabe, ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'Videohelligkeit und -farbe online anpassen',
+      ogDescription: 'Hellen Sie auf, fügen Sie Kontrast hinzu, verstärken Sie die Farbe oder wenden Sie einen Look auf jeden Clip an. Kostenlos, ohne Anmeldung.',
+      intro: 'Ein in Innenräumen gedrehter Clip kommt dunkel und orange heraus; ein flaues Handyvideo braucht mehr Kontrast und Farbe; ein Clip für ein Vorschaubild braucht einen stilisierten Look. Media Manipulator wendet Korrekturen von Helligkeit, Kontrast, Sättigung, Farbton, Gamma und Belichtung auf unseren Servern mit FFmpeg an, dazu Weichzeichnung, Schärfung, Korn und eine Reihe künstlerischer Filter, und exportiert MP4. Es ist ein Farbkorrekturdurchgang, ohne einen Editor zu öffnen.',
+      whatItDoes: [
+        'Regler für Helligkeit, Kontrast, Sättigung und Farbton von -100 bis +100.',
+        'Gamma, Belichtung, Schatten und Lichter für feinere Tonwertkontrolle.',
+        'Gauß’scher Weichzeichner und Bewegungsunschärfe, Schärfung per Unscharfmaskierung, Filmkorn und Rauschen.',
+        'Künstlerische Looks wie Ölgemälde, Skizze und Vintage.',
+        'Kombinieren Sie das mit Trimmen, Skalieren, Geschwindigkeit oder Spiegeln im selben Durchgang.',
+      ],
+      flowSteps: [
+        {
+          title: 'Clip hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Regler bewegen',
+          description: 'Helligkeit, Kontrast, Sättigung, Farbton und mehr.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg wendet die eq- und Effektfilter an.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das gegradete MP4.',
+        },
+      ],
+      advancedDetails: [
+        'Helligkeit, Kontrast, Sättigung und Gamma entsprechen dem eq-Filter von FFmpeg; der Farbton verwendet den hue-Filter in Grad.',
+        'Die Schärfung ist unsharp mit Radius, Stärke und Schwellenwert; die Weichzeichnung ist gblur oder eine gerichtete Bewegungsunschärfe.',
+        'Für eine 3D-LUT, Chroma-Key oder Grading pro Clip auf einer Timeline verwenden Sie Darkroom.',
+      ],
+      whyItMatters: [
+        'Die meisten Handyaufnahmen profitieren von etwas mehr Kontrast und Sättigung.',
+        'Die Belichtung vor dem Upload zu korrigieren verhindert, dass die Neukodierung der Plattform es noch schlimmer macht.',
+        'Ein einheitlicher Look über alle Clips lässt einen Schnitt fertig wirken.',
+      ],
+      useCases: [
+        {
+          title: 'Dunklen Clip aufhellen',
+          description: 'Heben Sie Belichtung und Schatten bei Innenaufnahmen an.',
+        },
+        {
+          title: 'Flauen Clip aufpeppen',
+          description: 'Fügen Sie einem log-artig wirkenden Handyvideo Kontrast und Sättigung hinzu.',
+        },
+        {
+          title: 'Farbstich beheben',
+          description: 'Verschieben Sie den Farbton, um einen orangen oder grünen Stich zu entfernen.',
+        },
+        {
+          title: 'Für soziale Medien stilisieren',
+          description: 'Wenden Sie Vintage-, Skizzen- oder Ölgemälde-Looks an.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Tonwert-, Farb- und Effektsteuerung in einem Abschnitt, nicht ein einzelner „Verbessern“-Button.',
+        'Nutzen Sie Darkroom für Timeline-Grading mit LUTs, wenn Sie mehr brauchen.',
+      ],
+      privacyNote: 'Helligkeit, Kontrast, Sättigung und Gamma Ihres Videos werden von FFmpeg auf unserem Server geändert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst Dritter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Kann ich das Ergebnis vorab ansehen?',
+          answer: 'Die Regler zeigen ihre Werte; das vollständige Grading wird bei der Konvertierung angewendet. Trimmen Sie zum schnellen Testen auf wenige Sekunden und verarbeiten Sie dann den ganzen Clip.',
+        },
+        {
+          question: 'Kann ich eine LUT anwenden?',
+          answer: 'Nicht hier. Darkroom, unser Multitrack-Editor, unterstützt 3D-LUTs und Grading pro Clip.',
+        },
+        {
+          question: 'Behebt das überbelichtetes Material?',
+          answer: 'Es kann die Lichter absenken, aber Details, die zu Weiß abgeschnitten wurden, lassen sich nicht wiederherstellen.',
+        },
+        {
+          question: 'Kann ich einen weichen Clip schärfen?',
+          answer: 'Ja. Verwenden Sie die Regler der Unscharfmaskierung; für echte Detailwiederherstellung probieren Sie die KI-Videorestaurierung.',
+        },
+      ],
+      related: [
+        {
+          label: 'Darkroom-Videoeditor',
+          to: '/tools/content-studio',
+          description: 'Graden Sie mit LUTs auf einer Timeline.',
+        },
+        {
+          label: 'KI-Videorestaurierung',
+          to: '/tools/ai-video-restoration',
+          description: 'Entrauschen und hochskalieren mit KI.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Videogeschwindigkeit ändern',
+          to: '/tools/change-video-speed',
+          description: 'Zeitraffer oder Zeitlupe.',
+        },
+        {
+          label: 'Video rückwärts abspielen',
+          to: '/tools/reverse-video',
+          description: 'Spielen Sie einen Clip rückwärts ab.',
+        },
+        {
+          label: 'Video spiegeln',
+          to: '/tools/flip-video',
+          description: 'Horizontal oder vertikal spiegeln.',
+        },
+        {
+          label: 'Video stabilisieren',
+          to: '/tools/stabilize-video',
+          description: 'Glätten Sie verwackeltes Material.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Datei.',
+        },
+        {
+          label: 'Video trimmen',
+          to: '/tools/video-trimmer',
+          description: 'Auf einen Bereich schneiden.',
+        },
+      ],
+      embed: {
+        title: 'Die Farbe eines Videos anpassen',
+        description: 'Laden Sie einen Clip hoch. Der Abschnitt „Visuelle Effekte“ öffnet sich mit Reglern für Helligkeit, Kontrast, Sättigung, Farbton, Gamma und Belichtung sowie Weichzeichnen, Schärfen, Rauschen und künstlerischen Looks. Exportieren Sie MP4.',
+      },
     },
     'convert-video-to-hevc': {
       name: 'Video in HEVC (H.265) umwandeln',
-      tagline:
-        'Kodieren Sie jedes Video als H.265 neu: bei gleicher Qualität ist die Datei etwa halb so groß wie mit H.264, ideal für Archivierung, 4K und moderne Geräte.',
+      h1: 'Video online in HEVC / H.265 umwandeln',
+      tagline: 'Kodieren Sie jedes Video als H.265 neu: bei gleicher Qualität ist die Datei etwa halb so groß wie mit H.264, ideal für Archivierung, 4K und moderne Geräte.',
+      metaTitle: 'Video online kostenlos in HEVC (H.265) umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter für H.265 / HEVC. Kodieren Sie MP4, MOV, MKV oder WebM zu HEVC neu, für etwa die halbe Größe bei gleicher Qualität. Wählen Sie eine Qualitätsvorgabe. Ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'Video online in HEVC / H.265 umwandeln',
+      ogDescription: 'Halbieren Sie die Größe eines Videos mit H.265. Kostenlos, ohne Anmeldung.',
+      intro: 'HEVC, auch H.265 genannt, ist der Nachfolger von H.264. Bei gleicher visueller Qualität braucht es rund 40 bis 50 Prozent weniger Bits, weshalb Telefone 4K darin aufnehmen und es das Format der Wahl zum Archivieren von Material ist. Media Manipulator kodiert jedes Video auf unseren Servern mit dem x265-Encoder von FFmpeg in der gewählten Qualitätsstufe zu HEVC neu, in einem MP4-Container, den iPhones, Macs, Windows 10+, Android und moderne Fernseher alle abspielen.',
+      whatItDoes: [
+        'Kodiert jedes Eingabevideo als H.265 in einem MP4-Container neu.',
+        'Drei Qualitätsvorgaben, die CRF-Werten zugeordnet sind; die Dateigröße halbiert sich gegenüber H.264 in etwa.',
+        'Behält Auflösung und Bildrate; skaliert 4K optional auf 1080p herunter für eine weit kleinere Datei.',
+        'Das Audio wird als AAC neu kodiert.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Jedes gängige Format, einschließlich H.264-MP4.',
+        },
+        {
+          title: 'Qualität wählen',
+          description: 'Kleinste Datei, ausgewogen oder hohe Qualität.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'x265 kodiert auf unseren Servern; langsamer als H.264.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die .mp4 mit HEVC darin.',
+        },
+      ],
+      advancedDetails: [
+        'Kodiert mit libx265 bei CRF 28 (ausgewogen), 32 (kleinste Datei) oder 24 (hohe Qualität), Preset medium, hvc1-Tag für Apple-Kompatibilität.',
+        'HEVC-Kodierung ist mehrfach langsamer als H.264; lange 4K-Dateien brauchen Minuten.',
+        'Browser: Safari und Edge spielen HEVC ab; Chrome und Firefox in der Regel nicht. Behalten Sie H.264 für Web-Einbettungen.',
+      ],
+      whyItMatters: [
+        'Halber Speicherplatz bei gleicher Qualität summiert sich über eine ganze Bibliothek.',
+        'Die Auslieferung von 4K und HDR ist für die meisten Geräte auf HEVC standardisiert.',
+        'Kleinere Dateien werden schneller hochgeladen und synchronisiert.',
+      ],
+      useCases: [
+        {
+          title: 'Material archivieren',
+          description: 'Halbieren Sie die Größe einer Kamerarolle ohne sichtbaren Verlust.',
+        },
+        {
+          title: '4K teilen',
+          description: 'Machen Sie einen 4K-Clip klein genug zum Versenden.',
+        },
+        {
+          title: 'Apple-Ökosystem',
+          description: 'Passen Sie sich den HEVC-Dateien an, die iPhones bereits aufnehmen.',
+        },
+        {
+          title: 'Laufwerk freiräumen',
+          description: 'Wandeln Sie alte H.264-Aufnahmen in HEVC um.',
+        },
+      ],
+      whyMediaManipulator: [
+        'x265 mit sinnvollen CRF-Vorgaben und Apple-kompatiblem Tagging.',
+        'Dasselbe Panel komprimiert zu H.264, VP9 oder AV1, wenn Sie die stattdessen brauchen.',
+      ],
+      privacyNote: 'Ihr Video wird von FFmpeg auf unserem Server zu H.265 (HEVC) neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst Dritter. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Spielt HEVC überall?',
+          answer: 'iPhone, Mac, Windows 10+, Android 5+, moderne Fernseher und Safari/Edge spielen es ab. Chrome und Firefox sowie alte Geräte meist nicht; behalten Sie H.264 für diese.',
+        },
+        {
+          question: 'Wie viel kleiner wird die Datei?',
+          answer: 'Typischerweise 40 bis 50 Prozent kleiner als H.264 bei gleicher Qualität; bei einfachen Inhalten mehr.',
+        },
+        {
+          question: 'Ist die Qualität schlechter?',
+          answer: 'Bei der ausgewogenen Vorgabe ist der Unterschied bei den meisten Inhalten nicht sichtbar. Wählen Sie hohe Qualität für Material, das Sie erneut bearbeiten werden.',
+        },
+        {
+          question: 'Warum ist es langsam?',
+          answer: 'x265 leistet pro Bild weit mehr Arbeit als x264. Das ist der Preis für die kleinere Datei.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'HEVC-Kodierung ist CPU-intensiv; rechnen Sie bei langen oder 4K-Quellen mit mehreren Minuten.',
+        ],
+      },
+      related: [
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'H.264-, VP9- oder AV1-Kompression.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Standard-H.264-MP4.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Videogeschwindigkeit ändern',
+          to: '/tools/change-video-speed',
+          description: 'Zeitraffer oder Zeitlupe.',
+        },
+        {
+          label: 'Video rückwärts abspielen',
+          to: '/tools/reverse-video',
+          description: 'Spielen Sie einen Clip rückwärts ab.',
+        },
+        {
+          label: 'Video spiegeln',
+          to: '/tools/flip-video',
+          description: 'Horizontal oder vertikal spiegeln.',
+        },
+        {
+          label: 'Video stabilisieren',
+          to: '/tools/stabilize-video',
+          description: 'Glätten Sie verwackeltes Material.',
+        },
+        {
+          label: 'Video trimmen',
+          to: '/tools/video-trimmer',
+          description: 'Auf einen Bereich schneiden.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video in HEVC umwandeln',
+        description: 'Laden Sie ein Video hoch. Der Codec ist auf H.265 in einem MP4-Container mit der ausgewogenen Vorgabe eingestellt; wählen Sie stattdessen kleinste Datei oder hohe Qualität. Ältere Geräte und manche Browser spielen HEVC nicht ab; behalten Sie für diese eine H.264-Kopie.',
+      },
     },
     'convert-audio-to-wav': {
       name: 'Audio in WAV umwandeln',
-      tagline:
-        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei verlustfrei in WAV um.',
+      h1: 'Audio online kostenlos in WAV umwandeln',
+      tagline: 'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei verlustfrei in WAV um.',
+      metaTitle: 'Audio online kostenlos in WAV umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von Audio in WAV. Laden Sie MP3, WAV, M4A, OGG, FLAC oder AAC hoch und laden Sie WAV herunter. Verlustfreie Ausgabe. Ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Audio online kostenlos in WAV umwandeln',
+      ogDescription: 'Laden Sie eine beliebige Audiodatei hoch und laden Sie WAV herunter. Verlustfrei. Kostenlos, ohne Anmeldung.',
+      intro: 'WAV ist unkomprimiertes PCM-Audio: Jedes Sample wird so gespeichert, wie es ist, nichts geht also verloren, und jeder Editor, jede DAW und jeder Sampler öffnet es sofort. Media Manipulator wandelt jedes gängige Audioformat in einem Upload in WAV um, behält Abtastrate und Kanalanordnung, sofern Sie sie nicht ändern, und bietet Trimmen, Normalisierung, EQ und die KI-Bereinigungstools im selben Formular.',
+      whatItDoes: [
+        'Wandelt MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 und WMA in WAV um.',
+        'Behält jedes Sample: Die Ausgabe dekodiert exakt zu dem, was hineinging.',
+        'Trimmen, Lautstärke, Normalisierung, EQ und Effekte können angewendet werden, bevor das PCM geschrieben wird.',
+        'KI-Bereinigung im selben Formular: Entfernen Sie Hintergrundgeräusche, bereinigen Sie eine Stimme oder isolieren oder entfernen Sie Gesang, bevor Sie als WAV speichern.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Jede gängige Audiodatei, komprimiert oder nicht.',
+        },
+        {
+          title: 'Bei Bedarf anpassen',
+          description: 'Trimmen, normalisieren oder Effekte anwenden.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg kodiert WAV auf unseren Servern.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die WAV-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die WAV-Ausgabe wird mit dem nativen pcm_s16le-Encoder von FFmpeg bei der Abtastrate der Quelle kodiert.',
+        'Das Umwandeln einer verlustbehafteten MP3 in WAV stellt keine Details wieder her, die der MP3-Encoder verworfen hat; es verhindert nur weiteren Verlust.',
+        'Albumcover in einer MP3- oder M4A-Quelle werden als Standbild erkannt, sodass die Prüfung die Datei nicht für ein Video hält.',
+      ],
+      whyItMatters: [
+        'Schneiden oder Mastern: WAV ist das Format, das Audioeditoren wollen, ohne Dekodierschritt und ohne Generationsverlust.',
+        'Archivierung eines Masters oder einer Feldaufnahme.',
+        'Sampler, Spiele-Engines und Broadcast-Systeme, die PCM verlangen.',
+      ],
+      useCases: [
+        {
+          title: 'Format für ein Gerät wechseln',
+          description: 'Erstellen Sie eine WAV-Kopie für einen Player, der sie braucht.',
+        },
+        {
+          title: 'Für den Schnitt vorbereiten',
+          description: 'Übergeben Sie eine verlustfreie Datei an eine DAW oder einen Videoeditor.',
+        },
+        {
+          title: 'Eine Datei nach der anderen',
+          description: 'Verwandeln Sie einen Ordner voller Sprachmemos nacheinander in WAV und trimmen Sie jedes dabei.',
+        },
+        {
+          title: 'Unterwegs bereinigen',
+          description: 'Entfernen Sie das Rauschen aus einer Feldaufnahme auf dem Weg zu einem unkomprimierten Master.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Abtastrate und Kanalanordnung bleiben erhalten, sofern Sie nichts anderes wählen.',
+        'Normalisieren und trimmen Sie eine Aufnahme im selben Upload, der das WAV erzeugt.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server dekodiert und als unkomprimiertes PCM-WAV geschrieben. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Was ist WAV?',
+          answer: 'WAV ist unkomprimiertes PCM-Audio: Jedes Sample wird so gespeichert, wie es ist, nichts geht also verloren, und jeder Editor, jede DAW und jeder Sampler öffnet es sofort.',
+        },
+        {
+          question: 'Verbessert das Umwandeln in WAV den Klang?',
+          answer: 'Nein. Das Umwandeln einer verlustbehafteten MP3 in WAV stellt keine Details wieder her, die der MP3-Encoder verworfen hat; es verhindert nur weiteren Verlust.',
+        },
+        {
+          question: 'Kann ich das Audio beim Umwandeln in WAV trimmen?',
+          answer: 'Ja. Legen Sie Start und Ende im Trimmabschnitt fest, und nur dieser Bereich wird in das WAV geschrieben.',
+        },
+        {
+          question: 'Meine MP3 hat ein Albumcover. Kann sie trotzdem zu WAV werden?',
+          answer: 'Ja. Das Cover wird als Bild und nicht als Videospur erkannt, sodass der Upload akzeptiert und das Audio wie üblich zu PCM dekodiert wird.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Verlustfreie Ausgabe; die Dateigröße hängt von Dauer und Abtastrate ab.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Wandeln Sie zwischen allen gängigen Audioformaten um.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit aus.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Audio in WAV umwandeln',
+        description: 'Laden Sie eine beliebige Audiodatei hoch. Die Ausgabe ist auf WAV festgelegt; Abtastrate und Kanäle bleiben erhalten, sofern Sie sie nicht ändern, dann drücken Sie auf Konvertieren.',
+      },
     },
     'convert-audio-to-flac': {
       name: 'Audio in FLAC umwandeln',
-      tagline:
-        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei verlustfrei in FLAC um.',
+      h1: 'Audio online kostenlos in FLAC umwandeln',
+      tagline: 'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei verlustfrei in FLAC um.',
+      metaTitle: 'Audio online kostenlos in FLAC umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von Audio zu FLAC. Laden Sie MP3, WAV, M4A, OGG, FLAC oder AAC hoch und laden Sie FLAC herunter. Verlustfreie Ausgabe. Kein Wasserzeichen, keine Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Audio online kostenlos in FLAC umwandeln',
+      ogDescription: 'Laden Sie eine beliebige Audiodatei hoch und laden Sie FLAC herunter. Verlustfrei. Kostenlos, ohne Anmeldung.',
+      intro: 'FLAC komprimiert Audio, ohne etwas zu verlieren, typischerweise auf 50 bis 70 Prozent der WAV-Größe, und dekodiert zu einer bitidentischen Kopie. Media Manipulator wandelt jedes gängige Audioformat in einem Upload in FLAC um, behält Abtastrate und Kanalbelegung bei, sofern Sie sie nicht ändern, und bietet Zuschneiden, Normalisierung, EQ und die KI-Säuberungstools im selben Formular.',
+      whatItDoes: [
+        'Wandelt MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 und WMA in FLAC um.',
+        'Behält jedes Sample: Die Ausgabe dekodiert zu genau dem, was hineinging.',
+        'Lautstärke, Zuschnitt, Normalisierung und EQ können angewendet werden, bevor FLAC das Ergebnis komprimiert.',
+        'Rauschentfernung, Stimmsäuberung und Gesangsisolierung laufen auf demselben Upload, wenn Sie eine gesäuberte verlustfreie Kopie möchten.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'WAV, PCM nach AIFF-Art, MP3, M4A und alle anderen.',
+        },
+        {
+          title: 'Bei Bedarf anpassen',
+          description: 'Zuschneiden, normalisieren oder Effekte anwenden.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg kodiert FLAC auf unseren Servern.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die FLAC-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die FLAC-Ausgabe wird mit dem nativen flac-Encoder von FFmpeg bei der Abtastrate der Quelle kodiert.',
+        'Ein aus einem MP3 erzeugtes FLAC ist nicht besser als das MP3; FLAC bewahrt nur, was bereits da ist.',
+        'Ein MP3 oder M4A mit eingebettetem Cover besteht die Prüfung: Das Cover wird als Bild behandelt, nicht als Videostream.',
+      ],
+      whyItMatters: [
+        'Verlustfreie Musikbibliotheken, die halb so viel Platz wie WAV belegen.',
+        'Ein Master an einen Mitwirkenden senden, ohne einen Anhang von 100 MB.',
+        'Langzeitarchivierung mit Prüfsummen, die im Format eingebaut sind.',
+      ],
+      useCases: [
+        {
+          title: 'Format für ein Gerät wechseln',
+          description: 'Erstellen Sie eine FLAC-Kopie für einen Player, der sie braucht.',
+        },
+        {
+          title: 'Für die Bearbeitung vorbereiten',
+          description: 'Übergeben Sie eine verlustfreie Datei an eine DAW oder einen Videoeditor.',
+        },
+        {
+          title: 'Eine Datei nach der anderen',
+          description: 'Archivieren Sie eine Reihe von Aufnahmen verlustfrei, ein Upload pro Datei.',
+        },
+        {
+          title: 'Unterwegs säubern',
+          description: 'Entfernen Sie zuerst Hintergrundgeräusche und behalten Sie das gesäuberte Ergebnis als FLAC.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Wählen Sie eine Abtastrate oder Kanalbelegung, oder lassen Sie beides so, wie die Quelle es hat.',
+        'Pegeln Sie ein leises Master aus und archivieren Sie es in einem Schritt als FLAC.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server verlustfrei zu FLAC komprimiert. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Was ist FLAC?',
+          answer: 'FLAC komprimiert Audio, ohne etwas zu verlieren, typischerweise auf 50 bis 70 Prozent der WAV-Größe, und dekodiert zu einer bitidentischen Kopie.',
+        },
+        {
+          question: 'Verbessert die Umwandlung in FLAC den Klang?',
+          answer: 'Nein. Ein aus einem MP3 erzeugtes FLAC ist nicht besser als das MP3; FLAC bewahrt nur, was bereits da ist.',
+        },
+        {
+          question: 'Kann ich das Audio beim Umwandeln in FLAC zuschneiden?',
+          answer: 'Ja. Der Abschnitt „Zuschneiden“ legt Anfang und Ende fest, und FLAC kodiert nur diesen Bereich.',
+        },
+        {
+          question: 'Lässt sich ein MP3 mit Cover in FLAC umwandeln?',
+          answer: 'Ja. Eingebettete Cover werden als Bild gelesen, nicht als Video, sodass die Prüfung bestanden wird und das Audio wie gewohnt kodiert wird.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Verlustfreie Ausgabe; die Dateigröße hängt von Dauer und Abtastrate ab.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit an.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Audio in FLAC umwandeln',
+        description: 'Laden Sie eine beliebige Audiodatei hoch. Die Ausgabe ist fest auf FLAC gesetzt; Abtastrate und Kanäle bleiben erhalten, sofern Sie sie nicht ändern. Klicken Sie dann auf Konvertieren.',
+      },
     },
     'convert-audio-to-ogg': {
       name: 'Audio in OGG umwandeln',
-      tagline:
-        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in OGG mit der von Ihnen gewählten Bitrate um.',
+      h1: 'Audio online kostenlos in OGG umwandeln',
+      tagline: 'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in OGG mit der von Ihnen gewählten Bitrate um.',
+      metaTitle: 'Audio online kostenlos in OGG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von Audio zu OGG. Laden Sie MP3, WAV, M4A, OGG, FLAC oder AAC hoch und laden Sie OGG herunter. Wählen Sie die Bitrate. Kein Wasserzeichen, keine Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Audio online kostenlos in OGG umwandeln',
+      ogDescription: 'Laden Sie eine beliebige Audiodatei hoch und laden Sie OGG herunter. Wählen Sie die Bitrate. Kostenlos, ohne Anmeldung.',
+      intro: 'OGG Vorbis ist ein freies, patentfreies verlustbehaftetes Format, das bei gleicher Bitrate besser klingt als MP3 und in Browsern, Android und Game-Engines nativ unterstützt wird. Media Manipulator wandelt jedes gängige Audioformat in einem Upload in OGG um, behält Abtastrate und Kanalbelegung bei, sofern Sie sie nicht ändern, und bietet Zuschneiden, Normalisierung, EQ und die KI-Säuberungstools im selben Formular.',
+      whatItDoes: [
+        'Wandelt MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 und WMA in OGG um.',
+        'Lässt Sie Bitrate, Abtastrate und Kanalbelegung wählen.',
+        'Zuschneiden, Lautstärke, Lautheitsnormalisierung und EQ geschehen im selben FFmpeg-Durchlauf wie die Vorbis-Kodierung.',
+        'Säubern Sie eine Stimme oder entfernen Sie Hintergrundgeräusche mit KI, bevor der Vorbis-Encoder läuft.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Eine MP3-, WAV-, FLAC- oder andere Audiodatei für Ihr Spiel oder Ihre Website.',
+        },
+        {
+          title: 'Bei Bedarf anpassen',
+          description: 'Wählen Sie die Bitrate; schneiden Sie zu oder wenden Sie Effekte an.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg kodiert OGG auf unseren Servern.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die OGG-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die OGG-Ausgabe verwendet den libvorbis-Encoder von FFmpeg; 192 kbps sind der Standard und eine sichere Wahl für Musik.',
+        'Apple-Geräte und manche Autoradios spielen kein OGG ab; verwenden Sie dafür M4A oder MP3.',
+        'Ein Cover in der Quelle wird als Bildanhang erkannt und löst die Videospur-Prüfung nicht aus.',
+      ],
+      whyItMatters: [
+        'Sound-Assets für Spiele und Apps, bei denen kleine Dateien und lizenzfreie Dekodierung zählen.',
+        'Web-Audio, das in Firefox und Chrome ohne Lizenz abspielbar sein muss.',
+        'Podcast- oder Musikdateien für Linux- und Android-Player.',
+      ],
+      useCases: [
+        {
+          title: 'Format für ein Gerät wechseln',
+          description: 'Erstellen Sie eine OGG-Kopie für einen Player, der sie braucht.',
+        },
+        {
+          title: 'Für die Bearbeitung vorbereiten',
+          description: 'Erstellen Sie eine kleine, kompatible Datei für ein Projekt.',
+        },
+        {
+          title: 'Eine Datei nach der anderen',
+          description: 'Bereiten Sie Soundeffekte für eine Game-Engine vor, eine Datei nach der anderen.',
+        },
+        {
+          title: 'Unterwegs säubern',
+          description: 'Entfernen Sie das Brummen aus einer Aufnahme, bevor sie als OGG-Asset ausgeliefert wird.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Bitrate, Abtastrate und Kanäle legen Sie für jedes OGG selbst fest.',
+        'Schneiden Sie die Stille von einem Soundeffekt ab, während er zu OGG wird.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server zu OGG Vorbis kodiert. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Was ist OGG?',
+          answer: 'OGG Vorbis ist ein freies, patentfreies verlustbehaftetes Format, das bei gleicher Bitrate besser klingt als MP3 und in Browsern, Android und Game-Engines nativ unterstützt wird.',
+        },
+        {
+          question: 'Verbessert die Umwandlung in OGG den Klang?',
+          answer: 'Nein. Apple-Geräte und manche Autoradios spielen kein OGG ab; verwenden Sie dafür M4A oder MP3.',
+        },
+        {
+          question: 'Kann ich das Audio beim Umwandeln in OGG zuschneiden?',
+          answer: 'Ja. Markieren Sie Anfang und Ende, und das OGG enthält nur diesen Teil.',
+        },
+        {
+          question: 'Kann ich ein M4A mit Albumcover in OGG umwandeln?',
+          answer: 'Ja. Das Cover wird als Bildanhang statt als Videospur erkannt, sodass der Auftrag fortgesetzt wird und reines Vorbis-Audio erzeugt.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Verlustbehaftete Ausgabe; die gewählte Bitrate bestimmt die Größe.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit an.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Audio in OGG umwandeln',
+        description: 'Laden Sie eine beliebige Audiodatei hoch. Die Ausgabe ist fest auf OGG gesetzt; wählen Sie Bitrate, Abtastrate und Kanäle. Klicken Sie dann auf Konvertieren.',
+      },
     },
     'convert-audio-to-m4a': {
       name: 'Audio in M4A / AAC umwandeln',
-      tagline:
-        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in M4A / AAC mit der von Ihnen gewählten Bitrate um.',
+      h1: 'Audio online kostenlos in M4A / AAC umwandeln',
+      tagline: 'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in M4A / AAC mit der von Ihnen gewählten Bitrate um.',
+      metaTitle: 'Audio online kostenlos in M4A / AAC umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von Audio zu M4A / AAC. Laden Sie MP3, WAV, M4A, OGG, FLAC oder AAC hoch und laden Sie M4A / AAC herunter. Wählen Sie die Bitrate. Kein Wasserzeichen, keine Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Audio online kostenlos in M4A / AAC umwandeln',
+      ogDescription: 'Laden Sie eine beliebige Audiodatei hoch und laden Sie M4A / AAC herunter. Wählen Sie die Bitrate. Kostenlos, ohne Anmeldung.',
+      intro: 'M4A ist AAC-Audio in einem MP4-Container, das Format, das Apple Music, iPhones, YouTube und die meisten Streaming-Dienste verwenden. Es schlägt MP3 bei der Qualität pro Kilobyte. Media Manipulator wandelt jedes gängige Audioformat in einem Upload in M4A / AAC um, behält Abtastrate und Kanalbelegung bei, sofern Sie sie nicht ändern, und bietet Zuschneiden, Normalisierung, EQ und die KI-Säuberungstools im selben Formular.',
+      whatItDoes: [
+        'Wandelt MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 und WMA in M4A / AAC um.',
+        'Lässt Sie Bitrate, Abtastrate und Kanalbelegung wählen.',
+        'Zuschnitt, Verstärkung, Normalisierung, EQ und Effekte fließen in dieselbe Kodierung wie das AAC.',
+        'Die KI-Tools im Formular können ein Sprachmemo säubern oder Gesang entfernen, bevor das AAC geschrieben wird.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Ein WAV-Master, ein MP3 oder ein Sprachmemo.',
+        },
+        {
+          title: 'Bei Bedarf anpassen',
+          description: 'Wählen Sie die Bitrate; schneiden Sie zu oder wenden Sie Effekte an.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg kodiert M4A / AAC auf unseren Servern.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die M4A- / AAC-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die M4A- / AAC-Ausgabe verwendet den aac-Encoder von FFmpeg; 192 kbps sind der Standard und eine sichere Wahl für Musik.',
+        'Manche ältere reine MP3-Player und Autoradios lesen kein AAC.',
+        'Ein eingebettetes Albumcover wird als Bild erkannt und nie mit einer Videospur verwechselt.',
+      ],
+      whyItMatters: [
+        'Musik und Sprachmemos für iPhone, iPad und Mac.',
+        'Audiospuren, die Sie später in ein MP4-Video muxen.',
+        'Podcasts und Hörbücher: Kapitelmarken und kleinere Dateien als MP3.',
+      ],
+      useCases: [
+        {
+          title: 'Format für ein Gerät wechseln',
+          description: 'Erstellen Sie eine M4A- / AAC-Kopie für einen Player, der sie braucht.',
+        },
+        {
+          title: 'Für die Bearbeitung vorbereiten',
+          description: 'Erstellen Sie eine kleine, kompatible Datei für ein Projekt.',
+        },
+        {
+          title: 'Eine Datei nach der anderen',
+          description: 'Wandeln Sie Sprachmemos für eine iPhone-Bibliothek um und schneiden Sie dabei die Stille weg.',
+        },
+        {
+          title: 'Unterwegs säubern',
+          description: 'Lassen Sie die Stimmsäuberung über eine Podcast-Aufnahme laufen und speichern Sie sie direkt als M4A.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Bitrate, Abtastrate und Kanalzahl sind für die AAC-Ausgabe einstellbar.',
+        'Normalisieren Sie eine Episode und machen Sie daraus M4A, ohne einen zweiten Upload.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server zu AAC in einer M4A-Datei kodiert. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Was ist M4A / AAC?',
+          answer: 'M4A ist AAC-Audio in einem MP4-Container, das Format, das Apple Music, iPhones, YouTube und die meisten Streaming-Dienste verwenden. Es schlägt MP3 bei der Qualität pro Kilobyte.',
+        },
+        {
+          question: 'Verbessert die Umwandlung in M4A / AAC den Klang?',
+          answer: 'Nein. Manche ältere reine MP3-Player und Autoradios lesen kein AAC.',
+        },
+        {
+          question: 'Kann ich das Audio beim Umwandeln in M4A / AAC zuschneiden?',
+          answer: 'Ja. Legen Sie den Bereich im Abschnitt „Zuschneiden“ fest; das M4A beginnt und endet dort, wo Sie es angegeben haben.',
+        },
+        {
+          question: 'Stört das Albumcover in meinem MP3 die Umwandlung in M4A?',
+          answer: 'Nein. Der Cover-Stream wird als Bild erkannt, nicht als Video, und die AAC-Kodierung läuft normal.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Verlustbehaftete Ausgabe; die gewählte Bitrate bestimmt die Größe.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit an.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Audio in M4A / AAC umwandeln',
+        description: 'Laden Sie eine beliebige Audiodatei hoch. Die Ausgabe ist fest auf M4A / AAC gesetzt; wählen Sie Bitrate, Abtastrate und Kanäle. Klicken Sie dann auf Konvertieren.',
+      },
     },
     'convert-audio-to-opus': {
       name: 'Audio in Opus umwandeln',
-      tagline:
-        'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in Opus mit der von Ihnen gewählten Bitrate um.',
+      h1: 'Audio online kostenlos in Opus umwandeln',
+      tagline: 'Wandeln Sie MP3, M4A, WAV, OGG, FLAC und jede andere Audiodatei in Opus mit der von Ihnen gewählten Bitrate um.',
+      metaTitle: 'Audio online kostenlos in Opus umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von Audio zu Opus. Laden Sie MP3, WAV, M4A, OGG, FLAC oder AAC hoch und laden Sie Opus herunter. Wählen Sie die Bitrate. Kein Wasserzeichen, keine Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Audio online kostenlos in Opus umwandeln',
+      ogDescription: 'Laden Sie eine beliebige Audiodatei hoch und laden Sie Opus herunter. Wählen Sie die Bitrate. Kostenlos, ohne Anmeldung.',
+      intro: 'Opus ist der neueste offene Codec und die beste verlustbehaftete Option für Sprache und Musik bei niedrigen Bitraten: Opus mit 64 kbps klingt wie MP3 mit 128 kbps. WhatsApp, Discord und WebRTC verwenden es. Media Manipulator wandelt jedes gängige Audioformat in einem Upload in Opus um, behält Abtastrate und Kanalbelegung bei, sofern Sie sie nicht ändern, und bietet Zuschneiden, Normalisierung, EQ und die KI-Säuberungstools im selben Formular.',
+      whatItDoes: [
+        'Wandelt MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 und WMA in Opus um.',
+        'Lässt Sie Bitrate, Abtastrate und Kanalbelegung wählen.',
+        'Zuschnitt, Lautstärke, Normalisierung und EQ werden im selben Durchlauf wie die Opus-Kodierung angewendet.',
+        'Vor der Kodierung kann das Formular Hintergrundgeräusche entfernen oder Sprache mit KI auf unserer GPU säubern.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Sprachnotizen, Podcasts, Musik oder jedes gängige Audio.',
+        },
+        {
+          title: 'Bei Bedarf anpassen',
+          description: 'Wählen Sie die Bitrate; schneiden Sie zu oder wenden Sie Effekte an.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg kodiert Opus auf unseren Servern.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die Opus-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die Opus-Ausgabe verwendet den libopus-Encoder von FFmpeg; 192 kbps sind der Standard und eine sichere Wahl für Musik.',
+        'iTunes, ältere Apple-Geräte und viele Hardware-Player unterstützen Opus nicht; wählen Sie dafür M4A.',
+        'Ein Albumcover in einer Quelldatei wird als Bild erkannt und stoppt die Umwandlung nicht.',
+      ],
+      whyItMatters: [
+        'Sprachnotizen, Podcasts und Hörbücher bei einem Bruchteil der Größe.',
+        'Audio streamen oder einbetten, wo Bandbreite zählt.',
+        'Discord, Matrix und Messaging-Bots, die Opus nativ annehmen.',
+      ],
+      useCases: [
+        {
+          title: 'Format für ein Gerät wechseln',
+          description: 'Erstellen Sie eine Opus-Kopie für einen Player, der sie braucht.',
+        },
+        {
+          title: 'Für die Bearbeitung vorbereiten',
+          description: 'Erstellen Sie eine kleine, kompatible Datei für ein Projekt.',
+        },
+        {
+          title: 'Eine Datei nach der anderen',
+          description: 'Verkleinern Sie eine Vorlesungsreihe zu Opus, eine Datei nach der anderen.',
+        },
+        {
+          title: 'Unterwegs säubern',
+          description: 'Säubern Sie eine verrauschte Gesprächsaufnahme und behalten Sie sie als kleine Opus-Datei.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Wählen Sie Opus-Bitrate, Abtastrate und Kanäle, oder behalten Sie die Standardwerte.',
+        'Schneiden Sie eine Sprachnotiz zu und normalisieren Sie sie auf dem Weg zu Opus.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server zu Opus kodiert. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Was ist Opus?',
+          answer: 'Opus ist der neueste offene Codec und die beste verlustbehaftete Option für Sprache und Musik bei niedrigen Bitraten: Opus mit 64 kbps klingt wie MP3 mit 128 kbps. WhatsApp, Discord und WebRTC verwenden es.',
+        },
+        {
+          question: 'Verbessert die Umwandlung in Opus den Klang?',
+          answer: 'Nein. iTunes, ältere Apple-Geräte und viele Hardware-Player unterstützen Opus nicht; wählen Sie dafür M4A.',
+        },
+        {
+          question: 'Kann ich das Audio beim Umwandeln in Opus zuschneiden?',
+          answer: 'Ja. Nur der Abschnitt zwischen dem von Ihnen gesetzten Anfang und Ende wird zu Opus kodiert.',
+        },
+        {
+          question: 'Lässt sich eine Audiodatei mit Cover in Opus umwandeln?',
+          answer: 'Ja. Das Cover wird als Bild erkannt, nicht als Videostream, sodass die Datei angenommen und nur das Audio kodiert wird.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Verlustbehaftete Ausgabe; die gewählte Bitrate bestimmt die Größe.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit an.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Audio in Opus umwandeln',
+        description: 'Laden Sie eine beliebige Audiodatei hoch. Die Ausgabe ist fest auf Opus gesetzt; wählen Sie Bitrate, Abtastrate und Kanäle. Klicken Sie dann auf Konvertieren.',
+      },
     },
     'convert-mp3-to-wav': {
       name: 'MP3 in WAV umwandeln',
-      tagline:
-        'Wandeln Sie eine MP3 in eine unkomprimierte WAV-Datei um, zum Bearbeiten, Sampeln oder Brennen auf CD.',
+      h1: 'MP3 online kostenlos in WAV umwandeln',
+      tagline: 'Wandeln Sie eine MP3 in eine unkomprimierte WAV-Datei um, zum Bearbeiten, Sampeln oder Brennen auf CD.',
+      metaTitle: 'MP3 online kostenlos in WAV umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von MP3 zu WAV. Laden Sie ein MP3 hoch und laden Sie ein unkomprimiertes 16-Bit-PCM-WAV mit der ursprünglichen Abtastrate herunter. Kein Wasserzeichen, keine Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'MP3 online kostenlos in WAV umwandeln',
+      ogDescription: 'MP3 rein, unkomprimiertes WAV raus. Kostenlos, ohne Anmeldung.',
+      intro: 'Audioeditoren, Sampler und CD-Brenner wollen unkomprimiertes PCM, und manche älteren Tools lehnen MP3 ganz ab. Die Umwandlung in WAV dekodiert das MP3 einmal, sodass beim Bearbeiten keine weitere Qualität verloren geht. Media Manipulator erledigt das auf unseren Servern mit FFmpeg, behält die ursprüngliche Abtastrate und die Kanäle bei und ignoriert eingebettete Albumcover, statt sie mit einer Videospur zu verwechseln.',
+      whatItDoes: [
+        'Dekodiert MP3 zu 16-Bit-PCM-WAV mit Abtastrate und Kanalbelegung der Quelle.',
+        'Optional Zuschneiden, Normalisieren, Ein-/Ausblenden und EQ im selben Durchlauf.',
+        'Verarbeitet MP3s mit eingebettetem Cover und ID3-Tags.',
+      ],
+      flowSteps: [
+        {
+          title: 'Ein MP3 hochladen',
+          description: 'Jede Bitrate, mit oder ohne Cover.',
+        },
+        {
+          title: 'Bei Bedarf anpassen',
+          description: 'Zuschneiden, normalisieren, EQ.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg dekodiert zu PCM.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das WAV.',
+        },
+      ],
+      advancedDetails: [
+        'Die WAV-Ausgabe ist pcm_s16le; die Datei ist etwa 10 MB pro Minute Stereo-Audio mit 44,1 kHz groß.',
+        'Das Dekodieren stellt nichts wieder her, was der MP3-Encoder verworfen hat; es verhindert nur weiteren Verlust.',
+      ],
+      whyItMatters: [
+        'Ein MP3 zu bearbeiten und wieder als MP3 zu speichern, verliert jedes Mal Qualität; WAV beendet das.',
+        'Sampler, DAWs und CD-Brenner erwarten PCM.',
+      ],
+      useCases: [
+        {
+          title: 'In einer DAW bearbeiten',
+          description: 'Importieren Sie ohne Dekodierschritt oder Generationsverlust.',
+        },
+        {
+          title: 'Eine Audio-CD brennen',
+          description: 'CD-Brenner wollen WAV mit 44,1 kHz.',
+        },
+        {
+          title: 'Einen Klang sampeln',
+          description: 'Laden Sie ihn in einen Sampler oder eine Game-Engine.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Behält die ursprüngliche Abtastrate und die Kanäle bei.',
+        'Ein Cover im MP3 wird korrekt behandelt.',
+      ],
+      privacyNote: 'Ihr MP3 wird von FFmpeg auf unserem Server einmal in ein 16-Bit-PCM-WAV dekodiert. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Klingt das WAV besser als das MP3?',
+          answer: 'Nein. Es klingt identisch; der Sinn ist, dass die weitere Bearbeitung es nicht verschlechtert.',
+        },
+        {
+          question: 'Warum ist das WAV so viel größer?',
+          answer: 'WAV ist unkomprimiert: etwa 10 MB pro Minute Stereo-Audio in CD-Qualität.',
+        },
+        {
+          question: 'Mein MP3 hat ein Albumcover. Ist das ein Problem?',
+          answer: 'Nein. Eingebettete Cover werden als Bild erkannt und ignoriert.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audio in WAV umwandeln',
+          to: '/tools/convert-audio-to-wav',
+          description: 'Jedes Format zu WAV.',
+        },
+        {
+          label: 'WAV in MP3 umwandeln',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Die andere Richtung.',
+        },
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit an.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'MP3 in WAV umwandeln',
+        description: 'Laden Sie ein MP3 hoch. Die Ausgabe ist fest auf WAV gesetzt; schneiden Sie zu oder normalisieren Sie, wenn Sie möchten. Klicken Sie dann auf Konvertieren.',
+      },
     },
     'change-audio-speed': {
       name: 'Audiogeschwindigkeit ändern',
-      tagline:
-        'Beschleunigen Sie eine Vorlesung oder einen Podcast auf 1.5x oder verlangsamen Sie einen Song oder eine Aufnahme zum Üben auf 0.75x, ohne die Tonhöhe zu ändern.',
+      h1: 'Audiogeschwindigkeit online ändern: beschleunigen oder verlangsamen',
+      tagline: 'Beschleunigen Sie eine Vorlesung oder einen Podcast auf 1.5x oder verlangsamen Sie einen Song oder eine Aufnahme zum Üben auf 0.75x, ohne die Tonhöhe zu ändern.',
+      metaTitle: 'Audiogeschwindigkeit online ändern (Tonhöhe bleibt) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Geschwindigkeitsänderer für Audio. Beschleunigen oder verlangsamen Sie MP3, WAV, M4A und mehr von 0.25x bis 4x bei erhaltener Tonhöhe. Ideal für Vorlesungen, Podcasts und Übungstracks. Ohne Anmeldung.',
+      ogTitle: 'Audiogeschwindigkeit online kostenlos ändern',
+      ogDescription: 'Schneller oder langsamer ohne Mickymaus-Effekt. Kostenlos, ohne Anmeldung.',
+      intro: 'Eine zweistündige Vorlesung bei 1.5x dauert 80 Minuten. Ein Gitarrensolo bei 0.75x lässt sich lernen. Die Audiogeschwindigkeit zu ändern ist jeden Tag nützlich, und der Haken ist die Tonhöhe: Naives Beschleunigen macht aus Stimmen Mickymaus-Stimmen. Media Manipulator dehnt Audio zeitlich auf unseren Servern mit dem Tempo-Filter von FFmpeg, der die Tonhöhe genau dort lässt, wo sie war, von einem Viertel der Geschwindigkeit bis zum Vierfachen.',
+      whatItDoes: [
+        'Beschleunigt (1.1x bis 4x) oder verlangsamt (0.25x bis 0.9x) jede Audiodatei.',
+        'Erhält die Tonhöhe, sodass Sprache und Musik in der Tonart bleiben.',
+        'Exportiert standardmäßig MP3 oder WAV, FLAC, M4A, OGG, Opus.',
+        'Optional Zuschneiden, Normalisieren und EQ im selben Durchlauf.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'MP3, WAV, M4A, OGG, FLAC und mehr.',
+        },
+        {
+          title: 'Geschwindigkeit festlegen',
+          description: '1.5x ist voreingestellt; 0.25x bis 4x.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg dehnt zeitlich bei erhaltener Tonhöhe.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die neu getaktete Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Verwendet den atempo-Filter, der für Faktoren außerhalb von 0.5 bis 2.0 automatisch verkettet wird.',
+        'Zeitdehnung erzeugt bei extremen Faktoren leichte Artefakte; 0.5x bis 2x ist für Sprache transparent.',
+        'Um Geschwindigkeit UND Tonhöhe zusammen zu ändern (der Bandeffekt), verwenden Sie die Zeitdehnungsoption des Tonhöhen-Tools.',
+      ],
+      whyItMatters: [
+        'Vorlesungen, Hörbücher und Podcasts sind oft bei 1.25x bis 2x angenehm.',
+        'Musiker üben schwierige Passagen bei 50 bis 75 Prozent der Geschwindigkeit.',
+        'Transkribierende verlangsamen Aufnahmen, um jedes Wort zu erfassen.',
+      ],
+      useCases: [
+        {
+          title: 'Schnellere Vorlesung',
+          description: 'Hören Sie einen aufgezeichneten Kurs bei 1.5x.',
+        },
+        {
+          title: 'Übungstrack',
+          description: 'Verlangsamen Sie ein Solo auf 0.75x in derselben Tonart.',
+        },
+        {
+          title: 'Transkription',
+          description: 'Verlangsamen Sie ein Interview auf 0.8x.',
+        },
+        {
+          title: 'In ein Zeitfenster passen',
+          description: 'Passen Sie ein Voiceover um 5 Prozent an, damit es passt.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die Tonhöhe bleibt standardmäßig erhalten; kein Mickymaus- oder Zeitlupenband-Klang.',
+        'Jedes Ausgabeformat, plus Zuschneiden und Normalisieren im selben Upload.',
+      ],
+      privacyNote: 'Ihre Aufnahme wird von FFmpeg auf unserem Server beschleunigt oder verlangsamt, je nach gewähltem Modus mit rubberband oder atempo. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Ändert sich die Tonhöhe?',
+          answer: 'Nein. Der Tempo-Filter lässt die Tonhöhe genau so, wie sie war.',
+        },
+        {
+          question: 'Wie schnell kann ich gehen?',
+          answer: '4x in einem Durchlauf. Lassen Sie das Ergebnis für mehr erneut durchlaufen.',
+        },
+        {
+          question: 'Klingt verlangsamtes Audio roboterhaft?',
+          answer: 'Bis hinunter zu 0.5x ist es sauber; darunter ist etwas Phasing hörbar.',
+        },
+        {
+          question: 'Kann ich Geschwindigkeit und Tonhöhe zusammen ändern?',
+          answer: 'Ja. Verwenden Sie das Tool „Tonhöhe ändern“, das einen Zeitdehnungsregler hat.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit an.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Die Geschwindigkeit einer Audiodatei ändern',
+        description: 'Laden Sie eine Audiodatei hoch und legen Sie einen Geschwindigkeitsfaktor fest; 1.5x ist voreingestellt. Die Tonhöhe bleibt erhalten, sodass Stimmen natürlich klingen. Um auch die Tonart zu ändern, verwenden Sie das Tonhöhen-Tool.',
+      },
     },
     'change-audio-pitch': {
       name: 'Tonhöhe ändern',
-      tagline:
-        'Verschieben Sie einen Song oder eine Aufnahme um Halbtöne, um die Tonart zu ändern, einen Gesang abzusenken oder ein Sample zu stimmen, bei gleichbleibendem Tempo.',
+      h1: 'Tonhöhe online ändern: nach oben oder unten transponieren',
+      tagline: 'Verschieben Sie einen Song oder eine Aufnahme um Halbtöne, um die Tonart zu ändern, einen Gesang abzusenken oder ein Sample zu stimmen, bei gleichbleibendem Tempo.',
+      metaTitle: 'Tonhöhe online ändern: um Halbtöne transponieren | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Pitch-Shifter. Transponieren Sie MP3, WAV oder jedes andere Audio um Halbtöne nach oben oder unten, um die Tonart zu ändern, bei unveränderter Geschwindigkeit. Optionale Zeitdehnung. Kein Wasserzeichen, keine Anmeldung.',
+      ogTitle: 'Tonhöhe online kostenlos ändern',
+      ogDescription: 'Transponieren Sie jedes Audio um Halbtöne. Kostenlos, ohne Anmeldung.',
+      intro: 'Ein Begleittrack in der falschen Tonart für Ihre Stimme, ein Sample, das zu einem Song passen muss, ein Gesang, der einen Ton tiefer sitzen soll: Pitch-Shifting behebt all das. Media Manipulator transponiert Audio um Halbtöne auf unseren Servern mit FFmpeg, lässt die Dauer unverändert und erlaubt Ihnen, es mit einer Zeitdehnung zu kombinieren, wenn Sie stattdessen den alten Bandgeschwindigkeits-Effekt möchten.',
+      whatItDoes: [
+        'Transponiert Audio um bis zu 12 Halbtöne (eine Oktave) nach oben oder unten.',
+        'Behält die Dauer bei, sodass der Track weiterhin passt.',
+        'Optionale Zeitdehnung, um die Länge unabhängig zu ändern.',
+        'Schreibt das verschobene Audio als MP3, WAV, FLAC, M4A, OGG oder Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Jedes gängige Audioformat.',
+        },
+        {
+          title: 'Halbtöne festlegen',
+          description: '+2 ist voreingestellt; -12 bis +12.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg resampelt und taktet neu.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die transponierte Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die Verschiebung resampelt um 2^(Halbtöne/12) und kompensiert das Tempo, sodass die Länge unverändert bleibt.',
+        'Große Verschiebungen (mehr als 5 Halbtöne) auf kompletten Mixen können künstlich klingen; Gesang und einzelne Instrumente kommen besser davon.',
+        'Die Formanterhaltung ist aktiv, sodass eine abgesenkte Stimme nicht zu einer anderen Person wird.',
+      ],
+      whyItMatters: [
+        'Sänger transponieren Begleittracks in eine angenehme Tonart.',
+        'Produzenten stimmen Samples und Gesang auf einen Song.',
+        'Ein oder zwei Halbtöne tiefer lassen einen Demo-Gesang entspannter klingen.',
+      ],
+      useCases: [
+        {
+          title: 'Tonart eines Begleittracks ändern',
+          description: 'Setzen Sie einen Karaoke-Track zwei Halbtöne tiefer.',
+        },
+        {
+          title: 'Ein Sample stimmen',
+          description: 'Passen Sie einen Drum- oder Gesangs-Hit an den Song an.',
+        },
+        {
+          title: 'Ein Voiceover absenken',
+          description: 'Nehmen Sie eine Einsprache einen Halbton tiefer.',
+        },
+        {
+          title: 'Oktaveffekt',
+          description: 'Verschieben Sie um +12 oder -12 für eine Effektebene.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Halbtonsteuerung bei erhaltener Dauer, und Zeitdehnung, wenn Sie sie möchten.',
+        'Jedes Ausgabeformat, plus Zuschneiden und Normalisieren im selben Upload.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server um die gewählte Anzahl Halbtöne nach oben oder unten verschoben. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Ändert sich die Geschwindigkeit?',
+          answer: 'Nein. Die Dauer bleibt erhalten. Verwenden Sie den Zeitdehnungsregler, wenn Sie das möchten.',
+        },
+        {
+          question: 'Wie weit kann ich verschieben?',
+          answer: 'Bis zu 12 Halbtöne (eine Oktave) nach oben oder unten.',
+        },
+        {
+          question: 'Klingt eine verschobene Stimme natürlich?',
+          answer: 'Bei ein bis drei Halbtönen ja. Größere Verschiebungen werden hörbar; die Formanterhaltung verhindert, dass es wie eine Zeichentrickfigur klingt.',
+        },
+        {
+          question: 'Kann ich um Cents verschieben?',
+          answer: 'Noch nicht; der Regler arbeitet in ganzen Halbtönen.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit an.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Die Tonhöhe einer Audiodatei ändern',
+        description: 'Laden Sie eine Audiodatei hoch. Der Abschnitt „Erweitertes Audio“ öffnet sich mit dem Tonhöhenregler; +2 Halbtöne sind voreingestellt. Negative Werte senken die Tonart. Die Zeitdehnung liegt daneben, falls Sie auch die Länge ändern möchten.',
+      },
     },
     'normalize-audio': {
       name: 'Audio normalisieren',
-      tagline:
-        'Heben Sie eine leise Aufnahme auf eine einheitliche Lautheit an, damit Podcasts, Sprachmemos und gemischte Playlists gleich laut abgespielt werden.',
+      h1: 'Audiolautheit online normalisieren',
+      tagline: 'Heben Sie eine leise Aufnahme auf eine einheitliche Lautheit an, damit Podcasts, Sprachmemos und gemischte Playlists gleich laut abgespielt werden.',
+      metaTitle: 'Audio online kostenlos normalisieren (Lautheit) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Audionormalisierer. Gleichen Sie die Lautheit von MP3-, WAV-, M4A- und anderen Dateien mit EBU-R128-Lautheitsnormalisierung an. Ideal für Podcasts und Sprachmemos. Kein Wasserzeichen, keine Anmeldung.',
+      ogTitle: 'Audio online kostenlos normalisieren',
+      ogDescription: 'Einheitliche Lautheit für jede Aufnahme. Kostenlos, ohne Anmeldung.',
+      intro: 'Ein Sprachmemo, das mit ausgestrecktem Arm aufgenommen wurde, ist leise; ein von einer CD gerippter Song ist laut; direkt nacheinander abgespielt bringen sie den Hörer dazu, zum Lautstärkeregler zu greifen. Die Lautheitsnormalisierung misst die wahrgenommene Lautheit einer ganzen Datei und bringt sie auf einen Standardzielwert, dieselbe EBU-R128-Messung, die Rundfunkanstalten und Streaming-Dienste verwenden. Media Manipulator führt sie auf unseren Servern mit dem loudnorm-Filter von FFmpeg aus, der zudem die True Peaks unter der Obergrenze hält, sodass nichts übersteuert.',
+      whatItDoes: [
+        'Misst die integrierte Lautheit und normalisiert auf einen rundfunkgerechten Zielwert.',
+        'Begrenzt die True Peaks, sodass die Ausgabe nie übersteuert.',
+        'Optional Verstärkung, Ein-/Ausblenden und Dynamikkompression im selben Abschnitt.',
+        'Speichert die ausgepegelte Datei als MP3, WAV, FLAC, M4A, OGG oder Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Normalisieren eingeschaltet lassen',
+          description: 'Fügen Sie bei Bedarf Blenden oder Kompression hinzu.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg loudnorm misst und korrigiert.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die ausgepegelte Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Verwendet loudnorm (EBU R128) mit seinem Standardziel von -24 LUFS integriert und einer True-Peak-Obergrenze von -2 dBTP.',
+        'Das ist Lautheitsnormalisierung, keine Spitzenwertnormalisierung: Zwei Dateien, die beide bei 0 dB ihre Spitze haben, können sich in der wahrgenommenen Lautstärke trotzdem stark unterscheiden.',
+        'Für eine schnelle feste Pegeländerung ohne Analyse verwenden Sie den Verstärken-Regler oder das Tool „Audiolautstärke anpassen“.',
+      ],
+      whyItMatters: [
+        'Hörer geben Podcasts auf, bei denen sie ständig die Lautstärke nachregeln müssen.',
+        'Playlists und DJ-Sets brauchen Tracks auf einheitlichem Pegel.',
+        'Plattformen normalisieren beim Upload; es vorher zu tun bedeutet keine Überraschungen.',
+      ],
+      useCases: [
+        {
+          title: 'Podcast-Episode',
+          description: 'Pegeln Sie ein aufgezeichnetes Gespräch vor der Veröffentlichung aus.',
+        },
+        {
+          title: 'Sprachmemo',
+          description: 'Heben Sie eine leise Handy-Aufnahme an.',
+        },
+        {
+          title: 'Vorlesungsaufzeichnung',
+          description: 'Gleichen Sie einen Sprecher aus, der sich vom Mikrofon entfernt.',
+        },
+        {
+          title: 'Playlist-Vorbereitung',
+          description: 'Normalisieren Sie Tracks, die aus verschiedenen Quellen gerippt wurden.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Echte EBU-R128-Lautheitsmessung, nicht nur ein Spitzenwert-Scan.',
+        'Blenden, Verstärkung und Kompression im selben Abschnitt.',
+      ],
+      privacyNote: 'Die Lautheit Ihres Audios wird von FFmpeg auf unserem Server gemessen und angeglichen. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Welche Ziellautheit wird verwendet?',
+          answer: '-24 LUFS integriert mit einer True-Peak-Obergrenze von -2 dBTP, dem EBU-R128-Standard. Podcast-Plattformen zielen typischerweise auf -16 bis -19 LUFS; fügen Sie ein paar dB Verstärkung hinzu, wenn Sie es lauter möchten.',
+        },
+        {
+          question: 'Wird dadurch alles innerhalb der Datei gleich laut?',
+          answer: 'Nein. Es pegelt die Datei als Ganzes aus. Schalten Sie zusätzlich den Kompressor ein, um die Schwankungen innerhalb der Datei zu verringern.',
+        },
+        {
+          question: 'Kann es übersteuern?',
+          answer: 'Nein. Der True-Peak-Limiter hält die Spitzen unter der Obergrenze.',
+        },
+        {
+          question: 'Kann ich es einfach nur lauter machen?',
+          answer: 'Ja. Verwenden Sie das Tool „Audiolautstärke anpassen“ für eine feste Pegeländerung.',
+        },
+      ],
+      related: [
+        {
+          label: 'Lautstärke anpassen',
+          to: '/tools/adjust-audio-volume',
+          description: 'Fester Pegel nach oben oder unten.',
+        },
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Eine Audiodatei normalisieren',
+        description: 'Laden Sie eine Audiodatei hoch. Die Lautheitsnormalisierung ist im Abschnitt „Grundlegende Audioverarbeitung“ bereits eingeschaltet; fügen Sie Verstärkung, Blenden oder Kompression hinzu, wenn Sie möchten. Klicken Sie auf Konvertieren.',
+      },
     },
     'adjust-audio-volume': {
       name: 'Audiolautstärke anpassen',
-      tagline:
-        'Machen Sie eine Audiodatei um einen festen Betrag lauter oder leiser, von 10 Prozent bis zum Doppelten, oder in Dezibel mit dem Verstärkungsregler.',
+      h1: 'Audiolautstärke online erhöhen oder verringern',
+      tagline: 'Machen Sie eine Audiodatei um einen festen Betrag lauter oder leiser, von 10 Prozent bis zum Doppelten, oder in Dezibel mit dem Verstärkungsregler.',
+      metaTitle: 'Lautstärke online erhöhen, kostenlos (MP3 lauter machen) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Lautstärkeregler. Machen Sie eine MP3, WAV oder jede andere Audiodatei um einen festen Faktor oder in Dezibel lauter oder leiser, mit Ein- und Ausblendungen. Ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'Audiolautstärke online erhöhen oder verringern',
+      ogDescription: 'Machen Sie jedes Audio lauter oder leiser. Kostenlos, ohne Anmeldung.',
+      intro: 'Manchmal ist eine Datei einfach zu leise oder viel zu laut für den Rest einer Playlist, und eine feste Pegeländerung ist alles, was sie braucht. Media Manipulator skaliert die Audiolautstärke auf unseren Servern mit FFmpeg, per Faktor oder in Dezibel, fügt auf Wunsch Ein- und Ausblendungen hinzu und kann die Änderung mit einer Lautheitsnormalisierung kombinieren, damit das Ergebnis nicht übersteuert.',
+      whatItDoes: [
+        'Multipliziert die Lautstärke mit einem Faktor von 0,1x (sehr leise) bis 2x (doppelt so laut).',
+        'Oder stellt mit dem Verstärkungsregler eine präzise Verstärkung in Dezibel von -60 bis +60 dB ein.',
+        'Ein- und Ausblenden in Sekunden.',
+        'Optionale Normalisierung und Kompression, um Übersteuern bei starken Anhebungen zu vermeiden.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Lautstärke einstellen',
+          description: '1,5x ist voreingestellt; oder verwenden Sie Dezibel.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg wendet die Verstärkung an.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die angepasste Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die Lautstärke verwendet den volume-Filter; ein Faktor von 2 entspricht +6 dB, 0,5 entspricht -6 dB.',
+        'Das Anheben einer Datei, deren Spitzen bereits nahe 0 dBFS liegen, führt zu Übersteuern; aktivieren Sie die Normalisierung, die einen True-Peak-Limiter enthält.',
+        'Für eine gleichmäßige wahrgenommene Lautheit statt einer festen Verstärkung verwenden Sie „Audio normalisieren“.',
+      ],
+      whyItMatters: [
+        'Leise Aufnahmen sind auf Handylautsprechern schwer zu hören.',
+        'Ein zu lauter Klingelton oder Soundeffekt ist unangenehm und übersteuert.',
+        'Eine feste Verstärkung ist das richtige Werkzeug, wenn Sie genau wissen, um wie viel Sie ändern möchten.',
+      ],
+      useCases: [
+        {
+          title: 'Leises Memo anheben',
+          description: 'Machen Sie eine Handyaufnahme hörbar.',
+        },
+        {
+          title: 'Lauten Effekt zähmen',
+          description: 'Senken Sie einen Soundeffekt um 10 dB.',
+        },
+        {
+          title: 'Klingelton',
+          description: 'Anheben und ein Ausblenden hinzufügen.',
+        },
+        {
+          title: 'Hintergrundmusik',
+          description: 'Senken Sie einen Track, damit er unter einer Stimme liegt.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Faktor oder Dezibel, plus Ein- und Ausblendungen, an einem Ort.',
+        'Normalisieren und komprimieren im selben Durchgang, um Übersteuern zu verhindern.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server um den von Ihnen eingestellten Betrag lauter oder leiser gemacht. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Was ist die maximale Anhebung?',
+          answer: '2x mit dem Faktor oder bis zu +60 dB mit dem Verstärkungsregler. Starke Anhebungen übersteuern, wenn die Normalisierung nicht eingeschaltet ist.',
+        },
+        {
+          question: 'Wird es verzerren?',
+          answer: 'Nur wenn das angehobene Signal die Vollaussteuerung überschreitet. Schalten Sie die Normalisierung ein, die die True Peaks begrenzt.',
+        },
+        {
+          question: 'Faktor oder Dezibel?',
+          answer: 'Beide tun dasselbe. 2x entspricht +6 dB; 0,5x entspricht -6 dB.',
+        },
+        {
+          question: 'Kann ich stattdessen die Lautstärke ausgleichen?',
+          answer: 'Ja. Verwenden Sie „Audio normalisieren“ für eine gleichmäßige wahrgenommene Lautheit.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichmäßige Lautheit.',
+        },
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Die Lautstärke einer Audiodatei anpassen',
+        description: 'Laden Sie eine Audiodatei hoch und stellen Sie den Lautstärkefaktor ein; 1,5x ist voreingestellt. Für eine Änderung in Dezibel verwenden Sie den Verstärkungsregler unter „Grundlegende Audioverarbeitung“. Starke Anhebungen können übersteuern; schalten Sie die Normalisierung für ein sicheres Ergebnis ein.',
+      },
     },
     'audio-equalizer': {
       name: 'Audio-Equalizer',
-      tagline:
-        'Wenden Sie Bassanhebung, Höhenanhebung, Stimmpräsenz oder ein Genre-Preset an oder stellen Sie Tiefpass- und Hochpassfilter ein, und laden Sie das Ergebnis herunter.',
+      h1: 'Audio online mit Equalizer bearbeiten: Bassanhebung, Höhen, Presets',
+      tagline: 'Wenden Sie Bassanhebung, Höhenanhebung, Stimmpräsenz oder ein Genre-Preset an oder stellen Sie Tiefpass- und Hochpassfilter ein, und laden Sie das Ergebnis herunter.',
+      metaTitle: 'Online-Audio-Equalizer: Bassanhebung, Höhen, Gesang | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Audio-Equalizer. Wenden Sie die EQ-Presets Bassanhebung, Höhenanhebung, Gesang, Rock, Jazz oder Klassik an oder stellen Sie Hochpass- und Tiefpassfilter ein, für MP3, WAV und mehr. Ohne Anmeldung.',
+      ogTitle: 'Audio online mit Equalizer bearbeiten',
+      ogDescription: 'Bassanhebung, Höhen, Stimmpräsenz und mehr. Kostenlos, ohne Anmeldung.',
+      intro: 'Ein EQ formt den Klang einer Aufnahme: mehr Tiefen für einen dünnen Track, weniger für einen dröhnenden Raum, eine Präsenzanhebung, damit eine Stimme durchkommt, ein Hochpass, um Rumpeln zu entfernen. Media Manipulator wendet die Entzerrung auf unseren Servern mit FFmpeg an, von Ein-Klick-Presets bis zu expliziten Filter-Grenzfrequenzen, und exportiert in jedes Audioformat.',
+      whatItDoes: [
+        'Presets: Bassanhebung, Höhenanhebung, Gesang, Rock, Jazz, Klassik.',
+        'Hochpass- und Tiefpassfilter mit einstellbaren Grenzfrequenzen.',
+        'Kombinierbar mit Lautstärke, Normalisierung, Kompression und Hall.',
+        'Das entzerrte Ergebnis kann MP3, WAV, FLAC, M4A, OGG oder Opus sein.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Preset oder Filter wählen',
+          description: 'Bassanhebung ist voreingestellt.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg wendet die EQ-Kette an.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die klanglich geformte Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Presets werden auf die FFmpeg-Filter equalizer, bass und treble mit festen Verstärkungen und Q-Werten abgebildet.',
+        'Ein Hochpass bei 80 bis 120 Hz entfernt Griffgeräusche und Rumpeln aus Sprachaufnahmen; ein Tiefpass bei 8 bis 10 kHz zähmt Rauschen.',
+        'Ein EQ kann keine Frequenzen hinzufügen, die nie aufgenommen wurden; eine Handyaufnahme hat unterhalb von 100 Hz wenig, das sich anheben ließe.',
+      ],
+      whyItMatters: [
+        'Eine kleine Präsenzanhebung macht Sprache auf kleinen Lautsprechern deutlich verständlicher.',
+        'Rumpeln und Rauschen sind die beiden häufigsten Korrekturen, und beide sind einfache Filter.',
+        'Genre-Presets geben einer Playlist schnell einen einheitlichen Charakter.',
+      ],
+      useCases: [
+        {
+          title: 'Sprachklarheit',
+          description: 'Gesangs-Preset plus Hochpass für einen Podcast.',
+        },
+        {
+          title: 'Bassanhebung',
+          description: 'Füllen Sie eine dünne Aufnahme auf.',
+        },
+        {
+          title: 'Rumpeln entfernen',
+          description: 'Hochpass bei 100 Hz.',
+        },
+        {
+          title: 'Rauschen zähmen',
+          description: 'Tiefpass bei 10 kHz bei einer alten Bandüberspielung.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Presets und explizite Filter-Grenzfrequenzen in einem Abschnitt.',
+        'Verketten Sie mit Normalisierung, Kompression und Hall im selben Upload.',
+      ],
+      privacyNote: 'Bässe, Mitten und Höhen Ihres Audios werden vom Equalizer von FFmpeg auf unserem Server neu geformt. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Kann ich eigene Bänder einstellen?',
+          answer: 'Presets sowie Hochpass- und Tiefpass-Grenzfrequenzen stehen zur Verfügung; eine Verstärkung pro Band steht auf der Roadmap.',
+        },
+        {
+          question: 'Was macht ein Hochpassfilter?',
+          answer: 'Er entfernt alles unterhalb der Grenzfrequenz: Rumpeln, Griffgeräusche, Plosivlaute.',
+        },
+        {
+          question: 'Kann ein EQ eine dumpfe Aufnahme reparieren?',
+          answer: 'Eine Höhenanhebung hilft, wenn die Höhen nur leise sind. Wurden sie nie aufgenommen, kann der EQ sie nicht erfinden; probieren Sie die KI-Sprachsäuberung.',
+        },
+        {
+          question: 'Übersteuert der EQ?',
+          answer: 'Anhebungen können das. Schalten Sie die Normalisierung ein, die einen True-Peak-Limiter enthält.',
+        },
+      ],
+      related: [
+        {
+          label: 'Sprachaufnahme säubern',
+          to: '/tools/clean-voice-audio',
+          description: 'KI-Sprachverbesserung.',
+        },
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit aus.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Eine Audiodatei mit dem Equalizer bearbeiten',
+        description: 'Laden Sie eine Audiodatei hoch. Der Equalizer unter „Grundlegende Audioverarbeitung“ ist bereits mit dem Preset Bassanhebung eingeschaltet; wählen Sie ein anderes Preset oder stellen Sie Hochpass- und Tiefpass-Grenzfrequenzen ein. Klicken Sie auf Konvertieren.',
+      },
     },
     'add-reverb-to-audio': {
       name: 'Hall zu Audio hinzufügen',
-      tagline:
-        'Versetzen Sie einen trockenen Gesang oder eine Aufnahme in einen Raum-, Hallen-, Platten- oder Federhall oder fügen Sie Delay oder Echo hinzu, und laden Sie das Ergebnis herunter.',
+      h1: 'Hall oder Echo online zu Audio hinzufügen',
+      tagline: 'Versetzen Sie einen trockenen Gesang oder eine Aufnahme in einen Raum-, Hallen-, Platten- oder Federhall oder fügen Sie Delay oder Echo hinzu, und laden Sie das Ergebnis herunter.',
+      metaTitle: 'Hall oder Echo online kostenlos zu Audio hinzufügen | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Hall und -Echo. Fügen Sie MP3, WAV und jeder Audiodatei Raum-, Hallen-, Platten- oder Federhall oder ein Delay hinzu, mit Reglern für Nass-Anteil und Raumgröße. Ohne Anmeldung.',
+      ogTitle: 'Hall oder Echo online zu Audio hinzufügen',
+      ogDescription: 'Raum, Halle, Platte, Federhall und Delay. Kostenlos, ohne Anmeldung.',
+      intro: 'Ein in einem akustisch behandelten Raum aufgenommener Gesang klingt tot, bis er irgendwo platziert wird. Hall fügt diesen Raum hinzu; Delay fügt Rhythmus hinzu. Media Manipulator wendet Raum-, Hallen-, Platten- und Federhall sowie echoartige Delays auf unseren Servern mit FFmpeg an, mit Reglern für Nass-Anteil und Raumgröße, und exportiert in jedes Audioformat.',
+      whatItDoes: [
+        'Halltypen Raum, Halle, Platte und Federhall mit Raumgröße, Dämpfung und Nass-/Trocken-Mix.',
+        'Echo-, Multi-Tap- und Ping-Pong-Delay mit Zeit und Feedback.',
+        'Chorus-, Flanger-, Phaser- und Tremolo-Modulation im selben Abschnitt.',
+        'Wählen Sie MP3, WAV, FLAC, M4A, OGG oder Opus für die Version mit Effekt.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Ein trockener Gesang oder ein trockenes Instrument funktioniert am besten.',
+        },
+        {
+          title: 'Hall wählen',
+          description: 'Halle ist voreingestellt; stellen Sie Größe und Mix ein.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg rendert den Effekt.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das Ergebnis.',
+        },
+      ],
+      advancedDetails: [
+        'Die Halltypen sind aus dem aecho-Filter von FFmpeg mit typspezifischen Delay- und Decay-Sätzen aufgebaut; der Nass-Anteil mischt den Effekt gegen das trockene Signal.',
+        'Die Delay-Zeit wird in Millisekunden angegeben; ein Feedback über 70 Prozent schaukelt sich schnell auf.',
+        'Effekte werden fest in die Datei gerendert; behalten Sie das trockene Original, falls Sie sie später ändern möchten.',
+      ],
+      whyItMatters: [
+        'Trockene Gesangs- und Voiceover-Aufnahmen klingen ohne etwas Raum unnatürlich.',
+        'Ein kurzer Plattenhall ist der Standard-Feinschliff für gesprochenes Wort und Gesang.',
+        'Delay und Modulation sind der schnellste Weg zu einem Sounddesign-Element.',
+      ],
+      useCases: [
+        {
+          title: 'Gesangs-Feinschliff',
+          description: 'Kurzer Plattenhall auf einem gesungenen oder gesprochenen Take.',
+        },
+        {
+          title: 'Große Halle',
+          description: 'Versetzen Sie einen Chor oder ein Pad in eine Kathedrale.',
+        },
+        {
+          title: 'Slapback',
+          description: 'Ein kurzes Echo auf einer Gitarre oder einem Gesang.',
+        },
+        {
+          title: 'Sounddesign',
+          description: 'Ping-Pong-Delay und Flanger auf einem Effekt.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Vier Halltypen, drei Delay-Typen und vier Modulationseffekte in einem Abschnitt.',
+        'Kombinierbar mit EQ, Normalisierung und Tonhöhe im selben Upload.',
+      ],
+      privacyNote: 'Der Hall wird Ihrem Audio von FFmpeg auf unserem Server hinzugefügt. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Welchen Hall sollte ich für Stimme verwenden?',
+          answer: 'Platte oder ein kleiner Raum mit 20 bis 30 Prozent Nass-Anteil. Halle ist für Musik und Effekte.',
+        },
+        {
+          question: 'Kann ich Hall entfernen?',
+          answer: 'Nicht hier. Das Tool zur KI-Sprachsäuberung reduziert Raumklang bei Sprache.',
+        },
+        {
+          question: 'Kann ich sowohl Hall als auch Delay hinzufügen?',
+          answer: 'Ja. Beide befinden sich im selben Abschnitt und können gemeinsam aktiviert werden.',
+        },
+        {
+          question: 'Ist der Effekt umkehrbar?',
+          answer: 'Nein. Er wird fest in die Datei gerendert; behalten Sie Ihr trockenes Original.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit aus.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Hall zu einer Audiodatei hinzufügen',
+        description: 'Laden Sie eine Audiodatei hoch. Der Abschnitt „Zeitbasierte Effekte“ öffnet sich mit ausgewähltem Halltyp „Halle“; passen Sie Raumgröße und Nass-Anteil an, wählen Sie Raum, Platte oder Federhall oder fügen Sie ein Delay hinzu. Klicken Sie auf Konvertieren.',
+      },
     },
     'trim-audio': {
       name: 'Audio schneiden',
-      tagline:
-        'Schneiden Sie eine MP3, WAV oder jede andere Aufnahme auf eine Start- und Endzeit zu, mit Wellenform zur Wahl der Punkte, und laden Sie nur diesen Teil herunter.',
+      h1: 'Audio online kostenlos schneiden oder kürzen',
+      tagline: 'Schneiden Sie eine MP3, WAV oder jede andere Aufnahme auf eine Start- und Endzeit zu, mit Wellenform zur Wahl der Punkte, und laden Sie nur diesen Teil herunter.',
+      metaTitle: 'Audio online kostenlos schneiden: MP3, WAV kürzen | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Audioschneider. Schneiden Sie jede Audiodatei anhand einer Wellenform auf einen Bereich zu, fügen Sie Ein- und Ausblendungen hinzu und laden Sie MP3, WAV, M4A oder mehr herunter. Erstellen Sie einen Klingelton oder einen Clip. Ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'Audio online kostenlos schneiden oder kürzen',
+      ogDescription: 'Wählen Sie Start und Ende auf der Wellenform und laden Sie den Clip herunter. Kostenlos, ohne Anmeldung.',
+      intro: 'Der Refrain für einen Klingelton, die eine gute Minute aus einer zweistündigen Aufnahme, der Soundbite ohne das Intro: Schneiden ist der Audioschnitt, den jeder braucht. Media Manipulator zeigt eine Wellenform, lässt Sie Start- und Endpunkte ziehen, schneidet auf unseren Servern mit FFmpeg und exportiert in jedes Format mit optionalen Ein- und Ausblendungen.',
+      whatItDoes: [
+        'Schneidet jede Audiodatei auf eine auf der Wellenform gewählte Start- und Endzeit zu.',
+        'Ein- und Ausblenden, damit der Schnitt nicht knackt.',
+        'Der Schnitt kommt als MP3, WAV, FLAC, M4A, OGG oder Opus zurück.',
+        'Kombinierbar mit Lautstärke, Normalisierung und EQ im selben Durchgang.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Bereich festlegen',
+          description: 'Ziehen Sie die Marker auf der Wellenform.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'FFmpeg schneidet und kodiert.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie den Clip.',
+        },
+      ],
+      advancedDetails: [
+        'Der Schnitt ist samplegenau; die Ausgabe wird im gewählten Format neu kodiert.',
+        'Eine Blende von 0,05 bis 0,2 Sekunden entfernt Knackser an den Schnittpunkten.',
+        'Für ein Video verwenden Sie den Video-Trimmer; für ein Wellenform-Video des Ergebnisses den Audio-Wellenform-Generator.',
+      ],
+      whyItMatters: [
+        'Klingeltöne und Benachrichtigungstöne brauchen einen Schnitt von 20 bis 30 Sekunden.',
+        'Einen Soundbite zu teilen ist einfacher, als die ganze Aufnahme zu teilen.',
+        'Stille und Intros vor der Transkription zu entfernen spart Zeit.',
+      ],
+      useCases: [
+        {
+          title: 'Klingelton',
+          description: 'Schneiden Sie den Refrain aus und fügen Sie eine Blende hinzu.',
+        },
+        {
+          title: 'Soundbite',
+          description: 'Ziehen Sie einen Satz aus einem Interview.',
+        },
+        {
+          title: 'Schlechten Anfang entfernen',
+          description: 'Entfernen Sie die ersten 10 Sekunden eines Memos.',
+        },
+        {
+          title: 'Sample',
+          description: 'Isolieren Sie einen Schlag oder eine Phrase.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Wellenform-Bearbeitung mit ziehbaren Markern statt eingetippter Zeitstempel.',
+        'Blenden, Normalisierung und jedes Ausgabeformat im selben Upload.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server auf den von Ihnen festgelegten Start und das Ende zugeschnitten. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Kann ich exakte Zeiten eingeben?',
+          answer: 'Ja. Der Schneidedialog hat neben den ziehbaren Markern auch Felder für Start und Ende.',
+        },
+        {
+          question: 'Wird der Schnitt knacken?',
+          answer: 'Fügen Sie unter „Grundlegende Audioverarbeitung“ ein kurzes Ein- und Ausblenden hinzu, um das zu vermeiden.',
+        },
+        {
+          question: 'Kann ich die Originalqualität behalten?',
+          answer: 'Wählen Sie WAV oder FLAC als Ausgabe, um eine verlustbehaftete Neukodierung zu vermeiden.',
+        },
+        {
+          question: 'Kann ich die Mitte herausschneiden?',
+          answer: 'Ein Bereich pro Durchgang; führen Sie das Tool zweimal aus und fügen Sie die Teile in Darkroom zusammen.',
+        },
+      ],
+      related: [
+        {
+          label: 'Video-Trimmer',
+          to: '/tools/video-trimmer',
+          description: 'Dasselbe für Video.',
+        },
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Holen Sie zuerst das Audio.',
+        },
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen allen gängigen Audioformaten.',
+        },
+        {
+          label: 'Audiogeschwindigkeit ändern',
+          to: '/tools/change-audio-speed',
+          description: 'Beschleunigen oder verlangsamen Sie eine Aufnahme.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart nach oben oder unten.',
+        },
+        {
+          label: 'Audio normalisieren',
+          to: '/tools/normalize-audio',
+          description: 'Gleichen Sie die Lautheit aus.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'KI-Rauschentfernung.',
+        },
+        {
+          label: 'Gesang aus einem Song entfernen',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Erstellen Sie ein Instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Eine Audiodatei schneiden',
+        description: 'Laden Sie eine Audiodatei hoch, klicken Sie auf „Audio zuschneiden“ und ziehen Sie die Start- und Endmarker auf der Wellenform. Fügen Sie auf Wunsch unter „Grundlegende Audioverarbeitung“ ein Ein- oder Ausblenden hinzu. Klicken Sie auf Konvertieren.',
+      },
     },
     'transcribe-audio': {
       name: 'Audio transkribieren',
-      tagline:
-        'Wandeln Sie eine MP3, WAV, M4A oder jede andere Aufnahme mit KI-Spracherkennung auf unseren eigenen GPU-Servern in Text, Untertitel oder JSON um.',
+      h1: 'Audio online in Text transkribieren',
+      tagline: 'Wandeln Sie eine MP3, WAV, M4A oder jede andere Aufnahme mit KI-Spracherkennung auf unseren eigenen GPU-Servern in Text, Untertitel oder JSON um.',
+      metaTitle: 'Audio online in Text transkribieren (kostenlose KI) | Media Manipulator',
+      metaDescription: 'Kostenlose Online-Audiotranskription. Wandeln Sie MP3-, WAV-, M4A-, OGG- oder FLAC-Aufnahmen in Klartext, VTT- oder SRT-Untertitel oder JSON mit Zeitstempeln um. Läuft auf unserer eigenen GPU, ohne Drittanbieter-KI.',
+      ogTitle: 'Audio online in Text transkribieren',
+      ogDescription: 'Aufnahmen, Interviews und Sprachmemos zu Text. Kostenlos, ohne Anmeldung.',
+      intro: 'Interviews, Vorlesungen, Sprachmemos und Meeting-Aufzeichnungen sind als Text weit nützlicher: durchsuchbar, zitierbar, übersetzbar. Media Manipulator transkribiert Audio mit einem Whisper-Modell auf einem GPU-Server, den wir betreiben, sodass Ihre Aufnahme unsere Infrastruktur nie verlässt, und liefert Klartext, VTT- oder SRT-Untertitel oder ein JSON-Transkript mit Zeitstempeln pro Wort.',
+      whatItDoes: [
+        'Transkribiert MP3, WAV, M4A, OGG, FLAC und anderes Audio mit Whisper.',
+        'Gibt Klartext, VTT, SRT oder JSON mit Zeitstempeln aus.',
+        'Erkennt die Sprache automatisch, aus Dutzenden von Sprachen.',
+        'Läuft auf unserer eigenen GPU; kein Drittanbieter-KI-Anbieter.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Ausgabe wählen',
+          description: 'Text, VTT, SRT oder JSON.',
+        },
+        {
+          title: 'Transkribieren',
+          description: 'Whisper läuft auf unserem GPU-Server.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Öffnen Sie die Transkript-Ansicht oder speichern Sie die Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Verwendet whisper-ctranslate2 mit einem großen mehrsprachigen Modell; die Genauigkeit ist bei klarer Sprache mit wenig Hintergrundgeräuschen am besten.',
+        'Lassen Sie bei verrauschten Aufnahmen zuerst das Tool „Hintergrundgeräusche entfernen“ laufen, um ein besseres Transkript zu erhalten.',
+        'Die Transkription zählt als ein KI-Auftrag aus dem täglichen KI-Kontingent statt aus dem normalen Tageskontingent; ein fehlgeschlagener Auftrag wird nicht gezählt.',
+      ],
+      whyItMatters: [
+        'Text ist durchsuchbar und lässt sich überfliegen; Audio nicht.',
+        'Untertitel machen Audioinhalte barrierefrei und indexierbar.',
+        'Ein Transkript ist der Ausgangspunkt für Notizen, Artikel und Übersetzungen.',
+      ],
+      useCases: [
+        {
+          title: 'Interviewnotizen',
+          description: 'Erhalten Sie einen Text, aus dem Sie zitieren können.',
+        },
+        {
+          title: 'Vorlesungstranskript',
+          description: 'Lernen Sie aus dem Text, suchen Sie nach Begriffen.',
+        },
+        {
+          title: 'Podcast-Untertitel',
+          description: 'SRT oder VTT für die Videoversion.',
+        },
+        {
+          title: 'Sprachmemo zu Text',
+          description: 'Verwandeln Sie Gedanken in ein Dokument.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper auf Hardware, die wir betreiben; Ihr Audio wird nie an eine Drittanbieter-KI gesendet.',
+        'Vier Ausgabeformate und eine integrierte Transkript-Ansicht.',
+      ],
+      privacyNote: 'Ihre Aufnahme wird von Whisper auf unserem eigenen GPU-Server transkribiert, und der Text wird beim Auftrag aufbewahrt. KI-Arbeit läuft auf Hardware, die wir betreiben, nie bei einem Drittanbieter-KI-Anbieter, und nichts, was Sie hochladen, wird zum Trainieren eines Modells verwendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Welche Sprachen werden unterstützt?',
+          answer: 'Whisper verarbeitet Dutzende von Sprachen und erkennt die Sprache automatisch.',
+        },
+        {
+          question: 'Wie genau ist es?',
+          answer: 'Sehr gut bei klarer Sprache. Hintergrundgeräusche, Überlappungen mehrerer Sprecher und starke Akzente senken die Genauigkeit; entrauschen Sie vorher, wenn Sie können.',
+        },
+        {
+          question: 'Wird meine Aufnahme an OpenAI gesendet?',
+          answer: 'Nein. Das Modell läuft auf unserem eigenen GPU-Server.',
+        },
+        {
+          question: 'Kann ich Sprecherkennzeichnungen erhalten?',
+          answer: 'Noch nicht. Die JSON-Ausgabe hat Zeitstempel pro Wort, nach denen Sie segmentieren können.',
+        },
+        {
+          question: 'Zählt das gegen mein Kontingent?',
+          answer: 'Ja, als ein KI-Auftrag auf dem KI-Kontingent, das vom normalen Kontingent getrennt ist. Fehlgeschlagene Aufträge werden nicht gezählt.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Zählt als ein KI-Auftrag; fehlgeschlagene Aufträge werden nicht gezählt.',
+        ],
+      },
+      related: [
+        {
+          label: 'Video transkribieren',
+          to: '/tools/transcribe-video',
+          description: 'Dasselbe für Videodateien.',
+        },
+        {
+          label: 'SRT-Generator',
+          to: '/tools/srt-generator',
+          description: 'Direkt zu Untertiteln.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'Säubern Sie zuerst das Audio.',
+        },
+        {
+          label: 'Untertitelübersetzer',
+          to: '/tools/caption-translator',
+          description: 'Übersetzen Sie die Untertitel.',
+        },
+      ],
+      embed: {
+        title: 'Eine Audiodatei transkribieren',
+        description: 'Laden Sie eine Audiodatei hoch und wählen Sie eine Ausgabe: Klartext für ein Dokument, VTT oder SRT für Untertitel, JSON für Zeitstempel. Whisper läuft auf unserem GPU-Server; nichts geht an eine Drittanbieter-KI.',
+      },
     },
     'add-text-to-image': {
       name: 'Text zu Bild hinzufügen',
-      tagline:
-        'Setzen Sie eine Bildunterschrift, einen Titel oder ein Wasserzeichen auf ein Foto: Wählen Sie Schriftart, Größe, Farbe, Kontur und Position und laden Sie es herunter.',
+      h1: 'Text online kostenlos zu einem Bild hinzufügen',
+      tagline: 'Setzen Sie eine Bildunterschrift, einen Titel oder ein Wasserzeichen auf ein Foto: Wählen Sie Schriftart, Größe, Farbe, Kontur und Position und laden Sie es herunter.',
+      metaTitle: 'Text zu Bild hinzufügen: Beschriftung, Wasserzeichen | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool, um Text zu einem Foto hinzuzufügen. Wählen Sie Schriftart, Größe, Farbe, Kontur und Position für eine Bildunterschrift, ein Meme oder ein Wasserzeichen auf JPG, PNG, WebP und mehr. Ohne Anmeldung.',
+      ogTitle: 'Text online kostenlos zu einem Bild hinzufügen',
+      ogDescription: 'Bildunterschrift, Titel oder Wasserzeichen auf jedem Foto. Kostenlos, ohne Anmeldung.',
+      intro: 'Eine Bildunterschrift auf einem Screenshot, ein Titel auf einem Thumbnail, eine Copyright-Zeile in der Ecke eines Fotos: Text hinzuzufügen ist nach dem Zuschneiden die häufigste Bildbearbeitung. Media Manipulator rendert Text auf unseren Servern mit ImageMagick auf ein Bild, mit Schriftart, Größe, Füll- und Konturfarbe und einer Position, die aus neun Ankerpunkten oder exakten Pixelkoordinaten gewählt wird, und exportiert im selben oder in einem anderen Format.',
+      whatItDoes: [
+        'Rendert einen Textblock in beliebiger Größe mit Füll- und Konturfarben.',
+        'Sechs mitgelieferte Schriftarten (Sans, Serif, Mono in zwei Familien).',
+        'Neun Ankerpositionen oder exakte x/y-Platzierung.',
+        'Kombinierbar mit Größenänderung, Zuschneiden, Filtern und Metadaten-Optionen im selben Durchgang.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'JPG, PNG, WebP, HEIC und mehr.',
+        },
+        {
+          title: 'Text eingeben und gestalten',
+          description: 'Größe, Farben, Kontur, Schriftart, Position.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'ImageMagick zeichnet den Text.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das beschriftete Bild.',
+        },
+      ],
+      advancedDetails: [
+        'Der Text wird in der Ausgabegröße gerastert; legen Sie die Größe in Pixeln relativ zur Bildbreite fest.',
+        'Eine Kontur von 2 bis 4 px in einer Kontrastfarbe hält Text auf unruhigen Fotos lesbar.',
+        'Wählen Sie PNG als Ausgabe, um einen transparenten Hintergrund für eine Wasserzeichen-Vorlage zu behalten.',
+      ],
+      whyItMatters: [
+        'Bildunterschriften machen Screenshots selbsterklärend.',
+        'Eine sichtbare Copyright-Zeile hält vom Reposten ohne Namensnennung ab.',
+        'Thumbnails mit einem Titel bekommen mehr Klicks.',
+      ],
+      useCases: [
+        {
+          title: 'Screenshot beschriften',
+          description: 'Benennen Sie, was der Betrachter sieht.',
+        },
+        {
+          title: 'Foto mit Wasserzeichen versehen',
+          description: 'Ihr Name in der unteren Ecke.',
+        },
+        {
+          title: 'Thumbnail-Titel',
+          description: 'Großer, fetter Text für ein Video-Thumbnail.',
+        },
+        {
+          title: 'Meme',
+          description: 'Text oben, Text unten.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Füllung, Kontur, Schriftart und Neun-Punkt-Platzierung, nicht nur ein Textfeld.',
+        'Größe ändern, zuschneiden und konvertieren im selben Upload.',
+      ],
+      privacyNote: 'Der von Ihnen eingegebene Text wird von ImageMagick auf unserem Server auf Ihr Bild gezeichnet. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Kann ich mehr als eine Zeile hinzufügen?',
+          answer: 'Ein Textblock pro Durchgang; ein Zeilenumbruch im Text wird als neue Zeile gerendert. Führen Sie das Tool für einen zweiten Block erneut aus.',
+        },
+        {
+          question: 'Kann ich meine eigene Schriftart verwenden?',
+          answer: 'Sechs mitgelieferte Schriftarten stehen zur Verfügung; das Hochladen eigener Schriftarten wird nicht unterstützt.',
+        },
+        {
+          question: 'Wie platziere ich Text exakt?',
+          answer: 'Wählen Sie einen Ankerpunkt und fügen Sie x/y-Versätze in Pixeln hinzu.',
+        },
+        {
+          question: 'Verringert es die Qualität?',
+          answer: 'Das Bild wird neu kodiert; wählen Sie PNG oder eine hohe JPG-Qualität, damit es scharf bleibt.',
+        },
+      ],
+      related: [
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen Bildformaten.',
+        },
+        {
+          label: 'Bild zuschneiden',
+          to: '/tools/crop-image',
+          description: 'Schneiden Sie auf einen Bereich zu.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Ändern Sie die Abmessungen.',
+        },
+        {
+          label: 'Bildfilter',
+          to: '/tools/image-filters',
+          description: 'Sepia, Skizze, Relief und mehr.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Entfernen Sie Standort- und Gerätedaten.',
+        },
+      ],
+      embed: {
+        title: 'Text zu einem Bild hinzufügen',
+        description: 'Laden Sie ein Bild hoch. Der Abschnitt „Textüberlagerung“ ist hervorgehoben: Geben Sie den Text ein und legen Sie Größe, Farbe, Kontur, Schriftart und Position fest (neun Ankerpunkte oder exakte Koordinaten). Klicken Sie auf Konvertieren.',
+      },
     },
     'crop-image': {
       name: 'Bild zuschneiden',
-      tagline:
-        'Ziehen Sie einen Rahmen über den gewünschten Teil eines Fotos, richten Sie den Ausschnitt gerade aus und laden Sie nur diesen Bereich in jedem Format herunter.',
+      h1: 'Bild online kostenlos zuschneiden',
+      tagline: 'Ziehen Sie einen Rahmen über den gewünschten Teil eines Fotos, richten Sie den Ausschnitt gerade aus und laden Sie nur diesen Bereich in jedem Format herunter.',
+      metaTitle: 'Bild online kostenlos zuschneiden | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Bildzuschnitt. Ziehen Sie einen Bereich eines JPG-, PNG-, WebP- oder HEIC-Fotos auf und laden Sie ihn herunter. Kombinierbar mit Größenänderung, Filtern und Formatkonvertierung. Ohne Anmeldung.',
+      ogTitle: 'Bild online kostenlos zuschneiden',
+      ogDescription: 'Rahmen ziehen, Bereich herunterladen. Kostenlos, ohne Anmeldung.',
+      intro: 'Zuschneiden korrigiert den Bildausschnitt, entfernt störende Elemente an den Rändern und macht aus einem Foto ein engeres. Media Manipulator öffnet einen visuellen Zuschneiderahmen auf dem hochgeladenen Bild, wendet den Zuschnitt auf unseren Servern mit ImageMagick an und lässt Sie das Ergebnis im selben Durchgang in der Größe ändern, filtern und konvertieren.',
+      whatItDoes: [
+        'Visueller Zuschneiderahmen mit Ziehgriffen direkt auf dem Bild.',
+        'Exakte Zuschnittkoordinaten werden angezeigt und sind bearbeitbar.',
+        'Kombinierbar mit einer Größenänderung auf eine Zielbreite und -höhe nach dem Zuschneiden.',
+        'Speichern Sie den zugeschnittenen Bereich als JPG, PNG, WebP, AVIF oder GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Zuschnitt zeichnen',
+          description: 'Ziehen Sie den Rahmen und die Griffe.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'ImageMagick schneidet zu und kodiert.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das zugeschnittene Bild.',
+        },
+      ],
+      advancedDetails: [
+        'Der Zuschnitt wird vor der Größenänderung angewendet, ein Foto mit 4000 px, das auf 1000 px zugeschnitten und auf 500 px skaliert wird, wird also nur einmal herunterskaliert.',
+        'Zuschneiden entfernt Pixel und ist nicht umkehrbar; behalten Sie das Original.',
+        'Die EXIF-Ausrichtung wird berücksichtigt, ein gedrehtes Handyfoto wird also so zugeschnitten, wie Sie es sehen.',
+      ],
+      whyItMatters: [
+        'Ein engerer Bildausschnitt ist die schnellste Verbesserung für die meisten Fotos.',
+        'Profilbilder und Thumbnails brauchen bestimmte Bereiche und Seitenverhältnisse.',
+        'Einen Passanten oder ein Kennzeichen herauszuschneiden ist eine Datenschutzmaßnahme.',
+      ],
+      useCases: [
+        {
+          title: 'Profilbild',
+          description: 'Schneiden Sie auf das Gesicht zu.',
+        },
+        {
+          title: 'Störendes entfernen',
+          description: 'Lassen Sie die Ränder eines Fotos weg.',
+        },
+        {
+          title: 'Screenshot-Detail',
+          description: 'Behalten Sie nur den relevanten Teil.',
+        },
+        {
+          title: 'Produktfoto',
+          description: 'Eng zuschneiden, dann für ein Angebot in der Größe ändern.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Visueller Zuschneiderahmen mit exakten Koordinaten, plus Größenänderung und Konvertierung im selben Durchgang.',
+        'Metadaten werden nach Ihrer Wahl behalten oder entfernt.',
+      ],
+      privacyNote: 'Ihr Bild wird von ImageMagick auf unserem Server auf den von Ihnen gewählten Bereich zugeschnitten. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Kann ich auf ein festes Seitenverhältnis zuschneiden?',
+          answer: 'Ziehen Sie den Rahmen auf das benötigte Verhältnis; Breite und Höhe werden dabei angezeigt.',
+        },
+        {
+          question: 'Verliert das Zuschneiden Qualität?',
+          answer: 'Die verbleibenden Pixel bleiben unberührt. Wählen Sie PNG oder eine hohe JPG-Qualität für die Neukodierung.',
+        },
+        {
+          question: 'Kann ich ein Video zuschneiden?',
+          answer: 'Ja, mit dem Tool „Video zuschneiden“.',
+        },
+        {
+          question: 'Kann ich zuerst drehen?',
+          answer: 'Verwenden Sie das Tool „Bild drehen“ und schneiden Sie dann zu.',
+        },
+      ],
+      related: [
+        {
+          label: 'Video zuschneiden',
+          to: '/tools/crop-video',
+          description: 'Dasselbe für Video.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen Bildformaten.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Ändern Sie die Abmessungen.',
+        },
+        {
+          label: 'Text zu Bild hinzufügen',
+          to: '/tools/add-text-to-image',
+          description: 'Bildunterschrift oder Wasserzeichen.',
+        },
+        {
+          label: 'Bildfilter',
+          to: '/tools/image-filters',
+          description: 'Sepia, Skizze, Relief und mehr.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Entfernen Sie Standort- und Gerätedaten.',
+        },
+      ],
+      embed: {
+        title: 'Ein Bild zuschneiden',
+        description: 'Laden Sie ein Bild hoch und klicken Sie auf „Bild zuschneiden“, um den visuellen Zuschneiderahmen zu öffnen. Ziehen Sie den Rahmen auf den gewünschten Bereich und speichern Sie; der Zuschnitt wird angewendet, wenn Sie auf Konvertieren klicken.',
+      },
     },
     'grayscale-image': {
       name: 'Bild in Schwarzweiß umwandeln',
-      tagline:
-        'Wandeln Sie ein Farbfoto in Graustufen oder in Sepia für einen Vintage-Ton um und laden Sie es in jedem Format herunter.',
+      h1: 'Bild online in Schwarzweiß umwandeln',
+      tagline: 'Wandeln Sie ein Farbfoto in Graustufen oder in Sepia für einen Vintage-Ton um und laden Sie es in jedem Format herunter.',
+      metaTitle: 'Bild online kostenlos in Schwarzweiß umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Schwarzweiß-Fotokonverter. Wandeln Sie jedes JPG-, PNG-, WebP- oder HEIC-Bild in Graustufen oder Sepia um und laden Sie es herunter. Kombinierbar mit Zuschneiden, Größenänderung und Formatwechsel. Ohne Anmeldung.',
+      ogTitle: 'Bild online in Schwarzweiß umwandeln',
+      ogDescription: 'Graustufen oder Sepia mit einem Klick. Kostenlos, ohne Anmeldung.',
+      intro: 'Schwarzweiß reduziert ein Foto auf Licht, Form und Textur, verbirgt Farbstiche und Mischlicht und gibt einer Fotoserie einen einheitlichen Look. Media Manipulator wandelt auf unseren Servern mit ImageMagick über eine luminanzgewichtete Umrechnung in Graustufen um, bietet Sepia- und Vintage-Töne und exportiert in jedes Bildformat.',
+      whatItDoes: [
+        'Wandelt ein Farbbild mit korrekter Luminanzgewichtung in Graustufen um.',
+        'Sepia- und Vintage-Alternativen für einen warmen oder gealterten Ton.',
+        'Kombinierbar mit Zuschneiden, Größenänderung, Text und Formatkonvertierung.',
+        'Die monochrome Kopie kann JPG, PNG, WebP, AVIF oder GIF sein.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Graustufen behalten oder Sepia wählen',
+          description: 'Der Filter ist voreingestellt.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'ImageMagick wendet die Umwandlung an.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das Ergebnis.',
+        },
+      ],
+      advancedDetails: [
+        'Graustufen verwenden die Luminanzgewichte nach Rec. 709, Grüntöne wirken also heller als Blautöne, wie es das Auge erwartet.',
+        'Sepia legt nach den Graustufen einen Farbton darüber; Vintage fügt eine leichte Ausbleichung und Vignette hinzu.',
+        'Die Ausgabe behält drei Kanäle, sofern Sie kein Format wählen, das Graustufen nativ speichert.',
+      ],
+      whyItMatters: [
+        'Monochrom verbirgt schlechte Farben und Mischlicht.',
+        'Eine einheitliche Schwarzweiß-Serie wirkt kuratiert.',
+        'Graustufenbilder lassen sich kleiner komprimieren.',
+      ],
+      useCases: [
+        {
+          title: 'Porträt',
+          description: 'Klassisches Schwarzweiß-Porträtfoto.',
+        },
+        {
+          title: 'Dokumentenscan',
+          description: 'Wandeln Sie eine fotografierte Seite in Graustufen um.',
+        },
+        {
+          title: 'Vintage-Look',
+          description: 'Sepia auf einem Familienfoto.',
+        },
+        {
+          title: 'Druck',
+          description: 'Bereiten Sie es für einen Schwarzweißdrucker vor.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Luminanzkorrekte Graustufen plus Sepia und Vintage.',
+        'Zuschneiden, Größe ändern und konvertieren im selben Upload.',
+      ],
+      privacyNote: 'Die Farbe Ihres Bildes wird von ImageMagick auf unserem Server entfernt. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Graustufen oder Entsättigen?',
+          answer: 'Dies sind luminanzgewichtete Graustufen, die natürlicher wirken als das bloße Entfernen der Sättigung.',
+        },
+        {
+          question: 'Kann ich einen Sepia-Ton erhalten?',
+          answer: 'Ja. Wählen Sie in der Filterauswahl Sepia oder Vintage.',
+        },
+        {
+          question: 'Kann ich das mit einem Video machen?',
+          answer: 'Ja. Verwenden Sie „Videohelligkeit & -farbe anpassen“ und setzen Sie die Sättigung auf -100.',
+        },
+        {
+          question: 'Lässt sich die Originalfarbe wiederherstellen?',
+          answer: 'Nein. Behalten Sie die Originaldatei.',
+        },
+      ],
+      related: [
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen Bildformaten.',
+        },
+        {
+          label: 'Bild zuschneiden',
+          to: '/tools/crop-image',
+          description: 'Schneiden Sie auf einen Bereich zu.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Ändern Sie die Abmessungen.',
+        },
+        {
+          label: 'Text zu Bild hinzufügen',
+          to: '/tools/add-text-to-image',
+          description: 'Bildunterschrift oder Wasserzeichen.',
+        },
+        {
+          label: 'Bildfilter',
+          to: '/tools/image-filters',
+          description: 'Sepia, Skizze, Relief und mehr.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Entfernen Sie Standort- und Gerätedaten.',
+        },
+      ],
+      embed: {
+        title: 'Ein Bild in Schwarzweiß umwandeln',
+        description: 'Laden Sie ein Bild hoch. Der Filter ist auf Graustufen voreingestellt; wechseln Sie für einen wärmeren Ton zu Sepia oder Vintage. Klicken Sie auf Konvertieren.',
+      },
     },
     'image-filters': {
       name: 'Bildfilter & Effekte',
-      tagline:
-        'Ölgemälde, Skizze, Kohle, Prägung, Vintage, Strudel, Unschärfe, Schärfen und mehr, mit einem Klick auf jedes Foto angewendet.',
+      h1: 'Filter und Effekte online auf ein Bild anwenden',
+      tagline: 'Ölgemälde, Skizze, Kohle, Prägung, Vintage, Strudel, Unschärfe, Schärfen und mehr, mit einem Klick auf jedes Foto angewendet.',
+      metaTitle: 'Bildfilter online kostenlos: Skizze, Ölgemälde, Prägung | Media Manipulator',
+      metaDescription: 'Kostenlose Online-Fotofilter. Wenden Sie Ölgemälde, Bleistiftskizze, Kohle, Prägung, Vintage, Sepia, Strudel, Weichzeichnen oder Schärfen auf JPG, PNG, WebP und mehr an und laden Sie das Ergebnis herunter. Ohne Anmeldung.',
+      ogTitle: 'Filter und Effekte online auf ein Bild anwenden',
+      ogDescription: 'Skizze, Ölgemälde, Prägung, Vintage und mehr. Kostenlos, ohne Anmeldung.',
+      intro: 'Manchmal soll ein Foto etwas anderes werden: eine Skizze für eine Einladung, ein Ölgemälde für einen Druck, ein geprägtes Logo, ein verwirbeltes abstraktes Bild. Media Manipulator wendet die künstlerischen und korrigierenden Filter von ImageMagick auf unseren Servern an, von der Bleistiftskizze bis zum Schärfen, und exportiert in jedes Bildformat, auf Wunsch im selben Durchgang zugeschnitten, in der Größe geändert und mit Beschriftung versehen.',
+      whatItDoes: [
+        'Künstlerisch: Ölgemälde, Skizze, Kohle, Prägung, Vintage, Sepia, Strudel, Tonnenverzeichnung.',
+        'Korrigierend: Weichzeichnen, Schärfen, Graustufen.',
+        'Drehungen um 45, 90, 180 und 270 Grad in derselben Auswahl.',
+        'Kombinierbar mit Zuschneiden, Größenänderung, Textüberlagerung und Formatkonvertierung.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Filter wählen',
+          description: 'Ölgemälde ist vorausgewählt.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'ImageMagick rendert den Effekt.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das Ergebnis.',
+        },
+      ],
+      advancedDetails: [
+        'Ölgemälde und Kohle arbeiten radiusbasiert und skalieren mit der Bildgröße; ändern Sie die Größe auf 1500 bis 2500 px für den stärksten Effekt.',
+        'Skizze und Prägung wirken am besten bei Bildern mit klaren Kanten und gutem Kontrast.',
+        'Effekte werden fest in die Pixel gerendert; behalten Sie das Original.',
+      ],
+      whyItMatters: [
+        'Ein stilisiertes Bild fällt in einem Feed voller Fotos auf.',
+        'Skizzen- und Gemälde-Looks sind für Karten, Poster und Drucke verbreitet.',
+        'Schärfen und Weichzeichnen sind alltägliche Korrekturen.',
+      ],
+      useCases: [
+        {
+          title: 'Bleistiftporträt',
+          description: 'Skizzenfilter auf einem Foto für eine Karte.',
+        },
+        {
+          title: 'Gemalter Druck',
+          description: 'Ölgemälde für einen Leinwanddruck.',
+        },
+        {
+          title: 'Geprägtes Logo',
+          description: 'Prägen Sie ein flaches Logo.',
+        },
+        {
+          title: 'Scan schärfen',
+          description: 'Holen Sie die Kanten eines weichen Scans heraus.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Zwölf künstlerische und korrigierende Filter in einer Auswahl.',
+        'Zuschneiden, Größe ändern, beschriften und konvertieren im selben Upload.',
+      ],
+      privacyNote: 'Der gewählte Filter wird von ImageMagick auf unserem Server auf Ihr Bild angewendet. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Kann ich die Stärke anpassen?',
+          answer: 'Die Filter verwenden feste, abgestimmte Stärken. Ändern Sie die Bildgröße nach oben oder unten, um zu beeinflussen, wie stark ein radiusbasierter Effekt wirkt.',
+        },
+        {
+          question: 'Kann ich Filter stapeln?',
+          answer: 'Ein Filter pro Durchgang; schicken Sie das Ergebnis für einen zweiten erneut durch das Tool.',
+        },
+        {
+          question: 'Gibt es einen KI-Stiltransfer?',
+          answer: 'Nein. Dies sind klassische ImageMagick-Effekte, die sofort laufen.',
+        },
+        {
+          question: 'Welcher Filter eignet sich für ein Logo?',
+          answer: 'Prägung oder Kohle auf einem kontrastreichen Logo.',
+        },
+      ],
+      related: [
+        {
+          label: 'Schwarzweiß',
+          to: '/tools/grayscale-image',
+          description: 'Graustufen und Sepia.',
+        },
+        {
+          label: 'Bild weichzeichnen',
+          to: '/tools/blur-image',
+          description: 'Weichzeichnen oder unkenntlich machen.',
+        },
+        {
+          label: 'Bild schärfen',
+          to: '/tools/sharpen-image',
+          description: 'Details herausholen.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Zwischen Bildformaten konvertieren.',
+        },
+        {
+          label: 'Bild zuschneiden',
+          to: '/tools/crop-image',
+          description: 'Auf einen Bereich beschneiden.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Die Abmessungen ändern.',
+        },
+        {
+          label: 'Text zu Bild hinzufügen',
+          to: '/tools/add-text-to-image',
+          description: 'Beschriftung oder Wasserzeichen.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Standort- und Gerätedaten entfernen.',
+        },
+      ],
+      embed: {
+        title: 'Filter auf ein Bild anwenden',
+        description: 'Laden Sie ein Bild hoch und wählen Sie einen Filter; Ölgemälde ist vorausgewählt. Skizze, Kohle, Prägung, Vintage, Sepia, Strudel, Tonnenverzeichnung, Weichzeichnen und Schärfen stehen zur Verfügung. Klicken Sie auf „Konvertieren“.',
+      },
     },
     'rotate-image': {
       name: 'Bild drehen',
-      tagline:
-        'Drehen Sie ein Foto um 90°, 180° oder 270°, korrigieren Sie einen seitlich eingescannten Scan oder ein Handyfoto und laden Sie es in jedem Format herunter.',
+      h1: 'Bild online kostenlos drehen',
+      tagline: 'Drehen Sie ein Foto um 90°, 180° oder 270°, korrigieren Sie einen seitlich eingescannten Scan oder ein Handyfoto und laden Sie es in jedem Format herunter.',
+      metaTitle: 'Bild online kostenlos drehen (90°, 180°, 270°) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Bilddreher. Drehen Sie ein JPG-, PNG-, WebP- oder HEIC-Foto um 90, 180 oder 270 Grad, oder um 45 für eine Neigung, und laden Sie es herunter. Die Drehung wird fest in die Pixel geschrieben. Ohne Anmeldung.',
+      ogTitle: 'Bild online kostenlos drehen',
+      ogDescription: 'Korrigieren Sie ein seitlich liegendes Foto mit einem Klick. Kostenlos, ohne Anmeldung.',
+      intro: 'Smartphones speichern die Ausrichtung als Tag, das manche Betrachter ignorieren, und Scanner und alte Kameras liegen damit schlicht falsch. Die Pixel selbst zu drehen behebt das dauerhaft. Media Manipulator dreht Bilder auf unseren Servern mit ImageMagick um 90, 180, 270 oder 45 Grad, berücksichtigt zuerst das vorhandene Ausrichtungs-Tag und exportiert in jedes Format.',
+      whatItDoes: [
+        'Dreht um 90° (im Uhrzeigersinn), 180°, 270° (gegen den Uhrzeigersinn) oder 45°.',
+        'Schreibt die Drehung fest in die Pixel und löscht das EXIF-Ausrichtungs-Tag.',
+        'Kombinierbar mit Zuschneiden, Größenänderung und Formatkonvertierung.',
+        'Speichert das gedrehte Bild als JPG, PNG, WebP, AVIF oder GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Winkel wählen',
+          description: '90° ist vorausgewählt.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'ImageMagick dreht und kodiert.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das aufrechte Bild.',
+        },
+      ],
+      advancedDetails: [
+        'Die vorhandene EXIF-Ausrichtung wird zuerst angewendet, sodass genau das gedreht wird, was Sie sehen.',
+        'Eine Drehung um 45° fügt an den Ecken eine Hintergrundfüllung hinzu; schneiden Sie bei Bedarf anschließend zu.',
+        'Für horizontales oder vertikales Spiegeln verwenden Sie stattdessen die Werkzeuge zum Spiegeln.',
+      ],
+      whyItMatters: [
+        'Seitlich liegende Fotos sind die häufigste Upload-Beschwerde in Foren und Formularen.',
+        'Manche Apps ignorieren das Ausrichtungs-Tag, daher ist eine fest eingeschriebene Drehung die einzige zuverlässige Lösung.',
+        'Scans und Dateien alter Kameras haben oft gar kein Tag.',
+      ],
+      useCases: [
+        {
+          title: 'Seitlich liegendes Handyfoto',
+          description: 'Um 90° drehen, damit es überall aufrecht steht.',
+        },
+        {
+          title: 'Scan auf dem Kopf',
+          description: 'Um 180° drehen.',
+        },
+        {
+          title: 'Formular-Upload korrigieren',
+          description: 'Drehen Sie das Dokumentfoto vor dem Einreichen.',
+        },
+        {
+          title: 'Geneigter Effekt',
+          description: 'Um 45° drehen für ein Gestaltungselement.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Drehung direkt auf den Pixeln, mit korrekt behandeltem Ausrichtungs-Tag.',
+        'Zuschneiden, Größe ändern und konvertieren im selben Upload.',
+      ],
+      privacyNote: 'Ihr Bild wird von ImageMagick auf unserem Server um den gewählten Winkel gedreht. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Warum sieht mein Foto auf dem Handy aufrecht aus, aber anderswo seitlich?',
+          answer: 'Ihr Handy hat ein Ausrichtungs-Tag geschrieben, das die andere App ignoriert. Das Drehen hier schreibt die Ausrichtung fest in die Pixel.',
+        },
+        {
+          question: 'Geht beim Drehen Qualität verloren?',
+          answer: 'Eine Drehung um Vielfache von 90° ist geometrisch verlustfrei; die Neukodierung ist der einzige Preis. Verwenden Sie PNG oder eine hohe JPG-Qualität.',
+        },
+        {
+          question: 'Kann ich um einen beliebigen Winkel drehen?',
+          answer: 'Angeboten werden nur 45° sowie die Vielfachen von 90°.',
+        },
+        {
+          question: 'Kann ich stattdessen spiegeln?',
+          answer: 'Nicht hier; Spiegeln wird für Bilder derzeit nicht angeboten.',
+        },
+      ],
+      related: [
+        {
+          label: 'Video drehen',
+          to: '/tools/rotate-video',
+          description: 'Dasselbe für Video.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Zwischen Bildformaten konvertieren.',
+        },
+        {
+          label: 'Bild zuschneiden',
+          to: '/tools/crop-image',
+          description: 'Auf einen Bereich beschneiden.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Die Abmessungen ändern.',
+        },
+        {
+          label: 'Text zu Bild hinzufügen',
+          to: '/tools/add-text-to-image',
+          description: 'Beschriftung oder Wasserzeichen.',
+        },
+        {
+          label: 'Bildfilter',
+          to: '/tools/image-filters',
+          description: 'Sepia, Skizze, Prägung und mehr.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Standort- und Gerätedaten entfernen.',
+        },
+      ],
+      embed: {
+        title: 'Bild drehen',
+        description: 'Laden Sie ein Bild hoch. Die Filterauswahl ist auf Drehen um 90° voreingestellt; wählen Sie stattdessen 180°, 270° oder 45°. Die Drehung wird auf die Pixel angewendet, sodass jeder Betrachter dasselbe zeigt. Klicken Sie auf „Konvertieren“.',
+      },
     },
     'sharpen-image': {
       name: 'Bild schärfen',
-      tagline:
-        'Holen Sie die Kanten eines leicht weichen Fotos oder Scans mit einem Klick heraus und laden Sie es in jedem Format herunter.',
+      h1: 'Bild online kostenlos schärfen',
+      tagline: 'Holen Sie die Kanten eines leicht weichen Fotos oder Scans mit einem Klick heraus und laden Sie es in jedem Format herunter.',
+      metaTitle: 'Bild online kostenlos schärfen | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Bildschärfer. Machen Sie ein weiches JPG-, PNG-, WebP- oder HEIC-Foto oder einen Scan knackiger und laden Sie es herunter. Für echte Detailwiederherstellung probieren Sie die KI-Bildrestaurierung. Ohne Anmeldung.',
+      ogTitle: 'Bild online kostenlos schärfen',
+      ogDescription: 'Machen Sie ein weiches Foto mit einem Klick knackiger. Kostenlos, ohne Anmeldung.',
+      intro: 'Ein Foto, das durch ein langsames Objektiv, eine Größenänderung oder einen Scanner etwas weich geworden ist, profitiert von einem Schärfungsdurchgang, der den Kontrast entlang der Kanten erhöht. Media Manipulator wendet auf unseren Servern mit ImageMagick eine Unscharfmaskierung an und exportiert in jedes Format. Bei Unschärfe, die über bloße Weichheit hinausgeht, stellt das Tool zur KI-Bildrestaurierung Details wieder her, die Schärfen nicht leisten kann.',
+      whatItDoes: [
+        'Wendet eine abgestimmte Unscharfmaskierung auf jedes Bild an.',
+        'Kombinierbar mit Größenänderung: Schärfen Sie nach dem Verkleinern für knackige Vorschaubilder.',
+        'Laden Sie das geschärfte Ergebnis als JPG, PNG, WebP, AVIF oder GIF herunter.',
+        'Vergleichen Sie Original und Ergebnis nebeneinander.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Schärfen ausgewählt lassen',
+          description: 'Fügen Sie bei Bedarf eine Größenänderung hinzu.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'ImageMagick wendet die Unscharfmaskierung an.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das knackigere Bild.',
+        },
+      ],
+      advancedDetails: [
+        'Schärfen erhöht den lokalen Kontrast an Kanten; es fügt keine Details hinzu. Zu starkes Schärfen zeigt sich als Halos.',
+        'Verkleinern und anschließend schärfen ist das klassische Rezept für knackige Webbilder.',
+        'Bei Bewegungsunschärfe, Defokussierung oder niedrig aufgelösten Quellen verwenden Sie die KI-Bildrestaurierung.',
+      ],
+      whyItMatters: [
+        'Verkleinerte Bilder verlieren Kantenkontrast und wirken ohne Schärfen weich.',
+        'Scans von Dokumenten und Abzügen sind oft leicht weich.',
+        'Ein knackiges Bild wirkt hochwertiger.',
+      ],
+      useCases: [
+        {
+          title: 'Vorschaubild',
+          description: 'Größe ändern und schärfen für das Web.',
+        },
+        {
+          title: 'Weicher Scan',
+          description: 'Machen Sie einen gescannten Abzug knackiger.',
+        },
+        {
+          title: 'Produktfoto',
+          description: 'Fügen Sie vor dem Einstellen Kantenschärfe hinzu.',
+        },
+        {
+          title: 'Leicht verfehlter Fokus',
+          description: 'Gewinnen Sie etwas sichtbare Schärfe zurück.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Abgestimmte Unscharfmaskierung mit Größenänderung im selben Durchgang.',
+        'KI-Restaurierung verfügbar, wenn Schärfen nicht ausreicht.',
+      ],
+      privacyNote: 'Ihr Bild wird von ImageMagick auf unserem Server mit der von Ihnen festgelegten Stärke geschärft. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Repariert es ein verschwommenes Foto?',
+          answer: 'Es hilft bei leichter Weichheit. Bei echter Unschärfe verwenden Sie die KI-Bildrestaurierung, die Details rekonstruiert.',
+        },
+        {
+          question: 'Kann ich die Stärke steuern?',
+          answer: 'Die Stärke ist fest und abgestimmt; führen Sie das Tool zweimal aus für mehr, oder verwenden Sie eine kleinere Ausgabegröße für einen relativ stärkeren Effekt.',
+        },
+        {
+          question: 'Fügt es Rauschen hinzu?',
+          answer: 'Schärfen kann vorhandenes Korn betonen. Verwenden Sie eine hohe JPG-Qualität, um es nicht zu verstärken.',
+        },
+      ],
+      related: [
+        {
+          label: 'KI-Bildrestaurierung',
+          to: '/tools/ai-image-restoration',
+          description: 'Echte Details mit KI wiederherstellen.',
+        },
+        {
+          label: 'KI-Bild-Upscaler',
+          to: '/tools/ai-image-upscaler',
+          description: 'Vergrößern ohne Unschärfe.',
+        },
+        {
+          label: 'Bild weichzeichnen',
+          to: '/tools/blur-image',
+          description: 'Das Gegenteil.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Zwischen Bildformaten konvertieren.',
+        },
+        {
+          label: 'Bild zuschneiden',
+          to: '/tools/crop-image',
+          description: 'Auf einen Bereich beschneiden.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Die Abmessungen ändern.',
+        },
+        {
+          label: 'Text zu Bild hinzufügen',
+          to: '/tools/add-text-to-image',
+          description: 'Beschriftung oder Wasserzeichen.',
+        },
+        {
+          label: 'Bildfilter',
+          to: '/tools/image-filters',
+          description: 'Sepia, Skizze, Prägung und mehr.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Standort- und Gerätedaten entfernen.',
+        },
+      ],
+      embed: {
+        title: 'Bild schärfen',
+        description: 'Laden Sie ein Bild hoch. Der Filter ist auf Schärfen voreingestellt. Klicken Sie auf „Konvertieren“ und vergleichen Sie das Ergebnis in der Ansicht mit dem Original.',
+      },
     },
     'blur-image': {
       name: 'Bild weichzeichnen',
-      tagline:
-        'Zeichnen Sie ein ganzes Foto weich, für einen Hintergrund, einen Platzhalter oder einen Sichtschutz, und laden Sie es in jedem Format herunter.',
+      h1: 'Bild online kostenlos weichzeichnen',
+      tagline: 'Zeichnen Sie ein ganzes Foto weich, für einen Hintergrund, einen Platzhalter oder einen Sichtschutz, und laden Sie es in jedem Format herunter.',
+      metaTitle: 'Bild online kostenlos weichzeichnen | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Weichzeichner für Bilder. Zeichnen Sie ein ganzes JPG-, PNG-, WebP- oder HEIC-Foto weich, für einen Hintergrund, einen Platzhalter oder einen Sichtschutz. Um nur Gesichter unkenntlich zu machen, nutzen Sie das Tool für Gesichter. Ohne Anmeldung.',
+      ogTitle: 'Bild online kostenlos weichzeichnen',
+      ogDescription: 'Zeichnen Sie ein Foto mit einem Klick weich. Kostenlos, ohne Anmeldung.',
+      intro: 'Ein weichgezeichnetes Foto ergibt einen ruhigen Hintergrund hinter Text, einen detailarmen Platzhalter, während das echte Bild lädt, oder einen Sichtschutz für einen Screenshot. Media Manipulator wendet auf unseren Servern mit ImageMagick einen Gaußschen Weichzeichner auf das gesamte Bild an und exportiert in jedes Format. Um nur Gesichter oder ein Kennzeichen unkenntlich zu machen, zielen die KI-Tools zum Unkenntlichmachen von Gesichtern und zur Textschwärzung gezielt auf diese Bereiche.',
+      whatItDoes: [
+        'Wendet einen Gaußschen Weichzeichner auf das gesamte Bild an.',
+        'Kombinierbar mit Größenänderung für einen winzigen weichgezeichneten Platzhalter.',
+        'Das weichgezeichnete Bild kommt als JPG, PNG, WebP, AVIF oder GIF zurück.',
+        'Verwandte Tools machen gezielt Gesichter unkenntlich oder schwärzen Text.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'Weichzeichnen ausgewählt lassen',
+          description: 'Optional die Größe ändern.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'ImageMagick zeichnet weich und kodiert.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das weichgezeichnete Bild.',
+        },
+      ],
+      advancedDetails: [
+        'Der Weichzeichnungsradius ist fest; für einen stärkeren Effekt verkleinern Sie zuerst, zeichnen weich und vergrößern dann wieder.',
+        'Weichgezeichnete Bilder lassen sich sehr klein komprimieren, deshalb eignen sie sich gut als Platzhalter.',
+        'Ein weichgezeichneter Screenshot ist keine Schwärzung: Text lässt sich manchmal wiederherstellen. Verwenden Sie die Textschwärzung für sensible Inhalte.',
+      ],
+      whyItMatters: [
+        'Weichgezeichnete Hintergründe halten darüberliegenden Text lesbar.',
+        'Platzhalter in niedriger Qualität verbessern die gefühlte Seitengeschwindigkeit.',
+        'Eine weiche Version eines Fotos ist ein verbreitetes Gestaltungselement.',
+      ],
+      useCases: [
+        {
+          title: 'Hintergrund für Text',
+          description: 'Zeichnen Sie ein Foto weich, um eine Überschrift darauf zu setzen.',
+        },
+        {
+          title: 'Platzhalter',
+          description: 'Winzige weichgezeichnete Vorschau für Lazy Loading.',
+        },
+        {
+          title: 'Sichtschutz',
+          description: 'Zeichnen Sie einen Screenshot vor dem Teilen weich und schwärzen Sie ihn dann richtig.',
+        },
+        {
+          title: 'Verträumter Effekt',
+          description: 'Weiche Überlagerung für ein Design.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Weichzeichnen des ganzen Bildes hier; Gesichter unkenntlich machen und Text schwärzen als eigene KI-Tools.',
+        'Größe ändern und konvertieren im selben Upload.',
+      ],
+      privacyNote: 'Ihr Bild wird von ImageMagick auf unserem Server mit dem von Ihnen festgelegten Radius weichgezeichnet. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Kann ich nur einen Teil des Bildes weichzeichnen?',
+          answer: 'Verwenden Sie „Gesichter im Foto unkenntlich machen“ für Gesichter oder „Text im Bild schwärzen“ für Text und Kennzeichen.',
+        },
+        {
+          question: 'Reicht Weichzeichnen aus, um Text zu verbergen?',
+          answer: 'Nicht zuverlässig. Verwenden Sie das Schwärzungstool, das den Bereich übermalt.',
+        },
+        {
+          question: 'Kann ich die Stärke der Weichzeichnung steuern?',
+          answer: 'Der Radius ist fest; verkleinern Sie das Bild vor dem Weichzeichnen für einen stärkeren Effekt.',
+        },
+      ],
+      related: [
+        {
+          label: 'Gesichter im Foto unkenntlich machen',
+          to: '/tools/blur-faces-in-photo',
+          description: 'KI-Gesichtsweichzeichnung.',
+        },
+        {
+          label: 'Text im Bild schwärzen',
+          to: '/tools/redact-text-in-image',
+          description: 'Text und Kennzeichen verbergen.',
+        },
+        {
+          label: 'Bild schärfen',
+          to: '/tools/sharpen-image',
+          description: 'Das Gegenteil.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Zwischen Bildformaten konvertieren.',
+        },
+        {
+          label: 'Bild zuschneiden',
+          to: '/tools/crop-image',
+          description: 'Auf einen Bereich beschneiden.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Die Abmessungen ändern.',
+        },
+        {
+          label: 'Text zu Bild hinzufügen',
+          to: '/tools/add-text-to-image',
+          description: 'Beschriftung oder Wasserzeichen.',
+        },
+        {
+          label: 'Bildfilter',
+          to: '/tools/image-filters',
+          description: 'Sepia, Skizze, Prägung und mehr.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Standort- und Gerätedaten entfernen.',
+        },
+      ],
+      embed: {
+        title: 'Bild weichzeichnen',
+        description: 'Laden Sie ein Bild hoch. Der Filter ist auf Weichzeichnen voreingestellt, was das ganze Bild weich macht. Um nur Gesichter unkenntlich zu machen, verwenden Sie das Tool „Gesichter im Foto unkenntlich machen“. Klicken Sie auf „Konvertieren“.',
+      },
     },
     'generate-vtt-captions': {
       name: 'VTT-Untertitel-Generator',
-      tagline:
-        'Erstellen Sie eine .vtt-Untertiteldatei für HTML5-Video, YouTube oder einen Player mit KI-Transkription auf unseren eigenen GPU-Servern.',
+      h1: 'WebVTT-Untertitel aus Video oder Audio erstellen',
+      tagline: 'Erstellen Sie eine .vtt-Untertiteldatei für HTML5-Video, YouTube oder einen Player mit KI-Transkription auf unseren eigenen GPU-Servern.',
+      metaTitle: 'VTT-Untertitel-Generator online (kostenlose KI) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Generator für WebVTT-Untertitel. Laden Sie eine Video- oder Audiodatei hoch und laden Sie eine .vtt-Datei mit zeitlich abgestimmten Untertiteln für HTML5-Video, YouTube, Vimeo oder jeden Player herunter. Läuft auf unserer eigenen GPU.',
+      ogTitle: 'WebVTT-Untertitel online erstellen',
+      ogDescription: 'KI-getimte .vtt-Untertitel für jedes Video. Kostenlos, ohne Anmeldung.',
+      intro: 'WebVTT ist das Untertitelformat des Webs: das HTML5-Track-Element, YouTube, Vimeo sowie HLS- und DASH-Player lesen es alle. Media Manipulator erstellt zeitlich abgestimmte VTT-Untertitel aus jedem Video oder Audio mit einem Whisper-Modell auf einem GPU-Server, den wir selbst betreiben, sodass Ihre Medien nie zu einer fremden KI gelangen, und öffnet das Ergebnis in einer Untertitelansicht, in der Sie das Timing vor dem Herunterladen prüfen können.',
+      whatItDoes: [
+        'Transkribiert Sprache und unterteilt sie in zeitlich abgestimmte Cues.',
+        'Gibt eine standardkonforme .vtt-Datei aus.',
+        'Erkennt die Sprache automatisch.',
+        'Läuft auf unserer eigenen GPU; kein externer KI-Anbieter.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video oder Audio hochladen',
+          description: 'Jedes gängige Format.',
+        },
+        {
+          title: 'VTT ausgewählt lassen',
+          description: 'Oder wechseln Sie zu SRT, Text oder JSON.',
+        },
+        {
+          title: 'Transkribieren',
+          description: 'Whisper setzt das Timing jedes Cues.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Hängen Sie die .vtt an Ihren Player an.',
+        },
+      ],
+      advancedDetails: [
+        'Die Cues folgen der Segmentierung von Whisper, typischerweise ein Satz oder Teilsatz pro Cue von 2 bis 7 Sekunden.',
+        'Übersetzen Sie das Ergebnis mit dem Untertitelübersetzer in andere Sprachen.',
+        'Für eine eingebrannte Untertitelspur verwenden Sie die Untertitelspur von Darkroom.',
+      ],
+      whyItMatters: [
+        'Untertitel sind für Barrierefreiheit vorgeschrieben und werden von den meisten Zuschauern stumm geschaltet mitgelesen.',
+        'VTT ist das einzige Format, das HTML5-Video nativ liest.',
+        'Zeitlich abgestimmte Untertitel können von Suchmaschinen indexiert werden.',
+      ],
+      useCases: [
+        {
+          title: 'HTML5-Video',
+          description: 'Hängen Sie die Datei mit einem Track-Element an.',
+        },
+        {
+          title: 'YouTube-Upload',
+          description: 'Laden Sie die .vtt als Untertitelspur hoch.',
+        },
+        {
+          title: 'Kursvideo',
+          description: 'Untertitel für einen LMS-Player.',
+        },
+        {
+          title: 'Später übersetzen',
+          description: 'VTT hinein, übersetzte VTT heraus.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper auf unserer eigenen Hardware; nichts wird an eine fremde KI gesendet.',
+        'Untertitelansicht zum Prüfen des Timings vor dem Herunterladen.',
+      ],
+      privacyNote: 'Die Sprache in Ihrer Datei wird von Whisper auf unserem eigenen GPU-Server transkribiert und zu zeitlich abgestimmten WebVTT-Untertiteln verarbeitet. Die KI-Arbeit läuft auf Hardware, die wir betreiben, nie bei einem externen KI-Anbieter, und nichts, was Sie hochladen, wird zum Trainieren eines Modells verwendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'VTT oder SRT?',
+          answer: 'VTT für Web-Player und YouTube; SRT für Videoeditoren und einige ältere Plattformen. Beide werden angeboten.',
+        },
+        {
+          question: 'Kann ich die Untertitel bearbeiten?',
+          answer: 'Laden Sie die .vtt herunter und bearbeiten Sie sie in einem beliebigen Texteditor; das Format ist reiner Text.',
+        },
+        {
+          question: 'Kann ich sie übersetzen?',
+          answer: 'Ja, mit dem Tool Untertitelübersetzer.',
+        },
+        {
+          question: 'Wird mein Video an Dritte gesendet?',
+          answer: 'Nein. Die Transkription läuft auf unserem eigenen GPU-Server.',
+        },
+        {
+          question: 'Wird das auf mein Kontingent angerechnet?',
+          answer: 'Jede VTT-Datei ist ein KI-Auftrag, der aus dem KI-Kontingent genommen wird und nie aus dem Standardkontingent. Fehlgeschlagene Aufträge werden nicht angerechnet.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Jede Untertiteldatei zählt als ein KI-Auftrag; fehlgeschlagene Aufträge werden nicht angerechnet.',
+        ],
+      },
+      related: [
+        {
+          label: 'SRT-Generator',
+          to: '/tools/srt-generator',
+          description: 'SubRip-Format.',
+        },
+        {
+          label: 'Video transkribieren',
+          to: '/tools/transcribe-video',
+          description: 'Reiner Text oder JSON.',
+        },
+        {
+          label: 'Untertitelübersetzer',
+          to: '/tools/caption-translator',
+          description: 'Die Untertitel übersetzen.',
+        },
+        {
+          label: 'Darkroom-Videoeditor',
+          to: '/tools/content-studio',
+          description: 'Untertitel einbrennen.',
+        },
+      ],
+      embed: {
+        title: 'VTT-Untertitel erstellen',
+        description: 'Laden Sie eine Video- oder Audiodatei hoch. Die Ausgabe ist auf WebVTT voreingestellt; das Transkript wird von Whisper auf unserem GPU-Server zeitlich abgestimmt und als .vtt-Datei zurückgegeben, die Sie mit einem Track-Element anhängen oder auf eine Plattform hochladen können.',
+      },
     },
     // MM75: summarize-video / summarize-audio full page bodies (model-written, needs native review).
     'summarize-video': {
@@ -3913,7 +7632,6 @@ const deToolPages = {
       whyMediaManipulator: [
         'Whisper sowie die Bild- und Sprachmodelle laufen auf Hardware, die wir betreiben; Ihr Video wird nie an eine fremde KI gesendet.',
         'Kapitel, die in Ihrem eigenen Video springen, direkt in der Ergebnisansicht.',
-        'Downloads als Markdown und JSON. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       ],
       privacyNote: 'Für Zusammenfassungen ist ein kostenloses Konto nötig, daher wird der Job diesem zugeordnet. Ihre Datei wird auf unseren eigenen Servern verarbeitet, und die KI-Modelle laufen auf einem GPU-Server, den wir betreiben; es wird nichts an einen externen KI-Anbieter gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       faq: [
@@ -4040,7 +7758,6 @@ const deToolPages = {
       whyMediaManipulator: [
         'Whisper und das Sprachmodell laufen auf Hardware, die wir betreiben; Ihre Aufnahme wird nie an eine fremde KI gesendet.',
         'Kapitel, die in Ihrer eigenen Aufnahme springen, direkt in der Ergebnisansicht.',
-        'Downloads als Markdown und JSON. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       ],
       privacyNote: 'Für Zusammenfassungen ist ein kostenloses Konto nötig, daher wird der Job diesem zugeordnet. Ihre Datei wird auf unseren eigenen Servern verarbeitet, und die KI-Modelle laufen auf einem GPU-Server, den wir betreiben; es wird nichts an einen externen KI-Anbieter gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       faq: [
@@ -4091,49 +7808,1222 @@ const deToolPages = {
     // MM78 voices: name + tagline (model-written, needs native review).
     'voice-cloning': {
       name: 'Stimmklonen',
-      tagline:
-        'Nehmen Sie 5 bis 60 Sekunden Ihrer eigenen Sprache auf oder laden Sie sie hoch, erstellen Sie eine Stimme und lassen Sie sie beliebige Texte in mehr als zwanzig Sprachen vorlesen.',
+      h1: 'Klonen Sie Ihre Stimme aus einer kurzen Aufnahme',
+      tagline: 'Nehmen Sie 5 bis 60 Sekunden Ihrer eigenen Sprache auf oder laden Sie sie hoch, erstellen Sie eine Stimme und lassen Sie sie beliebige Texte in mehr als zwanzig Sprachen vorlesen.',
+      metaTitle: 'Eigene Stimme aus einer Aufnahme klonen | Media Manipulator',
+      metaDescription: 'Erstellen Sie aus 5 bis 60 Sekunden Ihrer eigenen Sprache eine Stimme und lassen Sie sie Text in über 20 Sprachen vorlesen. Läuft auf unseren eigenen Servern; Ausgaben tragen ein Wasserzeichen.',
+      ogTitle: 'Klonen Sie Ihre eigene Stimme aus einer kurzen Aufnahme',
+      ogDescription: 'Nehmen Sie ein paar Sätze auf, bestätigen Sie, dass es Ihre Stimme ist, und erzeugen Sie damit Sprache in über 20 Sprachen. Selbst gehostete Modelle, Ausgabe mit Wasserzeichen.',
+      intro: 'Stimmklonen erzeugt aus einer kurzen Aufnahme Ihrer eigenen Sprache eine wiederverwendbare Stimme. Lesen Sie ein paar natürliche Sätze in Ihr Mikrofon oder laden Sie einen Clip von 5 bis 60 Sekunden hoch, bestätigen Sie, dass die Stimme Ihre eigene ist (oder dass Sie die ausdrückliche Erlaubnis der sprechenden Person haben), und erstellen Sie die Stimme. Sie erscheint unter „Meine Stimmen“ mit einer kurzen Vorschau. Von da an können Sie beliebigen Text eingeben, eine von mehr als zwanzig Sprachen und eine Emotionsstufe wählen und erhalten eine MP3- und eine WAV-Datei, in der diese Stimme ihn vorliest. Das Modell läuft auf einem GPU-Server, den wir betreiben, jede erzeugte Datei trägt ein unhörbares Wasserzeichen, und nichts, was Sie aufnehmen, wird zum Trainieren von irgendetwas verwendet.',
+      whatItDoes: [
+        'Erstellt eine gespeicherte Stimme aus 5 bis 60 Sekunden Sprache, im Browser aufgenommen oder als Audiodatei hochgeladen.',
+        'Prüft, ob die Aufnahme lang genug ist und tatsächlich Sprache enthält, bevor irgendetwas angerechnet wird.',
+        'Spricht beliebigen Text mit der gespeicherten Stimme in über 20 Sprachen, mit einer Emotionssteuerung von ruhig bis ausdrucksstark.',
+        'Liefert die Sprache als MP3, mit einem WAV-Download, der in Ihrem Browser erstellt wird.',
+        'Versieht jede erzeugte Datei mit einem unhörbaren Wasserzeichen, damit synthetische Sprache erkannt werden kann.',
+      ],
+      flowSteps: [
+        {
+          title: 'Aufnehmen oder hochladen',
+          description: '5 bis 60 Sekunden klare Sprache in einem ruhigen Raum.',
+        },
+        {
+          title: 'Einwilligung bestätigen',
+          description: 'Haken Sie an, dass die Stimme Ihre eigene ist oder dass Sie die Erlaubnis der sprechenden Person haben.',
+        },
+        {
+          title: 'Stimme erstellen',
+          description: 'Eine kurze Vorschau wird gerendert, und die Stimme wird in Ihrem Konto gespeichert.',
+        },
+        {
+          title: 'Sprache erzeugen',
+          description: 'Geben Sie Text ein, wählen Sie Sprache und Emotion und laden Sie das Audio herunter.',
+        },
+      ],
+      advancedDetails: [
+        'Die Stimm-Engine ist Chatterbox Multilingual (MIT-Lizenz), betrieben auf unserem eigenen GPU-Server. Sie klont in dem Moment aus dem Referenzclip, in dem Sie generieren; es wird kein Modell auf Ihre Stimme trainiert.',
+        'Das Erstellen einer Stimme zählt als ein KI-Auftrag (die Vorschau). Jede Generierung zählt als ein KI-Auftrag. Eine Anfrage, die fehlschlägt oder abgelehnt wird, wird nicht angerechnet.',
+        'Die Textlänge pro Anfrage hängt von Ihrem Tarif ab, bei etwa 18 Zeichen pro Sekunde Sprache; der Zähler unter dem Textfeld zeigt Ihr Limit.',
+        'Jede erzeugte Datei trägt das PerTh-Wasserzeichen von Resemble AI, das unhörbar ist und gängige Bearbeitung und Kompression überdauert.',
+        'Die erste Anfrage nach einer Ruhephase kann bis zu 20 Sekunden dauern, während die Engine geladen wird.',
+      ],
+      whyItMatters: [
+        'Erzählstimme in Ihrer eigenen Stimme, ohne für jede Skriptänderung eine Studiositzung zu buchen.',
+        'Dieselbe Stimme in einer anderen Sprache, für ein Video oder einen Kurs, der mehr Menschen erreicht.',
+        'Eine selbst gehostete Engine bedeutet, dass Ihre Aufnahmen bei uns bleiben, nicht bei einem externen KI-Anbieter.',
+      ],
+      useCases: [
+        {
+          title: 'Videosprecher',
+          description: 'Lesen Sie eine geänderte Zeile eines Skripts neu ein, ohne sie neu aufzunehmen.',
+        },
+        {
+          title: 'Kurse und Tutorials',
+          description: 'Vertonen Sie dieselbe Lektion in mehreren Sprachen.',
+        },
+        {
+          title: 'Barrierefreiheit',
+          description: 'Lassen Sie sich lange Texte mit einer vertrauten Stimme vorlesen.',
+        },
+        {
+          title: 'Prototyping',
+          description: 'Hören Sie ein Skript vorgelesen, bevor Sie die endgültige Aufnahme machen.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Offene Modelle auf Hardware, die wir betreiben; Aufnahmen gehen nie an einen externen KI-Dienst.',
+        'Ausdrückliche Einwilligung, bevor eine Stimme erstellt wird, zusammen mit der Stimme gespeichert.',
+        'Ausgabe mit Wasserzeichen und Ihre eigene Löschtaste für jede gespeicherte Stimme.',
+      ],
+      privacyNote: 'Die 5 bis 60 Sekunden Sprache, die Sie aufnehmen oder hochladen, werden zu einer gespeicherten Stimme in Ihrem Konto; diese Referenzaufnahme ist das, was das Modell jedes Mal liest, wenn die Stimme spricht. Sprachaufnahmen und gespeicherte Stimmen werden auf unseren eigenen Servern verarbeitet; nichts wird an einen externen KI-Anbieter gesendet und nichts zum Trainieren eines Modells verwendet. Eine gespeicherte Stimme (ihre Referenzaufnahme und Vorschau) wird in Ihrem Konto gespeichert, folgt der von Ihnen gewählten Aufbewahrungsfrist und kann jederzeit unter „Konto“, „Stimmen“ gelöscht werden; mit Ihrem Konto wird sie gelöscht. Erzeugtes Audio wird wie jedes andere Ergebnis aufbewahrt: Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Kann ich die Stimme einer anderen Person klonen?',
+          answer: 'Nur mit der ausdrücklichen Erlaubnis dieser Person. Sie müssen bestätigen, dass die Stimme Ihre eigene ist oder dass Sie die Erlaubnis haben, bevor eine Stimme erstellt wird, und wir speichern diese Bestätigung zusammen mit der Stimme. Das Nachahmen einer Person ohne Erlaubnis, Betrug und politische Deepfakes sind nach unseren Nutzungsbedingungen verboten.',
+        },
+        {
+          question: 'Klingt es genau wie ich?',
+          answer: 'Es klingt meist erkennbar nach der sprechenden Person, ist aber keine perfekte Kopie: Akzente, ungewöhnliche Stimmen und verrauschte Aufnahmen sind schwieriger. Nehmen Sie für das beste Ergebnis ein paar natürliche Sätze in einem ruhigen Raum auf.',
+        },
+        {
+          question: 'Wird meine Aufnahme zum Trainieren eines KI-Modells verwendet?',
+          answer: 'Nein. Nichts, was Sie hochladen oder erzeugen, wird zum Trainieren eines Modells verwendet. Die Stimme wird jedes Mal, wenn Sie Sprache erzeugen, aus Ihrem Referenzclip geklont.',
+        },
+        {
+          question: 'Können andere erkennen, dass das Audio erzeugt ist?',
+          answer: 'Jede mit einer gespeicherten Stimme erzeugte Datei trägt ein unhörbares Wasserzeichen, das Erkennungstools auslesen können. Es verändert nicht, wie das Audio klingt.',
+        },
+        {
+          question: 'Wie lösche ich eine Stimme?',
+          answer: 'Öffnen Sie „Konto“, „Stimmen“ und löschen Sie sie. Ihre Referenzaufnahme und Vorschau werden entfernt; bereits erzeugtes Audio bleibt in Ihrem Verlauf, bis seine eigene Aufbewahrungsfrist endet.',
+        },
+        {
+          question: 'Wie viele Stimmen kann ich behalten?',
+          answer: 'Das hängt von Ihrem Tarif ab; die Seite zeigt, wie viele Sie gespeichert haben und wo Ihr Limit liegt.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Referenz muss 5 bis 60 Sekunden lang sein und Sprache enthalten.',
+          'Das Speichern einer Stimme erfordert ein Konto; voreingestellte Stimmen funktionieren ohne.',
+        ],
+      },
+      related: [
+        {
+          label: 'Stimmdesigner',
+          to: '/tools/voice-designer',
+          description: 'Beschreiben Sie eine neue Stimme und behalten Sie sie.',
+        },
+        {
+          label: 'Stimmwechsler',
+          to: '/tools/voice-changer',
+          description: 'Verändern Sie eine Aufnahme oder wandeln Sie sie in eine Stimme um.',
+        },
+        {
+          label: 'Sprachaufnahme säubern',
+          to: '/tools/clean-voice-audio',
+          description: 'Säubern Sie eine Aufnahme, bevor Sie sie verwenden.',
+        },
+        {
+          label: 'Tonhöhe ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonlage von Musik oder Sprache.',
+        },
+      ],
+      embed: {
+        title: 'Stimme erstellen',
+        description: 'Nehmen Sie eine saubere Aufnahme von 5 bis 60 Sekunden auf oder laden Sie sie hoch, bestätigen Sie, dass die Stimme Ihre eigene ist oder dass Sie die Erlaubnis der sprechenden Person haben, und erstellen Sie die Stimme. Geben Sie dann einen Text ein und erzeugen Sie Sprache. Voreingestellte Stimmen funktionieren ohne Konto.',
+      },
     },
     'voice-designer': {
       name: 'Stimmdesigner',
-      tagline:
-        'Beschreiben Sie eine Stimme in Worten, hören Sie sich eine Vorschau an und behalten Sie die, die beliebige Texte in mehr als zwanzig Sprachen vorlesen soll.',
+      h1: 'Eine neue Stimme aus einer Beschreibung entwerfen',
+      tagline: 'Beschreiben Sie eine Stimme in Worten, hören Sie sich eine Vorschau an und behalten Sie die, die beliebige Texte in mehr als zwanzig Sprachen vorlesen soll.',
+      metaTitle: 'Neue Stimme aus einer Textbeschreibung entwerfen | Media Manipulator',
+      metaDescription: 'Beschreiben Sie die gewünschte Stimme, etwa warm, tief und ruhig, hören Sie eine kostenlose Vorschau, behalten Sie sie und erzeugen Sie Sprache damit. Selbst gehostete Modelle; Ausgabe mit Wasserzeichen.',
+      ogTitle: 'Eine neue Stimme aus einer Beschreibung entwerfen',
+      ogDescription: 'Beschreiben Sie eine Stimme, hören Sie kostenlose Vorschauen, behalten Sie die, die Ihnen gefällt, und erzeugen Sie Sprache damit. Selbst gehostet, mit Wasserzeichen.',
+      intro: 'Der Stimmdesigner erstellt eine Stimme, die niemandem gehört. Beschreiben Sie sie in wenigen Worten, etwa Geschlecht, Alter, Akzent, Klang und Tempo, oder stellen Sie die Beschreibung aus den Chips zusammen, und hören Sie sich einen Beispielsatz in der Vorschau an. Vorschauen sind kostenlos, drei pro Beschreibung und Stunde. Wenn Sie die gewünschte Stimme hören, geben Sie ihr einen Namen und behalten Sie sie: Genau die Stimme aus der Vorschau wird in Ihrem Konto gespeichert und kann dann jeden Text vorlesen, in jeder Sprache des Sprachwerkzeugs. Das Entwerfen läuft auf Qwen3-TTS und das Sprechen auf Chatterbox, beides auf unserem eigenen GPU-Server, und jede erzeugte Datei trägt ein unhörbares Wasserzeichen.',
+      whatItDoes: [
+        'Verwandelt eine Textbeschreibung einer Stimme in eine gesprochene Vorschau.',
+        'Behält genau die Stimme aus der Vorschau (denselben Seed), wenn Sie sie speichern.',
+        'Spricht jeden Text mit der behaltenen Stimme in mehr als 20 Sprachen.',
+        'Liefert eine MP3 der Sprache, mit einem WAV-Download, der in Ihrem Browser erstellt wird.',
+      ],
+      flowSteps: [
+        {
+          title: 'Beschreiben',
+          description: 'Schreiben oder klicken Sie die gewünschten Merkmale.',
+        },
+        {
+          title: 'Vorschau',
+          description: 'Drei kostenlose Vorschauen pro Beschreibung und Stunde.',
+        },
+        {
+          title: 'Behalten',
+          description: 'Geben Sie der Stimme einen Namen und speichern Sie sie in Ihrem Konto.',
+        },
+        {
+          title: 'Sprache erzeugen',
+          description: 'Geben Sie einen beliebigen Text ein und laden Sie das Audio herunter.',
+        },
+      ],
+      advancedDetails: [
+        'Das Entwerfen nutzt Qwen3-TTS VoiceDesign (Apache 2.0). Der Vorschausatz kann in zehn Sprachen gerendert werden: Chinesisch, Englisch, Japanisch, Koreanisch, Deutsch, Französisch, Russisch, Portugiesisch, Spanisch und Italienisch.',
+        'Eine behaltene Stimme wird als ihre Beschreibung, der Seed und ein 10-Sekunden-Referenzclip gespeichert; von da an spricht Chatterbox sie, sodass sie überall und in jeder unterstützten Sprache gleich klingt.',
+        'Vorschauen werden nicht gezählt. Das Behalten einer Stimme zählt als ein KI-Auftrag, und jede Erzeugung zählt als ein KI-Auftrag.',
+        'Beschreibungen funktionieren am besten auf Englisch; die Chips fügen englische Merkmale hinzu.',
+      ],
+      whyItMatters: [
+        'Eine unverwechselbare Erzähler- oder Figurenstimme, ohne für einen Entwurf einen Sprecher zu engagieren.',
+        'Es ist keine Stimme einer echten Person beteiligt, es wird also niemandes Ebenbild entliehen.',
+        'Die behaltene Stimme bleibt über jedes Skript und jede Sprache hinweg gleich.',
+      ],
+      useCases: [
+        {
+          title: 'Figuren',
+          description: 'Geben Sie jeder Figur in einer Geschichte oder einem Spielprototyp eine eigene Stimme.',
+        },
+        {
+          title: 'Erklärvideos',
+          description: 'Ein ruhiger, klarer Erzähler für Produkt- und Schulungsvideos.',
+        },
+        {
+          title: 'Platzhalter-Audio',
+          description: 'Vorläufiges Voice-over, während ein Skript sich noch ändert.',
+        },
+        {
+          title: 'Barrierefreiheit',
+          description: 'Eine angenehme Vorlesestimme für lange Dokumente.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Offene Modelle auf unserem eigenen GPU-Server; kein externer KI-Anbieter.',
+        'Kostenlose Vorschauen, bevor irgendetwas gezählt wird.',
+        'Ausgabe mit Wasserzeichen und ein Löschen-Button für jede behaltene Stimme.',
+      ],
+      privacyNote: 'Nur die Textbeschreibung, die Sie schreiben, wird an das Stimmmodell gesendet; die Vorschauen, die es erstellt, sind von uns erzeugtes Audio, und die Stimme, die Sie behalten, wird über ihren Seed gespeichert. Sprachaufnahmen und gespeicherte Stimmen werden auf unseren eigenen Servern verarbeitet; nichts wird an einen externen KI-Anbieter gesendet, und nichts wird zum Trainieren eines Modells verwendet. Eine gespeicherte Stimme (ihre Referenzaufnahme und Vorschau) wird in Ihrem Konto gespeichert, folgt der von Ihnen gewählten Aufbewahrungsdauer und kann jederzeit unter Konto, Stimmen gelöscht werden; sie wird mit Ihrem Konto gelöscht. Erzeugtes Audio wird wie jedes andere Ergebnis aufbewahrt: Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Ist eine entworfene Stimme die echte Stimme einer Person?',
+          answer: 'Nein. Sie wird aus Ihrer Beschreibung und einem zufälligen Seed erzeugt; sie ist keiner bestimmten Person nachgebildet.',
+        },
+        {
+          question: 'Warum gehen die Vorschauen aus?',
+          answer: 'Jede Beschreibung kann dreimal pro Stunde in der Vorschau angehört werden, damit die kostenlosen Vorschauen für alle verfügbar bleiben. Ändern Sie die Beschreibung, um erneut eine Vorschau zu erzeugen, oder behalten Sie die Stimme, die Ihnen gefällt.',
+        },
+        {
+          question: 'Klingt die behaltene Stimme wie die Vorschau?',
+          answer: 'Ja. Beim Behalten werden dieselbe Beschreibung und derselbe Seed gesendet wie bei der Vorschau, die Sie gehört haben, und die Stimme wird aus diesem Render gespeichert.',
+        },
+        {
+          question: 'Welche Sprachen kann sie sprechen?',
+          answer: 'Eine Stimme wird in einer von zehn Sprachen entworfen, und sobald sie behalten wurde, kann sie jede Sprache des Sprachwerkzeugs sprechen, insgesamt mehr als zwanzig.',
+        },
+        {
+          question: 'Ist die Ausgabe als erzeugt gekennzeichnet?',
+          answer: 'Ja. Jede erzeugte Datei trägt ein unhörbares Wasserzeichen, das Erkennungswerkzeuge lesen können.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Vorschauen: 3 pro Beschreibung und Stunde, nicht gezählt.',
+          'Das Behalten einer Stimme erfordert ein Konto.',
+        ],
+      },
+      related: [
+        {
+          label: 'Stimmklonen',
+          to: '/tools/voice-cloning',
+          description: 'Erstellen Sie eine Stimme aus Ihrer eigenen Aufnahme.',
+        },
+        {
+          label: 'Stimmwechsler',
+          to: '/tools/voice-changer',
+          description: 'Verschieben Sie eine Aufnahme oder wandeln Sie sie in eine Stimme um.',
+        },
+        {
+          label: 'Sprachaufnahme säubern',
+          to: '/tools/clean-voice-audio',
+          description: 'Säubern Sie eine Aufnahme, bevor Sie sie verwenden.',
+        },
+        {
+          label: 'Tonhöhe von Audio ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart von Musik oder Sprache.',
+        },
+      ],
+      embed: {
+        title: 'Eine Stimme beschreiben',
+        description: 'Schreiben Sie eine kurze Beschreibung oder klicken Sie die Merkmal-Chips, hören Sie sich die Stimme in der Vorschau an (drei kostenlose Vorschauen pro Beschreibung und Stunde) und behalten Sie sie dann, um Sprache zu erzeugen. Das Behalten einer Stimme erfordert ein Konto.',
+      },
     },
     'voice-changer': {
       name: 'Stimmwechsler',
-      tagline:
-        'Verschieben Sie Tonhöhe und Charakter einer Aufnahme sofort oder wandeln Sie die Sprache mithilfe von KI in eine gespeicherte oder voreingestellte Stimme um.',
+      h1: 'Die Stimme in einer Aufnahme ändern',
+      tagline: 'Verschieben Sie Tonhöhe und Charakter einer Aufnahme sofort oder wandeln Sie die Sprache mithilfe von KI in eine gespeicherte oder voreingestellte Stimme um.',
+      metaTitle: 'Stimmwechsler: Aufnahme verschieben oder umwandeln | Media Manipulator',
+      metaDescription: 'Ändern Sie die Stimme in einer Aufnahme: Verschieben Sie Tonhöhe und Formant sofort oder wandeln Sie die Sprache mit KI in eine gespeicherte oder voreingestellte Stimme um. Vergleichen Sie Vorher und Nachher.',
+      ogTitle: 'Die Stimme in einer Aufnahme ändern',
+      ogDescription: 'Verschieben Sie Tonhöhe und Formant sofort oder wandeln Sie Sprache mit KI in eine andere Stimme um, und vergleichen Sie dann Vorher und Nachher.',
+      intro: 'Der Stimmwechsler bietet zwei Wege, eine Aufnahme zu verändern. Verschieben ist eine klassische Änderung von Tonhöhe und Formant: Bewegen Sie die Tonhöhe um bis zu zwölf Halbtöne in beide Richtungen, behalten Sie den Charakter des Sprechers bei oder verschieben Sie ihn mit der Tonhöhe, oder beginnen Sie mit einer Voreinstellung wie Tiefer, Höher, Kindlich, Älter oder Telefon. Das geht sofort, erfordert kein Konto und nutzt keine KI. Umwandeln verwendet KI-Stimmumwandlung, damit die Sprache wie eine Ihrer gespeicherten Stimmen oder eine voreingestellte Stimme klingt, während Wörter, Timing und Intonation erhalten bleiben. In beiden Fällen können Sie Original und Ergebnis vor dem Herunterladen mit einem lückenlosen A/B-Player vergleichen.',
+      whatItDoes: [
+        'Verschiebt die Tonhöhe um bis zu 12 Halbtöne nach oben oder unten, wobei der Formant beibehalten oder mitverschoben wird.',
+        'Bietet Voreinstellungen zum Verschieben: Tiefer, Höher, Kindlich, Älter und Telefon.',
+        'Wandelt Sprache mit KI-Stimmumwandlung in eine gespeicherte Stimme oder eine voreingestellte Stimme um.',
+        'Spielt Original und Ergebnis in einem synchronisierten A/B-Vergleich ab.',
+        'Liefert eine MP3, mit einem WAV-Download, der in Ihrem Browser erstellt wird.',
+      ],
+      flowSteps: [
+        {
+          title: 'Aufnehmen oder hochladen',
+          description: 'Sprache von Ihrem Mikrofon oder aus einer Audio- oder Videodatei.',
+        },
+        {
+          title: 'Verschieben oder Umwandeln wählen',
+          description: 'Sofortige Tonhöhenänderung oder KI-Umwandlung in eine andere Stimme.',
+        },
+        {
+          title: 'Vergleichen',
+          description: 'Wechseln Sie ohne Lücke zwischen Original und Ergebnis.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'MP3 oder eine in Ihrem Browser erstellte WAV.',
+        },
+      ],
+      advancedDetails: [
+        'Verschieben nutzt den Pitch-Shifter rubberband über ffmpeg auf unserem Server. „Charakter der Stimme beibehalten“ erhält den Formant; „Mit der Tonhöhe verschieben“ bewegt ihn mit, was wie ein kleinerer oder größerer Sprecher klingt. Telefon wendet zusätzlich einen Bandpass von 300 bis 3400 Hz an.',
+        'Verschieben zählt als ein Vorgang, und seine Ausgabe trägt kein Wasserzeichen. Umwandeln zählt als ein KI-Auftrag, und seine Ausgabe trägt ein unhörbares Wasserzeichen.',
+        'Umwandeln nutzt die Stimmumwandlung von Chatterbox auf unserem eigenen GPU-Server. Die Länge der Aufnahme, die Sie umwandeln können, hängt von Ihrem Tarif ab.',
+        'Das Umwandeln erfordert ein Konto. Das Umwandeln in die Stimme einer anderen Person erfordert deren Erlaubnis, wie beim Klonen.',
+      ],
+      whyItMatters: [
+        'Verfremden Sie eine Stimme mit einer einfachen Verschiebung für ein anonymes Interview oder einen datenschutzbewussten Clip.',
+        'Reparieren Sie einen Take, der mit der falschen Stimme aufgenommen wurde, ohne ihn neu aufzunehmen.',
+        'Hören Sie den Unterschied mit dem A/B-Player sofort, statt zu raten.',
+      ],
+      useCases: [
+        {
+          title: 'Anonymes Audio',
+          description: 'Verschieben Sie eine Stimme, damit ein Sprecher schwerer zu erkennen ist.',
+        },
+        {
+          title: 'Figurenstimmen',
+          description: 'Verwandeln Sie Ihre eigene Lesung in eine andere Stimme für eine Geschichte.',
+        },
+        {
+          title: 'Einheitliche Erzählung',
+          description: 'Wandeln Sie die Zeile eines Gasts in die gespeicherte Stimme des Erzählers um.',
+        },
+        {
+          title: 'Effekte',
+          description: 'Ein Telefon- oder Kindlich-Effekt für eine Videoszene.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Der Shifter ist kostenlos und erfordert kein Konto.',
+        'Die KI-Umwandlung läuft auf unserem eigenen GPU-Server, nicht bei einem Drittanbieterdienst.',
+        'Eingebauter A/B-Vergleich von Original und Ergebnis.',
+      ],
+      privacyNote: 'Die hochgeladene Aufnahme wird je nach gewähltem Modus entweder mit rubberband verschoben oder von einem KI-Modell in eine andere Stimme umgewandelt. Sprachaufnahmen und gespeicherte Stimmen werden auf unseren eigenen Servern verarbeitet; nichts wird an einen externen KI-Anbieter gesendet, und nichts wird zum Trainieren eines Modells verwendet. Eine gespeicherte Stimme (ihre Referenzaufnahme und Vorschau) wird in Ihrem Konto gespeichert, folgt der von Ihnen gewählten Aufbewahrungsdauer und kann jederzeit unter Konto, Stimmen gelöscht werden; sie wird mit Ihrem Konto gelöscht. Erzeugtes Audio wird wie jedes andere Ergebnis aufbewahrt: Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Was ist der Unterschied zwischen Verschieben und Umwandeln?',
+          answer: 'Verschieben ändert Tonhöhe und Charakter derselben Stimme mit Signalverarbeitung; es geht sofort und ist kostenlos. Umwandeln nutzt KI, damit die Sprache wie eine andere Stimme klingt, eine Ihrer gespeicherten Stimmen oder eine Voreinstellung.',
+        },
+        {
+          question: 'Fügt das Verschieben ein Wasserzeichen hinzu?',
+          answer: 'Nein. Verschobenes Audio ist gewöhnliche Signalverarbeitung und trägt kein Wasserzeichen. Umgewandeltes Audio trägt ein unhörbares Wasserzeichen.',
+        },
+        {
+          question: 'Kann ich meine Stimme in die eines Prominenten umwandeln?',
+          answer: 'Nein. Sie können nur in Ihre eigenen gespeicherten Stimmen oder unsere voreingestellten Stimmen umwandeln, und die Verwendung der Stimme einer echten Person erfordert deren ausdrückliche Erlaubnis. Nachahmung ohne Erlaubnis ist durch unsere Nutzungsbedingungen verboten.',
+        },
+        {
+          question: 'Wie lang darf die Aufnahme sein?',
+          answer: 'Verschieben akzeptiert Aufnahmen bis zum Längenlimit Ihres Tarifs. Das Umwandeln hat ein eigenes Limit pro Tarif, das beim Hochladen angezeigt wird.',
+        },
+        {
+          question: 'Kann ich eine Videodatei verwenden?',
+          answer: 'Ja. Die Tonspur wird verwendet, und das Bild wird verworfen.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Verschieben: ein Vorgang, kein Konto erforderlich.',
+          'Umwandeln: ein KI-Auftrag, Konto und Tarif erforderlich.',
+        ],
+      },
+      related: [
+        {
+          label: 'Stimmklonen',
+          to: '/tools/voice-cloning',
+          description: 'Erstellen Sie eine Stimme aus Ihrer eigenen Aufnahme.',
+        },
+        {
+          label: 'Stimmdesigner',
+          to: '/tools/voice-designer',
+          description: 'Beschreiben Sie eine neue Stimme und behalten Sie sie.',
+        },
+        {
+          label: 'Sprachaufnahme säubern',
+          to: '/tools/clean-voice-audio',
+          description: 'Säubern Sie eine Aufnahme, bevor Sie sie verwenden.',
+        },
+        {
+          label: 'Tonhöhe von Audio ändern',
+          to: '/tools/change-audio-pitch',
+          description: 'Verschieben Sie die Tonart von Musik oder Sprache.',
+        },
+        {
+          label: 'Hintergrundgeräusche entfernen',
+          to: '/tools/remove-background-noise',
+          description: 'Säubern Sie die Aufnahme zuerst.',
+        },
+      ],
+      embed: {
+        title: 'Eine Stimme ändern',
+        description: 'Nehmen Sie Sprache auf oder laden Sie sie hoch. Verschieben ändert Tonhöhe und Formant sofort, für alle. Umwandeln lässt die Aufnahme wie eine Ihrer gespeicherten Stimmen oder eine voreingestellte Stimme klingen und erfordert ein Konto mit einem Tarif, der es enthält.',
+      },
     },
 
     // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
     // and the home grid never show an English card in this locale. Model-written; native review pending.
     'transcode-to-dash': {
       name: 'Video in DASH transkodieren (AV1 / VP9)',
+      h1: 'Video online in DASH AV1 oder VP9 transkodieren',
       tagline: 'Verpacken Sie jedes Video in ein MPEG-DASH-Paket mit manifest.mpd sowie Init- und Mediensegmenten pro Rendition.',
+      metaTitle: 'Video online in DASH AV1/VP9 transkodieren | Kostenloses MPEG-DASH-Tool',
+      metaDescription: 'Kostenloser Online-MPEG-DASH-Transcoder. Wandeln Sie MP4, MOV, WebM, MKV in ein DASH-Paket mit AV1- oder VP9-Video, optionalen Untertiteln und Storyboards um.',
+      ogTitle: 'Video online in DASH AV1/VP9 transkodieren',
+      ogDescription: 'Erzeugen Sie ein adaptives DASH-Paket (manifest.mpd + Init-/Mediensegmente pro Rendition) aus jedem Video – kostenlos, in Ihrem Browser.',
+      intro: 'MPEG-DASH ist der offene Standard für adaptives Streaming, den jeder moderne Browser unterstützt. Media Manipulator transkodiert Ihr Quellvideo in ein DASH-VOD-Paket – manifest.mpd plus init.mp4 und .m4s-Segmente pro Rendition – mit AV1 (kleinere Dateien, ideal für neue Web-Player) oder VP9 (breitere Wiedergabeunterstützung). Legen Sie den entpackten Ordner auf ein beliebiges CDN oder einen Origin und liefern Sie manifest.mpd an die Clients aus. Der kostenlose Tarif umfasst 360p, 480p und 720p.',
+      whatItDoes: [
+        'Analysiert Ihre Quelle mit ffprobe und zeigt Auflösung, FPS, Dauer, Codec und Audiostatus.',
+        'Lässt Sie wählen, welche Qualitätsstufen kodiert werden und ob AV1 oder VP9 ausgegeben wird.',
+        'Erkennt automatisch den besten verfügbaren AV1-Encoder (av1_nvenc → libsvtav1 → libaom-av1).',
+        'Erzeugt eine MPEG-DASH-manifest.mpd, die jede Video-Representation sowie, falls vorhanden, eine AAC-Audio-Representation referenziert.',
+        'Erzeugt optional WebVTT-Untertitel und Storyboard-Vorschaubilder für den Scrubber.',
+        'Bündelt das Ergebnis in media-manipulator-dash-<codec>-<jobID>.tar.gz mit einer report.json und README.',
+        'Lädt das Tarball auf S3 hoch und gibt Ihnen eine kurzlebige vorsignierte GET-URL zurück.',
+      ],
+      flowSteps: [
+        {
+          title: 'Hochladen',
+          description: 'Direkter vorsignierter S3-PUT – Ihre Datei läuft nie über den API-Server.',
+        },
+        {
+          title: 'Analysieren',
+          description: 'ffprobe liest Auflösung, FPS, Audiovorhandensein und Codec-Metadaten.',
+        },
+        {
+          title: 'Stufen + Codec wählen',
+          description: 'Wählen Sie AV1 oder VP9 und eine beliebige Kombination aus 360p/480p/720p.',
+        },
+        {
+          title: 'Kodieren',
+          description: 'AV1 (svtav1/libaom/nvenc) oder libvpx-vp9 mit 2-Sekunden-Segmenten.',
+        },
+        {
+          title: 'Verpacken',
+          description: 'manifest.mpd + Init/Segmente pro Rendition, als tar.gz gepackt mit report.json und README.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Vorsignierte S3-GET-URL, 30 Minuten gültig.',
+        },
+      ],
+      advancedDetails: [
+        'Die AV1-Encoder-Auswahl bevorzugt av1_nvenc (GPU), wenn verfügbar, und fällt sonst auf libsvtav1 und dann auf libaom-av1 zurück.',
+        'VP9 verwendet libvpx-vp9 mit row-mt, frame-parallelem Decoding und CRF + Bitraten-Vorgabe.',
+        'DASH-Varianten werden mit -seg_duration 2 -use_template 1 -use_timeline 0 -single_file 0 ausgegeben.',
+        'manifest.mpd deklariert ein AdaptationSet pro Inhaltstyp (Video + Audio, falls vorhanden) mit den codecs-Attributen "av01.0.08M.08" / "vp09.00.51.08" / "mp4a.40.2".',
+        'Kein Hochskalieren: Stufen, die höher als die Quellauflösung sind, werden mit einem Tooltip deaktiviert.',
+      ],
+      whyItMatters: [
+        'AV1 halbiert bei gleicher Qualität typischerweise die Bitrate gegenüber H.264.',
+        'DASH ist das dominierende Format für adaptives Streaming außerhalb des Apple-Ökosystems.',
+        'Vorverpacktes VOD vermeidet Transcoding-Kosten pro Anfrage auf Streaming-Plattformen.',
+      ],
+      useCases: [
+        {
+          title: 'Moderne Web-Player',
+          description: 'Shaka Player und dash.js verarbeiten manifest.mpd nativ.',
+        },
+        {
+          title: 'Bandbreitensensible Verteilung',
+          description: 'AV1 liefert annähernd die Hälfte der Bytes eines H.264-HLS-Pakets.',
+        },
+        {
+          title: 'Interne Medienbibliothek',
+          description: 'Hosten Sie adaptives Video selbst, ohne für eine SaaS-Streaming-Plattform zu bezahlen.',
+        },
+        {
+          title: 'Qualitätstests',
+          description: 'Vergleichen Sie AV1- und VP9-Kodierungen aus derselben Quelle Seite an Seite im A/B-Test.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Läuft auf unseren eigenen Servern – kein Drittanbieter-Transcoding-Dienst sieht Ihr Video.',
+        'AV1 ist standardmäßig ausgewählt, da AV1 die Zukunft für hochwertiges adaptives Streaming ist.',
+        'Offenes Paketformat: Entpacken Sie einfach das .tar.gz und hosten Sie die manifest.mpd.',
+      ],
+      privacyNote: 'Ihr Video wird einmal von FFmpeg gelesen, in AV1- oder VP9-Renditionen kodiert und in DASH-Segmente mit einem Manifest aufgeteilt, alles auf unseren Servern. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Drittanbieter-Transcoding-Dienst. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'AV1 oder VP9 – was soll ich wählen?',
+          answer: 'AV1 erzeugt bei gleicher Qualität kleinere Dateien, aber die Kodierung ist auf reinen CPU-Hosts langsamer. VP9 hat breitere Wiedergabeunterstützung und kodiert schneller. AV1 ist der Standard.',
+        },
+        {
+          question: 'Mein Server meldet, AV1 sei nicht verfügbar?',
+          answer: 'AV1 benötigt av1_nvenc (NVIDIA-GPU), libsvtav1 oder libaom-av1 in FFmpeg. Prüfen Sie unter /api/video-transcode/capabilities, was Ihre Installation bietet.',
+        },
+        {
+          question: 'Ist Audio immer AAC?',
+          answer: 'Ja – das DASH-Audio-AdaptationSet gibt derzeit unabhängig vom Quellcodec AAC LC mit 128 kbps aus, für maximale Kompatibilität.',
+        },
+        {
+          question: 'Kann ich dieses Manifest Cross-Origin ausliefern?',
+          answer: 'Ja, aber Ihr CDN/Origin braucht die richtigen CORS-Header für .mpd-, init.mp4- und .m4s-Dateien. Das Tarball enthält diese Header nicht.',
+        },
+        {
+          question: 'Wie lange ist die Download-URL gültig?',
+          answer: 'Vorsignierte GET-URLs sind standardmäßig 30 Minuten gültig. Führen Sie die Transkodierung erneut aus, wenn Sie einen frischen Link brauchen.',
+        },
+      ],
+      related: [
+        {
+          label: 'Video in HLS transkodieren',
+          to: '/tools/transcode-to-hls',
+          description: 'Derselbe Upload, aber die Ausgabe ist ein Apple-HLS-Paket mit H.264 + AAC.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie ein MP4 mit der regulären FFmpeg-Pipeline.',
+        },
+        {
+          label: 'Video transkribieren',
+          to: '/tools/transcribe-video',
+          description: 'Holen Sie Sprache aus Video als durchsuchbaren Text heraus.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video in DASH transkodieren (AV1 / VP9)',
+        description: 'Laden Sie ein MP4/MOV/WebM/MKV hoch. Wir analysieren die Quelle mit ffprobe, lassen Sie kostenlose Qualitätsstufen wählen (360p/480p/720p), führen dann eine AV1- (Standard) oder VP9-Kodierung mit ffmpeg aus und bündeln ein herunterladbares tar.gz mit manifest.mpd.',
+      },
     },
     'convert-webp-to-jpg': {
       name: 'WebP in JPG umwandeln',
+      h1: 'WebP online in JPG umwandeln',
       tagline: 'Verwandeln Sie WebP-Bilder in weithin kompatible JPG-Dateien, die in jedem Bildbetrachter und Editor funktionieren.',
+      metaTitle: 'WebP online in JPG umwandeln (kostenlos) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von WebP in JPG. Verwandeln Sie .webp-Bilder schnell in universell kompatible JPG-Dateien in der Qualität Ihrer Wahl.',
+      ogTitle: 'WebP online in JPG umwandeln',
+      ogDescription: 'Verwandeln Sie WebP-Bilder mit wenigen Klicks in universell kompatible JPG-Dateien.',
+      intro: 'WebP ist großartig fürs Web – aber ältere Software, Präsentationsprogramme und Drucker können es oft nicht lesen. Media Manipulator wandelt WebP zurück in JPG um, damit Sie das Bild überall verwenden können. Wählen Sie die gewünschte Qualität, und wir kümmern uns um den Rest.',
+      whatItDoes: [
+        'Wandelt jedes .webp-Bild (Standbild oder Einzelbild einer Animation) in ein Standard-.jpg um.',
+        'Lässt Sie die JPG-Qualität wählen – höhere Qualität = größere Datei.',
+        'Legt Transparenz auf eine gewählte Hintergrundfarbe (JPG hat keinen Alphakanal).',
+        'Behält das Farbprofil, wenn möglich.',
+      ],
+      flowSteps: [
+        {
+          title: 'WebP hochladen',
+          description: 'Ziehen Sie eine .webp-Datei von Ihrem Computer hinein.',
+        },
+        {
+          title: 'JPG-Qualität wählen',
+          description: '85 ist ein guter Standard; niedriger für kleinere Dateien.',
+        },
+        {
+          title: 'JPG kodieren',
+          description: 'ImageMagick kodiert mit der gewählten Qualität neu.',
+        },
+        {
+          title: 'JPG herunterladen',
+          description: 'Speichern Sie eine universell kompatible .jpg-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Qualität 85 ist seit Langem der bewährte Ausgleichspunkt – alles über ~92 erhöht meist nur die Dateigröße bei kaum sichtbarer Verbesserung.',
+        'JPG hat keine Transparenz, daher werden transparente WebPs auf einen Hintergrund gelegt. Wenn Sie Transparenz brauchen, wandeln Sie stattdessen in PNG um.',
+        'Für verlustfreie Bildkonvertierung oder animierte WebPs bevorzugen Sie PNG (Standbild) oder animiertes GIF.',
+      ],
+      whyItMatters: [
+        'Einige ältere Browser, Bildeditoren und eingebettete Software unterstützen WebP noch immer nicht.',
+        'Viele Drucker, Fotokioske und Präsentationsprogramme verlangen JPG oder PNG.',
+        'JPG ist das De-facto-Austauschformat für Fotos.',
+      ],
+      useCases: [
+        {
+          title: 'Fotos an Kunden senden',
+          description: 'Stellen Sie sicher, dass der Empfänger die Datei auf jedem Gerät öffnen kann.',
+        },
+        {
+          title: 'Einbetten in Präsentationen',
+          description: 'PowerPoint-/Keynote-Folien akzeptieren JPG überall; bei WebP ist es Glückssache.',
+        },
+        {
+          title: 'Druck und Fotolabore',
+          description: 'Die meisten Labore akzeptieren nur JPG.',
+        },
+        {
+          title: 'Einreichungen bei Stockfoto-Diensten',
+          description: 'Viele Stock-Websites verlangen JPG-Uploads.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Keine Wasserzeichen, keine Anmeldung, kostenlos für den gelegentlichen Gebrauch.',
+        'Stimmen Sie Qualität und Kompression präzise ab, statt mit einer Einheitsvoreinstellung zu arbeiten.',
+        'Dasselbe Datenschutz- und Aufbewahrungsmodell wie im Rest der Tool-Sammlung.',
+      ],
+      privacyNote: 'Ihr WebP wird auf unserem Server dekodiert und als JPG neu kodiert; ein transparenter Bereich wird auf einen Hintergrund gelegt, weil JPG ihn nicht speichern kann. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Was passiert mit der Transparenz?',
+          answer: 'JPG unterstützt keine Transparenz. Transparente WebPs werden auf die gewählte Hintergrundfarbe gelegt. Wenn Sie Transparenz brauchen, wandeln Sie stattdessen in PNG um.',
+        },
+        {
+          question: 'Welche Qualität soll ich verwenden?',
+          answer: '85 ist ein ausgewogener Standard. Verwenden Sie 90+ für Fotos, bei denen die Qualität am wichtigsten ist, und 70 für Vorschaubilder oder Previews.',
+        },
+        {
+          question: 'Funktioniert es mit animiertem WebP?',
+          answer: 'Nur das erste Einzelbild wird zu einem JPG. Wandeln Sie animiertes WebP stattdessen in ein animiertes GIF um.',
+        },
+        {
+          question: 'Kann ich mehrere Dateien auf einmal umwandeln?',
+          answer: 'Das kostenlose Tool verarbeitet eine Datei auf einmal. Wandeln Sie vorerst jedes WebP einzeln um.',
+        },
+      ],
+      related: [
+        {
+          label: 'WebP in PNG umwandeln',
+          to: '/tools/convert-webp-to-png',
+          description: 'Behalten Sie die Transparenz stattdessen mit einem verlustfreien PNG.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Wandeln Sie zwischen JPG, PNG, WebP, AVIF und GIF um.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie die JPG-Datei noch weiter.',
+        },
+        {
+          label: 'EXIF-Metadaten entfernen',
+          to: '/tools/remove-exif-metadata',
+          description: 'Entfernen Sie private Metadaten, bevor Sie das JPG teilen.',
+        },
+        {
+          label: 'Bildkonverter-Tutorial',
+          to: '/tutorials/image/getting-started',
+          description: 'Schritt-für-Schritt-Anleitung durch jede Bildoption.',
+        },
+      ],
+      embed: {
+        title: 'WebP in JPG umwandeln',
+        description: 'Laden Sie ein WebP-Bild hoch und wählen Sie JPG als Ausgabeformat. Stellen Sie den Qualitätsregler ein, um Dateigröße und Bildqualität auszubalancieren. JPG verwirft Transparenz, verwenden Sie also stattdessen PNG, wenn Ihr Bild einen transparenten Hintergrund hat.',
+      },
     },
     'convert-png-to-jpg': {
       name: 'PNG in JPG umwandeln',
+      h1: 'PNG online kostenlos in JPG umwandeln',
       tagline: 'Verwandeln Sie große PNG-Screenshots und -Grafiken in Sekunden in kleine, universell kompatible JPG-Fotos.',
+      metaTitle: 'PNG online kostenlos in JPG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von PNG in JPG. Verwandeln Sie .png-Dateien in kleinere, universell kompatible JPG-Bilder in der Qualität Ihrer Wahl. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'PNG online kostenlos in JPG umwandeln',
+      ogDescription: 'Verwandeln Sie PNG-Bilder in kleinere, universell kompatible JPG-Dateien. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'PNG ist ein verlustfreies Format, was es perfekt für Screenshots und Grafiken macht, für Fotos aber oft weit größer als nötig. Die Umwandlung von PNG in JPG kann eine Datei um das 5- bis 10-Fache verkleinern, ohne sichtbaren Unterschied bei fotografischem Inhalt. Media Manipulator wandelt Ihr PNG in ein sauberes JPG in der Qualität Ihrer Wahl um – kostenlos, online und ohne Anmeldung.',
+      whatItDoes: [
+        'Wandelt jedes .png-Bild in eine Standard-.jpg-Datei (JPEG) um.',
+        'Lässt Sie die JPG-Qualität wählen, damit Sie Dateigröße und Detailtreue ausbalancieren können.',
+        'Legt Transparenz auf einen einfarbigen Hintergrund, da JPG keinen Alphakanal hat.',
+        'Die Pixel, die Sie sehen, bleiben gleich; nur die Datei wird von PNG in JPG neu kodiert.',
+      ],
+      flowSteps: [
+        {
+          title: 'PNG hochladen',
+          description: 'Ziehen Sie einen .png-Screenshot, eine Grafik oder ein Foto hinein.',
+        },
+        {
+          title: 'JPG-Qualität wählen',
+          description: '85 ist ein ausgewogener Standard; senken Sie ihn für kleinere Dateien.',
+        },
+        {
+          title: 'JPG kodieren',
+          description: 'ImageMagick kodiert Ihr Bild als JPEG neu.',
+        },
+        {
+          title: 'JPG herunterladen',
+          description: 'Speichern Sie eine kleinere, universell kompatible .jpg-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Qualität 85 ist seit Langem der bewährte Idealwert – über ~92 fügen Sie meist nur Dateigröße bei kaum sichtbarem Gewinn hinzu.',
+        'Ein fotografisches PNG schrumpft als JPG oft von mehreren Megabyte auf einige hundert Kilobyte.',
+        'Bei Grafiken mit scharfen Kanten oder Text sehen PNG oder WebP bei gleicher Größe meist sauberer aus als JPG.',
+        'Wenn Ihr PNG Transparenz hat, die Sie behalten möchten, wandeln Sie stattdessen in WebP um – JPG kann keinen Alphakanal speichern.',
+      ],
+      whyItMatters: [
+        'JPG ist das universellste Fotoformat – jedes Gerät, jeder Editor und jedes Upload-Formular akzeptiert es.',
+        'Kleinere JPGs laden im Web schneller und bleiben unter den Upload-Limits von E-Mail und Formularen.',
+        'Viele Fotolabore, Marktplätze und Stock-Websites akzeptieren nur JPG.',
+      ],
+      useCases: [
+        {
+          title: 'Screenshots verkleinern',
+          description: 'Verwandeln Sie einen schweren PNG-Screenshot in ein leichtes JPG für E-Mail oder Chat.',
+        },
+        {
+          title: 'Fotos hochladen',
+          description: 'Wandeln Sie ein fotografisches PNG in JPG um, um die Formatanforderung einer Website zu erfüllen.',
+        },
+        {
+          title: 'Druck und Fotolabore',
+          description: 'Die meisten Labore verlangen JPG – wandeln Sie vor der Bestellung um.',
+        },
+        {
+          title: 'Schnellere Webseiten',
+          description: 'Ersetzen Sie große PNG-Fotos durch kompakte JPGs, um das Seitengewicht zu senken.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die Ausgabe ist fest auf JPG festgelegt, es gibt also nichts falsch zu konfigurieren.',
+        'Präzise Qualitätskontrolle statt einer Einheitsvoreinstellung.',
+      ],
+      privacyNote: 'Ihr PNG wird auf unserem Server in der von Ihnen eingestellten Qualität als JPG neu kodiert, und etwaige Transparenz wird auf einen einfarbigen Hintergrund gelegt. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich ein PNG kostenlos in JPG um?',
+          answer: 'Laden Sie Ihr .png oben hoch, wählen Sie eine JPG-Qualität und klicken Sie auf Umwandeln. Der Download ist eine Standard-.jpg-Datei.',
+        },
+        {
+          question: 'Verringert die Umwandlung von PNG in JPG die Qualität?',
+          answer: 'JPG ist verlustbehaftet, es gibt also einen kleinen Qualitätskompromiss. Bei Qualität 85–90 ist der Unterschied bei Fotos unsichtbar. Bei Grafiken mit scharfem Text bleiben Sie bei PNG oder verwenden WebP.',
+        },
+        {
+          question: 'Was passiert mit der Transparenz, wenn ich PNG in JPG umwandle?',
+          answer: 'JPG unterstützt keine Transparenz, daher werden transparente Bereiche auf einen einfarbigen Hintergrund gelegt. Wenn Sie die Transparenz behalten müssen, wandeln Sie PNG stattdessen in WebP um.',
+        },
+        {
+          question: 'Warum ist mein PNG so viel größer als das JPG?',
+          answer: 'PNG ist verlustfrei und speichert jedes Pixel exakt, was bei Fotos groß wird. JPG verwendet wahrnehmungsbasierte Kompression, daher schrumpfen fotografische Bilder drastisch bei kaum sichtbarer Veränderung.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Transparente PNG-Bereiche werden auf einen einfarbigen Hintergrund gelegt, weil JPG keine Transparenz hat.',
+        ],
+      },
+      related: [
+        {
+          label: 'JPG in PNG umwandeln',
+          to: '/tools/convert-jpg-to-png',
+          description: 'Gehen Sie den umgekehrten Weg und erhalten Sie ein transparenzfähiges PNG.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Wandeln Sie zwischen JPG, PNG, WebP, AVIF und mehr um.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie das JPG weiter, ohne das Format zu ändern.',
+        },
+        {
+          label: 'Bildkonverter-Tutorial',
+          to: '/tutorials/image/getting-started',
+          description: 'Gehen Sie jede Bildoption im Detail durch.',
+        },
+      ],
+      embed: {
+        title: 'PNG in JPG umwandeln',
+        description: 'Laden Sie ein PNG-Bild hoch. Die Ausgabe ist bei diesem Tool fest auf JPG festgelegt – wählen Sie einfach eine Qualität und wandeln Sie um. Transparente Bereiche werden auf einen einfarbigen Hintergrund gelegt, weil JPG keinen Alphakanal hat.',
+      },
     },
     'convert-jpg-to-png': {
       name: 'JPG in PNG umwandeln',
+      h1: 'JPG online kostenlos in PNG umwandeln',
       tagline: 'Verwandeln Sie JPG-Fotos in verlustfreie PNG-Dateien für Bearbeitung, Transparenz und hochwertige Grafikarbeit.',
+      metaTitle: 'JPG online kostenlos in PNG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von JPG in PNG. Verwandeln Sie .jpg-Fotos in verlustfreie PNG-Dateien für Bearbeitung, Transparenz und Grafiken. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'JPG online kostenlos in PNG umwandeln',
+      ogDescription: 'Verwandeln Sie JPG-Fotos in verlustfreie PNG-Dateien für Bearbeitung und Grafiken. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'PNG ist ein verlustfreies Format, das nie Kompressionsartefakte hinzufügt, was es ideal macht, sobald Sie ein Bild bearbeiten, Transparenz hinzufügen oder Grafiken übereinanderlegen. Die Umwandlung eines JPG in PNG friert die aktuellen Pixel ein, sodass weitere Bearbeitungen die Qualität nicht verschlechtern. Media Manipulator wandelt Ihr JPG online in ein sauberes PNG um, kostenlos und ohne Anmeldung.',
+      whatItDoes: [
+        'Wandelt jedes .jpg-/.jpeg-Bild in eine verlustfreie .png-Datei um.',
+        'Behält die exakten aktuellen Pixel, sodass wiederholtes Bearbeiten keine Artefakte hinzufügt.',
+        'Erzeugt ein PNG, das Sie später in einem Editor überlagern, maskieren oder transparent machen können.',
+        'Jedes Pixel des JPG wird exakt behalten; das PNG speichert sie ohne weiteren Verlust.',
+      ],
+      flowSteps: [
+        {
+          title: 'JPG hochladen',
+          description: 'Ziehen Sie ein .jpg- oder .jpeg-Foto hinein.',
+        },
+        {
+          title: 'In PNG umwandeln',
+          description: 'Wir kodieren das Bild verlustfrei als PNG neu.',
+        },
+        {
+          title: 'PNG kodieren',
+          description: 'ImageMagick schreibt ein Standard-PNG mit 24/32 Bit.',
+        },
+        {
+          title: 'PNG herunterladen',
+          description: 'Speichern Sie ein verlustfreies .png, bereit zur Bearbeitung.',
+        },
+      ],
+      advancedDetails: [
+        'PNG ist verlustfrei, daher ist die umgewandelte Datei meist größer als das Quell-JPG – das ist zu erwarten.',
+        'Die Umwandlung von JPG in PNG stellt keine Details wieder her, die das JPG bereits verworfen hat; sie friert die aktuellen Pixel verlustfrei ein.',
+        'PNG unterstützt einen Alphakanal, das Ergebnis ist also bereit, damit Sie in einem Editor Transparenz hinzufügen.',
+        'Für die kleinsten verlustfreien Web-Dateien ist WebP (verlustfrei) oft kleiner als PNG.',
+      ],
+      whyItMatters: [
+        'Verlustfreies PNG ist das richtige Arbeitsformat, sobald ein Bild wiederholt bearbeitet wird.',
+        'Design-Tools, App-Assets und UI-Arbeit erwarten PNG für scharfe Kanten und Transparenzunterstützung.',
+        'PNG vermeidet den Generationsverlust, der entsteht, wenn Sie ein JPG immer wieder neu speichern.',
+      ],
+      useCases: [
+        {
+          title: 'Vorbereitung zur Bearbeitung',
+          description: 'Wandeln Sie ein JPG vor der Retusche in PNG um, damit Bearbeitungen verlustfrei bleiben.',
+        },
+        {
+          title: 'Transparenz hinzufügen',
+          description: 'Erhalten Sie eine PNG-Leinwand, bereit zum Ausschneiden eines Hintergrunds.',
+        },
+        {
+          title: 'UI- und App-Assets',
+          description: 'Die meisten Designsysteme erwarten PNG für Icons und Grafiken.',
+        },
+        {
+          title: 'Einbetten in Dokumente',
+          description: 'Verwenden Sie PNG, wo scharfer Text und Linien wichtiger sind als die Dateigröße.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die Ausgabe ist fest auf PNG festgelegt, das Ergebnis ist also immer verlustfrei.',
+        'Läuft auf unseren eigenen Servern – keine Verarbeitung Ihres Bildes durch Drittanbieter.',
+      ],
+      privacyNote: 'Ihr JPG wird auf unserem Server dekodiert und als verlustfreies PNG mit exakt denselben Pixeln geschrieben. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich ein JPG kostenlos in PNG um?',
+          answer: 'Laden Sie Ihr .jpg oben hoch und klicken Sie auf Umwandeln – die Ausgabe ist ein verlustfreies .png. Es ist kostenlos, erfordert keine Anmeldung und funktioniert in Ihrem Browser.',
+        },
+        {
+          question: 'Verbessert die Umwandlung von JPG in PNG die Qualität?',
+          answer: 'Nein. Die Umwandlung ist verlustfrei, kann aber keine Details wiederherstellen, die das JPG bereits verworfen hat. Sie friert die aktuellen Pixel ein, damit künftige Bearbeitungen artefaktfrei bleiben.',
+        },
+        {
+          question: 'Wird das PNG größer als mein JPG?',
+          answer: 'Meist ja. PNG speichert jedes Pixel exakt ohne verlustbehaftete Kompression, daher ist ein fotografisches PNG typischerweise größer als das entsprechende JPG.',
+        },
+        {
+          question: 'Kann ich nach der Umwandlung in PNG Transparenz hinzufügen?',
+          answer: 'Ja. PNG unterstützt einen Alphakanal, sobald Sie also das PNG haben, können Sie in jedem Bildeditor einen Hintergrund radieren oder ausschneiden.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'PNG ist verlustfrei, daher ist die Ausgabe meist größer als das Quell-JPG.',
+        ],
+      },
+      related: [
+        {
+          label: 'PNG in JPG umwandeln',
+          to: '/tools/convert-png-to-jpg',
+          description: 'Gehen Sie den umgekehrten Weg und verkleinern Sie ein PNG zu einem JPG.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Wandeln Sie zwischen JPG, PNG, WebP, AVIF und mehr um.',
+        },
+        {
+          label: 'Hintergrund aus Bild entfernen',
+          to: '/tools/remove-background-from-image',
+          description: 'Erstellen Sie automatisch einen transparenten PNG-Ausschnitt.',
+        },
+        {
+          label: 'Bildkonverter-Tutorial',
+          to: '/tutorials/image/getting-started',
+          description: 'Gehen Sie jede Bildoption im Detail durch.',
+        },
+      ],
+      embed: {
+        title: 'JPG in PNG umwandeln',
+        description: 'Laden Sie ein JPG-Bild hoch. Die Ausgabe ist bei diesem Tool fest auf PNG festgelegt, Sie erhalten also eine verlustfreie Datei, bereit zur Bearbeitung oder zum Überlagern auf einer transparenten Leinwand.',
+      },
     },
     'convert-webp-to-png': {
       name: 'WebP in PNG umwandeln',
+      h1: 'WebP online kostenlos in PNG umwandeln',
       tagline: 'Verwandeln Sie WebP-Bilder in verlustfreie PNG-Dateien, die überall geöffnet werden können und die volle Transparenz behalten.',
+      metaTitle: 'WebP online kostenlos in PNG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von WebP in PNG. Verwandeln Sie .webp-Bilder in verlustfreie PNG-Dateien, die die Transparenz behalten und sich in jedem Editor öffnen lassen. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'WebP online kostenlos in PNG umwandeln',
+      ogDescription: 'Verwandeln Sie WebP-Bilder in verlustfreie PNG-Dateien, die die Transparenz bewahren. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'WebP ist großartig fürs Web, aber viele Editoren, ältere Software und Design-Tools erwarten weiterhin PNG – und anders als JPG behält PNG die volle Transparenz. Media Manipulator wandelt Ihr WebP in ein sauberes, verlustfreies PNG um, damit es überall geöffnet werden kann und Ihr Alphakanal erhalten bleibt.',
+      whatItDoes: [
+        'Wandelt jedes .webp-Bild in eine verlustfreie .png-Datei um.',
+        'Behält den Alphakanal, sodass transparente WebPs transparent bleiben.',
+        'Erzeugt ein PNG, das sich in jedem Editor, Viewer oder Design-Tool öffnen lässt.',
+        'Das Bild bleibt unverändert; die WebP-Kompression wird gegen verlustfreie PNG-Speicherung getauscht.',
+      ],
+      flowSteps: [
+        {
+          title: 'WebP hochladen',
+          description: 'Ziehen Sie eine .webp-Datei hinein, transparent oder deckend.',
+        },
+        {
+          title: 'In PNG umwandeln',
+          description: 'Wir dekodieren das WebP und kodieren es als PNG neu.',
+        },
+        {
+          title: 'PNG kodieren',
+          description: 'ImageMagick schreibt ein verlustfreies PNG mit 24/32 Bit.',
+        },
+        {
+          title: 'PNG herunterladen',
+          description: 'Speichern Sie eine .png-Datei, die die Transparenz bewahrt.',
+        },
+      ],
+      advancedDetails: [
+        'Transparenz im Quell-WebP wird als PNG-Alphakanal erhalten.',
+        'Nur das erste Einzelbild eines animierten WebP wird zu einem PNG-Standbild – für Animation wandeln Sie stattdessen in GIF um.',
+        'PNG ist verlustfrei, daher ist die Ausgabe meist größer als das Quell-WebP; das ist der Preis für universelle Kompatibilität und verlustfreie Speicherung.',
+      ],
+      whyItMatters: [
+        'Einige Editoren, Präsentationsprogramme und ältere Software können WebP noch immer nicht öffnen.',
+        'PNG behält Transparenz, was JPG nicht kann – wichtig für Logos und Ausschnitte.',
+        'PNG ist ein sicheres, verlustfreies Austauschformat für Grafikarbeit.',
+      ],
+      useCases: [
+        {
+          title: 'WebP in Editoren öffnen',
+          description: 'Wandeln Sie in PNG um, damit ein Editor ohne WebP-Unterstützung die Datei öffnen kann.',
+        },
+        {
+          title: 'Transparenz behalten',
+          description: 'Bewahren Sie ein transparentes WebP-Logo als transparentes PNG.',
+        },
+        {
+          title: 'Design-Übergaben',
+          description: 'Übergeben Sie ein PNG an Tools oder Teammitglieder, die PNG-Assets erwarten.',
+        },
+        {
+          title: 'Präsentationen',
+          description: 'Fügen Sie ein PNG in Präsentationssoftware ein, die kein WebP akzeptiert.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die Ausgabe ist fest auf PNG festgelegt, die Transparenz wird automatisch erhalten.',
+        'Läuft auf unseren eigenen Servern – keine Verarbeitung Ihres Bildes durch Drittanbieter.',
+      ],
+      privacyNote: 'Ihr WebP wird auf unserem Server dekodiert und als verlustfreies PNG gespeichert, wobei seine Transparenz erhalten bleibt. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich WebP kostenlos in PNG um?',
+          answer: 'Laden Sie Ihr .webp oben hoch und klicken Sie auf Umwandeln. Der Download ist ein verlustfreies .png mit erhaltener Transparenz. Es ist kostenlos und erfordert keine Anmeldung.',
+        },
+        {
+          question: 'Behält WebP in PNG die Transparenz?',
+          answer: 'Ja. Wenn Ihr WebP einen transparenten Hintergrund hat, behält das entstehende PNG diesen Alphakanal intakt.',
+        },
+        {
+          question: 'Warum WebP in PNG statt in JPG umwandeln?',
+          answer: 'PNG ist verlustfrei und bewahrt Transparenz, während JPG die Transparenz entfernt und Kompression hinzufügt. Wählen Sie PNG, wenn Sie Transparenz oder verlustfreie Grafiken brauchen; wählen Sie JPG für die kleinsten Fotodateien.',
+        },
+        {
+          question: 'Kann ich ein animiertes WebP umwandeln?',
+          answer: 'Nur das erste Einzelbild wird zu einem PNG. Für Animation wandeln Sie das WebP stattdessen in ein animiertes GIF um.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Transparenz wird erhalten. Nur das erste Einzelbild eines animierten WebP wird umgewandelt.',
+        ],
+      },
+      related: [
+        {
+          label: 'PNG in WebP umwandeln',
+          to: '/tools/convert-png-to-webp',
+          description: 'Gehen Sie den umgekehrten Weg und verkleinern Sie ein PNG zu einem WebP.',
+        },
+        {
+          label: 'WebP in JPG umwandeln',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Wandeln Sie WebP stattdessen in ein kompaktes JPG um.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Wandeln Sie zwischen JPG, PNG, WebP, AVIF und mehr um.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie ein Bild ohne den Aufwand eines Formatwechsels.',
+        },
+      ],
+      embed: {
+        title: 'WebP in PNG umwandeln',
+        description: 'Laden Sie ein WebP-Bild hoch. Die Ausgabe ist bei diesem Tool fest auf PNG festgelegt, die Transparenz bleibt also erhalten, und die Datei lässt sich in jedem Bildeditor oder Viewer öffnen.',
+      },
     },
     'convert-png-to-webp': {
       name: 'PNG in WebP umwandeln',
+      h1: 'PNG online kostenlos in WebP umwandeln',
       tagline: 'Verkleinern Sie PNG-Grafiken zu modernen WebP-Dateien, die im Web schneller laden und die volle Transparenz behalten.',
+      metaTitle: 'PNG online kostenlos in WebP umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von PNG in WebP. Verkleinern Sie .png-Dateien zu kleineren WebP-Bildern für schnellere Websites und behalten Sie dabei die Transparenz. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'PNG online kostenlos in WebP umwandeln',
+      ogDescription: 'Verkleinern Sie PNG-Grafiken zu kleineren WebP-Dateien mit erhaltener Transparenz für schnellere Websites. Kostenlos, ohne Anmeldung.',
+      intro: 'WebP ist das moderne Bildformat fürs Web: Es erzeugt drastisch kleinere Dateien als PNG und bewahrt dabei die Transparenz, was schnellere Seiten und bessere Core Web Vitals bedeutet. Media Manipulator wandelt Ihr PNG in der Qualität Ihrer Wahl in WebP um – kostenlos, online, mit intakter Transparenz und ohne Anmeldung.',
+      whatItDoes: [
+        'Wandelt jedes .png-Bild in eine moderne .webp-Datei um.',
+        'Behält den Alphakanal, sodass transparente PNGs transparent bleiben.',
+        'Lässt Sie die Qualität wählen, um Dateigröße und Detailtreue auszubalancieren.',
+        'Erzeugt typischerweise Dateien, die 25–80 % kleiner sind als das Quell-PNG.',
+      ],
+      flowSteps: [
+        {
+          title: 'PNG hochladen',
+          description: 'Ziehen Sie eine .png-Grafik, ein Icon oder einen Screenshot hinein.',
+        },
+        {
+          title: 'WebP-Qualität wählen',
+          description: '80–85 ist ein hervorragender Standard für den Web-Einsatz.',
+        },
+        {
+          title: 'WebP kodieren',
+          description: 'ImageMagick kodiert Ihr Bild als WebP neu.',
+        },
+        {
+          title: 'WebP herunterladen',
+          description: 'Speichern Sie eine kleinere .webp-Datei, die die Transparenz bewahrt.',
+        },
+      ],
+      advancedDetails: [
+        'WebP unterstützt sowohl verlustbehaftete als auch verlustfreie Modi; bei Qualität ~80 unterbietet es die PNG-Dateigröße meist deutlich und bleibt dabei visuell sauber.',
+        'Die Transparenz wird erhalten, sodass Logos und UI-Assets ihren Alphakanal behalten.',
+        'WebP wird von jedem modernen Browser unterstützt – liefern Sie es direkt aus, damit Seiten schneller laden.',
+        'Für maximale Kompatibilität mit sehr alter Software behalten Sie ein PNG als Fallback.',
+      ],
+      whyItMatters: [
+        'Kleinere Bilder sind der größte einzelne Hebel für schnellere Seitenladezeiten und besseres SEO.',
+        'WebP behält die Transparenz, Sie müssen also nicht wie bei JPG Alpha gegen Größe tauschen.',
+        'Googles Core Web Vitals belohnen leichtere Seiten – WebP hilft direkt.',
+      ],
+      useCases: [
+        {
+          title: 'Schnellere Websites',
+          description: 'Ersetzen Sie schwere PNG-Assets durch WebP, um das Seitengewicht zu senken.',
+        },
+        {
+          title: 'Transparente Logos',
+          description: 'Verkleinern Sie ein transparentes PNG-Logo und behalten Sie dabei seinen Alphakanal.',
+        },
+        {
+          title: 'App- und UI-Assets',
+          description: 'Liefern Sie leichtere Grafiken aus, ohne an Schärfe zu verlieren.',
+        },
+        {
+          title: 'Bildlastige Galerien',
+          description: 'Wandeln Sie eine Reihe von PNGs in WebP um, damit die Galerie flotter wird.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die Ausgabe ist fest auf WebP festgelegt, die Transparenz bleibt erhalten.',
+        'Präzise Qualitätskontrolle, damit Sie den Kompromiss zwischen Größe und Detailtreue bestimmen.',
+      ],
+      privacyNote: 'Ihr PNG wird auf unserem Server in der Qualität Ihrer Wahl als WebP neu kodiert, wobei seine Transparenz erhalten bleibt. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich PNG kostenlos in WebP um?',
+          answer: 'Laden Sie Ihr .png oben hoch, wählen Sie eine Qualität und klicken Sie auf Umwandeln. Der Download ist eine .webp-Datei. Es ist kostenlos und erfordert keine Anmeldung.',
+        },
+        {
+          question: 'Behält PNG in WebP die Transparenz?',
+          answer: 'Ja. WebP unterstützt einen Alphakanal, daher bleiben transparente PNGs nach der Umwandlung transparent.',
+        },
+        {
+          question: 'Wie viel kleiner wird das WebP?',
+          answer: 'Das hängt vom Bild ab, aber WebP ist bei visuell ähnlicher Qualität üblicherweise 25–80 % kleiner als das Quell-PNG.',
+        },
+        {
+          question: 'Wird WebP überall unterstützt?',
+          answer: 'Jeder moderne Browser unterstützt WebP. Einige ältere oder Nischenprogramme nicht – behalten Sie ein PNG als Fallback, wenn Sie diese unterstützen müssen.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Transparenz wird in der WebP-Ausgabe erhalten.',
+        ],
+      },
+      related: [
+        {
+          label: 'WebP in PNG umwandeln',
+          to: '/tools/convert-webp-to-png',
+          description: 'Gehen Sie den umgekehrten Weg zurück zu einem verlustfreien PNG.',
+        },
+        {
+          label: 'JPG in WebP umwandeln',
+          to: '/tools/convert-jpg-to-webp',
+          description: 'Verkleinern Sie JPG-Fotos zu WebP fürs Web.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie Bilder weiter, ohne das Format zu ändern.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Wandeln Sie zwischen JPG, PNG, WebP, AVIF und GIF um.',
+        },
+        {
+          label: 'Bildkonverter-Tutorial',
+          to: '/tutorials/image/getting-started',
+          description: 'Gehen Sie jede Bildoption im Detail durch.',
+        },
+      ],
+      embed: {
+        title: 'PNG in WebP umwandeln',
+        description: 'Laden Sie ein PNG-Bild hoch. Die Ausgabe ist bei diesem Tool fest auf WebP festgelegt – wählen Sie eine Qualität und wandeln Sie um. Die Transparenz bleibt erhalten, und WebP-Dateien sind typischerweise viel kleiner als PNG.',
+      },
     },
     'convert-jpg-to-webp': {
       name: 'JPG in WebP umwandeln',
+      h1: 'JPG online kostenlos in WebP umwandeln',
       tagline: 'Verkleinern Sie JPG-Fotos zu modernen WebP-Dateien, die bei gleicher Bildqualität im Web schneller laden.',
+      metaTitle: 'JPG online kostenlos in WebP umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von JPG in WebP. Verkleinern Sie .jpg-Fotos zu kleineren WebP-Bildern für schnellere Websites in der Qualität Ihrer Wahl. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'JPG online kostenlos in WebP umwandeln',
+      ogDescription: 'Verkleinern Sie JPG-Fotos zu kleineren WebP-Dateien für schnellere Websites bei gleicher visueller Qualität. Kostenlos, ohne Anmeldung.',
+      intro: 'WebP liefert dieselbe visuelle Qualität wie JPG in einer spürbar kleineren Datei, weshalb es zum Standard-Bildformat für schnelle Websites geworden ist. Media Manipulator wandelt Ihr JPG in der Qualität Ihrer Wahl in WebP um, sodass Ihre Fotos gleich aussehen, aber schneller laden.',
+      whatItDoes: [
+        'Wandelt jedes .jpg-/.jpeg-Foto in eine moderne .webp-Datei um.',
+        'Lässt Sie die WebP-Qualität wählen, um Dateigröße und Detailtreue auszubalancieren.',
+        'Erzeugt bei gleicher Qualität typischerweise Dateien, die 25–35 % kleiner sind als das Quell-JPG.',
+        'Das Foto sieht gleich aus; seine Bytes werden mit WebP neu kodiert, um die Datei zu verkleinern.',
+      ],
+      flowSteps: [
+        {
+          title: 'JPG hochladen',
+          description: 'Ziehen Sie ein .jpg- oder .jpeg-Foto hinein.',
+        },
+        {
+          title: 'WebP-Qualität wählen',
+          description: '80–85 entspricht weitgehend der typischen JPG-Qualität.',
+        },
+        {
+          title: 'WebP kodieren',
+          description: 'ImageMagick kodiert Ihr Foto als WebP neu.',
+        },
+        {
+          title: 'WebP herunterladen',
+          description: 'Speichern Sie ein kleineres .webp, bereit fürs Web.',
+        },
+      ],
+      advancedDetails: [
+        'Bei gleichwertiger visueller Qualität ist WebP dank modernerer Kompression üblicherweise 25–35 % kleiner als JPG.',
+        'Vermeiden Sie das Stapeln starker Kompression: Ein bereits verlustbehaftetes JPG mit sehr niedriger WebP-Qualität neu zu kodieren kann Artefakte verstärken.',
+        'WebP wird von jedem modernen Browser unterstützt – liefern Sie es direkt aus, um Seitenladezeiten zu beschleunigen.',
+        'Für maximale Kompatibilität mit sehr alter Software behalten Sie ein JPG als Fallback.',
+      ],
+      whyItMatters: [
+        'Leichtere Bilder verbessern Seitenladezeit, Absprungrate und SEO direkt.',
+        'WebP bringt Ihnen JPG-ähnliche Qualität bei kleinerer Größe mit einer einzigen Umwandlung.',
+        'Core Web Vitals belohnen kleinere Bilder – WebP ist ein schneller Gewinn.',
+      ],
+      useCases: [
+        {
+          title: 'Schnellere Websites',
+          description: 'Wandeln Sie Hero- und Galerie-JPGs in WebP um, um das Seitengewicht zu senken.',
+        },
+        {
+          title: 'E-Commerce-Kataloge',
+          description: 'Verkleinern Sie Produktfotos, damit Angebote sofort laden.',
+        },
+        {
+          title: 'Blogs und Artikel',
+          description: 'Liefern Sie leichtere Inline-Bilder ohne sichtbaren Qualitätsverlust aus.',
+        },
+        {
+          title: 'E-Mail-freundliche Fotos',
+          description: 'Erhalten Sie kleinere Dateien, die unter den Anhangslimits bleiben.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die Ausgabe ist fest auf WebP festgelegt, es gibt also nichts falsch zu konfigurieren.',
+        'Präzise Qualitätskontrolle statt einer festen Voreinstellung.',
+      ],
+      privacyNote: 'Ihr JPG wird auf unserem Server in der Qualität Ihrer Wahl als kleineres WebP neu kodiert. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich JPG kostenlos in WebP um?',
+          answer: 'Laden Sie Ihr .jpg oben hoch, wählen Sie eine Qualität und klicken Sie auf Umwandeln. Der Download ist eine .webp-Datei. Es ist kostenlos und erfordert keine Anmeldung.',
+        },
+        {
+          question: 'Ist WebP besser als JPG?',
+          answer: 'Fürs Web meist ja – WebP liefert ähnliche Qualität bei kleinerer Größe. JPG gewinnt weiterhin bei der universellen Kompatibilität mit sehr alter Software.',
+        },
+        {
+          question: 'Wie viel kleiner ist WebP als JPG?',
+          answer: 'Bei gleichwertiger visueller Qualität ist WebP üblicherweise 25–35 % kleiner als JPG, die genaue Einsparung hängt jedoch vom Bild ab.',
+        },
+        {
+          question: 'Verliert die Umwandlung von JPG in WebP Qualität?',
+          answer: 'Beide Formate sind verlustbehaftet. Bei Qualität 80–85 sieht das Ergebnis genauso aus wie das JPG. Vermeiden Sie eine sehr niedrige WebP-Qualität, um verstärkte Artefakte zu verhindern.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'JPG hat keine Transparenz, daher ist die WebP-Ausgabe vollständig deckend.',
+        ],
+      },
+      related: [
+        {
+          label: 'WebP in JPG umwandeln',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Gehen Sie den umgekehrten Weg zurück zu einem universellen JPG.',
+        },
+        {
+          label: 'PNG in WebP umwandeln',
+          to: '/tools/convert-png-to-webp',
+          description: 'Verkleinern Sie PNG-Grafiken zu WebP fürs Web.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie Bilder weiter, ohne das Format zu ändern.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Wandeln Sie zwischen JPG, PNG, WebP, AVIF und GIF um.',
+        },
+        {
+          label: 'Bildkonverter-Tutorial',
+          to: '/tutorials/image/getting-started',
+          description: 'Gehen Sie jede Bildoption im Detail durch.',
+        },
+      ],
+      embed: {
+        title: 'JPG in WebP umwandeln',
+        description: 'Laden Sie ein JPG-Bild hoch. Die Ausgabe ist bei diesem Tool fest auf WebP festgelegt – wählen Sie eine Qualität und wandeln Sie um. WebP erzeugt bei gleicher visueller Qualität meist eine kleinere Datei als JPG.',
+      },
     },
     'jpg-converter': {
       name: 'JPG-Konverter',
@@ -4145,43 +9035,1174 @@ const deToolPages = {
     },
     'convert-jpg-to-pdf': {
       name: 'JPG in PDF umwandeln',
+      h1: 'JPG online kostenlos in PDF umwandeln',
       tagline: 'Verwandeln Sie JPG-Fotos und Scans in saubere PDF-Dokumente, bereit zum Teilen, Drucken oder Hochladen.',
+      metaTitle: 'JPG online kostenlos in PDF umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von JPG in PDF. Verwandeln Sie .jpg-Fotos und Scans ohne Qualitätsverlust in saubere PDF-Dokumente. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'JPG online kostenlos in PDF umwandeln',
+      ogDescription: 'Verwandeln Sie JPG-Fotos und Scans in saubere PDF-Dokumente. Verlustfrei, kostenlos, ohne Anmeldung.',
+      intro: 'JPG ist das Format, in dem Ihr Handy und Ihre Kamera fotografieren, aber ein PDF ist das, was die meisten Formulare, Bewerbungen und Büros wollen. Media Manipulator bettet Ihr JPG ohne erneute Kompression direkt in ein PDF ein, sodass das Dokument genau wie Ihr Foto aussieht und klein bleibt.',
+      whatItDoes: [
+        'Verpackt ein JPG-/JPEG-Foto in ein einseitiges PDF-Dokument.',
+        'Bettet die ursprünglichen JPG-Bytes verlustfrei ein – null zusätzliche Kompression.',
+        'Passt die Seite an das Foto an, sodass nichts beschnitten oder gestreckt wird.',
+        'Erzeugt ein Standard-PDF, das sich überall öffnen und drucken lässt.',
+      ],
+      flowSteps: [
+        {
+          title: 'JPG hochladen',
+          description: 'Ziehen Sie ein .jpg- oder .jpeg-Foto oder einen Scan hinein.',
+        },
+        {
+          title: 'Wir betten es ein',
+          description: 'Das JPG wird unkomprimiert auf eine Seite passender Größe gelegt.',
+        },
+        {
+          title: 'PDF erzeugen',
+          description: 'Ein einseitiges Standard-PDF wird zusammengesetzt.',
+        },
+        {
+          title: 'PDF herunterladen',
+          description: 'Speichern Sie ein sauberes .pdf, bereit zum Teilen oder Hochladen.',
+        },
+      ],
+      advancedDetails: [
+        'Der JPG-Stream wird mit dem PDF-Filter /DCTDecode eingebettet, das heißt, das Foto wird unverändert gespeichert – keine zweite Runde verlustbehafteter Kompression.',
+        'Da keine Neukodierung stattfindet, ist ein JPG-zu-PDF-Dokument typischerweise etwa so groß wie das ursprüngliche Foto.',
+        'Die Seite wird aus dem Bild mit 96 DPI bemessen, sodass ein typisches Handyfoto eine angenehm dimensionierte Seite ergibt.',
+      ],
+      whyItMatters: [
+        'Formulare, Portale und Bewerbungen verlangen häufig PDF, nicht JPG.',
+        'Ein PDF druckt vorhersehbar, wo ein rohes JPG gekachelt oder skaliert werden könnte.',
+        'Verlustfreies Einbetten hält den Text in einem gescannten Dokument lesbar.',
+      ],
+      useCases: [
+        {
+          title: 'Bewerbungen',
+          description: 'Verwandeln Sie das Foto eines unterschriebenen Formulars in ein PDF, das ein Portal akzeptiert.',
+        },
+        {
+          title: 'Belege und Spesen',
+          description: 'Wandeln Sie Belegfotos für Spesenabrechnungen in PDFs um.',
+        },
+        {
+          title: 'Gescannte Dokumente',
+          description: 'Verpacken Sie den Handy-Scan einer Seite in ein ordentliches PDF.',
+        },
+        {
+          title: 'Drucken',
+          description: 'Erhalten Sie vorhersehbare Druckergebnisse aus einem JPG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Wirklich verlustfrei – das JPG im PDF ist identisch mit Ihrem Original.',
+        'Die Ausgabe ist fest auf PDF festgelegt, es gibt also nichts falsch zu konfigurieren.',
+      ],
+      privacyNote: 'Ihr JPG wird ohne erneute Kompression auf eine einzelne PDF-Seite gelegt, die unser Server erstellt. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich ein JPG kostenlos in PDF um?',
+          answer: 'Laden Sie Ihr .jpg oben hoch und klicken Sie auf Umwandeln – die Ausgabe ist ein einseitiges PDF. Es ist kostenlos und erfordert keine Anmeldung.',
+        },
+        {
+          question: 'Verringert die Umwandlung von JPG in PDF die Qualität?',
+          answer: 'Nein. Das JPG wird ohne erneute Kompression direkt in das PDF eingebettet, die Bildqualität ist also identisch mit Ihrer Originaldatei.',
+        },
+        {
+          question: 'Wird das PDF viel größer als mein JPG?',
+          answer: 'Nein – da keine Neukodierung stattfindet, ist das PDF etwa so groß wie das Quell-JPG plus eine winzige Dokumenthülle.',
+        },
+        {
+          question: 'Kann ich mehrere JPGs zu einem PDF zusammenfügen?',
+          answer: 'Dieses Tool erstellt ein PDF pro Bild. Wandeln Sie jedes JPG um und führen Sie die PDFs in einem Zusammenführungs-Tool zusammen, wenn Sie mehrere Seiten brauchen.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Das JPG wird verlustfrei (ohne erneute Kompression) in ein einseitiges PDF eingebettet.',
+        ],
+      },
+      related: [
+        {
+          label: 'PNG in PDF umwandeln',
+          to: '/tools/convert-png-to-pdf',
+          description: 'Spezialisierter Konverter von PNG → PDF.',
+        },
+        {
+          label: 'Bild in PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Wandeln Sie jedes Bildformat in PDF um.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Wandeln Sie zwischen JPG, PNG, WebP, AVIF und mehr um.',
+        },
+        {
+          label: 'PDF in JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Gehen Sie den umgekehrten Weg: Rendern Sie ein PDF zu JPG.',
+        },
+        {
+          label: 'PDF-Konverter',
+          to: '/tools/pdf-converter',
+          description: 'Die vollständige Zentrale für PDF-Konvertierungen.',
+        },
+      ],
+      embed: {
+        title: 'JPG in PDF umwandeln',
+        description: 'Laden Sie ein JPG-Bild hoch. Die Ausgabe ist fest auf PDF festgelegt, und Ihr JPG wird verlustfrei eingebettet – das Foto im PDF ist Bit für Bit identisch mit Ihrem Original.',
+      },
     },
     'convert-png-to-pdf': {
       name: 'PNG in PDF umwandeln',
+      h1: 'PNG online kostenlos in PDF umwandeln',
       tagline: 'Verwandeln Sie PNG-Screenshots, -Grafiken und Scans in saubere, gestochen scharfe PDF-Dokumente.',
+      metaTitle: 'PNG online kostenlos in PDF umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von PNG zu PDF. Verwandeln Sie .png-Screenshots und -Grafiken in gestochen scharfe, verlustfreie PDF-Dokumente. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'PNG online kostenlos in PDF umwandeln',
+      ogDescription: 'Verwandeln Sie PNG-Screenshots und -Grafiken in gestochen scharfe, verlustfreie PDF-Dokumente. Kostenlos, ohne Anmeldung.',
+      intro: 'PNG ist das Format für Screenshots, Diagramme und Grafiken mit scharfem Text und klaren Kanten. Wenn Sie eine solche Datei als Dokument versenden oder drucken müssen, ist ein PDF der richtige Rahmen. Media Manipulator bettet Ihr PNG verlustfrei in ein PDF ein, sodass jede Kante scharf bleibt.',
+      whatItDoes: [
+        'Verpackt ein PNG-Bild in ein einseitiges PDF-Dokument.',
+        'Bettet das Bild verlustfrei ein, sodass Text und Strichzeichnungen scharf bleiben.',
+        'Legt Transparenz auf Weiß, da PDF-Seiten undurchsichtig sind.',
+        'Erzeugt ein Standard-PDF, das sich überall öffnen und drucken lässt.',
+      ],
+      flowSteps: [
+        {
+          title: 'PNG hochladen',
+          description: 'Legen Sie einen .png-Screenshot, ein Diagramm oder eine Grafik ab.',
+        },
+        {
+          title: 'Wir betten es ein',
+          description: 'Das PNG wird auf eine weiße Seite gelegt und verlustfrei eingebettet.',
+        },
+        {
+          title: 'PDF erzeugen',
+          description: 'Ein einseitiges Standard-PDF wird zusammengesetzt.',
+        },
+        {
+          title: 'PDF herunterladen',
+          description: 'Speichern Sie ein gestochen scharfes .pdf, bereit zum Teilen oder Drucken.',
+        },
+      ],
+      advancedDetails: [
+        'PNGs werden dekodiert und mit verlustfreier zlib-Kompression (Flate) eingebettet, sodass scharfer Text und Kanten exakt erhalten bleiben – ohne JPEG-Artefakte.',
+        'Transparente Bereiche werden weiß, weil PDF-Seiten keinen Alphakanal haben.',
+        'Die Seite wird anhand des Bildes bei 96 DPI bemessen, was eine sinnvolle physische Standardgröße ergibt.',
+      ],
+      whyItMatters: [
+        'Screenshots und Diagramme werden in Tickets und Berichten oft als PDF eingereicht.',
+        'Die verlustfreie Einbettung hält kleine Schrift und dünne Linien lesbar.',
+        'Ein PDF druckt vorhersehbar, während ein rohes PNG unerwartet skaliert werden kann.',
+      ],
+      useCases: [
+        {
+          title: 'Fehlerberichte',
+          description: 'Verwandeln Sie einen Screenshot in ein PDF, das Sie an ein Ticket anhängen.',
+        },
+        {
+          title: 'Diagramme und Charts',
+          description: 'Verpacken Sie eine exportierte Grafik in ein teilbares PDF.',
+        },
+        {
+          title: 'Gescannte Formulare',
+          description: 'Wandeln Sie einen PNG-Scan in ein ordentliches PDF-Dokument um.',
+        },
+        {
+          title: 'Drucken',
+          description: 'Erhalten Sie gestochen scharfe, vorhersehbare Ausdrucke aus einem PNG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die verlustfreie Einbettung hält Text und Kanten messerscharf.',
+        'Die Ausgabe ist fest auf PDF gesetzt, es gibt also nichts falsch zu konfigurieren.',
+      ],
+      privacyNote: 'Ihr PNG wird auf unserem Server verlustfrei in ein einseitiges PDF eingebettet, wobei Transparenz auf Weiß gelegt wird. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich ein PNG kostenlos in PDF um?',
+          answer: 'Laden Sie oben Ihre .png-Datei hoch und klicken Sie auf Konvertieren – die Ausgabe ist ein einseitiges PDF. Das ist kostenlos und erfordert keine Anmeldung.',
+        },
+        {
+          question: 'Bleibt der Text bei PNG zu PDF scharf?',
+          answer: 'Ja. Das PNG wird verlustfrei eingebettet, sodass scharfer Text und Strichzeichnungen ohne JPEG-artige Artefakte klar bleiben.',
+        },
+        {
+          question: 'Was passiert mit einem transparenten PNG?',
+          answer: 'Transparente Bereiche werden auf einen weißen Hintergrund gelegt, weil PDF-Seiten undurchsichtig sind. Der sichtbare Inhalt bleibt unverändert.',
+        },
+        {
+          question: 'Kann ich mehrere PNGs zu einem PDF zusammenführen?',
+          answer: 'Dieses Tool erstellt ein PDF pro Bild. Konvertieren Sie jedes PNG und führen Sie die PDFs für mehrseitige Dokumente in einem Zusammenführungstool zusammen.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Das PNG wird verlustfrei eingebettet. Transparenz wird auf Weiß gelegt, weil PDF-Seiten undurchsichtig sind.',
+        ],
+      },
+      related: [
+        {
+          label: 'JPG in PDF umwandeln',
+          to: '/tools/convert-jpg-to-pdf',
+          description: 'Spezialisierter Konverter von JPG → PDF.',
+        },
+        {
+          label: 'Bild in PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Wandeln Sie jedes Bildformat in PDF um.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF und mehr.',
+        },
+        {
+          label: 'PDF in PNG',
+          to: '/tools/pdf-to-png',
+          description: 'Der umgekehrte Weg: Rendern Sie ein PDF zu PNG.',
+        },
+        {
+          label: 'PDF-Konverter',
+          to: '/tools/pdf-converter',
+          description: 'Die vollständige Zentrale für PDF-Konvertierungen.',
+        },
+      ],
+      embed: {
+        title: 'PNG in PDF umwandeln',
+        description: 'Laden Sie ein PNG-Bild hoch. Die Ausgabe ist fest auf PDF gesetzt, und Ihr PNG wird verlustfrei eingebettet, sodass Text und scharfe Kanten auf der Seite klar bleiben.',
+      },
     },
     'pdf-to-png': {
       name: 'PDF in PNG',
+      h1: 'PDF online kostenlos in PNG umwandeln',
       tagline: 'Rendern Sie jede Seite eines PDF in gestochen scharfe, verlustfreie PNG-Bilder – ideal für Text, Diagramme und Bearbeitung.',
+      metaTitle: 'PDF online kostenlos in PNG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von PDF zu PNG. Rendern Sie jede Seite eines PDF in gestochen scharfe, verlustfreie PNG-Bilder, heruntergeladen als ZIP. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'PDF online kostenlos in PNG umwandeln',
+      ogDescription: 'Rendern Sie jede Seite eines PDF in gestochen scharfe, verlustfreie PNG-Bilder. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'PNG ist die beste Wahl, wenn eine PDF-Seite scharfen Text, dünne Linien oder Diagramme enthält, die Sie messerscharf halten möchten. Media Manipulator rendert jede Seite mit Poppler in ein verlustfreies PNG, sodass es keine JPEG-Artefakte um den Text gibt. Wählen Sie alle Seiten oder nur die erste und legen Sie die Auflösung fest.',
+      whatItDoes: [
+        'Rendert jede PDF-Seite in ein verlustfreies PNG-Bild mit den DPI, die Sie wählen.',
+        'Konvertiert alle Seiten (heruntergeladen als ZIP) oder nur die erste Seite (ein einzelnes PNG).',
+        'Benennt mehrseitige Ausgabe eindeutig: page-001.png, page-002.png und so weiter.',
+        'Hält Text und Strichzeichnungen mit verlustfreier PNG-Kodierung scharf.',
+      ],
+      flowSteps: [
+        {
+          title: 'PDF hochladen',
+          description: 'Legen Sie ein beliebiges .pdf-Dokument ab.',
+        },
+        {
+          title: 'Seiten und DPI wählen',
+          description: 'Alle Seiten oder nur die erste; 150 DPI ist ein guter Standardwert.',
+        },
+        {
+          title: 'Zu PNG rendern',
+          description: 'Poppler rastert jede Seite in ein verlustfreies PNG.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Erhalten Sie ein einzelnes PNG oder ein ZIP mit einem PNG pro Seite.',
+        },
+      ],
+      advancedDetails: [
+        'Das Rendern verwendet Poppler (pdftoppm) für eine genaue, originalgetreue Seitenausgabe.',
+        'PNG ist verlustfrei und daher die bessere Wahl gegenüber JPG, wenn die Seite überwiegend aus Text, Diagrammen oder scharfen Grafiken besteht.',
+        'Höhere DPI ergeben schärfere, größere Bilder – 150 DPI eignen sich für Bildschirme, 300 DPI für den Druck.',
+        'Gerenderte PNGs haben einen weißen Hintergrund; PDF-Seiten sind undurchsichtig, es gibt also keine Transparenz zu erhalten.',
+      ],
+      whyItMatters: [
+        'Verlustfreies PNG hält kleine Schrift und dünne Linien ohne Artefakte lesbar.',
+        'PNG-Seiten lassen sich sauber in Editoren, Dokumente und Design-Tools einfügen.',
+        'Eine gerenderte Seite erfasst das exakte visuelle Layout des Dokuments.',
+      ],
+      useCases: [
+        {
+          title: 'Diagramme und Schaltpläne',
+          description: 'Rendern Sie technische Seiten ohne Artefakte.',
+        },
+        {
+          title: 'Markierung und Prüfung',
+          description: 'Öffnen Sie eine scharfe Seite in einem Editor, um sie zu kommentieren.',
+        },
+        {
+          title: 'Design-Assets',
+          description: 'Holen Sie eine saubere Seitengrafik in ein Design-Tool.',
+        },
+        {
+          title: 'Vorschaubilder',
+          description: 'Erzeugen Sie eine scharfe PNG-Vorschau der ersten Seite.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Verlustfreies PNG-Rendering hält Text und Kanten scharf.',
+        'Klare, ordentliche ZIP-Verpackung mit sortierbaren, seitennummerierten Dateinamen.',
+      ],
+      privacyNote: 'Die Seiten Ihres PDF werden auf unserem Server mit Poppler in PNG-Bilder gerendert und bei mehr als einer Seite in ein ZIP gepackt. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich ein PDF kostenlos in PNG um?',
+          answer: 'Laden Sie oben Ihre .pdf-Datei hoch, wählen Sie alle Seiten oder nur die erste, legen Sie die DPI fest und klicken Sie auf Konvertieren.',
+        },
+        {
+          question: 'Warum PNG statt JPG für ein PDF wählen?',
+          answer: 'PNG ist verlustfrei und hält daher Text, dünne Linien und Diagramme ohne Kompressionsartefakte scharf. JPG ist besser, wenn Sie kleinere Dateien für fotolastige Seiten möchten.',
+        },
+        {
+          question: 'Erhalte ich ein Bild oder viele?',
+          answer: 'Wählen Sie „alle Seiten“, um ein ZIP mit einem PNG pro Seite (page-001.png, …) zu erhalten, oder „nur erste Seite“ für ein einzelnes PNG.',
+        },
+        {
+          question: 'Haben die PNGs einen transparenten Hintergrund?',
+          answer: 'Nein – PDF-Seiten sind undurchsichtig, gerenderte Seiten haben also einen weißen Hintergrund. Es gibt keine Transparenz zu erhalten.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Ausgabe aller Seiten wird als .zip geliefert; die Ausgabe der ersten Seite ist ein einzelnes .png.',
+          'Gerenderte Seiten haben einen weißen Hintergrund – PDF-Seiten sind undurchsichtig, es gibt also keine Transparenz.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF in JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Rendern Sie PDF-Seiten stattdessen in kompakte JPGs.',
+        },
+        {
+          label: 'PDF-Konverter',
+          to: '/tools/pdf-converter',
+          description: 'Wandeln Sie PDFs in Bilder und Bilder in PDFs um.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie die gerenderten Bilder zwischen Formaten.',
+        },
+        {
+          label: 'Bild in PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Der umgekehrte Weg: Machen Sie aus Bildern ein PDF.',
+        },
+      ],
+      embed: {
+        title: 'PDF in PNG umwandeln',
+        description: 'Laden Sie ein PDF hoch. Jede Seite wird in ein verlustfreies PNG-Bild gerendert. Wählen Sie „alle Seiten“ für ein ZIP oder „nur erste Seite“ für ein einzelnes PNG. Legen Sie die Render-DPI für eine schärfere Ausgabe fest.',
+      },
     },
     'pdf-converter': {
       name: 'PDF-Konverter',
+      h1: 'Kostenloser PDF-Konverter online',
       tagline: 'Wandeln Sie PDFs in JPG- oder PNG-Bilder um und machen Sie aus Bildern PDFs – alles an einem Ort.',
+      metaTitle: 'Kostenloser PDF-Konverter online | Media Manipulator',
+      metaDescription: 'Kostenloser Online-PDF-Konverter. Wandeln Sie PDFs in JPG- oder PNG-Bilder um und konvertieren Sie Bilder in PDF. Ohne Anmeldung, ohne Wasserzeichen. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Kostenloser PDF-Konverter online',
+      ogDescription: 'Wandeln Sie PDFs in JPG-/PNG-Bilder und Bilder in PDFs um – alles in einem kostenlosen Tool. Ohne Anmeldung.',
+      intro: 'Der PDF-Konverter beherrscht beide Richtungen an einem Ort: Rendern Sie die Seiten eines PDF in JPG- oder PNG-Bilder, oder verpacken Sie ein Bild in ein PDF-Dokument. Laden Sie ein PDF hoch, erhalten Sie die Steuerelemente für den Bildexport; laden Sie ein Bild hoch, erhalten Sie Bild zu PDF. Alles läuft auf unseren eigenen Servern.',
+      whatItDoes: [
+        'Konvertiert PDF-Seiten in JPG oder PNG mit der Auflösung, die Sie wählen.',
+        'Konvertiert JPG, PNG und andere Bilder in einseitige PDFs.',
+        'Verpackt mehrseitige PDF-Exporte in ein ordentliches ZIP mit nummerierten Bildern.',
+        'Passt das Formular automatisch an die hochgeladene Datei an.',
+      ],
+      flowSteps: [
+        {
+          title: 'Datei hochladen',
+          description: 'Legen Sie ein PDF oder ein Bild wie JPG oder PNG ab.',
+        },
+        {
+          title: 'Ausgabe wählen',
+          description: 'Bei einem PDF wählen Sie JPG/PNG, Seiten und DPI; bei einem Bild ist die Ausgabe PDF.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'Wir rendern oder verpacken Ihre Datei auf unserem Server.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie ein PDF, ein einzelnes Bild oder ein ZIP mit Seitenbildern.',
+        },
+      ],
+      advancedDetails: [
+        'Das Rendern von PDF → Bild verwendet Poppler (pdftoppm); Bild → PDF bettet JPGs verlustfrei und andere Formate mit verlustfreier Flate-Kompression ein.',
+        'Mehrseitige PDF-Exporte werden als .zip mit sortierbaren Dateinamen page-001/page-002 geliefert.',
+        'Bild zu PDF bemisst die Seite anhand des Bildes bei 96 DPI; PDF zu Bild verwendet standardmäßig 150 DPI und unterstützt bis zu 300+ für den Druck.',
+        'Eine Seitenbegrenzung schützt vor übergroßen PDFs.',
+      ],
+      whyItMatters: [
+        'Ein Tool deckt beide gängigen Richtungen der PDF-Konvertierung ab.',
+        'Sie müssen nicht je nach Konvertierungsrichtung nach einem separaten Tool suchen.',
+        'Gleichbleibende, serverseitige Qualität unabhängig von Browser oder Gerät.',
+      ],
+      useCases: [
+        {
+          title: 'Gemischte Arbeitsabläufe',
+          description: 'Wechseln Sie zwischen PDF→Bild und Bild→PDF, ohne das Tool zu wechseln.',
+        },
+        {
+          title: 'Dokumentvorbereitung',
+          description: 'Verwandeln Sie Bilder in PDFs für Upload-Formulare.',
+        },
+        {
+          title: 'Wiederverwendung',
+          description: 'Rendern Sie PDF-Seiten in Bilder für Folien oder soziale Medien.',
+        },
+        {
+          title: 'Schnelle Vorschauen',
+          description: 'Erzeugen Sie aus jedem PDF ein Bild der ersten Seite.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Beide Konvertierungsrichtungen in einem einzigen, anpassungsfähigen Tool.',
+        'Verlustfreies Bild→PDF und genaues Poppler-Rendering von PDF→Bild.',
+      ],
+      privacyNote: 'Ihr PDF wird Seite für Seite in Bilder gerendert oder Ihr Bild in ein PDF verpackt – mit Poppler und ImageMagick auf unserem Server. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Was kann der PDF-Konverter?',
+          answer: 'Er konvertiert PDF-Seiten in JPG- oder PNG-Bilder und wandelt Bilder (JPG, PNG und mehr) in PDF-Dokumente um – alles in einem kostenlosen Tool.',
+        },
+        {
+          question: 'Woher weiß er, in welche Richtung konvertiert wird?',
+          answer: 'Er passt sich Ihrem Upload an: Bei einem PDF erscheinen Steuerelemente für den Bildexport (Format, Seiten, DPI), während ein Bild in ein PDF umgewandelt wird.',
+        },
+        {
+          question: 'Kann ich ein mehrseitiges PDF in Bilder umwandeln?',
+          answer: 'Ja. Wählen Sie „alle Seiten“, und Sie erhalten ein ZIP mit einem Bild pro Seite, benannt page-001, page-002 und so weiter.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Laden Sie ein PDF für PDF→Bild hoch; laden Sie ein Bild für Bild→PDF hoch. Das Formular passt sich automatisch an.',
+          'Der PDF-Export aller Seiten wird als .zip mit nummerierten Bildern geliefert.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF in JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Rendern Sie PDF-Seiten in JPG-Bilder.',
+        },
+        {
+          label: 'PDF in PNG',
+          to: '/tools/pdf-to-png',
+          description: 'Rendern Sie PDF-Seiten in verlustfreie PNG-Bilder.',
+        },
+        {
+          label: 'Bild in PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Verwandeln Sie jedes Bild in ein PDF.',
+        },
+        {
+          label: 'JPG in PDF umwandeln',
+          to: '/tools/convert-jpg-to-pdf',
+          description: 'Spezialisierter Konverter von JPG → PDF.',
+        },
+        {
+          label: 'PNG in PDF umwandeln',
+          to: '/tools/convert-png-to-pdf',
+          description: 'Spezialisierter Konverter von PNG → PDF.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen Bildformaten.',
+        },
+      ],
+      embed: {
+        title: 'Ein PDF oder ein Bild konvertieren',
+        description: 'Laden Sie ein PDF hoch, um seine Seiten in JPG- oder PNG-Bilder zu rendern, oder laden Sie ein Bild hoch, um es in ein PDF zu verwandeln. Das Formular passt sich der gewählten Datei an.',
+      },
     },
     'convert-heic-to-jpg': {
       name: 'HEIC in JPG umwandeln',
+      h1: 'HEIC online kostenlos in JPG umwandeln',
       tagline: 'Verwandeln Sie iPhone-HEIC-Fotos in universell kompatible JPG-Dateien, die sich überall öffnen und hochladen lassen.',
+      metaTitle: 'HEIC online kostenlos in JPG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von HEIC zu JPG. Verwandeln Sie iPhone-Fotos im Format .heic/.heif in universell kompatible JPG-Dateien. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'HEIC online kostenlos in JPG umwandeln',
+      ogDescription: 'Verwandeln Sie iPhone-HEIC-Fotos in universell kompatible JPG-Dateien. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'HEIC ist das hocheffiziente Format, mit dem iPhones Speicherplatz sparen, aber es lässt sich auf vielen Windows-PCs, Websites oder in älteren Apps nicht öffnen. Media Manipulator wandelt Ihre HEIC-Fotos in JPG um – das Format, das überall funktioniert – mit korrekter Ausrichtung und der Qualität, die Sie wählen.',
+      whatItDoes: [
+        'Wandelt Apple-HEIC/HEIF-Fotos in Standard-JPG um.',
+        'Richtet das Bild anhand der EXIF-Daten automatisch aus, damit Porträts nicht seitlich liegen.',
+        'Lässt Sie die JPG-Qualität wählen, um Dateigröße und Bildtreue auszubalancieren.',
+        'Erzeugt ein JPG, das sich auf jedem Gerät, jeder Website und in jeder App öffnen lässt.',
+      ],
+      flowSteps: [
+        {
+          title: 'HEIC hochladen',
+          description: 'Legen Sie ein .heic- oder .heif-Foto von Ihrem iPhone ab.',
+        },
+        {
+          title: 'Automatisch ausrichten',
+          description: 'Wir lesen die EXIF-Ausrichtung, damit das Foto aufrecht steht.',
+        },
+        {
+          title: 'JPG kodieren',
+          description: 'ImageMagick dekodiert HEIC (libheif) und schreibt ein JPG.',
+        },
+        {
+          title: 'JPG herunterladen',
+          description: 'Speichern Sie eine universell kompatible .jpg-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die HEIC-Dekodierung stützt sich auf ImageMagick mit einem libheif-Delegate. Fehlt dem Server die HEIC-Unterstützung, liefert das Tool eine klare Fehlermeldung statt einer defekten Datei.',
+        'Qualität 85–90 ist ein hervorragender Standardwert – HEIC ist bereits effizient, ein hochwertiges JPG lässt das Foto also identisch aussehen.',
+        'Die EXIF-Ausrichtung wird vor der Kodierung angewendet, was das häufige Problem „um 90° gedreht“ behebt, das bei naiver HEIC-Konvertierung auftritt.',
+      ],
+      whyItMatters: [
+        'Windows, viele Web-Upload-Formulare und ältere Software können HEIC immer noch nicht öffnen.',
+        'Ein JPG zu teilen garantiert, dass der Empfänger es auf jedem Gerät ansehen kann.',
+        'Die meisten Fotolabore und Marktplätze verlangen JPG.',
+      ],
+      useCases: [
+        {
+          title: 'iPhone-Fotos teilen',
+          description: 'Senden Sie Fotos, die sich auf jedem Handy oder PC öffnen lassen.',
+        },
+        {
+          title: 'Web-Uploads',
+          description: 'Erfüllen Sie die Vorgaben von Formularen und Websites, die HEIC ablehnen.',
+        },
+        {
+          title: 'Drucken',
+          description: 'Wandeln Sie in JPG um, bevor Sie Abzüge bestellen.',
+        },
+        {
+          title: 'Bearbeiten in älteren Apps',
+          description: 'Öffnen Sie Ihr Foto in Software ohne HEIC-Unterstützung.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Korrekte automatische Ausrichtung – keine seitlich liegenden Fotos.',
+        'Qualitätskontrolle statt einer festen Voreinstellung.',
+      ],
+      privacyNote: 'Ihr HEIC-Foto wird auf unserem Server dekodiert, richtig herum gedreht und als JPG gespeichert. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich HEIC kostenlos in JPG um?',
+          answer: 'Laden Sie oben Ihr .heic-Foto hoch, wählen Sie eine Qualität und klicken Sie auf Konvertieren. Sie erhalten ein Standard-.jpg zurück.',
+        },
+        {
+          question: 'Warum lässt sich mein HEIC-Foto unter Windows nicht öffnen?',
+          answer: 'HEIC ist ein von Apple bevorzugtes Format, das ältere Windows-Versionen und viele Apps nicht lesen können. Die Umwandlung in JPG sorgt dafür, dass sich das Foto überall öffnen lässt.',
+        },
+        {
+          question: 'Verliert das Foto an Qualität?',
+          answer: 'JPG ist verlustbehaftet, aber bei Qualität 85–90 sieht das Ergebnis für praktisch alle Fotos identisch mit dem HEIC-Original aus.',
+        },
+        {
+          question: 'Warum war mein konvertiertes Foto bisher gedreht?',
+          answer: 'Naive Konverter ignorieren die EXIF-Ausrichtung. Wir richten das Bild automatisch aus, sodass Ihr Foto richtig herum herauskommt.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die HEIC-Dekodierung erfordert ImageMagick mit einem libheif-Delegate auf dem Server.',
+        ],
+      },
+      related: [
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF und mehr.',
+        },
+        {
+          label: 'AVIF in JPG umwandeln',
+          to: '/tools/convert-avif-to-jpg',
+          description: 'Wandeln Sie moderne AVIF-Fotos in JPG um.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie das JPG für das Web.',
+        },
+        {
+          label: 'Bildkonverter-Tutorial',
+          to: '/tutorials/image/getting-started',
+          description: 'Schritt für Schritt durch jede Bildoption.',
+        },
+      ],
+      embed: {
+        title: 'HEIC in JPG umwandeln',
+        description: 'Laden Sie ein HEIC- oder HEIF-Foto von Ihrem iPhone hoch. Die Ausgabe ist fest auf JPG gesetzt, automatisch ausgerichtet, damit es richtig herum erscheint, mit der Qualität, die Sie wählen.',
+      },
     },
     'convert-avif-to-jpg': {
       name: 'AVIF in JPG umwandeln',
+      h1: 'AVIF online kostenlos in JPG umwandeln',
       tagline: 'Verwandeln Sie moderne AVIF-Bilder in universell kompatible JPG-Dateien für Apps und Websites, die AVIF nicht akzeptieren.',
+      metaTitle: 'AVIF online kostenlos in JPG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von AVIF zu JPG. Verwandeln Sie .avif-Bilder in universell kompatible JPG-Dateien mit der Qualität, die Sie wählen. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'AVIF online kostenlos in JPG umwandeln',
+      ogDescription: 'Verwandeln Sie moderne AVIF-Bilder in universell kompatible JPG-Dateien. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'AVIF ist ein hochmodernes Bildformat, das winzige Dateien erzeugt, aber viele Apps, Editoren und Upload-Formulare können es immer noch nicht öffnen. Media Manipulator wandelt AVIF in JPG um, damit Ihr Bild überall funktioniert. Wählen Sie eine Qualität und laden Sie herunter.',
+      whatItDoes: [
+        'Wandelt AVIF-Bilder in Standard-JPG um.',
+        'Legt eventuelle Transparenz auf einen Hintergrund, da JPG keinen Alphakanal hat.',
+        'Lässt Sie die JPG-Qualität für die gewünschte Balance zwischen Größe und Bildtreue wählen.',
+        'Erzeugt ein JPG, das sich auf jedem Gerät und in jeder App öffnen lässt.',
+      ],
+      flowSteps: [
+        {
+          title: 'AVIF hochladen',
+          description: 'Legen Sie ein .avif-Bild ab.',
+        },
+        {
+          title: 'JPG-Qualität wählen',
+          description: '85 ist ein ausgewogener Standardwert.',
+        },
+        {
+          title: 'JPG kodieren',
+          description: 'ImageMagick dekodiert AVIF (libaom/libheif) und schreibt ein JPG.',
+        },
+        {
+          title: 'JPG herunterladen',
+          description: 'Speichern Sie ein universell kompatibles .jpg.',
+        },
+      ],
+      advancedDetails: [
+        'Die AVIF-Dekodierung stützt sich auf ImageMagick mit einem AVIF-Delegate (libaom oder libheif). Fehlt dem Server die AVIF-Unterstützung, liefert das Tool eine klare Fehlermeldung.',
+        'AVIF unterstützt Transparenz; bei der Umwandlung in JPG werden transparente Bereiche auf einen Hintergrund gelegt, weil JPG keinen Alphakanal hat. Verwenden Sie AVIF → PNG, um Transparenz zu behalten.',
+        'Qualität 85–90 hält das JPG für die meisten Bilder visuell identisch mit dem AVIF.',
+      ],
+      whyItMatters: [
+        'Viele Apps und Upload-Formulare unterstützen AVIF immer noch nicht.',
+        'JPG garantiert, dass der Empfänger das Bild öffnen kann.',
+        'Die Umwandlung lässt Sie einen AVIF-Download überall dort verwenden, wo Sie ein JPG brauchen.',
+      ],
+      useCases: [
+        {
+          title: 'Webbilder speichern',
+          description: 'Wandeln Sie ein heruntergeladenes AVIF in ein nutzbares JPG um.',
+        },
+        {
+          title: 'App-Kompatibilität',
+          description: 'Öffnen Sie ein AVIF in Software ohne AVIF-Unterstützung.',
+        },
+        {
+          title: 'Uploads',
+          description: 'Erfüllen Sie die Vorgaben eines Formulars, das nur JPG akzeptiert.',
+        },
+        {
+          title: 'Drucken',
+          description: 'Erstellen Sie ein JPG für ein Fotolabor.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Qualitätskontrolle statt einer Einheitsvoreinstellung.',
+        'Läuft auf unseren eigenen Servern – keine Verarbeitung durch Dritte.',
+      ],
+      privacyNote: 'Ihr AVIF wird auf unserem Server dekodiert und mit der von Ihnen eingestellten Qualität als JPG neu kodiert. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich AVIF kostenlos in JPG um?',
+          answer: 'Laden Sie oben Ihr .avif-Bild hoch, wählen Sie eine Qualität und klicken Sie auf Konvertieren. Sie erhalten ein Standard-.jpg zurück.',
+        },
+        {
+          question: 'Warum kann ich AVIF-Dateien nicht öffnen?',
+          answer: 'AVIF ist ein neueres Format; viele Apps, Editoren und Websites haben die Unterstützung noch nicht ergänzt. Die Umwandlung in JPG sorgt dafür, dass sich das Bild überall öffnen lässt.',
+        },
+        {
+          question: 'Was ist mit Transparenz?',
+          answer: 'JPG kennt keine Transparenz, transparente AVIF-Bereiche werden also auf einen Hintergrund gelegt. Wenn Sie Transparenz behalten müssen, verwenden Sie das Tool AVIF → PNG.',
+        },
+        {
+          question: 'Verliere ich Qualität?',
+          answer: 'Bei Qualität 85–90 sieht das JPG für die meisten Bilder im Wesentlichen identisch mit dem AVIF aus.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die AVIF-Dekodierung erfordert ImageMagick mit einem AVIF-Delegate auf dem Server. Transparenz wird in der JPG-Ausgabe auf den Hintergrund gelegt.',
+        ],
+      },
+      related: [
+        {
+          label: 'AVIF in PNG umwandeln',
+          to: '/tools/convert-avif-to-png',
+          description: 'Behalten Sie Transparenz stattdessen mit einem PNG.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF und mehr.',
+        },
+        {
+          label: 'HEIC in JPG umwandeln',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Wandeln Sie iPhone-HEIC-Fotos in JPG um.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie das JPG für das Web.',
+        },
+      ],
+      embed: {
+        title: 'AVIF in JPG umwandeln',
+        description: 'Laden Sie ein AVIF-Bild hoch. Die Ausgabe ist fest auf JPG gesetzt, Sie erhalten also eine Datei, die jede App, jeder Editor und jedes Upload-Formular akzeptiert, mit der Qualität, die Sie wählen.',
+      },
     },
     'convert-avif-to-png': {
       name: 'AVIF in PNG umwandeln',
+      h1: 'AVIF online kostenlos in PNG umwandeln',
       tagline: 'Verwandeln Sie AVIF-Bilder in verlustfreie PNG-Dateien, die überall geöffnet werden können und die volle Transparenz behalten.',
+      metaTitle: 'AVIF online kostenlos in PNG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von AVIF zu PNG. Verwandeln Sie .avif-Bilder in verlustfreie PNG-Dateien, die Transparenz erhalten und sich in jedem Editor öffnen lassen. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'AVIF online kostenlos in PNG umwandeln',
+      ogDescription: 'Verwandeln Sie AVIF-Bilder in verlustfreie PNG-Dateien mit erhaltener Transparenz. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'Wenn ein AVIF-Bild Transparenz hat – etwa ein Logo oder ein Ausschnitt –, würde die Umwandlung in JPG sie entfernen. PNG behält den Alphakanal und ist verlustfrei, also das richtige Ziel für Grafiken. Media Manipulator wandelt AVIF in PNG um, mit intakter Transparenz.',
+      whatItDoes: [
+        'Wandelt AVIF-Bilder in verlustfreies PNG um.',
+        'Erhält den Alphakanal, sodass transparente AVIFs transparent bleiben.',
+        'Erzeugt ein PNG, das sich in jedem Editor, Viewer oder Design-Tool öffnen lässt.',
+        'Das Bild bleibt Pixel für Pixel erhalten, wenn aus dem AVIF ein PNG wird.',
+      ],
+      flowSteps: [
+        {
+          title: 'AVIF hochladen',
+          description: 'Legen Sie ein .avif-Bild ab, transparent oder deckend.',
+        },
+        {
+          title: 'AVIF dekodieren',
+          description: 'ImageMagick dekodiert das AVIF mit seinem AVIF-Delegate.',
+        },
+        {
+          title: 'PNG kodieren',
+          description: 'Ein verlustfreies PNG wird mit erhaltener Transparenz geschrieben.',
+        },
+        {
+          title: 'PNG herunterladen',
+          description: 'Speichern Sie eine .png-Datei mit erhaltener Transparenz.',
+        },
+      ],
+      advancedDetails: [
+        'Die AVIF-Dekodierung stützt sich auf ImageMagick mit einem AVIF-Delegate (libaom oder libheif). Fehlt dem Server die AVIF-Unterstützung, liefert das Tool eine klare Fehlermeldung.',
+        'Die Transparenz des AVIF wird als PNG-Alphakanal erhalten.',
+        'PNG ist verlustfrei, die Ausgabe ist also meist größer als das Quell-AVIF – der Preis für universelle Kompatibilität und Transparenz.',
+      ],
+      whyItMatters: [
+        'PNG behält Transparenz, die JPG zerstören würde – unverzichtbar für Logos und Ausschnitte.',
+        'Manche Editoren und Apps können AVIF nicht öffnen; PNG lässt sich überall öffnen.',
+        'PNG ist ein sicheres, verlustfreies Austauschformat für Grafiken.',
+      ],
+      useCases: [
+        {
+          title: 'Transparente Logos',
+          description: 'Wandeln Sie ein transparentes AVIF-Logo in ein nutzbares PNG um.',
+        },
+        {
+          title: 'Design-Übergaben',
+          description: 'Liefern Sie ein PNG an Tools, die AVIF nicht lesen.',
+        },
+        {
+          title: 'Bearbeitung',
+          description: 'Öffnen Sie das Bild verlustfrei in Ihrem Editor.',
+        },
+        {
+          title: 'Web-Assets',
+          description: 'Halten Sie ein PNG als Fallback für ältere Browser bereit.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Transparenz wird automatisch erhalten.',
+        'Verlustfreie PNG-Ausgabe für Grafikarbeit.',
+      ],
+      privacyNote: 'Ihr AVIF wird auf unserem Server dekodiert und als verlustfreies PNG mit intakter Transparenz gespeichert. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich AVIF kostenlos in PNG um?',
+          answer: 'Laden Sie oben Ihr .avif-Bild hoch und klicken Sie auf Konvertieren – die Ausgabe ist ein verlustfreies .png mit erhaltener Transparenz.',
+        },
+        {
+          question: 'Bleibt bei AVIF zu PNG die Transparenz erhalten?',
+          answer: 'Ja. PNG unterstützt einen Alphakanal, ein transparentes AVIF bleibt nach der Umwandlung also transparent.',
+        },
+        {
+          question: 'Soll ich für mein AVIF PNG oder JPG wählen?',
+          answer: 'Wählen Sie PNG, wenn Sie Transparenz oder verlustfreie Qualität brauchen (Logos, Grafiken). Wählen Sie JPG für die kleinste Datei, wenn das Bild ein Foto ohne Transparenz ist.',
+        },
+        {
+          question: 'Warum ist das PNG größer als das AVIF?',
+          answer: 'AVIF ist ein hocheffizientes komprimiertes Format, während PNG verlustfrei ist, das PNG ist also typischerweise größer. Das ist zu erwarten.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die AVIF-Dekodierung erfordert ImageMagick mit einem AVIF-Delegate. Transparenz bleibt in der PNG-Ausgabe erhalten.',
+        ],
+      },
+      related: [
+        {
+          label: 'AVIF in JPG umwandeln',
+          to: '/tools/convert-avif-to-jpg',
+          description: 'Wandeln Sie AVIF stattdessen in ein kompaktes JPG um.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF und mehr.',
+        },
+        {
+          label: 'HEIC in JPG umwandeln',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Wandeln Sie iPhone-HEIC-Fotos in JPG um.',
+        },
+        {
+          label: 'Hintergrund aus Bild entfernen',
+          to: '/tools/remove-background-from-image',
+          description: 'Erstellen Sie automatisch einen transparenten PNG-Ausschnitt.',
+        },
+      ],
+      embed: {
+        title: 'AVIF in PNG umwandeln',
+        description: 'Laden Sie ein AVIF-Bild hoch. Die Ausgabe ist fest auf PNG gesetzt, Transparenz bleibt also erhalten, und die Datei lässt sich verlustfrei in jedem Editor oder Viewer öffnen.',
+      },
     },
     'convert-svg-to-png': {
       name: 'SVG in PNG umwandeln',
+      h1: 'SVG online kostenlos in PNG umwandeln',
       tagline: 'Rastern Sie SVG-Icons und -Logos in beliebiger Größe zu PNG-Bildern für Uploads, Folien und Apps.',
+      metaTitle: 'SVG online kostenlos in PNG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von SVG zu PNG. Rastern Sie SVG-Icons und -Logos in der Größe, die Sie wählen, zu PNG-Bildern. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'SVG online kostenlos in PNG umwandeln',
+      ogDescription: 'Rastern Sie SVG-Icons und -Logos in beliebiger Größe zu PNG-Bildern. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'SVGs sind perfekte Vektoren, aber viele Plattformen – soziale Netzwerke, Marktplätze, Präsentationstools und Apps – akzeptieren nur Rasterbilder wie PNG. Media Manipulator rastert Ihr SVG in ein gestochen scharfes PNG mit erhaltener Transparenz in der Größe, die Sie wählen. SVGs werden als nicht vertrauenswürdige Eingabe mit einem sicheren Renderer verarbeitet.',
+      whatItDoes: [
+        'Rastert SVG-Vektordateien zu PNG-Bildern.',
+        'Lässt Sie eine Zielbreite und/oder -höhe für die Ausgabeauflösung festlegen.',
+        'Erhält die Transparenz des SVG im PNG.',
+        'Rendert mit einem sicheren Rasterizer, der keine externen Netzwerkressourcen abruft.',
+      ],
+      flowSteps: [
+        {
+          title: 'SVG hochladen',
+          description: 'Legen Sie ein .svg-Icon, -Logo oder eine Illustration ab.',
+        },
+        {
+          title: 'Größe festlegen (optional)',
+          description: 'Wählen Sie Breite/Höhe oder verwenden Sie die natürliche Größe des SVG.',
+        },
+        {
+          title: 'Rastern',
+          description: 'Das SVG wird auf unserem Server in ein Pixelbild gerendert.',
+        },
+        {
+          title: 'PNG herunterladen',
+          description: 'Speichern Sie ein gestochen scharfes .png mit erhaltener Transparenz.',
+        },
+      ],
+      advancedDetails: [
+        'Das Rendern verwendet rsvg-convert (librsvg), sofern verfügbar – es lädt standardmäßig keine entfernten Ressourcen –, mit ImageMagick als gehärtetem Fallback.',
+        'Da SVG ein Vektorformat ist, können Sie ohne Qualitätsverlust in jeder Auflösung rendern; wählen Sie eine größere Breite für eine schärfere Ausgabe.',
+        'Hochgeladene SVGs werden als nicht vertrauenswürdige Eingabe behandelt und mit deaktiviertem Netzwerkzugriff verarbeitet, um SSRF- und External-Fetch-Risiken zu vermeiden.',
+      ],
+      whyItMatters: [
+        'Die meisten Upload-Formulare und sozialen Plattformen lehnen SVG ab, akzeptieren aber PNG.',
+        'Das Rastern in einer gewählten Größe garantiert eine scharfe Ausgabe für diesen Zweck.',
+        'PNG behält die Transparenz, auf die Icons und Logos angewiesen sind.',
+      ],
+      useCases: [
+        {
+          title: 'Soziale Medien und Uploads',
+          description: 'Verwandeln Sie ein SVG-Logo in ein PNG, das eine Plattform akzeptiert.',
+        },
+        {
+          title: 'Präsentationen',
+          description: 'Fügen Sie ein gestochen scharfes PNG eines Icons in eine Folie ein.',
+        },
+        {
+          title: 'App-Assets',
+          description: 'Exportieren Sie ein PNG in genau der Größe, die Ihre App braucht.',
+        },
+        {
+          title: 'E-Mail',
+          description: 'Verwenden Sie ein PNG, wo SVG nicht unterstützt wird.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Rendern in jeder Größe ohne Qualitätsverlust – Vektoren skalieren perfekt.',
+        'Sichere SVG-Verarbeitung mit deaktivierten externen Abrufen.',
+      ],
+      privacyNote: 'Ihr SVG wird auf unserem Server von librsvg in ein PNG gerendert, wobei externe Bilder und Schriften, auf die es verweist, nicht abgerufen werden. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich SVG kostenlos in PNG um?',
+          answer: 'Laden Sie oben Ihre .svg-Datei hoch, legen Sie optional eine Breite oder Höhe fest und klicken Sie auf Konvertieren. Sie erhalten ein gestochen scharfes .png zurück.',
+        },
+        {
+          question: 'Welche Größe hat das PNG?',
+          answer: 'Standardmäßig wird die natürliche Größe des SVG verwendet. Legen Sie eine Breite und/oder Höhe fest, um größer oder kleiner zu rendern – Vektoren skalieren ohne Qualitätsverlust.',
+        },
+        {
+          question: 'Behält das PNG die Transparenz?',
+          answer: 'Ja. Transparente Bereiche des SVG werden als Transparenz im PNG erhalten.',
+        },
+        {
+          question: 'Ist es sicher, ein SVG hochzuladen?',
+          answer: 'Ja. Wir behandeln SVGs als nicht vertrauenswürdige Eingabe und rendern sie mit deaktivierten externen Netzwerkabrufen, sodass eingebettete entfernte Verweise nicht geladen werden können.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Gerendert mit rsvg-convert (bevorzugt) oder einem gehärteten ImageMagick-Fallback. Externe Netzwerkabrufe aus dem SVG sind deaktiviert.',
+        ],
+      },
+      related: [
+        {
+          label: 'PNG in SVG umwandeln',
+          to: '/tools/convert-png-to-svg',
+          description: 'Der umgekehrte Weg: Vektorisieren Sie ein PNG zu SVG.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF und mehr.',
+        },
+        {
+          label: 'PNG in ICO',
+          to: '/tools/png-to-ico',
+          description: 'Verwandeln Sie das PNG in ein Favicon.',
+        },
+      ],
+      embed: {
+        title: 'SVG in PNG umwandeln',
+        description: 'Laden Sie ein SVG hoch. Die Ausgabe ist fest auf PNG gesetzt. Legen Sie optional eine Breite oder Höhe fest, um die gerenderte Auflösung zu steuern – lassen Sie die Felder leer, um die natürliche Größe des SVG zu verwenden.',
+      },
     },
     'convert-png-to-svg': {
       name: 'PNG in SVG umwandeln',
+      h1: 'PNG online kostenlos in SVG umwandeln',
       tagline: 'Vektorisieren Sie Logos, Icons und Strichzeichnungen aus PNG mit potrace in echte, skalierbare SVG-Pfade.',
+      metaTitle: 'PNG online kostenlos in SVG umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Vektorisierer von PNG zu SVG. Zeichnen Sie Logos, Icons und Strichzeichnungen zu echten, skalierbaren SVG-Pfaden nach. Am besten für einfache Grafiken, nicht für Fotos. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'PNG online kostenlos in SVG umwandeln',
+      ogDescription: 'Vektorisieren Sie Logos, Icons und Strichzeichnungen aus PNG zu echten, skalierbaren SVG-Pfaden. Kostenlos, ohne Anmeldung.',
+      intro: 'Echte Umwandlung von PNG in SVG bedeutet, Ihr Bild in echte Vektorpfade nachzuzeichnen, die ohne Pixelbildung auf jede Größe skalieren. Media Manipulator verwendet potrace, um Ihr PNG zu vektorisieren – ideal für Logos, Icons, Unterschriften und schwarz-weiße Strichzeichnungen. Das ist echte Vektorisierung, kein in einem SVG verstecktes PNG. Es ist nicht dafür ausgelegt, Fotografien in saubere Vektorgrafiken zu verwandeln.',
+      whatItDoes: [
+        'Zeichnet ein PNG mit potrace in echte, skalierbare SVG-Vektorpfade nach.',
+        'Reduziert das Bild auf eine saubere Schwarz-Weiß-Bitmap und vektorisiert dann die Formen.',
+        'Lässt Sie den Schwarz-Weiß-Schwellenwert anpassen, um mehr oder weniger Details zu erfassen.',
+        'Gibt ein echtes .svg aus – kein Rasterbild, das in ein <image>-Tag verpackt ist.',
+      ],
+      flowSteps: [
+        {
+          title: 'PNG hochladen',
+          description: 'Legen Sie ein Logo, ein Icon, eine Unterschrift oder eine Strichzeichnung als PNG ab.',
+        },
+        {
+          title: 'Schwellenwert festlegen',
+          description: 'Wählen Sie die Schwarz-Weiß-Grenze, um den Detailgrad zu steuern.',
+        },
+        {
+          title: 'In Vektoren nachzeichnen',
+          description: 'ImageMagick bereitet eine Bitmap vor; potrace zeichnet die Pfade nach.',
+        },
+        {
+          title: 'SVG herunterladen',
+          description: 'Speichern Sie eine echte, skalierbare .svg-Datei.',
+        },
+      ],
+      advancedDetails: [
+        'Die Pipeline reduziert das PNG auf eine zweistufige Bitmap (ImageMagick-Schwellenwert) und führt dann potrace aus, um glatte Bézier-Vektorpfade zu erzeugen.',
+        'Die Vektorisierung funktioniert am besten bei kontrastreichen, einfachen Grafiken: Logos, Icons, Monogramme, Unterschriften und schwarz-weiße Strichzeichnungen.',
+        'Fotografien oder komplexe Verläufe werden nicht originalgetreu wiedergegeben – das Nachzeichnen eines Fotos erzeugt große, unsaubere Pfade, keine saubere Vektorgrafik.',
+        'Erhöhen Sie den Schwellenwert, um feinere/hellere Details zu erfassen; senken Sie ihn, um nur die kräftigsten Formen zu behalten.',
+      ],
+      whyItMatters: [
+        'Vektorlogos skalieren ohne Pixelbildung auf jede Größe – vom Favicon bis zur Plakatwand.',
+        'SVGs sind bei einfachen Grafiken winzig und in Vektortools wie Illustrator oder Inkscape bearbeitbar.',
+        'Einen Vektor aus einem PNG-Logo zurückzugewinnen spart es, ihn von Grund auf neu zu erstellen.',
+      ],
+      useCases: [
+        {
+          title: 'Logo-Wiederherstellung',
+          description: 'Vektorisieren Sie ein PNG-Logo, dessen Quelldatei Sie nicht mehr haben.',
+        },
+        {
+          title: 'Icons und Monogramme',
+          description: 'Verwandeln Sie ein einfaches Icon in ein skalierbares SVG.',
+        },
+        {
+          title: 'Unterschriften',
+          description: 'Vektorisieren Sie eine gescannte Unterschrift für die saubere Wiederverwendung.',
+        },
+        {
+          title: 'Strichzeichnungen',
+          description: 'Zeichnen Sie schwarz-weiße Grafiken in bearbeitbare Pfade nach.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Echte potrace-Vektorisierung – ehrlich darüber, was sie gut kann (und was nicht).',
+        'Schwellenwertsteuerung, damit Sie das Nachzeichnen fein abstimmen können.',
+      ],
+      privacyNote: 'Ihr Bild wird auf unserem Server auf Schwarz-Weiß reduziert und von potrace in Vektorpfade nachgezeichnet. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich ein PNG kostenlos in SVG um?',
+          answer: 'Laden Sie oben Ihre .png-Datei hoch, passen Sie bei Bedarf den Schwellenwert an und klicken Sie auf Konvertieren. Sie erhalten ein echtes Vektor-.svg zurück.',
+        },
+        {
+          question: 'Ist das echte Vektorisierung oder nur ein verpacktes PNG?',
+          answer: 'Es ist echte Vektorisierung. Wir zeichnen das Bild mit potrace in tatsächliche SVG-Pfade nach – wir betten nicht einfach das PNG in ein SVG ein und belassen es dabei.',
+        },
+        {
+          question: 'Vektorisiert es mein Foto?',
+          answer: 'Nicht gut. Die Vektorisierung ist für Logos, Icons, Unterschriften und Strichzeichnungen ausgelegt. Fotografien und komplexe Verläufe erzeugen große, unsaubere Pfade statt sauberer Vektoren.',
+        },
+        {
+          question: 'Was steuert der Schwellenwert?',
+          answer: 'Er legt die Schwarz-Weiß-Grenze vor dem Nachzeichnen fest. Erhöhen Sie ihn, um mehr (hellere) Details zu erfassen; senken Sie ihn, um nur die kräftigsten Formen zu behalten.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Vektorisierung erfordert potrace auf dem Server. Am besten für Logos/Icons/Strichzeichnungen – nicht für Fotografien.',
+        ],
+      },
+      related: [
+        {
+          label: 'SVG in PNG umwandeln',
+          to: '/tools/convert-svg-to-png',
+          description: 'Der umgekehrte Weg: Rastern Sie ein SVG zu PNG.',
+        },
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF und mehr.',
+        },
+        {
+          label: 'PNG in ICO',
+          to: '/tools/png-to-ico',
+          description: 'Verwandeln Sie ein PNG in ein Favicon.',
+        },
+      ],
+      embed: {
+        title: 'PNG zu SVG vektorisieren',
+        description: 'Laden Sie ein PNG hoch. Die Ausgabe ist fest auf SVG gesetzt und entsteht durch echte Vektorisierung (potrace), nicht durch ein in SVG verpacktes Rasterbild. Passen Sie den Schwarz-Weiß-Schwellenwert an, um mehr oder weniger Details zu erfassen. Am besten für Logos, Icons, Unterschriften und Strichzeichnungen.',
+      },
     },
     'png-to-ico': {
       name: 'PNG in ICO',
+      h1: 'PNG online kostenlos in ICO umwandeln',
       tagline: 'Verwandeln Sie ein PNG in ein echtes .ico-Favicon mit mehreren Größen für Websites und Windows-App-Icons.',
+      metaTitle: 'PNG online kostenlos in ICO umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von PNG in ICO. Erzeugen Sie ein echtes .ico-Favicon mit mehreren Größen (16–256 px) für Websites und Windows-Icons. Ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'PNG online kostenlos in ICO umwandeln',
+      ogDescription: 'Erzeugen Sie aus einem PNG ein echtes .ico-Favicon mit mehreren Größen. Kostenlos, schnell, ohne Anmeldung.',
+      intro: 'Ein Favicon muss eine echte .ico-Datei sein, die mehrere Größen enthält, damit Browser und Windows die passende auswählen können. Media Manipulator erzeugt aus Ihrem PNG ein echtes ICO mit mehreren Größen, keine umbenannte Datei, und packt die Standardleiter der Icon-Größen von 16–256 px hinein.',
+      whatItDoes: [
+        'Erzeugt einen echten .ico-Container aus einem PNG-Bild.',
+        'Packt mehrere Größen (16, 32, 48, 64, 128, 256 px) in eine Datei.',
+        'Erhält die Transparenz, damit das Icon auf jedem Hintergrund sauber sitzt.',
+        'Liefert eine Datei, die Browser und Windows als Favicon bzw. App-Icon akzeptieren.',
+      ],
+      flowSteps: [
+        {
+          title: 'PNG hochladen',
+          description: 'Legen Sie ein PNG ab; ein quadratisches Bild ergibt das beste Icon.',
+        },
+        {
+          title: 'Größen erzeugen',
+          description: 'Wir rendern jede Standard-Icon-Größe aus Ihrem Bild.',
+        },
+        {
+          title: 'ICO packen',
+          description: 'Die Größen werden in einen echten .ico-Container gepackt.',
+        },
+        {
+          title: 'ICO herunterladen',
+          description: 'Speichern Sie favicon.ico für Ihre Website oder App.',
+        },
+      ],
+      advancedDetails: [
+        'Das ICO wird mit der automatischen Icon-Größenanpassung von ImageMagick erstellt und ist ein echter Container mit mehreren Bildern, kein umbenanntes PNG.',
+        'Mehrere Größen einzuschließen erlaubt Browsern und Windows, für jeden Kontext (Tab, Taskleiste, Desktop) das schärfste Icon zu wählen.',
+        'Für das sauberste Ergebnis beginnen Sie mit einem quadratischen PNG mit 256×256 oder größer, damit jede Größe knackig herunterskaliert wird.',
+      ],
+      whyItMatters: [
+        'Browser erwarten ein echtes .ico-Favicon; ein umbenanntes PNG kann fehlschlagen oder unscharf aussehen.',
+        'Ein Icon mit mehreren Größen bleibt scharf, vom 16-px-Tab bis zur 256-px-Desktop-Verknüpfung.',
+        'Windows-App-Icons erfordern das .ico-Format.',
+      ],
+      useCases: [
+        {
+          title: 'Website-Favicons',
+          description: 'Erzeugen Sie favicon.ico für das Tab-Icon Ihrer Website.',
+        },
+        {
+          title: 'Windows-App-Icons',
+          description: 'Erstellen Sie ein .ico für eine Desktop-Anwendung.',
+        },
+        {
+          title: 'Verknüpfungen',
+          description: 'Erstellen Sie ein knackiges Icon für eine Desktop-Verknüpfung.',
+        },
+        {
+          title: 'Branding',
+          description: 'Verwandeln Sie ein Logo-PNG in eine richtige Icon-Datei.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Ein echtes ICO mit mehreren Größen, kein umbenanntes PNG.',
+        'Transparenz bleibt erhalten, für saubere Icons.',
+      ],
+      privacyNote: 'Ihr Bild wird von ImageMagick auf unserem Server auf jede Standard-Icon-Größe skaliert und in eine .ico-Datei gepackt. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Wie wandle ich ein PNG kostenlos in ICO um?',
+          answer: 'Laden Sie Ihre .png oben hoch und klicken Sie auf Konvertieren; Sie erhalten ein echtes .ico mit mehreren Größen zurück.',
+        },
+        {
+          question: 'Ist das ein echtes ICO oder ein umbenanntes PNG?',
+          answer: 'Ein echtes ICO. Wir erzeugen mehrere Icon-Größen und packen sie in einen echten .ico-Container, genau das, was Browser und Windows erwarten.',
+        },
+        {
+          question: 'Welche Größen sind enthalten?',
+          answer: 'Die Standard-Favicon-Leiter: 16, 32, 48, 64, 128 und 256 px. Browser und Windows wählen für jeden Kontext die beste Größe.',
+        },
+        {
+          question: 'Welches Bild eignet sich am besten?',
+          answer: 'Ein quadratisches PNG mit 256×256 oder größer liefert das knackigste Ergebnis, da jede kleinere Größe sauber daraus herunterskaliert wird.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Es wird ein ICO mit mehreren Größen (16/32/48/64/128/256 px) erzeugt. Beginnen Sie für das beste Ergebnis mit einem quadratischen Bild.',
+        ],
+      },
+      related: [
+        {
+          label: 'Bildkonverter',
+          to: '/tools/image-converter',
+          description: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF und mehr.',
+        },
+        {
+          label: 'SVG in PNG umwandeln',
+          to: '/tools/convert-svg-to-png',
+          description: 'Rastern Sie ein SVG-Logo, bevor Sie ein Icon erstellen.',
+        },
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Erstellen Sie ein quadratisches Bild, bevor Sie das Icon erzeugen.',
+        },
+        {
+          label: 'Hintergrund aus Bild entfernen',
+          to: '/tools/remove-background-from-image',
+          description: 'Erstellen Sie eine transparente Icon-Vorlage.',
+        },
+      ],
+      embed: {
+        title: 'PNG in ICO umwandeln',
+        description: 'Laden Sie ein PNG hoch (ein quadratisches Bild eignet sich am besten). Die Ausgabe ist fest auf ICO eingestellt, und es wird ein echtes Icon mit mehreren Größen erzeugt, das Versionen mit 16, 32, 48, 64, 128 und 256 px enthält.',
+      },
     },
     'svg-converter': {
       name: 'SVG-Konverter',
@@ -4189,19 +10210,511 @@ const deToolPages = {
     },
     'convert-wav-to-mp3': {
       name: 'WAV in MP3 umwandeln',
+      h1: 'WAV online in MP3 umwandeln',
       tagline: 'Verkleinern Sie große verlustfreie WAV-Aufnahmen zu weithin kompatiblen MP3-Dateien für Podcasts, Teilen und Speicherung.',
+      metaTitle: 'WAV online in MP3 umwandeln (kostenlos) | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von WAV in MP3. Komprimieren Sie verlustfreie .wav-Aufnahmen zu kleineren MP3-Dateien mit der Bitrate Ihrer Wahl.',
+      ogTitle: 'WAV online in MP3 umwandeln',
+      ogDescription: 'Komprimieren Sie WAV-Aufnahmen zu weithin kompatiblen MP3-Dateien mit der Bitrate Ihrer Wahl.',
+      intro: 'WAV-Dateien sind verlustfrei und groß. MP3 ist das universell kompatible komprimierte Audioformat: Jedes Smartphone, jeder Laptop und jede Musik-App spielt es ab. Media Manipulator kodiert Ihr WAV mit der von Ihnen gewählten Bitrate zu MP3 neu, sodass Sie nur ein winziges Stück Qualität gegen eine 5–10× kleinere Datei tauschen.',
+      whatItDoes: [
+        'Kodiert WAV-Aufnahmen mit der von Ihnen gewählten Bitrate zu MP3 neu.',
+        'Unterstützt eigene Abtastraten, Kanäle und Bitraten (128 bis 320 kbps).',
+        'Erhält die Lautheit und vermeidet unnötiges erneutes Resampling.',
+        'Gibt eine Standard-.mp3-Datei mit ID3-Tags aus.',
+      ],
+      flowSteps: [
+        {
+          title: 'WAV hochladen',
+          description: 'Legen Sie eine beliebige .wav-Datei von Ihrem Computer ab.',
+        },
+        {
+          title: 'Bitrate wählen',
+          description: '192 kbps für Sprache, 256–320 kbps für Musik.',
+        },
+        {
+          title: 'MP3 kodieren',
+          description: 'FFmpeg kodiert ein sauberes MP3 mit den gewählten Einstellungen.',
+        },
+        {
+          title: 'MP3 herunterladen',
+          description: 'Speichern Sie eine weithin kompatible .mp3.',
+        },
+      ],
+      advancedDetails: [
+        'Verwendet im Hintergrund eine Kodierung im LAME-Stil über FFmpeg.',
+        'MP3 ist ein verlustbehafteter Codec; bei Musik erreicht die Qualität um 256 kbps ein Plateau. Sprachinhalte klingen bei 128–192 kbps hervorragend.',
+        'Wenn Sie kleinere verlustfreie Dateien brauchen, verwenden Sie stattdessen FLAC oder ALAC. Verwenden Sie Opus (in OGG) für die kleinsten modernen verlustbehafteten Dateien, wenn Sie den Player kontrollieren.',
+      ],
+      whyItMatters: [
+        'WAV-Dateien sind 5–10× größer als ein vergleichbares MP3 mit vernünftiger Bitrate.',
+        'MP3 läuft auf jedem Gerät, ohne Codec-Kompatibilitätsprobleme.',
+        'Podcast-, Hörbuch- und Musikplattformen verlangen oder bevorzugen in der Regel MP3-Uploads.',
+      ],
+      useCases: [
+        {
+          title: 'Podcast-Episoden',
+          description: 'Mastern Sie in WAV, veröffentlichen Sie als MP3 mit 96–128 kbps mono.',
+        },
+        {
+          title: 'Sprachmemos',
+          description: 'Verkleinern Sie Handyaufnahmen vor dem Teilen oder Archivieren.',
+        },
+        {
+          title: 'Musikdemos',
+          description: 'Verschicken Sie Mixe mit 256–320 kbps ohne riesige Anhänge.',
+        },
+        {
+          title: 'Einbetten auf einer Website',
+          description: 'Verwenden Sie MP3 für Kompatibilität; jeder Browser spielt es nativ ab.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Wählen Sie Bitrate, Abtastrate und Kanalanordnung exakt aus.',
+        'Kostenlos, ohne Anmeldung, ohne Wasserzeichen; die Ausgabe gehört ganz Ihnen.',
+        'Dasselbe Aufbewahrungs- und Datenschutzmodell wie beim Rest der Tools.',
+      ],
+      privacyNote: 'Ihr WAV wird von FFmpeg auf unserem Server mit der von Ihnen gewählten Bitrate zu MP3 kodiert. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Welche Bitrate soll ich wählen?',
+          answer: '192 kbps ist ein ausgewogener Standard. Verwenden Sie 128 kbps für Sprache/Podcasts, 256–320 kbps für Musik.',
+        },
+        {
+          question: 'Sinkt die Audioqualität?',
+          answer: 'Leicht; MP3 ist verlustbehaftet. Ab 256 kbps können die meisten Hörer keinen Unterschied zum WAV-Original feststellen.',
+        },
+        {
+          question: 'Kann ich andere Formate in MP3 umwandeln?',
+          answer: 'Ja, der Audiokonverter akzeptiert FLAC, M4A/AAC, OGG, OPUS und mehr. Verwenden Sie das allgemeine Audiokonverter-Tool.',
+        },
+        {
+          question: 'Gibt es eine Dateigrößenbegrenzung?',
+          answer: 'Dateien in vernünftiger Größe werden akzeptiert. Bei sehr langen Aufnahmen sollten Sie zuerst trimmen.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren Sie zwischen beliebigen Audioformaten.',
+        },
+        {
+          label: 'Gesang aus einem Song isolieren',
+          to: '/tools/isolate-vocals-from-song',
+          description: 'Extrahieren Sie Gesang aus Musikstücken.',
+        },
+        {
+          label: 'Audiokonverter-Tutorial',
+          to: '/tutorials/audio/getting-started',
+          description: 'Gehen Sie jede Audio-Option durch, einschließlich der KI-Tools.',
+        },
+      ],
+      embed: {
+        title: 'WAV in MP3 umwandeln',
+        description: 'Laden Sie eine WAV-Datei hoch und wählen Sie MP3 als Ausgabeformat. 192 kbps ist ein guter Standard für Sprache; verwenden Sie 256–320 kbps für Musik.',
+      },
     },
     'isolate-vocals-from-song': {
       name: 'Gesang aus einem Song isolieren',
+      h1: 'Gesang aus einem Song online isolieren',
       tagline: 'Extrahieren Sie Gesang aus Musikstücken für Remixe, Covers, Transkription und Analyse. Nur bei Musik verwenden, an der Sie die Rechte haben.',
+      metaTitle: 'Gesang aus einem Song online isolieren (kostenlos) | Media Manipulator',
+      metaDescription: 'Kostenlose Online-Gesangsisolierung. Extrahieren Sie den Gesang aus einem Song als sauberen Stem für Remixe, Covers, Transkription oder Analyse.',
+      ogTitle: 'Gesang aus einem Song online isolieren',
+      ogDescription: 'Extrahieren Sie den Gesang aus einem Song als sauberen isolierten Stem, für Remixe, Covers, Transkription oder Analyse.',
+      intro: 'KI-basierte Quellentrennung kann eine Gesangsspur aus einem fertigen Mix herauslösen, ideal für Remixe, Covers, Karaoke-Vorbereitung oder das Transkribieren von Liedtexten. Media Manipulator führt die Trennung auf unserem eigenen GPU-Server aus. Das Ergebnis ist ein einzelner Gesangs-Stem, den Sie herunterladen und überall verwenden können, sofern Sie an Ihrem Ausgangsmaterial die Rechte dazu haben.',
+      whatItDoes: [
+        'Führt KI-basierte Quellentrennung aus, um die Gesangsspur aus einer Musikaufnahme zu extrahieren.',
+        'Gibt einen einzelnen isolierten Gesangs-Stem im Format Ihrer Datei aus (MP3 bleibt MP3) oder auf Wunsch als FLAC, WAV oder MP3.',
+        'Lässt sich gut mit Audio-Bereinigungstools wie Rauschunterdrückung und EQ kombinieren, für ein poliertes Ergebnis.',
+        'Unterstützt WAV, MP3, FLAC, M4A, OGG, OPUS und weitere Eingaben.',
+      ],
+      flowSteps: [
+        {
+          title: 'Song hochladen',
+          description: 'Legen Sie eine beliebige gängige Audiodatei mit gemischtem Gesang und Musik ab.',
+        },
+        {
+          title: 'KI-Trennung ausführen',
+          description: 'Ein lokales GPU-Modell trennt den Gesang vom Rest des Mixes.',
+        },
+        {
+          title: 'Bereinigen (optional)',
+          description: 'Wenden Sie Rauschunterdrückung, EQ oder Verstärkung an, um den Stem zu polieren.',
+        },
+        {
+          title: 'Gesangs-Stem herunterladen',
+          description: 'Speichern Sie den isolierten Gesang: standardmäßig im Format Ihrer Datei, oder als FLAC, WAV oder MP3.',
+        },
+      ],
+      advancedDetails: [
+        'Quellentrennung ist von Natur aus unvollkommen; Hall, Harmonien und starke Effekte sickern in die Ausgabe durch.',
+        'Ein MP3 oder eine andere komprimierte Datei kommt in ihrem eigenen Format zurück (MP3 mit 320 kbps). Verlustfreie Dateien (WAV, FLAC, AIFF) kommen als FLAC zurück. FLAC und WAV behalten die meisten Details für die weitere Bearbeitung in einer DAW; WAV ist am größten.',
+        'Für Karaoke (nur Instrumental) verwenden Sie stattdessen den eigenen Modus „Gesang entfernen“ im Audiokonverter.',
+      ],
+      whyItMatters: [
+        'Produzenten und Remixer können neue Tracks um einen vorhandenen Gesang herum aufbauen.',
+        'Sänger können Liedtexte oder Melodien genauer transkribieren.',
+        'Lehrende und Tontechniker nutzen isolierte Stems, um Mixing-Technik zu studieren.',
+      ],
+      useCases: [
+        {
+          title: 'Remixe und Covers',
+          description: 'Bauen Sie ein neues Instrumental um einen isolierten Gesang herum.',
+        },
+        {
+          title: 'Liedtext- und Melodietranskription',
+          description: 'Erhalten Sie ein klareres Signal für die manuelle oder KI-Transkription.',
+        },
+        {
+          title: 'Karaoke-Vorbereitung',
+          description: 'Kombinieren Sie den isolierten Gesang mit einer separaten Instrumentalversion.',
+        },
+        {
+          title: 'Tontechnik-Übung',
+          description: 'Studieren Sie Mixing-Technik an kommerziellen Aufnahmen.',
+        },
+      ],
+      whyMediaManipulator: [
+        'KI auf lokaler GPU; kein externer KI-Anbieter sieht Ihr Audio.',
+        'Kombinieren Sie EQ, Rauschunterdrückung und Trimmen in einem einzigen Upload.',
+        'Kostenlos, ohne Anmeldung, ohne Wasserzeichen auf der Ausgabe.',
+      ],
+      privacyNote: 'Ihr Song wird von Demucs auf unserem eigenen GPU-Server in Stems aufgeteilt, und nur der Gesangs-Stem wird an Sie zurückgegeben. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Ist die Trennung vollkommen sauber?',
+          answer: 'Kein Tool zur Quellentrennung ist perfekt. Rechnen Sie mit einigen Artefakten, besonders bei starkem Hall und Harmonien. Wählen Sie FLAC- oder WAV-Ausgabe, wenn Sie den Stem anschließend in einer DAW bereinigen möchten.',
+        },
+        {
+          question: 'Welche Audioformate werden unterstützt?',
+          answer: 'WAV, MP3, FLAC, M4A/AAC, OGG, OPUS und die meisten anderen gängigen Audioformate.',
+        },
+        {
+          question: 'Darf ich das bei urheberrechtlich geschützter Musik verwenden?',
+          answer: 'Nur, wenn Sie die Rechte besitzen, eine Lizenz haben oder unter einer Fair-Use-Regelung in Ihrem Rechtsraum handeln. Sie sind dafür verantwortlich, wie Sie die Ausgabe verwenden.',
+        },
+        {
+          question: 'Wo bekomme ich nur das Instrumental?',
+          answer: 'Verwenden Sie den KI-Modus „Gesang entfernen“ im Audiokonverter: derselbe Upload, andere Ausgabe.',
+        },
+      ],
+      related: [
+        {
+          label: 'Audiokonverter',
+          to: '/tools/audio-converter',
+          description: 'Konvertieren und bereinigen Sie den Stem nach der Isolierung.',
+        },
+        {
+          label: 'WAV in MP3 umwandeln',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Komprimieren Sie den WAV-Stem zum Teilen zu MP3.',
+        },
+        {
+          label: 'Audiokonverter-Tutorial',
+          to: '/tutorials/audio/getting-started',
+          description: 'Gehen Sie jede Audio-Option durch, einschließlich der KI-Tools.',
+        },
+      ],
+      embed: {
+        title: 'Gesang isolieren',
+        description: 'Laden Sie einen Song hoch und drücken Sie den Button: „Gesang isolieren“ ist bereits ausgewählt. Ihr Ergebnis kommt im Format Ihrer Datei zurück (MP3 bleibt MP3); wählen Sie unter „Ausgabeformat“ FLAC oder WAV für verlustfrei.',
+      },
     },
     'image-converter': {
       name: 'Bildkonverter',
+      h1: 'Kostenloser Online-Bildkonverter',
       tagline: 'Konvertieren Sie zwischen JPG, PNG, WebP, AVIF, GIF und mehr – mit Kontrolle über Qualität, Größenänderung, Zuschnitt und Metadaten.',
+      metaTitle: 'Kostenloser Online-Bildkonverter | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Bildkonverter für JPG, PNG, WebP, AVIF, GIF und HEIC. Größe ändern, komprimieren, zuschneiden und Metadaten entfernen in einem Upload.',
+      ogTitle: 'Kostenloser Online-Bildkonverter',
+      ogDescription: 'Konvertieren Sie JPG, PNG, WebP, AVIF, GIF und HEIC. Größe ändern, komprimieren und Metadaten entfernen in einem Upload.',
+      intro: 'Ein einzelnes Bild muss oft an mehreren Orten leben: auf Ihrer Website, in einer Präsentation, in einem Druckerzeugnis, in einem Marktplatz-Angebot. Jeder davon bevorzugt ein anderes Format. Media Manipulator verarbeitet jedes gängige Bildformat an einem Ort, mit feiner Kontrolle über Qualität, Größenänderung und Metadaten.',
+      whatItDoes: [
+        'Konvertiert zwischen JPG, PNG, WebP, AVIF, GIF, HEIC und mehr.',
+        'Größe ändern, zuschneiden, drehen und visuelle Filter anwenden in einem einzigen Durchgang.',
+        'EXIF-/IPTC-/XMP-Metadaten nach Bedarf entfernen oder behalten.',
+        'KI-Tools: Gesichter unkenntlich machen, Hintergrund entfernen, Hochskalieren sowie Schwärzen von Text und personenbezogenen Daten.',
+      ],
+      flowSteps: [
+        {
+          title: 'Bild hochladen',
+          description: 'Legen Sie eine beliebige gängige Bilddatei ab.',
+        },
+        {
+          title: 'Ausgabeformat wählen',
+          description: 'JPG, PNG, WebP, AVIF, GIF.',
+        },
+        {
+          title: 'Qualität und Metadaten einstellen',
+          description: 'Größe ändern, zuschneiden oder EXIF entfernen.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das konvertierte Bild.',
+        },
+      ],
+      advancedDetails: [
+        'WebP und AVIF liefern die kleinsten Web-Dateien; AVIF schlägt WebP bei gleicher visueller Qualität oft.',
+        'PNG ist verlustfrei und unterstützt Transparenz; ideal für UI-Assets und Screenshots.',
+        'JPG ist das sicherste Austauschformat für Fotos.',
+      ],
+      whyItMatters: [
+        'Verschiedene Plattformen und Tools akzeptieren verschiedene Bildformate.',
+        'Kleinere Bilddateien laden Seiten schneller, und Google stuft schnellere Seiten höher ein.',
+        'Metadaten vor dem Teilen zu entfernen schützt Ihre Privatsphäre.',
+      ],
+      useCases: [
+        {
+          title: 'Web-Optimierung',
+          description: 'Konvertieren Sie PNG-Fotos zu WebP/AVIF, um das Seitengewicht zu verringern.',
+        },
+        {
+          title: 'Plattformübergreifendes Teilen',
+          description: 'Konvertieren Sie HEIC-Fotos vom iPhone zu JPG.',
+        },
+        {
+          title: 'Marktplatz-Angebote',
+          description: 'Entfernen Sie Metadaten und ändern Sie die Größe vor dem Einstellen.',
+        },
+        {
+          title: 'Druck und Präsentationen',
+          description: 'Geben Sie JPG mit einer hohen Qualitätsvorgabe aus.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Ein Upload deckt Konvertieren, Größenänderung, Zuschnitt, Filter, KI und Metadaten ab.',
+        'Kostenlos, ohne Anmeldung, ohne Wasserzeichen.',
+        'KI-Tools laufen auf unserem eigenen GPU-Server.',
+      ],
+      privacyNote: 'Ihr Bild wird von ImageMagick auf unserem Server konvertiert und, falls gewünscht, in der Größe geändert oder zugeschnitten. Nichts wird an einen externen Dienst gesendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Das Original wird nie verändert: Sie laden eine neue Datei herunter.',
+      faq: [
+        {
+          question: 'Welches Bildformat ist das beste?',
+          answer: 'Das kommt darauf an: WebP/AVIF für das Web, PNG für Transparenz, JPG für Kompatibilität.',
+        },
+        {
+          question: 'Kann ich Bilder stapelweise konvertieren?',
+          answer: 'Das kostenlose Tool konvertiert ein Bild auf einmal. Führen Sie mehrere Konvertierungen nacheinander aus.',
+        },
+        {
+          question: 'Werden Metadaten entfernt?',
+          answer: 'Nur, wenn Sie den Metadatenmodus auf „Entfernen“ setzen. Standardmäßig werden Metadaten behalten.',
+        },
+        {
+          question: 'Funktioniert es mit HEIC?',
+          answer: 'Ja, HEIC-Fotos vom iPhone lassen sich sauber zu JPG, PNG oder WebP konvertieren.',
+        },
+      ],
+      related: [
+        {
+          label: 'Bildgröße ändern',
+          to: '/tools/image-resizer',
+          description: 'Ändern Sie die Größe auf exakte Pixelmaße.',
+        },
+        {
+          label: 'Bild komprimieren',
+          to: '/tools/compress-image',
+          description: 'Verkleinern Sie die Bilddateigröße für das Web.',
+        },
+        {
+          label: 'Bild in PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Verpacken Sie ein Bild in ein PDF-Dokument.',
+        },
+        {
+          label: 'PDF-Konverter',
+          to: '/tools/pdf-converter',
+          description: 'Konvertieren Sie PDFs in Bilder und zurück.',
+        },
+        {
+          label: 'HEIC in JPG umwandeln',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Konvertieren Sie HEIC-Fotos vom iPhone zu JPG.',
+        },
+        {
+          label: 'Hintergrund aus Bild entfernen',
+          to: '/tools/remove-background-from-image',
+          description: 'Löschen Sie einen Hintergrund automatisch zu einem transparenten PNG.',
+        },
+        {
+          label: 'WebP in JPG umwandeln',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Spezialisierter Konverter von WebP → JPG.',
+        },
+        {
+          label: 'Bildkonverter-Tutorial',
+          to: '/tutorials/image/getting-started',
+          description: 'Vollständige Anleitung zu jeder Option.',
+        },
+      ],
+      embed: {
+        title: 'Ein Bild konvertieren',
+        description: 'Laden Sie ein beliebiges Bild hoch und wählen Sie Ausgabeformat, Qualität sowie die Einstellungen für Größenänderung/Zuschnitt. JPG eignet sich für Fotos, PNG behält Transparenz, und WebP/AVIF liefern die kleinsten Web-Dateien.',
+      },
     },
     'video-converter': {
       name: 'Videokonverter',
+      h1: 'Kostenloser Online-Videokonverter',
       tagline: 'Konvertieren Sie zwischen MP4, WebM, MOV, AVI, MKV und mehr – mit voller Kontrolle über Codecs, Auflösung und Audio.',
+      metaTitle: 'Kostenloser Online-Videokonverter | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Videokonverter für MP4, WebM, MOV, AVI, MKV und mehr. Wählen Sie Codecs, Bitrate, Auflösung und Audioeinstellungen.',
+      ogTitle: 'Kostenloser Online-Videokonverter',
+      ogDescription: 'Konvertieren Sie MP4, WebM, MOV, AVI, MKV, FLV, WMV und mehr. Wählen Sie Codec, Bitrate und Audioeinstellungen.',
+      intro: 'Verschiedene Plattformen wollen verschiedene Videoformate. Auf dem Mac in MOV schneiden, im Web als MP4 oder WebM veröffentlichen, in MKV archivieren. Media Manipulator verarbeitet jeden gängigen Videocontainer und Codec an einem Ort, mit voller Kontrolle über Bitrate, Auflösung und Audio.',
+      whatItDoes: [
+        'Konvertiert zwischen MP4, WebM, MOV, AVI, MKV, FLV, WMV und ProRes.',
+        'Wählen Sie den Codec (H.264, H.265, VP9, ProRes, DNxHD).',
+        'Größe ändern, Bildrate ändern, trimmen und Audio neu kodieren.',
+        'Optional Filter und Farbkorrektur anwenden.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Legen Sie einen beliebigen gängigen Videocontainer ab.',
+        },
+        {
+          title: 'Zielformat wählen',
+          description: 'MP4, WebM, MOV, AVI, MKV.',
+        },
+        {
+          title: 'Codec und Qualität einstellen',
+          description: 'Bitrate, Auflösung, Audio.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das konvertierte Video.',
+        },
+      ],
+      advancedDetails: [
+        'H.264 in MP4 ist der Standard, der überall sicher funktioniert.',
+        'H.265 (HEVC) und VP9 liefern bei gleicher visueller Qualität etwa 25–50 % kleinere Dateien, brauchen aber einen modernen Player.',
+        'Für die Übergabe an den Schnitt bewahren ProRes (in MOV) oder DNxHD (in MOV/MXF) die meiste Qualität.',
+      ],
+      whyItMatters: [
+        'Schnittprogramme, Browser und soziale Plattformen bevorzugen jeweils unterschiedliche Formate.',
+        'Kleinere Videodateien verbessern die Ladezeit von Seiten und senken Bandbreitenkosten.',
+        'Durch Neukodierung können Sie falsche Codecs oder nicht abspielbare Dateien reparieren.',
+      ],
+      useCases: [
+        {
+          title: 'MOV → MP4',
+          description: 'Machen Sie mit Apple-Geräten aufgenommenes Material überall abspielbar.',
+        },
+        {
+          title: 'AVI → MP4',
+          description: 'Modernisieren Sie ein altes Archivvideo.',
+        },
+        {
+          title: 'MP4 → WebM',
+          description: 'Verkleinern Sie Webvideo für moderne Browser.',
+        },
+        {
+          title: 'Übergabe an den Schnitt',
+          description: 'Exportieren Sie ProRes oder DNxHD für hochwertigen Schnitt.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Volle Kontrolle über Codec, Bitrate und Audio in einem Upload.',
+        'KI-Transkription für dieselbe Datei verfügbar.',
+        'Kostenlos, ohne Anmeldung, ohne Wasserzeichen.',
+      ],
+      privacyNote: 'Ihr Video wird von FFmpeg auf unserem Server in den Container und Codec Ihrer Wahl neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Welches Ausgabeformat ist am besten?',
+          answer: 'MP4 mit H.264 für Kompatibilität, WebM mit VP9 für die kleinsten Web-Dateien.',
+        },
+        {
+          question: 'Kann ich vor dem Konvertieren trimmen?',
+          answer: 'Ja, im Trimm-Bereich des Formulars können Sie den Clip vor der Neukodierung kürzen.',
+        },
+        {
+          question: 'Bleibt mein Audio synchron?',
+          answer: 'Ja, FFmpeg hält Bild und Ton synchron. Wenn Sie Bildrate oder Geschwindigkeit ändern, wird das Audio entsprechend neu abgetastet.',
+        },
+        {
+          question: 'Gibt es eine Dateigrößenbegrenzung?',
+          answer: 'Sehr große Dateien können im kostenlosen Tarif abgelehnt werden. Versuchen Sie zuerst, die Auflösung zu senken.',
+        },
+      ],
+      related: [
+        {
+          label: 'MOV in MP4 umwandeln',
+          to: '/tools/convert-mov-to-mp4',
+          description: 'Machen Sie QuickTime-/iPhone-Material überall abspielbar.',
+        },
+        {
+          label: 'WebM in MP4 umwandeln',
+          to: '/tools/convert-webm-to-mp4',
+          description: 'Verwandeln Sie Webvideo in ein bearbeitbares MP4.',
+        },
+        {
+          label: 'MP4 in WebM umwandeln',
+          to: '/tools/convert-mp4-to-webm',
+          description: 'Verkleinern Sie MP4 zu VP9-WebM für das Web.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Spezialisierter Kompressor zum Verkleinern von Videodateien.',
+        },
+        {
+          label: 'Video in GIF umwandeln',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Verwandeln Sie kurze Clips in animierte GIFs.',
+        },
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Speichern Sie die Tonspur als MP3, WAV oder M4A.',
+        },
+        {
+          label: 'Video-Trimmer',
+          to: '/tools/video-trimmer',
+          description: 'Schneiden Sie einen Clip verlustfrei auf den gewünschten Teil.',
+        },
+        {
+          label: 'Videogröße ändern',
+          to: '/tools/resize-video',
+          description: 'Ändern Sie die Auflösung auf 1080p, 720p oder einen eigenen Wert.',
+        },
+        {
+          label: 'Video drehen',
+          to: '/tools/rotate-video',
+          description: 'Korrigieren Sie seitlich gedrehtes oder auf dem Kopf stehendes Material.',
+        },
+        {
+          label: 'Video transkribieren',
+          to: '/tools/transcribe-video',
+          description: 'Ziehen Sie Sprache als Text oder VTT-Untertitel aus dem Video.',
+        },
+        {
+          label: 'KI-Frame-Interpolation',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Erhöhen Sie die FPS eines Videos mit KI-generierten Bildern auf 48, 60 oder 120.',
+        },
+        {
+          label: 'Video in HLS transkodieren',
+          to: '/tools/transcode-to-hls',
+          description: 'Erzeugen Sie aus jedem Video ein adaptives HLS-Paket.',
+        },
+        {
+          label: 'Video in DASH transkodieren',
+          to: '/tools/transcode-to-dash',
+          description: 'Erzeugen Sie aus jedem Video ein MPEG-DASH-Paket mit AV1/VP9.',
+        },
+        {
+          label: 'Videokonverter-Tutorial',
+          to: '/tutorials/video/getting-started',
+          description: 'Vollständige Anleitung zu jeder Option.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video konvertieren',
+        description: 'Laden Sie ein beliebiges Video hoch und wählen Sie Zielcontainer und Codec. Die Qualitätsvorgabe „Mittel“ ist ein guter Standard. MP4 läuft überall; WebM liefert in modernen Browsern kleinere Dateien.',
+      },
     },
     'mp4-converter': {
       name: 'MP4-Konverter',
@@ -4209,23 +10722,567 @@ const deToolPages = {
     },
     'convert-mov-to-mp4': {
       name: 'MOV in MP4 umwandeln',
+      h1: 'MOV online kostenlos in MP4 umwandeln',
       tagline: 'Verwandeln Sie QuickTime- und iPhone-.mov-Dateien in ein universelles MP4, das überall abgespielt und hochgeladen werden kann.',
+      metaTitle: 'MOV online kostenlos in MP4 umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von MOV in MP4. Konvertieren Sie QuickTime- und iPhone-.mov-Videos in ein MP4, das überall läuft. Ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'MOV online kostenlos in MP4 umwandeln',
+      ogDescription: 'Konvertieren Sie QuickTime-/iPhone-MOV-Dateien in ein universelles MP4, das auf jedem Gerät hochgeladen und abgespielt werden kann.',
+      intro: 'MOV ist Apples QuickTime-Container: das Format, in dem iPhones, Macs und viele Kameras standardmäßig aufnehmen. Innerhalb des Apple-Ökosystems ist es hervorragend, aber unter Windows, Android oder in manchen Upload-Formularen kann es die Wiedergabe verweigern. Die Umwandlung von MOV in MP4 behält dasselbe H.264-Video und AAC-Audio in einem Container, den die ganze Welt akzeptiert, meist ohne sichtbare Qualitätsänderung.',
+      whatItDoes: [
+        'Konvertiert QuickTime-/iPhone-.mov-Dateien in MP4.',
+        'Legt die Ausgabe fest auf MP4 (H.264 + AAC), damit das Ergebnis überall läuft.',
+        'Fügt -pix_fmt yuv420p und +faststart hinzu, damit das MP4 in Browsern läuft und sofort startet.',
+        'Trimmen Sie das MOV, ändern Sie seine Größe oder wählen Sie eine Qualitätsvorgabe im selben Upload.',
+      ],
+      flowSteps: [
+        {
+          title: 'Ihr MOV hochladen',
+          description: 'Legen Sie eine .mov-Datei von Ihrem iPhone, Mac oder Ihrer Kamera ab.',
+        },
+        {
+          title: 'Ausgabe ist fest auf MP4 eingestellt',
+          description: 'Keine Formatwahl nötig; MP4 ist für dieses Tool vorgegeben.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'Wir verpacken bzw. kodieren das Video neu in ein sauberes MP4.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie Ihr MP4, bereit für jedes Gerät und jede Plattform.',
+        },
+      ],
+      advancedDetails: [
+        'Die meisten MOV-Dateien enthalten bereits H.264-Video, daher ist die Konvertierung schnell und bei der Qualität „Hoch“ nahezu verlustfrei.',
+        'Wir erzwingen yuv420p-Chroma, damit das MP4 in Safari und auf sozialen Plattformen läuft, die 4:2:2-/4:4:4-Video ablehnen.',
+        'Enthält Ihr MOV ProRes, transkodiert der Konverter es zu H.264 herunter; wählen Sie die Qualität „Hoch“, um die meisten Details zu behalten.',
+      ],
+      whyItMatters: [
+        'MOV läuft unter Windows oder Android oft nicht ohne zusätzliche Codecs.',
+        'Viele Upload-Formulare und Schnittprogramme akzeptieren MP4, lehnen MOV aber ab.',
+        'MP4 ist das sicherste Format, um ein iPhone-Video mit irgendjemandem zu teilen.',
+      ],
+      useCases: [
+        {
+          title: 'iPhone-Videos',
+          description: 'Konvertieren Sie ein auf dem iPhone aufgenommenes .mov, damit es auf einem Windows-PC läuft.',
+        },
+        {
+          title: 'Ins Web hochladen',
+          description: 'Verwandeln Sie einen QuickTime-Export in ein MP4, das eine Website akzeptiert.',
+        },
+        {
+          title: 'An Nicht-Apple-Nutzer senden',
+          description: 'Teilen Sie Material mit Android- und Windows-Nutzern ohne Wiedergabeprobleme.',
+        },
+        {
+          title: 'Kompatibilität mit Schnittprogrammen',
+          description: 'Geben Sie ein MP4 in Schnittprogramme, die mit rohem MOV Probleme haben.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Ausgabe fest auf ein bewährtes MP4-Profil eingestellt; kein Rätselraten bei den Einstellungen.',
+        'Serverseitiges FFmpeg verarbeitet auch Quellen mit ProRes in MOV und HEVC in MOV.',
+      ],
+      privacyNote: 'Ihr MOV wird von FFmpeg auf unserem Server in ein MP4 mit H.264 und AAC neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie wandle ich MOV in MP4 um?',
+          answer: 'Laden Sie Ihre .mov-Datei hoch und klicken Sie auf Konvertieren; die Ausgabe ist bereits auf MP4 eingestellt, es gibt also nichts weiter zu wählen.',
+        },
+        {
+          question: 'Verliert die Umwandlung von MOV in MP4 Qualität?',
+          answer: 'Die meisten MOV-Dateien verwenden H.264, daher ist die Neukodierung bei der Qualität „Hoch“ visuell nahezu verlustfrei. Niedrigere Vorgaben tauschen etwas Qualität gegen eine kleinere Datei.',
+        },
+        {
+          question: 'Warum läuft mein iPhone-MOV nicht unter Windows?',
+          answer: 'Windows fehlen möglicherweise die QuickTime-/HEVC-Codecs. MP4 mit H.264 + AAC läuft ohne zusätzliche Software.',
+        },
+        {
+          question: 'Ist QuickTime in MP4 dasselbe?',
+          answer: 'Ja, QuickTime-Dateien verwenden den .mov-Container, die Umwandlung von QuickTime in MP4 ist also genau dieses Tool.',
+        },
+        {
+          question: 'Gibt es ein Wasserzeichen oder eine Anmeldung?',
+          answer: 'Kein Wasserzeichen und kein Konto erforderlich. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Ausgabe ist fest auf MP4 eingestellt (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Konvertieren Sie jedes Video in MP4.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das MP4 für E-Mail oder das Web.',
+        },
+        {
+          label: 'Video in GIF umwandeln',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Trimmen Sie einen Clip und exportieren Sie ein animiertes GIF.',
+        },
+        {
+          label: 'Videokonverter-Tutorial',
+          to: '/tutorials/video/getting-started',
+          description: 'Gehen Sie die Optionen für Trimmen, Größenänderung und Qualität durch.',
+        },
+      ],
+      embed: {
+        title: 'MOV in MP4 umwandeln',
+        description: 'Laden Sie Ihre .mov-Datei hoch. Die Ausgabe ist für dieses Tool fest auf MP4 (H.264 + AAC) eingestellt, also einfach hochladen und konvertieren.',
+      },
     },
     'convert-webm-to-mp4': {
       name: 'WebM in MP4 umwandeln',
+      h1: 'WebM online kostenlos in MP4 umwandeln',
       tagline: 'Verwandeln Sie webtaugliche .webm-Videos in ein MP4, das Sie bearbeiten, teilen und auf jedem Gerät abspielen können.',
+      metaTitle: 'WebM online kostenlos in MP4 umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von WebM in MP4. Konvertieren Sie .webm-Video (VP8/VP9) in MP4 (H.264 + AAC) für Schnittprogramme und Geräte, die WebM nicht öffnen können. Ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'WebM online kostenlos in MP4 umwandeln',
+      ogDescription: 'Konvertieren Sie .webm-Video in ein universelles MP4, das Schnittprogramme, Smartphones und Fernseher abspielen können.',
+      intro: 'WebM ist ein moderner, offener Container, der für das Web entwickelt wurde: kleine Dateien, ideal für Browser-Video. Aber viele Videoschnittprogramme, ältere Geräte und Messaging-Apps können WebM nicht öffnen. Die Umwandlung von WebM in MP4 kodiert das VP8-/VP9-Video zu H.264 und das Audio zu AAC neu und liefert Ihnen eine Datei, die in Premiere, Resolve, auf Smartphones und Fernsehern funktioniert.',
+      whatItDoes: [
+        'Konvertiert .webm-Video (VP8/VP9 + Vorbis/Opus) in MP4.',
+        'Legt die Ausgabe fest auf MP4 (H.264 + AAC) für maximale Kompatibilität.',
+        'Fügt yuv420p und +faststart hinzu, damit das MP4 in jedem Browser läuft und sofort startet.',
+        'Eine WebM-Bildschirmaufnahme kann auf dem Weg zu MP4 getrimmt oder in der Größe geändert werden.',
+      ],
+      flowSteps: [
+        {
+          title: 'Ihr WebM hochladen',
+          description: 'Legen Sie eine .webm-Datei ab, die Sie aus dem Web heruntergeladen oder mit einem Bildschirmrekorder aufgenommen haben.',
+        },
+        {
+          title: 'Ausgabe ist fest auf MP4 eingestellt',
+          description: 'MP4 ist für dieses Tool vorgegeben; nichts zu konfigurieren.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'Wir transkodieren VP8/VP9 zu H.264 + AAC.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie Ihr MP4 zum Schneiden oder Abspielen, wo immer Sie möchten.',
+        },
+      ],
+      advancedDetails: [
+        'WebM verwendet VP8-/VP9-Video, das die meisten Schnittprogramme nicht importieren können; MP4/H.264 lässt sich sauber in jedes NLE importieren.',
+        'Wir erzwingen yuv420p, damit das MP4 in Safari und auf sozialen Plattformen läuft.',
+        'Wenn Sie eigentlich eine kleinere Web-Datei möchten, erzeugt das umgekehrte Tool von MP4 in WebM stattdessen ein VP9-WebM.',
+      ],
+      whyItMatters: [
+        'Die meisten Desktop-Schnittprogramme können WebM nicht importieren, verarbeiten MP4 aber nativ.',
+        'Manche Smartphones, Fernseher und Chat-Apps verweigern die Wiedergabe von WebM.',
+        'MP4 ist das sichere Übergabeformat für Video, das Sie als WebM heruntergeladen haben.',
+      ],
+      useCases: [
+        {
+          title: 'Heruntergeladenes Video schneiden',
+          description: 'Holen Sie einen .webm-Clip als MP4 in Premiere oder Resolve.',
+        },
+        {
+          title: 'Bildschirmaufnahmen',
+          description: 'Konvertieren Sie eine WebM-Bildschirmaufnahme in ein teilbares MP4.',
+        },
+        {
+          title: 'Auf älteren Geräten abspielen',
+          description: 'Bringen Sie eine WebM-Datei auf einem Fernseher oder Smartphone zum Laufen, das sie nicht unterstützt.',
+        },
+        {
+          title: 'Messaging-Apps',
+          description: 'Senden Sie Video an Apps, die MP4 akzeptieren, aber kein WebM.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Serverseitiges FFmpeg dekodiert VP8 und VP9 zuverlässig.',
+        'Ausgabe fest auf ein bewährtes MP4-Profil eingestellt.',
+      ],
+      privacyNote: 'Ihr WebM wird von FFmpeg auf unserem Server von VP8 oder VP9 in ein H.264-MP4 neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie wandle ich WebM in MP4 um?',
+          answer: 'Laden Sie Ihre .webm-Datei hoch und klicken Sie auf Konvertieren; die Ausgabe ist bereits auf MP4 eingestellt.',
+        },
+        {
+          question: 'Warum kann mein Schnittprogramm WebM nicht öffnen?',
+          answer: 'Die meisten Schnittprogramme enthalten keinen VP8-/VP9-Import. Die Umwandlung in MP4 (H.264) behebt den Import.',
+        },
+        {
+          question: 'Wird die Datei größer?',
+          answer: 'MP4/H.264 kann bei gleicher Qualität etwas größer sein als VP9-WebM. Wählen Sie eine niedrigere Qualitätsvorgabe, wenn die Größe wichtig ist.',
+        },
+        {
+          question: 'Bleibt das Audio erhalten?',
+          answer: 'Ja, Vorbis-/Opus-Audio wird zu AAC neu kodiert und bleibt synchron.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Ausgabe ist fest auf MP4 eingestellt (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Konvertieren Sie jedes Video in MP4.',
+        },
+        {
+          label: 'MP4 in WebM umwandeln',
+          to: '/tools/convert-mp4-to-webm',
+          description: 'Der umgekehrte Weg: Erstellen Sie ein kleines VP9-WebM.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das MP4 zum Teilen.',
+        },
+      ],
+      embed: {
+        title: 'WebM in MP4 umwandeln',
+        description: 'Laden Sie Ihre .webm-Datei hoch. Die Ausgabe ist für dieses Tool fest auf MP4 (H.264 + AAC) eingestellt, also einfach hochladen und konvertieren.',
+      },
     },
     'convert-avi-to-mp4': {
       name: 'AVI in MP4 umwandeln',
+      h1: 'AVI online kostenlos in MP4 umwandeln',
       tagline: 'Bringen Sie alte .avi-Videos auf den neuesten Stand: als kompaktes MP4, das auf jedem Smartphone, in jedem Browser und auf jedem Fernseher läuft.',
+      metaTitle: 'AVI online kostenlos in MP4 umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von AVI in MP4. Konvertieren Sie alte .avi-Videos (Xvid/DivX) in MP4 (H.264 + AAC), das überall läuft. Ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'AVI online kostenlos in MP4 umwandeln',
+      ogDescription: 'Konvertieren Sie altes .avi-Video in ein modernes, kompaktes MP4, das auf jedem Gerät läuft.',
+      intro: 'AVI ist ein klassischer Windows-Container aus der DivX-/Xvid-Ära. Die Dateien sind oft groß und verwenden Codecs, die moderne Smartphones, Browser und Fernseher nicht mehr abspielen. Die Umwandlung von AVI in MP4 kodiert das Video zu effizientem H.264 und das Audio zu AAC neu und erzeugt eine kleinere Datei, die auf allem läuft, was Sie heute besitzen.',
+      whatItDoes: [
+        'Konvertiert alte .avi-Dateien (Xvid, DivX, MJPEG und mehr) in MP4.',
+        'Legt die Ausgabe fest auf MP4 (H.264 + AAC) für moderne Wiedergabe.',
+        'Erzeugt in der Regel eine deutlich kleinere Datei als die AVI-Quelle.',
+        'Ein altes AVI kann während der Konvertierung gekürzt und skaliert werden.',
+      ],
+      flowSteps: [
+        {
+          title: 'Ihr AVI hochladen',
+          description: 'Legen Sie eine alte .avi-Datei aus einem Archiv oder von einer Kamera ab.',
+        },
+        {
+          title: 'Ausgabe ist fest auf MP4 eingestellt',
+          description: 'MP4 ist vorgegeben; nichts zu konfigurieren.',
+        },
+        {
+          title: 'Konvertieren',
+          description: 'Wir kodieren zu H.264 + AAC neu.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie ein kleineres, modernes MP4.',
+        },
+      ],
+      advancedDetails: [
+        'AVI verwendet häufig Xvid/DivX (MPEG-4 Part 2); H.264 ist etwa doppelt so effizient, daher ist das MP4 meist deutlich kleiner.',
+        'Wir erzwingen yuv420p, damit das Ergebnis in Browsern und auf sozialen Plattformen läuft.',
+        'Interlaced aufgenommene AVIs können von der Deinterlace-Option im vollständigen Videokonverter profitieren.',
+      ],
+      whyItMatters: [
+        'AVI-Dateien sind groß und auf modernen Geräten zunehmend nicht mehr abspielbar.',
+        'MP4/H.264 ist kleiner und läuft überall.',
+        'Alte Archive in MP4 umzuwandeln macht sie zukunftssicher.',
+      ],
+      useCases: [
+        {
+          title: 'Alte Videoarchive',
+          description: 'Modernisieren Sie AVIs von Camcordern oder DVD-Rips zu MP4.',
+        },
+        {
+          title: 'Speicherplatz freigeben',
+          description: 'Verkleinern Sie ein großes AVI zu einem kleineren MP4.',
+        },
+        {
+          title: 'Wiedergabe auf Smartphone und Fernseher',
+          description: 'Bringen Sie ein AVI auf Geräten zum Laufen, die die AVI-Unterstützung eingestellt haben.',
+        },
+        {
+          title: 'Ins Web hochladen',
+          description: 'Verwandeln Sie ein AVI in ein MP4, das eine Website akzeptiert.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Serverseitiges FFmpeg dekodiert alte AVI-Codecs, an denen andere Tools scheitern.',
+        'Ausgabe fest auf ein bewährtes MP4-Profil eingestellt.',
+      ],
+      privacyNote: 'Ihr AVI wird von FFmpeg auf unserem Server in ein modernes H.264-MP4 neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie wandle ich AVI in MP4 um?',
+          answer: 'Laden Sie Ihre .avi-Datei hoch und klicken Sie auf Konvertieren; die Ausgabe ist bereits auf MP4 eingestellt.',
+        },
+        {
+          question: 'Wird das MP4 kleiner als das AVI?',
+          answer: 'In der Regel ja. H.264 ist weit effizienter als die Xvid-/DivX-Codecs, die die meisten AVIs verwenden.',
+        },
+        {
+          question: 'Unterstützt es alte DivX-/Xvid-AVIs?',
+          answer: 'Ja, FFmpeg dekodiert die gängigen AVI-Codecs und kodiert sie zu H.264 neu.',
+        },
+        {
+          question: 'Verliere ich Qualität?',
+          answer: 'Die Neukodierung ist verlustbehaftet, aber bei der Qualität „Hoch“ ist der Unterschied minimal, und die Datei ist trotzdem kleiner.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Ausgabe ist fest auf MP4 eingestellt (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Konvertieren Sie jedes Video in MP4.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das MP4 noch weiter.',
+        },
+        {
+          label: 'Videokonverter-Tutorial',
+          to: '/tutorials/video/getting-started',
+          description: 'Gehen Sie Trimmen, Größenänderung und Deinterlacing durch.',
+        },
+      ],
+      embed: {
+        title: 'AVI in MP4 umwandeln',
+        description: 'Laden Sie Ihre .avi-Datei hoch. Die Ausgabe ist für dieses Tool fest auf MP4 (H.264 + AAC) eingestellt, also einfach hochladen und konvertieren.',
+      },
     },
     'convert-mkv-to-mp4': {
       name: 'MKV in MP4 umwandeln',
+      h1: 'MKV online kostenlos in MP4 umwandeln',
       tagline: 'Verwandeln Sie Matroska-.mkv-Dateien in ein MP4, das sich streamen, hochladen und auf Geräten abspielen lässt, die MKV ablehnen.',
+      metaTitle: 'MKV online kostenlos in MP4 umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von MKV zu MP4. Wandeln Sie Matroska-.mkv-Videos in MP4 (H.264 + AAC) für Geräte und Websites um, die MKV nicht abspielen können. Ohne Wasserzeichen, ohne Anmeldung.',
+      ogTitle: 'MKV online kostenlos in MP4 umwandeln',
+      ogDescription: 'Wandeln Sie Matroska-.mkv-Videos in ein universelles MP4 um, das überall abgespielt und hochgeladen werden kann.',
+      intro: 'MKV (Matroska) ist ein flexibler Container, der für hochwertige Videos beliebt ist, aber viele Smartphones, Browser, Smart-TVs und Upload-Formulare spielen ihn nicht ab. Die Umwandlung von MKV in MP4 bringt das Video in einen Container, den diese Geräte verstehen. Media Manipulator kodiert zu H.264 + AAC neu, damit das Ergebnis sauber abgespielt und hochgeladen werden kann.',
+      whatItDoes: [
+        'Wandelt Matroska-.mkv-Dateien in MP4 um.',
+        'Legt die Ausgabe fest auf MP4 (H.264 + AAC) für breite Geräteunterstützung.',
+        'Fügt yuv420p und +faststart hinzu, damit das MP4 streamt und sofort startet.',
+        'Trimmen Sie eine MKV-Episode oder ändern Sie ihre Größe, bevor das MP4 geschrieben wird.',
+      ],
+      flowSteps: [
+        {
+          title: 'MKV hochladen',
+          description: 'Legen Sie eine .mkv-Datei ab.',
+        },
+        {
+          title: 'Ausgabe ist fest auf MP4 gesetzt',
+          description: 'MP4 ist für dieses Tool voreingestellt.',
+        },
+        {
+          title: 'Umwandeln',
+          description: 'Wir verschieben/transkodieren das Video in ein MP4.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie ein MP4, das überall abgespielt wird.',
+        },
+      ],
+      advancedDetails: [
+        'Wenn das MKV bereits H.264 + AAC enthält, ist die Umwandlung schnell und visuell verlustfrei.',
+        'Wir erzwingen yuv420p, damit das MP4 in Safari und auf sozialen Plattformen abgespielt wird.',
+        'MKV kann viele Untertitel-/Tonspuren enthalten; der Konverter behält das primäre Video und die erste Tonspur.',
+      ],
+      whyItMatters: [
+        'Viele Geräte und Websites unterstützen MKV schlicht nicht.',
+        'MP4 ist der sichere Container zum Teilen und Hochladen.',
+        'Die Umwandlung hält Ihr hochwertiges Video überall nutzbar.',
+      ],
+      useCases: [
+        {
+          title: 'Wiedergabe auf Smartphone & TV',
+          description: 'Bringen Sie ein MKV auf einem Gerät zum Laufen, das es ablehnt.',
+        },
+        {
+          title: 'Upload ins Web',
+          description: 'Verwandeln Sie ein MKV in ein MP4, das eine Website akzeptiert.',
+        },
+        {
+          title: 'Übergabe an den Editor',
+          description: 'Importieren Sie ein MP4 in Editoren, die mit MKV Probleme haben.',
+        },
+        {
+          title: 'Bibliothek vereinheitlichen',
+          description: 'Bringen Sie MKV-Downloads in Einklang mit Ihrer MP4-Sammlung.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Serverseitiges FFmpeg verarbeitet MKV mit mehreren Spuren.',
+        'Ausgabe fest auf ein bewährtes MP4-Profil gesetzt.',
+      ],
+      privacyNote: 'Ihr MKV wird von FFmpeg auf unserem Server in ein MP4 neu kodiert, das Smartphones und Browser abspielen. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unverändert, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie wandle ich MKV in MP4 um?',
+          answer: 'Laden Sie Ihre .mkv-Datei hoch und klicken Sie auf Umwandeln – die Ausgabe ist bereits auf MP4 gesetzt.',
+        },
+        {
+          question: 'Verliert die Umwandlung von MKV in MP4 an Qualität?',
+          answer: 'Wenn das MKV bereits H.264 verwendet, ist das Ergebnis bei hoher Qualität visuell verlustfrei. Andernfalls ist es eine normale verlustbehaftete Neukodierung.',
+        },
+        {
+          question: 'Was passiert mit zusätzlichen Ton- oder Untertitelspuren?',
+          answer: 'Der Konverter behält das Hauptvideo und die erste Tonspur. Wenn Sie mehrere Spuren benötigen, melden Sie sich bei uns, und wir können uns eine Spurauswahl ansehen.',
+        },
+        {
+          question: 'Warum wird mein MKV nicht abgespielt?',
+          answer: 'Viele Smartphones, Fernseher, Browser und Websites unterstützen den MKV-Container nicht, selbst wenn die enthaltenen Codecs gängig sind.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Ausgabe ist fest auf MP4 gesetzt (H.264 + AAC, yuv420p, +faststart). Das primäre Video und die erste Tonspur werden behalten.',
+        ],
+      },
+      related: [
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie jedes Video in MP4 um.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das MP4 zum Teilen.',
+        },
+        {
+          label: 'Videokonverter-Tutorial',
+          to: '/tutorials/video/getting-started',
+          description: 'Gehen Sie jede Option Schritt für Schritt durch.',
+        },
+      ],
+      embed: {
+        title: 'MKV in MP4 umwandeln',
+        description: 'Laden Sie Ihre .mkv-Datei hoch. Die Ausgabe ist für dieses Tool fest auf MP4 (H.264 + AAC) gesetzt, also einfach hochladen und umwandeln.',
+      },
     },
     'convert-mp4-to-webm': {
       name: 'MP4 in WebM umwandeln',
+      h1: 'MP4 online kostenlos in WebM umwandeln',
       tagline: 'Kodieren Sie MP4 in ein kleineres, offenes VP9-WebM um, ideal für schnell ladende Web-Videos.',
+      metaTitle: 'MP4 online kostenlos in WebM umwandeln | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Konverter von MP4 zu WebM. Kodieren Sie MP4 in VP9 + Opus WebM um, für kleinere, schnellere Web-Videos. Ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'MP4 online kostenlos in WebM umwandeln',
+      ogDescription: 'Wandeln Sie MP4 in ein kleineres, offenes VP9-WebM um, das sich ideal zum Einbetten im modernen Web eignet.',
+      intro: 'WebM ist das offene Videoformat, das für das Web entwickelt wurde. Mit VP9-Video und Opus-Audio liefert es bei gleicher Qualität kleinere Dateien als MP4, was schnellere Seitenladezeiten für eingebettete Videos bedeutet. Die Umwandlung Ihres MP4 in WebM ist der richtige Schritt, wenn Sie den Player kontrollieren – alle modernen Browser unterstützen es nativ.',
+      whatItDoes: [
+        'Wandelt MP4 (H.264) in WebM (VP9 + Opus) um.',
+        'Legt die Ausgabe fest auf WebM für konsistente Einbettungen im offenen Web.',
+        'Erzeugt in der Regel eine kleinere Datei als das MP4 bei gleicher visueller Qualität.',
+        'Kürzen oder verkleinern Sie den Clip und wählen Sie eine Qualitätsvoreinstellung, bevor das WebM erstellt wird.',
+      ],
+      flowSteps: [
+        {
+          title: 'MP4 hochladen',
+          description: 'Legen Sie eine .mp4-Datei ab.',
+        },
+        {
+          title: 'Ausgabe ist fest auf WebM gesetzt',
+          description: 'WebM (VP9 + Opus) ist für dieses Tool voreingestellt.',
+        },
+        {
+          title: 'Umwandeln',
+          description: 'Wir kodieren H.264 zu VP9 und AAC zu Opus um.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie eine kleinere .webm-Datei für das Web.',
+        },
+      ],
+      advancedDetails: [
+        'Die WebM-Ausgabe verwendet VP9-Video mit Opus-Audio, wo verfügbar, und fällt auf FFmpeg-Builds ohne VP9/Opus auf VP8 + Vorbis zurück.',
+        'Die VP9-Kodierung ist langsamer als H.264, liefert aber bei vergleichbarer Qualität ~25–50 % kleinere Dateien.',
+        'Verwenden Sie das <video>-Tag mit einer WebM- und einer MP4-Quelle, damit Browser die beste von ihnen unterstützte Variante wählen.',
+      ],
+      whyItMatters: [
+        'Kleinere Web-Videos bedeuten schnellere Seiten und niedrigere Bandbreitenkosten.',
+        'WebM ist lizenzgebührenfrei und wird von allen modernen Browsern unterstützt.',
+        'Ein WebM + MP4-Paar deckt praktisch jeden Browser mit den kleinstmöglichen Dateien ab.',
+      ],
+      useCases: [
+        {
+          title: 'Hero-Video für Websites',
+          description: 'Liefern Sie einen kleinen, schnell ladenden Hintergrund- oder Hero-Clip aus.',
+        },
+        {
+          title: 'Einbettungen im offenen Web',
+          description: 'Betten Sie Videos ohne Bedenken wegen proprietärer Codecs ein.',
+        },
+        {
+          title: 'Bandbreite sparen',
+          description: 'Reduzieren Sie die Auslieferungsgröße für stark besuchte Seiten.',
+        },
+        {
+          title: 'HTML5 <video>',
+          description: 'Stellen Sie eine WebM-Quelle neben einem MP4-Fallback bereit.',
+        },
+      ],
+      whyMediaManipulator: [
+        'VP9 + Opus-Kodierung mit automatischem VP8 + Vorbis-Fallback.',
+        'Ausgabe fest auf WebM gesetzt, damit das Ergebnis vorhersehbar ist.',
+      ],
+      privacyNote: 'Ihr Video wird von FFmpeg auf unserem Server in ein VP9-WebM neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unverändert, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie wandle ich MP4 in WebM um?',
+          answer: 'Laden Sie Ihre .mp4-Datei hoch und klicken Sie auf Umwandeln – die Ausgabe ist bereits auf WebM gesetzt.',
+        },
+        {
+          question: 'Ist WebM kleiner als MP4?',
+          answer: 'Bei gleicher visueller Qualität ist VP9-WebM in der Regel 25–50 % kleiner als H.264-MP4.',
+        },
+        {
+          question: 'Unterstützen alle Browser WebM?',
+          answer: 'Alle modernen Browser tun das. Für ältere Browser stellen Sie in Ihrem <video>-Tag einen MP4-Fallback bereit.',
+        },
+        {
+          question: 'Warum ist die WebM-Kodierung langsamer?',
+          answer: 'VP9 ist rechenintensiver als H.264. Der Lohn dafür ist eine kleinere Datei.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Ausgabe ist fest auf WebM gesetzt (VP9 + Opus, oder VP8 + Vorbis, wenn VP9/Opus nicht verfügbar ist).',
+        ],
+      },
+      related: [
+        {
+          label: 'WebM in MP4 umwandeln',
+          to: '/tools/convert-webm-to-mp4',
+          description: 'Die umgekehrte Richtung.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie jedes Video in MP4 um.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie Videos, ohne den Container zu ändern.',
+        },
+      ],
+      embed: {
+        title: 'MP4 in WebM umwandeln',
+        description: 'Laden Sie Ihre .mp4-Datei hoch. Die Ausgabe ist für dieses Tool fest auf WebM (VP9 + Opus) gesetzt, also einfach hochladen und umwandeln.',
+      },
     },
     'mp4-to-mp3': {
       name: 'MP4 in MP3 umwandeln',
@@ -4269,51 +11326,1472 @@ const deToolPages = {
     },
     'crop-video': {
       name: 'Video zuschneiden',
+      h1: 'Video online kostenlos zuschneiden',
       tagline: 'Schneiden Sie die Ränder eines Videos ab – ändern Sie Bildausschnitt oder Seitenverhältnis ohne Editor.',
+      metaTitle: 'Video online kostenlos zuschneiden | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Zuschneiden von Videos. Schneiden Sie die Ränder eines Videos ab, um den Bildausschnitt oder das Seitenverhältnis zu ändern. MP4-Ausgabe, ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Video online kostenlos zuschneiden',
+      ogDescription: 'Schneiden Sie die Ränder eines Videos ab, um den Bildausschnitt oder das Seitenverhältnis zu ändern. Kostenlos, ohne Wasserzeichen.',
+      intro: 'Zuschneiden entfernt die äußeren Ränder eines Videos – nützlich, um eine Aufnahme neu zu rahmen, schwarze Balken oder ein Wasserzeichen zu entfernen oder das Seitenverhältnis für eine Plattform zu ändern. Das Video-Zuschneidewerkzeug von Media Manipulator nimmt ein Pixelrechteck (wo es beginnt und wie groß es ist) und exportiert genau diesen Bereich als sauberes MP4.',
+      whatItDoes: [
+        'Schneidet ein Video auf ein Rechteck zu, das Sie in Pixeln angeben.',
+        'Entfernt schwarze Balken, Ränder, Wasserzeichen oder unerwünschte Bereiche.',
+        'Hilft beim Umrahmen auf quadratisch oder vertikal für soziale Plattformen.',
+        'Exportiert standardmäßig MP4 (H.264 + AAC).',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'MP4, MOV, MKV, WebM, AVI oder M4V zum Zuschneiden.',
+        },
+        {
+          title: 'Zuschnittrechteck eingeben',
+          description: 'Legen Sie den X/Y-Versatz sowie die Breite/Höhe fest, die behalten werden sollen.',
+        },
+        {
+          title: 'Zuschneiden',
+          description: 'FFmpeg schneidet exakt auf diesen Bereich zu und kodiert neu.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das zugeschnittene Video.',
+        },
+      ],
+      advancedDetails: [
+        'Die Zuschnittkoordinaten sind in Pixeln ab der oberen linken Ecke: X/Y ist der Startpunkt des behaltenen Bereichs, Breite/Höhe seine Größe.',
+        'Zuschneiden kodiert das Video neu; die MP4-Ausgabe verwendet H.264 + AAC + yuv420p + faststart.',
+        'Für pixelgenaues Rahmen auf einer Vorschau bietet der vollständige Konverter auf der Startseite eine visuelle Zuschnitt-Überlagerung.',
+      ],
+      whyItMatters: [
+        'Zuschneiden rahmt eine Aufnahme neu, ohne sie neu zu drehen.',
+        'Es entfernt schwarze Balken (Letterboxing/Pillarboxing) und unerwünschte Ränder.',
+        'Das Ändern des Seitenverhältnisses (z. B. auf 9:16) hilft, ein Video an eine Plattform anzupassen.',
+      ],
+      useCases: [
+        {
+          title: 'Vertikal machen',
+          description: 'Schneiden Sie einen Querformat-Clip auf 9:16 für Reels/Shorts/TikTok zu.',
+        },
+        {
+          title: 'Schwarze Balken entfernen',
+          description: 'Schneiden Sie das Letterboxing weg.',
+        },
+        {
+          title: 'Wasserzeichen ausblenden',
+          description: 'Schneiden Sie ein Logo oder einen Zeitstempel in der Ecke weg.',
+        },
+        {
+          title: 'Motiv neu rahmen',
+          description: 'Verengen Sie die Aufnahme auf das Wesentliche.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Präzises pixelgenaues Zuschneiden serverseitig mit FFmpeg.',
+        'Saubere MP4-Ausgabe, ohne Wasserzeichen.',
+      ],
+      privacyNote: 'Ihr Video wird auf das von Ihnen gezeichnete Rechteck zugeschnitten und von FFmpeg auf unserem Server neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unverändert, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie schneide ich ein Video zu?',
+          answer: 'Laden Sie es hoch, geben Sie das zu behaltende Rechteck ein (X/Y-Versatz sowie Breite/Höhe in Pixeln) und laden Sie das zugeschnittene Video herunter.',
+        },
+        {
+          question: 'Kann ich auf ein quadratisches oder vertikales Seitenverhältnis zuschneiden?',
+          answer: 'Ja – setzen Sie Breite und Höhe auf das gewünschte Verhältnis (z. B. gleiche Werte für quadratisch, höher als breit für 9:16).',
+        },
+        {
+          question: 'Verringert das Zuschneiden die Qualität?',
+          answer: 'Zuschneiden kodiert neu, aber bei unserer Standardqualität ist der Verlust minimal.',
+        },
+        {
+          question: 'Kann ich ein Wasserzeichen wegschneiden?',
+          answer: 'Ja, wenn sich das Wasserzeichen nahe an einem Rand befindet – schneiden Sie das Bild so zu, dass es ausgeschlossen wird.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Zuschneiden kodiert neu; die MP4-Ausgabe verwendet H.264 + AAC + yuv420p + faststart.',
+        ],
+      },
+      related: [
+        {
+          label: 'Videogröße ändern',
+          to: '/tools/resize-video',
+          description: 'Ändern Sie die Auflösung, statt zuzuschneiden.',
+        },
+        {
+          label: 'Video drehen',
+          to: '/tools/rotate-video',
+          description: 'Beheben Sie seitlich oder auf dem Kopf stehende Videos.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das zugeschnittene Video.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video zuschneiden',
+        description: 'Laden Sie ein Video hoch und geben Sie das zu behaltende Rechteck ein (Versatz + Breite/Höhe in Pixeln). Wir schneiden exakt auf diesen Bereich zu und exportieren MP4.',
+      },
     },
     'resize-video': {
       name: 'Videogröße ändern',
+      h1: 'Videogröße online kostenlos ändern',
       tagline: 'Ändern Sie die Auflösung eines Videos – skalieren Sie auf 1080p, 720p, 480p oder eine beliebige Breite und Höhe.',
+      metaTitle: 'Videogröße online kostenlos ändern | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Ändern der Videogröße. Ändern Sie die Videoauflösung auf 1080p, 720p, 480p oder eine eigene Größe. MP4-Ausgabe, ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Videogröße online kostenlos ändern',
+      ogDescription: 'Ändern Sie die Auflösung eines Videos auf 1080p, 720p, 480p oder eine eigene Größe. Kostenlos, ohne Wasserzeichen.',
+      intro: 'Die Größenänderung ändert die Auflösung eines Videos – machen Sie aus einem 4K-Clip 1080p, verkleinern Sie auf 720p für das Web oder treffen Sie exakt die Pixelgröße, die eine Plattform verlangt. Das Videogrößen-Werkzeug von Media Manipulator skaliert Ihr Video auf die von Ihnen gewählten Abmessungen, behält standardmäßig das Seitenverhältnis bei und exportiert ein sauberes MP4.',
+      whatItDoes: [
+        'Skaliert ein Video auf eine Zielbreite und/oder -höhe.',
+        'Behält standardmäßig das Seitenverhältnis bei (lassen Sie eine Abmessung leer, um automatisch zu skalieren).',
+        'Verkleinert, um die Datei zu schrumpfen, oder vergrößert, um eine Zielgröße zu erreichen.',
+        'Exportiert standardmäßig MP4 (H.264 + AAC).',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Wählen Sie den Clip, den Sie in einer anderen Größe möchten.',
+        },
+        {
+          title: 'Größe festlegen',
+          description: 'Geben Sie eine Breite und/oder Höhe in Pixeln ein.',
+        },
+        {
+          title: 'Größe ändern',
+          description: 'FFmpeg skaliert das Video und kodiert es neu.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das Video in der neuen Größe.',
+        },
+      ],
+      advancedDetails: [
+        'Lassen Sie eine Abmessung leer, um proportional zu skalieren und das ursprüngliche Seitenverhältnis zu behalten.',
+        'Lassen Sie „Seitenverhältnis beibehalten“ aktiviert, damit das Video in den Rahmen passt, ohne verzerrt zu werden, wenn beide Abmessungen gesetzt sind.',
+        'Die Größenänderung kodiert neu; die MP4-Ausgabe verwendet H.264 + AAC + yuv420p + faststart. Maximal 4096 px pro Seite.',
+      ],
+      whyItMatters: [
+        'Eine niedrigere Auflösung bedeutet kleinere Dateien und schnellere Uploads.',
+        'Manche Plattformen verlangen eine exakte Auflösung.',
+        'Die Größenänderung vereinheitlicht eine Bibliothek mit gemischten Auflösungen.',
+      ],
+      useCases: [
+        {
+          title: 'Für das Web verkleinern',
+          description: 'Reduzieren Sie 4K auf 1080p oder 720p für schnellere Seiten.',
+        },
+        {
+          title: 'Zielgröße treffen',
+          description: 'Erfüllen Sie eine Plattformvorgabe exakt.',
+        },
+        {
+          title: 'Dateigröße reduzieren',
+          description: 'Senken Sie die Auflösung, um Bytes zu sparen.',
+        },
+        {
+          title: 'Material vereinheitlichen',
+          description: 'Bringen Sie Clips auf eine einheitliche Auflösung.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Skalierung mit Rücksicht auf das Seitenverhältnis, serverseitig mit FFmpeg.',
+        'Saubere MP4-Ausgabe, ohne Wasserzeichen.',
+      ],
+      privacyNote: 'Ihr Video wird auf die von Ihnen festgelegte Breite und Höhe skaliert und von FFmpeg auf unserem Server neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unverändert, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie ändere ich die Größe eines Videos?',
+          answer: 'Laden Sie es hoch, legen Sie eine Zielbreite und/oder -höhe fest und laden Sie das Video in der neuen Größe herunter.',
+        },
+        {
+          question: 'Wie ändere ich die Auflösung auf 720p?',
+          answer: 'Setzen Sie die Höhe auf 720 und lassen Sie die Breite leer, um proportional zu skalieren.',
+        },
+        {
+          question: 'Behält die Größenänderung das Seitenverhältnis bei?',
+          answer: 'Ja – lassen Sie eine Abmessung leer oder lassen Sie „Seitenverhältnis beibehalten“ aktiviert, damit das Video nicht verzerrt wird.',
+        },
+        {
+          question: 'Kann ich ein Video hochskalieren?',
+          answer: 'Sie können auf eine größere Größe skalieren, aber Hochskalieren kann keine Details hinzufügen, die nicht aufgenommen wurden.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Größenänderung kodiert neu; die MP4-Ausgabe verwendet H.264 + AAC + yuv420p + faststart. Maximal 4096 px pro Seite.',
+        ],
+      },
+      related: [
+        {
+          label: 'Video zuschneiden',
+          to: '/tools/crop-video',
+          description: 'Schneiden Sie Ränder ab, statt zu skalieren.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Datei mit Voreinstellungen.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie in MP4 um.',
+        },
+        {
+          label: 'Video drehen',
+          to: '/tools/rotate-video',
+          description: 'Korrigieren Sie die Ausrichtung.',
+        },
+      ],
+      embed: {
+        title: 'Die Größe eines Videos ändern',
+        description: 'Laden Sie ein Video hoch und legen Sie eine Zielbreite und/oder -höhe fest. Lassen Sie eine davon leer, um proportional zu skalieren. Die Ausgabe ist standardmäßig MP4.',
+      },
     },
     'rotate-video': {
       name: 'Video drehen',
+      h1: 'Video online kostenlos drehen',
       tagline: 'Beheben Sie seitlich oder auf dem Kopf stehende Videos – drehen Sie um 90°, 180° oder 270° und spiegeln Sie mit einem Klick.',
+      metaTitle: 'Video online kostenlos drehen | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Drehen von Videos. Drehen Sie ein Video um 90°, 180° oder 270° und beheben Sie seitlich oder auf dem Kopf stehende Clips. MP4-Ausgabe, ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Video online kostenlos drehen',
+      ogDescription: 'Drehen Sie ein Video um 90°, 180° oder 270°, um seitlich oder auf dem Kopf stehende Aufnahmen zu beheben. Kostenlos, ohne Wasserzeichen.',
+      intro: 'Handyvideos werden oft seitlich aufgenommen, und manche Clips stehen am Ende auf dem Kopf. Das Video-Drehwerkzeug von Media Manipulator korrigiert die Ausrichtung dauerhaft – wählen Sie 90°, 180° oder 270°, und wir drehen die tatsächlichen Bilder (bei 90°/270° werden Breite und Höhe vertauscht), sodass das Video in jedem Player richtig herum abgespielt wird, nicht nur in solchen, die ein Rotations-Flag auslesen.',
+      whatItDoes: [
+        'Dreht ein Video um 90° im Uhrzeigersinn, 180° oder 270° (90° gegen den Uhrzeigersinn).',
+        'Spiegelt das Video optional horizontal oder vertikal.',
+        'Kodiert neu, sodass die Drehung fest in die Bilder eingebrannt ist und nicht nur ein Metadaten-Flag bleibt.',
+        'Exportiert standardmäßig MP4 (H.264 + AAC).',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Zum Beispiel einen seitlich aufgenommenen Handy-Clip.',
+        },
+        {
+          title: 'Drehung wählen',
+          description: '90°, 180° oder 270° – und bei Bedarf spiegeln.',
+        },
+        {
+          title: 'Drehen',
+          description: 'FFmpeg dreht die Bilder (transpose) und kodiert neu.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das korrekt ausgerichtete Video.',
+        },
+      ],
+      advancedDetails: [
+        'Wir verwenden FFmpeg transpose für 90°/270° (was Breite und Höhe korrekt vertauscht) und ein doppeltes transpose für 180°.',
+        'Das Einbrennen der Drehung in die Pixel behebt das Problem bei Playern, die das Rotations-Flag des Containers ignorieren.',
+        'Die Drehung kodiert neu; die MP4-Ausgabe verwendet H.264 + AAC + yuv420p + faststart.',
+      ],
+      whyItMatters: [
+        'Seitlich aufgenommene Handyvideos gehören zu den häufigsten Ärgernissen bei Videos.',
+        'Eine eingebrannte Drehung wird überall korrekt abgespielt, anders als ein Rotations-Flag.',
+        'Spiegeln behebt seitenverkehrte Selfie- oder Webcam-Aufnahmen.',
+      ],
+      useCases: [
+        {
+          title: 'Seitlichen Clip korrigieren',
+          description: 'Drehen Sie ein Hochformat-Handyvideo, damit es aufrecht abgespielt wird.',
+        },
+        {
+          title: 'Selfie-Video spiegeln',
+          description: 'Heben Sie die Spiegelung von Webcam- oder Frontkamera-Aufnahmen auf.',
+        },
+        {
+          title: 'Um 180° drehen',
+          description: 'Beheben Sie eine auf dem Kopf stehende Aufnahme.',
+        },
+        {
+          title: 'Für den Schnitt neu ausrichten',
+          description: 'Bringen Sie die Ausrichtung vor dem Import in Ordnung.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Echte Bilddrehung (transpose), nicht nur ein Metadaten-Flag.',
+        'Drehen und Spiegeln in einem übersichtlichen Panel.',
+      ],
+      privacyNote: 'Ihr Video wird um den von Ihnen gewählten Winkel gedreht und von FFmpeg auf unserem Server neu kodiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unverändert, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie drehe ich ein Video?',
+          answer: 'Laden Sie es hoch, wählen Sie 90°, 180° oder 270° und laden Sie das gedrehte Video herunter.',
+        },
+        {
+          question: 'Wie korrigiere ich ein seitlich aufgenommenes Handyvideo?',
+          answer: 'Drehen Sie um 90° im oder gegen den Uhrzeigersinn, bis es aufrecht abgespielt wird; die Drehung wird fest in die Bilder eingebrannt.',
+        },
+        {
+          question: 'Dreht es wirklich die Bilder oder setzt es nur ein Flag?',
+          answer: 'Es dreht die tatsächlichen Bilder (FFmpeg transpose), sodass das Video in jedem Player aufrecht steht.',
+        },
+        {
+          question: 'Kann ich das Video auch spiegeln?',
+          answer: 'Ja – Optionen zum horizontalen und vertikalen Spiegeln sind enthalten.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Drehung kodiert per FFmpeg transpose neu; die MP4-Ausgabe verwendet H.264 + AAC + yuv420p + faststart.',
+        ],
+      },
+      related: [
+        {
+          label: 'Video zuschneiden',
+          to: '/tools/crop-video',
+          description: 'Schneiden Sie die Ränder ab.',
+        },
+        {
+          label: 'Videogröße ändern',
+          to: '/tools/resize-video',
+          description: 'Ändern Sie die Auflösung.',
+        },
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Wandeln Sie zwischen Videoformaten um.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das gedrehte Video.',
+        },
+      ],
+      embed: {
+        title: 'Ein Video drehen',
+        description: 'Laden Sie ein Video hoch und wählen Sie eine Drehung (90°, 180° oder 270°). Sie können es auch spiegeln. Wir drehen die tatsächlichen Bilder und exportieren MP4.',
+      },
     },
     'remove-audio-from-video': {
       name: 'Audio aus Video entfernen',
+      h1: 'Audio online kostenlos aus Video entfernen',
       tagline: 'Schalten Sie ein Video dauerhaft stumm – entfernen Sie die Tonspur und laden Sie eine stumme Datei nur mit Bild herunter.',
+      metaTitle: 'Audio online kostenlos aus Video entfernen | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool zum Entfernen von Audio aus einem Video. Entfernen Sie den Ton und laden Sie ein stummes MP4 nur mit Bild herunter. Ohne Wasserzeichen, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ogTitle: 'Audio online kostenlos aus Video entfernen',
+      ogDescription: 'Entfernen Sie die Tonspur aus einem Video und laden Sie eine stumme Datei nur mit Bild herunter. Kostenlos, ohne Wasserzeichen.',
+      intro: 'Das Entfernen des Audios aus einem Video liefert Ihnen eine stumme Datei nur mit Bild – praktisch, um Hintergrundgeräusche stummzuschalten, urheberrechtlich geschützte Musik vor dem erneuten Hochladen zu entfernen oder einen Clip vorzubereiten, dem Sie neues Audio hinzufügen möchten. Media Manipulator entfernt die Tonspur und gibt das Video zurück, wobei das Bild nach Möglichkeit per Stream-Kopie übernommen wird, sodass es keinen Qualitätsverlust gibt.',
+      whatItDoes: [
+        'Entfernt die Tonspur (schaltet stumm) und gibt eine Datei nur mit Bild zurück.',
+        'Übernimmt den Videostream nach Möglichkeit per Stream-Kopie – keine Neukodierung, kein Qualitätsverlust.',
+        'Fällt auf eine Neukodierung zurück, wenn Container oder Codec es erfordern.',
+        'Gibt standardmäßig MP4 aus (WebM ebenfalls verfügbar).',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Der Clip, dessen Ton Sie loswerden möchten.',
+        },
+        {
+          title: 'Ausgabeformat wählen',
+          description: 'MP4 (Standard) oder WebM.',
+        },
+        {
+          title: 'Audio entfernen',
+          description: 'FFmpeg verwirft das Audio und behält das Video.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie die stumme Datei nur mit Bild.',
+        },
+      ],
+      advancedDetails: [
+        'Wir übernehmen den Videostream per Stream-Kopie (`-c:v copy -an`), sodass das Bild unangetastet bleibt; wenn der Container den Quellcodec nicht akzeptiert, kodieren wir zu H.264 neu.',
+        'Die Ausgabe hat überhaupt keine Tonspur – sie ist stumm, nicht nur auf Lautstärke null gesetzt.',
+        'Der heruntergeladene Dateiname erhält das Suffix `_silent`, damit Sie ihn vom Original unterscheiden können.',
+      ],
+      whyItMatters: [
+        'Stummschalten entfernt Hintergrundgeräusche, Geplauder oder Wind dauerhaft.',
+        'Das Entfernen urheberrechtlich geschützter Musik vermeidet Sperrungen beim erneuten Hochladen.',
+        'Ein stummer Basis-Clip ist der Ausgangspunkt, um neues Audio oder ein Voiceover hinzuzufügen.',
+      ],
+      useCases: [
+        {
+          title: 'Hintergrundgeräusche stummschalten',
+          description: 'Entfernen Sie unerwünschten Ton aus einem Clip.',
+        },
+        {
+          title: 'Urheberrechtlich geschütztes Audio entfernen',
+          description: 'Entfernen Sie Musik vor dem erneuten Posten.',
+        },
+        {
+          title: 'Für neues Audio vorbereiten',
+          description: 'Erhalten Sie eine stumme Basis, der Sie ein Voiceover hinzufügen können.',
+        },
+        {
+          title: 'Datenschutz',
+          description: 'Entfernen Sie ein im Hintergrund aufgenommenes Gespräch.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Qualitätserhaltende Stream-Kopie des Videostreams.',
+        'Wirklich stumme Ausgabe (Tonspur entfernt, nicht nur leiser gestellt).',
+      ],
+      privacyNote: 'Die Tonspur Ihres Videos wird von FFmpeg auf unserem Server verworfen, und das Bild wird behalten. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem Transkodierungsdienst eines Drittanbieters. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unverändert, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie entferne ich Audio aus einem Video?',
+          answer: 'Laden Sie das Video hoch, wählen Sie ein Ausgabeformat und laden Sie die stumme Datei nur mit Bild herunter.',
+        },
+        {
+          question: 'Schaltet das Tool das Video stumm oder entfernt es die Spur?',
+          answer: 'Es entfernt die Tonspur vollständig, sodass das Ergebnis wirklich stumm ist statt nur auf null gestellt.',
+        },
+        {
+          question: 'Ändert sich die Videoqualität?',
+          answer: 'Nein – wir übernehmen den Videostream nach Möglichkeit per Stream-Kopie, sodass das Bild unangetastet bleibt.',
+        },
+        {
+          question: 'Warum heißt die Datei „_silent“?',
+          answer: 'Wir fügen ein _silent-Suffix hinzu, damit Sie die Kopie ohne Audio vom Original unterscheiden können.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Das Video wird nach Möglichkeit per Stream-Kopie übernommen; die Tonspur wird vollständig entfernt. Download-Suffix: _silent.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audio entfernen (nur Video)',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Dasselbe Tool für stumme Videos.',
+        },
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Speichern Sie das Audio, statt es zu entfernen.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das stumme Video.',
+        },
+        {
+          label: 'Audio zu Video hinzufügen',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Fügen Sie dem stummen Clip eine neue Tonspur hinzu.',
+        },
+      ],
+      embed: {
+        title: 'Audio aus einem Video entfernen',
+        description: 'Laden Sie ein Video hoch, und wir entfernen die Tonspur und geben eine stumme Datei nur mit Bild zurück. Die Ausgabe ist standardmäßig MP4. Wir übernehmen das Video nach Möglichkeit per Stream-Kopie (kein Qualitätsverlust).',
+      },
     },
     'audio-converter': {
       name: 'Audiokonverter',
+      h1: 'Kostenloser Online-Audiokonverter',
       tagline: 'Konvertieren Sie zwischen MP3, WAV, M4A, OGG, FLAC, OPUS und mehr – mit voller Kontrolle über Bitrate, Samplerate und Kanäle.',
+      metaTitle: 'Kostenloser Online-Audiokonverter | Media Manipulator',
+      metaDescription: 'Kostenloser Online-Audiokonverter für MP3, WAV, M4A, OGG, FLAC, OPUS und mehr. Wählen Sie Bitrate, Samplerate und Kanäle.',
+      ogTitle: 'Kostenloser Online-Audiokonverter',
+      ogDescription: 'Konvertieren Sie WAV, MP3, M4A, OGG, FLAC, OPUS und mehr. Wählen Sie Bitrate, Samplerate und Kanäle.',
+      intro: 'Verschiedene Geräte, Podcast-Hoster und Audio-Editoren verlangen unterschiedliche Formate. Media Manipulator verarbeitet jedes gängige Audioformat an einem Ort, mit feiner Kontrolle über Bitrate, Samplerate und Kanalanordnung.',
+      whatItDoes: [
+        'Konvertiert zwischen MP3, WAV, M4A/AAC, OGG, FLAC, ALAC, OPUS, AC3, DTS.',
+        'Wählen Sie Bitrate, Samplerate und Kanalanordnung.',
+        'Trimmen Sie und wenden Sie EQ, Rauschunterdrückung oder KI-Bereinigung im selben Upload an.',
+        'Gibt gültige, mit ID3-Tags versehene Dateien aus, wo zutreffend.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'MP3, WAV, M4A, FLAC, OGG und mehr.',
+        },
+        {
+          title: 'Ausgabeformat wählen',
+          description: 'MP3, WAV, FLAC, M4A, OGG, OPUS.',
+        },
+        {
+          title: 'Bitrate und Samplerate einstellen',
+          description: 'Trimmen oder KI-Bereinigung ausführen.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie das konvertierte Audio.',
+        },
+      ],
+      advancedDetails: [
+        'MP3 ist das universelle komprimierte Format – jedes Gerät spielt es ab.',
+        'FLAC und ALAC sind verlustfrei – größer als MP3, kleiner als WAV.',
+        'OPUS (in OGG) ist das kleinste moderne verlustbehaftete Format für Sprache und Musik – ideal, wenn Sie den Player kontrollieren.',
+      ],
+      whyItMatters: [
+        'Podcast-Plattformen, Musikdienste und Audio-Editoren bevorzugen jeweils unterschiedliche Formate.',
+        'Kleinere Dateien bedeuten weniger Speicherbedarf und schnellere Auslieferung.',
+        'Verlustfreie Formate sind entscheidend, wenn Audio später erneut bearbeitet wird.',
+      ],
+      useCases: [
+        {
+          title: 'Podcast-Veröffentlichung',
+          description: 'WAV-Master → MP3-Episode.',
+        },
+        {
+          title: 'Sprachmemos teilen',
+          description: 'Trimmen und zu MP3 komprimieren.',
+        },
+        {
+          title: 'Musikarchivierung',
+          description: 'Konvertieren Sie MP3 → FLAC (kein Qualitätsgewinn) oder WAV → FLAC zur verlustfreien Speicherung.',
+        },
+        {
+          title: 'Spiel- und App-Assets',
+          description: 'Konvertieren Sie WAV → OPUS für winzige mobile Assets.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Volle Kontrolle über Bitrate, Samplerate, Kanäle.',
+        'KI-Bereinigungswerkzeuge (Rauschunterdrückung, Gesang isolieren, Gesang entfernen) im selben Upload.',
+        'Kostenlos, ohne Anmeldung, ohne Wasserzeichen.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server dekodiert und in das von Ihnen gewählte Format und die gewählte Bitrate neu kodiert. Es ist kein externer Audiodienst beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Welches Format ist für Musik am besten?',
+          answer: 'FLAC zur verlustfreien Speicherung, MP3 mit 256–320 kbps zum Teilen, OPUS für die kleinste streambare Datei.',
+        },
+        {
+          question: 'Welches Format ist für Sprache am besten?',
+          answer: 'MP3 mit 96–128 kbps ist ein hervorragender Standard für Podcasts.',
+        },
+        {
+          question: 'Kann ich beim Konvertieren trimmen?',
+          answer: 'Ja – legen Sie vor dem Absenden Start-/Endsekunden im Trimm-Bereich fest.',
+        },
+        {
+          question: 'Ist FLAC wirklich verlustfrei?',
+          answer: 'Ja – FLAC komprimiert, ohne Daten zu verwerfen. Das Dekodieren liefert eine bitgenaue Kopie der Eingabe.',
+        },
+      ],
+      related: [
+        {
+          label: 'WAV in MP3 umwandeln',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Spezialisierter WAV → MP3-Konverter.',
+        },
+        {
+          label: 'Gesang aus einem Song isolieren',
+          to: '/tools/isolate-vocals-from-song',
+          description: 'Ziehen Sie den Gesang aus Musiktiteln heraus.',
+        },
+        {
+          label: 'Audiokonverter-Tutorial',
+          to: '/tutorials/audio/getting-started',
+          description: 'Vollständige Anleitung zu jeder Option.',
+        },
+      ],
+      embed: {
+        title: 'Eine Audiodatei konvertieren',
+        description: 'Laden Sie eine beliebige Audiodatei hoch und wählen Sie das Zielformat. MP3 mit 192 kbps ist ein sinnvoller Standard. WAV ist verlustfrei, aber groß; M4A/AAC ist eine gute komprimierte Wahl für Musik.',
+      },
     },
     'srt-generator': {
       name: 'SRT-Generator',
+      h1: 'Kostenloser SRT-Generator',
       tagline: 'Laden Sie eine Video- oder Audiodatei hoch und erzeugen Sie eine herunterladbare .srt-Untertiteldatei für YouTube, Editoren und Barrierefreiheitswerkzeuge.',
+      metaTitle: 'SRT-Generator online kostenlos – Video & Audio zu SRT | Media Manipulator',
+      metaDescription: 'Erzeugen Sie SRT-Untertiteldateien aus MP4, MOV, MP3, WAV und mehr. Kostenlos, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Funktioniert mit YouTube, Premiere, DaVinci Resolve.',
+      ogTitle: 'Kostenloser SRT-Generator – Video & Audio zu SRT',
+      ogDescription: 'Erzeugen Sie genaue SRT-Untertiteldateien aus jedem Video oder Audio. Lokale KI-Transkription, keine Drittanbieter.',
+      intro: 'SRT (SubRip) ist das am weitesten unterstützte Untertitelformat im Internet – YouTube, Vimeo, Premiere, DaVinci Resolve, Final Cut und fast jede soziale Plattform akzeptieren es. Mit Media Manipulator erzeugen Sie aus jedem Video oder Audio in einem einzigen Upload eine SRT-Datei. Die Transkription läuft auf unserem eigenen GPU-Server mit whisper-ctranslate2, sodass das Audio unsere Infrastruktur nie verlässt und nie einen KI-Drittanbieter zu sehen bekommt.',
+      whatItDoes: [
+        'Transkribiert jede Video- oder Audiodatei in eine zeitcodierte .srt-Untertiteldatei.',
+        'Verwendet whisper-ctranslate2 auf unserem lokalen GPU-Server – keine KI-Drittanbieter sehen Ihre Medien.',
+        'Erzeugt Dateien im SubRip-Format (Zeitstempel HH:MM:SS,mmm, fortlaufende Cue-Nummern), kompatibel mit jedem großen Video-Editor und Player.',
+        'Unterstützt automatische Spracherkennung oder einen optionalen BCP-47-Sprachhinweis für bessere Genauigkeit bei kurzen Clips.',
+      ],
+      flowSteps: [
+        {
+          title: 'Medien hochladen',
+          description: 'Legen Sie eine beliebige MP4-, MOV-, MP3-, WAV- oder andere unterstützte Datei ab.',
+        },
+        {
+          title: 'Wir extrahieren das Audio',
+          description: 'FFmpeg zieht die Tonspur heraus und konvertiert sie in das Format, das whisper erwartet.',
+        },
+        {
+          title: 'Whisper transkribiert',
+          description: 'Unser GPU-Server führt whisper-ctranslate2 aus, um zeitlich abgestimmte Segmente zu erzeugen.',
+        },
+        {
+          title: '.srt herunterladen',
+          description: 'Eine saubere SubRip-Datei wird mit fortlaufenden Cues und präzisem Timing erzeugt.',
+        },
+      ],
+      advancedDetails: [
+        'Whisper läuft auf unserem eigenen NVIDIA-GPU-Server mit ctranslate2 – es ist keine externe API beteiligt.',
+        'Die SRT-Ausgabe verwendet Zeitstempel mit Komma vor den Millisekunden (00:00:01,234) und fortlaufende, bei 1 beginnende Cue-Nummern – das Format, das die Editor-Kompatibilität maximiert.',
+        'Die Transkriptions-Pipeline unterstützt automatische Spracherkennung oder einen optionalen BCP-47-Hinweis im Stil von WHISPER_CT2_LANGUAGE über das Sprachfeld.',
+        'Die Ausgaben durchlaufen dasselbe Auftragssystem wie der Rest der App – Sie können im Transkriptionsformular auch VTT, reinen Text oder strukturiertes JSON wählen.',
+      ],
+      whyItMatters: [
+        'YouTube, Vimeo, Premiere, DaVinci Resolve, Final Cut und die meisten sozialen Plattformen akzeptieren SRT als ihr Standard-Untertitelformat.',
+        'Untertitel machen Videos für gehörlose und schwerhörige Zuschauer zugänglich und steigern das Engagement auf sozialen Plattformen, wo die meisten Videos stumm abgespielt werden.',
+        'Suchmaschinen können den Transkriptinhalt Ihrer Videos indexieren, wenn Sie eine passende .srt-Datei daneben veröffentlichen.',
+      ],
+      useCases: [
+        {
+          title: 'YouTube-Creator',
+          description: 'Erzeugen Sie genaue Untertitel und laden Sie sie als SRT-Spur zu jedem Video hoch.',
+        },
+        {
+          title: 'Kursproduzenten',
+          description: 'Fügen Sie Vorlesungsvideos Transkripte hinzu, damit Studierende sie später durchsuchen, wiederholen und übersetzen können.',
+        },
+        {
+          title: 'Podcaster, die als Video nachveröffentlichen',
+          description: 'Verwandeln Sie Podcast-Episoden in untertitelte Videoclips für soziale Plattformen.',
+        },
+        {
+          title: 'Marketing-/Social-Media-Teams',
+          description: 'Untertiteln Sie jeden Clip, damit Zuschauer bei stummer Autoplay-Wiedergabe die Botschaft trotzdem mitbekommen.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper läuft auf unserer eigenen GPU-Infrastruktur – Ihre Medien berühren nie einen KI-Drittanbieter.',
+        'Ohne Anmeldung, ohne Wasserzeichen. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+        'Dieselbe Transkriptions-Engine, die der Rest der App verwendet, sodass die Genauigkeit über SRT-, VTT-, Text- und JSON-Ausgaben hinweg konsistent ist.',
+      ],
+      privacyNote: 'Die Sprache in Ihrer Datei wird von Whisper auf unserem eigenen GPU-Server transkribiert und mit Zeitstempeln in eine SRT-Untertiteldatei geschrieben. KI-Arbeit läuft auf Hardware, die wir selbst betreiben, nie bei einem KI-Drittanbieter, und nichts, was Sie hochladen, wird zum Trainieren eines Modells verwendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Was ist eine SRT-Datei?',
+          answer: 'SRT (SubRip) ist eine Untertiteldatei im Klartext mit Zeitstempeln und Cue-Nummern. Es ist das Standard-Untertitelformat, das YouTube, die meisten Video-Editoren und die meisten Videoplayer akzeptieren.',
+        },
+        {
+          question: 'Kann ich Untertitel aus einem MP4 erzeugen?',
+          answer: 'Ja. Laden Sie ein beliebiges MP4 (oder MOV, MKV, WebM, AVI, M4V) hoch, und wir erzeugen eine herunterladbare .srt-Untertiteldatei.',
+        },
+        {
+          question: 'Kann ich die SRT-Datei auf YouTube verwenden?',
+          answer: 'Ja – YouTube akzeptiert SRT direkt. Laden Sie Ihr Video hoch und fügen Sie dann die Untertiteldatei unter Untertitel → Sprache hinzufügen → Datei hochladen hinzu.',
+        },
+        {
+          question: 'Welche Sprachen werden unterstützt?',
+          answer: 'Whisper unterstützt Dutzende Sprachen und kann die gesprochene Sprache automatisch erkennen. Sie können auch einen BCP-47-Hinweis (z. B. en, es, ja) übergeben, um die Genauigkeit bei sehr kurzen Clips zu verbessern.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Transkription läuft auf unserem lokalen GPU-Server – Ihre Datei wird nie an einen externen KI-Anbieter gesendet.',
+          'Bei langen Videos läuft der Auftrag asynchron, und Sie können den Tab geöffnet lassen, um den Fortschritt zu verfolgen.',
+        ],
+      },
+      related: [
+        {
+          label: 'Untertitelübersetzer',
+          to: '/tools/caption-translator',
+          description: 'Übersetzen Sie Ihre erzeugte SRT-Datei in andere Sprachen.',
+        },
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Ziehen Sie das Audio heraus, bevor Sie manuell transkribieren.',
+        },
+        {
+          label: 'Einzelbilder aus Video extrahieren',
+          to: '/tools/extract-frames-from-video',
+          description: 'Holen Sie sich Standbilder für Thumbnails und als Referenz.',
+        },
+        {
+          label: 'Video in HLS transkodieren',
+          to: '/tools/transcode-to-hls',
+          description: 'Bereiten Sie Ihr Video fürs Streaming vor.',
+        },
+        {
+          label: 'Video in DASH transkodieren',
+          to: '/tools/transcode-to-dash',
+          description: 'AV1-/VP9-DASH-Paketierung.',
+        },
+      ],
+      embed: {
+        title: 'Eine SRT-Untertiteldatei erzeugen',
+        description: 'Laden Sie eine Video- oder Audiodatei hoch. Wir transkribieren sie auf unserem eigenen GPU-Server mit whisper-ctranslate2 und geben eine .srt-Untertiteldatei zurück, die Sie in jeden Video-Editor einfügen können.',
+      },
     },
     'caption-translator': {
       name: 'Untertitelübersetzer',
+      h1: 'Kostenloser Untertitelübersetzer',
       tagline: 'Übersetzen Sie SRT- und VTT-Untertiteldateien und behalten Sie dabei Zeitmarken, Reihenfolge und Struktur der Einträge bei – ohne KI-Anbieter von Drittanbietern.',
+      metaTitle: 'Kostenloser Untertitelübersetzer (SRT & VTT) – behält Zeitmarken | Media Manipulator',
+      metaDescription: 'Übersetzen Sie SRT- und VTT-Untertitel online, wobei die Cue-Zeiten exakt erhalten bleiben. Läuft auf unserem eigenen lokalen KI-Server – Ihre Untertitel werden nie an Drittanbieter gesendet.',
+      ogTitle: 'Kostenloser Untertitelübersetzer – SRT & VTT',
+      ogDescription: 'Übersetzen Sie SRT- oder VTT-Untertitel und behalten Sie dabei Zeitstempel und Cue-Reihenfolge bei. Lokale KI, keine Drittanbieter.',
+      intro: 'Übersetzen Sie vorhandene Untertiteldateien zwischen Sprachen, ohne je das Cue-Timing anzutasten. Media Manipulator liest die Cues aus Ihrer .srt- oder .vtt-Datei, übersetzt nur den Text mit unserem lokal gehosteten Untertitel-Übersetzungsmodell und gibt die ursprünglichen Zeitstempel unverändert wieder aus. Keine Übersetzungs-API eines Drittanbieters sieht Ihre Untertitel – das Modell läuft auf unserem eigenen GPU-Server.',
+      whatItDoes: [
+        'Nimmt .srt- oder .vtt-Untertiteldateien an und erzeugt eine übersetzte Kopie im selben Format (oder im anderen, wenn Sie das wählen).',
+        'Behält Cue-Nummern, Cue-Reihenfolge und Zeitstempel exakt bei – nur der Cue-Text wird übersetzt.',
+        'Führt die Übersetzung auf unserem lokalen Ollama-Modellserver mit einem speziell auf Untertitel abgestimmten Modell aus – Ihre Untertitel verlassen nie unsere Infrastruktur.',
+        'Unterstützt über 30 Zielsprachen, darunter die wichtigsten europäischen, asiatischen und nahöstlichen Sprachen.',
+      ],
+      flowSteps: [
+        {
+          title: '.srt oder .vtt hochladen',
+          description: 'Ziehen Sie Ihre vorhandene Untertiteldatei in den Uploader.',
+        },
+        {
+          title: 'Sprachen wählen',
+          description: 'Lassen Sie die Ausgangssprache automatisch erkennen oder wählen Sie sie aus, dann wählen Sie eine Zielsprache.',
+        },
+        {
+          title: 'Wir übersetzen den Cue-Text',
+          description: 'Unsere lokale KI übersetzt nur den Untertiteltext – Zeitstempel und Reihenfolge bleiben eingefroren.',
+        },
+        {
+          title: 'Übersetzte Untertitel herunterladen',
+          description: 'Sie erhalten eine saubere .srt- oder .vtt-Datei mit identischem Timing und einer übersetzten Fassung jedes Cues.',
+        },
+      ],
+      advancedDetails: [
+        'Die Übersetzung läuft auf unserem eigenen Ollama-Server mit einem auf Untertitel abgestimmten Ableger von Translate-Gemma (mm-captions-translategemma-12b).',
+        'Wir senden nur den Cue-Text plus einen strikten JSON-Schema-Header an das Modell und setzen beim Lesen der Antwort das Timing aus der Originaldatei wieder ein – selbst ein fehlerhaft arbeitendes Modell kann Ihr Cue-Timing also nicht beschädigen.',
+        'NOTE- und STYLE-Blöcke in VTT-Dateien bleiben erhalten und werden nie an den Übersetzer gesendet.',
+        'Bei langen Untertitelspuren bündeln wir die Cues in Stapeln, sodass das Modell nie an sein Kontextlimit kommt.',
+      ],
+      whyItMatters: [
+        'Untertitel von Hand zu übersetzen ist fehleranfällig – man zerstört sehr leicht die Zeitstempel-Formatierung oder bringt Cues versehentlich durcheinander.',
+        'Ein eigens dafür gebauter Untertitelübersetzer bewahrt die Dateistruktur, die Schnittprogramme und Player erwarten.',
+        'Die Übersetzung intern auf einem lokalen Modell zu erledigen hält Creator-Workflows unabhängig von Preisen und Richtlinien externer Übersetzungsanbieter.',
+      ],
+      useCases: [
+        {
+          title: 'Mehrsprachige YouTube-Kanäle',
+          description: 'Übersetzen Sie eine englische Master-SRT in 5 oder mehr Sprachen für denselben Upload.',
+        },
+        {
+          title: 'Online-Kurse',
+          description: 'Erreichen Sie internationale Lernende mit Untertiteln in ihrer Muttersprache.',
+        },
+        {
+          title: 'Dokumentarfilme / Filmfestivals',
+          description: 'Bereiten Sie Übersetzungsspuren vor, ohne das Cue-Timing anzutasten.',
+        },
+        {
+          title: 'Nachrichten und Journalismus',
+          description: 'Übersetzen Sie Untertitelspuren zu Eilmeldungen und behalten Sie dabei die präzise Synchronisation.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Lokale KI-Übersetzung – Ihre Untertitel gehen nie an einen externen KI-Anbieter.',
+        'Timing-sicheres Parsen, das die ursprünglichen Start- und Endzeiten jedes Cues wieder einsetzt, selbst wenn das Modell fehlerhaft arbeitet.',
+      ],
+      privacyNote: 'Nur der Text Ihrer SRT- oder VTT-Datei wird gelesen: Jeder Untertitel wird von einem Sprachmodell übersetzt, das wir auf unserem eigenen GPU-Server betreiben, und die Zeitangaben werden unverändert übernommen. Die KI-Arbeit läuft auf Hardware, die wir selbst betreiben, nie bei einem externen KI-Anbieter, und nichts, was Sie hochladen, wird zum Trainieren eines Modells verwendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Kann ich eine SRT-Datei übersetzen, ohne die Zeitstempel zu zerstören?',
+          answer: 'Ja – genau das ist der Sinn dieses Tools. Wir lesen die Cues, übersetzen nur den Text und setzen dann die ursprünglichen Zeitstempel exakt wieder ein, bevor die Ausgabe geschrieben wird.',
+        },
+        {
+          question: 'Welche Untertitelformate werden unterstützt?',
+          answer: 'Sowohl SubRip (.srt) als auch WebVTT (.vtt) werden unterstützt. Sie können das Ausgabeformat wie das Eingabeformat belassen oder zwischen beiden konvertieren.',
+        },
+        {
+          question: 'Kann ich Untertitel für YouTube-Videos übersetzen?',
+          answer: 'Ja. Erzeugen (oder exportieren) Sie eine SRT aus Ihrem Video, übersetzen Sie sie hier und laden Sie die neue SRT als zusätzliche Sprachspur bei YouTube hoch.',
+        },
+        {
+          question: 'Werden die Untertitel mit einem externen KI-Anbieter übersetzt?',
+          answer: 'Nein. Die Übersetzung läuft auf unserem eigenen, mit Ollama gehosteten Modell – Ihre Untertitel verlassen nie unsere Infrastruktur.',
+        },
+        {
+          question: 'Was passiert mit dem Cue-Timing?',
+          answer: 'Start- und Endzeiten der Cues bleiben exakt erhalten – wir setzen sie nach der Übersetzung aus der Originaldatei wieder ein, sodass selbst ein fehlerhaft arbeitendes Modell Ihr Timing nicht beschädigen kann.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Maximale Größe der Untertiteldatei: 2 MB (echte Untertitelspuren liegen meist weit darunter).',
+        ],
+        processingNotes: [
+          'Die Übersetzung läuft auf einem lokal gehosteten Ollama-Modell – es wird keine Übersetzungs-API eines Drittanbieters kontaktiert.',
+          'NOTE- und STYLE-Blöcke in WebVTT-Dateien bleiben unverändert erhalten.',
+        ],
+      },
+      related: [
+        {
+          label: 'SRT-Generator',
+          to: '/tools/srt-generator',
+          description: 'Erzeugen Sie eine neue SRT aus einer Video- oder Audiodatei.',
+        },
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Ziehen Sie die Tonspur zur Prüfung oder erneuten Transkription heraus.',
+        },
+        {
+          label: 'Audio zu Video hinzufügen',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Fügen Sie nach dem Übersetzen der Untertitel ein übersetztes Voiceover hinzu.',
+        },
+        {
+          label: 'Video in HLS transkodieren',
+          to: '/tools/transcode-to-hls',
+          description: 'Bündeln Sie Ihr Video fürs Streaming.',
+        },
+        {
+          label: 'Video in DASH transkodieren',
+          to: '/tools/transcode-to-dash',
+          description: 'DASH-Paketierung mit AV1 / VP9.',
+        },
+      ],
+      embed: {
+        title: 'Eine SRT- oder VTT-Untertiteldatei übersetzen',
+        description: 'Laden Sie eine vorhandene .srt- oder .vtt-Datei hoch, wählen Sie eine Zielsprache und erhalten Sie eine übersetzte Untertiteldatei, bei der die ursprünglichen Cue-Zeiten exakt erhalten bleiben.',
+      },
     },
     'audio-waveform-generator': {
       name: 'Audio-Wellenform-Generator',
+      h1: 'Kostenloser Audio-Wellenform-Generator',
       tagline: 'Verwandeln Sie jede Audiodatei in ein konfigurierbares Wellenform-Video, ein Wellenform-Bild oder beides – perfekt für Podcasts, Musikvorschauen und Social-Clips.',
+      metaTitle: 'Kostenloser Audio-Wellenform-Generator – Video & Bild | Media Manipulator',
+      metaDescription: 'Erzeugen Sie Wellenform-Videos und -Bilder aus jeder Audiodatei. Breite 10:1-Podcast-Streifen, quadratische Social-Vorschauen, getrennte Stereokanäle, eigene Farben und mehr.',
+      ogTitle: 'Kostenloser Audio-Wellenform-Generator',
+      ogDescription: 'Erzeugen Sie Wellenform-Videos und -Bilder aus MP3, WAV, M4A, FLAC und mehr. Umfassend konfigurierbar, ohne Anmeldung.',
+      intro: 'Eine Wellenform macht Audio sichtbar – ein unverzichtbares Element für Podcasts, Musikvorschauen, Vorschaubilder von Social-Clips und Schnitt-Timelines. Media Manipulator rendert Wellenformen mit den FFmpeg-Filtern showwaves / showwavespic, mit sinnvollen Voreinstellungen (ein breiter 10:1-Streifen mit 1600×160) und einem vollständigen Bereich für erweiterte Einstellungen zum Feinjustieren von Rendermodus, Farbe, Skala und Stereo-Trennung.',
+      whatItDoes: [
+        'Rendert animierte Wellenform-Videos mit dem FFmpeg-Filter showwaves in den Modi point / line / p2p / cline.',
+        'Rendert Wellenform-Standbilder mit dem FFmpeg-Filter showwavespic – perfekt für Vorschaubilder und Albumcover.',
+        'Unterstützt empfohlene Seitenverhältnis-Vorgaben (10:1 breit, 8:1, 6:1, 16:9, 1:1) sowie eigene Breite und Höhe.',
+        'Optionales Rendern mit getrennten Kanälen, sodass linker und rechter Kanal in unterschiedlichen Farben gezeichnet werden.',
+      ],
+      flowSteps: [
+        {
+          title: 'Audio hochladen',
+          description: 'Ziehen Sie eine beliebige MP3-, WAV-, M4A-, AAC-, FLAC- oder OGG-Datei hinein.',
+        },
+        {
+          title: 'Ausgabe und Größe wählen',
+          description: 'Wählen Sie Wellenform-Video, -Bild oder beides – und eine Seitenverhältnis-Vorgabe oder eine eigene Größe.',
+        },
+        {
+          title: 'Aussehen anpassen (optional)',
+          description: 'Passen Sie Rendermodus, Bildrate, Farben, Skala und Zeichenmodus im Bereich für erweiterte Einstellungen an.',
+        },
+        {
+          title: 'Herunterladen',
+          description: 'Speichern Sie Ihr Wellenform-Video, Ihr Wellenform-Bild oder eine .zip mit beidem.',
+        },
+      ],
+      advancedDetails: [
+        'Die Rendermodi entsprechen direkt den showwaves-Modi von FFmpeg: point, line, p2p, cline. Jeder wird im Formular als Vorschau gezeigt, sodass Sie nach Augenmaß wählen können.',
+        'Sie können entweder die Ausgabe-Bildrate (rate=) oder die Samples pro Spalte (n=) festlegen – nie beides, passend zu dem sich gegenseitig ausschließenden Parameter in FFmpeg.',
+        'Mit den Skalenoptionen (lin, log, sqrt, cbrt) entscheiden Sie, wie sichtbar leise Passagen sein sollen.',
+        'Werden Video und Bild zugleich angefordert, packen wir beide in eine einzige .zip – dasselbe Auftragssystem wie bei jedem anderen Download von Media Manipulator.',
+      ],
+      whyItMatters: [
+        'Wellenform-Grafiken machen Audioinhalte teilbar – ein Clip mit bewegter Wellenform schneidet in Social-Feeds mit stummem Autoplay weit besser ab als ein statisches Vorschaubild.',
+        'Editoren und Produzenten nutzen Wellenformen als Referenzmaterial beim Anordnen von Timelines oder beim Gestalten von Albumcovern.',
+        'Eine gut abgestimmte Wellenform ist Vorschaubild, Audiogramm und Audio-Teaser in einem.',
+      ],
+      useCases: [
+        {
+          title: 'Podcasts',
+          description: 'Erstellen Sie Audiogramme für Social Media – Clip + Wellenform + Untertitel = das erfolgreichste Promo-Format für Podcasts.',
+        },
+        {
+          title: 'Musikvorschauen',
+          description: 'Erzeugen Sie eine quadratische Wellenform-Karte für Instagram oder eine breite für YouTube-Beschreibungen.',
+        },
+        {
+          title: 'Schnitt-Timelines',
+          description: 'Nutzen Sie das Wellenform-Standbild als Referenzbild in Premiere oder DaVinci Resolve.',
+        },
+        {
+          title: 'Voiceover-Lieferung',
+          description: 'Schicken Sie Kunden eine Wellenform-Karte zusammen mit der WAV, damit sie auf einen Blick eine Vorschau haben.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Die Voreinstellungen tendieren zur nützlichsten Form (10:1 breit) statt zum FFmpeg-Standard von 600×240.',
+        'Erweiterte FFmpeg-Steuerung sicher zugänglich – jede Einstellung wird serverseitig geprüft, bevor sie an den Filtergraphen übergeben wird.',
+        'Ausgabe als MP4, PNG oder ZIP mit beidem – kein zweiter Auftrag nötig.',
+      ],
+      privacyNote: 'Ihr Audio wird von FFmpeg auf unserem Server in ein Wellenform-Bild oder -Video gezeichnet. Kein externer Audiodienst ist beteiligt. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Sie erhalten eine neue Datei; der Upload selbst wird nicht verändert.',
+      faq: [
+        {
+          question: 'Was ist eine Audio-Wellenform?',
+          answer: 'Eine Wellenform ist die visuelle Darstellung der Amplitude eines Audiosignals über die Zeit. Es ist die bewegte Linie, die Sie in Videoeditoren und auf Plattformen wie SoundCloud sehen.',
+        },
+        {
+          question: 'Kann ich aus einer MP3 ein Wellenform-Video erstellen?',
+          answer: 'Ja. Laden Sie die MP3 (oder WAV/M4A/FLAC/OGG/AAC) hoch, und das Tool rendert ein Wellenform-Video mit dem FFmpeg-Filter showwaves.',
+        },
+        {
+          question: 'Kann ich auch ein Wellenform-Bild erstellen?',
+          answer: 'Ja. Stellen Sie die Ausgabe auf „Bild“ für ein PNG/WebP-Standbild oder auf „Beides“, um eine ZIP mit Video und Bild zu erhalten.',
+        },
+        {
+          question: 'Welche Größe sollte ich für eine Wellenform verwenden?',
+          answer: 'Für die meisten Podcast- und Musik-Workflows sieht die breite 10:1-Vorgabe (1600×160) am besten aus. Verwenden Sie 16:9 oder 1:1, wenn Sie eine Social-Media-taugliche Form brauchen.',
+        },
+        {
+          question: 'Was bedeuten die Modi point, line, p2p und cline?',
+          answer: 'Das sind die Rendermodi des FFmpeg-Filters showwaves. point zeichnet einen Punkt pro Sample, line einen vertikalen Balken, p2p verbindet die Punkte mit Linien, und cline zeichnet einen zentrierten vertikalen Balken. Das Formular zeigt jeden Modus als Vorschau.',
+        },
+        {
+          question: 'Kann ich den linken und rechten Audiokanal trennen?',
+          answer: 'Ja – aktivieren Sie „Stereokanäle trennen“ in den erweiterten Einstellungen und wählen Sie für jeden Kanal eine andere Farbe.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Empfohlene Voreinstellung: breite 10:1-Wellenform (1600×160) – ideal für Podcasts, Musikvorschauen und Schnitt-Timelines.',
+          'Wenn Sie „Beides“ wählen, wird das Ergebnis in eine einzige ZIP mit Video und Bild gepackt.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Ziehen Sie das Audio aus einem Video, bevor Sie eine Wellenform erzeugen.',
+        },
+        {
+          label: 'SRT-Generator',
+          to: '/tools/srt-generator',
+          description: 'Kombinieren Sie die Wellenform mit Untertiteln für Social-Audiogramme.',
+        },
+        {
+          label: 'Audio zu Video hinzufügen',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Kombinieren Sie Ihr Wellenform-Rendering mit einem anderen Video.',
+        },
+      ],
+      embed: {
+        title: 'Eine Wellenform aus einer Audiodatei erzeugen',
+        description: 'Laden Sie eine Audiodatei hoch und wählen Sie, ob Sie ein Wellenform-Video, ein Wellenform-Bild oder beides möchten. Mit den erweiterten Einstellungen justieren Sie Größe, Farben, Rendermodus und Stereoverhalten. Voreingestellt ist ein breites 10:1-Wellenform-Video, passend für Podcasts und Musikvorschauen.',
+      },
     },
     'extract-video-only-from-video': {
       name: 'Video ohne Audio extrahieren',
+      h1: 'Video ohne Audio extrahieren (nur Bild)',
       tagline: 'Exportieren Sie eine stumme Kopie nur mit Bild, bei der alle Audiospuren entfernt sind – perfekt für stumme Vorschauen, B-Roll, Schnitte und neue Vertonung.',
+      metaTitle: 'Video ohne Audio extrahieren – Export nur Bild | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool, um eine stumme Kopie nur mit Bild zu exportieren, bei der jede Audiospur entfernt ist. Kopiert den Videostream wo möglich – keine Neukodierung, kein Qualitätsverlust.',
+      ogTitle: 'Video ohne Audio extrahieren (nur Bild)',
+      ogDescription: 'Exportieren Sie eine stumme Kopie Ihres Videos nur mit Bild, bei der jede Audiospur entfernt ist. Kostenlos, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      intro: 'Manchmal möchten Sie das Video ohne den Ton – für eine stumme Vorschau im Social-Feed, ein B-Roll-Element für einen neuen Schnitt oder eine Neuvertonung, bei der Sie frische Musik hinzufügen. Media Manipulator entfernt jede Audiospur und gibt eine saubere Datei nur mit Bild aus. Der Videostream wird wo immer möglich als Stream-Kopie übernommen, es gibt also keine Neukodierung und keinen Qualitätsverlust.',
+      whatItDoes: [
+        'Entfernt jeden Audiostream aus Ihrem Video.',
+        'Übernimmt den Videostream wo immer möglich als Stream-Kopie – keine Neukodierung, kein Qualitätsverlust.',
+        'Kodiert nur dann in kompatibles H.264 Baseline neu, wenn der Zielcontainer es erfordert.',
+        'Liefert eine stumme MP4 (oder WebM), die Sie direkt in einen neuen Schnitt übernehmen können.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Ziehen Sie eine beliebige MP4-, MOV-, MKV-, WebM-, AVI- oder M4V-Datei hinein.',
+        },
+        {
+          title: 'Zielcontainer wählen',
+          description: 'MP4 ist der sichere Standard. WebM wird für VP9/AV1-Quellen angeboten.',
+        },
+        {
+          title: 'Wir entfernen das Audio',
+          description: 'FFmpeg verwirft den Audiostream und kopiert den Videostream, wenn möglich.',
+        },
+        {
+          title: 'Stummes Video herunterladen',
+          description: 'Speichern Sie eine saubere, tonlose Kopie Ihres Videos.',
+        },
+      ],
+      advancedDetails: [
+        'Der erste Versuch verwendet `-c:v copy`, sodass keine Neukodierung stattfindet – die Qualität des Videostreams bleibt Bit für Bit erhalten.',
+        'Lehnt der Zielcontainer den Quellcodec ab, weichen wir auf eine Neukodierung mit libx264 + yuv420p bei CRF 20 aus.',
+        'Keine Wasserzeichen, keine Überlagerung, keine Skalierung – die Bildausgabe ist standardmäßig identisch mit der Quelle.',
+      ],
+      whyItMatters: [
+        'Stummes Video ist das De-facto-Autoplay-Format auf den meisten Social-Plattformen.',
+        'Audio zu entfernen ist auch ein Datenschutzschritt – es entfernt eingebettete Stimmen und Gespräche aus Bildschirmaufnahmen, bevor Sie sie teilen.',
+        'Editoren wollen oft eine saubere Datei nur mit Bild, um sie neu zu vertonen oder mit einer anderen Audioaufnahme zu synchronisieren.',
+      ],
+      useCases: [
+        {
+          title: 'Stumme Social-Vorschauen',
+          description: 'Erstellen Sie einen sauberen Autoplay-Clip für Instagram, X, LinkedIn oder TikTok.',
+        },
+        {
+          title: 'Neuvertonungsprojekte',
+          description: 'Entfernen Sie das Originalaudio, bevor Sie Musik oder Voiceover hinzufügen.',
+        },
+        {
+          title: 'Datenschutzsensible Freigaben',
+          description: 'Entfernen Sie Hintergrundgespräche, die bei einer Bildschirmaufnahme mitgeschnitten wurden.',
+        },
+        {
+          title: 'B-Roll-Vorbereitung',
+          description: 'Übernehmen Sie einen tonlosen Clip in einen Mehrkamera- oder B-Roll-getriebenen Schnitt.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Stream-Kopie wo möglich – bewahrt die ursprüngliche Videoqualität.',
+        'Klar, schnell, ohne Anmeldung, ohne Wasserzeichen.',
+        'Kostenlos. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ],
+      privacyNote: 'Ihr Video wird von FFmpeg auf unserem Server ohne seine Tonspur kopiert. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem externen Transcoding-Dienst. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie entferne ich Audio aus einem Video?',
+          answer: 'Laden Sie Ihr Video hoch und klicken Sie auf „Audio aus Video entfernen“. Das Tool gibt eine Kopie nur mit Bild im gewählten Container aus.',
+        },
+        {
+          question: 'Ändert sich die Videoqualität?',
+          answer: 'Im Standardfall nicht. Wir übernehmen den Videostream als Stream-Kopie, sodass die Ausgabe auf der Bildseite Bit für Bit identisch ist. Wir kodieren nur neu, wenn der Zielcontainer es verlangt.',
+        },
+        {
+          question: 'Kann ich eine MP4 stumm machen?',
+          answer: 'Ja – MP4 ist der Standard-Ausgabecontainer und der häufigste Anwendungsfall.',
+        },
+        {
+          question: 'Wird das Originalvideo verändert?',
+          answer: 'Nein. Der ursprüngliche Upload bleibt unangetastet. Wir erzeugen eine neue Datei und behalten oder löschen den Upload gemäß der Aufbewahrungsregel: Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+        },
+        {
+          question: 'Was ist, wenn mein Video kein Audio hat?',
+          answer: 'Kein Problem – das Tool läuft normal durch und liefert eine sauber neu verpackte Kopie.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Der Videostream wird ohne Neukodierung kopiert, wo immer der Zielcontainer es unterstützt.',
+          'Eingabevideos ohne Audiostream laufen normal durch und liefern eine neu verpackte Kopie.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audio aus Video entfernen',
+          to: '/tools/remove-audio-from-video',
+          description: 'Die verbraucherfreundliche Seite zum Stummschalten / Ton entfernen.',
+        },
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Ziehen Sie die Tonspur als MP3, WAV usw. heraus.',
+        },
+        {
+          label: 'Audio zu Video hinzufügen',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Fügen Sie Ihrem stummen Video eine neue Tonspur hinzu.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie das stumme Video.',
+        },
+        {
+          label: 'Einzelbilder aus Video extrahieren',
+          to: '/tools/extract-frames-from-video',
+          description: 'Ziehen Sie Standbilder aus dem stummen Video.',
+        },
+      ],
+      embed: {
+        title: 'Audio aus einem Video entfernen',
+        description: 'Laden Sie Ihr Video hoch, und wir erzeugen eine stumme Kopie nur mit Bild. Der Videostream wird wo immer möglich als Stream-Kopie übernommen, es gibt also keine Neukodierung und keinen Qualitätsverlust.',
+      },
     },
     'extract-frames-from-video': {
       name: 'Einzelbilder aus Video extrahieren',
+      h1: 'Einzelbilder aus Video extrahieren',
       tagline: 'Ziehen Sie Standbilder aus jedem Video – alle N Sekunden, mit einer Ziel-Bildrate oder zu bestimmten Zeitpunkten – und laden Sie sie als ZIP herunter.',
+      metaTitle: 'Einzelbilder aus Video extrahieren – kostenlos | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool, um Standbilder aus jedem Video zu extrahieren. Wählen Sie alle N Sekunden, Bilder pro Sekunde oder bestimmte Zeitpunkte. Ausgabe als ZIP mit JPG-, PNG- oder WebP-Einzelbildern.',
+      ogTitle: 'Einzelbilder aus Video extrahieren',
+      ogDescription: 'Ziehen Sie Standbilder aus MP4, MOV, MKV, WebM, AVI und M4V. Download als ZIP mit JPG-, PNG- oder WebP-Einzelbildern.',
+      intro: 'Die Einzelbild-Extraktion verwandelt ein Video zurück in eine Folge von Standbildern – nützlich für Vorschaubilder, Referenzaufnahmen, Design-Mockups, ML-Datensätze und Animations- oder Storyboard-Vorschauen. Media Manipulator lässt Sie Einzelbilder alle N Sekunden, mit einer Ziel-Bildrate oder zu bestimmten Zeitpunkten entnehmen und packt die entstehenden Bilder in eine einzige ZIP zum Herunterladen.',
+      whatItDoes: [
+        'Extrahiert Standbilder als JPG-, PNG- oder WebP-Bilder.',
+        'Unterstützt drei Entnahmemodi: alle N Sekunden, Ziel-Bildrate oder bestimmte Zeitpunkte.',
+        'Packt die Einzelbilder in eine einzige ZIP für den Download mit einem Klick.',
+        'Setzt eine Obergrenze für die Bildanzahl durch, damit Durchläufe schnell und vorhersehbar bleiben.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Ziehen Sie eine beliebige MP4-, MOV-, MKV-, WebM-, AVI- oder M4V-Datei hinein.',
+        },
+        {
+          title: 'Entnahmemodus wählen',
+          description: 'Alle N Sekunden, eine Ziel-Bildrate oder eine kommagetrennte Liste von Zeitpunkten.',
+        },
+        {
+          title: 'Bildformat wählen',
+          description: 'JPG für kompakte Vorschaubilder, PNG für verlustfreie Standbilder, WebP für kleinere moderne Dateien.',
+        },
+        {
+          title: 'ZIP herunterladen',
+          description: 'Alle extrahierten Einzelbilder werden in eine einzige .zip gepackt, die Sie überall entpacken können.',
+        },
+      ],
+      advancedDetails: [
+        'Die Modi „alle N Sekunden“ und Bildrate verwenden den fps-Filter von FFmpeg, um gleichmäßig über die Zeitachse zu entnehmen.',
+        'Der Zeitpunkt-Modus führt pro angefordertem Zeitpunkt einen eigenen FFmpeg-Aufruf aus, damit Fehler einzelner Bilder (Anfragen außerhalb der Dauer usw.) klar sichtbar werden.',
+        'Die Obergrenze für die Bildanzahl liegt standardmäßig bei 300 und maximal bei 1000 – das hält Aufträge schnell und verhindert ausufernde Extraktionen.',
+      ],
+      whyItMatters: [
+        'Die Einzelbild-Extraktion ist der einfachste Weg, Vorschaubilder oder Referenzbilder aus vorhandenem Videomaterial zu gewinnen.',
+        'Designer und Animatoren nutzen entnommene Einzelbilder als Zeichenreferenz und als B-Roll für Storyboards.',
+        'ML-Praktiker bauen daraus Klassifikations- oder Erkennungsdatensätze, ohne eine eigene Pipeline zu brauchen.',
+      ],
+      useCases: [
+        {
+          title: 'Vorschaubilder und Vorschauen',
+          description: 'Wählen Sie ein einzelnes Bild als YouTube/Vimeo-Vorschaubild.',
+        },
+        {
+          title: 'Design-Referenzen',
+          description: 'Entnehmen Sie eine Bildfolge aus Gameplay oder Animation als Zeichenreferenz.',
+        },
+        {
+          title: 'Storyboards',
+          description: 'Erzeugen Sie eine Folge von Schlüsselbildern für einen Storyboard-Pitch.',
+        },
+        {
+          title: 'ML-Datensätze',
+          description: 'Bauen Sie schnell kleine Bilddatensätze aus wenigen Videos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Drei Entnahmemodi decken fast jeden praktischen Bedarf ab – Intervall, Bildrate oder bestimmte Zeitpunkte.',
+        'Die ZIP-Ausgabe hält den Download bei einem Klick, egal wie viele Bilder Sie entnommen haben.',
+        'Serverseitiges FFmpeg bedeutet konsistente Ausgabe unabhängig von Browser- oder Codec-Unterstützung.',
+      ],
+      privacyNote: 'Einzelbilder werden von FFmpeg auf unserem Server in der von Ihnen gewählten Rate aus Ihrem Video entnommen und als ZIP mit Bildern zurückgegeben. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem externen Transcoding-Dienst. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Wie extrahiere ich Einzelbilder aus einem Video?',
+          answer: 'Laden Sie Ihr Video hoch, wählen Sie einen Entnahmemodus (alle N Sekunden ist voreingestellt), wählen Sie ein Bildformat und klicken Sie auf „Einzelbilder extrahieren“. Das Ergebnis ist eine ZIP mit Standbildern.',
+        },
+        {
+          question: 'Kann ich alle paar Sekunden ein Bild exportieren?',
+          answer: 'Ja – das ist der Standardmodus. Stellen Sie „Sekunden zwischen Bildern“ auf das gewünschte Intervall.',
+        },
+        {
+          question: 'Welche Bildformate werden unterstützt?',
+          answer: 'JPG (kompakt, ideal für Vorschaubilder), PNG (verlustfrei) und WebP (kleinere moderne Dateien).',
+        },
+        {
+          question: 'Warum liefert das Tool eine ZIP-Datei?',
+          answer: 'Selbst kurze Videos können Dutzende Einzelbilder ergeben. Eine einzige ZIP hält den Download bei einem Klick und vermeidet den Kampf mit dem Browser um mehrere Dateidownloads.',
+        },
+        {
+          question: 'Warum gibt es eine Obergrenze für die Bildanzahl?',
+          answer: 'Die Grenze verhindert versehentlich ausufernde Aufträge (z. B. Zehntausende Einzelbilder aus einem langen Video). Der Standard ist 300, das absolute Maximum 1000.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Die Standard-Obergrenze für die Bildanzahl ist 300 – erhöhen Sie sie im Formular auf bis zu 1000, wenn Sie wirklich mehr brauchen.',
+          'Der Zeitpunkt-Modus akzeptiert eine kommagetrennte Liste von Sekunden (z. B. „1, 5.5, 12.25, 30“).',
+        ],
+      },
+      related: [
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Ziehen Sie das Audio aus demselben Video.',
+        },
+        {
+          label: 'SRT-Generator',
+          to: '/tools/srt-generator',
+          description: 'Transkribieren Sie dasselbe Video in .srt-Untertitel.',
+        },
+        {
+          label: 'Audio aus Video entfernen',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Entfernen Sie das Audio, um eine stumme Kopie des Videos zu behalten.',
+        },
+      ],
+      embed: {
+        title: 'Einzelbilder aus einem Video extrahieren',
+        description: 'Laden Sie ein Video hoch, wählen Sie einen Entnahmemodus (alle N Sekunden, mit einer Bildrate oder zu bestimmten Zeitpunkten) und laden Sie eine ZIP mit Standbildern herunter.',
+      },
     },
     'stitch-audio-to-video': {
       name: 'Audio zu Video hinzufügen',
+      h1: 'Audio zu Video hinzufügen',
       tagline: 'Kombinieren Sie ein Basisvideo mit bis zu drei weiteren Audiodateien – Voiceovers, Musik, Erzählung – und laden Sie ein neues MP4 herunter.',
+      metaTitle: 'Audio zu Video hinzufügen – Voiceover, Musik, Ersetzen, Mix | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool, um Voiceover, Musik oder Erzählung zu einem Video hinzuzufügen oder das Originalaudio komplett zu ersetzen. Lautstärke- und Versatzregler pro Spur, MP4-Ausgabe.',
+      ogTitle: 'Audio zu Video hinzufügen',
+      ogDescription: 'Fügen Sie Voiceover, Musik oder Erzählung hinzu oder ersetzen Sie das Originalaudio. Lautstärke- und Versatzregler pro Spur, MP4-Ausgabe, ohne Anmeldung.',
+      intro: 'Ein Basisvideo mit einer oder mehreren zusätzlichen Audiodateien zu kombinieren ist eine der häufigsten Schnittaufgaben – ein Voiceover hinzufügen, einen Begleittrack unterlegen, eine Bildschirmaufnahme kommentieren oder das Originalaudio komplett ersetzen. Media Manipulator bietet Ihnen Lautstärke- und Versatzregler pro Spur, einen Umschalter zwischen Mischen und Ersetzen und eine MP4-Ausgabe, die sauber in jedem Player läuft.',
+      whatItDoes: [
+        'Kombiniert ein Basisvideo mit bis zu drei zusätzlichen Audiospuren.',
+        'Regler pro Spur: Lautstärke (0–4×), Startversatz in Sekunden, optional Schleife bis zur Videolänge.',
+        'Übergeordneter Modus-Umschalter: „Mischen“ behält das Originalaudio, „Ersetzen“ verwirft es.',
+        'Die Ausgabe ist immer MP4 mit AAC-Audio bei 192 kbps – der überall sichere Standard.',
+      ],
+      flowSteps: [
+        {
+          title: 'Basisvideo hochladen',
+          description: 'Ziehen Sie eine beliebige MP4-, MOV-, MKV-, WebM-, AVI- oder M4V-Datei hinein.',
+        },
+        {
+          title: 'Audiospuren hinzufügen',
+          description: 'Fügen Sie bis zu drei Audiodateien (Voiceover, Musik, Erzählung) mit Einstellungen pro Spur hinzu.',
+        },
+        {
+          title: 'Mischen oder Ersetzen wählen',
+          description: 'Behalten Sie das Originalaudio und mischen Sie die neuen Spuren hinein, oder verwerfen Sie das Original und verwenden Sie nur das neue Audio.',
+        },
+        {
+          title: 'Neue MP4 herunterladen',
+          description: 'Wir fügen alles auf unserem Server zusammen und liefern eine saubere MP4.',
+        },
+      ],
+      advancedDetails: [
+        'Der Filtergraph wird programmatisch aufgebaut: adelay- und volume-Knoten pro Spur, dann ein einzelnes amix, das sie kombiniert.',
+        'Der Videostream wird wo immer möglich als Stream-Kopie übernommen – nur das Audio wird neu kodiert (zu AAC bei 192 kbps).',
+        'Die Schleife ist mit `-stream_loop -1` auf dem Audio-Input umgesetzt, sodass kurze Begleittracks sauber auf die Videodauer verlängert werden.',
+        'Die Ausgabedauer ist standardmäßig „auf Videodauer kürzen“ – deaktivieren Sie das, wenn die Ausgabe bis zum längsten Input reichen soll.',
+      ],
+      whyItMatters: [
+        'Voiceover, Musik und Erzählung sind die häufigsten Audio-Ergänzungen bei Kurzvideos.',
+        'Mit Lautstärke- und Versatzreglern pro Spur gestalten Sie eine echte Mischung statt einer einzelnen eingefügten Spur.',
+        'Im Browser wäre das langsam und unzuverlässig – serverseitiges FFmpeg ist schnell und korrekt.',
+      ],
+      useCases: [
+        {
+          title: 'Creator-Videos',
+          description: 'Legen Sie ein Musikbett unter einen Talking-Head-Abschnitt, oder ersetzen Sie den Raumton durch ein sauberes Voiceover.',
+        },
+        {
+          title: 'Tutorials',
+          description: 'Legen Sie eine Erzählspur über eine Bildschirmaufnahme.',
+        },
+        {
+          title: 'Social-Clips',
+          description: 'Fügen Sie einem 15-Sekunden-Schnitt einen angesagten Track mit einem bestimmten Versatz hinzu.',
+        },
+        {
+          title: 'Familien- / Privatvideos',
+          description: 'Unterlegen Sie eine Urlaubsmontage mit Hintergrundmusik.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Lautstärke- und Versatzregler pro Spur – nicht nur eine einzelne eingefügte Audiodatei.',
+        'Stream-Kopie des Videos wo möglich – bewahrt die ursprüngliche Videoqualität.',
+        'Kostenlos, ohne Anmeldung, serverseitiges FFmpeg. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ],
+      privacyNote: 'Ihr Video und die hinzugefügte Audiodatei werden von FFmpeg auf unserem Server zu einer MP4 zusammengefügt. Die Arbeit läuft auf unseren eigenen Servern, nicht bei einem externen Transcoding-Dienst. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Ihre Quelldatei bleibt unangetastet, und das Ergebnis ist eine neue Datei.',
+      faq: [
+        {
+          question: 'Kann ich Musik zu einem Video hinzufügen?',
+          answer: 'Ja – fügen Sie die Musikdatei als Audiospur hinzu, stellen Sie ihre Lautstärke ein und lassen Sie den Modus auf „Mischen“, damit das Originalaudio darunter erhalten bleibt.',
+        },
+        {
+          question: 'Kann ich ein Voiceover hinzufügen und das Originalaudio behalten?',
+          answer: 'Ja – lassen Sie den Modus auf „Mischen“, fügen Sie das Voiceover hinzu und senken Sie das Originalaudio, indem Sie bei den zusätzlichen Spuren eine niedrige Lautstärke setzen, wenn das Voiceover obenauf liegen soll.',
+        },
+        {
+          question: 'Kann ich die Original-Tonspur ersetzen?',
+          answer: 'Ja – stellen Sie den Modus auf „Ersetzen“, und das Originalaudio wird verworfen. Nur die hinzugefügten Spuren werden in die Ausgabe gemischt.',
+        },
+        {
+          question: 'Was passiert, wenn das Audio länger ist als das Video?',
+          answer: 'Standardmäßig kürzen wir auf die Videodauer. Deaktivieren Sie „Auf Videodauer kürzen“, wenn die Ausgabe bis zum längsten Input reichen soll.',
+        },
+        {
+          question: 'Kann ich die Lautstärke des hinzugefügten Audios anpassen?',
+          answer: 'Ja – jede hinzugefügte Spur hat ihren eigenen Lautstärkefaktor (0–4×) und einen Startversatz in Sekunden.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Maximal 3 hinzugefügte Audiospuren pro Auftrag.',
+        ],
+        processingNotes: [
+          'Der Videostream wird wo möglich als Stream-Kopie übernommen – nur das Audio wird neu kodiert (zu AAC 192 kbps).',
+          'Das Schleifen-Kontrollkästchen verlängert kurze Begleittracks auf die Videolänge.',
+        ],
+      },
+      related: [
+        {
+          label: 'Audio aus Video extrahieren',
+          to: '/tools/extract-audio-from-video',
+          description: 'Ziehen Sie das Audio aus einem Video, um es in einem anderen wiederzuverwenden.',
+        },
+        {
+          label: 'Audio aus Video entfernen',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Entfernen Sie das Audio, um eine saubere Basis für die Neuvertonung vorzubereiten.',
+        },
+        {
+          label: 'Audio-Wellenform-Generator',
+          to: '/tools/audio-waveform-generator',
+          description: 'Erstellen Sie eine visuelle Begleitung für Ihre Tonspur.',
+        },
+      ],
+      embed: {
+        title: 'Die Tonspur eines Videos hinzufügen oder ersetzen',
+        description: 'Laden Sie ein Basisvideo hoch, fügen Sie ein bis drei Audiodateien hinzu, stellen Sie Lautstärke und Versatz pro Spur ein und wählen Sie „Mischen“ oder „Ersetzen“. Wir liefern eine MP4 mit allem kombiniert.',
+      },
     },
     'ai-frame-interpolation': {
       name: 'KI-Frame-Interpolation',
+      h1: 'Tool für KI-Frame-Interpolation',
       tagline: 'Erhöhen Sie die Bildrate eines Videos mit KI-erzeugten Zwischenbildern auf 48, 60 oder 120 FPS für flüssigere Bewegung.',
+      metaTitle: 'KI-Frame-Interpolation – Video auf 60 oder 120 FPS bringen | Media Manipulator',
+      metaDescription: 'Kostenloses Online-Tool für KI-Frame-Interpolation. Verwandeln Sie mit RIFE Videos mit 24/30 fps in flüssigere MP4s mit 48, 60 oder 120 FPS. Keine externe API – läuft auf unserer eigenen GPU.',
+      ogTitle: 'KI-Frame-Interpolation – Video flüssig auf 60 oder 120 FPS',
+      ogDescription: 'Laden Sie ein Video hoch, wählen Sie eine Ziel-FPS und laden Sie eine MP4 mit KI-erzeugten Zwischenbildern für flüssigere Bewegung herunter.',
+      intro: 'KI-Frame-Interpolation erhöht die Bildrate eines Videos, indem ein neuronales Netz (RIFE) neue Zwischenbilder erzeugt, statt vorhandene Bilder einfach zu verdoppeln oder zu überblenden. Das Ergebnis ist spürbar flüssigere Bewegung – Material mit 24/30 fps fühlt sich allmählich wie 60 fps an, und 60-fps-Clips lassen sich auf 120 fps für Displays mit hoher Bildwiederholrate heben. Die Verarbeitung läuft auf unserem eigenen GPU-Server, nicht über eine externe API, und die Ausgabe ist eine MP4, die Sie direkt in jedem Player abspielen können.',
+      whatItDoes: [
+        'Synthetisiert neue Zwischenbilder mit RIFE (rife-ncnn-vulkan), statt vorhandene Bilder zu verdoppeln oder zu überblenden.',
+        'Zielt auf 48, 60 oder 120 FPS mit Vorgaben für Qualität und maximale Verarbeitungshöhe, die Sie steuern.',
+        'Läuft auf unserem eigenen GPU-Server – kein externer KI-Anbieter sieht Ihre Datei.',
+        'Liefert eine MP4 mit H.264 + AAC (die Tonspur der Quelle bleibt standardmäßig erhalten).',
+        'Begrenzt lange oder sehr hohe Quellen von vornherein, damit kein einzelner Auftrag die GPU blockiert.',
+      ],
+      flowSteps: [
+        {
+          title: 'Video hochladen',
+          description: 'Ziehen Sie einen kurzen MP4-, MOV-, WebM-, MKV- oder AVI-Clip hinein.',
+        },
+        {
+          title: 'KI-Video-Tools öffnen',
+          description: 'Scrollen Sie im Videoformular zu „KI-Video-Tools“ und wählen Sie KI-Frame-Interpolation.',
+        },
+        {
+          title: 'Ziel-FPS und Qualität wählen',
+          description: 'Wählen Sie 48, 60 oder 120 FPS sowie eine Kodierqualität / maximale Verarbeitungshöhe.',
+        },
+        {
+          title: 'Interpolation ausführen',
+          description: 'Wir extrahieren die Einzelbilder, lassen RIFE auf unserer GPU laufen und kodieren eine MP4 mit der neuen Bildrate.',
+        },
+        {
+          title: 'MP4 herunterladen',
+          description: 'Speichern Sie den interpolierten Clip und sehen Sie ihn neben dem Original in der Vorschau.',
+        },
+      ],
+      advancedDetails: [
+        'Die Einzelbild-Extraktion verwendet ffmpeg mit vsync=0, sodass die Anzahl der Eingangsbilder exakt der Quell-Bildrate entspricht.',
+        'RIFE läuft über rife-ncnn-vulkan mit dem gewählten Modellverzeichnis (rife-v4.6 ist der empfohlene Standard; rife-v4 und rife-v2.3 sind aus Kompatibilitätsgründen ebenfalls verfügbar).',
+        'Nach der Interpolation kodiert ffmpeg zu H.264 (libx264) + AAC in der gewählten Qualität neu (CRF 26/20/17 für niedrig/mittel/hoch).',
+        'Das Quellaudio wird auf die neue Kodierung übertragen, und die Ausgabe verwendet +faststart, damit die Datei sauber über HTTP streamt.',
+        'Eine maximale Verarbeitungshöhe (standardmäßig 720p) begrenzt den GPU-Speicherdruck bei hohen Quellen; das ursprüngliche Seitenverhältnis bleibt durch Skalierung mit -2:min(ih,N) erhalten.',
+      ],
+      whyItMatters: [
+        'Bewegungsflüssigkeit ist einer der größten wahrnehmbaren Unterschiede zwischen Consumer- und Broadcast-Videoqualität.',
+        'Moderne Displays und viele Social-Plattformen bevorzugen Inhalte mit 60 und 120 fps für flüssigere Wiedergabe.',
+        'Älteres Material oder Material mit niedriger Bildrate lässt sich eine Stufe anheben, ohne das Ausgangsmaterial neu zu drehen.',
+      ],
+      useCases: [
+        {
+          title: '30 fps → 60 fps fürs Web',
+          description: 'Heben Sie Talking-Head-, Screencast- oder Vlog-Material in den flüssigeren 60-fps-Bereich, der für moderne Social- und Videoseiten typisch ist.',
+        },
+        {
+          title: '60 fps → 120 fps für Wiedergabe mit hoher Bildwiederholrate',
+          description: 'Bereiten Sie Material für 120-Hz/144-Hz-Displays oder nachgelagerte Zeitlupenbearbeitung vor.',
+        },
+        {
+          title: 'Flüssigere kurze Clips',
+          description: 'Lassen Sie einen 5–10 Sekunden langen Schnitt vor dem Teilen spürbar flüssiger aussehen.',
+        },
+        {
+          title: 'Ältere Clips aufwerten',
+          description: 'Bringen Sie alte Clips mit 24/30 fps auf 48 oder 60 fps für ein moderneres Wiedergabegefühl.',
+        },
+        {
+          title: 'Schnittvorbereitung',
+          description: 'Erzeugen Sie eine dichtere Bildfolge, bevor Sie in einem nachgelagerten Editor Zeitlupe oder Motion Graphics anwenden.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Läuft auf unserer eigenen GPU-Infrastruktur – kein externer KI-Anbieter erhält die Datei.',
+        'Verwendet rife-ncnn-vulkan, ein portables Vulkan-Binary, statt eines schweren PyTorch-Stacks – weniger Abhängigkeiten, schnellere Kaltstarts.',
+        'Kostenlos, ohne Anmeldung. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      ],
+      privacyNote: 'Neue Zwischenbilder für Ihr Video werden von RIFE auf unserem eigenen GPU-Server erzeugt. Die KI-Arbeit läuft auf Hardware, die wir selbst betreiben, nie bei einem externen KI-Anbieter, und nichts, was Sie hochladen, wird zum Trainieren eines Modells verwendet. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
+      faq: [
+        {
+          question: 'Verbessert KI-Frame-Interpolation tatsächlich die Videoqualität?',
+          answer: 'Sie verbessert die Bewegungsflüssigkeit, nicht Auflösung oder Schärfe. Hat Ihre Quelle bereits 60 fps, fühlt sie sich bei 120 fps flüssiger an. Hat Ihre Quelle 24/30 fps, fühlt sie sich näher an 60 fps an. Echte Bewegung, die die Kamera nie aufgenommen hat, wird nicht auf magische Weise wiederhergestellt.',
+        },
+        {
+          question: 'Ist KI-Frame-Interpolation dasselbe wie einfach die FPS zu erhöhen?',
+          answer: 'Nein. Eine einfache FPS-Umwandlung verdoppelt, verwirft oder überblendet in der Regel vorhandene Bilder. KI-Interpolation synthetisiert völlig neue Zwischenbilder auf Basis der geschätzten Bewegung, was meist deutlich natürlicher aussieht als Verdoppelung.',
+        },
+        {
+          question: 'Kann ich 30 fps in 60 fps umwandeln?',
+          answer: 'Ja – 30 fps zu 60 fps ist eines der häufigsten Ziele und ein guter erster Test.',
+        },
+        {
+          question: 'Kann ich 60 fps in 120 fps umwandeln?',
+          answer: 'Ja. 120 fps verdoppelt die GPU-Arbeit gegenüber 60 fps und erzeugt eine größere Datei, probieren Sie es also zuerst mit einem kurzen Clip.',
+        },
+        {
+          question: 'Warum kann Frame-Interpolation Artefakte erzeugen?',
+          answer: 'Die Bewegungsschätzung muss raten, was zwischen zwei echten Bildern passiert. Schnelle Bewegung, Hände, Haare, Räder, Verdeckungen und Szenenschnitte sind von Natur aus schwieriger – das synthetisierte Bild kann sich in diesen Bereichen verzerren, Geisterbilder zeigen oder verschmieren.',
+        },
+        {
+          question: 'Welches Ausgabeformat erzeugt das Tool?',
+          answer: 'MP4 mit H.264-Video und AAC-Audio. v1 gibt nur MP4 aus, weil dieser Container überall abgespielt wird und die höheren Bildraten unterstützt, die dieses Tool erzeugt.',
+        },
+        {
+          question: 'Sind 60 fps immer besser als 30 fps?',
+          answer: 'Für UI-Screencasts, Sport, Gameplay und bewegungsreiche Clips fühlen sich 60 fps meist flüssiger an. Bei filmischen Inhalten sind 24/30 fps oft der beabsichtigte Look. Wählen Sie die FPS, die zu der gewünschten Wirkung des Ergebnisses passen.',
+        },
+        {
+          question: 'Ist KI-Frame-Interpolation besser als minterpolate von FFmpeg?',
+          answer: 'KI-Interpolation (RIFE) erzeugt in der Regel sauberere Bewegung als der eingebaute minterpolate-Filter von FFmpeg, besonders bei nicht starrer Bewegung. minterpolate ist schneller, einfacher und für schnelle Ersatzumwandlungen weiterhin nützlich.',
+        },
+        {
+          question: 'Warum sehen Szenenschnitte nach der Interpolation manchmal seltsam aus?',
+          answer: 'Das Modell geht davon aus, dass benachbarte Bilder zur selben Bewegungsfolge gehören. Ein harter Szenenschnitt bricht diese Annahme, sodass das synthetisierte Bild an der Grenze eine kurze Verzerrung zeigen kann. Saubere Schnitte und kurze Clips helfen.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Maximale Quelldauer und Verarbeitungshöhe werden auf dem Server durch AI_FRAME_INTERPOLATION_MAX_DURATION_SECONDS und AI_FRAME_INTERPOLATION_MAX_HEIGHT begrenzt.',
+        ],
+        processingNotes: [
+          'KI-Interpolation ist GPU-intensiv. Senken Sie die maximale Verarbeitungshöhe für schnellere Ergebnisse bei hohen Quellen.',
+          'Die Ausgabe ist in v1 MP4 (H.264 + AAC). Das Audio der Quelle bleibt standardmäßig erhalten.',
+        ],
+      },
+      related: [
+        {
+          label: 'Videokonverter',
+          to: '/tools/video-converter',
+          description: 'Konvertieren Sie MP4, WebM, MOV, AVI, MKV und mehr.',
+        },
+        {
+          label: 'Video komprimieren',
+          to: '/tools/compress-video',
+          description: 'Verkleinern Sie die Videodatei nach der Interpolation.',
+        },
+        {
+          label: 'Video in animiertes GIF umwandeln',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Verwandeln Sie kurze Clips in teilbare animierte GIFs.',
+        },
+        {
+          label: 'Einzelbilder aus Video extrahieren',
+          to: '/tools/extract-frames-from-video',
+          description: 'Ziehen Sie einzelne Bilder als PNGs heraus.',
+        },
+        {
+          label: 'KI-Frame-Interpolation-Tutorial',
+          to: '/tutorials/ai-frame-interpolation',
+          description: 'Erfahren Sie, wie KI-Interpolation funktioniert und wann Sie sie einsetzen sollten.',
+        },
+      ],
+      embed: {
+        title: 'KI-Frame-Interpolation',
+        description: 'Laden Sie ein kurzes Video hoch. KI-Frame-Interpolation ist bereits ausgewählt: Wählen Sie eine Ziel-FPS (48, 60 oder 120), und das Tool synthetisiert neue Zwischenbilder und liefert eine MP4.',
+      },
     },
   },
 } as const;
