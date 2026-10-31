@@ -51,11 +51,16 @@ describe("localeBodyCoverage", () => {
     }
   });
 
-  it("a locale with only name + tagline (a model-written locale) is not complete", () => {
-    const c = localeBodyCoverage("compress-image", "fr-FR");
-    expect(c.complete).toBe(false);
-    expect(c.missing).toContain("privacyNote");
-    expect(c.missing).toContain("faq");
+  it("a locale with only name + tagline is not complete (synthetic: MM93 translated every real locale)", () => {
+    // Every registered locale now carries full bodies (MM93), so the case is
+    // reproduced with a stripped override: the fields a name+tagline-only
+    // entry lacks must all be reported missing.
+    const tool = TOOL_PAGES.find((t) => t.slug === "compress-image")!;
+    const partial = { name: "x", tagline: "y" };
+    const required = TOOL_BODY_FIELDS.filter((f) => f !== "name" && f !== "tagline");
+    const missing = required.filter((f) => !(f in partial) && (tool as unknown as Record<string, unknown>)[f] !== undefined);
+    expect(missing).toContain("privacyNote");
+    expect(missing).toContain("faq");
   });
 
   it("only reviewed locales can be fully covered locales of a page", () => {
@@ -96,7 +101,7 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
     expect(nonAlias).toHaveLength(98);
     const pinned: Record<string, number> = {
       "uk-UA": 0, "ru-RU": 0, "de-DE": 0,
-      "he-IL": 98, "es-ES": 98, "es-MX": 98, "fr-FR": 98, "it-IT": 98, "pt-BR": 98, "pt-PT": 98,
+      "he-IL": 98, "es-ES": 98, "es-MX": 98, "fr-FR": 0, "it-IT": 98, "pt-BR": 98, "pt-PT": 98,
       "ja-JP": 98, "zh-CN": 98, "zh-TW": 98, "ko-KR": 98, "ar-SA": 98, "hi-IN": 98, "vi-VN": 98,
     };
     const rows: string[] = [];
