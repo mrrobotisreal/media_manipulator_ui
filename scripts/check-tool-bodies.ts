@@ -47,7 +47,7 @@ const digitsMatch = (en: string, tr: string) => {
   return kept.sort().join(' ') === digits(tr);
 };
 /** A verbatim command line ("pdftoppm -r <dpi> …") has nothing to translate. */
-const isCommandLine = (s: string) => /^[a-z][\w.-]*(\s+(-{1,2}[\w-]+|<\w+>|\[[^\]]*\]|[\w./<>=:-]+))+$/.test(s.trim());
+const isCommandLine = (s: string) => /^[a-z][\w.-]*(\s+(-{1,2}[\w-]+|<[^>\s]+>|\[[^\]]*\]|[\w./<>=:|-]+))+$/.test(s.trim());
 const count = (s: string, re: RegExp) => (s.match(re) ?? []).length;
 const BRANDS = ['Media Manipulator', 'Darkroom', 'Motion'];
 const tokens = (s: string, re: RegExp) => (s.match(re) ?? []).sort().join(' | ');
