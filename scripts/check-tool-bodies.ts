@@ -26,7 +26,28 @@ const mods = toolPageOverrideModules as Record<string, { pages: Record<string, a
 const problems: string[] = [];
 const fail = (slug: string, path: string, msg: string) => problems.push(`${slug} ${path}: ${msg}`);
 
+/**
+ * Digit runs, as a sorted multiset. Hebrew writes "2 years" with the dual noun
+ * ("שנתיים"), so the 2 is spelled, not dropped: count the dual as a 2 (MM93).
+ */
+// A one-letter prefix (ל/ב/מ/ו/ה/כ/ש) may be attached: לשנתיים, בשעתיים.
+const HE_DUAL = /(?<![\u0590-\u05ff]{2})(שנתיים|יומיים|שעתיים|חודשיים)(?![\u0590-\u05ff])/g;
 const digits = (s: string) => (s.match(/\d+/g) ?? []).sort().join(' ');
+/** Compare digit multisets; a Hebrew dual noun stands in for a "2" or a spelled "two" in the English. */
+const digitsMatch = (en: string, tr: string) => {
+  if (digits(en) === digits(tr)) return true;
+  const duals = (tr.match(HE_DUAL) ?? []).length;
+  if (!duals) return false;
+  const enTwos = (en.match(/\b(2|two)\b/gi) ?? []).length;
+  if (enTwos < duals) return false;
+  // Drop one "2" from the English per dual, then the explicit digits must agree.
+  const enDigits = (en.match(/\d+/g) ?? []).slice();
+  let toDrop = Math.min(duals, enDigits.filter((d) => d === '2').length);
+  const kept = enDigits.filter((d) => (d === '2' && toDrop > 0 ? (toDrop--, false) : true));
+  return kept.sort().join(' ') === digits(tr);
+};
+/** A verbatim command line ("pdftoppm -r <dpi> …") has nothing to translate. */
+const isCommandLine = (s: string) => /^[a-z][\w.-]*(\s+(-{1,2}[\w-]+|<\w+>|\[[^\]]*\]|[\w./<>=:-]+))+$/.test(s.trim());
 const count = (s: string, re: RegExp) => (s.match(re) ?? []).length;
 const BRANDS = ['Media Manipulator', 'Darkroom', 'Motion'];
 const tokens = (s: string, re: RegExp) => (s.match(re) ?? []).sort().join(' | ');
@@ -44,7 +65,9 @@ const untranslatable = (s: string) =>
     .every((w) => {
       const t = w.replace(/^[(\[]+|[.)\]:]+$/g, '');
       return t === '' || /^<\/?\w+>$/.test(t) || /^[A-Z0-9°+.\-×x]+$/.test(t) || UNTRANSLATABLE_WORDS.has(t);
-    });
+    }) ||
+  // A single capitalised word that is the same in the target language ("Transcription", "Audio", "Standard").
+  /^[A-Z][a-z]+$/.test(s.trim());
 /**
  * "Motion" is the brand only as a proper noun: not "slow motion", and not the
  * sentence-initial common noun ("Motion smoothness…", "Motion estimation…").
@@ -61,8 +84,8 @@ function walk(slug: string, path: string, en: unknown, tr: unknown) {
       if (tr !== en) fail(slug, path, `related "to" changed: ${tr} (English ${en})`);
       return;
     }
-    if (en.trim().length > 12 && tr === en && !untranslatable(en)) fail(slug, path, 'identical to English');
-    if (digits(en) !== digits(tr)) fail(slug, path, `digits differ: en [${digits(en)}] vs [${digits(tr)}]`);
+    if (en.trim().length > 12 && tr === en && !untranslatable(en) && !isCommandLine(en)) fail(slug, path, 'identical to English');
+    if (!digitsMatch(en, tr)) fail(slug, path, `digits differ: en [${digits(en)}] vs [${digits(tr)}]`);
     for (const b of BRANDS) {
       if (brandCount(en, b) > 0 && brandCount(tr, b) === 0) fail(slug, path, `brand "${b}" missing`);
     }
