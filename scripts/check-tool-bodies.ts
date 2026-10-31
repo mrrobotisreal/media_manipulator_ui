@@ -32,6 +32,28 @@ const BRANDS = ['Media Manipulator', 'Darkroom', 'Motion'];
 const tokens = (s: string, re: RegExp) => (s.match(re) ?? []).sort().join(' | ');
 const EN_WORDS = /\b(the|and|with|your|you|this|that|which|from|when|into|is|are)\b/g;
 
+/**
+ * MM93: a string with nothing to translate (a format list "JPG, PNG, WebP",
+ * "HTML5 <video>", "90°, 180°, 270°") may stay identical to English.
+ */
+const UNTRANSLATABLE_WORDS = new Set(['WebP', 'WebM', 'Opus', 'Lottie', 'Darkroom', 'Motion', 'Media', 'Manipulator', 'ffmpeg', 'ffprobe', 'exiftool']);
+const untranslatable = (s: string) =>
+  s
+    .split(/[\s,;/]+/)
+    .filter(Boolean)
+    .every((w) => {
+      const t = w.replace(/^[(\[]+|[.)\]:]+$/g, '');
+      return t === '' || /^<\/?\w+>$/.test(t) || /^[A-Z0-9°+.\-×x]+$/.test(t) || UNTRANSLATABLE_WORDS.has(t);
+    });
+/**
+ * "Motion" is the brand only as a proper noun: not "slow motion", and not the
+ * sentence-initial common noun ("Motion smoothness…", "Motion estimation…").
+ */
+const brandCount = (s: string, b: string) =>
+  b === 'Motion'
+    ? (s.match(/(?<!\b[Ss]low[- ])\bMotion\b(?! (?:smoothness|estimation|blur|vectors?|path|compensation|graphics|analysis|detection|tracking|data|interpolation)\b)/g) ?? []).length
+    : (s.match(new RegExp(b, 'g')) ?? []).length;
+
 function walk(slug: string, path: string, en: unknown, tr: unknown) {
   if (typeof en === 'string') {
     if (typeof tr !== 'string') return fail(slug, path, 'missing string');
@@ -39,15 +61,14 @@ function walk(slug: string, path: string, en: unknown, tr: unknown) {
       if (tr !== en) fail(slug, path, `related "to" changed: ${tr} (English ${en})`);
       return;
     }
-    if (en.trim().length > 12 && tr === en) fail(slug, path, 'identical to English');
+    if (en.trim().length > 12 && tr === en && !untranslatable(en)) fail(slug, path, 'identical to English');
     if (digits(en) !== digits(tr)) fail(slug, path, `digits differ: en [${digits(en)}] vs [${digits(tr)}]`);
     for (const b of BRANDS) {
-      const ce = count(en, new RegExp(b, 'g'));
-      if (ce > 0 && count(tr, new RegExp(b, 'g')) === 0) fail(slug, path, `brand "${b}" missing`);
+      if (brandCount(en, b) > 0 && brandCount(tr, b) === 0) fail(slug, path, `brand "${b}" missing`);
     }
     if (tokens(en, /\{\{\w+\}\}/g) !== tokens(tr, /\{\{\w+\}\}/g)) fail(slug, path, 'placeholder {{…}} drift');
     if (tokens(en, /<\/?[A-Za-z][\w-]*>/g) !== tokens(tr, /<\/?[A-Za-z][\w-]*>/g)) fail(slug, path, `<…> token drift: en [${tokens(en, /<\/?[A-Za-z][\w-]*>/g)}] vs [${tokens(tr, /<\/?[A-Za-z][\w-]*>/g)}]`);
-    if (/[а-яА-ЯіїєґІЇЄҐ]/.test(tr) === false && (locale === 'ru-RU' || locale === 'uk-UA') && en.split(/\s+/).length > 4) fail(slug, path, 'no Cyrillic at all');
+    if (/[а-яА-ЯіїєґІЇЄҐ]/.test(tr) === false && (locale === 'ru-RU' || locale === 'uk-UA') && en.split(/\s+/).length > 4 && !untranslatable(en)) fail(slug, path, 'no Cyrillic at all');
     if (locale === 'ru-RU' && /ё/.test(tr)) fail(slug, path, 'contains ё (house style: е)');
     if (locale === 'uk-UA' && /[ыэъё]/.test(tr)) fail(slug, path, 'Russian letter in Ukrainian');
     const latinWords = count(tr.replace(/`[^`]*`/g, ''), EN_WORDS);
