@@ -62,14 +62,25 @@ export function catalogGroupFor(tool: Pick<ToolPageContent, 'slug' | 'category' 
 export function toCatalogTool(
   tool: ToolPageContent,
   featured: boolean,
-  options: { listed?: boolean; aliases?: ReadonlyArray<Pick<ToolPageContent, 'slug' | 'name' | 'primaryKeyword' | 'secondaryKeywords'>> } = {},
+  options: {
+    listed?: boolean;
+    aliases?: ReadonlyArray<Pick<ToolPageContent, 'slug' | 'name' | 'primaryKeyword' | 'secondaryKeywords'>>;
+    /**
+     * Localized template for the alias line, with a `{{names}}` placeholder
+     * (`interface:toolsIndex.alsoLine`). Defaults to the English line so the
+     * two-argument callers keep working; the /tools page always passes it, or
+     * every locale's catalog would carry an English "Also:".
+     */
+    alsoLine?: string;
+  } = {},
 ): CatalogTool {
   const aliases = options.aliases ?? [];
   const aliasNames = aliases.map((a) => a.name);
+  const alsoLine = options.alsoLine ?? DEFAULT_ALSO_LINE;
   return {
     slug: tool.slug,
     name: tool.name,
-    tagline: aliasNames.length ? `${tool.tagline} Also: ${aliasNames.join(', ')}.` : tool.tagline,
+    tagline: aliasNames.length ? `${tool.tagline} ${alsoLine.replace('{{names}}', aliasNames.join(', '))}` : tool.tagline,
     category: tool.category,
     featured,
     listed: options.listed ?? true,
@@ -93,9 +104,12 @@ export function toCatalogTool(
  * and while the full-index flag is off only `listedSlugs` (the 24 copy-bar
  * tools) are full cards; the rest are collapsed and nofollow.
  */
+/** English alias line; the /tools page passes the locale's own via `opts.alsoLine`. */
+export const DEFAULT_ALSO_LINE = 'Also: {{names}}.';
+
 export function buildCatalogTools(
   pages: readonly ToolPageContent[],
-  opts: { featuredSlugs: ReadonlySet<string>; listedSlugs: ReadonlySet<string>; fullIndex: boolean },
+  opts: { featuredSlugs: ReadonlySet<string>; listedSlugs: ReadonlySet<string>; fullIndex: boolean; alsoLine?: string },
 ): CatalogTool[] {
   const aliasesByPrimary = new Map<string, ToolPageContent[]>();
   for (const page of pages) {
@@ -108,6 +122,7 @@ export function buildCatalogTools(
       toCatalogTool(tool, opts.featuredSlugs.has(tool.slug), {
         listed: opts.fullIndex || opts.listedSlugs.has(tool.slug),
         aliases: aliasesByPrimary.get(tool.slug),
+        alsoLine: opts.alsoLine,
       }),
     );
 }

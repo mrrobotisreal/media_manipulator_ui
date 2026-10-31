@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM92: the English copy left on Pricing, Account, Tools and Voices in every other language.
+  {
+    id: '2026-10-31-locale-copy-gaps',
+    date: '2026-10-31',
+    title: 'Pricing, Account, Tools and Voices now read entirely in your language',
+    body: 'A translator pointed out that parts of the site were still in English in every other language. The "Pricing" link in the footer, most of the Account page (the History, Projects, Billing, Privacy & data and Profile tabs), the names and descriptions of 52 tools in the Tools catalog and the home-page grid, the "Also:" line that lists a tool\'s other names, the two voice-demo titles on the Voices page, and the browser-tab titles of the Pricing and Account pages are now translated in all 17 other languages. The status page also gained a new state: when your browser cannot reach the status service at all, it now says "Status unavailable" and keeps checking, instead of claiming the service is down.',
+    tags: ['fixed'],
+    links: [
+      { label: 'Compare plans', href: '/pricing' },
+      { label: 'All tools', href: '/tools' },
+    ],
+  },
   // MM90: model-run tools spend the AI allowance; higher AI limits; AI meter in the nav.
   {
     id: '2026-10-29-ai-allowance',

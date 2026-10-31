@@ -24,7 +24,7 @@ const rich = (state: SystemHealth['state'], extra: Partial<SystemHealth> = {}): 
 });
 
 describe('StatusBody', () => {
-  it.each([['operational'], ['degraded'], ['down']] as const)('renders the %s state in a polite live region', (state) => {
+  it.each([['operational'], ['degraded'], ['down'], ['unknown']] as const)('renders the %s state in a polite live region', (state) => {
     render(<StatusBody health={rich(state)} />);
     const live = screen.getByTestId('status-live');
     expect(live.getAttribute('aria-live')).toBe('polite');
@@ -44,6 +44,14 @@ describe('StatusBody', () => {
     expect(screen.getByTestId('status-basic')).toBeTruthy();
     expect(screen.queryByTestId('status-queue')).toBeNull();
     expect(screen.queryByTestId('status-check-database')).toBeNull();
+  });
+
+  it('an unreachable API is "status unavailable", never "down", and carries no basic-only note', () => {
+    render(<StatusBody health={{ state: 'unknown', basic: true }} />);
+    expect(screen.getByTestId('status-state').textContent).toBe('interface:status.unknown');
+    expect(screen.getByTestId('status-live').textContent).toContain('interface:status.unknownDetail');
+    expect(screen.getByTestId('status-live').textContent).not.toContain('interface:status.down');
+    expect(screen.queryByTestId('status-basic')).toBeNull();
   });
 
   it('says the GPU is off instead of showing counts', () => {
@@ -83,9 +91,13 @@ describe('fetchSystemHealth', () => {
     expect(h).toEqual({ state: 'operational', basic: true });
   });
 
-  it('reports down on a network error or a failing basic health', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline')));
-    expect((await fetchSystemHealth()).state).toBe('down');
+  it('a request that gets no answer (network error, CORS refusal) is unknown, not down', async () => {
+    // What a browser throws when the API's CORS allow-list refuses the page's origin.
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')));
+    expect(await fetchSystemHealth()).toEqual({ state: 'unknown', basic: true });
+  });
+
+  it('reports down on a failing basic health', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(reply(404, null)).mockResolvedValueOnce(reply(503, null)));
     expect((await fetchSystemHealth()).state).toBe('down');
   });

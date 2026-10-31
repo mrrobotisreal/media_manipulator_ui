@@ -11,12 +11,15 @@ const STATE_KEY: Record<ServiceState, string> = {
   operational: 'operational',
   degraded: 'degraded',
   down: 'down',
+  unknown: 'unknown',
 };
 
 const STATE_DOT: Record<ServiceState, string> = {
   operational: 'bg-emerald-500',
   degraded: 'bg-amber-500',
   down: 'bg-red-500',
+  // Grey, not red: the browser got no answer, which says nothing about the service.
+  unknown: 'bg-zinc-400',
 };
 
 /** Presentational: renders one known health snapshot. Exported for tests. */
@@ -48,7 +51,7 @@ export function StatusBody({ health, checkedAt }: { health: SystemHealth | null;
         )}
       </div>
 
-      {health?.basic && health.state !== 'down' ? (
+      {health?.basic && health.state !== 'down' && health.state !== 'unknown' ? (
         <p className="mt-4 text-sm text-muted-foreground" data-testid="status-basic">
           {s('basicOnly')}
         </p>

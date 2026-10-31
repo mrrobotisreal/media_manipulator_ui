@@ -3,22 +3,32 @@ import type { Metadata } from 'next';
 
 import type { AccountCopy } from '@/components/account/account-copy';
 
-import { getServerT } from '@/lib/i18n/server';
+import { getServerMetadataT, getServerT } from '@/lib/i18n/server';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import AccountDashboard, {
   type AccountLabels,
 } from '@/components/account/account-dashboard';
-import { SITE_ORIGIN } from '@/lib/seo';
+import { localizeHref } from '@/i18n/locales';
+import { SITE_NAME, SITE_ORIGIN } from '@/lib/seo';
+
+type PageParams = { params: Promise<{ lang: string }> };
 
 // A private dashboard: indexable content would be a bug, and there is nothing
 // here for a crawler. Metadata is written inline rather than through
 // buildMetadata() because lib/seo.ts is byte-unchanged since main by design.
-export const metadata: Metadata = {
-  title: 'Your account — Media Manipulator',
-  description: 'Your plan, your daily usage, and your saved Darkroom projects.',
-  alternates: { canonical: `${SITE_ORIGIN}/account` },
-  robots: { index: false, follow: false },
-};
+// The <title> reuses the page's own localized heading (MM92): until then every
+// locale's browser tab read "Your account" in English.
+export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
+  const { lang } = await params;
+  const locale = resolveLangParam(lang);
+  const t = getServerMetadataT('interface', locale);
+  return {
+    title: `${t('interface:account.title')} — ${SITE_NAME}`,
+    description: t('interface:account.subtitle'),
+    alternates: { canonical: `${SITE_ORIGIN}${localizeHref('/account', locale)}` },
+    robots: { index: false, follow: false },
+  };
+}
 
 /**
  * The page shell is a server component so every label is prerendered and
@@ -27,8 +37,6 @@ export const metadata: Metadata = {
  * why the history panel's tool and status maps are read here, with
  * `returnObjects`, rather than in the island.
  */
-type PageParams = { params: Promise<{ lang: string }> };
-
 export default async function Account({ params }: PageParams) {
   const { lang } = await params;
   const locale = resolveLangParam(lang);

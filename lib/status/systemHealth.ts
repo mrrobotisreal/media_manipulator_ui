@@ -15,7 +15,13 @@
 
 import { getBaseURL } from '@/lib/utils';
 
-export type ServiceState = 'operational' | 'degraded' | 'down';
+/**
+ * `unknown`: the browser could not get ANY answer from the API (network error,
+ * CORS refusal, an extension blocking the request). It is not evidence that the
+ * service is down, so the page must not say "Down"; `down` is reserved for an
+ * answer that says so (a 5xx, or a body with status "down").
+ */
+export type ServiceState = 'operational' | 'degraded' | 'down' | 'unknown';
 export type CheckResult = 'ok' | 'fail';
 
 export interface SystemHealth {
@@ -79,7 +85,9 @@ async function getJson(url: string, signal?: AbortSignal): Promise<{ status: num
 }
 
 /**
- * Fetch the service health. Never throws: a network failure means "down".
+ * Fetch the service health. Never throws: a request that gets no answer at all
+ * (network error, CORS refusal, blocked by an extension) is reported as
+ * `unknown`, not `down`; the page shows "Status unavailable" and keeps polling.
  * 5xx from /system/health is a real answer (the API reports itself down), a
  * 404/405 means the endpoint does not exist yet and we fall back to /health.
  */
@@ -97,6 +105,6 @@ export async function fetchSystemHealth(signal?: AbortSignal): Promise<SystemHea
     const parsed = parseSystemHealth(basic.body);
     return { state: ok ? (parsed?.state ?? 'operational') : 'down', basic: true };
   } catch {
-    return { state: 'down', basic: true };
+    return { state: 'unknown', basic: true };
   }
 }

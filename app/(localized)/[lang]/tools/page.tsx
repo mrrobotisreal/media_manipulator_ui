@@ -11,14 +11,32 @@ import { Panel } from '@/components/darkroom/panel';
 import ToolCatalog, { type ToolCatalogLabels } from '@/components/tools/tool-catalog';
 import { buildCatalogTools } from '@/components/tools/tool-catalog-data';
 import { resolveLangParam } from '@/lib/i18n/routeLocale';
-import { localizeHref } from '@/i18n/locales';
-import { getServerT } from '@/lib/i18n/server';
+import { defaultLocale, localizeHref } from '@/i18n/locales';
+import { getServerMetadataT, getServerT } from '@/lib/i18n/server';
+import { SITE_NAME } from '@/lib/seo';
+import { getSeoOverride } from '@/lib/seoOverrides';
 
 type PageParams = { params: Promise<{ lang: string }> };
 
 export async function generateMetadata({ params }: PageParams): Promise<Metadata> {
   const { lang } = await params;
-  return buildMetadata('/tools', resolveLangParam(lang));
+  const locale = resolveLangParam(lang);
+  const meta = buildMetadata('/tools', locale);
+  // MM92: a locale with no hand-written SEO override used to fall back to the
+  // English <title>/description. Reuse the page's own localized heading and
+  // intro instead, mirroring what /voices does. The six override locales and
+  // English are unchanged.
+  if (locale === defaultLocale || getSeoOverride('/tools', locale)) return meta;
+  const t = getServerMetadataT('interface', locale);
+  const title = `${t('interface:toolsIndex.title')} | ${SITE_NAME}`;
+  const description = t('interface:toolsIndex.intro');
+  return {
+    ...meta,
+    title,
+    description,
+    openGraph: { ...meta.openGraph, title, description },
+    twitter: { ...meta.twitter, title, description },
+  };
 }
 
 export default async function ToolsIndexPage({ params }: PageParams) {
@@ -48,6 +66,9 @@ export default async function ToolsIndexPage({ params }: PageParams) {
     featuredSlugs: new Set<string>(REVIEW_INDEXED_TOOL_SLUGS),
     listedSlugs: new Set<string>(REVIEW_CATALOG_SLUGS),
     fullIndex: isSeoFullIndex(),
+    // The "Also: …" alias line is part of the tagline, so it is localized here
+    // with the rest of the server-only `toolsIndex.*` strings.
+    alsoLine: t('toolsIndex.alsoLine'),
   });
   // Resolved here because `toolsIndex.*` lives in the server-only `pages`
   // shard; the client catalog cannot translate them itself. The two templated

@@ -21,7 +21,7 @@ const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'about', href: '/about' },
   // MM85: who runs the site and how to reach them.
   { key: 'contact', href: '/contact' },
-  { key: 'pricing', href: '/pricing', label: 'Pricing' },
+  { key: 'pricing', href: '/pricing' },
 ];
 
 // MM34: footer-only links (not in the header nav, per the ticket).
