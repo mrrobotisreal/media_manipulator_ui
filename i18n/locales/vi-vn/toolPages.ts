@@ -694,6 +694,217 @@ const viToolPages = {
       metaTitle: 'Tách giọng hát khỏi bài hát: Tạo nhạc karaoke | Media Manipulator',
       metaDescription: 'Tách giọng hát khỏi bài hát bằng AI và tải bản nhạc nền về cùng định dạng với tệp của bạn, hoặc FLAC hoặc WAV. Bản karaoke và bản luyện tập, trên GPU của chúng tôi. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
     },
+
+    // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
+    // and the home grid never show an English card in this locale. Model-written; native review pending.
+    'transcode-to-dash': {
+      name: 'Chuyển mã video sang DASH (AV1 / VP9)',
+      tagline: 'Đóng gói mọi video thành gói MPEG-DASH gồm manifest.mpd và các phân đoạn init/media theo từng độ phân giải.',
+    },
+    'convert-webp-to-jpg': {
+      name: 'Chuyển WebP sang JPG',
+      tagline: 'Biến ảnh WebP thành tệp JPG tương thích rộng rãi, mở được trong mọi trình xem và chỉnh sửa ảnh.',
+    },
+    'convert-png-to-jpg': {
+      name: 'Chuyển PNG sang JPG',
+      tagline: 'Biến ảnh chụp màn hình và đồ họa PNG dung lượng lớn thành ảnh JPG nhỏ gọn, tương thích mọi nơi chỉ trong vài giây.',
+    },
+    'convert-jpg-to-png': {
+      name: 'Chuyển JPG sang PNG',
+      tagline: 'Biến ảnh JPG thành tệp PNG không mất dữ liệu, sẵn sàng để chỉnh sửa, dùng nền trong suốt và làm đồ họa chất lượng cao.',
+    },
+    'convert-webp-to-png': {
+      name: 'Chuyển WebP sang PNG',
+      tagline: 'Biến ảnh WebP thành tệp PNG không mất dữ liệu, mở được ở mọi nơi và giữ nguyên độ trong suốt.',
+    },
+    'convert-png-to-webp': {
+      name: 'Chuyển PNG sang WebP',
+      tagline: 'Thu nhỏ đồ họa PNG thành tệp WebP hiện đại, tải nhanh hơn trên web và giữ nguyên độ trong suốt.',
+    },
+    'convert-jpg-to-webp': {
+      name: 'Chuyển JPG sang WebP',
+      tagline: 'Thu nhỏ ảnh JPG thành tệp WebP hiện đại, tải nhanh hơn trên web với chất lượng hình ảnh tương đương.',
+    },
+    'jpg-converter': {
+      name: 'Bộ chuyển đổi JPG',
+      tagline: 'Chuyển ảnh sang JPG: bộ chuyển đổi ảnh với JPG được chọn sẵn.',
+    },
+    'png-converter': {
+      name: 'Bộ chuyển đổi PNG',
+      tagline: 'Chuyển ảnh sang PNG: bộ chuyển đổi ảnh với PNG được chọn sẵn.',
+    },
+    'convert-jpg-to-pdf': {
+      name: 'Chuyển JPG sang PDF',
+      tagline: 'Biến ảnh JPG và bản quét thành tài liệu PDF gọn gàng, sẵn sàng để chia sẻ, in hoặc tải lên.',
+    },
+    'convert-png-to-pdf': {
+      name: 'Chuyển PNG sang PDF',
+      tagline: 'Biến ảnh chụp màn hình, đồ họa và bản quét PNG thành tài liệu PDF gọn gàng, sắc nét.',
+    },
+    'pdf-to-png': {
+      name: 'PDF sang PNG',
+      tagline: 'Kết xuất từng trang của tệp PDF thành ảnh PNG sắc nét, không mất dữ liệu, lý tưởng cho văn bản, sơ đồ và chỉnh sửa.',
+    },
+    'pdf-converter': {
+      name: 'Bộ chuyển đổi PDF',
+      tagline: 'Chuyển PDF thành ảnh JPG hoặc PNG và biến ảnh thành PDF, tất cả trong một nơi.',
+    },
+    'convert-heic-to-jpg': {
+      name: 'Chuyển HEIC sang JPG',
+      tagline: 'Biến ảnh HEIC từ iPhone thành tệp JPG tương thích mọi nơi, mở và tải lên được ở bất cứ đâu.',
+    },
+    'convert-avif-to-jpg': {
+      name: 'Chuyển AVIF sang JPG',
+      tagline: 'Biến ảnh AVIF hiện đại thành tệp JPG tương thích mọi nơi, dành cho ứng dụng và trang web không chấp nhận AVIF.',
+    },
+    'convert-avif-to-png': {
+      name: 'Chuyển AVIF sang PNG',
+      tagline: 'Biến ảnh AVIF thành tệp PNG không mất dữ liệu, mở được ở mọi nơi và giữ nguyên độ trong suốt.',
+    },
+    'convert-svg-to-png': {
+      name: 'Chuyển SVG sang PNG',
+      tagline: 'Chuyển biểu tượng và logo SVG thành ảnh PNG ở bất kỳ kích thước nào để tải lên, đưa vào slide và ứng dụng.',
+    },
+    'convert-png-to-svg': {
+      name: 'Chuyển PNG sang SVG',
+      tagline: 'Vector hóa logo, biểu tượng và nét vẽ từ PNG thành đường dẫn SVG thật, co giãn được, bằng potrace.',
+    },
+    'png-to-ico': {
+      name: 'PNG sang ICO',
+      tagline: 'Biến PNG thành favicon .ico nhiều kích thước thực thụ cho trang web và biểu tượng ứng dụng Windows.',
+    },
+    'svg-converter': {
+      name: 'Bộ chuyển đổi SVG',
+      tagline: 'Chuyển SVG sang PNG hoặc vector hóa PNG thành SVG: bộ chuyển đổi ảnh với SVG làm điểm xuất phát.',
+    },
+    'convert-wav-to-mp3': {
+      name: 'Chuyển WAV sang MP3',
+      tagline: 'Thu nhỏ các bản ghi WAV không mất dữ liệu dung lượng lớn thành tệp MP3 tương thích rộng rãi cho podcast, chia sẻ và lưu trữ.',
+    },
+    'isolate-vocals-from-song': {
+      name: 'Tách giọng hát khỏi bài hát',
+      tagline: 'Trích giọng hát từ bản nhạc để phối lại, cover, chép lời và phân tích. Chỉ dùng với nhạc mà bạn có quyền.',
+    },
+    'image-converter': {
+      name: 'Bộ chuyển đổi ảnh',
+      tagline: 'Chuyển đổi giữa JPG, PNG, WebP, AVIF, GIF và nhiều định dạng khác, với tùy chỉnh chất lượng, đổi kích thước, cắt và siêu dữ liệu.',
+    },
+    'video-converter': {
+      name: 'Bộ chuyển đổi video',
+      tagline: 'Chuyển đổi giữa MP4, WebM, MOV, AVI, MKV và nhiều định dạng khác, với toàn quyền kiểm soát codec, độ phân giải và âm thanh.',
+    },
+    'mp4-converter': {
+      name: 'Bộ chuyển đổi MP4',
+      tagline: 'Chuyển video sang MP4: bộ chuyển đổi video với MP4 được chọn sẵn.',
+    },
+    'convert-mov-to-mp4': {
+      name: 'Chuyển MOV sang MP4',
+      tagline: 'Biến tệp .mov của QuickTime và iPhone thành MP4 phổ biến, phát và tải lên được ở mọi nơi.',
+    },
+    'convert-webm-to-mp4': {
+      name: 'Chuyển WebM sang MP4',
+      tagline: 'Biến video .webm tối ưu cho web thành MP4 để bạn chỉnh sửa, chia sẻ và phát trên mọi thiết bị.',
+    },
+    'convert-avi-to-mp4': {
+      name: 'Chuyển AVI sang MP4',
+      tagline: 'Làm mới các video .avi cũ thành MP4 gọn nhẹ, phát được trên mọi điện thoại, trình duyệt và TV.',
+    },
+    'convert-mkv-to-mp4': {
+      name: 'Chuyển MKV sang MP4',
+      tagline: 'Biến tệp .mkv Matroska thành MP4 để phát trực tuyến, tải lên và phát trên các thiết bị không hỗ trợ MKV.',
+    },
+    'convert-mp4-to-webm': {
+      name: 'Chuyển MP4 sang WebM',
+      tagline: 'Mã hóa lại MP4 thành WebM VP9 mở, nhỏ hơn, hoàn hảo cho video web tải nhanh.',
+    },
+    'mp4-to-mp3': {
+      name: 'Chuyển MP4 sang MP3',
+      tagline: 'Lấy âm thanh của MP4 thành MP3: Tách âm thanh khỏi video với MP4 đầu vào và MP3 đầu ra.',
+    },
+    'video-to-mp3': {
+      name: 'Chuyển video sang MP3',
+      tagline: 'Lấy nhạc nền của video thành MP3: cùng công cụ với Tách âm thanh khỏi video.',
+    },
+    'mp4-to-gif': {
+      name: 'Chuyển MP4 sang GIF',
+      tagline: 'Tạo GIF lặp từ một clip MP4: bộ chuyển đổi GIF động với đầu vào cố định là MP4.',
+    },
+    'video-to-gif': {
+      name: 'Chuyển video sang GIF',
+      tagline: 'Biến một clip ngắn ở bất kỳ định dạng video phổ biến nào thành GIF lặp: cùng công cụ với bộ chuyển đổi GIF động.',
+    },
+    'gif-converter': {
+      name: 'Bộ chuyển đổi GIF',
+      tagline: 'Tạo và tinh chỉnh GIF động từ các clip video: bộ chuyển đổi GIF động dưới một tên khác.',
+    },
+    'video-compressor': {
+      name: 'Bộ nén video',
+      tagline: 'Thu nhỏ video bằng một cài đặt nén sẵn: cùng công cụ với Nén video.',
+    },
+    'compress-mp4': {
+      name: 'Nén MP4',
+      tagline: 'Làm MP4 nhỏ hơn mà vẫn giữ là MP4: Nén video với định dạng chứa được cố định.',
+    },
+    'mp4-trimmer': {
+      name: 'Trình cắt MP4',
+      tagline: 'Trình cắt video với MP4 được cố định cho cả đầu vào và đầu ra.',
+    },
+    'video-cutter': {
+      name: 'Trình cắt video',
+      tagline: 'Giữ lại một đoạn của video và bỏ phần còn lại: cùng công cụ với trình cắt video.',
+    },
+    'cut-video-online': {
+      name: 'Cắt video trực tuyến',
+      tagline: 'Cắt một clip từ video ngay trong trình duyệt, không cần cài đặt gì: trình cắt video dưới một tên khác.',
+    },
+    'crop-video': {
+      name: 'Cắt khung video',
+      tagline: 'Cắt bỏ phần rìa của video, đổi khung hình hoặc tỷ lệ khung hình mà không cần trình chỉnh sửa.',
+    },
+    'resize-video': {
+      name: 'Đổi kích thước video',
+      tagline: 'Thay đổi độ phân giải video: chuyển về 1080p, 720p, 480p hoặc bất kỳ chiều rộng và chiều cao tùy chỉnh nào.',
+    },
+    'rotate-video': {
+      name: 'Xoay video',
+      tagline: 'Sửa video bị nằm ngang hoặc lộn ngược: xoay 90°, 180° hoặc 270° và lật chỉ với một cú nhấp.',
+    },
+    'remove-audio-from-video': {
+      name: 'Xóa âm thanh khỏi video',
+      tagline: 'Tắt tiếng video vĩnh viễn: gỡ track âm thanh và tải về tệp chỉ có hình, không có tiếng.',
+    },
+    'audio-converter': {
+      name: 'Bộ chuyển đổi âm thanh',
+      tagline: 'Chuyển đổi giữa MP3, WAV, M4A, OGG, FLAC, OPUS và nhiều định dạng khác, với toàn quyền kiểm soát bitrate, tần số lấy mẫu và kênh.',
+    },
+    'srt-generator': {
+      name: 'Trình tạo phụ đề SRT',
+      tagline: 'Tải lên video hoặc tệp âm thanh và tạo tệp phụ đề .srt có thể tải về, sẵn sàng cho YouTube, phần mềm chỉnh sửa và công cụ hỗ trợ tiếp cận.',
+    },
+    'caption-translator': {
+      name: 'Trình dịch phụ đề',
+      tagline: 'Dịch tệp phụ đề SRT và VTT mà vẫn giữ nguyên thời gian, thứ tự và cấu trúc của từng dòng phụ đề, không dùng nhà cung cấp AI bên thứ ba.',
+    },
+    'audio-waveform-generator': {
+      name: 'Trình tạo dạng sóng âm thanh',
+      tagline: 'Biến bất kỳ tệp âm thanh nào thành video dạng sóng, ảnh dạng sóng hoặc cả hai, tùy chỉnh được, hoàn hảo cho podcast, bản nghe thử nhạc và clip mạng xã hội.',
+    },
+    'extract-video-only-from-video': {
+      name: 'Tách video không âm thanh',
+      tagline: 'Xuất bản sao không tiếng, chỉ có hình, với mọi track âm thanh đã được gỡ bỏ, hoàn hảo cho bản xem trước không tiếng, cảnh B-roll, chỉnh sửa và phối nhạc lại.',
+    },
+    'extract-frames-from-video': {
+      name: 'Tách khung hình từ video',
+      tagline: 'Lấy các khung hình tĩnh ra khỏi bất kỳ video nào, cứ mỗi N giây, theo tốc độ khung hình mục tiêu hoặc tại các mốc thời gian cụ thể, rồi tải về dưới dạng ZIP.',
+    },
+    'stitch-audio-to-video': {
+      name: 'Thêm âm thanh vào video',
+      tagline: 'Kết hợp video gốc với tối đa ba tệp âm thanh bổ sung như lồng tiếng, nhạc, thuyết minh, rồi tải về một MP4 mới.',
+    },
+    'ai-frame-interpolation': {
+      name: 'Nội suy khung hình bằng AI',
+      tagline: 'Tăng tốc độ khung hình của video lên 48, 60 hoặc 120 FPS với các khung hình trung gian do AI tạo ra, cho chuyển động mượt hơn.',
+    },
   },
 } as const;
 

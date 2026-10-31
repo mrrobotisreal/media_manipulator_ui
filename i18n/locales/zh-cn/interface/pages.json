@@ -2075,7 +2075,8 @@
       "privacy": "隐私",
       "editor": "编辑器"
     },
-    "moreTools": "{{category}}：另外 {{count}} 个"
+    "moreTools": "{{category}}：另外 {{count}} 个",
+    "alsoLine": "别名：{{names}}。"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "面包屑导航",

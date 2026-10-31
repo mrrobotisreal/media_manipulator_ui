@@ -2075,7 +2075,8 @@
       "privacy": "Quyền riêng tư",
       "editor": "Trình chỉnh sửa"
     },
-    "moreTools": "{{category}}: thêm {{count}}"
+    "moreTools": "{{category}}: thêm {{count}}",
+    "alsoLine": "Còn gọi là: {{names}}."
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Đường dẫn điều hướng",

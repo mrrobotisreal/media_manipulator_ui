@@ -2075,7 +2075,8 @@
       "privacy": "개인정보",
       "editor": "편집기"
     },
-    "moreTools": "{{category}}: {{count}}개 더"
+    "moreTools": "{{category}}: {{count}}개 더",
+    "alsoLine": "다른 이름: {{names}}."
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "탐색 경로",
@@ -2144,12 +2145,12 @@
     },
     "mrWintrow": {
       "description": "오디오북, 공포 이야기, 설명 영상, 보이스오버 같은 장편 내레이션을 위해 만든 제 목소리의 전문가용 클론이에요. 한 번의 낭독 안에 차분함, 재미, 두려움, 무너짐을 담아내요.",
-      "demoTitle": "The Last Exit",
+      "demoTitle": "마지막 출구",
       "demoDescription": "야간 운전 공포 내레이션: 차분하고, 재미있어하고, 공포에 질리고, 숨이 가쁘고, 무너지고, 다시 돌아와요."
     },
     "obsidian": {
       "description": "캐릭터 연기에 맞춰 조정한 두 번째 전문가용 클론이에요. 내레이터의 절제보다 위협과 연극성이 필요한 악당, 마법사, 게임과 오디오 드라마 역할을 위한 것이에요.",
-      "demoTitle": "The Tower at Vaelmoor",
+      "demoTitle": "베일모어의 탑",
       "demoDescription": "한 사령술사가 폭풍 속에서 옛 스승 Cornelius(ElevenLabs 라이브러리 음성)와 결투를 벌여요."
     },
     "howTo": {

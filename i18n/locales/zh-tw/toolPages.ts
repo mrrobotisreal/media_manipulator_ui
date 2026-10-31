@@ -694,6 +694,217 @@ const zhTwToolPages = {
       metaTitle: '去除歌曲人聲：卡拉 OK 製作器 | Media Manipulator',
       metaDescription: '用 AI 去除歌曲中的人聲，並以與原檔案相同的格式或 FLAC、WAV 下載伴奏。在我們自己的 GPU 上製作卡拉 OK 和練習音軌。訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。',
     },
+
+    // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
+    // and the home grid never show an English card in this locale. Model-written; native review pending.
+    'transcode-to-dash': {
+      name: '將影片轉碼為 DASH（AV1 / VP9）',
+      tagline: '把任何影片封裝成 MPEG-DASH 套件，包含 manifest.mpd 和依解析度劃分的初始化與媒體片段。',
+    },
+    'convert-webp-to-jpg': {
+      name: '將 WebP 轉換為 JPG',
+      tagline: '把 WebP 圖片變成相容性廣泛的 JPG 檔案，任何看圖軟體或編輯器都能開啟。',
+    },
+    'convert-png-to-jpg': {
+      name: '將 PNG 轉換為 JPG',
+      tagline: '幾秒內把容量龐大的 PNG 螢幕截圖和圖形，變成體積小、各處都能使用的 JPG 相片。',
+    },
+    'convert-jpg-to-png': {
+      name: '將 JPG 轉換為 PNG',
+      tagline: '把 JPG 相片轉為無損 PNG 檔案，方便編輯、處理透明背景和製作高品質圖形。',
+    },
+    'convert-webp-to-png': {
+      name: '將 WebP 轉換為 PNG',
+      tagline: '把 WebP 圖片轉為無損 PNG 檔案，到處都能開啟，並完整保留透明度。',
+    },
+    'convert-png-to-webp': {
+      name: '將 PNG 轉換為 WebP',
+      tagline: '把 PNG 圖形壓縮成新式 WebP 檔案，網頁載入更快，並完整保留透明度。',
+    },
+    'convert-jpg-to-webp': {
+      name: '將 JPG 轉換為 WebP',
+      tagline: '把 JPG 相片壓縮成新式 WebP 檔案，在相同視覺畫質下網頁載入更快。',
+    },
+    'jpg-converter': {
+      name: 'JPG 轉換器',
+      tagline: '將圖片轉換為 JPG：預先選好 JPG 的圖片轉換器。',
+    },
+    'png-converter': {
+      name: 'PNG 轉換器',
+      tagline: '將圖片轉換為 PNG：預先選好 PNG 的圖片轉換器。',
+    },
+    'convert-jpg-to-pdf': {
+      name: '將 JPG 轉換為 PDF',
+      tagline: '把 JPG 相片和掃描檔變成整潔的 PDF 文件，方便分享、列印或上傳。',
+    },
+    'convert-png-to-pdf': {
+      name: '將 PNG 轉換為 PDF',
+      tagline: '把 PNG 螢幕截圖、圖形和掃描檔變成整潔清晰的 PDF 文件。',
+    },
+    'pdf-to-png': {
+      name: 'PDF 轉 PNG',
+      tagline: '將 PDF 的每一頁轉為清晰的無損 PNG 圖片，適合處理文字、圖表和編輯。',
+    },
+    'pdf-converter': {
+      name: 'PDF 轉換器',
+      tagline: '將 PDF 轉為 JPG 或 PNG 圖片，也能把圖片轉成 PDF，全都在同一個地方完成。',
+    },
+    'convert-heic-to-jpg': {
+      name: '將 HEIC 轉換為 JPG',
+      tagline: '把 iPhone 的 HEIC 相片轉為各處都能開啟和上傳的 JPG 檔案。',
+    },
+    'convert-avif-to-jpg': {
+      name: '將 AVIF 轉換為 JPG',
+      tagline: '把新式 AVIF 圖片轉為相容性廣泛的 JPG 檔案，供不接受 AVIF 的應用程式和網站使用。',
+    },
+    'convert-avif-to-png': {
+      name: '將 AVIF 轉換為 PNG',
+      tagline: '把 AVIF 圖片轉為無損 PNG 檔案，到處都能開啟，並完整保留透明度。',
+    },
+    'convert-svg-to-png': {
+      name: '將 SVG 轉換為 PNG',
+      tagline: '把 SVG 圖示和標誌轉為任意尺寸的 PNG 圖片，用於上傳、簡報和應用程式。',
+    },
+    'convert-png-to-svg': {
+      name: '將 PNG 轉換為 SVG',
+      tagline: '使用 potrace 把 PNG 標誌、圖示和線稿向量化，變成真正可縮放的 SVG 路徑。',
+    },
+    'png-to-ico': {
+      name: 'PNG 轉 ICO',
+      tagline: '把 PNG 轉為真正的多尺寸 .ico 網站圖示，可用於網站 favicon 和 Windows 應用程式圖示。',
+    },
+    'svg-converter': {
+      name: 'SVG 轉換器',
+      tagline: '將 SVG 轉為 PNG，或把 PNG 描摹成 SVG：以 SVG 為起點的圖片轉換器。',
+    },
+    'convert-wav-to-mp3': {
+      name: '將 WAV 轉換為 MP3',
+      tagline: '把容量龐大的無損 WAV 錄音壓縮成相容性廣泛的 MP3 檔案，適合 Podcast、分享和儲存。',
+    },
+    'isolate-vocals-from-song': {
+      name: '分離歌曲人聲',
+      tagline: '從音樂音軌中擷取人聲，用於混音、翻唱、轉錄和分析。請僅用於你擁有權利的音樂。',
+    },
+    'image-converter': {
+      name: '圖片轉換器',
+      tagline: '在 JPG、PNG、WebP、AVIF、GIF 等格式之間轉換，並可控制畫質、調整尺寸、裁切和中繼資料。',
+    },
+    'video-converter': {
+      name: '影片轉換器',
+      tagline: '在 MP4、WebM、MOV、AVI、MKV 等格式之間轉換，並可完整控制編解碼器、解析度和音訊。',
+    },
+    'mp4-converter': {
+      name: 'MP4 轉換器',
+      tagline: '將影片轉換為 MP4：預先選好 MP4 的影片轉換器。',
+    },
+    'convert-mov-to-mp4': {
+      name: '將 MOV 轉換為 MP4',
+      tagline: '把 QuickTime 和 iPhone 的 .mov 檔案變成通用的 MP4，各處都能播放和上傳。',
+    },
+    'convert-webm-to-mp4': {
+      name: '將 WebM 轉換為 MP4',
+      tagline: '把網頁最佳化的 .webm 影片變成 MP4，可在任何裝置上剪輯、分享和播放。',
+    },
+    'convert-avi-to-mp4': {
+      name: '將 AVI 轉換為 MP4',
+      tagline: '把老舊的 .avi 影片升級成小巧的 MP4，在每支手機、瀏覽器和電視上都能播放。',
+    },
+    'convert-mkv-to-mp4': {
+      name: '將 MKV 轉換為 MP4',
+      tagline: '把 Matroska .mkv 檔案變成 MP4，在不支援 MKV 的裝置上也能串流、上傳和播放。',
+    },
+    'convert-mp4-to-webm': {
+      name: '將 MP4 轉換為 WebM',
+      tagline: '把 MP4 重新編碼為更小的開放式 VP9 WebM，非常適合載入快速的網頁影片。',
+    },
+    'mp4-to-mp3': {
+      name: '將 MP4 轉換為 MP3',
+      tagline: '把 MP4 的音訊擷取成 MP3：輸入 MP4、輸出 MP3 的「從影片擷取音訊」。',
+    },
+    'video-to-mp3': {
+      name: '將影片轉換為 MP3',
+      tagline: '把影片的配樂擷取成 MP3：與「從影片擷取音訊」是同一個工具。',
+    },
+    'mp4-to-gif': {
+      name: '將 MP4 轉換為 GIF',
+      tagline: '把 MP4 片段做成循環播放的 GIF：固定輸入為 MP4 的動態 GIF 轉換器。',
+    },
+    'video-to-gif': {
+      name: '將影片轉換為 GIF',
+      tagline: '把任何常見影片格式的簡短片段變成循環播放的 GIF：與動態 GIF 轉換器是同一個工具。',
+    },
+    'gif-converter': {
+      name: 'GIF 轉換器',
+      tagline: '從影片片段製作並調整動態 GIF：換個名稱的動態 GIF 轉換器。',
+    },
+    'video-compressor': {
+      name: '影片壓縮器',
+      tagline: '用壓縮預設縮小影片：與「壓縮影片」是同一個工具。',
+    },
+    'compress-mp4': {
+      name: '壓縮 MP4',
+      tagline: '縮小 MP4 檔案並保持 MP4 格式：固定容器格式的「壓縮影片」。',
+    },
+    'mp4-trimmer': {
+      name: 'MP4 裁剪工具',
+      tagline: '輸入與輸出都固定為 MP4 的影片裁剪工具。',
+    },
+    'video-cutter': {
+      name: '影片剪切工具',
+      tagline: '保留影片的某一段，捨棄其餘部分：與影片裁剪工具是同一個工具。',
+    },
+    'cut-video-online': {
+      name: '線上剪切影片',
+      tagline: '直接在瀏覽器中從影片剪出片段，不必安裝任何軟體：換個名稱的影片裁剪工具。',
+    },
+    'crop-video': {
+      name: '裁切影片',
+      tagline: '裁掉影片的邊緣，不需要剪輯軟體就能改變構圖或長寬比。',
+    },
+    'resize-video': {
+      name: '調整影片尺寸',
+      tagline: '變更影片解析度，可縮放為 1080p、720p、480p，或任意自訂的寬度與高度。',
+    },
+    'rotate-video': {
+      name: '旋轉影片',
+      tagline: '修正橫躺或上下顛倒的影片，一鍵旋轉 90°、180° 或 270°，並可翻轉。',
+    },
+    'remove-audio-from-video': {
+      name: '移除影片中的音訊',
+      tagline: '讓影片徹底靜音：移除音軌，下載沒有聲音、只有畫面的檔案。',
+    },
+    'audio-converter': {
+      name: '音訊轉換器',
+      tagline: '在 MP3、WAV、M4A、OGG、FLAC、OPUS 等格式之間轉換，並可完整控制位元率、取樣率和聲道。',
+    },
+    'srt-generator': {
+      name: 'SRT 字幕產生器',
+      tagline: '上傳影片或音訊檔案，產生可下載的 .srt 字幕檔，可用於 YouTube、剪輯軟體和無障礙工具。',
+    },
+    'caption-translator': {
+      name: '字幕翻譯器',
+      tagline: '翻譯 SRT 和 VTT 字幕檔，同時保留字幕的時間點、順序和結構，不使用第三方 AI 供應商。',
+    },
+    'audio-waveform-generator': {
+      name: '音訊波形產生器',
+      tagline: '把任何音訊檔案變成可自訂的波形影片、波形圖片，或兩者兼具，適合 Podcast、音樂預覽和社群短片。',
+    },
+    'extract-video-only-from-video': {
+      name: '擷取無音訊影片',
+      tagline: '匯出移除所有音軌的靜音、純影像副本，適合靜音預覽、B-roll、剪輯和重新配樂。',
+    },
+    'extract-frames-from-video': {
+      name: '從影片擷取影格',
+      tagline: '從任何影片擷取靜態影格：每隔 N 秒、依指定幀率，或在特定時間點擷取，並下載為 ZIP。',
+    },
+    'stitch-audio-to-video': {
+      name: '為影片加入音訊',
+      tagline: '將一支基底影片與最多三個額外的音訊檔案（配音、音樂、旁白）合併，並下載新的 MP4。',
+    },
+    'ai-frame-interpolation': {
+      name: 'AI 影格插補',
+      tagline: '以 AI 產生的中間影格，將影片幀率提高到 48、60 或 120 FPS，讓動作更流暢。',
+    },
   },
 } as const;
 

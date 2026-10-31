@@ -2075,7 +2075,8 @@
       "privacy": "Privacidade",
       "editor": "Editores"
     },
-    "moreTools": "{{category}}: mais {{count}}"
+    "moreTools": "{{category}}: mais {{count}}",
+    "alsoLine": "Também: {{names}}."
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Trilha de navegação",
@@ -2144,7 +2145,7 @@
     },
     "mrWintrow": {
       "description": "Um clone profissional da minha própria voz, feito para narração longa: audiolivros, histórias de terror, vídeos explicativos e locuções. Ele passa de calmo a divertido, assustado e abalado em uma única leitura.",
-      "demoTitle": "A Última Saída",
+      "demoTitle": "A última saída",
       "demoDescription": "Uma narração de terror em uma viagem noturna: calmo, divertido, aterrorizado, ofegante, abalado, e de volta."
     },
     "obsidian": {

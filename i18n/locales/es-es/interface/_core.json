@@ -104,7 +104,8 @@
     "language": "Idioma",
     "selectLanguage": "Seleccionar idioma",
     "voices": "Voces",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "pricing": "Precios"
   },
   "footer": {
     "tagline": "Herramientas basadas en el navegador y asistidas por servidor para editar, convertir, comprimir, analizar, transcribir, resumir y procesar de otras formas archivos de imagen, vídeo y audio.",

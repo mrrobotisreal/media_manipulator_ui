@@ -694,6 +694,217 @@ const jaToolPages = {
       metaTitle: '曲からボーカルを除去：カラオケメーカー | Media Manipulator',
       metaDescription: 'AIで曲からボーカルを除去し、インストゥルメンタルを元のファイルと同じ形式、またはFLACやWAVでダウンロードできます。カラオケや練習用トラックを自社のGPUで作成します。ゲストのファイルは24時間保存されます。無料アカウントなら24時間から2年までの間で選べます。',
     },
+
+    // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
+    // and the home grid never show an English card in this locale. Model-written; native review pending.
+    'transcode-to-dash': {
+      name: '動画をDASH（AV1 / VP9）にトランスコード',
+      tagline: 'あらゆる動画を、manifest.mpdとレンディションごとの初期化・メディアセグメントを含むMPEG-DASHバンドルにパッケージ化します。',
+    },
+    'convert-webp-to-jpg': {
+      name: 'WebPをJPGに変換',
+      tagline: 'WebP画像を、どの画像ビューアーやエディターでも開ける互換性の高いJPGファイルに変換します。',
+    },
+    'convert-png-to-jpg': {
+      name: 'PNGをJPGに変換',
+      tagline: 'サイズの大きいPNGのスクリーンショットやグラフィックを、小さくて互換性の高いJPG画像に数秒で変換します。',
+    },
+    'convert-jpg-to-png': {
+      name: 'JPGをPNGに変換',
+      tagline: 'JPG写真を劣化のないPNGファイルに変換します。編集、透過、高品質なグラフィック作業に最適です。',
+    },
+    'convert-webp-to-png': {
+      name: 'WebPをPNGに変換',
+      tagline: 'WebP画像を、どこでも開ける劣化のないPNGファイルに変換します。透過もそのまま保持されます。',
+    },
+    'convert-png-to-webp': {
+      name: 'PNGをWebPに変換',
+      tagline: 'PNGグラフィックを最新のWebPファイルに縮小します。Webでの読み込みが速くなり、透過もそのまま保持されます。',
+    },
+    'convert-jpg-to-webp': {
+      name: 'JPGをWebPに変換',
+      tagline: 'JPG写真を最新のWebPファイルに縮小します。見た目の画質はそのままで、Webでの読み込みが速くなります。',
+    },
+    'jpg-converter': {
+      name: 'JPGコンバーター',
+      tagline: '画像をJPGに変換します。JPGをあらかじめ選択した状態の画像コンバーターです。',
+    },
+    'png-converter': {
+      name: 'PNGコンバーター',
+      tagline: '画像をPNGに変換します。PNGをあらかじめ選択した状態の画像コンバーターです。',
+    },
+    'convert-jpg-to-pdf': {
+      name: 'JPGをPDFに変換',
+      tagline: 'JPG写真やスキャンを、共有・印刷・アップロードにすぐ使えるきれいなPDFドキュメントに変換します。',
+    },
+    'convert-png-to-pdf': {
+      name: 'PNGをPDFに変換',
+      tagline: 'PNGのスクリーンショット、グラフィック、スキャンを、鮮明できれいなPDFドキュメントに変換します。',
+    },
+    'pdf-to-png': {
+      name: 'PDFをPNGに変換',
+      tagline: 'PDFのすべてのページを、劣化のない鮮明なPNG画像に変換します。テキスト、図表、編集に最適です。',
+    },
+    'pdf-converter': {
+      name: 'PDFコンバーター',
+      tagline: 'PDFをJPGやPNG画像に変換したり、画像をPDFにまとめたりできます。すべてひとつの場所で完結します。',
+    },
+    'convert-heic-to-jpg': {
+      name: 'HEICをJPGに変換',
+      tagline: 'iPhoneのHEIC写真を、どこでも開いてアップロードできる互換性の高いJPGファイルに変換します。',
+    },
+    'convert-avif-to-jpg': {
+      name: 'AVIFをJPGに変換',
+      tagline: '最新のAVIF画像を、AVIFに対応していないアプリやサイトでも使える互換性の高いJPGファイルに変換します。',
+    },
+    'convert-avif-to-png': {
+      name: 'AVIFをPNGに変換',
+      tagline: 'AVIF画像を、どこでも開ける劣化のないPNGファイルに変換します。透過もそのまま保持されます。',
+    },
+    'convert-svg-to-png': {
+      name: 'SVGをPNGに変換',
+      tagline: 'SVGのアイコンやロゴを、任意のサイズのPNG画像にラスタライズします。アップロード、スライド、アプリに使えます。',
+    },
+    'convert-png-to-svg': {
+      name: 'PNGをSVGに変換',
+      tagline: 'PNGのロゴ、アイコン、線画を、potraceで本物の拡大縮小できるSVGパスにベクター化します。',
+    },
+    'png-to-ico': {
+      name: 'PNGをICOに変換',
+      tagline: 'PNGを、WebサイトのファビコンやWindowsアプリのアイコンに使える、複数サイズ入りの本格的な.icoファイルに変換します。',
+    },
+    'svg-converter': {
+      name: 'SVGコンバーター',
+      tagline: 'SVGをPNGにラスタライズしたり、PNGをSVGにトレースしたりできます。SVGを起点にした画像コンバーターです。',
+    },
+    'convert-wav-to-mp3': {
+      name: 'WAVをMP3に変換',
+      tagline: 'サイズの大きい非圧縮のWAV録音を、互換性の高いMP3ファイルに縮小します。ポッドキャスト、共有、保存に便利です。',
+    },
+    'isolate-vocals-from-song': {
+      name: '曲からボーカルを抽出',
+      tagline: '楽曲からボーカルを取り出して、リミックス、カバー、書き起こし、分析に使えます。権利をお持ちの音楽にのみご利用ください。',
+    },
+    'image-converter': {
+      name: '画像コンバーター',
+      tagline: 'JPG、PNG、WebP、AVIF、GIFなどの間で変換できます。画質、リサイズ、トリミング、メタデータも細かく調整できます。',
+    },
+    'video-converter': {
+      name: '動画コンバーター',
+      tagline: 'MP4、WebM、MOV、AVI、MKVなどの間で変換できます。コーデック、解像度、音声も細かく設定できます。',
+    },
+    'mp4-converter': {
+      name: 'MP4コンバーター',
+      tagline: '動画をMP4に変換します。MP4をあらかじめ選択した状態の動画コンバーターです。',
+    },
+    'convert-mov-to-mp4': {
+      name: 'MOVをMP4に変換',
+      tagline: 'QuickTimeやiPhoneの.movファイルを、どこでも再生・アップロードできる汎用的なMP4に変換します。',
+    },
+    'convert-webm-to-mp4': {
+      name: 'WebMをMP4に変換',
+      tagline: 'Web向けに最適化された.webm動画を、編集・共有でき、どのデバイスでも再生できるMP4に変換します。',
+    },
+    'convert-avi-to-mp4': {
+      name: 'AVIをMP4に変換',
+      tagline: '古い.avi動画を、スマートフォン、ブラウザー、テレビのどれでも再生できるコンパクトなMP4に変換します。',
+    },
+    'convert-mkv-to-mp4': {
+      name: 'MKVをMP4に変換',
+      tagline: 'Matroskaの.mkvファイルを、MKVに非対応のデバイスでもストリーミング、アップロード、再生できるMP4に変換します。',
+    },
+    'convert-mp4-to-webm': {
+      name: 'MP4をWebMに変換',
+      tagline: 'MP4を、より小さくオープンなVP9のWebMに再エンコードします。読み込みの速いWeb動画に最適です。',
+    },
+    'mp4-to-mp3': {
+      name: 'MP4をMP3に変換',
+      tagline: 'MP4の音声をMP3として取り出します。MP4を入力、MP3を出力に設定した「動画から音声を抽出」です。',
+    },
+    'video-to-mp3': {
+      name: '動画をMP3に変換',
+      tagline: '動画のサウンドトラックをMP3として取り出します。「動画から音声を抽出」と同じツールです。',
+    },
+    'mp4-to-gif': {
+      name: 'MP4をGIFに変換',
+      tagline: 'MP4クリップからループ再生のGIFを作成します。入力をMP4に固定した、アニメーションGIFコンバーターです。',
+    },
+    'video-to-gif': {
+      name: '動画をGIFに変換',
+      tagline: '一般的な形式の短い動画クリップを、ループ再生のGIFに変換します。アニメーションGIFコンバーターと同じツールです。',
+    },
+    'gif-converter': {
+      name: 'GIFコンバーター',
+      tagline: '動画クリップからアニメーションGIFを作成して調整できます。別名で提供しているアニメーションGIFコンバーターです。',
+    },
+    'video-compressor': {
+      name: '動画コンプレッサー',
+      tagline: '圧縮プリセットで動画を縮小します。「動画を圧縮」と同じツールです。',
+    },
+    'compress-mp4': {
+      name: 'MP4を圧縮',
+      tagline: 'MP4をMP4のまま小さくします。コンテナを固定した「動画を圧縮」です。',
+    },
+    'mp4-trimmer': {
+      name: 'MP4トリマー',
+      tagline: '入力と出力をMP4に固定した動画トリマーです。',
+    },
+    'video-cutter': {
+      name: '動画カッター',
+      tagline: '動画の一部分だけを残して、残りを削除します。動画トリマーと同じツールです。',
+    },
+    'cut-video-online': {
+      name: '動画をオンラインでカット',
+      tagline: 'インストール不要で、ブラウザー上で動画からクリップを切り出せます。別名で提供している動画トリマーです。',
+    },
+    'crop-video': {
+      name: '動画をクロップ',
+      tagline: '動画の端を切り落として、フレーミングやアスペクト比を変更します。編集ソフトは不要です。',
+    },
+    'resize-video': {
+      name: '動画をリサイズ',
+      tagline: '動画の解像度を変更します。1080p、720p、480p、または任意の幅と高さに拡大縮小できます。',
+    },
+    'rotate-video': {
+      name: '動画を回転',
+      tagline: '横向きや上下逆さまの動画を修正します。90°、180°、270°の回転と反転をワンクリックで行えます。',
+    },
+    'remove-audio-from-video': {
+      name: '動画から音声を削除',
+      tagline: '動画を完全にミュートします。音声トラックを取り除いて、映像のみの無音ファイルをダウンロードできます。',
+    },
+    'audio-converter': {
+      name: '音声コンバーター',
+      tagline: 'MP3、WAV、M4A、OGG、FLAC、OPUSなどの間で変換できます。ビットレート、サンプルレート、チャンネルも細かく設定できます。',
+    },
+    'srt-generator': {
+      name: 'SRTジェネレーター',
+      tagline: '動画または音声ファイルをアップロードして、ダウンロードできる.srt字幕ファイルを作成します。YouTube、編集ソフト、アクセシビリティツールにすぐ使えます。',
+    },
+    'caption-translator': {
+      name: '字幕翻訳',
+      tagline: 'SRTとVTTの字幕ファイルを、キューのタイミング、順序、構造を保ったまま翻訳します。第三者のAIプロバイダーは使用しません。',
+    },
+    'audio-waveform-generator': {
+      name: '音声波形ジェネレーター',
+      tagline: 'あらゆる音声ファイルを、設定を調整できる波形動画や波形画像、またはその両方に変換します。ポッドキャスト、楽曲のプレビュー、SNS用クリップに最適です。',
+    },
+    'extract-video-only-from-video': {
+      name: '音声なしで動画を抽出',
+      tagline: 'すべての音声トラックを取り除いた、無音の映像のみのコピーを書き出します。無音のプレビュー、Bロール、編集、音楽の付け替えに最適です。',
+    },
+    'extract-frames-from-video': {
+      name: '動画からフレームを抽出',
+      tagline: 'どんな動画からも静止画のフレームを取り出せます。N秒ごと、指定のフレームレート、または特定のタイムスタンプで抽出し、ZIPでダウンロードできます。',
+    },
+    'stitch-audio-to-video': {
+      name: '動画に音声を追加',
+      tagline: 'ベースの動画に、ボイスオーバー、音楽、ナレーションなど最大3つの音声ファイルを合成して、新しいMP4をダウンロードできます。',
+    },
+    'ai-frame-interpolation': {
+      name: 'AIフレーム補間',
+      tagline: 'AIが生成する中間フレームで、動画のフレームレートを48、60、120 FPSに引き上げ、動きをより滑らかにします。',
+    },
   },
 } as const;
 

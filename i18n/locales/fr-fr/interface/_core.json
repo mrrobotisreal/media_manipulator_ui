@@ -104,7 +104,8 @@
     "language": "Langue",
     "selectLanguage": "Choisir la langue",
     "voices": "Voix",
-    "contact": "Contact"
+    "contact": "Contact",
+    "pricing": "Offres"
   },
   "footer": {
     "tagline": "Outils dans le navigateur et assistés par serveur pour éditer, convertir, compresser, analyser, transcrire, résumer et traiter vos fichiers image, vidéo et audio.",
