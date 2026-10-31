@@ -1,8 +1,10 @@
 /**
  * MM86 per-locale checker for the 24 copy-bar tool bodies (the MM68-style
  * checks for a locale's `i18n/locales/<dir>/toolPages.ts`).
- * Run from the repo root:  npx tsx scripts/check-tool-bodies.ts <locale-code> [--words]
+ * Run from the repo root:  npx tsx scripts/check-tool-bodies.ts <locale-code> [--words] [--all]
  * Used by MM86 (uk, ru, de) and by the per-locale follow-ups `MM86-<prefix>`.
+ * MM93: `--all` checks every non-alias tool page (98), not only the 24 copy-bar
+ * slugs; a locale is done for MM93 when it ends `98/98 … 0 problem(s)`.
  * Reports, per slug: coverage (localeBodyCoverage), then for every translated
  * string vs its English source: digit runs (multiset), brand names
  * (Media Manipulator, Darkroom, Motion), {{placeholders}}, <tags>/<placeholders>,
@@ -17,6 +19,8 @@ import { toolPageOverrideModules } from '@/i18n/generated/toolPages.generated';
 
 const locale = process.argv[2];
 const showWords = process.argv.includes('--words');
+const checkAll = process.argv.includes('--all');
+const SLUGS: readonly string[] = checkAll ? TOOL_PAGES.filter((t) => !t.aliasOf).map((t) => t.slug) : REVIEW_CATALOG_SLUGS;
 if (!locale) throw new Error('usage: check-locale.ts <locale>');
 const mods = toolPageOverrideModules as Record<string, { pages: Record<string, any> }>;
 const problems: string[] = [];
@@ -66,7 +70,7 @@ const words = (v: unknown): number =>
   typeof v === 'string' ? v.split(/\s+/).filter(Boolean).length : Array.isArray(v) ? v.reduce((n, x) => n + words(x), 0) : v && typeof v === 'object' ? Object.entries(v).filter(([k]) => k !== 'to').reduce((n, [, x]) => n + words(x), 0) : 0;
 
 let complete = 0;
-for (const slug of REVIEW_CATALOG_SLUGS) {
+for (const slug of SLUGS) {
   const enTool: any = TOOL_PAGES.find((t) => t.slug === slug)!;
   const o = mods[locale]?.pages?.[slug] ?? {};
   const cov = localeBodyCoverage(slug, locale);
@@ -93,7 +97,7 @@ for (const slug of REVIEW_CATALOG_SLUGS) {
   totalWords += w;
   if (showWords) console.log(`${slug.padEnd(32)} ${w} words`);
 }
-console.log(`${locale}: ${complete}/${REVIEW_CATALOG_SLUGS.length} slugs fully covered; ${totalWords} words in the 24 entries; ${problems.length} problem(s)`);
+console.log(`${locale}: ${complete}/${SLUGS.length} slugs fully covered; ${totalWords} words in the ${SLUGS.length} entries; ${problems.length} problem(s)`);
 for (const p of problems.slice(0, 200)) console.log('  - ' + p);
 if (problems.length > 200) console.log(`  … ${problems.length - 200} more`);
 process.exit(problems.length ? 1 : 0);
