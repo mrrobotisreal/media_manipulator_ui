@@ -2075,7 +2075,8 @@
       "privacy": "Confidentialité",
       "editor": "Éditeurs"
     },
-    "moreTools": "{{category}} : {{count}} de plus"
+    "moreTools": "{{category}} : {{count}} de plus",
+    "alsoLine": "Aussi : {{names}}."
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Fil d'Ariane",
@@ -2144,12 +2145,12 @@
     },
     "mrWintrow": {
       "description": "Un clone professionnel de ma propre voix, conçu pour la narration longue : livres audio, histoires d'horreur, vidéos explicatives et voix off. Il passe du calme à l'amusement, de la peur à l'effondrement dans une même lecture.",
-      "demoTitle": "La dernière sortie",
+      "demoTitle": "La Dernière Sortie",
       "demoDescription": "Une narration d'horreur sur une route de nuit : calme, amusé, terrifié, à bout de souffle, brisé, puis de retour."
     },
     "obsidian": {
       "description": "Un second clone professionnel réglé pour les personnages : méchants, sorciers, rôles de jeux et de fictions audio qui demandent de la menace et du théâtre plutôt que la retenue d'un narrateur.",
-      "demoTitle": "La tour de Vaelmoor",
+      "demoTitle": "La Tour de Vaelmoor",
       "demoDescription": "Un nécromancien affronte son ancien maître, Cornelius (une voix de la bibliothèque ElevenLabs), dans une tempête."
     },
     "howTo": {

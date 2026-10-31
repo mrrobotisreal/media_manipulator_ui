@@ -2075,7 +2075,8 @@
       "privacy": "プライバシー",
       "editor": "エディター"
     },
-    "moreTools": "{{category}}：ほか {{count}} 件"
+    "moreTools": "{{category}}：ほか {{count}} 件",
+    "alsoLine": "別名：{{names}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "パンくずリスト",
@@ -2149,7 +2150,7 @@
     },
     "obsidian": {
       "description": "キャラクター演技向けに調整した2つ目のプロフェッショナルなクローンです。悪役、魔術師、ゲームやオーディオドラマの役など、ナレーターの抑制ではなく、威圧感と演劇性が必要な役柄に。",
-      "demoTitle": "ヴェルムーアの塔",
+      "demoTitle": "ヴェイルモアの塔",
       "demoDescription": "嵐の中、死霊術師がかつての師コーネリアス（ElevenLabsライブラリのボイス）と決闘する。"
     },
     "howTo": {

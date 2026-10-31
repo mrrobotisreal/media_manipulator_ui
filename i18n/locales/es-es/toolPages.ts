@@ -828,6 +828,217 @@ const esToolPages = {
       tagline:
         'Modifica al instante el tono y el carácter de una grabación, o convierte el habla a una voz guardada o predefinida con IA.',
     },
+
+    // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
+    // and the home grid never show an English card in this locale. Model-written; native review pending.
+    'transcode-to-dash': {
+      name: 'Transcodificar vídeo a DASH (AV1 / VP9)',
+      tagline: 'Empaqueta cualquier vídeo en un paquete MPEG-DASH con manifest.mpd y segmentos de inicialización y de medios para cada versión.',
+    },
+    'convert-webp-to-jpg': {
+      name: 'Convertir WebP a JPG',
+      tagline: 'Convierte imágenes WebP en archivos JPG de amplia compatibilidad que funcionan en cualquier visor o editor de imágenes.',
+    },
+    'convert-png-to-jpg': {
+      name: 'Convertir PNG a JPG',
+      tagline: 'Convierte capturas de pantalla y gráficos PNG pesados en fotos JPG pequeñas y compatibles con todo, en cuestión de segundos.',
+    },
+    'convert-jpg-to-png': {
+      name: 'Convertir JPG a PNG',
+      tagline: 'Convierte fotos JPG en archivos PNG sin pérdida, listos para editar, usar transparencias y trabajar gráficos de alta calidad.',
+    },
+    'convert-webp-to-png': {
+      name: 'Convertir WebP a PNG',
+      tagline: 'Convierte imágenes WebP en archivos PNG sin pérdida que se abren en cualquier parte y conservan toda la transparencia.',
+    },
+    'convert-png-to-webp': {
+      name: 'Convertir PNG a WebP',
+      tagline: 'Reduce el peso de tus gráficos PNG con archivos WebP modernos que cargan más rápido en la web y conservan toda la transparencia.',
+    },
+    'convert-jpg-to-webp': {
+      name: 'Convertir JPG a WebP',
+      tagline: 'Reduce el peso de tus fotos JPG con archivos WebP modernos que cargan más rápido en la web con la misma calidad visual.',
+    },
+    'jpg-converter': {
+      name: 'Conversor a JPG',
+      tagline: 'Convierte imágenes a JPG: el conversor de imágenes con JPG preseleccionado.',
+    },
+    'png-converter': {
+      name: 'Conversor a PNG',
+      tagline: 'Convierte imágenes a PNG: el conversor de imágenes con PNG preseleccionado.',
+    },
+    'convert-jpg-to-pdf': {
+      name: 'Convertir JPG a PDF',
+      tagline: 'Convierte fotos y escaneos JPG en documentos PDF limpios, listos para compartir, imprimir o subir.',
+    },
+    'convert-png-to-pdf': {
+      name: 'Convertir PNG a PDF',
+      tagline: 'Convierte capturas de pantalla, gráficos y escaneos PNG en documentos PDF limpios y nítidos.',
+    },
+    'pdf-to-png': {
+      name: 'PDF a PNG',
+      tagline: 'Convierte cada página de un PDF en imágenes PNG nítidas y sin pérdida, ideales para texto, diagramas y edición.',
+    },
+    'pdf-converter': {
+      name: 'Conversor de PDF',
+      tagline: 'Convierte PDF en imágenes JPG o PNG y transforma imágenes en PDF, todo en un mismo lugar.',
+    },
+    'convert-heic-to-jpg': {
+      name: 'Convertir HEIC a JPG',
+      tagline: 'Convierte las fotos HEIC del iPhone en archivos JPG compatibles con todo, que se abren y se suben en cualquier parte.',
+    },
+    'convert-avif-to-jpg': {
+      name: 'Convertir AVIF a JPG',
+      tagline: 'Convierte imágenes AVIF modernas en archivos JPG compatibles con todo, para las apps y los sitios que no aceptan AVIF.',
+    },
+    'convert-avif-to-png': {
+      name: 'Convertir AVIF a PNG',
+      tagline: 'Convierte imágenes AVIF en archivos PNG sin pérdida que se abren en cualquier parte y conservan toda la transparencia.',
+    },
+    'convert-svg-to-png': {
+      name: 'Convertir SVG a PNG',
+      tagline: 'Rasteriza iconos y logotipos SVG en imágenes PNG de cualquier tamaño para subidas, presentaciones y apps.',
+    },
+    'convert-png-to-svg': {
+      name: 'Convertir PNG a SVG',
+      tagline: 'Vectoriza logotipos, iconos y dibujos de línea desde PNG en trazados SVG reales y escalables con potrace.',
+    },
+    'png-to-ico': {
+      name: 'PNG a ICO',
+      tagline: 'Convierte un PNG en un favicon .ico multitamaño real para sitios web e iconos de aplicaciones de Windows.',
+    },
+    'svg-converter': {
+      name: 'Conversor de SVG',
+      tagline: 'Rasteriza SVG a PNG o vectoriza un PNG en SVG: el conversor de imágenes con SVG como punto de partida.',
+    },
+    'convert-wav-to-mp3': {
+      name: 'Convertir WAV a MP3',
+      tagline: 'Reduce el peso de tus grabaciones WAV sin pérdida con archivos MP3 de amplia compatibilidad para pódcasts, para compartir y para almacenar.',
+    },
+    'isolate-vocals-from-song': {
+      name: 'Aislar la voz de una canción',
+      tagline: 'Extrae la voz de pistas musicales para remezclas, versiones, transcripción y análisis. Úsalo solo con música sobre la que tengas derechos.',
+    },
+    'image-converter': {
+      name: 'Conversor de imágenes',
+      tagline: 'Convierte entre JPG, PNG, WebP, AVIF, GIF y más, con control sobre la calidad, el tamaño, el recorte y los metadatos.',
+    },
+    'video-converter': {
+      name: 'Conversor de vídeo',
+      tagline: 'Convierte entre MP4, WebM, MOV, AVI, MKV y más, con control total sobre los códecs, la resolución y el audio.',
+    },
+    'mp4-converter': {
+      name: 'Conversor a MP4',
+      tagline: 'Convierte un vídeo a MP4: el conversor de vídeo con MP4 preseleccionado.',
+    },
+    'convert-mov-to-mp4': {
+      name: 'Convertir MOV a MP4',
+      tagline: 'Convierte archivos .mov de QuickTime y del iPhone en un MP4 universal que se reproduce y se sube en cualquier parte.',
+    },
+    'convert-webm-to-mp4': {
+      name: 'Convertir WebM a MP4',
+      tagline: 'Convierte vídeo .webm optimizado para la web en un MP4 que puedes editar, compartir y reproducir en cualquier dispositivo.',
+    },
+    'convert-avi-to-mp4': {
+      name: 'Convertir AVI a MP4',
+      tagline: 'Moderniza tus viejos vídeos .avi con un MP4 compacto que se reproduce en cualquier móvil, navegador y televisor.',
+    },
+    'convert-mkv-to-mp4': {
+      name: 'Convertir MKV a MP4',
+      tagline: 'Convierte archivos Matroska .mkv en un MP4 que se puede emitir, subir y reproducir en los dispositivos que rechazan MKV.',
+    },
+    'convert-mp4-to-webm': {
+      name: 'Convertir MP4 a WebM',
+      tagline: 'Recodifica MP4 en un WebM VP9 abierto y más pequeño, perfecto para vídeo web de carga rápida.',
+    },
+    'mp4-to-mp3': {
+      name: 'Convertir MP4 a MP3',
+      tagline: 'Obtén el audio de un MP4 como MP3: Extraer audio de un vídeo con MP4 de entrada y MP3 de salida.',
+    },
+    'video-to-mp3': {
+      name: 'Convertir vídeo a MP3',
+      tagline: 'Extrae la banda sonora de un vídeo como MP3: la misma herramienta que Extraer audio de un vídeo.',
+    },
+    'mp4-to-gif': {
+      name: 'Convertir MP4 a GIF',
+      tagline: 'Crea un GIF en bucle a partir de un clip MP4: el conversor de GIF animado con la entrada MP4 fijada.',
+    },
+    'video-to-gif': {
+      name: 'Convertir vídeo a GIF',
+      tagline: 'Convierte un clip corto en cualquier formato de vídeo habitual en un GIF en bucle: la misma herramienta que el conversor de GIF animado.',
+    },
+    'gif-converter': {
+      name: 'Conversor de GIF',
+      tagline: 'Crea y ajusta GIF animados a partir de clips de vídeo: el conversor de GIF animado con otro nombre.',
+    },
+    'video-compressor': {
+      name: 'Compresor de vídeo',
+      tagline: 'Reduce el tamaño de un vídeo con un preajuste de compresión: la misma herramienta que Comprimir vídeo.',
+    },
+    'compress-mp4': {
+      name: 'Comprimir MP4',
+      tagline: 'Haz más pequeño un MP4 y que siga siendo un MP4: Comprimir vídeo con el contenedor fijado.',
+    },
+    'mp4-trimmer': {
+      name: 'Recortador de MP4',
+      tagline: 'El recortador de vídeo con MP4 fijado tanto de entrada como de salida.',
+    },
+    'video-cutter': {
+      name: 'Cortador de vídeo',
+      tagline: 'Quédate con un fragmento de un vídeo y descarta el resto: la misma herramienta que el recortador de vídeo.',
+    },
+    'cut-video-online': {
+      name: 'Cortar vídeo online',
+      tagline: 'Corta un clip de un vídeo en el navegador, sin instalar nada: el recortador de vídeo con otro nombre.',
+    },
+    'crop-video': {
+      name: 'Recortar encuadre de vídeo',
+      tagline: 'Elimina los bordes de un vídeo: cambia el encuadre o la relación de aspecto sin necesidad de un editor.',
+    },
+    'resize-video': {
+      name: 'Redimensionar vídeo',
+      tagline: 'Cambia la resolución de un vídeo: escálalo a 1080p, 720p, 480p o a cualquier ancho y alto personalizados.',
+    },
+    'rotate-video': {
+      name: 'Girar vídeo',
+      tagline: 'Arregla un vídeo grabado de lado o boca abajo: gíralo 90°, 180° o 270° y voltéalo con un solo clic.',
+    },
+    'remove-audio-from-video': {
+      name: 'Quitar el audio de un vídeo',
+      tagline: 'Silencia un vídeo para siempre: elimina la pista de audio y descarga un archivo mudo, solo con vídeo.',
+    },
+    'audio-converter': {
+      name: 'Conversor de audio',
+      tagline: 'Convierte entre MP3, WAV, M4A, OGG, FLAC, OPUS y más, con control total sobre la tasa de bits, la frecuencia de muestreo y los canales.',
+    },
+    'srt-generator': {
+      name: 'Generador de subtítulos SRT',
+      tagline: 'Sube un archivo de vídeo o de audio y genera un archivo de subtítulos .srt descargable, listo para YouTube, editores y herramientas de accesibilidad.',
+    },
+    'caption-translator': {
+      name: 'Traductor de subtítulos',
+      tagline: 'Traduce archivos de subtítulos SRT y VTT conservando los tiempos, el orden y la estructura de cada subtítulo, sin proveedores de IA de terceros.',
+    },
+    'audio-waveform-generator': {
+      name: 'Generador de forma de onda de audio',
+      tagline: 'Convierte cualquier archivo de audio en un vídeo de forma de onda configurable, una imagen de forma de onda o ambos, perfecto para pódcasts, adelantos de música y clips para redes sociales.',
+    },
+    'extract-video-only-from-video': {
+      name: 'Extraer vídeo sin audio',
+      tagline: 'Exporta una copia muda, solo con vídeo, sin ninguna pista de audio: perfecta para vistas previas sin sonido, material de apoyo, ediciones y nuevas bandas sonoras.',
+    },
+    'extract-frames-from-video': {
+      name: 'Extraer fotogramas de un vídeo',
+      tagline: 'Saca fotogramas fijos de cualquier vídeo, cada N segundos, a una frecuencia de fotogramas concreta o en marcas de tiempo específicas, y descárgalos en un ZIP.',
+    },
+    'stitch-audio-to-video': {
+      name: 'Añadir audio a un vídeo',
+      tagline: 'Combina un vídeo base con hasta tres archivos de audio adicionales (locuciones, música, narración) y descarga un MP4 nuevo.',
+    },
+    'ai-frame-interpolation': {
+      name: 'Interpolación de fotogramas con IA',
+      tagline: 'Aumenta la frecuencia de fotogramas de un vídeo a 48, 60 o 120 FPS con fotogramas intermedios generados por IA para un movimiento más fluido.',
+    },
   },
 } as const;
 

@@ -101,7 +101,8 @@
     "language": "语言",
     "selectLanguage": "选择语言",
     "voices": "用户之声",
-    "contact": "联系我们"
+    "contact": "联系我们",
+    "pricing": "价格"
   },
   "footer": {
     "tagline": "基于浏览器并由服务器辅助的工具，用于编辑、转换、压缩、分析、转录、摘要以及以其他方式处理图片、视频和音频文件。",

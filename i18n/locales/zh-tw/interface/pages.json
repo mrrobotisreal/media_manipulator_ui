@@ -2075,7 +2075,8 @@
       "privacy": "隱私",
       "editor": "編輯器"
     },
-    "moreTools": "{{category}}：另外 {{count}} 個"
+    "moreTools": "{{category}}：另外 {{count}} 個",
+    "alsoLine": "另稱：{{names}}。"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "導覽路徑",

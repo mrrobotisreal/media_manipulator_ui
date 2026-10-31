@@ -694,6 +694,217 @@ const koToolPages = {
       metaTitle: '노래에서 보컬 제거: 노래방 메이커 | Media Manipulator',
       metaDescription: 'AI로 노래에서 보컬을 제거하고 인스트루멘털을 원본 파일과 같은 형식이나 FLAC, WAV로 내려받으세요. 노래방 및 연습용 트랙을 자체 GPU에서 만듭니다. 비회원의 파일은 24시간 보관되며, 무료 계정이 있으면 24시간부터 2년까지 직접 선택할 수 있어요.',
     },
+
+    // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
+    // and the home grid never show an English card in this locale. Model-written; native review pending.
+    'transcode-to-dash': {
+      name: '동영상을 DASH(AV1 / VP9)로 변환',
+      tagline: '어떤 동영상이든 manifest.mpd와 화질별 초기화/미디어 세그먼트가 담긴 MPEG-DASH 번들로 패키징해요.',
+    },
+    'convert-webp-to-jpg': {
+      name: 'WebP를 JPG로 변환',
+      tagline: 'WebP 이미지를 어떤 이미지 뷰어나 편집기에서도 열리는 호환성 좋은 JPG 파일로 바꿔요.',
+    },
+    'convert-png-to-jpg': {
+      name: 'PNG를 JPG로 변환',
+      tagline: '용량이 큰 PNG 스크린샷과 그래픽을 어디서나 열리는 작은 JPG 사진으로 몇 초 만에 바꿔요.',
+    },
+    'convert-jpg-to-png': {
+      name: 'JPG를 PNG로 변환',
+      tagline: 'JPG 사진을 편집, 투명 배경, 고품질 그래픽 작업에 알맞은 무손실 PNG 파일로 바꿔요.',
+    },
+    'convert-webp-to-png': {
+      name: 'WebP를 PNG로 변환',
+      tagline: 'WebP 이미지를 어디서나 열리고 투명도도 그대로 유지되는 무손실 PNG 파일로 바꿔요.',
+    },
+    'convert-png-to-webp': {
+      name: 'PNG를 WebP로 변환',
+      tagline: 'PNG 그래픽을 웹에서 더 빠르게 로드되는 최신 WebP 파일로 줄여요. 투명도는 그대로 유지돼요.',
+    },
+    'convert-jpg-to-webp': {
+      name: 'JPG를 WebP로 변환',
+      tagline: 'JPG 사진을 같은 화질로 웹에서 더 빠르게 로드되는 최신 WebP 파일로 줄여요.',
+    },
+    'jpg-converter': {
+      name: 'JPG 변환기',
+      tagline: '이미지를 JPG로 변환해요. JPG가 미리 선택된 이미지 변환기예요.',
+    },
+    'png-converter': {
+      name: 'PNG 변환기',
+      tagline: '이미지를 PNG로 변환해요. PNG가 미리 선택된 이미지 변환기예요.',
+    },
+    'convert-jpg-to-pdf': {
+      name: 'JPG를 PDF로 변환',
+      tagline: 'JPG 사진과 스캔본을 공유, 인쇄, 업로드하기 좋은 깔끔한 PDF 문서로 바꿔요.',
+    },
+    'convert-png-to-pdf': {
+      name: 'PNG를 PDF로 변환',
+      tagline: 'PNG 스크린샷, 그래픽, 스캔본을 깔끔하고 선명한 PDF 문서로 바꿔요.',
+    },
+    'pdf-to-png': {
+      name: 'PDF를 PNG로',
+      tagline: 'PDF의 모든 페이지를 선명한 무손실 PNG 이미지로 변환해요. 텍스트, 도표, 편집 작업에 알맞아요.',
+    },
+    'pdf-converter': {
+      name: 'PDF 변환기',
+      tagline: 'PDF를 JPG나 PNG 이미지로 바꾸고, 이미지를 PDF로 만드는 일까지 한곳에서 할 수 있어요.',
+    },
+    'convert-heic-to-jpg': {
+      name: 'HEIC를 JPG로 변환',
+      tagline: 'iPhone의 HEIC 사진을 어디서나 열고 업로드할 수 있는 JPG 파일로 바꿔요.',
+    },
+    'convert-avif-to-jpg': {
+      name: 'AVIF를 JPG로 변환',
+      tagline: '최신 AVIF 이미지를 AVIF를 지원하지 않는 앱과 사이트에서도 쓸 수 있는 JPG 파일로 바꿔요.',
+    },
+    'convert-avif-to-png': {
+      name: 'AVIF를 PNG로 변환',
+      tagline: 'AVIF 이미지를 어디서나 열리고 투명도도 그대로 유지되는 무손실 PNG 파일로 바꿔요.',
+    },
+    'convert-svg-to-png': {
+      name: 'SVG를 PNG로 변환',
+      tagline: 'SVG 아이콘과 로고를 업로드, 슬라이드, 앱에 쓸 수 있도록 원하는 크기의 PNG 이미지로 변환해요.',
+    },
+    'convert-png-to-svg': {
+      name: 'PNG를 SVG로 변환',
+      tagline: 'PNG 로고, 아이콘, 선화를 potrace로 확대해도 깨지지 않는 진짜 SVG 패스로 벡터화해요.',
+    },
+    'png-to-ico': {
+      name: 'PNG를 ICO로',
+      tagline: 'PNG를 웹사이트 파비콘과 Windows 앱 아이콘에 쓸 수 있는 여러 크기의 .ico 파일로 만들어요.',
+    },
+    'svg-converter': {
+      name: 'SVG 변환기',
+      tagline: 'SVG를 PNG로 바꾸거나 PNG를 SVG로 트레이싱해요. SVG를 시작점으로 둔 이미지 변환기예요.',
+    },
+    'convert-wav-to-mp3': {
+      name: 'WAV를 MP3로 변환',
+      tagline: '용량이 큰 무손실 WAV 녹음을 팟캐스트, 공유, 보관에 알맞은 호환성 좋은 MP3 파일로 줄여요.',
+    },
+    'isolate-vocals-from-song': {
+      name: '노래에서 보컬 분리',
+      tagline: '리믹스, 커버, 받아쓰기, 분석을 위해 음악 트랙에서 보컬을 추출해요. 사용 권한이 있는 음악에만 사용하세요.',
+    },
+    'image-converter': {
+      name: '이미지 변환기',
+      tagline: 'JPG, PNG, WebP, AVIF, GIF 등 여러 형식 사이를 변환해요. 품질, 크기 조정, 자르기, 메타데이터도 직접 정할 수 있어요.',
+    },
+    'video-converter': {
+      name: '동영상 변환기',
+      tagline: 'MP4, WebM, MOV, AVI, MKV 등 여러 형식 사이를 변환해요. 코덱, 해상도, 오디오도 자유롭게 설정할 수 있어요.',
+    },
+    'mp4-converter': {
+      name: 'MP4 변환기',
+      tagline: '동영상을 MP4로 변환해요. MP4가 미리 선택된 동영상 변환기예요.',
+    },
+    'convert-mov-to-mp4': {
+      name: 'MOV를 MP4로 변환',
+      tagline: 'QuickTime과 iPhone의 .mov 파일을 어디서나 재생하고 업로드할 수 있는 MP4로 바꿔요.',
+    },
+    'convert-webm-to-mp4': {
+      name: 'WebM을 MP4로 변환',
+      tagline: '웹에 최적화된 .webm 동영상을 편집, 공유하고 어떤 기기에서나 재생할 수 있는 MP4로 바꿔요.',
+    },
+    'convert-avi-to-mp4': {
+      name: 'AVI를 MP4로 변환',
+      tagline: '오래된 .avi 동영상을 모든 휴대폰, 브라우저, TV에서 재생되는 작은 MP4로 새롭게 바꿔요.',
+    },
+    'convert-mkv-to-mp4': {
+      name: 'MKV를 MP4로 변환',
+      tagline: 'Matroska .mkv 파일을 MKV를 지원하지 않는 기기에서도 스트리밍, 업로드, 재생할 수 있는 MP4로 바꿔요.',
+    },
+    'convert-mp4-to-webm': {
+      name: 'MP4를 WebM으로 변환',
+      tagline: 'MP4를 더 작고 개방형인 VP9 WebM으로 다시 인코딩해요. 빠르게 로드되는 웹 동영상에 안성맞춤이에요.',
+    },
+    'mp4-to-mp3': {
+      name: 'MP4를 MP3로 변환',
+      tagline: 'MP4의 오디오를 MP3로 가져와요. 입력은 MP4, 출력은 MP3로 설정된 ‘동영상에서 오디오 추출’이에요.',
+    },
+    'video-to-mp3': {
+      name: '동영상을 MP3로 변환',
+      tagline: '동영상의 사운드트랙을 MP3로 뽑아내요. ‘동영상에서 오디오 추출’과 같은 도구예요.',
+    },
+    'mp4-to-gif': {
+      name: 'MP4를 GIF로 변환',
+      tagline: 'MP4 클립으로 반복 재생되는 GIF를 만들어요. 입력이 MP4로 고정된 움직이는 GIF 변환기예요.',
+    },
+    'video-to-gif': {
+      name: '동영상을 GIF로 변환',
+      tagline: '흔한 동영상 형식의 짧은 클립을 반복 재생되는 GIF로 바꿔요. 움직이는 GIF 변환기와 같은 도구예요.',
+    },
+    'gif-converter': {
+      name: 'GIF 변환기',
+      tagline: '동영상 클립으로 움직이는 GIF를 만들고 다듬어요. 이름만 다른 움직이는 GIF 변환기예요.',
+    },
+    'video-compressor': {
+      name: '동영상 압축기',
+      tagline: '압축 프리셋으로 동영상 용량을 줄여요. ‘동영상 압축’과 같은 도구예요.',
+    },
+    'compress-mp4': {
+      name: 'MP4 압축',
+      tagline: 'MP4를 MP4 그대로 더 작게 만들어요. 컨테이너가 고정된 ‘동영상 압축’이에요.',
+    },
+    'mp4-trimmer': {
+      name: 'MP4 자르기',
+      tagline: '입력과 출력이 모두 MP4로 고정된 동영상 자르기 도구예요.',
+    },
+    'video-cutter': {
+      name: '동영상 컷 편집',
+      tagline: '동영상의 한 구간만 남기고 나머지는 잘라내요. 동영상 자르기와 같은 도구예요.',
+    },
+    'cut-video-online': {
+      name: '온라인 동영상 자르기',
+      tagline: '설치 없이 브라우저에서 동영상의 원하는 구간을 잘라내요. 이름만 다른 동영상 자르기 도구예요.',
+    },
+    'crop-video': {
+      name: '동영상 화면 자르기',
+      tagline: '동영상의 가장자리를 잘라내 편집기 없이 구도나 화면 비율을 바꿔요.',
+    },
+    'resize-video': {
+      name: '동영상 크기 조정',
+      tagline: '동영상 해상도를 바꿔요. 1080p, 720p, 480p나 원하는 가로세로 크기로 조정할 수 있어요.',
+    },
+    'rotate-video': {
+      name: '동영상 회전',
+      tagline: '옆으로 누웠거나 거꾸로 된 동영상을 바로잡아요. 90°, 180°, 270° 회전과 뒤집기를 클릭 한 번으로 할 수 있어요.',
+    },
+    'remove-audio-from-video': {
+      name: '동영상에서 오디오 제거',
+      tagline: '동영상을 완전히 무음으로 만들어요. 오디오 트랙을 제거하고 소리 없는 동영상 파일을 다운로드하세요.',
+    },
+    'audio-converter': {
+      name: '오디오 변환기',
+      tagline: 'MP3, WAV, M4A, OGG, FLAC, OPUS 등 여러 형식 사이를 변환해요. 비트레이트, 샘플 레이트, 채널도 자유롭게 설정할 수 있어요.',
+    },
+    'srt-generator': {
+      name: 'SRT 자막 생성기',
+      tagline: '동영상이나 오디오 파일을 업로드하면 YouTube, 편집기, 접근성 도구에 바로 쓸 수 있는 .srt 자막 파일을 만들어 다운로드할 수 있어요.',
+    },
+    'caption-translator': {
+      name: '자막 번역기',
+      tagline: 'SRT와 VTT 자막 파일의 큐 타이밍, 순서, 구조를 그대로 유지하면서 번역해요. 제3자 AI 제공업체는 사용하지 않아요.',
+    },
+    'audio-waveform-generator': {
+      name: '오디오 파형 생성기',
+      tagline: '어떤 오디오 파일이든 설정 가능한 파형 동영상이나 파형 이미지, 또는 둘 다로 만들어요. 팟캐스트, 음악 미리듣기, 소셜 클립에 알맞아요.',
+    },
+    'extract-video-only-from-video': {
+      name: '오디오 없이 동영상만 추출',
+      tagline: '모든 오디오 트랙을 제거한 무음, 동영상 전용 사본을 내보내요. 무음 미리보기, B-roll, 편집, 음악 다시 입히기에 알맞아요.',
+    },
+    'extract-frames-from-video': {
+      name: '동영상에서 프레임 추출',
+      tagline: 'N초마다, 원하는 프레임 레이트로, 또는 특정 시점에서 동영상의 정지 이미지 프레임을 뽑아 ZIP으로 다운로드해요.',
+    },
+    'stitch-audio-to-video': {
+      name: '동영상에 오디오 추가',
+      tagline: '기본 동영상에 보이스오버, 음악, 내레이션 등 오디오 파일을 최대 세 개까지 합쳐 새 MP4로 다운로드해요.',
+    },
+    'ai-frame-interpolation': {
+      name: 'AI 프레임 보간',
+      tagline: 'AI가 만든 중간 프레임으로 동영상 프레임 레이트를 48, 60, 120FPS로 높여 움직임을 더 부드럽게 만들어요.',
+    },
   },
 } as const;
 

@@ -12,7 +12,8 @@ describe('changelog data', () => {
     // 2026-10-27: MM60–MM67 and MM72 (the last eight locales) merged to UI main.
     // 2026-10-28: MM73 (quota refunds, cover-art probe fix, full /tools catalog).
     // 2026-10-29: MM84 (tool copy bar, alias pages, /tools review mode).
-    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29']).toContain(d);
+    // 2026-10-31: MM92 (locale copy gaps, status "unknown").
+    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-31']).toContain(d);
   });
 
   it('does not announce email as being sent (sending is off until configured)', () => {

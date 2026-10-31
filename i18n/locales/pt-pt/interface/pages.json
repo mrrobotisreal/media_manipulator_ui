@@ -2075,7 +2075,8 @@
       "privacy": "Privacidade",
       "editor": "Editores"
     },
-    "moreTools": "{{category}}: mais {{count}}"
+    "moreTools": "{{category}}: mais {{count}}",
+    "alsoLine": "Também: {{names}}."
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Navegação estrutural",

@@ -2075,7 +2075,8 @@
       "privacy": "الخصوصية",
       "editor": "المحررات"
     },
-    "moreTools": "{{category}}: {{count}} أخرى"
+    "moreTools": "{{category}}: {{count}} أخرى",
+    "alsoLine": "ويُعرف أيضًا باسم: {{names}}."
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "مسار التنقل",

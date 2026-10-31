@@ -694,6 +694,217 @@ const zhCnToolPages = {
       metaTitle: '去除歌曲人声：卡拉OK制作器 | Media Manipulator',
       metaDescription: '用AI去除歌曲中的人声，并以与原文件相同的格式或FLAC、WAV下载伴奏。在我们自己的GPU上制作卡拉OK和练习音轨。访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。',
     },
+
+    // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
+    // and the home grid never show an English card in this locale. Model-written; native review pending.
+    'transcode-to-dash': {
+      name: '将视频转码为DASH（AV1 / VP9）',
+      tagline: '把任意视频打包成MPEG-DASH包：manifest.mpd，以及按清晰度划分的初始化分片和媒体分片。',
+    },
+    'convert-webp-to-jpg': {
+      name: '将WebP转换为JPG',
+      tagline: '把WebP图片转为兼容性极佳的JPG文件，在任何看图软件或编辑器中都能打开。',
+    },
+    'convert-png-to-jpg': {
+      name: '将PNG转换为JPG',
+      tagline: '几秒钟内把体积庞大的PNG截图和图形变成小巧、通用的JPG图片。',
+    },
+    'convert-jpg-to-png': {
+      name: '将JPG转换为PNG',
+      tagline: '把JPG照片转为无损PNG文件，适合编辑、透明处理和高质量图形制作。',
+    },
+    'convert-webp-to-png': {
+      name: '将WebP转换为PNG',
+      tagline: '把WebP图片转为无损PNG文件，随处可开，并完整保留透明度。',
+    },
+    'convert-png-to-webp': {
+      name: '将PNG转换为WebP',
+      tagline: '把PNG图形压缩成新一代WebP文件，网页加载更快，并完整保留透明度。',
+    },
+    'convert-jpg-to-webp': {
+      name: '将JPG转换为WebP',
+      tagline: '把JPG照片压缩成新一代WebP文件，画质相同，网页加载更快。',
+    },
+    'jpg-converter': {
+      name: 'JPG转换器',
+      tagline: '将图片转换为JPG：已预选JPG的图片转换器。',
+    },
+    'png-converter': {
+      name: 'PNG转换器',
+      tagline: '将图片转换为PNG：已预选PNG的图片转换器。',
+    },
+    'convert-jpg-to-pdf': {
+      name: '将JPG转换为PDF',
+      tagline: '把JPG照片和扫描件变成整洁的PDF文档，可直接分享、打印或上传。',
+    },
+    'convert-png-to-pdf': {
+      name: '将PNG转换为PDF',
+      tagline: '把PNG截图、图形和扫描件变成整洁、清晰的PDF文档。',
+    },
+    'pdf-to-png': {
+      name: 'PDF转PNG',
+      tagline: '将PDF的每一页渲染为清晰的无损PNG图片，适合文字、图表和编辑。',
+    },
+    'pdf-converter': {
+      name: 'PDF转换器',
+      tagline: '把PDF转换为JPG或PNG图片，也可以把图片转为PDF，一站搞定。',
+    },
+    'convert-heic-to-jpg': {
+      name: '将HEIC转换为JPG',
+      tagline: '把iPhone的HEIC照片转为通用的JPG文件，随处可开，随处可传。',
+    },
+    'convert-avif-to-jpg': {
+      name: '将AVIF转换为JPG',
+      tagline: '把新一代AVIF图片转为通用的JPG文件，适用于不支持AVIF的应用和网站。',
+    },
+    'convert-avif-to-png': {
+      name: '将AVIF转换为PNG',
+      tagline: '把AVIF图片转为无损PNG文件，随处可开，并完整保留透明度。',
+    },
+    'convert-svg-to-png': {
+      name: '将SVG转换为PNG',
+      tagline: '把SVG图标和徽标栅格化为任意尺寸的PNG图片，用于上传、幻灯片和应用。',
+    },
+    'convert-png-to-svg': {
+      name: '将PNG转换为SVG',
+      tagline: '用potrace把PNG中的徽标、图标和线稿矢量化为真正可缩放的SVG路径。',
+    },
+    'png-to-ico': {
+      name: 'PNG转ICO',
+      tagline: '把PNG变成真正的多尺寸.ico文件，用作网站图标和Windows应用图标。',
+    },
+    'svg-converter': {
+      name: 'SVG转换器',
+      tagline: '将SVG栅格化为PNG，或把PNG描摹为SVG：以SVG为起点的图片转换器。',
+    },
+    'convert-wav-to-mp3': {
+      name: '将WAV转换为MP3',
+      tagline: '把体积庞大的无损WAV录音压缩成兼容性极佳的MP3文件，便于播客发布、分享和存储。',
+    },
+    'isolate-vocals-from-song': {
+      name: '提取歌曲人声',
+      tagline: '从音乐中提取人声，用于混音、翻唱、转写和分析。请仅用于你拥有权利的音乐。',
+    },
+    'image-converter': {
+      name: '图片转换器',
+      tagline: '在JPG、PNG、WebP、AVIF、GIF等格式之间转换，可控制质量、调整尺寸、裁剪和元数据。',
+    },
+    'video-converter': {
+      name: '视频转换器',
+      tagline: '在MP4、WebM、MOV、AVI、MKV等格式之间转换，可完全控制编解码器、分辨率和音频。',
+    },
+    'mp4-converter': {
+      name: 'MP4转换器',
+      tagline: '将视频转换为MP4：已预选MP4的视频转换器。',
+    },
+    'convert-mov-to-mp4': {
+      name: '将MOV转换为MP4',
+      tagline: '把QuickTime和iPhone的.mov文件变成通用的MP4，随处可播，随处可传。',
+    },
+    'convert-webm-to-mp4': {
+      name: '将WebM转换为MP4',
+      tagline: '把为网页优化的.webm视频变成MP4，可在任何设备上编辑、分享和播放。',
+    },
+    'convert-avi-to-mp4': {
+      name: '将AVI转换为MP4',
+      tagline: '把老旧的.avi视频升级为体积小巧的MP4，手机、浏览器和电视都能播放。',
+    },
+    'convert-mkv-to-mp4': {
+      name: '将MKV转换为MP4',
+      tagline: '把Matroska的.mkv文件变成MP4，在不支持MKV的设备上也能串流、上传和播放。',
+    },
+    'convert-mp4-to-webm': {
+      name: '将MP4转换为WebM',
+      tagline: '把MP4重新编码为更小的开放格式VP9 WebM，非常适合加载迅速的网页视频。',
+    },
+    'mp4-to-mp3': {
+      name: '将MP4转换为MP3',
+      tagline: '把MP4中的音频保存为MP3：输入MP4、输出MP3的“从视频中提取音频”。',
+    },
+    'video-to-mp3': {
+      name: '将视频转换为MP3',
+      tagline: '把视频中的音轨提取为MP3：与“从视频中提取音频”是同一个工具。',
+    },
+    'mp4-to-gif': {
+      name: '将MP4转换为GIF',
+      tagline: '把MP4片段做成循环播放的GIF：输入固定为MP4的动态GIF转换器。',
+    },
+    'video-to-gif': {
+      name: '将视频转换为GIF',
+      tagline: '把任意常见格式的短片变成循环播放的GIF：与动态GIF转换器是同一个工具。',
+    },
+    'gif-converter': {
+      name: 'GIF转换器',
+      tagline: '用视频片段制作并微调动态GIF：换了个名字的动态GIF转换器。',
+    },
+    'video-compressor': {
+      name: '视频压缩器',
+      tagline: '用压缩预设缩小视频：与“压缩视频”是同一个工具。',
+    },
+    'compress-mp4': {
+      name: '压缩MP4',
+      tagline: '让MP4变得更小，并仍保持MP4格式：容器固定的“压缩视频”。',
+    },
+    'mp4-trimmer': {
+      name: 'MP4剪辑工具',
+      tagline: '输入和输出都固定为MP4的视频剪辑工具。',
+    },
+    'video-cutter': {
+      name: '视频裁切器',
+      tagline: '保留视频中的一段，去掉其余部分：与视频剪辑工具是同一个工具。',
+    },
+    'cut-video-online': {
+      name: '在线剪切视频',
+      tagline: '直接在浏览器中从视频里剪出一段，无需安装任何软件：换了个名字的视频剪辑工具。',
+    },
+    'crop-video': {
+      name: '裁剪视频',
+      tagline: '裁掉视频的边缘，无需剪辑软件即可调整画面构图或宽高比。',
+    },
+    'resize-video': {
+      name: '调整视频尺寸',
+      tagline: '更改视频分辨率，可缩放到1080p、720p、480p，或任意自定义宽度和高度。',
+    },
+    'rotate-video': {
+      name: '旋转视频',
+      tagline: '修正横置或倒置的视频，一键旋转90°、180°或270°，还可翻转。',
+    },
+    'remove-audio-from-video': {
+      name: '移除视频中的音频',
+      tagline: '让视频彻底静音：去掉音轨，下载无声的纯视频文件。',
+    },
+    'audio-converter': {
+      name: '音频转换器',
+      tagline: '在MP3、WAV、M4A、OGG、FLAC、OPUS等格式之间转换，可完全控制比特率、采样率和声道。',
+    },
+    'srt-generator': {
+      name: 'SRT字幕生成器',
+      tagline: '上传视频或音频文件，生成可下载的.srt字幕文件，可直接用于YouTube、剪辑软件和无障碍工具。',
+    },
+    'caption-translator': {
+      name: '字幕翻译器',
+      tagline: '翻译SRT和VTT字幕文件，同时保留字幕的时间点、顺序和结构，不使用任何第三方AI服务商。',
+    },
+    'audio-waveform-generator': {
+      name: '音频波形生成器',
+      tagline: '把任意音频文件变成可自定义的波形视频、波形图片，或两者兼得，适合播客、音乐预告和社交媒体短片。',
+    },
+    'extract-video-only-from-video': {
+      name: '提取无音频视频',
+      tagline: '导出去掉所有音轨的无声纯视频副本，适合无声预览、B-roll素材、剪辑和重新配乐。',
+    },
+    'extract-frames-from-video': {
+      name: '从视频中提取帧',
+      tagline: '从任意视频中提取静态图像帧，可按每N秒、目标帧率或指定时间点提取，并打包为ZIP下载。',
+    },
+    'stitch-audio-to-video': {
+      name: '为视频添加音频',
+      tagline: '把一个基础视频与最多三个额外音频文件（配音、音乐、旁白）合成，并下载新的MP4。',
+    },
+    'ai-frame-interpolation': {
+      name: 'AI插帧',
+      tagline: '借助AI生成的中间帧，把视频帧率提高到48、60或120 FPS，让动作更流畅。',
+    },
   },
 } as const;
 

@@ -74,6 +74,19 @@ describe('/tools catalog data (MM73, MM84)', () => {
     expect(gif.search).toContain('mp4 to gif');
   });
 
+  it('the alias line is localized through opts.alsoLine (MM92: no English "Also:" in other locales)', () => {
+    const localized = buildCatalogTools(TOOL_PAGES, {
+      featuredSlugs: new Set<string>(REVIEW_INDEXED_TOOL_SLUGS),
+      listedSlugs: new Set<string>(REVIEW_CATALOG_SLUGS),
+      fullIndex: false,
+      alsoLine: 'Також: {{names}}.',
+    });
+    const trimmer = localized.find((t) => t.slug === 'video-trimmer')!;
+    expect(trimmer.tagline).toMatch(/ Також: MP4 Trimmer, Video Cutter, Cut Video Online\.$/);
+    expect(trimmer.tagline).not.toContain('Also:');
+    expect(trimmer.tagline).not.toContain('{{names}}');
+  });
+
   it('toCatalogTool keeps its two-argument form (voices, summaries)', () => {
     const t = toCatalogTool(TOOL_PAGES.find((p) => p.slug === 'crop-video')!, false);
     expect(t.listed).toBe(true);
