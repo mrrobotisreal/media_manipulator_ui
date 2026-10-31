@@ -2,11 +2,10 @@
  * French partial overrides for the data-driven tool pages
  * (see `i18n/toolPageContent.ts` — anything omitted falls back to English).
  *
- * Scope (MM57, 2026-10-26): only Motion's full page body, which
- * `i18n/motionTranslations.test.ts` requires for every `translated: true`
- * locale (coordinator decision; the ticket otherwise keeps toolPages out of
- * scope). The other tool pages render English until a later session adds
- * per-slug entries here, as de/es do.
+ * Scope: MM57 (2026-10-26) added Motion's full page body; MM92 (2026-10-31)
+ * added `name` + `tagline` for every tool; MM93 (2026-10-31) added the full
+ * body of every non-alias tool page (98), model-written by Fable 5.1; native
+ * review pending.
  *
  * Register: formal "vous"; brand names, formats and codecs stay untranslated;
  * "Darkroom" and "Motion" stay as they are. Model-written, needs native review.
@@ -17,14 +16,15 @@ const frToolPages = {
     // MM48/MM57: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
       name: 'Motion',
+      h1: 'Motion',
       tagline: 'Dessinez ou importez un SVG, animez-le sur une timeline d’images clés et exportez en SVG animé, Lottie, React, JavaScript, Flutter ou GIF, le tout dans votre navigateur.',
       intro: 'Motion est un éditeur SVG doté d’une timeline d’animation, intégré à Media Manipulator. Ouvrez un fichier SVG (ou une animation Lottie) et chaque forme devient un calque que vous pouvez sélectionner, déplacer, recolorer et animer, ou partez d’une zone de dessin vierge et dessinez avec les outils rectangle, ellipse, ligne, plume et texte. Chaque propriété animée reçoit sa propre piste d’images clés, avec des préréglages d’accélération, un éditeur de courbe pour une accélération personnalisée et des clés de maintien pour les sauts instantanés. Des animateurs en un clic ajoutent le tracé progressif du contour, le déplacement le long d’une trajectoire, le morphing de formes, les changements de couleur de dégradé, l’animation de masque et le flou. Quand le mouvement vous convient, exportez-le en SVG animé, fichier Lottie, composant React, module JavaScript ou TypeScript, widget Flutter ou GIF. L’édition et chaque export s’exécutent dans votre navigateur : votre dessin n’est donc jamais envoyé sur nos serveurs pour être exporté.',
       whatItDoes: [
-        'Importe les fichiers SVG dans une arborescence de calques modifiables (groupes, tracés, formes, texte, images, dégradés, masques et tracés de détourage) et importe les animations Lottie JSON avec leurs images clés.',
+        'Importe les fichiers SVG dans une arborescence de calques modifiables (groupes, tracés, formes, texte, images, dégradés, masques et tracés de détourage) et importe les animations Lottie JSON avec leurs images clés, chaque fichier pouvant atteindre 4 Mo.',
         'Dessine de nouveaux graphiques avec les outils rectangle, ellipse, ligne, plume (Bézier) et texte, et modifie les nœuds des tracés directement sur la zone de dessin.',
         'Anime la position, l’échelle, la rotation, l’inclinaison, l’opacité, le remplissage, le contour et l’épaisseur du contour sur une timeline d’images clés avec des accélérations linéaire, en entrée, en sortie, en entrée-sortie, cubic-bezier personnalisée et maintien.',
-        'Ajoute des animations avancées en un clic : tracé progressif du contour, déplacement le long d’une trajectoire avec rotation automatique facultative, morphing de formes, couleurs des étapes de dégradé, animation de masque et de tracé de détourage, et flou.',
-        'Exporte un SVG statique (toujours gratuit), un SVG animé lisible sans aucune bibliothèque, du Lottie JSON, un composant React, un module JavaScript ou TypeScript, un widget Flutter et un GIF animé.',
+        'Ajoute six animateurs en un clic : tracé progressif du contour, déplacement le long d’une trajectoire avec rotation automatique facultative, morphing de formes, couleurs des étapes de dégradé, animation de masque et de tracé de détourage, et flou.',
+        'Exporte un SVG statique (toujours gratuit et jamais décompté), un SVG animé lisible sans aucune bibliothèque, du Lottie JSON, un composant React, un module JavaScript ou TypeScript, un widget Flutter et un GIF animé, tous générés sur votre machine.',
       ],
       flowSteps: [
         {
@@ -45,11 +45,12 @@ const frToolPages = {
         },
       ],
       advancedDetails: [
-        'L’export en SVG animé utilise des images clés CSS pures chaque fois que tous les effets peuvent s’exprimer en CSS dans Chrome, Firefox et Safari. Les morphings de forme, les étapes de dégradé mobiles et le flou nécessitent un petit script ; ces fichiers intègrent donc une copie allégée d’anime.js (licence MIT, environ 14 Ko compressés) avec sa mention de licence en tête.',
+        'L’export en SVG animé utilise des images clés CSS pures chaque fois que tous les effets peuvent s’exprimer en CSS dans Chrome, Firefox et Safari. Les morphings de forme, les étapes de dégradé mobiles et le flou nécessitent un script ; ces fichiers intègrent donc une copie allégée d’anime.js (licence MIT, environ 31 Ko de script, à peu près 13 Ko après gzip) avec sa mention de licence en tête.',
         'Le morphing de formes normalise les deux formes au même nombre de segments de courbe et aligne leurs points de départ et leur sens de parcours, pour que le morphing ne se torde pas. Deux formes impossibles à apparier sont maintenues au lieu d’être morphées.',
-        'Le générateur Lottie cible la spécification Lottie 1.0.1 et l’ensemble de fonctionnalités « Basic » de LottieFiles. Tout ce que Lottie ne peut pas transporter (filtres, texte ou masques avancés, par exemple) est listé après le téléchargement ; rien n’est écarté en silence.',
-        'L’export GIF utilise un encodeur écrit pour Media Manipulator, avec une palette globale unique construite à partir d’images réparties sur toute l’animation, pour que les graphiques vectoriels à aplats conservent leurs couleurs exactes.',
-        'Les SVG importés sont nettoyés à l’entrée : scripts, gestionnaires d’événements, références externes et autres contenus non sûrs sont supprimés, et l’éditeur reconstruit le balisage non pris en charge à partir d’une liste autorisée au lieu de l’insérer comme du HTML.',
+        'Le générateur Lottie cible la spécification Lottie 1.0.1 et l’ensemble de fonctionnalités « Basic » de LottieFiles. Tout ce que Lottie ne peut pas transporter (filtres, texte ou masques avancés, par exemple) est listé après le téléchargement ; rien n’est écarté en silence. Le lecteur utilise la même liste dans l’autre sens.',
+        'L’export GIF rend les images une par une, transfère chacune à un Worker et encode avec un encodeur écrit pour Media Manipulator : une palette globale unique échantillonnée sur cinq images réparties sur toute la durée, le tramage désactivé par défaut (les graphiques vectoriels à aplats ont peu de couleurs et le tramage ajoute du bruit), un délai entre images de round(100 / fps) centièmes de seconde, et la transparence conservée seulement lorsque le fond de la zone de dessin est transparent. La sortie est plafonnée à 2 Go et la boîte de dialogue affiche une estimation de taille avant de commencer.',
+        'Les SVG importés sont nettoyés à l’entrée : scripts, gestionnaires d’événements, références externes et autres contenus non sûrs sont supprimés, et l’éditeur reconstruit le balisage non pris en charge à partir d’une liste autorisée au lieu de l’insérer comme du HTML. Le balisage qu’il ne peut pas modéliser est conservé comme un calque opaque qui ressort inchangé.',
+        'Le compteur d’exports est une seule transaction de base de données : le verrou de format et les plafonds sont vérifiés, puis le compteur et une ligne d’export sont écrits ensemble. Un export refusé n’écrit rien et ne coûte rien ; un export que le navigateur annule ou fait échouer ensuite a déjà été compté.',
       ],
       whyItMatters: [
         'Les SVG animés restent nets à toutes les tailles et sont généralement bien plus légers qu’une vidéo ou un GIF de la même animation, ce qui les rend idéaux pour les logos, les icônes, les animations de chargement et les illustrations sur le web.',
@@ -74,32 +75,43 @@ const frToolPages = {
           description: 'Déplacez des parties d’une illustration le long de trajectoires, morphez des formes les unes en les autres et exportez un GIF pour la messagerie ou l’e-mail.',
         },
       ],
+      workedExamples: [
+        {
+          title: 'Un tracé progressif de logo de 2 secondes en SVG animé',
+          body: 'Un logotype de quelques tracés avec l’animateur Tracé progressif sur 2 000 ms, exporté en SVG animé. Le tracé progressif est une animation de stroke-dasharray et stroke-dashoffset, que le CSS peut exprimer dans tous les grands navigateurs ; l’exportateur écrit donc un bloc <style> de @keyframes et aucun script. Le fichier est votre SVG plus quelques centaines d’octets de CSS, il se lance dès qu’il est dans la page, et il compte comme un export svg_animated : sans compte, c’est l’un des 2 par jour et dans la limite de durée de 10 secondes des visiteurs ; avec un compte gratuit, l’un des 5. L’export est une transformation de chaîne dans votre navigateur et se termine immédiatement.',
+        },
+        {
+          title: 'Une boucle de morphing 400 x 400 en GIF',
+          body: 'Un morphing de forme de 2 secondes sur une zone de dessin 400 x 400 exporté en GIF à 25 fps avec une offre Premium (GIF est un format Premium par défaut). La boîte de dialogue se cale sur les préréglages de hauteur et de fréquence d’images de l’offre, 25 fps donnant un délai de round(100 / 25) = 4 centièmes de seconde par image et 50 images en tout. Son estimation de taille est pixels x images x 0,25 octet + 1 Ko : 160 000 x 50 x 0,25 fait environ 2 Mo, volontairement surestimé, et un dessin à aplats de deux couleurs atterrit en général bien en dessous. Les images sont rendues sur le fil principal et encodées dans un Worker une par une, de sorte que la mémoire reste à quelques images plus le fichier qui grandit ; le temps est consacré à la rastérisation de 50 images de SVG, quelques secondes sur un ordinateur portable.',
+        },
+      ],
+      whenNotToUse: 'Motion anime des dessins vectoriels ; il ne monte ni vidéo ni photographies. Si votre point de départ est une séquence filmée, Darkroom est l’éditeur et la page de conversion de vidéo en GIF transforme un clip en GIF. Ce n’est pas non plus un vectoriseur pour les images matricielles complexes : une photographie tracée en chemins sera lourde et le résultat ne s’animera pas de façon significative. Les animations qui dépendent de filtres, d’effets de texte ou de masques avancés ne survivront pas intactes à un export Lottie (la boîte de dialogue liste ce qui a été écarté) ; pour ces cibles, tenez-vous aux exports SVG animé, React ou JavaScript. Enfin, la sortie MP4 ou WebM dépend de la prise en charge de WebCodecs par votre navigateur et de votre offre ; consultez donc le tableau des offres avant de prévoir un livrable vidéo.',
       whyMediaManipulator: [
         'Un véritable éditeur à calques et images clés, avec maintiens, courbes personnalisées et animateurs avancés, pas une galerie de modèles.',
         'Des exports pour les designers comme pour les développeurs : SVG animé, Lottie, React, JavaScript ou TypeScript, Flutter et GIF à partir d’un seul projet.',
         'Les exports sont créés dans votre navigateur, et le seul code tiers qu’un export utilise est sous licence permissive (anime.js sous MIT ; flutter_svg et webview_flutter pour Flutter), sa mention de licence étant conservée dans le fichier.',
       ],
-      privacyNote: 'L’édition et l’export ont lieu dans votre navigateur ; votre dessin n’est pas envoyé sur nos serveurs pour être exporté. Sans compte, les projets ne sont conservés que dans ce navigateur. Si vous vous connectez et enregistrez un projet dans votre compte, il est stocké sur nos serveurs comme un projet Darkroom, suit la durée de conservation que vous choisissez et peut être supprimé depuis votre page Compte. Pour chaque export, nous n’enregistrons que son format, sa taille, sa durée et son heure, afin d’appliquer le quota quotidien.',
+      privacyNote: 'L’édition et l’export ont lieu dans votre navigateur ; votre dessin n’est pas envoyé sur nos serveurs pour être exporté. Sans compte, les projets ne sont conservés que dans ce navigateur. Si vous vous connectez et enregistrez un projet dans votre compte, le document nettoyé (jusqu’à 4 Mo) et une vignette sont stockés sur nos serveurs comme un projet Darkroom, suivent la durée de conservation que vous choisissez et peuvent être supprimés depuis votre page Compte. Pour chaque export décompté, nous n’enregistrons que son format, sa hauteur, sa cadence d’images, sa durée et son heure, avec votre compte ou votre session comme propriétaire, afin d’appliquer le quota quotidien ; la ligne d’export ne contient jamais le dessin.',
       faq: [
         {
           question: 'Motion est-il gratuit ?',
-          answer: 'Oui. Ouvrir Motion, dessiner, animer, enregistrer et exporter un SVG statique est gratuit et illimité, sans compte. Les exports animés sont décomptés d’un quota quotidien qui dépend de votre offre ; le tableau des offres sur cette page indique le quota et les formats de chaque offre.',
+          answer: 'Oui. Ouvrir Motion, dessiner, animer, enregistrer dans ce navigateur et exporter un SVG statique est gratuit, illimité et ne nécessite aucun compte. Les exports animés sont décomptés d’un quota quotidien qui dépend de votre offre : par défaut 2 par jour sans compte (SVG animé uniquement), 5 avec un compte gratuit, 30 avec Premium et 150 avec Pro. Le tableau des offres sur cette page indique le quota en vigueur et les formats de chaque offre.',
         },
         {
           question: 'Quels formats puis-je exporter ?',
-          answer: 'SVG statique, SVG animé (CSS, ou un petit script intégré si nécessaire), Lottie JSON, un composant React (.tsx), un module JavaScript ou TypeScript, un widget Flutter (.dart) et un GIF animé. Les formats inclus dans votre offre et le nombre d’exports quotidiens sont indiqués dans le tableau des offres sur cette page.',
+          answer: 'SVG statique, SVG animé (CSS, ou un petit script intégré si nécessaire), Lottie JSON, un composant React (.tsx), un module JavaScript ou TypeScript, un widget Flutter (.dart) et un GIF animé. Par défaut, le SVG animé est inclus dans toutes les offres, Lottie à partir du compte gratuit, et React, JS/TS, Flutter et GIF à partir de Premium. Les formats inclus dans votre offre et le nombre d’exports quotidiens sont indiqués dans le tableau des offres sur cette page.',
         },
         {
           question: 'Quelles sont les limites ?',
-          answer: 'Les exports animés sont comptés par jour et réinitialisés à minuit UTC. Les visiteurs sans compte ne peuvent enregistrer leurs projets que dans leur navigateur ; les offres avec connexion enregistrent un certain nombre de projets dans le compte. Les visiteurs ont aussi une durée d’animation maximale à l’export, et l’export GIF a une limite de taille et de durée. Tous les chiffres à jour figurent dans le tableau des offres sur cette page et sur la page des tarifs.',
+          answer: 'Les exports animés sont comptés par jour et réinitialisés à minuit UTC ; un export refusé n’est pas compté, mais un export que vous annulez après le décompte l’est. Les visiteurs sans compte n’enregistrent leurs projets que dans leur navigateur et peuvent exporter des animations d’une durée maximale de 10 secondes ; un compte gratuit enregistre 3 projets dans le compte, Premium 25, Pro sans limite. Les imports SVG et Lottie sont plafonnés à 4 Mo chacun, l’export GIF à 50 fps et 2 Go de sortie. Tous les chiffres à jour figurent dans le tableau des offres sur cette page et sur la page des tarifs.',
         },
         {
           question: 'Puis-je animer un SVG que je possède déjà ?',
-          answer: 'Oui. Importez n’importe quel SVG : ses groupes, tracés, formes, textes, dégradés, masques et tracés de détourage deviennent des calques modifiables. Les parties que l’éditeur ne peut pas modifier, comme les motifs ou les filtres complexes, sont conservées et exportées sans changement, et tout élément non sûr (scripts ou liens externes) est supprimé et listé après l’import.',
+          answer: 'Oui. Importez n’importe quel SVG : ses groupes, tracés, formes, textes, dégradés, masques et tracés de détourage deviennent des calques modifiables. Les parties que l’éditeur ne peut pas modifier, comme les motifs ou les filtres complexes, sont conservées et exportées sans changement, et tout élément non sûr (scripts, gestionnaires d’événements ou liens externes) est supprimé et listé après l’import.',
         },
         {
           question: 'Lottie est-il pris en charge ?',
-          answer: 'Oui, dans les deux sens. Vous pouvez importer un fichier Lottie JSON pour le modifier, et exporter votre animation en Lottie JSON pour lottie-web et les lecteurs Lottie iOS, Android et Flutter. Les fonctionnalités qu’un côté ne peut pas représenter sont listées dans la boîte de dialogue au lieu d’être écartées en silence.',
+          answer: 'Oui, dans les deux sens. Vous pouvez importer un fichier Lottie JSON pour le modifier (l’import compte pour une unité à partir de l’offre gratuite), et exporter votre animation en Lottie JSON pour lottie-web et les lecteurs Lottie iOS, Android et Flutter. Les fonctionnalités qu’un côté ne peut pas représenter sont listées dans la boîte de dialogue au lieu d’être écartées en silence.',
         },
         {
           question: 'Quels navigateurs prennent en charge l’export vidéo ?',
@@ -167,131 +179,3894 @@ const frToolPages = {
       metaDescription: 'Animez du SVG dans votre navigateur : images clés, accélération, maintiens, tracé progressif, trajectoires et morphing. Exportez en SVG animé, Lottie JSON, React, JS, Flutter ou GIF.',
       ogTitle: 'Motion : animez du SVG dans votre navigateur',
       ogDescription: 'Importez un SVG ou dessinez-en un, animez-le sur une timeline d’images clés et exportez en SVG animé, Lottie JSON, React, JavaScript, Flutter ou GIF. Les exports sont créés dans votre navigateur.',
+      featureList: [
+        'Import SVG en calques modifiables',
+        'Import Lottie JSON',
+        'Outils rectangle, ellipse, ligne, plume et texte',
+        'Timeline d’images clés avec préréglages d’accélération, courbes cubic-bezier personnalisées et clés de maintien',
+        'Animateurs de tracé progressif du contour, de trajectoire, de morphing de formes, de dégradé, de masque et de flou',
+        'Export SVG statique',
+        'Export SVG animé (CSS ou moteur anime.js intégré)',
+        'Export Lottie JSON',
+        'Export de code React, JavaScript, TypeScript et Flutter',
+        'Export GIF animé',
+        'Projets enregistrés dans le navigateur ou dans votre compte',
+      ],
     },
     // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
     'inspect-metadata': {
       name: 'Inspecteur de métadonnées',
+      h1: 'Inspecter les métadonnées d’un fichier en ligne',
       tagline: 'Voyez toutes les balises cachées dans une photo, une vidéo, un fichier audio ou un PDF : EXIF, position GPS, appareil photo, codecs, ID3, XMP et plus encore, avant de le partager.',
+      metaTitle: 'Inspecter les métadonnées : EXIF, GPS, codecs, ID3 | Media Manipulator',
+      metaDescription: 'Inspecteur de métadonnées gratuit en ligne pour les images, vidéos, fichiers audio et PDF. Voyez les données EXIF, les coordonnées GPS sur une carte, l’appareil et l’objectif, les codecs et débits, les balises ID3, XMP et IPTC. Sans inscription.',
+      ogTitle: 'Inspecter les métadonnées d’un fichier en ligne',
+      ogDescription: 'Chaque balise EXIF, GPS, codec, ID3 et XMP de votre fichier, regroupée et consultable, avec les balises privées signalées.',
+      intro: 'Les fichiers contiennent plus que leurs pixels et leurs échantillons. Une photo de téléphone enregistre où et quand elle a été prise et avec quel appareil ; une vidéo nomme son encodeur et ses débits ; un MP3 contient des balises ID3 et une pochette ; un PDF stocke son auteur et le logiciel qui l’a produit. L’inspecteur de métadonnées de Media Manipulator lit tout cela sur nos serveurs avec ExifTool et ffprobe, le regroupe en sections appareil photo, position, appareil, horodatage, codec et document, et met en évidence les entrées qui pourraient vous identifier, pour que vous décidiez quoi supprimer avant qu’un fichier ne quitte vos mains.',
+      whatItDoes: [
+        'Lit les données EXIF, GPS, IPTC, XMP et ICC des images JPG, PNG, WebP, HEIC, AVIF, TIFF et dérivées de RAW.',
+        'Lit les données de conteneur, de flux, de codec, de débit, de fréquence d’images et de chapitres des fichiers vidéo MP4, MOV, MKV, WebM et autres.',
+        'Lit les balises ID3, Vorbis et MP4, la pochette et les réglages d’encodeur des fichiers MP3, M4A, FLAC, OGG et WAV.',
+        'Lit l’auteur, le producteur, les dates de création et le nombre de pages des PDF.',
+        'Affiche les coordonnées GPS sur un contour de carte et signale chaque entrée sensible pour la vie privée.',
+        'Propose la sortie brute d’ExifTool et de ffprobe et la copie en un clic de n’importe quel bloc.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un fichier',
+          description: 'Image, vidéo, audio ou PDF.',
+        },
+        {
+          title: 'Nous le lisons',
+          description: 'ExifTool et ffprobe s’exécutent sur nos serveurs.',
+        },
+        {
+          title: 'Parcourez le rapport',
+          description: 'Regroupé, consultable, avec les entrées privées signalées.',
+        },
+        {
+          title: 'Décidez',
+          description: 'Supprimez les métadonnées avec l’outil EXIF si nécessaire.',
+        },
+      ],
+      advancedDetails: [
+        'Les images et les PDF sont inspectés automatiquement ; les vidéos et fichiers audio de plus de 100 Mo attendent un clic pour qu’un gros fichier ne soit pas importé par accident.',
+        'La pochette intégrée aux fichiers audio est signalée comme une entrée image, pas comme un flux vidéo.',
+        'Le rapport utilise le même catalogue de métadonnées que celui qui alimente l’outil de suppression EXIF et l’inspecteur de résultat de chaque conversion.',
+      ],
+      whyItMatters: [
+        'Une photo partagée depuis un téléphone peut révéler votre adresse personnelle par ses balises GPS.',
+        'Connaître le vrai codec, le débit et la fréquence d’images d’une vidéo explique pourquoi elle se lira ou non à tel endroit.',
+        'Les métadonnées d’un document nomment les auteurs et le logiciel d’édition, ce qui compte pour tout ce que vous publiez anonymement.',
+      ],
+      useCases: [
+        {
+          title: 'Avant de publier une photo',
+          description: 'Vérifiez la présence de coordonnées GPS et du numéro de série de l’appareil.',
+        },
+        {
+          title: 'Déboguer une vidéo',
+          description: 'Voyez le vrai codec, le profil, la fréquence d’images et la disposition audio.',
+        },
+        {
+          title: 'Vérifier un fichier musical',
+          description: 'Confirmez les balises, le débit et s’il a été transcodé depuis un débit plus faible.',
+        },
+        {
+          title: 'Examiner un PDF',
+          description: 'Voyez qui est nommé dans le champ auteur et quel logiciel l’a produit.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Un seul inspecteur pour les images, les vidéos, l’audio et les PDF, pas quatre outils distincts.',
+        'Les entrées sensibles pour la vie privée sont signalées, avec un accès direct à leur suppression.',
+        'Aucune conversion, aucun compte. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre fichier est lu par ExifTool et ffprobe sur notre serveur, le rapport revient dans votre navigateur et la copie temporaire est supprimée dès que le rapport est produit. Aucun tiers ne voit le fichier ni ses balises. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'L’inspection d’un fichier le modifie-t-elle ?',
+          answer: 'Non. Le fichier est lu, décrit dans un rapport et supprimé après l’analyse. Rien n’y est réécrit.',
+        },
+        {
+          question: 'Puis-je supprimer ce que l’inspecteur trouve ?',
+          answer: 'Oui. Utilisez l’outil Supprimer les métadonnées EXIF pour les images ; il retire tout et affiche une comparaison avant/après.',
+        },
+        {
+          question: 'Pourquoi une grosse vidéo nécessite-t-elle un clic ?',
+          answer: 'Les vidéos et fichiers audio de plus de 100 Mo ne sont importés que lorsque vous le demandez, pour que vous n’envoyiez jamais un gros fichier par accident.',
+        },
+        {
+          question: 'Est-ce décompté de mes conversions quotidiennes ?',
+          answer: 'Non. L’inspection est gratuite et ne consomme pas d’opération.',
+        },
+        {
+          question: 'Les données sont-elles envoyées à un tiers ?',
+          answer: 'Non. ExifTool et ffprobe s’exécutent sur nos propres serveurs, et le fichier est supprimé ensuite.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'L’inspection est en lecture seule et ne compte pas comme une conversion.',
+        ],
+      },
+      related: [
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez tout ce que l’inspecteur a trouvé.',
+        },
+        {
+          label: 'Modifier les métadonnées d’une image',
+          to: '/tools/edit-image-metadata',
+          description: 'Réécrivez le titre, l’auteur, le copyright et la position GPS.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez avec ou sans métadonnées.',
+        },
+      ],
+      embed: {
+        title: 'Inspecter un fichier',
+        description: 'Déposez une image, une vidéo, un fichier audio ou un PDF. Le rapport regroupe chaque balise par catégorie, signale celles qui vous identifient ou révèlent votre position, et propose une vue brute d’ExifTool et de ffprobe.',
+      },
     },
     'edit-image-metadata': {
       name: 'Modifier les métadonnées d’une image',
+      h1: 'Modifier les métadonnées d’une image en ligne',
       tagline: 'Définissez le titre, l’auteur, le copyright, les mots-clés et la description d’une photo, corrigez ou supprimez sa position GPS et réécrivez les balises EXIF et IPTC.',
+      metaTitle: 'Modifier les métadonnées d’une image : EXIF, IPTC, GPS | Media Manipulator',
+      metaDescription: 'Éditeur de métadonnées d’image gratuit en ligne. Définissez le titre, l’auteur, le copyright, la description et les mots-clés, remplacez ou supprimez la position GPS et modifiez les balises EXIF et IPTC des JPG, PNG, WebP et plus encore.',
+      ogTitle: 'Modifier les métadonnées d’une image en ligne',
+      ogDescription: 'Écrivez une mention de copyright, corrigez la position, définissez des mots-clés. Gratuit, sans inscription.',
+      intro: 'Les photographes ont besoin d’une mention de copyright et de coordonnées dans chaque fichier qu’ils livrent. Les agences veulent des mots-clés et des légendes IPTC. Quiconque partage une photo peut vouloir que la position disparaisse, ou qu’elle indique une ville plutôt qu’un pas de porte. Media Manipulator réécrit les champs EXIF, IPTC et XMP sur place, sur nos serveurs, avec ExifTool, laisse les données d’image intactes et vous montre la comparaison avant/après.',
+      whatItDoes: [
+        'Définit le titre, l’auteur/artiste, la description, le copyright, le commentaire et les mots-clés.',
+        'Supprime la position GPS ou la remplace par les coordonnées de votre choix.',
+        'Modifie des balises EXIF/TIFF, IPTC et avancées individuelles par leur nom.',
+        'Laisse les pixels intacts ; convertit en option le format dans la même passe.',
+        'Affiche une comparaison de ce qui a changé après la tâche.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une image',
+          description: 'JPG, PNG, WebP, HEIC, TIFF.',
+        },
+        {
+          title: 'Remplissez les champs',
+          description: 'Titre, auteur, copyright, mots-clés, position.',
+        },
+        {
+          title: 'Appliquez',
+          description: 'ExifTool réécrit les balises sur nos serveurs.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Comparez avant et après, puis enregistrez.',
+        },
+      ],
+      advancedDetails: [
+        'Le mode métadonnées personnalisées écrit ensemble les équivalents standard EXIF (Artist, Copyright, ImageDescription), IPTC (Keywords, Caption) et XMP (dc:title, dc:creator), de sorte que toutes les visionneuses s’accordent.',
+        'Le remplacement de la position GPS écrit GPSLatitude/GPSLongitude avec les bons hémisphères de référence ; sa suppression efface toutes les balises GPS.',
+        'Les PNG et WebP stockent leurs métadonnées dans des blocs de texte et en XMP ; les mêmes champs y sont écrits.',
+      ],
+      whyItMatters: [
+        'Une mention de copyright intégrée au fichier voyage avec lui lorsqu’il est republié.',
+        'Les mots-clés et légendes IPTC sont ce qu’indexent les agences de photos et les systèmes de gestion d’actifs numériques.',
+        'Une position réglée sur une ville protège votre domicile tout en gardant la photo géolocalisée.',
+      ],
+      useCases: [
+        {
+          title: 'Livrer des photos à un client',
+          description: 'Intégrez votre nom, votre copyright et vos coordonnées dans chaque fichier.',
+        },
+        {
+          title: 'Soumissions à des banques d’images',
+          description: 'Ajoutez des mots-clés IPTC et une légende.',
+        },
+        {
+          title: 'Géolocalisation approximative',
+          description: 'Remplacez une position GPS précise par le centre-ville.',
+        },
+        {
+          title: 'Corriger une balise erronée',
+          description: 'Corrigez l’auteur ou la date écrits par un scanner.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Écrit EXIF, IPTC et XMP ensemble, et pas seulement l’un d’eux.',
+        'Comparaison avant/après pour voir exactement ce qui a changé.',
+      ],
+      privacyNote: 'Les balises de votre image sont réécrites par ExifTool sur notre serveur avec les valeurs que vous avez saisies ; les pixels sont laissés tels quels. Aucun tiers ne voit le fichier ni ses balises. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'La modification des métadonnées réencode-t-elle mon JPG ?',
+          answer: 'Seulement si vous changez le format de sortie ou redimensionnez. Avec le même format et sans modification des pixels, les données d’image sont copiées et seules les balises sont réécrites.',
+        },
+        {
+          question: 'Puis-je supprimer la position tout en conservant le reste ?',
+          answer: 'Oui. Cochez « supprimer les données de position » et laissez les autres champs intacts.',
+        },
+        {
+          question: 'Puis-je modifier une balise qui n’est pas listée ?',
+          answer: 'Oui. Dépliez la section avancée et définissez n’importe quelle balise EXIF ou IPTC par son nom.',
+        },
+        {
+          question: 'Comment tout supprimer à la place ?',
+          answer: 'Utilisez l’outil Supprimer les métadonnées EXIF, qui retire toutes les balises en un clic.',
+        },
+      ],
+      related: [
+        {
+          label: 'Inspecter les métadonnées',
+          to: '/tools/inspect-metadata',
+          description: 'Voyez d’abord ce que contient le fichier.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez tout.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre formats d’image.',
+        },
+        {
+          label: 'Recadrer une image',
+          to: '/tools/crop-image',
+          description: 'Découpez une zone.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Changez les dimensions.',
+        },
+        {
+          label: 'Ajouter du texte à une image',
+          to: '/tools/add-text-to-image',
+          description: 'Légende ou filigrane.',
+        },
+        {
+          label: 'Filtres d’image',
+          to: '/tools/image-filters',
+          description: 'Sépia, croquis, relief et plus encore.',
+        },
+      ],
+      embed: {
+        title: 'Modifier les métadonnées d’une image',
+        description: 'Importez une image. La section métadonnées s’ouvre en mode personnalisé : renseignez le titre, l’auteur, le copyright, les mots-clés, remplacez ou supprimez la position GPS et dépliez les balises avancées si besoin. Les pixels de l’image sont laissés tels quels, sauf si vous changez aussi le format.',
+      },
     },
     'change-video-speed': {
       name: 'Modifier la vitesse d’une vidéo',
+      h1: 'Modifier la vitesse d’une vidéo en ligne : accélérer ou ralentir',
       tagline: 'Créez un time-lapse à 2x, 4x ou plus, ou ralentissez un clip à 0,5x ou 0,25x, avec un son resté synchronisé.',
+      metaTitle: 'Modifier la vitesse d’une vidéo : accéléré ou ralenti | Media Manipulator',
+      metaDescription: 'Changeur de vitesse vidéo gratuit en ligne. Accélérez une vidéo à 1,5x, 2x ou 4x pour un time-lapse, ou ralentissez-la à 0,5x ou 0,25x. Le son reste synchronisé. Sortie MP4, sans filigrane.',
+      ogTitle: 'Modifier la vitesse d’une vidéo en ligne gratuitement',
+      ogDescription: 'Accélérez ou ralentissez n’importe quelle vidéo de 0,25x à 4x. Le son reste synchronisé. Gratuit, sans inscription.',
+      intro: 'Un enregistrement d’écran qui traîne en longueur, un coucher de soleil qui doit devenir un time-lapse de dix secondes, une figure de skate qui mérite un ralenti : modifier la vitesse de lecture est l’un des montages vidéo les plus courants, et il ne devrait pas exiger un logiciel de montage. Media Manipulator recale l’image et le son sur nos serveurs avec FFmpeg, du quart de la vitesse au quadruple, et exporte un MP4 qui se lit partout à la nouvelle cadence.',
+      whatItDoes: [
+        'Accélère (de 1,25x à 4x) ou ralentit (de 0,25x à 0,9x) n’importe quelle vidéo.',
+        'Recale l’audio avec un changement de tempo qui conserve la hauteur, pour que les voix restent naturelles.',
+        'Conserve la résolution et la qualité ; exporte en MP4 par défaut ou dans tout conteneur pris en charge.',
+        'Combinez-la avec le découpage, le redimensionnement ou les réglages de couleur dans la même passe.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre vidéo',
+          description: 'Tout format vidéo courant.',
+        },
+        {
+          title: 'Réglez la vitesse',
+          description: 'De 0,25x à 4x ; 2x est présélectionné.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'FFmpeg recale la vidéo et l’audio.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le nouveau MP4.',
+        },
+      ],
+      advancedDetails: [
+        'La vidéo utilise setpts pour mettre à l’échelle les horodatages de présentation ; l’audio utilise atempo, chaîné pour les facteurs hors de la plage 0,5 à 2,0.',
+        'Le ralentissement n’invente pas d’images ; pour un ralenti fluide, utilisez l’interpolation d’images par IA après avoir ralenti le clip.',
+        'La fréquence d’images est conservée : un time-lapse en 4x contient donc un quart des images d’origine.',
+      ],
+      whyItMatters: [
+        'Les time-lapses et les récapitulatifs sont bien plus agréables à regarder entre 2x et 4x.',
+        'Le ralenti rend lisibles les clips de sport et d’action.',
+        'Les tutoriels et les enregistrements d’écran sont souvent meilleurs entre 1,25x et 1,5x.',
+      ],
+      useCases: [
+        {
+          title: 'Time-lapse',
+          description: 'Condensez une heure de construction, de cuisine ou de peinture en quelques minutes.',
+        },
+        {
+          title: 'Ralenti',
+          description: 'Ralentissez un clip de sport ou d’animal de compagnie à mi-vitesse.',
+        },
+        {
+          title: 'Tutoriel plus rapide',
+          description: 'Accélérez un enregistrement d’écran sans effet de voix de canard.',
+        },
+        {
+          title: 'Caler sur une piste musicale',
+          description: 'Poussez un clip à 1,1x pour qu’il tombe sur le rythme.',
+        },
+      ],
+      whyMediaManipulator: [
+        'L’audio est recalé en conservant la hauteur, ni laissé de côté ni transformé en voix de canard.',
+        'Associez-la à l’inversion, au découpage et à la couleur dans le même formulaire.',
+      ],
+      privacyNote: 'Votre vidéo est accélérée ou ralentie par FFmpeg sur notre serveur, le tempo de l’audio étant modifié pour suivre. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'L’audio reste-t-il synchronisé ?',
+          answer: 'Oui. Le tempo de l’audio est modifié du même facteur, en conservant la hauteur.',
+        },
+        {
+          question: 'Quelle est la vitesse maximale ?',
+          answer: '4x plus rapide et 0,25x plus lent en une seule passe. Pour aller plus loin, repassez le résultat dans l’outil.',
+        },
+        {
+          question: 'Le ralenti sera-t-il fluide ?',
+          answer: 'Le ralentissement répète des images. Pour un ralenti vraiment fluide, ralentissez le clip ici, puis utilisez l’interpolation d’images par IA.',
+        },
+        {
+          question: 'Puis-je plutôt couper le son ?',
+          answer: 'Oui : utilisez d’abord l’outil Supprimer l’audio d’une vidéo, ou exportez en GIF, qui n’a pas de son.',
+        },
+      ],
+      related: [
+        {
+          label: 'Interpolation d’images par IA',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Un ralenti fluide grâce à des images générées.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Inverser une vidéo',
+          to: '/tools/reverse-video',
+          description: 'Lisez un clip à l’envers.',
+        },
+        {
+          label: 'Retourner une vidéo',
+          to: '/tools/flip-video',
+          description: 'Miroir horizontal ou vertical.',
+        },
+        {
+          label: 'Stabiliser une vidéo',
+          to: '/tools/stabilize-video',
+          description: 'Atténuez les tremblements.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids du fichier.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez sur une plage.',
+        },
+      ],
+      embed: {
+        title: 'Modifier la vitesse d’une vidéo',
+        description: 'Importez une vidéo et définissez un multiplicateur de vitesse : au-dessus de 1, c’est plus rapide ; en dessous de 1, plus lent. 2x est présélectionné. L’audio est recalé pour suivre, afin qu’une voix accélérée reste intelligible.',
+      },
     },
     'reverse-video': {
       name: 'Inverser une vidéo',
+      h1: 'Inverser une vidéo en ligne gratuitement',
       tagline: 'Lisez n’importe quel clip à l’envers, avec ou sans le son inversé, et, si vous le souhaitez, en aller-retour (ping-pong), d’abord vers l’avant puis vers l’arrière.',
+      metaTitle: 'Inverser une vidéo en ligne : lecture à l’envers, ping-pong | Media Manipulator',
+      metaDescription: 'Inverseur vidéo gratuit en ligne. Lisez une vidéo à l’envers, inversez aussi le son, ou créez une boucle ping-pong qui va vers l’avant puis vers l’arrière. Sortie MP4 ou GIF, sans filigrane, sans inscription.',
+      ogTitle: 'Inverser une vidéo en ligne gratuitement',
+      ogDescription: 'Lisez un clip à l’envers ou créez une boucle aller-retour. Gratuit, sans inscription.',
+      intro: 'L’effet de vidéo inversée est plus vieux qu’Internet et fonctionne toujours : du verre brisé qui se reconstitue, un plongeur qui jaillit de la piscine, une foule qui se rassemble à rebours. Media Manipulator inverse les images et, si vous le souhaitez, le son de n’importe quel clip sur nos serveurs avec FFmpeg, et l’option ping-pong ajoute la copie vers l’avant pour que le résultat boucle sans à-coup, ce que recherchent la plupart des usages sur les réseaux sociaux et en GIF.',
+      whatItDoes: [
+        'Inverse les images de n’importe quel clip.',
+        'Inverse l’audio avec elles, ou supprime l’audio pour un résultat muet.',
+        'Le mode ping-pong lit vers l’avant puis vers l’arrière pour une boucle sans à-coup.',
+        'Exporte en MP4, WebM ou GIF animé.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un clip',
+          description: 'Les clips courts donnent les meilleurs résultats ; l’inversion charge tout le clip en mémoire.',
+        },
+        {
+          title: 'Choisissez inversion ou ping-pong',
+          description: 'L’inversion est présélectionnée.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'FFmpeg inverse les images et l’audio.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'MP4 pour une vidéo, GIF pour une boucle.',
+        },
+      ],
+      advancedDetails: [
+        'L’inversion met en mémoire tampon chaque image du clip : les clips très longs ou en 4K prennent donc plus de temps et de mémoire ; découpez d’abord pour de meilleurs résultats.',
+        'L’audio utilise le filtre areverse ; pour un clip inversé muet, supprimez d’abord l’audio.',
+        'Le ping-pong concatène les flux avant et inversé, ce qui double la durée.',
+      ],
+      whyItMatters: [
+        'Les clips inversés et de type boomerang sont un classique des vidéos courtes sur les réseaux sociaux.',
+        'Une boucle ping-pong masque la coupure qu’une boucle simple laisserait voir.',
+        'L’inversion est aussi un moyen économique de créer une transition « rembobinage ».',
+      ],
+      useCases: [
+        {
+          title: 'Boucle façon boomerang',
+          description: 'Transformez un clip de deux secondes en un aller-retour sans à-coup.',
+        },
+        {
+          title: 'Révélation inversée',
+          description: 'Lisez un déballage ou une construction à l’envers.',
+        },
+        {
+          title: 'Transition rembobinage',
+          description: 'Inversez quelques secondes pour passer d’une scène à l’autre.',
+        },
+        {
+          title: 'GIF inversé',
+          description: 'Exportez directement en GIF pour les messageries et les forums.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Inversion et ping-pong en un seul interrupteur, avec un audio traité correctement.',
+        'Découpez d’abord et exportez en GIF dans le même formulaire.',
+      ],
+      privacyNote: 'Votre clip est décodé et lu à l’envers dans un nouveau fichier par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'L’audio est-il aussi inversé ?',
+          answer: 'Oui, par défaut. Supprimez d’abord l’audio si vous voulez un clip muet.',
+        },
+        {
+          question: 'Qu’est-ce que le ping-pong ?',
+          answer: 'Le clip est lu vers l’avant, puis vers l’arrière, de sorte qu’il boucle sans saut visible.',
+        },
+        {
+          question: 'Y a-t-il une limite de durée ?',
+          answer: 'L’inversion garde tout le clip en mémoire. Les clips d’une ou deux minutes passent sans problème ; découpez d’abord les vidéos plus longues.',
+        },
+        {
+          question: 'Puis-je obtenir un GIF ?',
+          answer: 'Oui. Choisissez GIF comme format de sortie ; c’est l’idéal pour une boucle ping-pong.',
+        },
+      ],
+      related: [
+        {
+          label: 'Vidéo en GIF',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Créez un GIF en boucle.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Modifier la vitesse d’une vidéo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou ralenti.',
+        },
+        {
+          label: 'Retourner une vidéo',
+          to: '/tools/flip-video',
+          description: 'Miroir horizontal ou vertical.',
+        },
+        {
+          label: 'Stabiliser une vidéo',
+          to: '/tools/stabilize-video',
+          description: 'Atténuez les tremblements.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids du fichier.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez sur une plage.',
+        },
+      ],
+      embed: {
+        title: 'Inverser une vidéo',
+        description: 'Importez un clip. L’inversion est déjà activée dans la section Effets temporels ; activez plutôt le ping-pong pour une boucle aller-retour. Exportez en MP4 ou en GIF.',
+      },
     },
     'flip-video': {
       name: 'Retourner et miroiter une vidéo',
+      h1: 'Retourner ou miroiter une vidéo en ligne gratuitement',
       tagline: 'Inversez une vidéo à l’horizontale pour corriger une webcam ou un selfie en miroir, ou retournez-la à la verticale, en un clic.',
+      metaTitle: 'Retourner ou miroiter une vidéo en ligne | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour retourner une vidéo. Miroitez une vidéo à l’horizontale (pour corriger un selfie ou une webcam en miroir) ou retournez-la à la verticale. Sortie MP4, sans filigrane, sans inscription.',
+      ogTitle: 'Retourner ou miroiter une vidéo en ligne gratuitement',
+      ogDescription: 'Corrigez une vidéo selfie en miroir ou retournez un clip tête en bas. Gratuit, sans inscription.',
+      intro: 'Les caméras frontales et les webcams enregistrent souvent une image en miroir : le texte se lit à l’envers et votre raie est du mauvais côté. Un seul passage en miroir remet le clip à l’endroit. Media Manipulator retourne la vidéo à l’horizontale ou à la verticale sur nos serveurs avec FFmpeg, la réencode pour que le retournement soit inscrit dans les images, et exporte un MP4 qui se lit correctement dans tous les lecteurs.',
+      whatItDoes: [
+        'Miroite une vidéo à l’horizontale (gauche-droite) ou la retourne à la verticale (haut-bas).',
+        'Combinez-le avec une rotation de 90°, 180° ou 270° dans la même passe.',
+        'Inscrit la transformation dans les images ; aucune dépendance à un indicateur de rotation.',
+        'Exporte en MP4 par défaut, ou dans tout conteneur pris en charge.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une vidéo',
+          description: 'Tout format courant.',
+        },
+        {
+          title: 'Choisissez un retournement',
+          description: 'L’horizontal est présélectionné ; ajoutez le vertical ou une rotation.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'FFmpeg applique hflip/vflip et réencode.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le MP4 corrigé.',
+        },
+      ],
+      advancedDetails: [
+        'Le retournement horizontal utilise le filtre hflip, le vertical vflip ; les deux sont sans perte sur la géométrie et réencodent les images.',
+        'Un miroir plus une rotation de 180° équivaut à un retournement vertical ; le panneau vous laisse les combiner librement.',
+        'La sortie MP4 utilise H.264 + AAC + yuv420p + faststart.',
+      ],
+      whyItMatters: [
+        'Une vidéo selfie en miroir rend le texte à l’écran illisible.',
+        'Certaines caméras d’action montées à l’envers ont besoin d’un retournement vertical plutôt que d’une rotation.',
+        'Une copie en miroir est un moyen rapide de rendre un tutoriel de danse ou d’exercice plus facile à suivre.',
+      ],
+      useCases: [
+        {
+          title: 'Corriger un selfie en miroir',
+          description: 'Faites en sorte que le texte et les logos se lisent correctement.',
+        },
+        {
+          title: 'Fixation à l’envers',
+          description: 'Retournez les images d’une caméra montée tête en bas.',
+        },
+        {
+          title: 'Miroir pour un tutoriel',
+          description: 'Miroitez une démonstration pour que les spectateurs puissent la reproduire directement.',
+        },
+        {
+          title: 'Raccorder un plan',
+          description: 'Miroitez un clip pour que le sujet regarde dans l’autre direction.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Retournement et rotation dans une seule section de transformation, inscrits dans les images.',
+        'Découpage, redimensionnement et couleur dans le même import.',
+      ],
+      privacyNote: 'Votre vidéo est miroitée à l’horizontale ou à la verticale par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Miroir ou retournement, quelle est la différence ?',
+          answer: 'Le miroir (retournement horizontal) échange la gauche et la droite. Le retournement vertical échange le haut et le bas.',
+        },
+        {
+          question: 'Le retournement est-il permanent ?',
+          answer: 'Oui. Les images sont réencodées avec le retournement appliqué, donc tous les lecteurs l’affichent.',
+        },
+        {
+          question: 'Puis-je aussi faire pivoter la vidéo ?',
+          answer: 'Oui. La rotation se trouve dans la même section Transformation, ou utilisez l’outil dédié Faire pivoter une vidéo.',
+        },
+        {
+          question: 'Le retournement réduit-il la qualité ?',
+          answer: 'Le réencodage a un léger coût ; choisissez la haute qualité pour le rendre négligeable.',
+        },
+      ],
+      related: [
+        {
+          label: 'Faire pivoter une vidéo',
+          to: '/tools/rotate-video',
+          description: '90°, 180°, 270°.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Modifier la vitesse d’une vidéo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou ralenti.',
+        },
+        {
+          label: 'Inverser une vidéo',
+          to: '/tools/reverse-video',
+          description: 'Lisez un clip à l’envers.',
+        },
+        {
+          label: 'Stabiliser une vidéo',
+          to: '/tools/stabilize-video',
+          description: 'Atténuez les tremblements.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids du fichier.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez sur une plage.',
+        },
+      ],
+      embed: {
+        title: 'Retourner ou miroiter une vidéo',
+        description: 'Importez une vidéo. Le retournement horizontal (miroir) est présélectionné dans la section Transformation ; activez plutôt, ou en plus, le retournement vertical. La rotation est disponible dans la même section.',
+      },
     },
     'stabilize-video': {
       name: 'Stabiliser une vidéo',
+      h1: 'Stabiliser une vidéo tremblante en ligne gratuitement',
       tagline: 'Atténuez les tremblements de la caméra à la main et les secousses de la marche avec un stabilisateur en deux passes, sans trépied ni logiciel de montage.',
+      metaTitle: 'Stabiliser une vidéo tremblante en ligne | Media Manipulator',
+      metaDescription: 'Stabilisateur vidéo gratuit en ligne. Atténuez les tremblements à la main et les secousses de la marche grâce au lissage de mouvement de FFmpeg. Intensité réglable, sortie MP4, sans filigrane, sans inscription.',
+      ogTitle: 'Stabiliser une vidéo tremblante en ligne gratuitement',
+      ogDescription: 'Lissez les tremblements de la caméra dans n’importe quel clip. Gratuit, sans inscription.',
+      intro: 'Les images filmées à la main tremblent, et un léger tremblement devient énorme sur un grand écran. La stabilisation logicielle suit le mouvement entre les images, lisse la trajectoire de la caméra et recadre légèrement les bords pour masquer la correction. Media Manipulator exécute le stabilisateur par compensation de mouvement de FFmpeg sur nos serveurs, avec une intensité réglable, pour qu’un vlog en marchant ou un clip de téléphone zoomé ressorte nettement plus stable.',
+      whatItDoes: [
+        'Analyse le mouvement d’une image à l’autre et lisse la trajectoire de la caméra.',
+        'Tremblement (ampleur du tremblement attendu) et précision (intensité de la recherche) réglables.',
+        'Recadre légèrement pour masquer la correction ; le zoom est appliqué automatiquement.',
+        'Exporte en MP4 par défaut ; combinez-la avec le découpage et la couleur dans la même passe.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un clip tremblant',
+          description: 'Tout format courant.',
+        },
+        {
+          title: 'Gardez ou ajustez l’intensité',
+          description: 'Les valeurs par défaut conviennent aux images de téléphone filmées à la main.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'FFmpeg estime et compense le mouvement.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Comparez le résultat plus stable.',
+        },
+      ],
+      advancedDetails: [
+        'Utilise le filtre de compensation de mouvement deshake de FFmpeg ; la valeur de tremblement définit la plage de recherche et la précision sa profondeur.',
+        'La stabilisation ne peut pas corriger le flou de mouvement déjà présent dans les images ; elle ne supprime que les secousses entre elles.',
+        'Attendez-vous à un léger recadrage des bords, proportionnel à l’ampleur des mouvements de la caméra.',
+      ],
+      whyItMatters: [
+        'Des images stables paraissent plus professionnelles et sont plus agréables à regarder.',
+        'Les clips de téléphone filmés en marchant sont le cas le plus fréquent et réagissent bien.',
+        'Un clip stabilisé se compresse mieux, puisqu’une moindre part de l’image change d’une image à l’autre.',
+      ],
+      useCases: [
+        {
+          title: 'Vlog en marchant',
+          description: 'Supprimez les rebonds d’une séquence filmée à la main en marchant et en parlant.',
+        },
+        {
+          title: 'Vidéo de téléphone zoomée',
+          description: 'Stabilisez un clip de concert ou d’animaux sauvages filmé en plein zoom.',
+        },
+        {
+          title: 'Fixation voiture ou vélo',
+          description: 'Réduisez les vibrations d’un support de tableau de bord ou de guidon.',
+        },
+        {
+          title: 'Avant un GIF',
+          description: 'Stabilisez d’abord pour que la boucle ne tremble pas.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Une véritable compensation de mouvement, avec une intensité exposée plutôt que cachée.',
+        'Découpage, vitesse et couleur dans le même formulaire.',
+      ],
+      privacyNote: 'Vos images sont analysées pour détecter les tremblements et lissées par le filtre deshake de FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Ma vidéo sera-t-elle recadrée ?',
+          answer: 'Légèrement. Le stabilisateur décale les images pour annuler les tremblements et zoome un peu pour masquer les bords mobiles.',
+        },
+        {
+          question: 'Peut-il corriger le flou ?',
+          answer: 'Non. Le flou à l’intérieur d’une image ne peut pas être annulé ; la stabilisation ne fait que stabiliser le mouvement entre les images.',
+        },
+        {
+          question: 'Quels réglages dois-je utiliser ?',
+          answer: 'Commencez par les valeurs par défaut. Augmentez le tremblement pour des images très agitées ; augmentez la précision si le résultat dérive encore.',
+        },
+        {
+          question: 'Fonctionne-t-il en 4K ?',
+          answer: 'Oui, mais le traitement prend plus de temps. Envisagez un redimensionnement en 1080p dans la même passe.',
+        },
+      ],
+      related: [
+        {
+          label: 'Restauration vidéo par IA',
+          to: '/tools/ai-video-restoration',
+          description: 'Débruitez, défloutez et agrandissez avec l’IA.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Modifier la vitesse d’une vidéo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou ralenti.',
+        },
+        {
+          label: 'Inverser une vidéo',
+          to: '/tools/reverse-video',
+          description: 'Lisez un clip à l’envers.',
+        },
+        {
+          label: 'Retourner une vidéo',
+          to: '/tools/flip-video',
+          description: 'Miroir horizontal ou vertical.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids du fichier.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez sur une plage.',
+        },
+      ],
+      embed: {
+        title: 'Stabiliser une vidéo',
+        description: 'Importez un clip tremblant. La stabilisation est déjà activée dans la section Effets temporels ; ajustez le tremblement et la précision si le réglage par défaut est trop doux ou recadre trop.',
+      },
     },
     'change-video-frame-rate': {
       name: 'Modifier la fréquence d’images d’une vidéo',
+      h1: 'Modifier la fréquence d’images d’une vidéo en ligne',
       tagline: 'Convertissez une vidéo en 24, 25, 30 ou 60 images/s, ramenez un clip de 60 à 30 images/s pour obtenir un fichier plus léger, ou adaptez-la à la fréquence d’images de votre projet.',
+      metaTitle: 'Changer la fréquence d’images (24, 30, 60 images/s) | Media Manipulator',
+      metaDescription: 'Convertisseur de fréquence d’images gratuit en ligne. Passez une vidéo en 24, 25, 30, 50 ou 60 images/s, ramenez 60 images/s à 30 pour un fichier plus léger, ou adaptez-la à une timeline de montage. Sortie MP4, sans inscription.',
+      ogTitle: 'Modifier la fréquence d’images d’une vidéo en ligne',
+      ogDescription: 'Convertissez n’importe quelle vidéo en 24, 25, 30 ou 60 images/s. Gratuit, sans inscription.',
+      intro: 'La fréquence d’images détermine la sensation que donne une vidéo et son poids. Le cinéma est en 24 images/s, la diffusion européenne en 25, la plupart des téléphones en 30 ou 60, et les mélanger dans une même timeline provoque des saccades. Media Manipulator rééchantillonne n’importe quelle vidéo à la fréquence d’images dont vous avez besoin sur nos serveurs avec FFmpeg, en supprimant ou en répétant exactement les images, et exporte un MP4. Quand vous voulez plus d’images plutôt que moins, l’outil d’interpolation d’images par IA génère les images intermédiaires.',
+      whatItDoes: [
+        'Rééchantillonne une vidéo à n’importe quelle fréquence de 1 à 120 images/s.',
+        'Divise par deux 60 images/s en 30 pour un fichier bien plus léger, sans changement visible pour la plupart des contenus.',
+        'S’aligne sur la fréquence d’images d’un projet (24, 25, 29,97, 30, 50, 60) avant l’import dans un logiciel de montage.',
+        'Conserve la résolution, l’audio et la durée inchangés.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une vidéo',
+          description: 'Tout format courant.',
+        },
+        {
+          title: 'Définissez la fréquence cible',
+          description: '30 est présélectionné.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'FFmpeg supprime ou duplique des images pour s’y conformer.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le MP4 rééchantillonné.',
+        },
+      ],
+      advancedDetails: [
+        'Utilise le filtre fps : les images sont supprimées ou dupliquées selon l’horodatage, de sorte que la durée et la synchronisation audio sont exactement préservées.',
+        'Monter (de 30 à 60) duplique des images et ne paraît pas plus fluide ; utilisez l’interpolation d’images par IA pour de vraies nouvelles images.',
+        'Descendre supprime des données et n’est pas réversible ; conservez l’original.',
+      ],
+      whyItMatters: [
+        'Un clip de téléphone en 60 images/s est deux fois plus lourd qu’en 30 images/s pour la même qualité visible dans la plupart des contenus.',
+        'Des fréquences d’images mélangées dans une timeline de montage provoquent des saccades ; les conformer d’abord l’évite.',
+        'Certaines plateformes et certains appareils limitent ou imposent une fréquence d’images particulière.',
+      ],
+      useCases: [
+        {
+          title: 'Alléger un clip en 60 images/s',
+          description: 'Passez à 30 images/s pour l’e-mail, la messagerie ou un envoi plus léger.',
+        },
+        {
+          title: 'Conformer pour le montage',
+          description: 'Alignez chaque clip sur la fréquence du projet.',
+        },
+        {
+          title: 'Rendu cinéma',
+          description: 'Convertissez en 24 images/s pour une cadence cinématographique.',
+        },
+        {
+          title: 'Livraison broadcast',
+          description: 'Convertissez en 25 ou 50 images/s pour les régions PAL.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Un rééchantillonnage exact basé sur les horodatages, sans toucher à la durée ni à l’audio.',
+        'L’interpolation par IA est disponible quand vous avez besoin de plus d’images plutôt que de moins.',
+      ],
+      privacyNote: 'Votre vidéo est recalée à la fréquence d’images que vous choisissez par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'La vidéo devient-elle plus courte ou plus longue ?',
+          answer: 'Non. La durée est préservée ; des images sont supprimées ou répétées pour atteindre la nouvelle fréquence.',
+        },
+        {
+          question: 'Le passage de 30 à 60 images/s paraîtra-t-il plus fluide ?',
+          answer: 'Pas avec cet outil, qui duplique les images. Utilisez l’interpolation d’images par IA pour générer de vraies images intermédiaires.',
+        },
+        {
+          question: 'Quelle fréquence d’images choisir ?',
+          answer: '30 images/s pour la plupart des contenus web et téléphone, 24 pour un rendu cinéma, 25 ou 50 pour la diffusion PAL, 60 pour le jeu vidéo et le sport.',
+        },
+        {
+          question: 'L’audio est-il affecté ?',
+          answer: 'Non. Le flux audio est copié ou réencodé avec le même minutage.',
+        },
+      ],
+      related: [
+        {
+          label: 'Interpolation d’images par IA',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Générez des images jusqu’à 120 images/s.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Modifier la vitesse d’une vidéo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou ralenti.',
+        },
+        {
+          label: 'Inverser une vidéo',
+          to: '/tools/reverse-video',
+          description: 'Lisez un clip à l’envers.',
+        },
+        {
+          label: 'Retourner une vidéo',
+          to: '/tools/flip-video',
+          description: 'Miroir horizontal ou vertical.',
+        },
+        {
+          label: 'Stabiliser une vidéo',
+          to: '/tools/stabilize-video',
+          description: 'Atténuez les tremblements.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids du fichier.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez sur une plage.',
+        },
+      ],
+      embed: {
+        title: 'Modifier la fréquence d’images d’une vidéo',
+        description: 'Importez une vidéo et définissez la fréquence d’images cible dans la section Effets temporels ; 30 images/s est présélectionné. Des images sont supprimées ou dupliquées pour atteindre la cible. Pour une fréquence plus élevée avec des images intermédiaires générées, utilisez plutôt l’interpolation d’images par IA.',
+      },
     },
     'adjust-video-color': {
       name: 'Ajuster la luminosité et les couleurs d’une vidéo',
+      h1: 'Ajuster la luminosité, le contraste et les couleurs d’une vidéo en ligne',
       tagline: 'Éclaircissez un clip sombre, ajoutez du contraste et de la saturation, décalez la teinte, ou appliquez un flou ou un rendu artistique, avec des curseurs et un aperçu en direct.',
+      metaTitle: 'Ajuster luminosité, contraste et saturation d’une vidéo | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour ajuster les couleurs d’une vidéo. Corrigez la luminosité, le contraste, la saturation, la teinte, le gamma et l’exposition, ajoutez du flou ou de la netteté, ou appliquez un rendu artistique. Sortie MP4, sans filigrane, sans inscription.',
+      ogTitle: 'Ajuster la luminosité et les couleurs d’une vidéo en ligne',
+      ogDescription: 'Éclaircissez, ajoutez du contraste, renforcez les couleurs ou appliquez un rendu à n’importe quel clip. Gratuit, sans inscription.',
+      intro: 'Un clip filmé en intérieur ressort sombre et orangé ; une vidéo de téléphone un peu plate demande plus de contraste et de couleur ; un clip destiné à une miniature a besoin d’un rendu stylisé. Media Manipulator applique des corrections de luminosité, de contraste, de saturation, de teinte, de gamma et d’exposition sur nos serveurs avec FFmpeg, aux côtés du flou, de la netteté, du grain et d’un ensemble de filtres artistiques, et exporte un MP4. C’est une passe de correction colorimétrique sans ouvrir de logiciel de montage.',
+      whatItDoes: [
+        'Curseurs de luminosité, de contraste, de saturation et de teinte de -100 à +100.',
+        'Gamma, exposition, ombres et hautes lumières pour un contrôle tonal plus fin.',
+        'Flou gaussien et flou de mouvement, accentuation par masque flou, grain de film et bruit.',
+        'Rendus artistiques comme la peinture à l’huile, le croquis et le vintage.',
+        'Combinez-les avec le découpage, le redimensionnement, la vitesse ou le retournement dans la même passe.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un clip',
+          description: 'Tout format courant.',
+        },
+        {
+          title: 'Déplacez les curseurs',
+          description: 'Luminosité, contraste, saturation, teinte et plus encore.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'FFmpeg applique les filtres eq et d’effets.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le MP4 étalonné.',
+        },
+      ],
+      advancedDetails: [
+        'La luminosité, le contraste, la saturation et le gamma correspondent au filtre eq de FFmpeg ; la teinte utilise le filtre hue, en degrés.',
+        'La netteté est un unsharp avec rayon, intensité et seuil ; le flou est gblur ou un flou de mouvement directionnel.',
+        'Pour une LUT 3D, une incrustation chromatique ou un étalonnage clip par clip sur une timeline, utilisez Darkroom.',
+      ],
+      whyItMatters: [
+        'La plupart des images de téléphone gagnent à une légère hausse du contraste et de la saturation.',
+        'Corriger l’exposition avant l’envoi évite que le réencodage de la plateforme n’aggrave les choses.',
+        'Un rendu homogène d’un clip à l’autre donne à un montage un aspect fini.',
+      ],
+      useCases: [
+        {
+          title: 'Éclaircir un clip sombre',
+          description: 'Relevez l’exposition et les ombres sur des images d’intérieur.',
+        },
+        {
+          title: 'Dynamiser un clip plat',
+          description: 'Ajoutez du contraste et de la saturation à une vidéo de téléphone à l’aspect log.',
+        },
+        {
+          title: 'Corriger une dominante de couleur',
+          description: 'Décalez la teinte pour supprimer une dominante orange ou verte.',
+        },
+        {
+          title: 'Styliser pour les réseaux sociaux',
+          description: 'Appliquez des rendus vintage, croquis ou peinture à l’huile.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Des commandes de tonalité, de couleur et d’effets dans une seule section, et non un simple bouton « améliorer ».',
+        'Utilisez Darkroom pour un étalonnage sur timeline avec des LUT quand il vous en faut davantage.',
+      ],
+      privacyNote: 'La luminosité, le contraste, la saturation et le gamma de votre vidéo sont modifiés par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Puis-je prévisualiser le résultat ?',
+          answer: 'Les curseurs affichent leurs valeurs ; l’étalonnage complet est appliqué à la conversion. Découpez quelques secondes pour tester rapidement, puis traitez tout le clip.',
+        },
+        {
+          question: 'Puis-je appliquer une LUT ?',
+          answer: 'Pas ici. Darkroom, notre éditeur multipiste, prend en charge les LUT 3D et l’étalonnage clip par clip.',
+        },
+        {
+          question: 'Cela corrigera-t-il des images surexposées ?',
+          answer: 'L’outil peut abaisser les hautes lumières, mais les détails écrêtés en blanc ne peuvent pas être récupérés.',
+        },
+        {
+          question: 'Puis-je accentuer la netteté d’un clip flou ?',
+          answer: 'Oui. Utilisez les commandes de masque flou ; pour une vraie récupération des détails, essayez la restauration vidéo par IA.',
+        },
+      ],
+      related: [
+        {
+          label: 'Éditeur vidéo Darkroom',
+          to: '/tools/content-studio',
+          description: 'Étalonnez avec des LUT sur une timeline.',
+        },
+        {
+          label: 'Restauration vidéo par IA',
+          to: '/tools/ai-video-restoration',
+          description: 'Débruitez et agrandissez avec l’IA.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Modifier la vitesse d’une vidéo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou ralenti.',
+        },
+        {
+          label: 'Inverser une vidéo',
+          to: '/tools/reverse-video',
+          description: 'Lisez un clip à l’envers.',
+        },
+        {
+          label: 'Retourner une vidéo',
+          to: '/tools/flip-video',
+          description: 'Miroir horizontal ou vertical.',
+        },
+        {
+          label: 'Stabiliser une vidéo',
+          to: '/tools/stabilize-video',
+          description: 'Atténuez les tremblements.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids du fichier.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez sur une plage.',
+        },
+      ],
+      embed: {
+        title: 'Ajuster les couleurs d’une vidéo',
+        description: 'Importez un clip. La section Effets visuels s’ouvre avec les curseurs de luminosité, de contraste, de saturation, de teinte, de gamma et d’exposition, plus le flou, la netteté, le bruit et les rendus artistiques. Exportez en MP4.',
+      },
     },
     'convert-video-to-hevc': {
       name: 'Convertir une vidéo en HEVC (H.265)',
+      h1: 'Convertir une vidéo en HEVC / H.265 en ligne',
       tagline: 'Réencodez n’importe quelle vidéo en H.265 pour obtenir environ la moitié de la taille du H.264 à qualité égale, idéal pour le stockage, la 4K et les appareils récents.',
+      metaTitle: 'Convertir une vidéo en HEVC (H.265) en ligne | Media Manipulator',
+      metaDescription: 'Convertisseur H.265 / HEVC gratuit en ligne. Réencodez du MP4, MOV, MKV ou WebM en HEVC pour environ la moitié de la taille à qualité égale. Choisissez un préréglage de qualité. Sans filigrane, sans inscription.',
+      ogTitle: 'Convertir une vidéo en HEVC / H.265 en ligne',
+      ogDescription: 'Divisez par deux la taille d’une vidéo avec le H.265. Gratuit, sans inscription.',
+      intro: 'Le HEVC, aussi appelé H.265, est le successeur du H.264. À qualité visuelle égale, il nécessite environ 40 à 50 pour cent de bits en moins, ce qui explique que les téléphones enregistrent la 4K dans ce format et qu’il soit le format de choix pour archiver des images. Media Manipulator réencode n’importe quelle vidéo en HEVC sur nos serveurs avec l’encodeur x265 de FFmpeg, au niveau de qualité que vous choisissez, dans un conteneur MP4 que les iPhone, les Mac, Windows 10+, Android et les téléviseurs récents lisent tous.',
+      whatItDoes: [
+        'Réencode n’importe quelle vidéo d’entrée en H.265 dans un conteneur MP4.',
+        'Trois préréglages de qualité correspondant à des valeurs CRF ; la taille du fichier est à peu près divisée par deux par rapport au H.264.',
+        'Conserve la résolution et la fréquence d’images ; réduit en option la 4K en 1080p pour un fichier bien plus léger.',
+        'L’audio est réencodé en AAC.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une vidéo',
+          description: 'Tout format courant, y compris le MP4 H.264.',
+        },
+        {
+          title: 'Choisissez une qualité',
+          description: 'Fichier le plus léger, équilibré ou haute qualité.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'x265 encode sur nos serveurs ; plus lent que le H.264.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le .mp4 contenant du HEVC.',
+        },
+      ],
+      advancedDetails: [
+        'Encodé avec libx265 en CRF 28 (équilibré), 32 (fichier le plus léger) ou 24 (haute qualité), préréglage medium, balise hvc1 pour la compatibilité Apple.',
+        'L’encodage HEVC est plusieurs fois plus lent que le H.264 ; les longs fichiers 4K prennent plusieurs minutes.',
+        'Navigateurs : Safari et Edge lisent le HEVC ; Chrome et Firefox généralement pas. Gardez le H.264 pour les intégrations web.',
+      ],
+      whyItMatters: [
+        'La moitié du stockage pour la même qualité, cela compte à l’échelle d’une bibliothèque.',
+        'La diffusion en 4K et en HDR est standardisée sur le HEVC pour la plupart des appareils.',
+        'Des fichiers plus légers s’envoient et se synchronisent plus vite.',
+      ],
+      useCases: [
+        {
+          title: 'Archiver des images',
+          description: 'Divisez par deux la taille d’une pellicule sans perte visible.',
+        },
+        {
+          title: 'Partager de la 4K',
+          description: 'Rendez un clip 4K assez léger pour être envoyé.',
+        },
+        {
+          title: 'Écosystème Apple',
+          description: 'Alignez-vous sur les fichiers HEVC que les iPhone enregistrent déjà.',
+        },
+        {
+          title: 'Libérer un disque',
+          description: 'Convertissez d’anciens enregistrements H.264 en HEVC.',
+        },
+      ],
+      whyMediaManipulator: [
+        'x265 avec des préréglages CRF raisonnables et un balisage compatible Apple.',
+        'Le même panneau compresse en H.264, VP9 ou AV1 si vous en avez plutôt besoin.',
+      ],
+      privacyNote: 'Votre vidéo est réencodée en H.265 (HEVC) par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Le HEVC se lit-il partout ?',
+          answer: 'iPhone, Mac, Windows 10+, Android 5+, les téléviseurs récents et Safari/Edge le lisent. Chrome, Firefox et les anciens appareils généralement pas ; gardez le H.264 pour ceux-là.',
+        },
+        {
+          question: 'De combien le fichier sera-t-il plus léger ?',
+          answer: 'Généralement de 40 à 50 pour cent par rapport au H.264 à qualité égale ; davantage pour les contenus simples.',
+        },
+        {
+          question: 'La qualité est-elle moins bonne ?',
+          answer: 'Avec le préréglage équilibré, la différence n’est pas visible pour la plupart des contenus. Choisissez la haute qualité pour des images que vous remonterez.',
+        },
+        {
+          question: 'Pourquoi est-ce lent ?',
+          answer: 'x265 fait bien plus de travail par image que x264. C’est le prix d’un fichier plus léger.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'L’encodage HEVC sollicite fortement le processeur ; comptez plusieurs minutes pour les sources longues ou en 4K.',
+        ],
+      },
+      related: [
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Compression H.264, VP9 ou AV1.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'MP4 H.264 standard.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Modifier la vitesse d’une vidéo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou ralenti.',
+        },
+        {
+          label: 'Inverser une vidéo',
+          to: '/tools/reverse-video',
+          description: 'Lisez un clip à l’envers.',
+        },
+        {
+          label: 'Retourner une vidéo',
+          to: '/tools/flip-video',
+          description: 'Miroir horizontal ou vertical.',
+        },
+        {
+          label: 'Stabiliser une vidéo',
+          to: '/tools/stabilize-video',
+          description: 'Atténuez les tremblements.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez sur une plage.',
+        },
+      ],
+      embed: {
+        title: 'Convertir une vidéo en HEVC',
+        description: 'Importez une vidéo. Le codec est réglé sur H.265 dans un conteneur MP4 avec le préréglage équilibré ; choisissez plutôt le fichier le plus léger ou la haute qualité. Les anciens appareils et certains navigateurs ne lisent pas le HEVC ; gardez une copie H.264 pour ceux-là.',
+      },
     },
     'convert-audio-to-wav': {
       name: 'Convertir un fichier audio en WAV',
+      h1: 'Convertir un fichier audio en WAV en ligne gratuitement',
       tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en WAV sans aucune perte.',
+      metaTitle: 'Convertir un fichier audio en WAV en ligne | Media Manipulator',
+      metaDescription: 'Convertisseur audio en WAV gratuit en ligne. Importez du MP3, WAV, M4A, OGG, FLAC ou AAC et téléchargez un WAV. Sortie sans perte. Sans filigrane, sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un fichier audio en WAV en ligne gratuitement',
+      ogDescription: 'Importez n’importe quel fichier audio et téléchargez un WAV. Sans perte. Gratuit, sans inscription.',
+      intro: 'Le WAV est de l’audio PCM non compressé : chaque échantillon est stocké tel quel, rien n’est donc perdu et tous les éditeurs, DAW et échantillonneurs l’ouvrent instantanément. Media Manipulator convertit tout format audio courant en WAV en un seul import, en conservant la fréquence d’échantillonnage et la disposition des canaux sauf si vous les modifiez, et propose le découpage, la normalisation, l’égalisation et les outils de nettoyage par IA dans le même formulaire.',
+      whatItDoes: [
+        'Convertit le MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 et WMA en WAV.',
+        'Conserve chaque échantillon : la sortie se décode exactement comme l’entrée.',
+        'Le découpage, le volume, la normalisation, l’égalisation et les effets peuvent être appliqués avant l’écriture du PCM.',
+        'Le nettoyage par IA est dans le même formulaire : supprimez le bruit de fond, nettoyez une voix, ou isolez ou supprimez le chant avant d’enregistrer en WAV.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un fichier audio',
+          description: 'Tout fichier audio courant, compressé ou non.',
+        },
+        {
+          title: 'Ajustez si besoin',
+          description: 'Découpez, normalisez ou appliquez des effets.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'FFmpeg encode le WAV sur nos serveurs.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le fichier WAV.',
+        },
+      ],
+      advancedDetails: [
+        'La sortie WAV est encodée avec l’encodeur natif pcm_s16le de FFmpeg à la fréquence d’échantillonnage de la source.',
+        'Convertir un MP3 avec perte en WAV ne restaure pas les détails que l’encodeur MP3 a éliminés ; cela empêche seulement toute perte supplémentaire.',
+        'La pochette d’album d’une source MP3 ou M4A est reconnue comme une image fixe, de sorte que la validation ne prend pas le fichier pour une vidéo.',
+      ],
+      whyItMatters: [
+        'Montage ou mastering : le WAV est le format qu’attendent les éditeurs audio, sans étape de décodage ni perte de génération.',
+        'Archivage d’un master ou d’un enregistrement de terrain.',
+        'Échantillonneurs, moteurs de jeu et systèmes de diffusion qui exigent du PCM.',
+      ],
+      useCases: [
+        {
+          title: 'Changer de format pour un appareil',
+          description: 'Créez une copie WAV pour un lecteur qui en a besoin.',
+        },
+        {
+          title: 'Préparer le montage',
+          description: 'Fournissez un fichier sans perte à une DAW ou à un logiciel de montage vidéo.',
+        },
+        {
+          title: 'Un fichier à la fois',
+          description: 'Transformez un dossier de mémos vocaux en WAV un par un, en découpant chacun au passage.',
+        },
+        {
+          title: 'Nettoyer au passage',
+          description: 'Retirez le souffle d’un enregistrement de terrain en route vers un master non compressé.',
+        },
+      ],
+      whyMediaManipulator: [
+        'La fréquence d’échantillonnage et la disposition des canaux sont conservées sauf si vous en décidez autrement.',
+        'Normalisez et découpez une prise dans le même import que celui qui crée le WAV.',
+      ],
+      privacyNote: 'Votre audio est décodé par FFmpeg sur notre serveur et écrit en WAV PCM non compressé. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Qu’est-ce que le WAV ?',
+          answer: 'Le WAV est de l’audio PCM non compressé : chaque échantillon est stocké tel quel, rien n’est donc perdu et tous les éditeurs, DAW et échantillonneurs l’ouvrent instantanément.',
+        },
+        {
+          question: 'Convertir en WAV améliorera-t-il le son ?',
+          answer: 'Non. Convertir un MP3 avec perte en WAV ne restaure pas les détails que l’encodeur MP3 a éliminés ; cela empêche seulement toute perte supplémentaire.',
+        },
+        {
+          question: 'Puis-je découper l’audio en le convertissant en WAV ?',
+          answer: 'Oui. Définissez le début et la fin dans la section de découpage et seule cette plage est écrite dans le WAV.',
+        },
+        {
+          question: 'Mon MP3 contient une pochette d’album. Peut-il quand même devenir un WAV ?',
+          answer: 'Oui. La pochette est reconnue comme une image et non comme une piste vidéo ; l’import est donc accepté et l’audio est décodé en PCM comme d’habitude.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Sortie sans perte ; la taille du fichier dépend de la durée et de la fréquence d’échantillonnage.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Transposez vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformisez le volume sonore.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Suppression du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez un instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un fichier audio en WAV',
+        description: 'Importez n’importe quel fichier audio. La sortie est verrouillée sur WAV ; la fréquence d’échantillonnage et les canaux sont conservés sauf si vous les modifiez, puis appuyez sur Convertir.',
+      },
     },
     'convert-audio-to-flac': {
       name: 'Convertir un fichier audio en FLAC',
+      h1: 'Convertir un fichier audio en FLAC en ligne gratuitement',
       tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en FLAC sans aucune perte.',
+      metaTitle: 'Convertir un fichier audio en FLAC en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Convertisseur audio vers FLAC gratuit en ligne. Importez un MP3, WAV, M4A, OGG, FLAC ou AAC et téléchargez un FLAC. Sortie sans perte. Sans filigrane, sans inscription. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
+      ogTitle: 'Convertir un fichier audio en FLAC en ligne gratuitement',
+      ogDescription: 'Importez n’importe quel fichier audio et téléchargez un FLAC. Sans perte. Gratuit, sans inscription.',
+      intro: 'Le FLAC compresse l’audio sans rien perdre, généralement à 50 à 70 % de la taille du WAV, et se décode en une copie identique au bit près. Media Manipulator convertit tout format audio courant en FLAC en un seul import, en conservant la fréquence d’échantillonnage et la configuration des canaux sauf si vous les modifiez, et propose la découpe, la normalisation, l’égaliseur et les outils de nettoyage par IA sur le même formulaire.',
+      whatItDoes: [
+        'Convertit MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 et WMA en FLAC.',
+        'Conserve chaque échantillon : la sortie se décode exactement en ce qui est entré.',
+        'Le volume, la découpe, la normalisation et l’égaliseur peuvent être appliqués avant que le FLAC compresse le résultat.',
+        'La réduction du bruit, le nettoyage de la voix et l’isolation de la voix s’exécutent sur le même import si vous voulez une copie sans perte nettoyée.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'WAV, PCM de type AIFF, MP3, M4A et tous les autres.',
+        },
+        {
+          title: 'Ajuster si besoin',
+          description: 'Découpez, normalisez ou appliquez des effets.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg encode le FLAC sur nos serveurs.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier FLAC.',
+        },
+      ],
+      advancedDetails: [
+        'La sortie FLAC est encodée avec l’encodeur flac natif de FFmpeg, à la fréquence d’échantillonnage de la source.',
+        'Un FLAC créé à partir d’un MP3 n’est pas meilleur que le MP3 ; le FLAC ne préserve que ce qui existe déjà.',
+        'Un MP3 ou un M4A avec une pochette intégrée passe la validation : l’illustration est traitée comme une image, pas comme un flux vidéo.',
+      ],
+      whyItMatters: [
+        'Des bibliothèques musicales sans perte qui occupent la moitié de l’espace du WAV.',
+        'Envoyer un master à un collaborateur sans pièce jointe de 100 Mo.',
+        'Un archivage à long terme avec des sommes de contrôle intégrées au format.',
+      ],
+      useCases: [
+        {
+          title: 'Changer de format pour un appareil',
+          description: 'Créez une copie FLAC pour un lecteur qui en a besoin.',
+        },
+        {
+          title: 'Préparer le montage',
+          description: 'Fournissez un fichier sans perte à une DAW ou à un logiciel de montage vidéo.',
+        },
+        {
+          title: 'Un fichier à la fois',
+          description: 'Archivez une série d’enregistrements sans perte, un import par fichier.',
+        },
+        {
+          title: 'Nettoyer au passage',
+          description: 'Supprimez d’abord le bruit de fond et conservez le résultat nettoyé en FLAC.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Choisissez une fréquence d’échantillonnage ou une configuration des canaux, ou laissez les deux telles qu’elles sont dans la source.',
+        'Mettez à niveau un master trop faible et archivez-le en FLAC en une seule étape.',
+      ],
+      privacyNote: 'Votre audio est compressé sans perte en FLAC par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Qu’est-ce que le FLAC ?',
+          answer: 'Le FLAC compresse l’audio sans rien perdre, généralement à 50 à 70 % de la taille du WAV, et se décode en une copie identique au bit près.',
+        },
+        {
+          question: 'La conversion en FLAC améliore-t-elle le son ?',
+          answer: 'Non. Un FLAC créé à partir d’un MP3 n’est pas meilleur que le MP3 ; le FLAC ne préserve que ce qui existe déjà.',
+        },
+        {
+          question: 'Puis-je découper l’audio pendant la conversion en FLAC ?',
+          answer: 'Oui. La section de découpe définit un début et une fin, et le FLAC n’encode que cette plage.',
+        },
+        {
+          question: 'Un MP3 avec une pochette se convertit-il en FLAC ?',
+          answer: 'Oui. L’illustration intégrée est lue comme une image, pas comme de la vidéo, donc la validation passe et l’audio est encodé normalement.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Sortie sans perte ; la taille du fichier dépend de la durée et de la fréquence d’échantillonnage.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Homogénéisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un fichier audio en FLAC',
+        description: 'Importez n’importe quel fichier audio. La sortie est verrouillée sur FLAC ; la fréquence d’échantillonnage et les canaux sont conservés sauf si vous les modifiez, puis appuyez sur Convertir.',
+      },
     },
     'convert-audio-to-ogg': {
       name: 'Convertir un fichier audio en OGG',
+      h1: 'Convertir un fichier audio en OGG en ligne gratuitement',
       tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en OGG avec le débit de votre choix.',
+      metaTitle: 'Convertir un fichier audio en OGG en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Convertisseur audio vers OGG gratuit en ligne. Importez un MP3, WAV, M4A, OGG, FLAC ou AAC et téléchargez un OGG. Choisissez le débit. Sans filigrane, sans inscription. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
+      ogTitle: 'Convertir un fichier audio en OGG en ligne gratuitement',
+      ogDescription: 'Importez n’importe quel fichier audio et téléchargez un OGG. Choisissez le débit. Gratuit, sans inscription.',
+      intro: 'L’OGG Vorbis est un format avec perte libre et exempt de brevets, qui sonne mieux que le MP3 au même débit et est pris en charge nativement par les navigateurs, Android et les moteurs de jeu. Media Manipulator convertit tout format audio courant en OGG en un seul import, en conservant la fréquence d’échantillonnage et la configuration des canaux sauf si vous les modifiez, et propose la découpe, la normalisation, l’égaliseur et les outils de nettoyage par IA sur le même formulaire.',
+      whatItDoes: [
+        'Convertit MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 et WMA en OGG.',
+        'Vous laisse choisir le débit, la fréquence d’échantillonnage et la configuration des canaux.',
+        'La découpe, le volume, la normalisation du volume et l’égaliseur s’effectuent dans la même passe FFmpeg que l’encodage Vorbis.',
+        'Nettoyez une voix ou supprimez le bruit de fond avec l’IA avant que l’encodeur Vorbis ne s’exécute.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'Un MP3, WAV, FLAC ou autre fichier audio pour votre jeu ou votre site.',
+        },
+        {
+          title: 'Ajuster si besoin',
+          description: 'Choisissez le débit ; découpez ou appliquez des effets.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg encode l’OGG sur nos serveurs.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier OGG.',
+        },
+      ],
+      advancedDetails: [
+        'La sortie OGG utilise l’encodeur libvorbis de FFmpeg ; 192 kbit/s est la valeur par défaut et un choix sûr pour la musique.',
+        'Les appareils Apple et certains autoradios ne lisent pas l’OGG ; utilisez M4A ou MP3 pour ceux-là.',
+        'La pochette présente dans la source est reconnue comme une image jointe et ne déclenche pas la vérification de piste vidéo.',
+      ],
+      whyItMatters: [
+        'Les ressources sonores de jeux et d’applications, où la petite taille des fichiers et un décodage libre de droits comptent.',
+        'L’audio web qui doit être lu dans Firefox et Chrome sans licence.',
+        'Les fichiers de podcast ou de musique pour les lecteurs Linux et Android.',
+      ],
+      useCases: [
+        {
+          title: 'Changer de format pour un appareil',
+          description: 'Créez une copie OGG pour un lecteur qui en a besoin.',
+        },
+        {
+          title: 'Préparer le montage',
+          description: 'Créez un fichier léger et compatible pour un projet.',
+        },
+        {
+          title: 'Un fichier à la fois',
+          description: 'Préparez des effets sonores pour un moteur de jeu, un fichier à la fois.',
+        },
+        {
+          title: 'Nettoyer au passage',
+          description: 'Retirez le ronflement d’un enregistrement avant de le livrer comme ressource OGG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Le débit, la fréquence d’échantillonnage et les canaux se règlent à votre guise pour chaque OGG.',
+        'Coupez le silence d’un effet sonore pendant qu’il devient un OGG.',
+      ],
+      privacyNote: 'Votre audio est encodé en OGG Vorbis par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Qu’est-ce que l’OGG ?',
+          answer: 'L’OGG Vorbis est un format avec perte libre et exempt de brevets, qui sonne mieux que le MP3 au même débit et est pris en charge nativement par les navigateurs, Android et les moteurs de jeu.',
+        },
+        {
+          question: 'La conversion en OGG améliore-t-elle le son ?',
+          answer: 'Non. Les appareils Apple et certains autoradios ne lisent pas l’OGG ; utilisez M4A ou MP3 pour ceux-là.',
+        },
+        {
+          question: 'Puis-je découper l’audio pendant la conversion en OGG ?',
+          answer: 'Oui. Marquez le début et la fin, et l’OGG ne contient que cette partie.',
+        },
+        {
+          question: 'Puis-je convertir en OGG un M4A qui contient une pochette d’album ?',
+          answer: 'Oui. La pochette est vue comme une image jointe plutôt que comme une piste vidéo, la tâche se poursuit donc et produit un Vorbis audio seul.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Sortie avec perte ; le débit que vous choisissez détermine la taille.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Homogénéisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un fichier audio en OGG',
+        description: 'Importez n’importe quel fichier audio. La sortie est verrouillée sur OGG ; choisissez le débit, la fréquence d’échantillonnage et les canaux, puis appuyez sur Convertir.',
+      },
     },
     'convert-audio-to-m4a': {
       name: 'Convertir un fichier audio en M4A / AAC',
+      h1: 'Convertir un fichier audio en M4A / AAC en ligne gratuitement',
       tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en M4A / AAC avec le débit de votre choix.',
+      metaTitle: 'Convertir un audio en M4A / AAC en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Convertisseur audio vers M4A / AAC gratuit en ligne. Importez un MP3, WAV, M4A, OGG, FLAC ou AAC et téléchargez un M4A / AAC. Choisissez le débit. Sans filigrane, sans inscription. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
+      ogTitle: 'Convertir un fichier audio en M4A / AAC en ligne gratuitement',
+      ogDescription: 'Importez n’importe quel fichier audio et téléchargez un M4A / AAC. Choisissez le débit. Gratuit, sans inscription.',
+      intro: 'Le M4A, c’est de l’audio AAC dans un conteneur MP4, le format qu’utilisent Apple Music, les iPhone, YouTube et la plupart des services de streaming. Il surpasse le MP3 en qualité par kilooctet. Media Manipulator convertit tout format audio courant en M4A / AAC en un seul import, en conservant la fréquence d’échantillonnage et la configuration des canaux sauf si vous les modifiez, et propose la découpe, la normalisation, l’égaliseur et les outils de nettoyage par IA sur le même formulaire.',
+      whatItDoes: [
+        'Convertit MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 et WMA en M4A / AAC.',
+        'Vous laisse choisir le débit, la fréquence d’échantillonnage et la configuration des canaux.',
+        'La découpe, le gain, la normalisation, l’égaliseur et les effets entrent dans le même encodage que l’AAC.',
+        'Les outils d’IA du formulaire peuvent nettoyer un mémo vocal ou supprimer la voix avant que l’AAC soit écrit.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'Un master WAV, un MP3 ou un mémo vocal.',
+        },
+        {
+          title: 'Ajuster si besoin',
+          description: 'Choisissez le débit ; découpez ou appliquez des effets.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg encode le M4A / AAC sur nos serveurs.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier M4A / AAC.',
+        },
+      ],
+      advancedDetails: [
+        'La sortie M4A / AAC utilise l’encodeur aac de FFmpeg ; 192 kbit/s est la valeur par défaut et un choix sûr pour la musique.',
+        'Certains anciens lecteurs limités au MP3 et certains autoradios ne lisent pas l’AAC.',
+        'Une pochette d’album intégrée est reconnue comme une image et jamais confondue avec une piste vidéo.',
+      ],
+      whyItMatters: [
+        'La musique et les mémos vocaux pour iPhone, iPad et Mac.',
+        'Les pistes audio que vous multiplexerez plus tard dans une vidéo MP4.',
+        'Les podcasts et les livres audio : des marqueurs de chapitres et des fichiers plus petits qu’en MP3.',
+      ],
+      useCases: [
+        {
+          title: 'Changer de format pour un appareil',
+          description: 'Créez une copie M4A / AAC pour un lecteur qui en a besoin.',
+        },
+        {
+          title: 'Préparer le montage',
+          description: 'Créez un fichier léger et compatible pour un projet.',
+        },
+        {
+          title: 'Un fichier à la fois',
+          description: 'Convertissez des mémos vocaux pour une bibliothèque iPhone, en coupant les silences au passage.',
+        },
+        {
+          title: 'Nettoyer au passage',
+          description: 'Lancez le nettoyage de la voix sur une prise de podcast et enregistrez-la directement en M4A.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Le débit, la fréquence d’échantillonnage et le nombre de canaux sont réglables pour la sortie AAC.',
+        'Normalisez un épisode et transformez-le en M4A sans second import.',
+      ],
+      privacyNote: 'Votre audio est encodé en AAC dans un fichier M4A par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Qu’est-ce que le M4A / AAC ?',
+          answer: 'Le M4A, c’est de l’audio AAC dans un conteneur MP4, le format qu’utilisent Apple Music, les iPhone, YouTube et la plupart des services de streaming. Il surpasse le MP3 en qualité par kilooctet.',
+        },
+        {
+          question: 'La conversion en M4A / AAC améliore-t-elle le son ?',
+          answer: 'Non. Certains anciens lecteurs limités au MP3 et certains autoradios ne lisent pas l’AAC.',
+        },
+        {
+          question: 'Puis-je découper l’audio pendant la conversion en M4A / AAC ?',
+          answer: 'Oui. Définissez la plage dans la section de découpe ; le M4A commence et se termine là où vous l’avez indiqué.',
+        },
+        {
+          question: 'La pochette d’album de mon MP3 fait-elle échouer la conversion en M4A ?',
+          answer: 'Non. Le flux de l’illustration est identifié comme une image, pas comme de la vidéo, et l’encodage AAC s’exécute normalement.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Sortie avec perte ; le débit que vous choisissez détermine la taille.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Homogénéisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un fichier audio en M4A / AAC',
+        description: 'Importez n’importe quel fichier audio. La sortie est verrouillée sur M4A / AAC ; choisissez le débit, la fréquence d’échantillonnage et les canaux, puis appuyez sur Convertir.',
+      },
     },
     'convert-audio-to-opus': {
       name: 'Convertir un fichier audio en Opus',
+      h1: 'Convertir un fichier audio en Opus en ligne gratuitement',
       tagline: 'Transformez du MP3, M4A, WAV, OGG, FLAC et tout autre fichier audio en Opus avec le débit de votre choix.',
+      metaTitle: 'Convertir un fichier audio en Opus en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Convertisseur audio vers Opus gratuit en ligne. Importez un MP3, WAV, M4A, OGG, FLAC ou AAC et téléchargez un Opus. Choisissez le débit. Sans filigrane, sans inscription. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
+      ogTitle: 'Convertir un fichier audio en Opus en ligne gratuitement',
+      ogDescription: 'Importez n’importe quel fichier audio et téléchargez un Opus. Choisissez le débit. Gratuit, sans inscription.',
+      intro: 'Opus est le codec ouvert le plus récent et la meilleure option avec perte pour la voix et la musique à bas débit : de l’Opus à 64 kbit/s sonne comme du MP3 à 128 kbit/s. C’est ce qu’utilisent WhatsApp, Discord et WebRTC. Media Manipulator convertit tout format audio courant en Opus en un seul import, en conservant la fréquence d’échantillonnage et la configuration des canaux sauf si vous les modifiez, et propose la découpe, la normalisation, l’égaliseur et les outils de nettoyage par IA sur le même formulaire.',
+      whatItDoes: [
+        'Convertit MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 et WMA en Opus.',
+        'Vous laisse choisir le débit, la fréquence d’échantillonnage et la configuration des canaux.',
+        'La découpe, le volume, la normalisation et l’égaliseur s’appliquent dans la même passe que l’encodage Opus.',
+        'Avant l’encodage, le formulaire peut supprimer le bruit de fond ou nettoyer la parole avec l’IA sur notre GPU.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'Notes vocales, podcasts, musique ou tout audio courant.',
+        },
+        {
+          title: 'Ajuster si besoin',
+          description: 'Choisissez le débit ; découpez ou appliquez des effets.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg encode l’Opus sur nos serveurs.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier Opus.',
+        },
+      ],
+      advancedDetails: [
+        'La sortie Opus utilise l’encodeur libopus de FFmpeg ; 192 kbit/s est la valeur par défaut et un choix sûr pour la musique.',
+        'iTunes, les anciens appareils Apple et de nombreux lecteurs matériels ne prennent pas en charge l’Opus ; choisissez M4A pour ceux-là.',
+        'La pochette d’album d’un fichier source est détectée comme une image et n’empêche pas la conversion.',
+      ],
+      whyItMatters: [
+        'Les notes vocales, podcasts et livres audio à une fraction de la taille.',
+        'L’audio diffusé en streaming ou intégré là où la bande passante compte.',
+        'Les bots Discord, Matrix et de messagerie qui acceptent l’Opus nativement.',
+      ],
+      useCases: [
+        {
+          title: 'Changer de format pour un appareil',
+          description: 'Créez une copie Opus pour un lecteur qui en a besoin.',
+        },
+        {
+          title: 'Préparer le montage',
+          description: 'Créez un fichier léger et compatible pour un projet.',
+        },
+        {
+          title: 'Un fichier à la fois',
+          description: 'Réduisez une série de cours en Opus, un par un.',
+        },
+        {
+          title: 'Nettoyer au passage',
+          description: 'Nettoyez l’enregistrement bruyant d’un appel et conservez-le dans un petit fichier Opus.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Choisissez le débit, la fréquence d’échantillonnage et les canaux de l’Opus, ou gardez les valeurs par défaut.',
+        'Découpez et normalisez une note vocale pendant sa conversion en Opus.',
+      ],
+      privacyNote: 'Votre audio est encodé en Opus par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Qu’est-ce que l’Opus ?',
+          answer: 'Opus est le codec ouvert le plus récent et la meilleure option avec perte pour la voix et la musique à bas débit : de l’Opus à 64 kbit/s sonne comme du MP3 à 128 kbit/s. C’est ce qu’utilisent WhatsApp, Discord et WebRTC.',
+        },
+        {
+          question: 'La conversion en Opus améliore-t-elle le son ?',
+          answer: 'Non. iTunes, les anciens appareils Apple et de nombreux lecteurs matériels ne prennent pas en charge l’Opus ; choisissez M4A pour ceux-là.',
+        },
+        {
+          question: 'Puis-je découper l’audio pendant la conversion en Opus ?',
+          answer: 'Oui. Seule la portion entre le début et la fin que vous définissez est encodée en Opus.',
+        },
+        {
+          question: 'Un fichier audio avec une pochette se convertit-il en Opus ?',
+          answer: 'Oui. La pochette est détectée comme une image, pas comme un flux vidéo, donc le fichier est accepté et seul l’audio est encodé.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Sortie avec perte ; le débit que vous choisissez détermine la taille.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Homogénéisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un fichier audio en Opus',
+        description: 'Importez n’importe quel fichier audio. La sortie est verrouillée sur Opus ; choisissez le débit, la fréquence d’échantillonnage et les canaux, puis appuyez sur Convertir.',
+      },
     },
     'convert-mp3-to-wav': {
       name: 'Convertir un MP3 en WAV',
+      h1: 'Convertir un MP3 en WAV en ligne gratuitement',
       tagline: 'Transformez un MP3 en WAV non compressé pour le monter, l’échantillonner ou le graver sur CD.',
+      metaTitle: 'Convertir un MP3 en WAV en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur MP3 vers WAV gratuit en ligne. Importez un MP3 et téléchargez un WAV PCM 16 bits non compressé à la fréquence d’échantillonnage d’origine. Sans filigrane, sans inscription. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
+      ogTitle: 'Convertir un MP3 en WAV en ligne gratuitement',
+      ogDescription: 'Un MP3 en entrée, un WAV non compressé en sortie. Gratuit, sans inscription.',
+      intro: 'Les logiciels de montage audio, les échantillonneurs et les graveurs de CD veulent du PCM non compressé, et certains outils plus anciens refusent carrément le MP3. Convertir en WAV décode le MP3 une seule fois, pour qu’aucune qualité supplémentaire ne soit perdue au montage. Media Manipulator s’en charge sur nos serveurs avec FFmpeg, conserve la fréquence d’échantillonnage et les canaux d’origine, et ignore la pochette d’album intégrée au lieu de la prendre pour une piste vidéo.',
+      whatItDoes: [
+        'Décode le MP3 en WAV PCM 16 bits à la fréquence d’échantillonnage et à la configuration des canaux de la source.',
+        'Découpe, normalisation, fondus et égaliseur en option, dans la même passe.',
+        'Prend en charge les MP3 avec pochette intégrée et balises ID3.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer un MP3',
+          description: 'N’importe quel débit, avec ou sans pochette.',
+        },
+        {
+          title: 'Ajuster si besoin',
+          description: 'Découpe, normalisation, égaliseur.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg décode en PCM.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le WAV.',
+        },
+      ],
+      advancedDetails: [
+        'La sortie WAV est en pcm_s16le ; le fichier pèse environ 10 Mo par minute d’audio stéréo à 44,1 kHz.',
+        'Le décodage ne récupère rien de ce que l’encodeur MP3 a éliminé ; il évite seulement une perte supplémentaire.',
+      ],
+      whyItMatters: [
+        'Monter un MP3 et le réenregistrer en MP3 perd en qualité à chaque fois ; le WAV y met fin.',
+        'Les échantillonneurs, les DAW et les graveurs de CD attendent du PCM.',
+      ],
+      useCases: [
+        {
+          title: 'Monter dans une DAW',
+          description: 'Importez sans étape de décodage ni perte de génération.',
+        },
+        {
+          title: 'Graver un CD audio',
+          description: 'Les graveurs de CD veulent du WAV à 44,1 kHz.',
+        },
+        {
+          title: 'Échantillonner un son',
+          description: 'Chargez-le dans un échantillonneur ou un moteur de jeu.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Conserve la fréquence d’échantillonnage et les canaux d’origine.',
+        'La pochette présente dans le MP3 est gérée correctement.',
+      ],
+      privacyNote: 'Votre MP3 est décodé une seule fois par FFmpeg sur notre serveur en un WAV PCM 16 bits. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Le WAV sonnera-t-il mieux que le MP3 ?',
+          answer: 'Non. Il sonne à l’identique ; l’intérêt est que les montages ultérieurs ne le dégraderont pas.',
+        },
+        {
+          question: 'Pourquoi le WAV est-il tellement plus gros ?',
+          answer: 'Le WAV n’est pas compressé : environ 10 Mo par minute d’audio stéréo de qualité CD.',
+        },
+        {
+          question: 'Mon MP3 contient une pochette d’album. Est-ce un problème ?',
+          answer: 'Non. La pochette intégrée est reconnue comme une image et ignorée.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertir un fichier audio en WAV',
+          to: '/tools/convert-audio-to-wav',
+          description: 'N’importe quel format vers WAV.',
+        },
+        {
+          label: 'Convertir un WAV en MP3',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Dans l’autre sens.',
+        },
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Homogénéisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un MP3 en WAV',
+        description: 'Importez un MP3. La sortie est verrouillée sur WAV ; découpez ou normalisez si vous le souhaitez, puis appuyez sur Convertir.',
+      },
     },
     'change-audio-speed': {
       name: 'Modifier la vitesse d’un fichier audio',
+      h1: 'Modifier la vitesse d’un fichier audio en ligne : accélérer ou ralentir',
       tagline: 'Accélérez un cours ou un podcast à 1,5x, ou ralentissez un morceau ou un enregistrement à 0,75x pour vous entraîner, sans modifier la hauteur.',
+      metaTitle: 'Accélérer ou ralentir un audio sans changer la hauteur | Media Manipulator',
+      metaDescription: 'Modificateur de vitesse audio gratuit en ligne. Accélérez ou ralentissez un MP3, WAV, M4A et plus, de 0,25x à 4x, en conservant la hauteur. Idéal pour les cours, les podcasts et les morceaux d’entraînement. Sans inscription.',
+      ogTitle: 'Modifier la vitesse d’un fichier audio en ligne gratuitement',
+      ogDescription: 'Plus vite ou plus lentement, sans effet chipmunk. Gratuit, sans inscription.',
+      intro: 'Un cours de deux heures à 1,5x dure 80 minutes. Un solo de guitare à 0,75x devient apprenable. Modifier la vitesse d’un audio est utile tous les jours, et le piège, c’est la hauteur : une accélération naïve transforme les voix en chipmunks. Media Manipulator étire le temps de l’audio sur nos serveurs avec le filtre tempo de FFmpeg, qui garde la hauteur exactement là où elle était, du quart de la vitesse jusqu’à quatre fois plus vite.',
+      whatItDoes: [
+        'Accélère (1,1x à 4x) ou ralentit (0,25x à 0,9x) n’importe quel fichier audio.',
+        'Préserve la hauteur, pour que la parole et la musique restent dans la tonalité.',
+        'Exporte en MP3 par défaut, ou en WAV, FLAC, M4A, OGG, Opus.',
+        'Découpe, normalisation et égaliseur en option, dans la même passe.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'MP3, WAV, M4A, OGG, FLAC et plus.',
+        },
+        {
+          title: 'Régler la vitesse',
+          description: '1,5x est présélectionné ; de 0,25x à 4x.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg étire le temps en préservant la hauteur.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier à la nouvelle vitesse.',
+        },
+      ],
+      advancedDetails: [
+        'Utilise le filtre atempo, chaîné automatiquement pour les facteurs hors de la plage 0,5 à 2,0.',
+        'L’étirement temporel introduit de légers artefacts aux facteurs extrêmes ; de 0,5x à 2x, il est transparent pour la parole.',
+        'Pour modifier la vitesse ET la hauteur ensemble (l’effet bande magnétique), utilisez l’option d’étirement temporel de l’outil de hauteur.',
+      ],
+      whyItMatters: [
+        'Les cours, livres audio et podcasts sont souvent confortables entre 1,25x et 2x.',
+        'Les musiciens travaillent les passages difficiles à 50 à 75 % de la vitesse.',
+        'Les transcripteurs ralentissent les enregistrements pour saisir chaque mot.',
+      ],
+      useCases: [
+        {
+          title: 'Cours plus rapide',
+          description: 'Écoutez un cours enregistré à 1,5x.',
+        },
+        {
+          title: 'Morceau d’entraînement',
+          description: 'Ralentissez un solo à 0,75x dans la même tonalité.',
+        },
+        {
+          title: 'Transcription',
+          description: 'Ralentissez un entretien à 0,8x.',
+        },
+        {
+          title: 'Tenir dans un créneau',
+          description: 'Décalez une voix off de 5 % pour qu’elle tienne.',
+        },
+      ],
+      whyMediaManipulator: [
+        'La hauteur est préservée par défaut ; ni effet chipmunk ni son de bande ralentie.',
+        'N’importe quel format de sortie, plus la découpe et la normalisation dans le même import.',
+      ],
+      privacyNote: 'Votre enregistrement est accéléré ou ralenti par FFmpeg sur notre serveur, avec rubberband ou atempo selon le mode que vous choisissez. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'La hauteur change-t-elle ?',
+          answer: 'Non. Le filtre tempo garde la hauteur exactement telle qu’elle était.',
+        },
+        {
+          question: 'Jusqu’où puis-je aller ?',
+          answer: '4x en une passe. Relancez le résultat pour aller plus loin.',
+        },
+        {
+          question: 'L’audio ralenti sonnera-t-il robotique ?',
+          answer: 'Jusqu’à 0,5x, il est propre ; en dessous, un léger phasing devient audible.',
+        },
+        {
+          question: 'Puis-je modifier la vitesse et la hauteur ensemble ?',
+          answer: 'Oui. Utilisez l’outil Modifier la hauteur d’un fichier audio, qui dispose d’une commande d’étirement temporel.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Homogénéisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Modifier la vitesse d’un fichier audio',
+        description: 'Importez un fichier audio et définissez un multiplicateur de vitesse ; 1,5x est présélectionné. La hauteur est préservée, les voix restent donc naturelles. Pour changer aussi la tonalité, utilisez l’outil de hauteur.',
+      },
     },
     'change-audio-pitch': {
       name: 'Modifier la hauteur d’un fichier audio',
+      h1: 'Modifier la hauteur d’un fichier audio en ligne : transposer vers le haut ou le bas',
       tagline: 'Décalez un morceau ou un enregistrement par demi-tons pour changer de tonalité, abaisser une voix ou accorder un sample, en conservant le même tempo.',
+      metaTitle: 'Transposer un audio par demi-tons en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Outil de transposition audio gratuit en ligne. Transposez un MP3, un WAV ou tout audio vers le haut ou le bas par demi-tons pour changer la tonalité, sans modifier la vitesse. Étirement temporel en option. Sans filigrane, sans inscription.',
+      ogTitle: 'Modifier la hauteur d’un fichier audio en ligne gratuitement',
+      ogDescription: 'Transposez n’importe quel audio par demi-tons. Gratuit, sans inscription.',
+      intro: 'Une piste d’accompagnement dans la mauvaise tonalité pour votre voix, un sample qui doit s’accorder à un morceau, une voix qui gagnerait à descendre d’un ton : la transposition règle tout cela. Media Manipulator transpose l’audio par demi-tons sur nos serveurs avec FFmpeg, en gardant la durée inchangée, et vous laisse la combiner à un étirement temporel lorsque vous préférez le vieil effet de vitesse de bande.',
+      whatItDoes: [
+        'Transpose l’audio vers le haut ou le bas jusqu’à 12 demi-tons (une octave).',
+        'Conserve la même durée, pour que la piste tienne toujours en place.',
+        'Étirement temporel en option pour modifier la longueur indépendamment.',
+        'Écrit l’audio transposé en MP3, WAV, FLAC, M4A, OGG ou Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'N’importe quel format audio courant.',
+        },
+        {
+          title: 'Régler les demi-tons',
+          description: '+2 est présélectionné ; de -12 à +12.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg rééchantillonne et recale le tempo.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier transposé.',
+        },
+      ],
+      advancedDetails: [
+        'Le décalage rééchantillonne d’un facteur 2^(demi-tons/12) et compense le tempo pour que la longueur reste inchangée.',
+        'Les grands décalages (plus de 5 demi-tons) sur des mixages complets peuvent sonner artificiels ; les voix et les instruments seuls s’en sortent mieux.',
+        'La préservation des formants est activée, pour qu’une voix abaissée ne devienne pas une autre personne.',
+      ],
+      whyItMatters: [
+        'Les chanteurs transposent les pistes d’accompagnement dans une tonalité confortable.',
+        'Les producteurs accordent les samples et les voix à un morceau.',
+        'Un demi-ton ou deux plus bas rend une voix de démo plus détendue.',
+      ],
+      useCases: [
+        {
+          title: 'Changer la tonalité d’une piste d’accompagnement',
+          description: 'Descendez une piste de karaoké de deux demi-tons.',
+        },
+        {
+          title: 'Accorder un sample',
+          description: 'Faites correspondre un coup de batterie ou une voix au morceau.',
+        },
+        {
+          title: 'Abaisser une voix off',
+          description: 'Descendez une lecture d’un demi-ton.',
+        },
+        {
+          title: 'Effet d’octave',
+          description: 'Décalez de +12 ou -12 pour une couche d’effet.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Réglage par demi-tons avec durée préservée, et étirement temporel quand vous le voulez.',
+        'N’importe quel format de sortie, plus la découpe et la normalisation dans le même import.',
+      ],
+      privacyNote: 'Votre audio est décalé vers le haut ou le bas du nombre de demi-tons que vous choisissez, par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'La vitesse change-t-elle ?',
+          answer: 'Non. La durée est préservée. Utilisez la commande d’étirement temporel si vous le souhaitez.',
+        },
+        {
+          question: 'Jusqu’où puis-je transposer ?',
+          answer: 'Jusqu’à 12 demi-tons (une octave) vers le haut ou le bas.',
+        },
+        {
+          question: 'Une voix transposée sonnera-t-elle naturelle ?',
+          answer: 'Pour un à trois demi-tons, oui. Les décalages plus grands deviennent audibles ; la préservation des formants évite un rendu de dessin animé.',
+        },
+        {
+          question: 'Puis-je transposer par cents ?',
+          answer: 'Pas encore ; la commande fonctionne par demi-tons entiers.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Homogénéisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Modifier la hauteur d’un fichier audio',
+        description: 'Importez un fichier audio. La section Traitement avancé s’ouvre sur le curseur de hauteur ; +2 demi-tons est présélectionné. Les valeurs négatives abaissent la tonalité. L’étirement temporel se trouve juste à côté si vous voulez aussi modifier la longueur.',
+      },
     },
     'normalize-audio': {
       name: 'Normaliser un fichier audio',
+      h1: 'Normaliser le volume d’un fichier audio en ligne',
       tagline: 'Portez un enregistrement trop faible à un volume homogène, pour que podcasts, mémos vocaux et playlists mixtes soient lus au même niveau.',
+      metaTitle: 'Normaliser le volume d’un audio en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Normaliseur audio gratuit en ligne. Homogénéisez le volume de fichiers MP3, WAV, M4A et autres avec la normalisation du volume EBU R128. Idéal pour les podcasts et les mémos vocaux. Sans filigrane, sans inscription.',
+      ogTitle: 'Normaliser un fichier audio en ligne gratuitement',
+      ogDescription: 'Un volume homogène pour n’importe quel enregistrement. Gratuit, sans inscription.',
+      intro: 'Un mémo vocal enregistré à bout de bras est faible ; un morceau extrait d’un CD est fort ; lus à la suite, ils obligent l’auditeur à tendre la main vers le volume. La normalisation du volume mesure le volume perçu d’un fichier entier et le ramène à une cible standard, la même mesure EBU R128 qu’utilisent les diffuseurs et les services de streaming. Media Manipulator l’exécute sur nos serveurs avec le filtre loudnorm de FFmpeg, qui maintient aussi les crêtes réelles sous le plafond pour que rien ne sature.',
+      whatItDoes: [
+        'Mesure le volume intégré et normalise vers une cible aux normes de la diffusion.',
+        'Limite les crêtes réelles pour que la sortie ne sature jamais.',
+        'Gain, fondus d’entrée/sortie et compression de la dynamique en option, dans la même section.',
+        'Enregistre le fichier mis à niveau en MP3, WAV, FLAC, M4A, OGG ou Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Laisser la normalisation activée',
+          description: 'Ajoutez des fondus ou de la compression si besoin.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg loudnorm mesure et corrige.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier mis à niveau.',
+        },
+      ],
+      advancedDetails: [
+        'Utilise loudnorm (EBU R128) avec sa cible intégrée par défaut de -24 LUFS et son plafond de crête réelle de -2 dBTP.',
+        'Il s’agit d’une normalisation du volume perçu, pas d’une normalisation des crêtes : deux fichiers qui culminent tous deux à 0 dB peuvent encore différer fortement en volume perçu.',
+        'Pour un changement de gain fixe rapide, sans analyse, utilisez le curseur Amplifier ou l’outil Ajuster le volume.',
+      ],
+      whyItMatters: [
+        'Les auditeurs abandonnent les podcasts qui exigent d’ajuster le volume en permanence.',
+        'Les playlists et les sets de DJ ont besoin de pistes à un niveau constant.',
+        'Les plateformes normalisent à l’import ; le faire d’abord évite les surprises.',
+      ],
+      useCases: [
+        {
+          title: 'Épisode de podcast',
+          description: 'Mettez à niveau une conversation enregistrée avant de la publier.',
+        },
+        {
+          title: 'Mémo vocal',
+          description: 'Remontez un enregistrement de téléphone trop faible.',
+        },
+        {
+          title: 'Captation de cours',
+          description: 'Homogénéisez un intervenant qui s’éloigne du micro.',
+        },
+        {
+          title: 'Préparation de playlist',
+          description: 'Normalisez des pistes extraites de sources différentes.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Une vraie mesure du volume EBU R128, pas un simple balayage des crêtes.',
+        'Fondus, gain et compression dans la même section.',
+      ],
+      privacyNote: 'Le volume de votre audio est mesuré et homogénéisé par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Quelle cible de volume est utilisée ?',
+          answer: '-24 LUFS intégré avec un plafond de crête réelle de -2 dBTP, la valeur par défaut EBU R128. Les plateformes de podcast visent généralement -16 à -19 LUFS ; ajoutez quelques dB d’amplification si vous le voulez plus fort.',
+        },
+        {
+          question: 'Tout aura-t-il le même volume à l’intérieur du fichier ?',
+          answer: 'Non. Il met à niveau le fichier dans son ensemble. Activez aussi le compresseur pour réduire les variations à l’intérieur.',
+        },
+        {
+          question: 'Peut-il saturer ?',
+          answer: 'Non. Le limiteur de crête réelle maintient les crêtes sous le plafond.',
+        },
+        {
+          question: 'Puis-je simplement le rendre plus fort ?',
+          answer: 'Oui. Utilisez l’outil Ajuster le volume pour un changement de gain fixe.',
+        },
+      ],
+      related: [
+        {
+          label: 'Ajuster le volume',
+          to: '/tools/adjust-audio-volume',
+          description: 'Gain fixe vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Réduction du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Normaliser un fichier audio',
+        description: 'Importez un fichier audio. La normalisation du volume est déjà activée dans la section Traitement audio de base ; ajoutez de l’amplification, des fondus ou de la compression si vous le souhaitez. Appuyez sur Convertir.',
+      },
     },
     'adjust-audio-volume': {
       name: 'Ajuster le volume d’un fichier audio',
+      h1: 'Augmenter ou diminuer le volume d’un fichier audio en ligne',
       tagline: 'Rendez un fichier audio plus fort ou plus faible d’une valeur fixe, de 10 pour cent au double, ou en décibels avec le curseur d’amplification.',
+      metaTitle: 'Augmenter le volume audio en ligne gratuit (MP3 plus fort) | Media Manipulator',
+      metaDescription: 'Changeur de volume en ligne gratuit. Rendez un MP3, un WAV ou n’importe quel fichier audio plus fort ou plus faible, par un multiplicateur fixe ou en décibels, avec des fondus. Sans filigrane, sans inscription.',
+      ogTitle: 'Augmenter ou diminuer le volume d’un fichier audio en ligne',
+      ogDescription: 'Rendez n’importe quel audio plus fort ou plus faible. Gratuit, sans inscription.',
+      intro: 'Parfois, un fichier est simplement trop faible, ou bien trop fort par rapport au reste d’une playlist, et un changement de gain fixe suffit. Media Manipulator ajuste le volume audio sur nos serveurs avec FFmpeg, par un multiplicateur ou en décibels, ajoute des fondus si vous le souhaitez, et peut combiner ce changement avec une normalisation du volume pour que le résultat ne sature pas.',
+      whatItDoes: [
+        'Multiplie le volume de 0,1x (très faible) à 2x (le double).',
+        'Ou applique un gain précis en décibels, de -60 à +60 dB, avec le curseur Amplifier.',
+        'Fondu d’entrée et fondu de sortie en secondes.',
+        'Normalisation et compression en option pour éviter la saturation lors des fortes augmentations.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Régler le volume',
+          description: '1,5x est présélectionné ; ou utilisez les décibels.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg applique le gain.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier ajusté.',
+        },
+      ],
+      advancedDetails: [
+        'Le volume utilise le filtre volume ; un multiplicateur de 2 correspond à +6 dB, 0,5 à -6 dB.',
+        'Augmenter un fichier dont les crêtes approchent déjà 0 dBFS provoquera de la saturation ; activez la normalisation, qui inclut un limiteur de crête réelle (true-peak).',
+        'Pour un volume perçu homogène plutôt qu’un gain fixe, utilisez Normaliser un fichier audio.',
+      ],
+      whyItMatters: [
+        'Les enregistrements trop faibles sont difficiles à entendre sur les haut-parleurs d’un téléphone.',
+        'Une sonnerie ou un effet sonore trop fort est désagréable et sature.',
+        'Le gain fixe est le bon outil lorsque vous savez exactement de combien changer le volume.',
+      ],
+      useCases: [
+        {
+          title: 'Amplifier un mémo trop faible',
+          description: 'Rendez un enregistrement téléphonique audible.',
+        },
+        {
+          title: 'Dompter un effet trop fort',
+          description: 'Baissez un effet sonore de 10 dB.',
+        },
+        {
+          title: 'Sonnerie',
+          description: 'Amplifiez et ajoutez un fondu de sortie.',
+        },
+        {
+          title: 'Musique de fond',
+          description: 'Baissez un morceau pour le placer sous une voix.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Multiplicateur ou décibels, plus les fondus, au même endroit.',
+        'Normalisation et compression dans la même passe pour éviter la saturation.',
+      ],
+      privacyNote: 'Votre audio est rendu plus fort ou plus faible de la valeur que vous définissez, par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous obtenez un nouveau fichier ; le fichier importé lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Quelle est l’augmentation maximale ?',
+          answer: '2x avec le multiplicateur, ou jusqu’à +60 dB avec le curseur Amplifier. Les fortes augmentations saturent si la normalisation n’est pas activée.',
+        },
+        {
+          question: 'Le son sera-t-il distordu ?',
+          answer: 'Seulement si le signal amplifié dépasse la pleine échelle. Activez la normalisation, qui limite les crêtes réelles.',
+        },
+        {
+          question: 'Multiplicateur ou décibels ?',
+          answer: 'Ils font le même travail. 2x équivaut à +6 dB ; 0,5x équivaut à -6 dB.',
+        },
+        {
+          question: 'Puis-je plutôt uniformiser le volume ?',
+          answer: 'Oui. Utilisez Normaliser un fichier audio pour un volume perçu homogène.',
+        },
+      ],
+      related: [
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Un volume homogène.',
+        },
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Suppression du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Ajuster le volume d’un fichier audio',
+        description: 'Importez un fichier audio et réglez le multiplicateur de volume ; 1,5x est présélectionné. Pour un changement en décibels, utilisez le curseur Amplifier dans Traitement audio de base. Les fortes augmentations peuvent saturer ; activez la normalisation pour un résultat sûr.',
+      },
     },
     'audio-equalizer': {
       name: 'Égaliseur audio',
+      h1: 'Égaliser un fichier audio en ligne : renfort des basses, aigus, préréglages',
       tagline: 'Appliquez un renforcement des basses, un relèvement des aigus, une présence vocale ou un préréglage par genre, ou réglez des filtres passe-bas et passe-haut, puis téléchargez le résultat.',
+      metaTitle: 'Égaliseur audio en ligne : basses, aigus, voix | Media Manipulator',
+      metaDescription: 'Égaliseur audio en ligne gratuit. Appliquez des préréglages de renfort des basses, de renfort des aigus, voix, rock, jazz ou classique, ou réglez des filtres passe-haut et passe-bas, sur des fichiers MP3, WAV et plus. Sans inscription.',
+      ogTitle: 'Égaliser un fichier audio en ligne',
+      ogDescription: 'Renfort des basses, aigus, présence vocale et plus. Gratuit, sans inscription.',
+      intro: 'L’égalisation façonne le timbre d’un enregistrement : plus de graves pour un morceau trop maigre, moins pour une pièce qui résonne, un relèvement de présence pour qu’une voix se détache, un passe-haut pour supprimer les ronflements. Media Manipulator applique l’égalisation sur nos serveurs avec FFmpeg, des préréglages en un clic aux fréquences de coupure explicites, et exporte dans n’importe quel format audio.',
+      whatItDoes: [
+        'Préréglages : renfort des basses, renfort des aigus, voix, rock, jazz, classique.',
+        'Filtres passe-haut et passe-bas avec fréquences de coupure réglables.',
+        'Combinez avec le volume, la normalisation, la compression et la réverbération.',
+        'Le résultat égalisé peut être en MP3, WAV, FLAC, M4A, OGG ou Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Choisir un préréglage ou des filtres',
+          description: 'Le renfort des basses est présélectionné.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg applique la chaîne d’égalisation.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le fichier façonné.',
+        },
+      ],
+      advancedDetails: [
+        'Les préréglages correspondent aux filtres equalizer, bass et treble de FFmpeg, avec des gains et des valeurs de Q fixes.',
+        'Un passe-haut entre 80 et 120 Hz supprime les bruits de manipulation et les ronflements des enregistrements de voix ; un passe-bas entre 8 et 10 kHz atténue le souffle.',
+        'L’égalisation ne peut pas ajouter des fréquences qui n’ont jamais été enregistrées ; un enregistrement au téléphone contient peu de contenu sous 100 Hz à renforcer.',
+      ],
+      whyItMatters: [
+        'Un léger relèvement de présence rend la parole bien plus intelligible sur de petits haut-parleurs.',
+        'Les ronflements et le souffle sont les deux corrections les plus courantes, et les deux sont de simples filtres.',
+        'Les préréglages par genre donnent rapidement un caractère homogène à une playlist.',
+      ],
+      useCases: [
+        {
+          title: 'Clarté de la voix',
+          description: 'Préréglage voix plus un passe-haut pour un podcast.',
+        },
+        {
+          title: 'Renfort des basses',
+          description: 'Étoffez un enregistrement trop maigre.',
+        },
+        {
+          title: 'Supprimer les ronflements',
+          description: 'Passe-haut à 100 Hz.',
+        },
+        {
+          title: 'Atténuer le souffle',
+          description: 'Passe-bas à 10 kHz sur une vieille cassette numérisée.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Préréglages et fréquences de coupure explicites dans une seule section.',
+        'Enchaînez avec la normalisation, la compression et la réverbération dans le même envoi.',
+      ],
+      privacyNote: 'Les basses, les médiums et les aigus de votre audio sont remodelés par l’égaliseur de FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous obtenez un nouveau fichier ; le fichier importé lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Puis-je définir mes propres bandes ?',
+          answer: 'Les préréglages ainsi que les fréquences de coupure passe-haut et passe-bas sont exposés ; le gain par bande est prévu dans la feuille de route.',
+        },
+        {
+          question: 'Que fait un filtre passe-haut ?',
+          answer: 'Il supprime tout ce qui se trouve sous la fréquence de coupure : ronflements, bruits de manipulation, coups de plosives.',
+        },
+        {
+          question: 'L’égalisation peut-elle corriger un enregistrement étouffé ?',
+          answer: 'Un renfort des aigus aide si les hautes fréquences sont simplement trop faibles. Si elles n’ont jamais été captées, l’égalisation ne peut pas les inventer ; essayez le nettoyage de voix par IA.',
+        },
+        {
+          question: 'L’égalisation va-t-elle saturer ?',
+          answer: 'Les renforts peuvent saturer. Activez la normalisation, qui inclut un limiteur de crête réelle.',
+        },
+      ],
+      related: [
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Amélioration de la voix par IA.',
+        },
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Suppression du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Égaliser un fichier audio',
+        description: 'Importez un fichier audio. L’égaliseur dans Traitement audio de base est déjà activé avec le préréglage de renfort des basses ; choisissez un autre préréglage ou réglez les fréquences de coupure passe-haut et passe-bas. Appuyez sur Convertir.',
+      },
     },
     'add-reverb-to-audio': {
       name: 'Ajouter de la réverbération à un fichier audio',
+      h1: 'Ajouter de la réverbération ou de l’écho à un fichier audio en ligne',
       tagline: 'Placez une voix ou un enregistrement sec dans une pièce, une salle, une réverbération à plaque ou à ressort, ou ajoutez un delay ou un écho, puis téléchargez le résultat.',
+      metaTitle: 'Ajouter réverb ou écho à un audio en ligne gratuit | Media Manipulator',
+      metaDescription: 'Réverbération et écho en ligne gratuits. Ajoutez une réverbération pièce, salle, plaque ou ressort, ou un délai, à un MP3, un WAV ou n’importe quel fichier audio, avec réglage du niveau wet et de la taille de la pièce. Sans inscription.',
+      ogTitle: 'Ajouter de la réverbération ou de l’écho à un fichier audio en ligne',
+      ogDescription: 'Pièce, salle, plaque, ressort et délai. Gratuit, sans inscription.',
+      intro: 'Une voix enregistrée dans une pièce traitée sonne de façon terne tant qu’elle n’est pas placée quelque part. La réverbération ajoute cet espace ; le délai ajoute du rythme. Media Manipulator applique des réverbérations pièce, salle, plaque et ressort ainsi que des délais de type écho sur nos serveurs avec FFmpeg, avec des réglages de niveau wet et de taille de pièce, et exporte dans n’importe quel format audio.',
+      whatItDoes: [
+        'Réverbérations de type pièce, salle, plaque et ressort, avec taille de la pièce, amortissement et mélange wet/dry.',
+        'Délai écho, multi-tap et ping-pong avec temps et feedback.',
+        'Modulations chorus, flanger, phaser et trémolo dans la même section.',
+        'Choisissez MP3, WAV, FLAC, M4A, OGG ou Opus pour la version wet.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'Une voix ou un instrument sec donne les meilleurs résultats.',
+        },
+        {
+          title: 'Choisir une réverbération',
+          description: 'Salle est présélectionnée ; réglez la taille et le mélange.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg calcule l’effet.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le résultat.',
+        },
+      ],
+      advancedDetails: [
+        'Les réverbérations sont construites à partir du filtre aecho de FFmpeg avec des jeux de délais et de décroissances propres à chaque type ; le niveau wet dose l’effet par rapport au signal dry.',
+        'Le temps de délai est en millisecondes ; un feedback supérieur à 70 pour cent s’accumule rapidement.',
+        'Les effets sont rendus dans le fichier ; conservez l’original sec si vous pensez vouloir les modifier.',
+      ],
+      whyItMatters: [
+        'Les voix et voix off sèches sonnent de façon peu naturelle sans un peu d’espace.',
+        'Une courte réverbération à plaque est la finition standard de la parole et du chant.',
+        'Le délai et la modulation sont le moyen le plus rapide de créer un élément de design sonore.',
+      ],
+      useCases: [
+        {
+          title: 'Finition vocale',
+          description: 'Plaque courte sur une prise chantée ou parlée.',
+        },
+        {
+          title: 'Grande salle',
+          description: 'Placez une chorale ou une nappe dans une cathédrale.',
+        },
+        {
+          title: 'Slapback',
+          description: 'Un écho rapide sur une guitare ou une voix.',
+        },
+        {
+          title: 'Design sonore',
+          description: 'Délai ping-pong et flanger sur un effet.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Quatre types de réverbération, trois types de délai et quatre effets de modulation dans une seule section.',
+        'Combinez avec l’égalisation, la normalisation et la hauteur dans le même envoi.',
+      ],
+      privacyNote: 'La réverbération est ajoutée à votre audio par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous obtenez un nouveau fichier ; le fichier importé lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Quelle réverbération utiliser pour la voix ?',
+          answer: 'Plaque ou une petite pièce, avec 20 à 30 pour cent de wet. La salle est destinée à la musique et aux effets.',
+        },
+        {
+          question: 'Puis-je supprimer la réverbération ?',
+          answer: 'Pas ici. L’outil de nettoyage de voix par IA réduit le son de la pièce sur la parole.',
+        },
+        {
+          question: 'Puis-je ajouter à la fois réverbération et délai ?',
+          answer: 'Oui. Les deux se trouvent dans la même section et peuvent être activés ensemble.',
+        },
+        {
+          question: 'L’effet est-il réversible ?',
+          answer: 'Non. Il est rendu dans le fichier ; conservez votre original sec.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Suppression du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Ajouter de la réverbération à un fichier audio',
+        description: 'Importez un fichier audio. La section Effets temporels s’ouvre avec la réverbération salle sélectionnée ; ajustez la taille de la pièce et le niveau wet, ou choisissez pièce, plaque ou ressort, ou ajoutez un délai. Appuyez sur Convertir.',
+      },
     },
     'trim-audio': {
       name: 'Couper un fichier audio',
+      h1: 'Couper un fichier audio en ligne gratuitement',
       tagline: 'Coupez un MP3, un WAV ou n’importe quel enregistrement entre un début et une fin, avec une forme d’onde pour choisir les points, et téléchargez uniquement cette partie.',
+      metaTitle: 'Couper un fichier audio en ligne gratuit : MP3, WAV | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour couper un fichier audio. Coupez n’importe quel fichier audio sur une plage choisie sur une forme d’onde, ajoutez des fondus et téléchargez un MP3, WAV, M4A ou plus. Créez une sonnerie ou un extrait. Sans filigrane, sans inscription.',
+      ogTitle: 'Couper un fichier audio en ligne gratuitement',
+      ogDescription: 'Choisissez un début et une fin sur la forme d’onde et téléchargez l’extrait. Gratuit, sans inscription.',
+      intro: 'Le refrain pour une sonnerie, la seule bonne minute d’un enregistrement de deux heures, la phrase choc sans l’intro : couper est le montage audio dont tout le monde a besoin. Media Manipulator affiche une forme d’onde, vous laisse faire glisser les points de début et de fin, coupe sur nos serveurs avec FFmpeg et exporte dans n’importe quel format, avec des fondus en option.',
+      whatItDoes: [
+        'Coupe n’importe quel fichier audio entre un début et une fin choisis sur une forme d’onde.',
+        'Fondu d’entrée et fondu de sortie pour que la coupe ne produise pas de clic.',
+        'La coupe est renvoyée en MP3, WAV, FLAC, M4A, OGG ou Opus.',
+        'Combinez avec le volume, la normalisation et l’égalisation dans la même passe.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Définir la plage',
+          description: 'Faites glisser les marqueurs sur la forme d’onde.',
+        },
+        {
+          title: 'Convertir',
+          description: 'FFmpeg coupe et encode.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez l’extrait.',
+        },
+      ],
+      advancedDetails: [
+        'La coupe est précise à l’échantillon ; la sortie est réencodée dans le format que vous choisissez.',
+        'Un fondu de 0,05 à 0,2 seconde supprime les clics aux points de coupe.',
+        'Pour une vidéo, utilisez Découper une vidéo ; pour une vidéo de forme d’onde du résultat, le Générateur de forme d’onde audio.',
+      ],
+      whyItMatters: [
+        'Les sonneries et les sons de notification demandent une coupe de 20 à 30 secondes.',
+        'Partager un extrait sonore est plus simple que partager tout l’enregistrement.',
+        'Supprimer les silences et les intros avant la transcription fait gagner du temps.',
+      ],
+      useCases: [
+        {
+          title: 'Sonnerie',
+          description: 'Coupez le refrain et ajoutez un fondu.',
+        },
+        {
+          title: 'Extrait sonore',
+          description: 'Isolez une phrase d’une interview.',
+        },
+        {
+          title: 'Supprimer un mauvais début',
+          description: 'Retirez les 10 premières secondes d’un mémo.',
+        },
+        {
+          title: 'Sample',
+          description: 'Isolez un coup ou une phrase musicale.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Édition sur la forme d’onde avec des marqueurs à faire glisser, pas des horodatages à saisir.',
+        'Fondus, normalisation et n’importe quel format de sortie dans le même envoi.',
+      ],
+      privacyNote: 'Votre audio est coupé entre le début et la fin que vous définissez par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous obtenez un nouveau fichier ; le fichier importé lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Puis-je saisir des temps exacts ?',
+          answer: 'Oui. La boîte de dialogue de découpe propose des champs de début et de fin en plus des marqueurs à faire glisser.',
+        },
+        {
+          question: 'La coupe va-t-elle produire un clic ?',
+          answer: 'Ajoutez un court fondu d’entrée et de sortie dans Traitement audio de base pour l’éviter.',
+        },
+        {
+          question: 'Puis-je conserver la qualité d’origine ?',
+          answer: 'Choisissez une sortie WAV ou FLAC pour éviter un réencodage avec perte.',
+        },
+        {
+          question: 'Puis-je couper le milieu ?',
+          answer: 'Une plage par passe ; lancez l’outil deux fois et assemblez les parties dans Darkroom.',
+        },
+      ],
+      related: [
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'La même chose pour la vidéo.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Récupérez d’abord l’audio.',
+        },
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre tous les formats audio courants.',
+        },
+        {
+          label: 'Modifier la vitesse d’un fichier audio',
+          to: '/tools/change-audio-speed',
+          description: 'Accélérez ou ralentissez un enregistrement.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Décalez la tonalité vers le haut ou vers le bas.',
+        },
+        {
+          label: 'Normaliser un fichier audio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformisez le volume.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Suppression du bruit par IA.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Créez une version instrumentale.',
+        },
+      ],
+      embed: {
+        title: 'Couper un fichier audio',
+        description: 'Importez un fichier audio, appuyez sur Découper l’audio et faites glisser les marqueurs de début et de fin sur la forme d’onde. Ajoutez un fondu d’entrée ou de sortie dans Traitement audio de base si vous le souhaitez. Appuyez sur Convertir.',
+      },
     },
     'transcribe-audio': {
       name: 'Transcrire un fichier audio',
+      h1: 'Transcrire un fichier audio en texte en ligne',
       tagline: 'Transformez un MP3, WAV, M4A ou n’importe quel enregistrement en texte, sous-titres ou JSON grâce à la reconnaissance vocale par IA sur nos propres serveurs GPU.',
+      metaTitle: 'Transcrire un audio en texte en ligne (IA gratuite) | Media Manipulator',
+      metaDescription: 'Transcription audio en ligne gratuite. Convertissez des enregistrements MP3, WAV, M4A, OGG ou FLAC en texte brut, en sous-titres VTT ou SRT, ou en JSON horodaté. Fonctionne sur notre propre GPU, sans IA tierce.',
+      ogTitle: 'Transcrire un fichier audio en texte en ligne',
+      ogDescription: 'Enregistrements, interviews et mémos vocaux en texte. Gratuit, sans inscription.',
+      intro: 'Interviews, cours, mémos vocaux et enregistrements de réunions sont bien plus utiles sous forme de texte : consultables, citables, traduisibles. Media Manipulator transcrit l’audio avec un modèle Whisper sur un serveur GPU que nous exploitons, votre enregistrement ne quitte donc jamais notre infrastructure, et renvoie du texte brut, des sous-titres VTT ou SRT, ou une transcription JSON avec l’horodatage de chaque mot.',
+      whatItDoes: [
+        'Transcrit les fichiers MP3, WAV, M4A, OGG, FLAC et d’autres formats audio avec Whisper.',
+        'Produit du texte brut, du VTT, du SRT ou du JSON horodaté.',
+        'Détecte automatiquement la langue parmi des dizaines de langues.',
+        'Fonctionne sur notre propre GPU ; aucun fournisseur d’IA tiers.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’audio',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Choisir une sortie',
+          description: 'Texte, VTT, SRT ou JSON.',
+        },
+        {
+          title: 'Transcrire',
+          description: 'Whisper s’exécute sur notre serveur GPU.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Ouvrez la visionneuse de transcription ou enregistrez le fichier.',
+        },
+      ],
+      advancedDetails: [
+        'Utilise whisper-ctranslate2 avec un grand modèle multilingue ; la précision est optimale sur une parole claire avec peu de bruit de fond.',
+        'Lancez d’abord l’outil Supprimer le bruit de fond sur les enregistrements bruyants pour obtenir une meilleure transcription.',
+        'La transcription compte pour une tâche IA, décomptée du quota IA quotidien et non du quota standard ; une tâche échouée n’est pas comptée.',
+      ],
+      whyItMatters: [
+        'Le texte est consultable et se parcourt rapidement ; l’audio, non.',
+        'Les sous-titres rendent les contenus audio accessibles et indexables.',
+        'Une transcription est le point de départ de notes, d’articles et de traductions.',
+      ],
+      useCases: [
+        {
+          title: 'Notes d’interview',
+          description: 'Obtenez un texte que vous pouvez citer.',
+        },
+        {
+          title: 'Transcription de cours',
+          description: 'Révisez à partir du texte, recherchez des termes.',
+        },
+        {
+          title: 'Sous-titres de podcast',
+          description: 'SRT ou VTT pour la version vidéo.',
+        },
+        {
+          title: 'Mémo vocal en texte',
+          description: 'Transformez vos idées en document.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper sur du matériel que nous exploitons ; votre audio n’est jamais envoyé à une IA tierce.',
+        'Quatre formats de sortie et une visionneuse de transcription intégrée.',
+      ],
+      privacyNote: 'Votre enregistrement est transcrit par Whisper sur notre propre serveur GPU, et le texte est conservé avec la tâche. Le travail d’IA s’exécute sur du matériel que nous exploitons, jamais chez un fournisseur d’IA tiers, et rien de ce que vous importez ne sert à entraîner un modèle. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Quelles langues sont prises en charge ?',
+          answer: 'Whisper gère des dizaines de langues et détecte la langue automatiquement.',
+        },
+        {
+          question: 'Quelle est la précision ?',
+          answer: 'Très bonne sur une parole claire. Le bruit de fond, les voix qui se chevauchent et les accents marqués réduisent la précision ; débruitez d’abord si vous le pouvez.',
+        },
+        {
+          question: 'Mon enregistrement est-il envoyé à OpenAI ?',
+          answer: 'Non. Le modèle s’exécute sur notre propre serveur GPU.',
+        },
+        {
+          question: 'Puis-je obtenir l’identification des locuteurs ?',
+          answer: 'Pas encore. La sortie JSON contient des horodatages par mot qui vous permettent de segmenter le texte.',
+        },
+        {
+          question: 'Est-ce décompté de mon quota ?',
+          answer: 'Oui, comme une tâche IA sur le quota IA, qui est distinct du quota standard. Les tâches échouées ne sont pas comptées.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Compte pour une tâche IA ; les tâches échouées ne sont pas comptées.',
+        ],
+      },
+      related: [
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'La même chose pour les fichiers vidéo.',
+        },
+        {
+          label: 'Générateur de sous-titres SRT',
+          to: '/tools/srt-generator',
+          description: 'Directement en sous-titres.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Nettoyez d’abord l’audio.',
+        },
+        {
+          label: 'Traducteur de sous-titres',
+          to: '/tools/caption-translator',
+          description: 'Traduisez les sous-titres.',
+        },
+      ],
+      embed: {
+        title: 'Transcrire un fichier audio',
+        description: 'Importez un fichier audio et choisissez une sortie : texte brut pour un document, VTT ou SRT pour des sous-titres, JSON pour les horodatages. Whisper s’exécute sur notre serveur GPU ; rien n’est envoyé à une IA tierce.',
+      },
     },
     'add-text-to-image': {
       name: 'Ajouter du texte à une image',
+      h1: 'Ajouter du texte à une image en ligne gratuitement',
       tagline: 'Ajoutez une légende, un titre ou un filigrane sur une photo : choisissez la police, la taille, la couleur, le contour et la position, puis téléchargez-la.',
+      metaTitle: 'Ajouter du texte à une image : légende, filigrane | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour ajouter du texte à une photo. Choisissez la police, la taille, la couleur, le contour et la position d’une légende, d’un mème ou d’un filigrane sur un JPG, PNG, WebP et plus. Sans inscription.',
+      ogTitle: 'Ajouter du texte à une image en ligne gratuitement',
+      ogDescription: 'Légende, titre ou filigrane sur n’importe quelle photo. Gratuit, sans inscription.',
+      intro: 'Une légende sur une capture d’écran, un titre sur une miniature, une ligne de copyright dans le coin d’une photo : ajouter du texte est la modification d’image la plus courante après le recadrage. Media Manipulator incruste le texte sur une image sur nos serveurs avec ImageMagick, avec la police, la taille, les couleurs de remplissage et de contour, et une position choisie parmi neuf points d’ancrage ou des coordonnées exactes en pixels, puis exporte dans le même format ou dans un autre.',
+      whatItDoes: [
+        'Incruste un bloc de texte à n’importe quelle taille avec des couleurs de remplissage et de contour.',
+        'Six polices intégrées (sans serif, serif, monospace en deux familles).',
+        'Neuf positions d’ancrage ou placement exact en x/y.',
+        'Combinez avec le redimensionnement, le recadrage, les filtres et les options de métadonnées dans la même passe.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer une image',
+          description: 'JPG, PNG, WebP, HEIC et plus.',
+        },
+        {
+          title: 'Saisir et styliser le texte',
+          description: 'Taille, couleurs, contour, police, position.',
+        },
+        {
+          title: 'Convertir',
+          description: 'ImageMagick dessine le texte.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez l’image légendée.',
+        },
+      ],
+      advancedDetails: [
+        'Le texte est rastérisé à la taille de sortie ; définissez la taille en pixels par rapport à la largeur de l’image.',
+        'Un contour de 2 à 4 px dans une couleur contrastée garde le texte lisible sur les photos chargées.',
+        'Choisissez une sortie PNG pour conserver un arrière-plan transparent pour un modèle de filigrane.',
+      ],
+      whyItMatters: [
+        'Les légendes rendent les captures d’écran explicites.',
+        'Une ligne de copyright visible dissuade de republier sans crédit.',
+        'Les miniatures avec un titre obtiennent plus de clics.',
+      ],
+      useCases: [
+        {
+          title: 'Légender une capture d’écran',
+          description: 'Indiquez ce que le spectateur regarde.',
+        },
+        {
+          title: 'Filigraner une photo',
+          description: 'Votre nom dans le coin inférieur.',
+        },
+        {
+          title: 'Titre de miniature',
+          description: 'Un grand texte en gras pour une miniature de vidéo.',
+        },
+        {
+          title: 'Mème',
+          description: 'Texte en haut, texte en bas.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Remplissage, contour, police et placement sur neuf points, pas une simple zone de texte.',
+        'Redimensionnez, recadrez et convertissez dans le même envoi.',
+      ],
+      privacyNote: 'Le texte que vous avez saisi est dessiné sur votre image par ImageMagick sur notre serveur. Rien n’est envoyé à un service externe. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Puis-je ajouter plusieurs lignes ?',
+          answer: 'Un bloc de texte par passe ; un saut de ligne dans le texte est rendu sur une nouvelle ligne. Relancez l’outil pour un second bloc.',
+        },
+        {
+          question: 'Puis-je utiliser ma propre police ?',
+          answer: 'Six polices intégrées sont disponibles ; l’import de polices personnalisées n’est pas pris en charge.',
+        },
+        {
+          question: 'Comment placer le texte avec précision ?',
+          answer: 'Choisissez un point d’ancrage et ajoutez des décalages x/y en pixels.',
+        },
+        {
+          question: 'La qualité sera-t-elle réduite ?',
+          answer: 'L’image est réencodée ; choisissez PNG ou une qualité JPG élevée pour la garder nette.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre les formats d’image.',
+        },
+        {
+          label: 'Recadrer une image',
+          to: '/tools/crop-image',
+          description: 'Découpez une zone.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Modifiez les dimensions.',
+        },
+        {
+          label: 'Filtres d’image',
+          to: '/tools/image-filters',
+          description: 'Sépia, croquis, relief et plus.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les données de localisation et d’appareil.',
+        },
+      ],
+      embed: {
+        title: 'Ajouter du texte à une image',
+        description: 'Importez une image. La section Texte en surimpression est mise en évidence : saisissez le texte, définissez la taille, la couleur, le contour, la police et la position (neuf points d’ancrage ou coordonnées exactes). Appuyez sur Convertir.',
+      },
     },
     'crop-image': {
       name: 'Recadrer une image',
+      h1: 'Recadrer une image en ligne gratuitement',
       tagline: 'Faites glisser un cadre sur la partie de la photo qui vous intéresse, redressez le cadrage et téléchargez uniquement cette zone dans le format de votre choix.',
+      metaTitle: 'Recadrer une image en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour recadrer une image. Faites glisser un cadre pour sélectionner une zone d’une photo JPG, PNG, WebP ou HEIC et téléchargez-la. Combinez avec le redimensionnement, les filtres et la conversion de format. Sans inscription.',
+      ogTitle: 'Recadrer une image en ligne gratuitement',
+      ogDescription: 'Faites glisser un cadre, téléchargez la zone. Gratuit, sans inscription.',
+      intro: 'Le recadrage corrige le cadrage, supprime les éléments parasites sur les bords et transforme une photo en une version plus serrée. Media Manipulator ouvre un outil de recadrage visuel sur l’image importée, applique le recadrage sur nos serveurs avec ImageMagick, et vous laisse redimensionner, filtrer et convertir le résultat dans la même passe.',
+      whatItDoes: [
+        'Cadre de recadrage visuel avec poignées à faire glisser, directement sur l’image.',
+        'Coordonnées exactes du recadrage affichées et modifiables.',
+        'Combinez avec un redimensionnement à une largeur et une hauteur cibles après le recadrage.',
+        'Enregistrez la zone recadrée en JPG, PNG, WebP, AVIF ou GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer une image',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Tracer le recadrage',
+          description: 'Faites glisser le cadre et les poignées.',
+        },
+        {
+          title: 'Convertir',
+          description: 'ImageMagick recadre et encode.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez l’image recadrée.',
+        },
+      ],
+      advancedDetails: [
+        'Le recadrage est appliqué avant le redimensionnement ; une photo de 4000 px recadrée à 1000 px puis redimensionnée à 500 px n’est donc réduite qu’une seule fois.',
+        'Le recadrage supprime des pixels et n’est pas réversible ; conservez l’original.',
+        'L’orientation EXIF est respectée ; une photo de téléphone pivotée est donc recadrée telle que vous la voyez.',
+      ],
+      whyItMatters: [
+        'Un cadrage plus serré est l’amélioration la plus rapide pour la plupart des photos.',
+        'Les photos de profil et les miniatures exigent des zones et des proportions précises.',
+        'Recadrer pour exclure un passant ou une plaque d’immatriculation est une mesure de confidentialité.',
+      ],
+      useCases: [
+        {
+          title: 'Photo de profil',
+          description: 'Recadrez sur le visage.',
+        },
+        {
+          title: 'Supprimer les éléments parasites',
+          description: 'Éliminez les bords d’une photo.',
+        },
+        {
+          title: 'Détail d’une capture d’écran',
+          description: 'Ne gardez que la partie pertinente.',
+        },
+        {
+          title: 'Photo de produit',
+          description: 'Recadrez serré, puis redimensionnez pour une annonce.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Outil de recadrage visuel avec coordonnées exactes, plus redimensionnement et conversion dans la même passe.',
+        'Métadonnées conservées ou supprimées, selon votre choix.',
+      ],
+      privacyNote: 'Votre image est découpée selon la zone que vous avez sélectionnée par ImageMagick sur notre serveur. Rien n’est envoyé à un service externe. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Puis-je recadrer selon un ratio fixe ?',
+          answer: 'Faites glisser le cadre jusqu’au ratio voulu ; la largeur et la hauteur s’affichent au fur et à mesure.',
+        },
+        {
+          question: 'Le recadrage fait-il perdre de la qualité ?',
+          answer: 'Les pixels restants ne sont pas touchés. Choisissez PNG ou une qualité JPG élevée pour le réencodage.',
+        },
+        {
+          question: 'Puis-je recadrer une vidéo ?',
+          answer: 'Oui, avec l’outil Recadrer une vidéo.',
+        },
+        {
+          question: 'Puis-je d’abord faire pivoter l’image ?',
+          answer: 'Utilisez l’outil Faire pivoter une image, puis recadrez.',
+        },
+      ],
+      related: [
+        {
+          label: 'Recadrer une vidéo',
+          to: '/tools/crop-video',
+          description: 'La même chose pour la vidéo.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre les formats d’image.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Modifiez les dimensions.',
+        },
+        {
+          label: 'Ajouter du texte à une image',
+          to: '/tools/add-text-to-image',
+          description: 'Légende ou filigrane.',
+        },
+        {
+          label: 'Filtres d’image',
+          to: '/tools/image-filters',
+          description: 'Sépia, croquis, relief et plus.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les données de localisation et d’appareil.',
+        },
+      ],
+      embed: {
+        title: 'Recadrer une image',
+        description: 'Importez une image et appuyez sur Recadrer l’image pour ouvrir l’outil de recadrage visuel. Faites glisser le cadre sur la zone souhaitée et enregistrez ; le recadrage est appliqué lorsque vous appuyez sur Convertir.',
+      },
     },
     'grayscale-image': {
       name: 'Convertir une image en noir et blanc',
+      h1: 'Convertir une image en noir et blanc en ligne',
       tagline: 'Transformez une photo couleur en niveaux de gris, ou en sépia pour un ton vintage, et téléchargez-la dans le format de votre choix.',
+      metaTitle: 'Convertir une image en noir et blanc en ligne gratuit | Media Manipulator',
+      metaDescription: 'Convertisseur de photos en noir et blanc gratuit en ligne. Passez n’importe quelle image JPG, PNG, WebP ou HEIC en niveaux de gris ou en sépia et téléchargez-la. Combinez avec le recadrage, le redimensionnement et le changement de format. Sans inscription.',
+      ogTitle: 'Convertir une image en noir et blanc en ligne',
+      ogDescription: 'Niveaux de gris ou sépia en un clic. Gratuit, sans inscription.',
+      intro: 'Le noir et blanc réduit une photo à la lumière, aux formes et aux textures, masque les dominantes de couleur et les éclairages mixtes, et donne à une série de photos un rendu homogène. Media Manipulator convertit en niveaux de gris sur nos serveurs avec ImageMagick, grâce à une conversion pondérée par la luminance, propose des tons sépia et vintage, et exporte dans n’importe quel format d’image.',
+      whatItDoes: [
+        'Convertit une image couleur en niveaux de gris avec une pondération de luminance correcte.',
+        'Variantes sépia et vintage pour un ton chaud ou vieilli.',
+        'Combinez avec le recadrage, le redimensionnement, le texte et la conversion de format.',
+        'La copie monochrome peut être en JPG, PNG, WebP, AVIF ou GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer une image',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Garder les niveaux de gris ou choisir le sépia',
+          description: 'Le filtre est présélectionné.',
+        },
+        {
+          title: 'Convertir',
+          description: 'ImageMagick applique la conversion.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Enregistrez le résultat.',
+        },
+      ],
+      advancedDetails: [
+        'Les niveaux de gris utilisent les coefficients de luminance Rec. 709 ; les verts apparaissent donc plus clairs que les bleus, comme l’œil s’y attend.',
+        'Le sépia applique un ton après le passage en niveaux de gris ; le vintage ajoute une légère décoloration et un vignettage.',
+        'La sortie conserve trois canaux, sauf si vous choisissez un format qui stocke nativement les niveaux de gris.',
+      ],
+      whyItMatters: [
+        'Le monochrome masque les couleurs médiocres et les éclairages mixtes.',
+        'Une série homogène en noir et blanc paraît soignée.',
+        'Les images en niveaux de gris se compressent en fichiers plus légers.',
+      ],
+      useCases: [
+        {
+          title: 'Portrait',
+          description: 'Portrait classique en noir et blanc.',
+        },
+        {
+          title: 'Scan de document',
+          description: 'Passez en niveaux de gris une page photographiée.',
+        },
+        {
+          title: 'Rendu vintage',
+          description: 'Du sépia sur une photo de famille.',
+        },
+        {
+          title: 'Impression',
+          description: 'Préparez l’image pour une imprimante noir et blanc.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Niveaux de gris fidèles à la luminance, plus sépia et vintage.',
+        'Recadrez, redimensionnez et convertissez dans le même envoi.',
+      ],
+      privacyNote: 'La couleur de votre image est retirée par ImageMagick sur notre serveur. Rien n’est envoyé à un service externe. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Niveaux de gris ou désaturation ?',
+          answer: 'Il s’agit de niveaux de gris pondérés par la luminance, ce qui paraît plus naturel qu’une simple suppression de la saturation.',
+        },
+        {
+          question: 'Puis-je obtenir un ton sépia ?',
+          answer: 'Oui. Choisissez sépia ou vintage dans le menu Filtre.',
+        },
+        {
+          question: 'Puis-je faire la même chose sur une vidéo ?',
+          answer: 'Oui. Utilisez Ajuster la luminosité et les couleurs d’une vidéo et réglez la saturation sur -100.',
+        },
+        {
+          question: 'La couleur d’origine est-elle récupérable ?',
+          answer: 'Non. Conservez le fichier d’origine.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre les formats d’image.',
+        },
+        {
+          label: 'Recadrer une image',
+          to: '/tools/crop-image',
+          description: 'Découpez une zone.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Modifiez les dimensions.',
+        },
+        {
+          label: 'Ajouter du texte à une image',
+          to: '/tools/add-text-to-image',
+          description: 'Légende ou filigrane.',
+        },
+        {
+          label: 'Filtres d’image',
+          to: '/tools/image-filters',
+          description: 'Sépia, croquis, relief et plus.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les données de localisation et d’appareil.',
+        },
+      ],
+      embed: {
+        title: 'Convertir une image en noir et blanc',
+        description: 'Importez une image. Le filtre est préréglé sur niveaux de gris ; passez en sépia ou vintage pour un ton plus chaud. Appuyez sur Convertir.',
+      },
     },
     'image-filters': {
       name: 'Filtres et effets d’image',
+      h1: 'Appliquer des filtres et des effets à une image en ligne',
       tagline: 'Peinture à l’huile, croquis, fusain, relief, vintage, tourbillon, flou, netteté et plus encore, appliqués à n’importe quelle photo en un clic.',
+      metaTitle: 'Filtres d’image en ligne gratuits : croquis, huile, relief | Media Manipulator',
+      metaDescription: 'Filtres photo gratuits en ligne. Appliquez peinture à l’huile, croquis au crayon, fusain, relief, vintage, sépia, tourbillon, flou ou netteté à vos JPG, PNG, WebP et autres, puis téléchargez. Sans inscription.',
+      ogTitle: 'Appliquer des filtres et des effets à une image en ligne',
+      ogDescription: 'Croquis, peinture à l’huile, relief, vintage et plus encore. Gratuit, sans inscription.',
+      intro: 'Parfois, une photo demande à devenir autre chose : un croquis pour une invitation, une peinture à l’huile pour un tirage, un logo en relief, une abstraction en tourbillon. Media Manipulator applique sur nos serveurs les filtres artistiques et correctifs d’ImageMagick, du croquis au crayon au renforcement de netteté, et exporte dans n’importe quel format d’image, avec en option un recadrage, un redimensionnement et une légende dans la même passe.',
+      whatItDoes: [
+        'Artistiques : peinture à l’huile, croquis, fusain, relief, vintage, sépia, tourbillon, distorsion en barillet.',
+        'Correctifs : flou, netteté, niveaux de gris.',
+        'Rotations de 45, 90, 180 et 270 degrés dans le même menu.',
+        'Combinez avec le recadrage, le redimensionnement, l’ajout de texte et la conversion de format.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une image',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Choisissez un filtre',
+          description: 'La peinture à l’huile est présélectionnée.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'ImageMagick applique l’effet.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le résultat.',
+        },
+      ],
+      advancedDetails: [
+        'La peinture à l’huile et le fusain reposent sur un rayon et varient avec la taille de l’image ; redimensionnez entre 1500 et 2500 px pour l’effet le plus marqué.',
+        'Le croquis et le relief donnent le meilleur résultat sur des images aux contours nets et au bon contraste.',
+        'Les effets sont inscrits dans les pixels ; conservez l’original.',
+      ],
+      whyItMatters: [
+        'Une image stylisée se démarque dans un fil de photos.',
+        'Les rendus croquis et peinture sont courants pour les cartes, les affiches et les tirages.',
+        'La netteté et le flou sont des corrections de tous les jours.',
+      ],
+      useCases: [
+        {
+          title: 'Portrait au crayon',
+          description: 'Filtre croquis sur une photo pour une carte.',
+        },
+        {
+          title: 'Tirage peint',
+          description: 'Peinture à l’huile pour une impression sur toile.',
+        },
+        {
+          title: 'Logo en relief',
+          description: 'Donnez du relief à un logo plat.',
+        },
+        {
+          title: 'Accentuer un scan',
+          description: 'Faites ressortir les contours d’un scan un peu flou.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Douze filtres artistiques et correctifs dans un seul menu.',
+        'Recadrage, redimensionnement, légende et conversion dans le même envoi.',
+      ],
+      privacyNote: 'Le filtre que vous choisissez est appliqué à votre image par ImageMagick sur notre serveur. Rien n’est envoyé à un service externe. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Puis-je régler l’intensité ?',
+          answer: 'Les filtres utilisent des intensités fixes et calibrées. Redimensionnez l’image en plus grand ou en plus petit pour changer la force apparente d’un effet basé sur un rayon.',
+        },
+        {
+          question: 'Puis-je cumuler des filtres ?',
+          answer: 'Un filtre par passe ; repassez le résultat dans l’outil pour en appliquer un second.',
+        },
+        {
+          question: 'Y a-t-il un transfert de style par IA ?',
+          answer: 'Non. Il s’agit d’effets ImageMagick classiques, qui s’exécutent instantanément.',
+        },
+        {
+          question: 'Quel filtre convient à un logo ?',
+          answer: 'Le relief ou le fusain sur un logo très contrasté.',
+        },
+      ],
+      related: [
+        {
+          label: 'Noir et blanc',
+          to: '/tools/grayscale-image',
+          description: 'Niveaux de gris et sépia.',
+        },
+        {
+          label: 'Flouter une image',
+          to: '/tools/blur-image',
+          description: 'Adoucir ou masquer.',
+        },
+        {
+          label: 'Accentuer la netteté d’une image',
+          to: '/tools/sharpen-image',
+          description: 'Faire ressortir les détails.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertir entre formats d’image.',
+        },
+        {
+          label: 'Recadrer une image',
+          to: '/tools/crop-image',
+          description: 'Découper une zone.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Changer les dimensions.',
+        },
+        {
+          label: 'Ajouter du texte à une image',
+          to: '/tools/add-text-to-image',
+          description: 'Légende ou filigrane.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Effacer les données de localisation et d’appareil.',
+        },
+      ],
+      embed: {
+        title: 'Appliquer un filtre à une image',
+        description: 'Importez une image et choisissez un filtre ; la peinture à l’huile est présélectionnée. Croquis, fusain, relief, vintage, sépia, tourbillon, distorsion en barillet, flou et netteté sont disponibles. Appuyez sur Convertir.',
+      },
     },
     'rotate-image': {
       name: 'Faire pivoter une image',
+      h1: 'Faire pivoter une image en ligne gratuitement',
       tagline: 'Faites pivoter une photo de 90°, 180° ou 270°, corrigez un scan ou une photo de téléphone de travers, et téléchargez-la dans le format de votre choix.',
+      metaTitle: 'Faire pivoter une image en ligne (90°, 180°, 270°) | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour faire pivoter une image. Tournez une photo JPG, PNG, WebP ou HEIC de 90, 180 ou 270 degrés, ou de 45 pour une inclinaison, et téléchargez-la. La rotation est inscrite dans les pixels. Sans inscription.',
+      ogTitle: 'Faire pivoter une image en ligne gratuitement',
+      ogDescription: 'Corrigez une photo de travers en un clic. Gratuit, sans inscription.',
+      intro: 'Les téléphones enregistrent l’orientation dans une balise que certains visualiseurs ignorent, et les scanners comme les anciens appareils photo se trompent carrément. Faire pivoter les pixels eux-mêmes règle le problème pour de bon. Media Manipulator fait pivoter les images sur nos serveurs avec ImageMagick de 90, 180, 270 ou 45 degrés, respecte d’abord la balise d’orientation existante et exporte dans n’importe quel format.',
+      whatItDoes: [
+        'Fait pivoter de 90° (sens horaire), 180°, 270° (sens antihoraire) ou 45°.',
+        'Inscrit la rotation dans les pixels et efface la balise d’orientation EXIF.',
+        'Combinez avec le recadrage, le redimensionnement et la conversion de format.',
+        'Enregistrez l’image redressée en JPG, PNG, WebP, AVIF ou GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une image',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Choisissez l’angle',
+          description: '90° est présélectionné.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'ImageMagick fait pivoter et encode.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez l’image redressée.',
+        },
+      ],
+      advancedDetails: [
+        'L’orientation EXIF existante est appliquée d’abord, pour que ce que vous voyez soit bien ce qui pivote.',
+        'Une rotation de 45° ajoute un fond de remplissage dans les coins ; recadrez ensuite si nécessaire.',
+        'Utilisez plutôt les outils Retourner et miroir pour un effet miroir horizontal ou vertical.',
+      ],
+      whyItMatters: [
+        'Les photos de travers sont la plainte la plus fréquente lors des envois sur les forums et les formulaires.',
+        'Certaines applications ignorent la balise d’orientation ; une rotation inscrite dans les pixels est donc la seule correction fiable.',
+        'Les scans et les fichiers d’anciens appareils photo n’ont souvent aucune balise.',
+      ],
+      useCases: [
+        {
+          title: 'Photo de téléphone de travers',
+          description: 'Pivotez de 90° pour qu’elle soit droite partout.',
+        },
+        {
+          title: 'Scan à l’envers',
+          description: 'Pivotez de 180°.',
+        },
+        {
+          title: 'Corriger un envoi de formulaire',
+          description: 'Pivotez avant d’envoyer la photo d’un document.',
+        },
+        {
+          title: 'Effet incliné',
+          description: 'Pivotez de 45° pour un élément graphique.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Rotation appliquée aux pixels, avec une gestion correcte de la balise d’orientation.',
+        'Recadrage, redimensionnement et conversion dans le même envoi.',
+      ],
+      privacyNote: 'Votre image est tournée selon l’angle que vous choisissez par ImageMagick sur notre serveur. Rien n’est envoyé à un service externe. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Pourquoi ma photo est-elle droite sur mon téléphone mais de travers ailleurs ?',
+          answer: 'Votre téléphone a écrit une balise d’orientation que l’autre application ignore. La rotation effectuée ici inscrit l’orientation dans les pixels.',
+        },
+        {
+          question: 'La rotation fait-elle perdre de la qualité ?',
+          answer: 'La rotation par multiples de 90° est sans perte sur le plan géométrique ; le réencodage est le seul coût. Utilisez le PNG ou une qualité JPG élevée.',
+        },
+        {
+          question: 'Puis-je pivoter d’un angle quelconque ?',
+          answer: 'Seuls 45° et les multiples de 90° sont proposés.',
+        },
+        {
+          question: 'Puis-je plutôt faire un effet miroir ?',
+          answer: 'Pas ici ; l’effet miroir n’est pas proposé pour les images à l’heure actuelle.',
+        },
+      ],
+      related: [
+        {
+          label: 'Faire pivoter une vidéo',
+          to: '/tools/rotate-video',
+          description: 'La même chose pour la vidéo.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertir entre formats d’image.',
+        },
+        {
+          label: 'Recadrer une image',
+          to: '/tools/crop-image',
+          description: 'Découper une zone.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Changer les dimensions.',
+        },
+        {
+          label: 'Ajouter du texte à une image',
+          to: '/tools/add-text-to-image',
+          description: 'Légende ou filigrane.',
+        },
+        {
+          label: 'Filtres d’image',
+          to: '/tools/image-filters',
+          description: 'Sépia, croquis, relief et plus encore.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Effacer les données de localisation et d’appareil.',
+        },
+      ],
+      embed: {
+        title: 'Faire pivoter une image',
+        description: 'Importez une image. Le menu de filtre est préréglé sur une rotation de 90° ; choisissez plutôt 180°, 270° ou 45°. La rotation est appliquée aux pixels, pour que tous les visualiseurs l’affichent de la même façon. Appuyez sur Convertir.',
+      },
     },
     'sharpen-image': {
       name: 'Accentuer la netteté d’une image',
+      h1: 'Accentuer la netteté d’une image en ligne gratuitement',
       tagline: 'Faites ressortir les contours d’une photo ou d’un scan un peu flou grâce à un renforcement de netteté en un clic, et téléchargez-le dans le format de votre choix.',
+      metaTitle: 'Accentuer la netteté d’une image en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour accentuer la netteté d’une image. Rendez plus nette une photo ou un scan JPG, PNG, WebP ou HEIC un peu flou et téléchargez le résultat. Pour récupérer de vrais détails, essayez la restauration d’images par IA. Sans inscription.',
+      ogTitle: 'Accentuer la netteté d’une image en ligne gratuitement',
+      ogDescription: 'Rendez une photo floue plus nette en un clic. Gratuit, sans inscription.',
+      intro: 'Une photo légèrement floue à cause d’un objectif lent, d’un redimensionnement ou d’un scanner gagne à recevoir une passe de netteté qui augmente le contraste le long des contours. Media Manipulator applique sur nos serveurs un renforcement de netteté par masque flou avec ImageMagick et exporte dans n’importe quel format. Pour un flou qui va au-delà d’un simple manque de piqué, l’outil de restauration d’images par IA récupère des détails que la netteté ne peut pas retrouver.',
+      whatItDoes: [
+        'Applique un masque flou calibré à n’importe quelle image.',
+        'Combinez avec le redimensionnement : accentuez la netteté après la réduction pour des vignettes bien nettes.',
+        'Téléchargez le résultat accentué en JPG, PNG, WebP, AVIF ou GIF.',
+        'Comparez l’original et le résultat côte à côte.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une image',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Laissez la netteté sélectionnée',
+          description: 'Ajoutez un redimensionnement si vous le souhaitez.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'ImageMagick applique le masque flou.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez l’image plus nette.',
+        },
+      ],
+      advancedDetails: [
+        'La netteté augmente le contraste local sur les contours ; elle n’ajoute pas de détails. Un excès de netteté se voit sous forme de halos.',
+        'Réduire la taille puis accentuer la netteté est la recette classique pour des images web bien nettes.',
+        'Pour un flou de mouvement, une mise au point manquée ou une source en basse résolution, utilisez la restauration d’images par IA.',
+      ],
+      whyItMatters: [
+        'Les images réduites perdent du contraste sur les contours et paraissent floues sans accentuation.',
+        'Les scans de documents et de tirages sont souvent un peu flous.',
+        'Une image nette donne une impression de meilleure qualité.',
+      ],
+      useCases: [
+        {
+          title: 'Vignette',
+          description: 'Redimensionnez et accentuez la netteté pour le web.',
+        },
+        {
+          title: 'Scan un peu flou',
+          description: 'Rendez plus net un tirage numérisé.',
+        },
+        {
+          title: 'Photo de produit',
+          description: 'Renforcez les contours avant la mise en ligne.',
+        },
+        {
+          title: 'Mise au point légèrement manquée',
+          description: 'Récupérez un peu de netteté apparente.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Masque flou calibré avec redimensionnement dans la même passe.',
+        'Restauration par IA disponible quand la netteté ne suffit pas.',
+      ],
+      privacyNote: 'La netteté de votre image est accentuée par ImageMagick sur notre serveur, à l’intensité que vous définissez. Rien n’est envoyé à un service externe. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Cela va-t-il corriger une photo floue ?',
+          answer: 'Cela aide pour un léger manque de netteté. Pour un vrai flou, utilisez la restauration d’images par IA, qui reconstruit les détails.',
+        },
+        {
+          question: 'Puis-je contrôler l’intensité ?',
+          answer: 'L’intensité est fixe et calibrée ; lancez l’outil deux fois pour en avoir plus, ou utilisez une taille de sortie plus petite pour un effet relatif plus fort.',
+        },
+        {
+          question: 'Cela ajoute-t-il du bruit ?',
+          answer: 'La netteté peut accentuer le grain existant. Utilisez une qualité JPG élevée pour éviter de l’aggraver.',
+        },
+      ],
+      related: [
+        {
+          label: 'Restauration d’images par IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Récupérer de vrais détails grâce à l’IA.',
+        },
+        {
+          label: 'Upscaler d’images par IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Agrandir sans flou.',
+        },
+        {
+          label: 'Flouter une image',
+          to: '/tools/blur-image',
+          description: 'L’inverse.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertir entre formats d’image.',
+        },
+        {
+          label: 'Recadrer une image',
+          to: '/tools/crop-image',
+          description: 'Découper une zone.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Changer les dimensions.',
+        },
+        {
+          label: 'Ajouter du texte à une image',
+          to: '/tools/add-text-to-image',
+          description: 'Légende ou filigrane.',
+        },
+        {
+          label: 'Filtres d’image',
+          to: '/tools/image-filters',
+          description: 'Sépia, croquis, relief et plus encore.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Effacer les données de localisation et d’appareil.',
+        },
+      ],
+      embed: {
+        title: 'Accentuer la netteté d’une image',
+        description: 'Importez une image. Le filtre est préréglé sur la netteté. Appuyez sur Convertir, puis comparez le résultat à l’original dans la visionneuse.',
+      },
     },
     'blur-image': {
       name: 'Flouter une image',
+      h1: 'Flouter une image en ligne gratuitement',
       tagline: 'Adoucissez une photo entière pour un arrière-plan, un espace réservé ou un écran de confidentialité, et téléchargez-la dans le format de votre choix.',
+      metaTitle: 'Flouter une image en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Flou d’image gratuit en ligne. Adoucissez une photo JPG, PNG, WebP ou HEIC entière pour un arrière-plan, un espace réservé ou un écran de confidentialité. Pour flouter uniquement les visages, utilisez l’outil de floutage des visages. Sans inscription.',
+      ogTitle: 'Flouter une image en ligne gratuitement',
+      ogDescription: 'Adoucissez une photo en un clic. Gratuit, sans inscription.',
+      intro: 'Une photo floutée fait un arrière-plan apaisant derrière un texte, un espace réservé peu détaillé pendant que la vraie image se charge, ou un écran de confidentialité pour une capture d’écran. Media Manipulator applique sur nos serveurs un flou gaussien à toute l’image avec ImageMagick et exporte dans n’importe quel format. Pour flouter seulement les visages ou une plaque d’immatriculation, les outils IA de floutage des visages et de masquage de texte ciblent ces zones.',
+      whatItDoes: [
+        'Applique un flou gaussien à l’image entière.',
+        'Combinez avec le redimensionnement pour un minuscule espace réservé flouté.',
+        'L’image adoucie vous revient en JPG, PNG, WebP, AVIF ou GIF.',
+        'Des outils associés floutent les visages ou masquent le texte de façon sélective.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une image',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Laissez le flou sélectionné',
+          description: 'Redimensionnez si vous le souhaitez.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'ImageMagick floute et encode.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez l’image adoucie.',
+        },
+      ],
+      advancedDetails: [
+        'Le rayon du flou est fixe ; pour un effet plus fort, réduisez d’abord la taille, floutez, puis agrandissez.',
+        'Les images floutées se compressent énormément, ce qui en fait de bons espaces réservés.',
+        'Une capture d’écran floutée n’est pas un masquage : le texte peut parfois être récupéré. Utilisez le masquage de texte pour les contenus sensibles.',
+      ],
+      whyItMatters: [
+        'Les arrière-plans floutés gardent le texte superposé lisible.',
+        'Les espaces réservés en basse qualité améliorent la vitesse perçue d’une page.',
+        'Une version adoucie d’une photo est un élément graphique courant.',
+      ],
+      useCases: [
+        {
+          title: 'Arrière-plan pour un texte',
+          description: 'Floutez une photo pour y poser un titre.',
+        },
+        {
+          title: 'Espace réservé',
+          description: 'Minuscule aperçu flouté pour le chargement différé.',
+        },
+        {
+          title: 'Écran de confidentialité',
+          description: 'Adoucissez une capture d’écran avant de la partager, puis masquez correctement.',
+        },
+        {
+          title: 'Effet vaporeux',
+          description: 'Superposition douce pour un visuel.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Flou de l’image entière ici ; floutage des visages et masquage de texte sous forme d’outils IA dédiés.',
+        'Redimensionnement et conversion dans le même envoi.',
+      ],
+      privacyNote: 'Votre image est floutée par ImageMagick sur notre serveur, au rayon que vous définissez. Rien n’est envoyé à un service externe. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Puis-je flouter seulement une partie de l’image ?',
+          answer: 'Utilisez Flouter les visages sur une photo pour les visages, ou Masquer du texte dans une image pour le texte et les plaques d’immatriculation.',
+        },
+        {
+          question: 'Le flou suffit-il à cacher du texte ?',
+          answer: 'Pas de façon fiable. Utilisez l’outil de masquage, qui recouvre la zone.',
+        },
+        {
+          question: 'Puis-je contrôler l’intensité du flou ?',
+          answer: 'Le rayon est fixe ; réduisez la taille avant de flouter pour un effet plus fort.',
+        },
+      ],
+      related: [
+        {
+          label: 'Flouter les visages sur une photo',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Floutage des visages par IA.',
+        },
+        {
+          label: 'Masquer du texte dans une image',
+          to: '/tools/redact-text-in-image',
+          description: 'Cacher le texte et les plaques.',
+        },
+        {
+          label: 'Accentuer la netteté d’une image',
+          to: '/tools/sharpen-image',
+          description: 'L’inverse.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertir entre formats d’image.',
+        },
+        {
+          label: 'Recadrer une image',
+          to: '/tools/crop-image',
+          description: 'Découper une zone.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Changer les dimensions.',
+        },
+        {
+          label: 'Ajouter du texte à une image',
+          to: '/tools/add-text-to-image',
+          description: 'Légende ou filigrane.',
+        },
+        {
+          label: 'Filtres d’image',
+          to: '/tools/image-filters',
+          description: 'Sépia, croquis, relief et plus encore.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Effacer les données de localisation et d’appareil.',
+        },
+      ],
+      embed: {
+        title: 'Flouter une image',
+        description: 'Importez une image. Le filtre est préréglé sur le flou, qui adoucit toute l’image. Pour flouter uniquement les visages, utilisez l’outil Flouter les visages sur une photo. Appuyez sur Convertir.',
+      },
     },
     'generate-vtt-captions': {
       name: 'Générateur de sous-titres VTT',
+      h1: 'Générer des sous-titres WebVTT à partir d’une vidéo ou d’un audio',
       tagline: 'Créez un fichier de sous-titres .vtt pour une vidéo HTML5, YouTube ou un lecteur grâce à la transcription par IA sur nos propres serveurs GPU.',
+      metaTitle: 'Générateur de sous-titres VTT en ligne (IA gratuite) | Media Manipulator',
+      metaDescription: 'Générateur de sous-titres WebVTT gratuit en ligne. Importez un fichier vidéo ou audio et téléchargez un fichier .vtt avec des sous-titres synchronisés pour la vidéo HTML5, YouTube, Vimeo ou n’importe quel lecteur. Fonctionne sur notre propre GPU.',
+      ogTitle: 'Générer des sous-titres WebVTT en ligne',
+      ogDescription: 'Sous-titres .vtt synchronisés par IA pour n’importe quelle vidéo. Gratuit, sans inscription.',
+      intro: 'WebVTT est le format de sous-titres du web : l’élément track de HTML5, YouTube, Vimeo et les lecteurs HLS et DASH le lisent tous. Media Manipulator génère des sous-titres VTT synchronisés à partir de n’importe quelle vidéo ou audio avec un modèle Whisper sur un serveur GPU que nous exploitons, pour que votre média ne parte jamais vers une IA tierce, et ouvre le résultat dans une visionneuse de sous-titres où vous pouvez vérifier la synchronisation avant de télécharger.',
+      whatItDoes: [
+        'Transcrit la parole et la découpe en segments synchronisés.',
+        'Produit un fichier .vtt conforme à la norme.',
+        'Détecte automatiquement la langue.',
+        'Fonctionne sur notre propre GPU ; aucun fournisseur d’IA tiers.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une vidéo ou un audio',
+          description: 'N’importe quel format courant.',
+        },
+        {
+          title: 'Laissez VTT sélectionné',
+          description: 'Ou passez en SRT, texte ou JSON.',
+        },
+        {
+          title: 'Transcrivez',
+          description: 'Whisper synchronise chaque segment.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Associez le .vtt à votre lecteur.',
+        },
+      ],
+      advancedDetails: [
+        'Les segments suivent la découpe de Whisper, en général une phrase ou une proposition par segment de 2 à 7 secondes.',
+        'Traduisez le résultat dans d’autres langues avec le Traducteur de sous-titres.',
+        'Pour une piste de sous-titres incrustée, utilisez la piste de sous-titres de Darkroom.',
+      ],
+      whyItMatters: [
+        'Les sous-titres sont indispensables à l’accessibilité et la plupart des spectateurs regardent en sourdine.',
+        'VTT est le seul format que la vidéo HTML5 lit nativement.',
+        'Les sous-titres synchronisés peuvent être indexés par les moteurs de recherche.',
+      ],
+      useCases: [
+        {
+          title: 'Vidéo HTML5',
+          description: 'Associez le fichier avec un élément track.',
+        },
+        {
+          title: 'Mise en ligne sur YouTube',
+          description: 'Importez le .vtt comme piste de sous-titres.',
+        },
+        {
+          title: 'Vidéo de cours',
+          description: 'Des sous-titres pour un lecteur de plateforme d’apprentissage.',
+        },
+        {
+          title: 'Traduire plus tard',
+          description: 'VTT en entrée, VTT traduit en sortie.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper sur notre propre matériel ; rien n’est envoyé à une IA tierce.',
+        'Visionneuse de sous-titres pour vérifier la synchronisation avant le téléchargement.',
+      ],
+      privacyNote: 'La parole de votre fichier est transcrite par Whisper sur notre propre serveur GPU et synchronisée en sous-titres WebVTT. Le travail d’IA s’exécute sur du matériel que nous exploitons, jamais chez un fournisseur d’IA tiers, et rien de ce que vous importez ne sert à entraîner un modèle. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'VTT ou SRT ?',
+          answer: 'VTT pour les lecteurs web et YouTube ; SRT pour les logiciels de montage vidéo et certaines plateformes plus anciennes. Les deux sont proposés.',
+        },
+        {
+          question: 'Puis-je modifier les sous-titres ?',
+          answer: 'Téléchargez le .vtt et modifiez-le dans n’importe quel éditeur de texte ; le format est du texte brut.',
+        },
+        {
+          question: 'Puis-je les traduire ?',
+          answer: 'Oui, avec l’outil Traducteur de sous-titres.',
+        },
+        {
+          question: 'Ma vidéo est-elle envoyée à un tiers ?',
+          answer: 'Non. La transcription s’exécute sur notre propre serveur GPU.',
+        },
+        {
+          question: 'Cela est-il décompté de mon quota ?',
+          answer: 'Chaque fichier VTT compte pour une tâche IA, prise sur le quota IA et jamais sur le quota courant. Les tâches échouées ne sont pas comptées.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Chaque fichier de sous-titres compte pour une tâche IA ; les tâches échouées ne sont pas comptées.',
+        ],
+      },
+      related: [
+        {
+          label: 'Générateur de SRT',
+          to: '/tools/srt-generator',
+          description: 'Format SubRip.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Texte brut ou JSON.',
+        },
+        {
+          label: 'Traducteur de sous-titres',
+          to: '/tools/caption-translator',
+          description: 'Traduire les sous-titres.',
+        },
+        {
+          label: 'Éditeur vidéo Darkroom',
+          to: '/tools/content-studio',
+          description: 'Incruster les sous-titres.',
+        },
+      ],
+      embed: {
+        title: 'Générer des sous-titres VTT',
+        description: 'Importez un fichier vidéo ou audio. La sortie est préréglée sur WebVTT ; la transcription est synchronisée par Whisper sur notre serveur GPU et renvoyée sous forme de fichier .vtt que vous pouvez associer avec un élément track ou importer sur une plateforme.',
+      },
     },
     // MM75: summarize-video / summarize-audio full page bodies (model-written, needs native review).
     'summarize-video': {
@@ -362,9 +4137,8 @@ const frToolPages = {
         },
       ],
       whyMediaManipulator: [
-        'Whisper et les modèles de vision et de langage s\'exécutent sur du matériel que nous exploitons ; votre vidéo n\'est jamais envoyée à une IA tierce.',
+        'Whisper et les modèles de vision et de langage s’exécutent sur du matériel que nous exploitons ; votre vidéo n’est jamais envoyée à une IA tierce.',
         'Des chapitres qui naviguent dans votre propre vidéo, directement dans la visionneuse de résultats.',
-        'Téléchargements en Markdown et JSON. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
       ],
       privacyNote: 'Les résumés nécessitent un compte gratuit, la tâche y est donc rattachée. Votre fichier est traité sur nos propres serveurs, et les modèles d\'IA s\'exécutent sur un serveur GPU que nous exploitons ; rien n\'est envoyé à un fournisseur d\'IA tiers. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
       faq: [
@@ -489,9 +4263,8 @@ const frToolPages = {
         },
       ],
       whyMediaManipulator: [
-        'Whisper et le modèle de langage s\'exécutent sur du matériel que nous exploitons ; votre enregistrement n\'est jamais envoyé à une IA tierce.',
+        'Whisper et le modèle de langage s’exécutent sur du matériel que nous exploitons ; votre enregistrement n’est jamais envoyé à une IA tierce.',
         'Des chapitres qui naviguent dans votre propre enregistrement, directement dans la visionneuse de résultats.',
-        'Téléchargements en Markdown et JSON. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
       ],
       privacyNote: 'Les résumés nécessitent un compte gratuit, la tâche y est donc rattachée. Votre fichier est traité sur nos propres serveurs, et les modèles d\'IA s\'exécutent sur un serveur GPU que nous exploitons ; rien n\'est envoyé à un fournisseur d\'IA tiers. Les fichiers sont conservés 24 heures pour les invités ; avec un compte gratuit, vous choisissez de 24 heures à 2 ans.',
       faq: [
@@ -542,188 +4315,4729 @@ const frToolPages = {
     // MM78 voices: name + tagline (model-written, needs native review).
     'voice-cloning': {
       name: 'Clonage vocal',
-      tagline:
-        'Enregistrez ou envoyez de 5 à 60 secondes de votre propre voix, créez une voix et faites-lui lire n\'importe quel texte dans plus de vingt langues.',
+      h1: 'Clonez votre voix à partir d’un court enregistrement',
+      tagline: 'Enregistrez ou envoyez de 5 à 60 secondes de votre propre voix, créez une voix et faites-lui lire n\'importe quel texte dans plus de vingt langues.',
+      metaTitle: 'Cloner votre voix à partir d’un enregistrement | Media Manipulator',
+      metaDescription: 'Créez une voix à partir de 5 à 60 secondes de votre propre parole et faites-lui lire du texte dans plus de 20 langues. Fonctionne sur nos propres serveurs ; les sorties sont marquées d’un filigrane.',
+      ogTitle: 'Clonez votre propre voix à partir d’un court enregistrement',
+      ogDescription: 'Enregistrez quelques phrases, confirmez qu’il s’agit de votre voix et générez de la parole avec elle dans plus de 20 langues. Modèles auto-hébergés, sorties marquées d’un filigrane.',
+      intro: 'Le clonage vocal crée une voix réutilisable à partir d’un court enregistrement de votre propre parole. Lisez quelques phrases naturelles dans votre microphone, ou importez un extrait de 5 à 60 secondes, confirmez que la voix est la vôtre (ou que vous avez l’autorisation explicite de la personne qui parle), puis créez la voix. Elle apparaît dans Mes voix avec un court aperçu. Dès lors, vous pouvez saisir n’importe quel texte, choisir l’une de plus de vingt langues et un niveau d’émotion, et obtenir un MP3 et un WAV de cette voix qui le lit. Le modèle s’exécute sur un serveur GPU que nous exploitons, chaque fichier généré porte un filigrane inaudible, et rien de ce que vous enregistrez ne sert à entraîner quoi que ce soit.',
+      whatItDoes: [
+        'Crée une voix enregistrée à partir de 5 à 60 secondes de parole captées dans le navigateur ou importées sous forme de fichier audio.',
+        'Vérifie que l’enregistrement est assez long et contient bien de la parole avant que quoi que ce soit ne soit comptabilisé.',
+        'Fait lire n’importe quel texte par la voix enregistrée dans plus de 20 langues, avec un réglage d’émotion allant de calme à expressif.',
+        'Renvoie la parole en MP3, avec un téléchargement WAV créé dans votre navigateur.',
+        'Marque chaque fichier généré d’un filigrane inaudible pour que la parole synthétique puisse être identifiée.',
+      ],
+      flowSteps: [
+        {
+          title: 'Enregistrez ou importez',
+          description: '5 à 60 secondes de parole claire dans une pièce calme.',
+        },
+        {
+          title: 'Confirmez le consentement',
+          description: 'Cochez que la voix est la vôtre, ou que vous avez l’autorisation de la personne qui parle.',
+        },
+        {
+          title: 'Créez la voix',
+          description: 'Un court aperçu est généré et la voix est enregistrée dans votre compte.',
+        },
+        {
+          title: 'Générez la parole',
+          description: 'Saisissez un texte, choisissez une langue et une émotion, puis téléchargez l’audio.',
+        },
+      ],
+      advancedDetails: [
+        'Le moteur vocal est Chatterbox Multilingual (licence MIT), exécuté sur notre propre serveur GPU. Il clone la voix à partir de l’extrait de référence au moment où vous générez ; aucun modèle n’est entraîné sur votre voix.',
+        'La création d’une voix compte pour une tâche IA (l’aperçu). Chaque génération compte pour une tâche IA. Une demande qui échoue ou est refusée n’est pas comptée.',
+        'La longueur de texte par demande dépend de votre offre, à raison d’environ 18 caractères par seconde de parole ; le compteur sous la zone de texte indique votre limite.',
+        'Chaque fichier généré porte le filigrane PerTh de Resemble AI, inaudible et résistant aux retouches et compressions courantes.',
+        'La première demande après une période d’inactivité peut prendre jusqu’à 20 secondes pendant le chargement du moteur.',
+      ],
+      whyItMatters: [
+        'Une narration dans votre propre voix, sans réserver une séance en studio à chaque modification d’un script.',
+        'La même voix dans une autre langue, pour une vidéo ou un cours qui touche plus de monde.',
+        'Un moteur auto-hébergé signifie que vos enregistrements restent chez nous, pas chez un fournisseur d’IA tiers.',
+      ],
+      useCases: [
+        {
+          title: 'Narration vidéo',
+          description: 'Relisez une ligne de script modifiée sans la réenregistrer.',
+        },
+        {
+          title: 'Cours et tutoriels',
+          description: 'Donnez une voix à la même leçon en plusieurs langues.',
+        },
+        {
+          title: 'Accessibilité',
+          description: 'Faites lire un long texte à voix haute par une voix familière.',
+        },
+        {
+          title: 'Prototypage',
+          description: 'Écoutez un script lu avant d’enregistrer la prise finale.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Des modèles ouverts sur du matériel que nous exploitons ; les enregistrements ne partent jamais vers un service d’IA externe.',
+        'Un consentement explicite avant la création de toute voix, conservé avec la voix.',
+        'Des sorties marquées d’un filigrane et votre propre bouton de suppression pour chaque voix enregistrée.',
+      ],
+      privacyNote: 'Les 5 à 60 secondes de parole que vous enregistrez ou importez deviennent une voix enregistrée dans votre compte ; cet enregistrement de référence est ce que le modèle lit chaque fois que la voix parle. Les enregistrements vocaux et les voix enregistrées sont traités sur nos propres serveurs ; rien n’est envoyé à un fournisseur d’IA tiers et rien ne sert à entraîner un quelconque modèle. Une voix enregistrée (son enregistrement de référence et son aperçu) est stockée dans votre compte, suit la durée de conservation que vous choisissez et peut être supprimée à tout moment depuis Compte, Voix ; elle est supprimée avec votre compte. L’audio généré est conservé comme tout autre résultat : les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Puis-je cloner la voix de quelqu’un d’autre ?',
+          answer: 'Uniquement avec l’autorisation explicite de cette personne. Vous devez confirmer que la voix est la vôtre ou que vous avez cette autorisation avant qu’une voix ne soit créée, et nous conservons cette confirmation avec la voix. L’usurpation d’identité sans autorisation, la fraude et les deepfakes politiques sont interdits par nos Conditions d’utilisation.',
+        },
+        {
+          question: 'Est-ce que cela sonnera exactement comme moi ?',
+          answer: 'Le résultat ressemble en général de façon reconnaissable à la personne, mais ce n’est pas une copie parfaite : les accents, les voix atypiques et les enregistrements bruyants sont plus difficiles. Enregistrez quelques phrases naturelles dans une pièce calme pour le meilleur résultat.',
+        },
+        {
+          question: 'Mon enregistrement sert-il à entraîner un modèle d’IA ?',
+          answer: 'Non. Rien de ce que vous importez ou générez ne sert à entraîner un quelconque modèle. La voix est clonée à partir de votre extrait de référence chaque fois que vous générez de la parole.',
+        },
+        {
+          question: 'Peut-on savoir que l’audio est généré ?',
+          answer: 'Chaque fichier généré avec une voix enregistrée porte un filigrane inaudible que les outils de détection peuvent lire. Il ne change rien au son de l’audio.',
+        },
+        {
+          question: 'Comment supprimer une voix ?',
+          answer: 'Ouvrez Compte, Voix et supprimez-la. Son enregistrement de référence et son aperçu sont retirés ; l’audio que vous avez déjà généré reste dans votre historique jusqu’à la fin de sa propre durée de conservation.',
+        },
+        {
+          question: 'Combien de voix puis-je conserver ?',
+          answer: 'Cela dépend de votre offre ; la page indique combien de voix vous avez enregistrées et votre limite.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La référence doit durer de 5 à 60 secondes et contenir de la parole.',
+          'L’enregistrement d’une voix nécessite un compte ; les voix prédéfinies fonctionnent sans.',
+        ],
+      },
+      related: [
+        {
+          label: 'Concepteur de voix',
+          to: '/tools/voice-designer',
+          description: 'Décrivez une nouvelle voix et conservez-la.',
+        },
+        {
+          label: 'Changeur de voix',
+          to: '/tools/voice-changer',
+          description: 'Modifiez un enregistrement ou convertissez-le vers une voix.',
+        },
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Nettoyez un enregistrement avant de l’utiliser.',
+        },
+        {
+          label: 'Modifier la hauteur d’un audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Changez la tonalité d’une musique ou d’une voix.',
+        },
+      ],
+      embed: {
+        title: 'Créer une voix',
+        description: 'Enregistrez ou importez un enregistrement propre de 5 à 60 secondes, confirmez que la voix est la vôtre ou que vous avez l’autorisation de la personne qui parle, puis créez la voix. Saisissez ensuite un texte et générez la parole. Les voix prédéfinies fonctionnent sans compte.',
+      },
     },
     'voice-designer': {
       name: 'Concepteur de voix',
-      tagline:
-        'Décrivez une voix avec des mots, écoutez un aperçu et conservez celle qui vous plaît pour lire n\'importe quel texte dans plus de vingt langues.',
+      h1: 'Concevez une nouvelle voix à partir d’une description',
+      tagline: 'Décrivez une voix avec des mots, écoutez un aperçu et conservez celle qui vous plaît pour lire n\'importe quel texte dans plus de vingt langues.',
+      metaTitle: 'Concevoir une voix à partir d’une description | Media Manipulator',
+      metaDescription: 'Décrivez la voix que vous voulez, par exemple chaleureuse, grave et calme, écoutez-en un aperçu gratuit, conservez-la et générez de la parole avec elle. Modèles auto-hébergés ; sortie filigranée.',
+      ogTitle: 'Concevez une nouvelle voix à partir d’une description',
+      ogDescription: 'Décrivez une voix, écoutez des aperçus gratuits, conservez celle qui vous plaît et générez de la parole avec elle. Auto-hébergé, filigrané.',
+      intro: 'Le concepteur de voix crée une voix qui n’appartient à personne. Décrivez-la en quelques mots (genre, âge, accent, timbre et débit, par exemple) ou composez la description à partir des puces, puis écoutez un aperçu d’une phrase d’exemple. Les aperçus sont gratuits, à raison de trois par description et par heure. Quand vous entendez celle qu’il vous faut, donnez-lui un nom et conservez-la : la voix exacte que vous avez écoutée en aperçu est enregistrée dans votre compte et peut ensuite lire n’importe quel texte, dans toutes les langues de l’outil de parole. La conception s’exécute sur Qwen3-TTS et la parole sur Chatterbox, tous deux sur notre propre serveur GPU, et chaque fichier généré porte un filigrane inaudible.',
+      whatItDoes: [
+        'Transforme la description écrite d’une voix en un aperçu parlé.',
+        'Conserve exactement la voix écoutée en aperçu (la même graine) quand vous l’enregistrez.',
+        'Fait lire n’importe quel texte par la voix conservée, dans plus de 20 langues.',
+        'Renvoie un MP3 de la parole, avec un téléchargement WAV créé dans votre navigateur.',
+      ],
+      flowSteps: [
+        {
+          title: 'Décrire',
+          description: 'Écrivez ou cliquez sur les traits que vous voulez.',
+        },
+        {
+          title: 'Aperçu',
+          description: 'Trois aperçus gratuits par description et par heure.',
+        },
+        {
+          title: 'Conserver',
+          description: 'Nommez la voix et enregistrez-la dans votre compte.',
+        },
+        {
+          title: 'Générer la parole',
+          description: 'Saisissez n’importe quel texte et téléchargez l’audio.',
+        },
+      ],
+      advancedDetails: [
+        'La conception utilise Qwen3-TTS VoiceDesign (Apache 2.0). La phrase d’aperçu peut être rendue en dix langues : chinois, anglais, japonais, coréen, allemand, français, russe, portugais, espagnol et italien.',
+        'Une voix conservée est stockée sous la forme de sa description, de sa graine et d’un extrait de référence de 10 secondes ; à partir de là, c’est Chatterbox qui la fait parler, de sorte qu’elle sonne de la même façon partout et dans toutes les langues prises en charge.',
+        'Les aperçus ne sont pas comptabilisés. Conserver une voix compte pour une tâche IA, et chaque génération compte pour une tâche IA.',
+        'Les descriptions fonctionnent mieux en anglais ; les puces ajoutent des traits en anglais.',
+      ],
+      whyItMatters: [
+        'Une voix de narrateur ou de personnage bien distincte, sans engager un comédien voix pour une ébauche.',
+        'Aucune voix de personne réelle n’est impliquée : on n’emprunte l’identité vocale de personne.',
+        'La voix conservée reste cohérente d’un script à l’autre et d’une langue à l’autre.',
+      ],
+      useCases: [
+        {
+          title: 'Personnages',
+          description: 'Donnez à chaque personnage d’une histoire ou d’un prototype de jeu sa propre voix.',
+        },
+        {
+          title: 'Vidéos explicatives',
+          description: 'Un narrateur calme et clair pour les vidéos produit et de formation.',
+        },
+        {
+          title: 'Audio provisoire',
+          description: 'Une voix off temporaire pendant qu’un script évolue encore.',
+        },
+        {
+          title: 'Accessibilité',
+          description: 'Une voix de lecture agréable pour les longs documents.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Des modèles ouverts sur notre propre serveur GPU ; aucun fournisseur d’IA tiers.',
+        'Des aperçus gratuits avant que quoi que ce soit ne soit comptabilisé.',
+        'Une sortie filigranée et un bouton de suppression pour chaque voix conservée.',
+      ],
+      privacyNote: 'Seule la description écrite que vous rédigez est envoyée au modèle vocal ; les aperçus qu’il produit sont de l’audio que nous générons, et celui que vous conservez est stocké par sa graine. Les enregistrements vocaux et les voix enregistrées sont traités sur nos propres serveurs ; rien n’est envoyé à un fournisseur d’IA tiers et rien ne sert à entraîner un modèle. Une voix enregistrée (son enregistrement de référence et son aperçu) est stockée dans votre compte, suit la durée de conservation que vous choisissez et peut être supprimée à tout moment depuis Compte, Voix ; elle est supprimée avec votre compte. L’audio généré est conservé comme tout autre résultat : les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Une voix conçue est-elle la vraie voix de quelqu’un ?',
+          answer: 'Non. Elle est générée à partir de votre description et d’une graine aléatoire ; elle n’est modelée sur aucune personne en particulier.',
+        },
+        {
+          question: 'Pourquoi les aperçus s’épuisent-ils ?',
+          answer: 'Chaque description peut être écoutée en aperçu trois fois par heure, pour que les aperçus gratuits restent disponibles pour tout le monde. Modifiez la description pour obtenir un nouvel aperçu, ou conservez la voix qui vous plaît.',
+        },
+        {
+          question: 'La voix conservée sonnera-t-elle comme l’aperçu ?',
+          answer: 'Oui. La conservation envoie la même description et la même graine que l’aperçu que vous avez entendu, et la voix est enregistrée à partir de ce rendu.',
+        },
+        {
+          question: 'Quelles langues peut-elle parler ?',
+          answer: 'Une voix est conçue dans l’une de dix langues et, une fois conservée, elle peut parler toutes les langues de l’outil de parole, soit plus de vingt au total.',
+        },
+        {
+          question: 'La sortie est-elle marquée comme générée ?',
+          answer: 'Oui. Chaque fichier généré porte un filigrane inaudible que les outils de détection peuvent lire.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Aperçus : 3 par description et par heure, non comptabilisés.',
+          'Conserver une voix nécessite un compte.',
+        ],
+      },
+      related: [
+        {
+          label: 'Clonage vocal',
+          to: '/tools/voice-cloning',
+          description: 'Créez une voix à partir de votre propre enregistrement.',
+        },
+        {
+          label: 'Changeur de voix',
+          to: '/tools/voice-changer',
+          description: 'Décalez un enregistrement ou convertissez-le vers une voix.',
+        },
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Nettoyez un enregistrement avant de l’utiliser.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Changez la tonalité d’une musique ou d’une voix.',
+        },
+      ],
+      embed: {
+        title: 'Décrire une voix',
+        description: 'Rédigez une courte description ou cliquez sur les puces de traits, écoutez la voix en aperçu (trois aperçus gratuits par description et par heure), puis conservez-la pour générer de la parole. Conserver une voix nécessite un compte.',
+      },
     },
     'voice-changer': {
       name: 'Changeur de voix',
-      tagline:
-        'Décalez instantanément la hauteur et le caractère d\'un enregistrement, ou convertissez la parole vers une voix enregistrée ou prédéfinie grâce à l\'IA.',
+      h1: 'Changez la voix d’un enregistrement',
+      tagline: 'Décalez instantanément la hauteur et le caractère d\'un enregistrement, ou convertissez la parole vers une voix enregistrée ou prédéfinie grâce à l\'IA.',
+      metaTitle: 'Changeur de voix : décaler ou convertir une voix | Media Manipulator',
+      metaDescription: 'Changez la voix d’un enregistrement : décalez instantanément la hauteur et le formant, ou convertissez la parole vers une voix enregistrée ou prédéfinie grâce à l’IA. Comparez l’avant et l’après.',
+      ogTitle: 'Changez la voix d’un enregistrement',
+      ogDescription: 'Décalez instantanément la hauteur et le formant, ou convertissez la parole vers une autre voix grâce à l’IA, puis comparez l’avant et l’après.',
+      intro: 'Le changeur de voix offre deux façons de modifier un enregistrement. Décaler est une modification classique de la hauteur et du formant : montez ou descendez la hauteur jusqu’à douze demi-tons, conservez le caractère de la voix ou décalez-le avec la hauteur, ou partez d’un préréglage comme Plus grave, Plus aiguë, Enfantine, Âgée ou Téléphone. C’est instantané, sans compte et sans IA. Convertir utilise la conversion vocale par IA pour faire sonner la parole comme l’une de vos voix enregistrées ou une voix prédéfinie, en gardant les mots, le rythme et l’intonation. Dans les deux cas, vous pouvez comparer l’original et le résultat avec un lecteur A/B sans coupure avant de télécharger.',
+      whatItDoes: [
+        'Décale la hauteur jusqu’à 12 demi-tons vers le haut ou vers le bas, avec le formant conservé ou décalé.',
+        'Propose des préréglages de décalage : plus grave, plus aiguë, enfantine, âgée et téléphone.',
+        'Convertit la parole vers une voix enregistrée ou prédéfinie grâce à la conversion vocale par IA.',
+        'Lit l’original et le résultat dans une comparaison A/B synchronisée.',
+        'Renvoie un MP3, avec un téléchargement WAV créé dans votre navigateur.',
+      ],
+      flowSteps: [
+        {
+          title: 'Enregistrer ou envoyer',
+          description: 'De la parole depuis votre microphone ou un fichier audio ou vidéo.',
+        },
+        {
+          title: 'Choisir Décaler ou Convertir',
+          description: 'Changement de hauteur instantané, ou conversion par IA vers une autre voix.',
+        },
+        {
+          title: 'Comparer',
+          description: 'Basculez entre l’original et le résultat sans coupure.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'MP3, ou un WAV créé dans votre navigateur.',
+        },
+      ],
+      advancedDetails: [
+        'Décaler utilise le décaleur de hauteur rubberband via ffmpeg sur notre serveur. « Conserver le caractère de la voix » préserve le formant ; « Décaler avec la hauteur » le déplace, ce qui donne l’impression d’un locuteur plus petit ou plus grand. Téléphone applique en plus un filtre passe-bande de 300 à 3400 Hz.',
+        'Décaler compte pour une opération et sa sortie ne porte pas de filigrane. Convertir compte pour une tâche IA et sa sortie porte un filigrane inaudible.',
+        'Convertir utilise la conversion vocale Chatterbox sur notre propre serveur GPU. La durée d’enregistrement que vous pouvez convertir dépend de votre offre.',
+        'La conversion nécessite un compte. Convertir vers la voix d’une autre personne exige l’autorisation de cette personne, comme pour le clonage.',
+      ],
+      whyItMatters: [
+        'Déguisez une voix pour une interview anonyme ou un clip respectueux de la vie privée avec un simple décalage.',
+        'Corrigez une prise enregistrée avec la mauvaise voix sans la réenregistrer.',
+        'Entendez la différence immédiatement avec le lecteur A/B au lieu de deviner.',
+      ],
+      useCases: [
+        {
+          title: 'Audio anonyme',
+          description: 'Décalez une voix pour qu’un locuteur soit plus difficile à reconnaître.',
+        },
+        {
+          title: 'Voix de personnages',
+          description: 'Transformez votre propre lecture en une autre voix pour une histoire.',
+        },
+        {
+          title: 'Narration homogène',
+          description: 'Convertissez la réplique d’un invité vers la voix enregistrée du narrateur.',
+        },
+        {
+          title: 'Effets',
+          description: 'Un effet téléphone ou voix d’enfant pour une scène de vidéo.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Le décaleur est gratuit et ne nécessite aucun compte.',
+        'La conversion par IA s’exécute sur notre propre serveur GPU, pas sur un service tiers.',
+        'Comparaison A/B intégrée de l’original et du résultat.',
+      ],
+      privacyNote: 'L’enregistrement que vous envoyez est soit décalé avec rubberband, soit converti vers une autre voix par un modèle d’IA, selon le mode que vous choisissez. Les enregistrements vocaux et les voix enregistrées sont traités sur nos propres serveurs ; rien n’est envoyé à un fournisseur d’IA tiers et rien ne sert à entraîner un modèle. Une voix enregistrée (son enregistrement de référence et son aperçu) est stockée dans votre compte, suit la durée de conservation que vous choisissez et peut être supprimée à tout moment depuis Compte, Voix ; elle est supprimée avec votre compte. L’audio généré est conservé comme tout autre résultat : les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Quelle est la différence entre Décaler et Convertir ?',
+          answer: 'Décaler modifie la hauteur et le caractère de la même voix par traitement du signal ; c’est instantané et gratuit. Convertir utilise l’IA pour faire sonner la parole comme une voix différente, l’une de vos voix enregistrées ou une voix prédéfinie.',
+        },
+        {
+          question: 'Le décalage ajoute-t-il un filigrane ?',
+          answer: 'Non. L’audio décalé relève du traitement du signal ordinaire et ne porte pas de filigrane. L’audio converti porte un filigrane inaudible.',
+        },
+        {
+          question: 'Puis-je convertir ma voix en celle d’une célébrité ?',
+          answer: 'Non. Vous ne pouvez convertir que vers vos propres voix enregistrées ou vers nos voix prédéfinies, et utiliser la voix d’une personne réelle exige son autorisation explicite. L’usurpation d’identité sans autorisation est interdite par nos Conditions.',
+        },
+        {
+          question: 'Quelle durée l’enregistrement peut-il avoir ?',
+          answer: 'Décaler accepte des enregistrements jusqu’à la limite de durée de votre offre. La conversion a sa propre limite par offre, indiquée au moment de l’envoi.',
+        },
+        {
+          question: 'Puis-je utiliser un fichier vidéo ?',
+          answer: 'Oui. La piste audio est utilisée et l’image est ignorée.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Décaler : une opération, aucun compte nécessaire.',
+          'Convertir : une tâche IA, compte et offre requis.',
+        ],
+      },
+      related: [
+        {
+          label: 'Clonage vocal',
+          to: '/tools/voice-cloning',
+          description: 'Créez une voix à partir de votre propre enregistrement.',
+        },
+        {
+          label: 'Concepteur de voix',
+          to: '/tools/voice-designer',
+          description: 'Décrivez une nouvelle voix et conservez-la.',
+        },
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Nettoyez un enregistrement avant de l’utiliser.',
+        },
+        {
+          label: 'Modifier la hauteur d’un fichier audio',
+          to: '/tools/change-audio-pitch',
+          description: 'Changez la tonalité d’une musique ou d’une voix.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Nettoyez d’abord l’enregistrement.',
+        },
+      ],
+      embed: {
+        title: 'Changer une voix',
+        description: 'Enregistrez ou envoyez de la parole. Décaler modifie instantanément la hauteur et le formant, pour tout le monde. Convertir fait sonner l’enregistrement comme l’une de vos voix enregistrées ou une voix prédéfinie, et nécessite un compte avec une offre qui l’inclut.',
+      },
     },
     // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
     'content-studio': {
       name: 'Darkroom',
+      h1: 'Darkroom',
       tagline: 'Montez, superposez et mixez vidéo et audio sur une timeline multipiste, puis exportez en MP4. Un éditeur de type Premiere Pro, directement dans votre navigateur.',
       metaTitle: 'Darkroom : éditeur vidéo multipiste gratuit en ligne | Media Manipulator',
       metaDescription: 'Montez, superposez et mixez vidéo et audio sur une timeline multipiste, puis exportez en MP4 : un éditeur vidéo gratuit de type Premiere Pro qui fonctionne directement dans votre navigateur. Sans inscription ni installation.',
+      ogTitle: '🎬 Darkroom : éditeur vidéo multipiste gratuit dans votre navigateur',
+      ogDescription: 'Montez, superposez et mixez vidéo et audio sur une timeline multipiste, ajoutez titres, transitions et couleur, puis exportez en MP4. Un éditeur de type Premiere Pro, directement dans votre navigateur, sans inscription, entièrement gratuit. Venez l’essayer ! 🎬',
+      intro: 'Darkroom est un éditeur vidéo multipiste qui fonctionne dans un onglet de navigateur. Vous créez un projet avec une zone de travail et une fréquence d’images, déposez des fichiers vidéo, image et audio dans un chutier, les disposez sur des pistes empilées, les rognez et les coupez à l’image près, les étalonnez et les incrustez, ajoutez des titres, des transitions et des sous-titres, mixez l’audio avec une table de mixage par piste, puis confiez la timeline terminée à notre serveur de rendu, où ffmpeg construit tout le montage en un seul graphe de filtres et l’encode en H.264 ou HEVC dans un MP4, ou en MP3 ou WAV lorsque le projet est uniquement audio. L’aperçu sur lequel vous montez est composité en direct sur votre GPU en WebGL2 ; l’export est vérifié par rapport à cet aperçu, pour que ce que vous avez vu soit ce que vous obtenez.',
+      whatItDoes: [
+        'Fait tourner une timeline multipiste précise à l’image : rognage, coupe, suppression avec resserrement, cutter, glissement, coulissement, roulement et montage par propagation, marqueurs, groupes, verrouillage de piste, solo et masquage, et détachement de l’audio de la vidéo.',
+        'Composite les pistes dans l’ordre d’empilement avec recadrage, ajustement, transformation, un étalonnage colorimétrique de type Lumetri (exposition, contraste, saturation, température, teinte, vibrance), des LUT 3D, une incrustation chromatique avec pipette, l’opacité et huit modes de fusion.',
+        'Anime la position, l’échelle, la rotation, l’opacité, le volume, le panoramique et les paramètres d’effets avec des images clés et cinq courbes d’accélération ; ajoute quinze transitions et des clips de titre construits à partir de calques de texte et de formes.',
+        'Mixe l’audio via un fader par piste, un panoramique, un égaliseur trois bandes et un compresseur avec vumètres en direct, plus le ducking et des préréglages de loudness streaming, podcast et broadcast sur le bus master.',
+        'Génère des sous-titres avec Whisper sur notre GPU, vous laisse les modifier dans une piste de sous-titres et les exporte incrustés dans l’image ou sous forme de fichier SRT ou VTT séparé.',
+        'Exporte un MP4 H.264 ou HEVC avec audio AAC, ou un MP3 ou WAV, à la taille de la zone de travail ou mis à l’échelle en 720, 1080, 1440 ou 2160 lignes, et conserve un panneau d’exports avec progression et nouveau rendu.',
+      ],
+      flowSteps: [
+        {
+          title: 'Créer un projet',
+          description: 'Choisissez une zone de travail (16:9 en 1920 x 1080, 9:16 en 1080 x 1920, 1:1, 4:5 ou une taille personnalisée) et une fréquence d’images de 24, 30 ou 60.',
+        },
+        {
+          title: 'Importer des médias',
+          description: 'Téléversez vidéo, images et audio dans le chutier. Le serveur génère un proxy d’aperçu avec une image clé chaque seconde pour que la navigation reste légère.',
+        },
+        {
+          title: 'Couper et superposer',
+          description: 'Placez les clips sur les pistes, rognez et coupez à la tête de lecture, empilez les surimpressions et les titres au-dessus des images de base, et maintenez les images fixes aussi longtemps que vous voulez.',
+        },
+        {
+          title: 'Étalonner, incruster et mixer',
+          description: 'Ajustez la couleur, appliquez une LUT, incrustez un arrière-plan, posez des images clés sur ce qui doit bouger et équilibrez les pistes audio sur la table de mixage.',
+        },
+        {
+          title: 'Exporter',
+          description: 'Choisissez le format, la qualité, la hauteur de sortie, le mode de sous-titres et le préréglage de loudness. ffmpeg rend la timeline sur notre serveur et le fichier apparaît dans le panneau d’exports.',
+        },
+      ],
+      advancedDetails: [
+        'L’export est une seule invocation de ffmpeg : chaque source est une entrée, la timeline devient un graphe filter_complex (trim, scale, overlay, drawtext pour les titres, eq et filtres de couleur, amix avec normalize=0 pour l’audio) et la sortie est encodée en une seule passe. Les paramètres animés par images clés passent par un fichier sendcmd attaché au graphe, ce qui exige ffmpeg 4.4 ou plus récent sur l’hôte de rendu.',
+        'H.264 utilise l’encodeur matériel h264_nvenc lorsqu’un encodage de test réussit sur le GPU de rendu, sinon libx264. Les préréglages de qualité correspondent au preset NVENC p4 à qualité constante 23 (Moyenne), p5 à CQ 19 (Haute) et p4 à CQ 28 (Basse) ; sur libx264, ce sont preset medium CRF 23, slow CRF 18 et veryfast CRF 28. Les deux imposent yuv420p.',
+        'HEVC utilise hevc_nvenc ou libx265 à des valeurs CQ ou CRF cinq points plus élevées (28, 24, 33 sur NVENC ; 28, 24, 32 sur libx265), ce qui est le décalage habituel pour une qualité perçue égale, et étiquette le flux hvc1 pour que le MP4 se lise dans Safari et QuickTime. Si aucun des deux encodeurs n’est disponible, l’export échoue explicitement au lieu de renvoyer du H.264 sous un nom HEVC.',
+        'L’audio est rééchantillonné en stéréo 48 kHz dans le graphe et encodé en AAC à 192 kb/s pour les exports vidéo ; les exports MP3 utilisent libmp3lame à 192 kb/s et les exports WAV sont en PCM 16 bits. Les préréglages de loudness sont du loudnorm ffmpeg : streaming I=-14 LUFS TP=-1.5 LRA=11, podcast I=-16 TP=-1.5 LRA=11, broadcast I=-23 TP=-2 LRA=7.',
+        'Choisir une hauteur de sortie met à l’échelle l’image composée en dernier filtre (lanczos, pixels carrés, largeur arrondie à un nombre pair), après l’incrustation des sous-titres, de sorte que le texte est mis à l’échelle avec l’image au lieu d’être redessiné. Une hauteur que votre offre ne peut pas rendre est refusée avec une erreur, jamais rétrogradée en silence.',
+        'Les fichiers MP4 sont écrits avec -movflags +faststart pour que l’index se trouve en tête et que le fichier commence à se lire avant d’être entièrement téléchargé. Les images fixes de la timeline deviennent des entrées avec -loop 1 -framerate <project fps> -t <hold>, de sorte qu’une photo maintenue ne coûte pas plus à décoder que ses images.',
+      ],
+      whyItMatters: [
+        'Un outil de conversion modifie un seul fichier. Un montage en combine plusieurs : le b-roll sous l’interview, le titre sur l’ouverture, le lit musical sous les deux, chacun rogné à l’image près.',
+        'Dans les éditeurs en ligne, l’aperçu et l’export divergent souvent. Darkroom rend l’aperçu sur votre GPU et l’export sur le nôtre, et maintient les deux dans une tolérance documentée grâce à un banc d’images de référence.',
+        'Le gros du travail reste hors de votre ordinateur portable. Un export 4K, une transcription Whisper ou un composite multicouche étalonné par LUT s’exécute sur un serveur de rendu GPU, si bien qu’un portable léger peut finir le travail.',
+      ],
+      useCases: [
+        {
+          title: 'Clips verticaux pour les plateformes de format court',
+          description: 'Une zone de travail 1080 x 1920, un zoom sur l’intervenant, un carton de titre, une musique en ducking sous la voix et des sous-titres incrustés.',
+        },
+        {
+          title: 'Tutoriels et enregistrements d’écran',
+          description: 'Coupez les silences, assemblez les prises, superposez une webcam en incrustation d’image, ajoutez des annotations et exportez en 1080p avec un fichier de sous-titres séparé.',
+        },
+        {
+          title: 'Interviews et épisodes de podcast',
+          description: 'Deux angles de caméra montés sur l’intervenant, un mixage normalisé en loudness et un export MP3 de la même timeline pour le flux audio.',
+        },
+        {
+          title: 'Promos et vidéos produit',
+          description: 'Des images en incrustation chromatique sur un fond, une LUT pour le rendu, des mouvements de logo animés par images clés et un montage de 15 secondes en 4K pour l’écran mural.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un montage de 90 secondes en 1080p30 au préréglage Moyenne',
+          body: 'Deux clips 1080p, une piste musicale et un carton de titre sur une zone de travail 1920 x 1080 à 30 fps, exportés en H.264 au préréglage Moyenne. Sur le serveur de rendu avec un NVENC fonctionnel, c’est h264_nvenc preset p4 à qualité constante 23 avec yuv420p ; sans lui, libx264 preset medium CRF 23. Le mixage audio est encodé en AAC à 192 kb/s, ce qui pour 90 secondes donne 192 000 x 90 / 8, soit environ 2,2 Mo d’audio quel que soit le contenu. Le côté vidéo vise une qualité plutôt qu’un débit, donc sa taille dépend des images : un plan fixe de présentateur à CQ 23 s’encode petit, un mouvement à main levée s’encode gros. Le temps de rendu évolue avec la longueur de la timeline et le nombre de clips visibles en même temps, parce que chaque image de chaque clip visible est décodée et compositée avant d’atteindre l’encodeur.',
+        },
+        {
+          title: 'Un podcast de 20 minutes exporté en MP3 et en WAV',
+          body: 'Un projet uniquement audio (deux pistes de voix, un jingle d’intro, préréglage de loudness podcast) saute entièrement le graphe vidéo. Exporté en MP3, le fichier est du libmp3lame à 192 kb/s constants : 192 000 x 1 200 / 8 = 28,8 Mo, soit environ 29 Mo. Exporté en WAV, c’est du PCM 16 bits en stéréo 48 kHz comme dans le graphe : 48 000 x 2 canaux x 2 octets = 192 000 octets par seconde, 230 Mo pour 20 minutes. L’étape loudnorm vise -16 LUFS intégrés avec un plafond de -1.5 dBTP et 11 LU de plage de loudness. Sans images à compositer, la tâche est bornée par le décodage des sources et les filtres audio, donc elle se termine bien avant la durée de l’épisode.',
+        },
+      ],
+      whenNotToUse: 'Darkroom n’est pas le bon outil pour une tâche en une seule étape. Si vous avez seulement besoin de couper le début et la fin d’un clip, de changer son format ou de le réduire, les pages dédiées de découpage et de compression vidéo le font avec un seul téléversement et sans projet. Ce n’est pas non plus l’endroit pour des images que vous ne pouvez pas téléverser : chaque source est envoyée à notre serveur pour les proxys et le rendu, donc un contenu qui ne doit jamais quitter votre machine relève d’un éditeur de bureau. Les projets d’une session visiteur sont limités à un seul et durent 24 heures ; connectez-vous avant de commencer quoi que ce soit sur lequel vous voudrez revenir la semaine prochaine.',
+      whyMediaManipulator: [
+        'De vraies primitives de montage : cutter, glissement, coulissement, roulement, propagation, marqueurs, groupes, images clés avec accélération, une table de mixage avec égaliseur et compression, pas un outil de découpe avec un champ de titre.',
+        'Des exports honnêtes : l’encodage matériel ou logiciel est choisi par un test en direct, HEVC refuse plutôt que de mentir, et une résolution que votre offre ne peut pas rendre est une erreur, pas une rétrogradation silencieuse.',
+        'Un compte, un seul endroit : transcrivez, compressez ou supprimez les métadonnées des mêmes fichiers que vous montez, et générez une voix off ou des sous-titres sur le même serveur GPU.',
+      ],
+      privacyNote: 'Darkroom conserve vos médias sur nos serveurs aussi longtemps que le projet existe : les téléversements rejoignent le chutier comme ressources, le serveur en génère des proxys d’aperçu, des pellicules et des crêtes de forme d’onde, et les exports sont construits par ffmpeg dans outputs/<jobId>/ sur l’hôte de rendu. Lorsque vous demandez des sous-titres, l’audio est envoyé à Whisper sur notre propre GPU et les repères obtenus sont stockés avec le projet. Le document de projet, ses ressources, ses versions et ses exports peuvent être supprimés depuis l’éditeur ou votre page Compte. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Les vidéos et fichiers audio téléversés passent aussi par une étape d’analyse automatisée sur notre propre serveur. Rien n’est envoyé à un fournisseur d’IA tiers et aucun fichier ne sert à entraîner quoi que ce soit.',
+      faq: [
+        {
+          question: 'Darkroom est-il gratuit ?',
+          answer: 'Oui. Sans compte, vous pouvez conserver un projet et rendre 5 exports par jour, avec des téléversements jusqu’à 200 Mo par fichier et une sortie jusqu’à 1080 lignes. Un compte gratuit porte cela à 5 projets, 30 exports par jour, des fichiers de 1 Go et 1440 lignes ; Premium donne des projets illimités, 300 exports par jour, des fichiers de 5 Go et une sortie en 2160 lignes ; Pro porte les exports à 700 par jour. Les exports ont leur propre compteur quotidien et ne consomment pas le quota général d’opérations. Ce sont les valeurs par défaut ; la page des tarifs affiche les chiffres en vigueur.',
+        },
+        {
+          question: 'Que puis-je exporter ?',
+          answer: 'Un MP4 avec vidéo H.264 ou HEVC et audio AAC, ou un MP3 ou WAV pour les projets uniquement audio. La vidéo peut sortir à la taille de la zone de travail ou mise à l’échelle en 720, 1080, 1440 ou 2160 lignes, avec des sous-titres incrustés, en fichier SRT ou VTT séparé, ou omis, et avec un préréglage de loudness streaming, podcast ou broadcast sur le mixage.',
+        },
+        {
+          question: 'Quel préréglage de qualité choisir ?',
+          answer: 'Moyenne correspond à CRF 23 sur libx264 ou à une qualité constante 23 sur NVENC, et c’est le choix raisonnable par défaut pour un envoi vers une plateforme qui réencode de toute façon. Haute (CRF 18 ou CQ 19, preset slow ou p5) est pour un master que vous remonterez ou montrerez sur un grand écran. Basse (CRF 28 ou CQ 28, veryfast ou p4) est pour un aperçu rapide à envoyer à un collègue.',
+        },
+        {
+          question: 'Pourquoi mon export HEVC a-t-il échoué ?',
+          answer: 'HEVC a besoin soit de hevc_nvenc sur le GPU de rendu, soit de libx265 dans la version de ffmpeg. Si le serveur n’a ni l’un ni l’autre, l’export échoue avec un message d’encodeur non pris en charge au lieu de renvoyer un fichier H.264 étiqueté HEVC. Passez le format en H.264 et la même timeline se rendra.',
+        },
+        {
+          question: 'Comment les sous-titres sont-ils créés ?',
+          answer: 'Générer les sous-titres envoie l’audio de la timeline à Whisper sur notre serveur GPU. Les segments reviennent sous forme de repères que vous pouvez modifier dans la piste de sous-titres, puis exporter incrustés dans l’image (une piste de sous-titres ASS rendue dans les images) ou en fichier SRT ou VTT à côté de la vidéo. La génération de sous-titres compte comme une tâche IA, prise sur le quota IA.',
+        },
+        {
+          question: 'L’export correspond-il à l’aperçu ?',
+          answer: 'C’est tout l’objet de la conception. L’aperçu composite en WebGL2 dans le même ordre que le graphe de filtres du serveur (recadrage, ajustement, transformation, étalonnage, LUT, incrustation, opacité, fusion), et un banc d’images de référence compare les images des deux dans une tolérance documentée. Solo et masquage s’appliquent à l’export exactement comme à l’aperçu.',
+        },
+        {
+          question: 'Puis-je revenir sur un projet plus tard ?',
+          answer: 'Oui. Les projets sont enregistrés avec des numéros de révision, de sorte qu’un onglet obsolète ne peut pas écraser un travail plus récent, et l’historique des versions conserve des points de contrôle auxquels vous pouvez revenir. Un brouillon est aussi gardé dans votre navigateur pour la récupération après un plantage. Les utilisateurs connectés peuvent ouvrir leurs projets récents depuis n’importe quel appareil ; les projets visiteur restent liés à la session du navigateur et à la fenêtre de conservation de 24 heures.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Les fichiers sources et exportés sont traités sur nos serveurs. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+        ],
+        processingNotes: [
+          'L’aperçu est composité dans le navigateur ; l’export final est encodé sur le serveur en MP4 H.264 ou HEVC, ou en audio MP3 ou WAV.',
+        ],
+      },
+      related: [
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez encore un export pour l’e-mail ou une connexion lente.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenez une transcription complète d’un montage terminé, pas seulement des sous-titres.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Extrayez la bande-son d’un clip avant de l’amener dans la timeline.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Quand une seule coupe suffit.',
+        },
+        {
+          label: 'Motion',
+          to: '/tools/motion',
+          description: 'Animez un logo ou un synthé en SVG, puis exportez un GIF pour la timeline.',
+        },
+        {
+          label: 'Tutoriel Darkroom',
+          to: '/tutorials/content-studio',
+          description: 'Construisez un montage du projet vide au MP4 exporté, pas à pas.',
+        },
+      ],
+      embed: {
+        title: 'Monter une vidéo',
+        description: 'Créez un nouveau projet (ou rouvrez-en un récent), glissez des fichiers vidéo, image et audio dans le chutier, puis déposez-les sur la timeline multipiste. Rognez, coupez et organisez les clips, superposez des surimpressions et des titres, mixez l’audio et exportez un MP4 terminé, le tout dans votre navigateur.',
+      },
     },
     'remove-exif-metadata': {
       name: 'Supprimer les métadonnées EXIF des images',
+      h1: 'Supprimer les métadonnées EXIF des images en ligne',
       tagline: 'Supprimez la localisation GPS et les données d’appareil, de caméra et d’horodatage de vos photos avant de les partager.',
-      metaTitle: 'Supprimer les métadonnées EXIF d’images en ligne (gratuit) | Media Manipulator',
+      metaTitle: 'Supprimer les métadonnées EXIF d’une image en ligne | Media Manipulator',
       metaDescription: 'Outil en ligne gratuit pour supprimer les métadonnées EXIF, GPS, IPTC et d’appareil photo des images JPG, PNG, WebP et HEIC. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Supprimer les métadonnées EXIF des images en ligne',
+      ogDescription: 'Supprimez les métadonnées de localisation GPS, d’appareil photo et d’horodatage des images avant de les partager publiquement.',
+      intro: 'Une photo transporte un second document en elle. À côté des pixels, un téléphone ou un appareil photo inscrit la marque et le modèle de l’appareil, souvent son numéro de série, l’objectif, l’exposition, la seconde exacte du déclenchement, le logiciel qui a enregistré le fichier en dernier, une petite vignette d’aperçu et, lorsque les services de localisation étaient activés, la latitude, la longitude et l’altitude de l’endroit où vous vous teniez. Cet outil lit tout cela dans un JPG, PNG, WebP ou HEIC, vous montre chaque balise regroupée selon ce qu’elle révèle, puis supprime l’ensemble en une seule passe d’ExifTool, pour que la copie que vous partagez ne contienne que l’image.',
+      whatItDoes: [
+        'Inspecte le fichier téléversé avec ExifTool et liste chaque balise trouvée, regroupée par catégorie (appareil, objectif, GPS, date et heure, XMP, IPTC, vignette, couleur, notes du fabricant et plus encore), en signalant les balises de localisation, d’identité, d’appareil et d’historique.',
+        'Supprime les blocs EXIF (IFD0 et ExifIFD : marque, modèle, numéro de série du boîtier, modèle d’objectif, exposition, ISO, focale, dates de prise de vue et de modification) et l’IFD GPS (latitude, longitude, altitude, leurs balises de référence, horodatages GPS).',
+        'Supprime la vignette d’aperçu intégrée IFD1, qui est une petite copie séparée de l’image et survit au recadrage dans de nombreux éditeurs.',
+        'Supprime les paquets XMP (outil de création, historique des modifications, mots-clés, notes), les enregistrements IPTC (auteur, copyright, légende), les blocs de ressources Photoshop, les notes du fabricant et le profil colorimétrique ICC.',
+        'Applique d’abord l’orientation EXIF aux pixels, pour qu’une photo de téléphone qui reposait sur la balise de rotation ne ressorte pas de travers une fois la balise supprimée.',
+        'Compte ce qui a été supprimé en comparant les rapports avant et après et affiche le nombre, avec une mention lorsque des balises de localisation en faisaient partie.',
+      ],
+      flowSteps: [
+        {
+          title: 'Téléverser la photo',
+          description: 'Déposez un JPG, PNG, WebP ou HEIC. Le serveur exécute ExifTool deux fois (une passe lisible et une passe numérique pour les valeurs GPS et d’exposition) et renvoie le rapport.',
+        },
+        {
+          title: 'Lire le rapport',
+          description: 'Les balises sont regroupées par catégorie ; les coordonnées GPS sont placées sur une carte pour que vous voyiez exactement ce que le fichier révèle.',
+        },
+        {
+          title: 'Tout supprimer',
+          description: 'Un clic réenregistre l’image avec ImageMagick et exécute exiftool -all= sur le résultat.',
+        },
+        {
+          title: 'Comparer et télécharger',
+          description: 'L’écran de résultat indique combien de balises ont disparu, propose une comparaison côte à côte des deux rapports et vous donne le fichier nettoyé.',
+        },
+      ],
+      advancedDetails: [
+        'La passe sur les pixels est ImageMagick : convert <input> -auto-orient -quality 85 <output>, le conteneur de sortie correspondant à celui d’entrée pour JPG, PNG, WebP, GIF et AVIF. HEIC, TIFF et BMP n’ont pas de chemin vers le même conteneur sur cette page et reviennent en JPG.',
+        'La passe sur les métadonnées est exiftool -overwrite_original -all= sur le fichier converti. -all= supprime d’un coup tous les groupes inscriptibles : EXIF (IFD0, ExifIFD, GPS, InteropIFD), la vignette IFD1, XMP, IPTC, Photoshop IRB, ICC_Profile, les notes du fabricant et tous les segments APP qu’ExifTool sait écrire. Les segments JFIF et Adobe APP14 dont un décodeur JPEG a besoin sont laissés en place ; ils décrivent la disposition des pixels, pas vous.',
+        'Comme l’image est réencodée, un JPG est réécrit à la qualité 85 et un PNG est réécrit sans perte. La suppression n’est pas une copie octet pour octet dont on aurait retiré les métadonnées.',
+        'Les rapports avant et après sont le même MetadataDocument que construit l’inspecteur : des entrées indexées par groupe telles que GPS:GPSLatitude ou XMP-xmpMM:History, chacune classée par un catalogue d’environ 1 800 balises en 22 catégories et quatre classes de confidentialité (localisation, identité, appareil, historique).',
+        'Le compte des suppressions exclut les lignes qui changent à chaque conversion (nom de fichier, taille, date de modification, type MIME, dimensions de l’image), pour qu’il reflète les métadonnées réellement supprimées plutôt que des données de gestion.',
+        'Les conteneurs vidéo et audio peuvent aussi être nettoyés, depuis les convertisseurs vidéo et audio : ffmpeg est exécuté avec -map_metadata -1 -map_chapters -1, et pour MP4, MOV, M4A et M4V une passe exiftool -all= suit, car ffmpeg laisse derrière lui les clés QuickTime et le XMP.',
+      ],
+      whyItMatters: [
+        'Les balises GPS correspondent à une adresse postale. Une photo d’un canapé à vendre, publiée depuis chez vous, peut indiquer à un inconnu où se trouve le canapé.',
+        'Les balises d’appareil et de numéro de série relient les photos entre elles et à vous. Deux images avec le même BodySerialNumber ont été prises avec le même appareil, quel que soit le compte qui les a publiées.',
+        'La vignette IFD1 est une copie de l’image d’origine. Recadrez un visage ou un document hors de la photo, et l’aperçu peut encore le montrer.',
+        'Beaucoup de sites suppriment l’EXIF au téléversement, et beaucoup ne le font pas. Les applications de messagerie, les pièces jointes d’e-mail, les partages cloud et les sites de petites annonces laissent souvent passer le fichier intact.',
+      ],
+      useCases: [
+        {
+          title: 'Petites annonces et sites de vente',
+          description: 'Supprimez la localisation et l’heure de prise de vue des photos de produits prises chez vous avant que les acheteurs les voient.',
+        },
+        {
+          title: 'Photos de documents',
+          description: 'Un instantané d’un formulaire ou d’une lettre enregistre aussi quand et où il a été photographié ; supprimez cela avant de le transmettre.',
+        },
+        {
+          title: 'Publication depuis un lieu sensible',
+          description: 'Retirez les identifiants d’appareil et les coordonnées d’une image avant qu’elle vous échappe, et vérifiez avec la comparaison qu’ils ont disparu.',
+        },
+        {
+          title: 'Nettoyage d’une image retouchée',
+          description: 'Les éditeurs ajoutent un historique XMP et conservent la vignette d’origine ; supprimez les deux pour que le fichier ne montre que ce que vous vouliez.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un JPEG iPhone de 12 mégapixels avec GPS',
+          body: 'Un JPEG de 4032 x 3024 sorti directement d’un iPhone 15 Pro contient, dans un cas typique, 5 balises IFD0 (marque, modèle, orientation, logiciel, date de modification), 7 balises ExifIFD dont le numéro de série du boîtier et le modèle d’objectif, 5 balises GPS, 4 entrées XMP dont l’historique des modifications, 2 entrées de profil ICC, les 3 entrées de vignette IFD1 (environ 5 Ko de JPEG d’aperçu) et une GPSPosition dérivée. L’écran de résultat annonce 27 balises supprimées, localisation comprise : ces 27 sont toutes les entrées sauf les lignes de nom, de taille, de date et de type de fichier et les dimensions de l’image, présentes sur n’importe quel fichier. La sortie est un JPG réencodé à la qualité 85 avec l’orientation intégrée aux pixels ; le réencodage décide de la taille finale. La tâche consiste en un seul décodage et encodage ImageMagick plus une réécriture ExifTool ; elle se termine donc en quelques secondes, et le temps est consacré aux pixels, pas aux balises.',
+        },
+        {
+          title: 'Un HEIC d’un téléphone récent',
+          body: 'HEIC n’a pas de chemin vers le même conteneur sur cette page ; un HEIC de 12 mégapixels est donc décodé par ImageMagick et écrit en JPG à la qualité 85, puis nettoyé avec exiftool -all=. Vous perdez le conteneur HEIC et son profil colorimétrique, et vous gagnez un fichier que tous les navigateurs et sites de vente acceptent. Attendez-vous à un fichier plus gros que le HEIC téléversé, parce que le réencodage JPEG à la qualité 85 est la seule compression appliquée et qu’il décide de la taille. Le rapport liste les notes du fabricant Apple et le bloc GPS avant, et rien d’autre que les lignes de fichier et de dimensions d’image après. Le décodage HEIC est la partie lente ; cela reste une affaire de secondes pour une photo.',
+        },
+      ],
+      whenNotToUse: 'Ne nettoyez pas une photo que vous devez encore retoucher ou dont vous devez prouver la provenance. Les fichiers RAW d’appareil photo ne sont pas acceptés ici et ne devraient de toute façon pas être nettoyés avec -all=, parce que leurs notes du fabricant contiennent des données dont le convertisseur RAW a besoin. Si vous voulez conserver une mention de copyright ou un titre tout en retirant les balises GPS et d’appareil, utilisez plutôt le mode Métadonnées personnalisées du convertisseur d’images, qui supprime tout et ne réécrit que les champs que vous renseignez. Et rappelez-vous que supprimer les métadonnées ne supprime pas ce qui est visible sur l’image : un panneau de rue, un reflet ou un visage indique toujours où vous étiez ; les outils de floutage des visages et de masquage de texte s’occupent de cela.',
+      whyMediaManipulator: [
+        'Vous voyez les preuves. L’inspecteur liste chaque balise avant la suppression et une comparaison prouve ce qui a disparu après, plutôt qu’une coche verte et une promesse.',
+        'Une seule passe, tous les groupes. ExifTool -all= supprime ensemble EXIF, GPS, XMP, IPTC, Photoshop, ICC, notes du fabricant et vignette d’aperçu ; rien n’a besoin d’être coché bloc par bloc.',
+        'L’orientation est gérée. La balise de rotation est appliquée aux pixels avant d’être supprimée, pour qu’une photo de téléphone nettoyée ne se retrouve pas de travers ailleurs, ce qui arrive en général quand la balise est retirée sans faire pivoter les pixels.',
+      ],
+      privacyNote: 'Cet outil supprime, de la copie qu’il renvoie, les blocs EXIF (marque, modèle, numéro de série, objectif, exposition, dates), le bloc GPS, la vignette d’aperçu IFD1, les enregistrements XMP et IPTC, les ressources Photoshop, les notes du fabricant et le profil ICC. Pour cela, le serveur doit d’abord les lire : le fichier téléversé est inspecté avec ExifTool et le rapport est écrit dans le dossier de la tâche sous le nom metadata.json, et après la suppression un second rapport du résultat est conservé à côté pour que la vue Comparer puisse montrer la différence. Les deux rapports et les deux fichiers vivent dans uploads/<jobId>/ et outputs/<jobId>/ et sont supprimés ensemble à la fin de la fenêtre de conservation. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’inspecteur autonome (lecture d’un fichier sans le convertir) supprime sa copie temporaire dès que le rapport est produit. Les images passent aussi par une étape d’analyse automatisée sur notre propre serveur ; rien n’est envoyé à un tiers.',
+      faq: [
+        {
+          question: 'Quels groupes de métadonnées sont supprimés exactement ?',
+          answer: 'Tout ce qu’ExifTool sait écrire : EXIF (IFD0, ExifIFD, InteropIFD), l’IFD GPS, la vignette IFD1, le XMP dans tous ses espaces de noms (xmp, dc, xmpMM, photoshop, etc.), les enregistrements IPTC IIM, les blocs de ressources Photoshop, les notes du fabricant d’Apple, Canon, Nikon, Sony et d’autres marques, et le profil colorimétrique ICC. Pour PNG, cela inclut les blocs tEXt, iTXt, zTXt, eXIf et iCCP ; pour WebP, les blocs EXIF, XMP et ICCP.',
+        },
+        {
+          question: 'L’image est-elle réencodée ?',
+          answer: 'Oui. Le fichier passe par ImageMagick (qui applique aussi la balise d’orientation aux pixels) avant qu’ExifTool supprime les balises. Un JPG est réécrit à la qualité 85, un PNG est réécrit sans perte, un WebP à la qualité 85. Visuellement, le JPG réencodé se distingue difficilement de l’original aux tailles d’affichage normales, mais ce n’est pas le même flux binaire.',
+        },
+        {
+          question: 'Pourquoi mon HEIC est-il revenu en JPG ?',
+          answer: 'La suppression en un clic conserve le conteneur pour JPG, PNG, WebP, GIF et AVIF. HEIC, TIFF et BMP sont décodés et écrits en JPG pour que le résultat s’ouvre partout. Si vous avez besoin d’un HEIC en retour, convertissez-le dans le convertisseur d’images avec les métadonnées réglées sur Supprimer.',
+        },
+        {
+          question: 'Le profil colorimétrique est-il supprimé, et est-ce important ?',
+          answer: 'Oui, exiftool -all= supprime le profil ICC. Pour une photo sRGB standard, rien ne change, parce que les visionneuses supposent le sRGB en l’absence de profil. Pour une photo Display P3 à large gamme venant d’un téléphone récent, les couleurs peuvent paraître légèrement moins saturées dans les logiciels qui respectent les profils. Si cela compte pour vous, utilisez le mode Métadonnées personnalisées du convertisseur d’images et conservez-y le profil.',
+        },
+        {
+          question: 'Puis-je conserver une mention de copyright ou un titre ?',
+          answer: 'Pas avec la suppression en un clic, qui retire tout. La section métadonnées du convertisseur d’images propose un mode Personnalisé qui nettoie le fichier puis ne réécrit que ce que vous saisissez : titre, auteur, description, copyright, commentaire, mots-clés et les champs EXIF ou GPS choisis. Utilisez-le quand vous voulez un fichier propre qui vous nomme encore.',
+        },
+        {
+          question: 'Comment savoir si cela a fonctionné ?',
+          answer: 'L’écran de résultat donne le nombre de balises supprimées et signale si des données de localisation en faisaient partie. Ouvrez Comparer pour l’avant-après complet : c’est le même rapport ExifTool exécuté sur le fichier de sortie, donc une ligne GPS ou de numéro de série qui aurait survécu y apparaîtrait.',
+        },
+        {
+          question: 'Est-ce gratuit, et combien de photos puis-je nettoyer ?',
+          answer: 'Oui. Chaque suppression est un téléversement via le convertisseur standard, et compte donc sur le quota quotidien d’opérations : par défaut 5 par jour sans compte et jusqu’à 200 Mo par fichier, 30 par jour avec un compte gratuit et des fichiers jusqu’à 1 Go, 300 avec Premium et 700 avec Pro. Une tâche qui échoue rend son unité. Les chiffres en vigueur sont sur la page des tarifs.',
+        },
+      ],
+      related: [
+        {
+          label: 'Flouter les visages sur une photo',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Les métadonnées ne sont que la moitié de l’histoire ; cachez les visages que l’image elle-même montre.',
+        },
+        {
+          label: 'Masquer du texte dans une image',
+          to: '/tools/redact-text-in-image',
+          description: 'Noircissez les noms, adresses et numéros imprimés sur l’image.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez la photo nettoyée avant de la publier.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Regroupez des photos de documents nettoyées en un seul PDF.',
+        },
+        {
+          label: 'Politique de confidentialité',
+          to: '/privacy-policy',
+          description: 'Comment les téléversements, rapports et résultats sont stockés et supprimés.',
+        },
+      ],
+      embed: {
+        title: 'Supprimer les métadonnées d’une image',
+        description: 'Téléversez une photo JPG, PNG, WebP ou HEIC. Nous affichons chaque balise qu’elle contient ; appuyez ensuite sur Tout supprimer pour les retirer toutes et voir exactement ce qui a été supprimé.',
+      },
     },
     'compress-image': {
       name: 'Compresser une image',
+      h1: 'Compresser une image en ligne gratuitement',
       tagline: 'Réduisez le poids des fichiers JPG, PNG et WebP pour des sites plus rapides, des envois plus légers et un partage plus simple.',
       metaTitle: 'Compresser une image en ligne gratuitement | Media Manipulator',
       metaDescription: 'Compresseur d’images en ligne gratuit. Réduisez le poids des fichiers JPG, PNG et WebP tout en gardant une bonne qualité. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Compresser une image en ligne gratuitement',
+      ogDescription: 'Réduisez le poids des fichiers JPG, PNG et WebP tout en gardant une bonne qualité. Gratuit, rapide, sans inscription.',
+      intro: 'Compresser une image consiste à la réencoder pour que la même image occupe moins d’octets. Cette page ouvre le convertisseur d’images avec le champ de qualité déjà réglé sur 80 et le format de sortie aligné sur votre envoi : un JPG reste un JPG et un WebP reste un WebP. Sur notre serveur, la tâche est une seule commande ImageMagick : le fichier est orienté automatiquement d’après son indicateur de rotation EXIF, puis écrit avec -quality 80, ou le nombre entre 1 et 100 que vous saisissez. Pour le JPG et le WebP, ce nombre est ce qui décide du poids du fichier. Pour le PNG, il est ignoré, car le PNG est sans perte ; le vrai levier pour une photo PNG est donc de basculer la sortie en JPG ou en WebP.',
+      whatItDoes: [
+        'Réencode la sortie JPG et WebP à la qualité de votre choix ; le formulaire démarre à 80.',
+        'Conserve le format d’entrée sauf si vous le changez ; faire passer une photo PNG en WebP ou en JPG est ce qui apporte les grandes économies pour le PNG.',
+        'Peut réduire les dimensions en pixels dans la même passe : une largeur ou une hauteur saisie dans les champs de redimensionnement est appliquée avant le réglage de qualité, de sorte que les deux économies se cumulent.',
+        'Recopie les balises EXIF, IPTC et XMP d’origine sur le fichier compressé, sauf si vous réglez le mode de métadonnées sur « supprimer ».',
+        'Écrit le résultat sous le nom converted.jpg, converted.webp ou converted.png dans le dossier de sortie de la tâche, qui est ce que sert le lien de téléchargement.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer un JPG, PNG ou WebP',
+          description: 'Tout fichier jusqu’au plafond par fichier de votre offre, soit 200 Mo pour les visiteurs par défaut.',
+        },
+        {
+          title: 'Choisir un nombre de qualité',
+          description: '80 est prédéfini. De 60 à 75, la réduction est plus forte ; à partir de 90, presque tout est conservé.',
+        },
+        {
+          title: 'ImageMagick réencode',
+          description: 'convert input -auto-orient -quality N output, suivi d’une passe exiftool qui recopie les balises.',
+        },
+        {
+          title: 'Télécharger le fichier allégé',
+          description: 'La sortie est servie depuis le dossier de la tâche jusqu’à la fin de sa fenêtre de conservation.',
+        },
+      ],
+      advancedDetails: [
+        'La commande exacte est ImageMagick convert avec le chemin d’entrée en premier, puis -auto-orient, un -crop et un -resize facultatifs, puis -quality N, puis le chemin de sortie. L’argument -quality n’est ajouté que lorsque le format de sortie est jpg, jpeg ou webp (convertImage dans converter.go).',
+        'La qualité est validée sur le serveur dans la plage 1 à 100 ; une valeur en dehors est refusée avant tout travail, et l’unité de la tâche est remboursée.',
+        'La sortie PNG ne reçoit jamais d’argument -quality : baisser le nombre sur une tâche PNG vers PNG ne change donc rien. Le convertisseur n’exécute ni pngquant ni aucune réduction de palette ; pour alléger un PNG, vous changez son format.',
+        'Dans le mode de métadonnées par défaut, le serveur exécute exiftool -TagsFromFile <original> -all:all -unsafe sur le résultat : les balises d’appareil, d’objectif, de date et GPS survivent donc à la compression. Choisir « supprimer » exécute à la place exiftool -all= sur la sortie.',
+        'Un redimensionnement, si vous en définissez un, a lieu avant l’application de la qualité. Une largeur seule conserve les proportions ; largeur plus hauteur force cette boîte exacte même si les proportions diffèrent.',
+        'Des filtres, une teinte et une incrustation de texte sont disponibles dans le même formulaire : un filtre est appliqué juste après le redimensionnement, et la teinte et l’incrustation de texte sont ajoutées en dernier, après le réglage de qualité.',
+      ],
+      whyItMatters: [
+        'Les octets d’images représentent généralement la plus grande part d’une page web ou d’un e-mail : les diviser par deux est donc le gain de vitesse le moins cher qui soit.',
+        'Les formulaires d’envoi, les champs de CMS et les applications de messagerie imposent des plafonds mesurés en mégaoctets, pas en pixels.',
+        'Réencoder une fois à une qualité que vous avez choisie vaut mieux que laisser une plateforme réencoder à sa façon.',
+      ],
+      useCases: [
+        {
+          title: 'Photos de blog et de produits',
+          description: 'Faites passer un JPEG d’appareil photo de 4 à 6 Mo bien en dessous de 1 Mo avant publication.',
+        },
+        {
+          title: 'Pièces jointes d’e-mail',
+          description: 'Faites tenir une série de photos sous une limite de boîte mail de 20 ou 25 Mo.',
+        },
+        {
+          title: 'Portails de candidature',
+          description: 'Respectez une limite de 2 Mo pour une photo d’identité ou de document, sans perte visible.',
+        },
+        {
+          title: 'Copies de travail',
+          description: 'Gardez des copies plus légères pour l’usage quotidien pendant que les originaux restent dans vos archives.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un JPEG de téléphone de 4000 x 3000 à la qualité 80 avec une largeur de 1600 px',
+          body: 'Entrée : un JPEG de 4,8 Mo, 4000 x 3000 pixels, tout droit sorti d’un appareil photo de téléphone. Réglages : largeur 1600, hauteur vide, qualité 80, format inchangé. ImageMagick exécute -resize 1600x, ce qui conserve les proportions et produit 1600 x 1200 pixels : 1,92 mégapixel contre 12 à l’origine, soit environ un sixième des pixels. Le résultat est écrit avec -quality 80 et récupère ses EXIF : la sortie est donc un JPG de 1600 x 1200 dont le poids suit cette réduction de pixels, à peu près un sixième de l’original ; attendez-vous à environ 1 Mo ou moins à partir de 4,8 Mo. La conversion est une seule passe ImageMagick sur une image de 12 mégapixels et prend quelques secondes ; l’envoi du fichier de 4,8 Mo prend généralement plus de temps que sa conversion.',
+        },
+        {
+          title: 'Une capture d’écran PNG de 2,6 Mo basculée en WebP',
+          body: 'Entrée : une capture d’écran PNG de 1920 x 1080 et 2,6 Mo, sans transparence. Laisser le format en PNG et passer la qualité à 60 ne changerait rien, car -quality n’est pas transmis pour la sortie PNG. Basculer la sortie en WebP à la valeur prédéfinie 80 exécute convert input -auto-orient -quality 80 converted.webp. Non compressés, ces 2 073 600 pixels représentent 6,2 Mo de RVB ; le WebP avec perte à la qualité 80 n’en conserve qu’une fraction : le résultat n’est donc qu’une fraction du PNG de 2,6 Mo, le chiffre exact dépendant de la quantité de couleurs unies et de texte que contient la capture. Les dimensions restent 1920 x 1080 et la tâche se termine en quelques secondes.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas de compression avec perte sur une image que vous comptez encore retoucher en profondeur, sur un PNG dont vous devez conserver la transparence en PNG (passer en JPG aplatit le canal alpha), ni sur des captures d’écran de petit texte, où une qualité bien inférieure à 85 fait baver les lettres. Si le fichier est lourd uniquement à cause de ses dimensions en pixels, le redimensionneur d’images est la meilleure première étape ; si votre objectif est la confidentialité plutôt que le poids, le suppresseur d’EXIF retire les balises sans toucher aux pixels. Et un JPG déjà enregistré à la qualité 70 ne s’allège guère à 80 ; chaque réenregistrement ajoute de la perte sans gain correspondant.',
+      whyMediaManipulator: [
+        'La commande exécutée est écrite sur cette page, y compris le fait que le PNG ignore le nombre de qualité : vous n’avez donc pas à deviner pourquoi un fichier n’a pas rétréci.',
+        'Les contrôles de qualité, de redimensionnement, de format et de métadonnées tiennent dans un seul formulaire et un seul envoi, et aucun filigrane n’est ajouté.',
+        'Rien à installer et aucun compte requis pour l’outil standard. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre image est stockée sous uploads/<jobId>/ sur notre propre serveur, ImageMagick écrit la copie compressée dans outputs/<jobId>/, et un rapport de métadonnées de l’original est écrit à côté. Dans le mode par défaut, exiftool recopie les balises EXIF, IPTC et XMP d’origine sur le fichier compressé : les données de localisation et d’appareil reviennent donc avec le résultat, sauf si vous choisissez l’option « supprimer ». Chaque image envoyée est aussi soumise à une analyse automatisée réalisée par un modèle de vision sur le même serveur, et son résumé JSON est conservé avec la tâche. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Rien n’est envoyé à un service tiers.',
+      faq: [
+        {
+          question: 'Compresser une image ici est-il gratuit ?',
+          answer: 'Oui pour l’outil standard. Une tâche de compression dépense une des opérations de la journée : les visiteurs disposent de 5 par jour avec un plafond par fichier de 200 Mo par défaut, un compte gratuit porte cela à 30 par jour et 1 Go par fichier, et Premium et Pro montent à 300 et 700. Les chiffres en vigueur figurent sur /pricing, car les limites peuvent changer.',
+        },
+        {
+          question: 'Quel nombre de qualité utiliser ?',
+          answer: '80 est la valeur prédéfinie et un choix raisonnable pour les photos. Descendez plus bas seulement quand une limite de taille stricte l’impose, et montez à 90 ou plus pour les images qui seront imprimées ou recadrées plus tard. Le nombre est transmis tel quel à l’option -quality d’ImageMagick : il signifie donc la même chose que dans les autres outils bâtis sur ImageMagick.',
+        },
+        {
+          question: 'Pourquoi mon PNG n’a-t-il pas rétréci ?',
+          answer: 'Parce que le champ de qualité n’a aucun effet sur la sortie PNG : le serveur n’ajoute -quality que pour jpg, jpeg et webp. Changez le format de sortie en WebP ou en JPG. Si vous devez conserver la transparence, le WebP garde un canal alpha, contrairement au JPG.',
+        },
+        {
+          question: 'La compression conserve-t-elle mes données EXIF et GPS ?',
+          answer: 'Par défaut, oui. Après qu’ImageMagick a écrit le fichier, exiftool recopie chaque groupe de balises de l’original sur le résultat. Choisissez « supprimer » dans la section métadonnées pour toutes les retirer, ou utilisez le suppresseur d’EXIF dédié.',
+        },
+        {
+          question: 'L’image sera-t-elle aussi redimensionnée ?',
+          answer: 'Non, sauf si vous saisissez une largeur ou une hauteur. Les deux champs vides, les dimensions en pixels restent inchangées et seul l’encodage change.',
+        },
+        {
+          question: 'Puis-je compresser plusieurs images d’un coup ?',
+          answer: 'Chaque envoi est une tâche avec un seul fichier de sortie. Lancez l’outil une fois par image ; chaque tâche compte pour une opération sur le quota quotidien.',
+        },
+        {
+          question: 'Le WebP est-il toujours plus léger que le JPG à la même qualité ?',
+          answer: 'Généralement pour les photographies, mais les échelles de qualité des deux encodeurs ne sont pas identiques : comparez donc les deux sorties plutôt que de le supposer. Gardez le JPG quand le fichier doit s’ouvrir dans un logiciel antérieur à la prise en charge du WebP.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Baisser la qualité agit sur la sortie JPG et WebP. Pour alléger fortement une photo PNG, convertissez-la en JPG ou en WebP.',
+        ],
+      },
+      related: [
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Réduisez d’abord les dimensions en pixels pour les plus grandes économies.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les balises de localisation et d’appareil sans réencoder.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Placez le JPG compressé dans un PDF d’une page.',
+        },
+        {
+          label: 'Upscaler d’images par IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Faites le chemin inverse et agrandissez une petite image.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez les réglages de qualité, de redimensionnement et de format.',
+        },
+      ],
+      embed: {
+        title: 'Compresser une image',
+        description: 'Importez une image et baissez le curseur de qualité pour alléger le fichier. Le format de sortie reste le même par défaut, ou basculez en WebP pour le poids minimal. Une qualité autour de 75–85 est un bon équilibre.',
+      },
     },
     'image-resizer': {
       name: 'Redimensionner une image',
+      h1: 'Redimensionner une image en ligne gratuitement',
       tagline: 'Redimensionnez des images JPG, PNG, WebP et GIF aux dimensions exactes en pixels tout en conservant les proportions.',
       metaTitle: 'Redimensionner une image en ligne gratuitement | Media Manipulator',
       metaDescription: 'Outil gratuit en ligne pour redimensionner des images. Redimensionnez des images JPG, PNG, WebP et GIF aux dimensions exactes en pixels en conservant les proportions. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Redimensionner une image en ligne gratuitement',
+      ogDescription: 'Redimensionnez des images JPG, PNG, WebP et GIF aux dimensions exactes en pixels. Gratuit, rapide, sans inscription.',
+      intro: 'Cette page ouvre le convertisseur d’images avec les champs de redimensionnement mis en avant. Saisissez une largeur, une hauteur ou les deux, et le serveur exécute ImageMagick avec un argument -resize construit exactement à partir de ce que vous avez saisi : 1600x pour une largeur seule, x900 pour une hauteur seule, et 1600x900! quand vous remplissez les deux. Ce point d’exclamation final compte : il indique à ImageMagick de produire exactement cette boîte même si les proportions diffèrent de l’original, ce qui étire l’image. La règle est donc simple. Un champ conserve les proportions ; deux champs donnent la taille exacte et vous font confiance pour avoir choisi des proportions correspondantes ou pour avoir recadré d’abord.',
+      whatItDoes: [
+        'Met à l’échelle les images JPG, PNG, WebP et GIF à la largeur et à la hauteur en pixels que vous saisissez, après les avoir orientées automatiquement d’après l’indicateur de rotation EXIF.',
+        'Conserve les proportions quand une seule dimension est renseignée ; force la boîte exacte quand les deux le sont.',
+        'Propose une zone de recadrage dans le même formulaire, appliquée avant le redimensionnement : c’est ainsi que vous obtenez un carré ou une bannière exacts sans distorsion.',
+        'Écrit la sortie dans le format d’origine par défaut, avec une qualité de 85 pour le JPG et le WebP, et y recopie les balises de métadonnées d’origine.',
+        'Plafonne la hauteur demandée à la limite de sortie de votre offre, et les dimensions à ce qu’ImageMagick est autorisé à produire.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer l’image',
+          description: 'JPG, PNG, WebP ou GIF, jusqu’au plafond par fichier de votre offre.',
+        },
+        {
+          title: 'Saisir la largeur, la hauteur ou les deux',
+          description: 'Une valeur conserve les proportions. Deux valeurs forcent la boîte. Recadrez d’abord si les proportions doivent changer.',
+        },
+        {
+          title: 'ImageMagick redimensionne',
+          description: 'convert input -auto-orient [-crop WxH+X+Y] -resize <arg> [-quality 85] output.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'Le fichier redimensionné est servi depuis le dossier de sortie de la tâche sous le nom converted.<format>.',
+        },
+      ],
+      advancedDetails: [
+        'L’argument de redimensionnement est construit dans convertImage (converter.go) : les deux valeurs donnent WxH! (boîte exacte forcée), la largeur seule donne Wx, la hauteur seule donne xH. Le filtre de rééchantillonnage par défaut d’ImageMagick est utilisé ; aucune option ne permet d’en choisir un autre.',
+        'Un recadrage, s’il est défini, est passé sous la forme -crop WxH+X+Y et s’exécute avant -resize : les coordonnées de recadrage se rapportent donc à l’original orienté automatiquement, pas au résultat redimensionné.',
+        'Le serveur refuse une largeur ou une hauteur supérieure à 10000 ou inférieure à 1, et le formulaire plafonne les deux champs à 4096.',
+        'Une hauteur explicite est aussi vérifiée par rapport au plafond de hauteur de sortie de votre offre avant que l’envoi soit accepté : 1080 px pour les visiteurs par défaut, 1440 avec un compte gratuit, 2160 en Premium et Pro. Une demande au-dessus du plafond est refusée avec un message indiquant les deux nombres, et aucune unité n’est dépensée. La largeur seule n’est pas vérifiée.',
+        'La sortie JPG et WebP reçoit -quality 85 sauf si vous changez le nombre ; le PNG et le GIF l’ignorent. Agrandir avec cet outil ne fait qu’interpoler les pixels existants : un agrandissement 2x ou 4x paraît donc flou ; l’upscaler par IA existe pour ce cas.',
+        'Une fois ImageMagick terminé, exiftool recopie les balises d’origine sur le résultat dans le mode de métadonnées par défaut : le fichier redimensionné porte donc toujours la date de prise de vue, le modèle d’appareil et toute position GPS.',
+      ],
+      whyItMatters: [
+        'Les emplacements d’avatar, de couverture et de vignette exigent des tailles en pixels précises, et un redimensionnement par la plateforme est généralement de moindre qualité et hors de votre contrôle.',
+        'Le nombre de pixels est le facteur numéro un du poids d’un fichier ; une photo de 24 mégapixels affichée sur 1920 px de large transporte dix fois plus de données que l’écran ne peut en afficher.',
+        'Redimensionner selon vos conditions vous laisse aussi choisir le recadrage, au lieu de laisser un emplacement carré couper une tête.',
+      ],
+      useCases: [
+        {
+          title: 'Photos de profil et avatars',
+          description: 'Recadrez en carré, puis redimensionnez aux 400 ou 512 px demandés par le service.',
+        },
+        {
+          title: 'Images pour le web et les blogs',
+          description: 'Mettez les photos d’appareil à l’échelle de la largeur de colonne à laquelle elles seront réellement affichées.',
+        },
+        {
+          title: 'Bannières et en-têtes',
+          description: 'Découpez les proportions exactes, puis atteignez la largeur requise au pixel près.',
+        },
+        {
+          title: 'Limites des formulaires d’envoi',
+          description: 'Réduisez les dimensions pour passer sous un plafond en mégapixels ou en mégaoctets.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un JPEG d’appareil photo de 6000 x 4000 mis à l’échelle sur 1920 px de large',
+          body: 'Entrée : un JPEG de 8,5 Mo et 24 mégapixels issu d’un appareil hybride. Réglages : largeur 1920, hauteur vide, format inchangé, qualité 85. Le serveur exécute convert input -auto-orient -resize 1920x -quality 85 converted.jpg. Les proportions sont de 3:2 : la sortie fait donc 1920 x 1280 pixels, soit environ 2,46 mégapixels, à peu près un dixième du nombre de pixels d’origine. Le poids du fichier baisse dans une proportion similaire : attendez-vous à moins de 1 Mo. Une passe ImageMagick sur 24 mégapixels prend quelques secondes sur le serveur, et la copie exiftool qui suit conserve les balises d’objectif et d’exposition.',
+        },
+        {
+          title: 'Un avatar de 400 x 400 à partir d’une photo de téléphone en portrait de 3024 x 4032',
+          body: 'Entrée : un JPEG portrait de 3,1 Mo, 3024 de large sur 4032 de haut. Saisir 400 et 400 seuls exécuterait -resize 400x400! et écraserait l’image 3:4 en carré. Définissez plutôt le recadrage sur 3024 x 3024 au décalage 0,504 (un carré pris au milieu), puis largeur 400 et hauteur 400. La commande devient convert input -auto-orient -crop 3024x3024+0+504 -resize 400x400! -quality 85 converted.jpg, et le résultat est un JPG de 400 x 400 sans distorsion, de 160 000 pixels, pesant quelques dizaines de kilooctets. Le recadrage et le redimensionnement se font en une seule passe et se terminent en quelques secondes.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas le redimensionneur pour agrandir une petite image : ImageMagick ne fait qu’interpoler les pixels existants, si bien qu’une photo de 640 px poussée à 2560 px ressort floue ; ce cas relève de l’upscaler par IA. Ne saisissez pas à la fois une largeur et une hauteur dont les proportions diffèrent de celles de l’image sans avoir recadré d’abord, car le mode boîte exacte étire au lieu d’ajouter des bandes. Si le fichier est lourd mais que les dimensions sont déjà bonnes, utilisez plutôt le compresseur et laissez les pixels tranquilles. Et les GIF animés sont mieux traités par un outil GIF dédié que par un simple redimensionnement.',
+      whyMediaManipulator: [
+        'Le comportement boîte exacte contre conservation des proportions est expliqué ici avec les véritables arguments ImageMagick : pas de surprise quand une photo revient étirée.',
+        'Recadrage, redimensionnement, format et qualité tiennent en un seul envoi, et la sortie ne porte aucun filigrane.',
+        'Sans inscription pour l’outil standard. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'L’image envoyée est enregistrée sous uploads/<jobId>/ sur notre serveur et la copie redimensionnée sous outputs/<jobId>/ ; les deux répertoires figurent sur le registre de conservation et sont supprimés ensemble. Comme le mode de métadonnées par défaut recopie les balises d’origine sur le fichier redimensionné avec exiftool, les coordonnées GPS et le numéro de série de l’appareil accompagnent le résultat, sauf si vous choisissez « supprimer » dans la section métadonnées du formulaire. Les images envoyées pour redimensionnement passent aussi par l’analyse automatisée qui s’exécute sur chaque image sur notre serveur, à l’aide d’un modèle de vision local, le résumé étant stocké dans le dossier de la tâche. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Aucun tiers ne reçoit le fichier.',
+      faq: [
+        {
+          question: 'Le redimensionnement coûte-t-il quelque chose ?',
+          answer: 'Ni compte ni paiement pour l’outil standard. Chaque redimensionnement compte pour une opération quotidienne : 5 par jour pour les visiteurs et 30 pour un compte gratuit par défaut, avec un plafond par fichier de 200 Mo et 1 Go respectivement. Premium et Pro portent ces nombres à 300 et 700. Consultez /pricing pour les chiffres en vigueur aujourd’hui.',
+        },
+        {
+          question: 'Comment conserver les proportions ?',
+          answer: 'Ne remplissez qu’un seul des deux champs. Une largeur seule devient -resize 1600x et la hauteur est calculée d’après les proportions d’origine ; une hauteur seule devient x900 et la largeur suit.',
+        },
+        {
+          question: 'Pourquoi mon image est-elle ressortie étirée ?',
+          answer: 'Vous avez rempli la largeur et la hauteur avec des proportions qui ne correspondent pas à l’image. Deux valeurs sont envoyées sous la forme WxH!, ce qui force cette boîte exacte. Recadrez d’abord aux proportions cibles, dans le même formulaire, puis définissez les deux valeurs.',
+        },
+        {
+          question: 'Quelle est la taille maximale que je peux demander ?',
+          answer: 'Le formulaire accepte jusqu’à 4096 pour chaque champ et le serveur jusqu’à 10000. Une hauteur explicite au-dessus du plafond de sortie de votre offre (1080 px pour les visiteurs par défaut) est refusée avant le début de l’envoi et ne coûte rien.',
+        },
+        {
+          question: 'Puis-je agrandir une petite photo avec cet outil ?',
+          answer: 'Vous pouvez saisir un nombre plus grand, mais ImageMagick ne fait qu’interpoler : le résultat est donc flou. Pour un agrandissement 2x ou 4x qui reconstruit les détails, utilisez l’upscaler par IA, qui exécute Real-ESRGAN à la place.',
+        },
+        {
+          question: 'La sortie conserve-t-elle mes données EXIF et mon orientation ?',
+          answer: 'Les pixels sont d’abord orientés automatiquement, pour que le résultat s’affiche à l’endroit partout, et dans le mode par défaut exiftool recopie les balises d’origine dessus. Choisissez « supprimer » si vous voulez vous débarrasser des balises.',
+        },
+        {
+          question: 'Puis-je redimensionner un GIF ?',
+          answer: 'Le GIF est accepté en entrée et en sortie et passe par la même commande ImageMagick. L’outil est conçu pour les images fixes ; pour les GIF animés, un outil GIF dédié offre plus de contrôle sur les images et la palette.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Laissez une dimension vide pour mettre à l’échelle proportionnellement et conserver les proportions.',
+        ],
+      },
+      related: [
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Baissez la qualité sans changer les dimensions.',
+        },
+        {
+          label: 'Upscaler d’images par IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Agrandissez en 2x ou 4x avec un modèle plutôt que par interpolation.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les balises que le redimensionnement conserve par défaut.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Placez l’image redimensionnée dans une page PDF.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez les réglages de redimensionnement, de recadrage et de qualité.',
+        },
+      ],
+      embed: {
+        title: 'Redimensionner une image',
+        description: 'Importez une image et définissez ci-dessous une largeur et/ou une hauteur cibles. Laissez l’une d’elles vide pour mettre à l’échelle proportionnellement et conserver les proportions d’origine. Le format de sortie reste le même sauf si vous le changez.',
+      },
     },
     'remove-background-from-image': {
       name: 'Supprimer l’arrière-plan d’une image',
+      h1: 'Supprimer l’arrière-plan d’une image en ligne gratuitement',
       tagline: 'Effacez automatiquement l’arrière-plan de n’importe quelle photo et téléchargez un détourage PNG net et transparent.',
-      metaTitle: 'Supprimer l’arrière-plan d’une image en ligne gratuitement | Media Manipulator',
+      metaTitle: 'Supprimer l’arrière-plan d’une image en ligne | Media Manipulator',
       metaDescription: 'Suppression d’arrière-plan gratuite en ligne. Effacez automatiquement l’arrière-plan de n’importe quelle photo et téléchargez un PNG transparent. Fonctionne sur notre propre GPU, sans IA tierce. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Supprimer l’arrière-plan d’une image en ligne gratuitement',
+      ogDescription: 'Effacez automatiquement l’arrière-plan de n’importe quelle photo et téléchargez un détourage PNG transparent. Gratuit, sans inscription.',
+      intro: 'Cette page ouvre le convertisseur d’images avec l’opération IA verrouillée sur Supprimer l’arrière-plan et la sortie verrouillée sur PNG. Lorsque vous convertissez, le serveur confie votre fichier à rembg, un outil de segmentation open source qui s’exécute sur un GPU qui nous appartient : par défaut, il charge le modèle BiRefNet General, prédit quels pixels appartiennent au sujet et écrit un PNG dont le canal alpha est transparent partout ailleurs. Six autres modèles sont sélectionnables dans le formulaire (un BiRefNet plus léger, une variante portrait, ISNet et trois versions de U2Net) pour les cas où le modèle général se trompe sur les cheveux, le verre ou une personne devant un arrière-plan chargé.',
+      whatItDoes: [
+        'Exécute rembg avec le modèle que vous choisissez (BiRefNet General sauf si vous le changez) et renvoie le sujet sur un fond transparent.',
+        'Écrit toujours un PNG, car la transparence a besoin d’un canal alpha et l’API impose l’extension .png pour cette opération.',
+        'Conserve les dimensions complètes en pixels de votre fichier ; le détourage n’est ni redimensionné ni recadré.',
+        'S’exécute sur notre propre GPU via ONNX Runtime avec CUDA ; aucune image n’est envoyée à un service d’IA extérieur.',
+        'Compte comme une tâche courante, la même unité qu’une simple conversion de format, et non comme une tâche IA.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un JPG, un PNG ou un WebP',
+          description: 'Un seul sujet bien net donne le masque le plus propre.',
+        },
+        {
+          title: 'Choisissez un modèle, ou gardez celui par défaut',
+          description: 'BiRefNet General est présélectionné ; les modèles portrait et de segmentation humaine existent pour les personnes.',
+        },
+        {
+          title: 'rembg segmente sur le GPU',
+          description: 'rembg i -m <model> input output.png s’exécute avec l’environnement CUDA ONNX Runtime chargé.',
+        },
+        {
+          title: 'Téléchargez le PNG transparent',
+          description: 'Le résultat est converted.png dans le dossier de sortie de la tâche.',
+        },
+      ],
+      advancedDetails: [
+        'L’appel est RemoveBackground dans ai_tools.go : un shell bash charge le script d’environnement CUDA d’ONNX Runtime, définit U2NET_HOME sur le répertoire des modèles du serveur et exécute rembg i -m <model> <input> <output>. Les poids des modèles sont mis en cache sur le serveur ; la première tâche après un redémarrage peut donc prendre un peu plus de temps pendant leur chargement.',
+        'Les noms de modèle acceptés sont birefnet-general, birefnet-general-lite, isnet-general-use, u2net, u2netp, u2net_human_seg et birefnet-portrait ; toute autre valeur est rejetée avant le démarrage de la tâche. Une valeur vide devient birefnet-general.',
+        'Le chemin IA remplace entièrement le pipeline ImageMagick ; la valeur de qualité, les filtres, la teinte, le texte en surimpression et les options de métadonnées du formulaire n’ont donc aucun effet sur cette opération : la sortie est exactement ce que rembg écrit.',
+        'Comme l’étape habituelle de copie exiftool ne s’exécute pas pour les opérations IA, le PNG ne contient aucune donnée EXIF de l’original. Si vous avez besoin des balises sur le détourage, l’éditeur de métadonnées peut les ajouter dans une seconde tâche.',
+        'La taille de sortie dépend du sujet : les zones entièrement transparentes se compressent presque à rien en PNG, donc un petit produit sur une grande zone donne un petit fichier, tandis qu’un sujet plein cadre donne un fichier proche d’un PNG sans perte de l’original.',
+      ],
+      whyItMatters: [
+        'Les fiches produit, les vignettes et les compositions commencent toutes par un détourage, et en réaliser un à la main prend plusieurs minutes par image.',
+        'Les places de marché exigent de plus en plus un fond uni ou blanc, c’est-à-dire un détourage transparent placé sur un calque blanc.',
+        'Un modèle entraîné sur des millions de masques gère mieux la fourrure, les cheveux et les bords semi-transparents qu’une sélection à la baguette magique.',
+      ],
+      useCases: [
+        {
+          title: 'Produits e-commerce',
+          description: 'Isolez l’article et placez-le sur du blanc ou sur n’importe quelle couleur de marque.',
+        },
+        {
+          title: 'Portraits et pages d’équipe',
+          description: 'Utilisez le modèle portrait pour détacher proprement les personnes des arrière-plans de bureau.',
+        },
+        {
+          title: 'Logos extraits de photos',
+          description: 'Obtenez une version transparente d’un logo qui n’existe que sur une enseigne ou une page colorée.',
+        },
+        {
+          title: 'Vignettes et stickers',
+          description: 'Construisez des compositions en calques à partir de plusieurs détourages dans votre éditeur.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un JPEG produit de 3000 x 2000 avec le modèle par défaut',
+          body: 'Entrée : un JPEG de 2,1 Mo, 3000 x 2000, montrant une chaussure sur un fond gris. Modèle laissé sur BiRefNet General. Le serveur exécute rembg sur le GPU et écrit converted.png aux mêmes 3000 x 2000 pixels, en quatre canaux. Non compressé, cela représente 24 Mo de RGBA, mais le fond transparent se compresse presque à rien ; la taille du PNG dépend donc de la chaussure elle-même, généralement quelques mégaoctets puisque le PNG est sans perte. Le temps correspond à une passe du modèle sur l’image plus l’encodage PNG, soit quelques secondes une fois le modèle chargé ; la première exécution après une période d’inactivité ajoute le temps de chargement des poids.',
+        },
+        {
+          title: 'Un portrait de 1080 x 1080 avec le modèle portrait',
+          body: 'Entrée : un selfie WebP de 640 Ko, 1080 x 1080, devant une bibliothèque. Passez le modèle sur BiRefNet Portrait, réglé pour les personnes et les cheveux. La sortie est un PNG de 1080 x 1080 avec la personne opaque et les étagères entièrement transparentes. À 1,17 mégapixel, la passe du modèle est rapide ; l’essentiel du temps total est l’import et l’écriture du PNG. Comme le chemin IA saute la copie des métadonnées, le PNG n’a aucune donnée EXIF, ce qui est généralement ce que l’on veut pour une photo de profil.',
+        },
+      ],
+      whenNotToUse: 'Évitez cet outil lorsque le sujet n’est pas un élément unique et distinct : une foule, un paysage, un motif ou un intérieur sans premier plan évident ne donne au modèle rien à séparer, et le masque sera arbitraire. Ce n’est pas non plus le bon outil si vous voulez un flou doux derrière un sujet plutôt que de la transparence, si vous avez besoin du résultat en JPG (le JPG ne peut pas contenir de canal alpha, vous devriez donc l’aplatir ensuite) et si l’entrée est une capture d’écran ou un dessin au trait, pour lesquels ISNet ou une sélection manuelle dans un éditeur fonctionne mieux qu’un modèle entraîné sur des photos.',
+      whyMediaManipulator: [
+        'Sept vrais modèles de segmentation sont exposés par leur nom, pour que vous puissiez passer du modèle général à une version portrait ou U2Net lorsqu’un contour sort mal.',
+        'La sortie est un simple PNG transparent en pleine résolution, sans filigrane et sans réduction forcée.',
+        'Le modèle tourne sur du matériel que nous exploitons, et l’outil standard ne nécessite aucun compte. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre photo est écrite dans uploads/<jobId>/ sur notre serveur et lue par rembg qui s’exécute sur un GPU de la même machine ; le détourage est enregistré dans outputs/<jobId>/converted.png. Aucune API externe n’est appelée pour la segmentation et rien de votre image ne sert à entraîner quoi que ce soit. Comme tout import d’image, le fichier est aussi examiné une fois par une étape d’analyse automatisée utilisant un modèle de vision hébergé sur notre serveur, et ce résumé est stocké avec la tâche. Le PNG ne contient aucune donnée EXIF de l’original, car l’étape de copie des métadonnées ne s’exécute pas pour les opérations IA. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'La suppression d’arrière-plan est-elle gratuite ?',
+          answer: 'Oui, dans la limite du quota quotidien. La suppression d’arrière-plan compte délibérément comme une tâche courante, et non comme une tâche du quota IA distinct : 5 par jour pour les visiteurs et 30 avec un compte gratuit par défaut, avec des plafonds par fichier de 200 Mo et 1 Go. Premium et Pro en obtiennent 300 et 700. Les chiffres actuels sont sur /pricing.',
+        },
+        {
+          question: 'Quel modèle choisir ?',
+          answer: 'Gardez BiRefNet General pour les objets, les produits et la plupart des photos. Choisissez BiRefNet Portrait ou U2Net Human Segmentation pour les personnes, et BiRefNet General Lite ou U2Net Lite lorsque vous voulez une passe plus rapide sur une grande image.',
+        },
+        {
+          question: 'Pourquoi la sortie est-elle toujours en PNG ?',
+          answer: 'L’API impose l’extension .png pour cette opération, car le détourage a besoin d’un canal alpha ; le JPG n’en a pas et afficherait l’arrière-plan en noir ou en blanc. Convertissez ensuite vers un autre format une fois l’image aplatie sur une couleur.',
+        },
+        {
+          question: 'Puis-je obtenir un fond blanc au lieu de la transparence ?',
+          answer: 'Pas directement avec cet outil. Placez le PNG sur un calque blanc dans n’importe quel éditeur ou dans Darkroom ; les pixels transparents prennent la couleur située dessous.',
+        },
+        {
+          question: 'Cela fonctionne-t-il sur les cheveux, la fourrure et le verre ?',
+          answer: 'Souvent, et les modèles portrait et BiRefNet ont été entraînés en pensant à ces bords, mais les zones semi-transparentes restent le cas le plus difficile. Essayez un second modèle si le premier laisse un liseré.',
+        },
+        {
+          question: 'Ma photo est-elle envoyée à une entreprise d’IA extérieure ?',
+          answer: 'Non. rembg et ses modèles s’exécutent sur notre propre serveur GPU, et la tâche n’appelle jamais d’API tierce.',
+        },
+        {
+          question: 'Le détourage conserve-t-il mes données EXIF ?',
+          answer: 'Non. Les opérations IA contournent la copie exiftool qu’effectue le convertisseur normal ; le PNG n’a donc aucune balise d’appareil, de date ou de GPS.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est toujours un PNG transparent. La suppression d’arrière-plan s’exécute sur notre serveur GPU local, pas sur une API tierce.',
+        ],
+      },
+      related: [
+        {
+          label: 'Supprimer un objet d’une photo',
+          to: '/tools/remove-object-from-photo',
+          description: 'Effacez un élément et gardez le reste de la scène.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Mettez le détourage à la taille dont votre mise en page a besoin.',
+        },
+        {
+          label: 'Agrandisseur d’images IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Agrandissez un petit détourage avant de le placer.',
+        },
+        {
+          label: 'Flouter les visages d’une photo',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Anonymisez les personnes au lieu de les isoler.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez chaque option IA et image.',
+        },
+      ],
+      embed: {
+        title: 'Supprimer l’arrière-plan d’une image',
+        description: 'Importez une photo. Cet outil est préréglé sur la suppression d’arrière-plan par IA et produit un PNG transparent. Il suffit d’importer et de convertir : le sujet est conservé et l’arrière-plan est effacé.',
+      },
     },
     'image-to-pdf': {
       name: 'Image en PDF',
+      h1: 'Convertir une image en PDF en ligne gratuitement',
       tagline: 'Transformez des images JPG, PNG et autres en un document PDF propre et facile à partager, en un clic.',
       metaTitle: 'Convertir une image en PDF en ligne gratuitement | Media Manipulator',
       metaDescription: 'Convertisseur d’image en PDF gratuit en ligne. Transformez des images JPG, PNG et autres en un document PDF propre. Sans inscription ni filigrane. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir une image en PDF en ligne gratuitement',
+      ogDescription: 'Transformez des images JPG, PNG et autres en un PDF propre et facile à partager. Gratuit, rapide, sans inscription.',
+      intro: 'Cette page verrouille le format de sortie sur PDF, ce qui envoie votre image vers un chemin dédié de notre API qui construit le document en pur Go plutôt qu’avec ImageMagick ou Ghostscript. Un JPEG est intégré octet pour octet avec le filtre /DCTDecode ; la photo à l’intérieur du PDF est donc exactement le flux compressé que vous avez importé. Un PNG, un GIF ou un WebP est décodé, composé sur du blanc et stocké en RGB 8 bits compressé avec zlib. La page unique est dimensionnée pour que l’image soit à 96 pixels par pouce : chaque pixel devient 0,75 point, ce qui garde l’image à sa résolution native, sans rééchantillonnage.',
+      whatItDoes: [
+        'Enveloppe une image dans un document PDF 1.4 d’une page, dimensionné à l’image à 96 DPI.',
+        'Intègre les données JPEG telles quelles, donc sans seconde génération de compression pour les photos.',
+        'Aplatit les pixels transparents des PNG et GIF sur du blanc et les stocke sans perte avec zlib.',
+        'Pixellise d’abord avec ImageMagick le WebP et les autres conteneurs que Go ne peut pas décoder, puis intègre le résultat sans perte.',
+        'Ignore les réglages de qualité, de redimensionnement, de recadrage, de filtre et d’IA ; le chemin PDF ne prend que l’image.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez n’importe quelle image',
+          description: 'JPG, PNG, GIF et WebP sont les entrées habituelles ; le champ accepte tout type d’image.',
+        },
+        {
+          title: 'Le serveur lit les pixels',
+          description: 'Les dimensions du JPEG viennent de l’en-tête ; les autres formats sont décodés et aplatis en RGB.',
+        },
+        {
+          title: 'Un PDF d’une page est assemblé',
+          description: 'Catalogue, page, XObject image et un flux de contenu qui dessine l’image sur toute la page.',
+        },
+        {
+          title: 'Téléchargez converted.pdf',
+          description: 'Servi depuis le dossier de sortie de la tâche jusqu’à l’expiration de la conservation.',
+        },
+      ],
+      advancedDetails: [
+        'Le générateur est imageToPDFBytes dans pdf_tools.go. Un fichier commençant par le marqueur JPEG FF D8 FF est intégré en /DCTDecode avec /DeviceRGB ou /DeviceGray ; un JPEG CMYK bascule sur le chemin décodage-aplatissement, pour que le PDF ne transporte jamais de flux CMYK.',
+        'Les entrées non JPEG sont décodées avec les codecs image de Go (PNG et GIF sont enregistrés). Chaque pixel est composé par alpha sur du blanc et écrit sur trois octets, puis l’ensemble du tampon est compressé avec zlib et stocké en /FlateDecode à 8 bits par composante.',
+        'Le WebP et tout ce que Go ne peut pas décoder est d’abord pixellisé par ImageMagick avec -auto-orient en un flux PNG en mémoire, et ce PNG est ensuite aplati et intégré.',
+        'La taille de page en points est largeur x 72 / 96 et hauteur x 72 / 96 ; une image de 1200 x 1600 donne donc une page de 900 x 1200 points (12,5 sur 16,7 pouces). Les lecteurs PDF ajustent la page à la fenêtre et les imprimantes au papier ; une grande page ne pose donc aucun problème à l’affichage, mais activez « ajuster à la page » à l’impression.',
+        'Les JPEG sur le chemin rapide conservent leurs données EXIF, y compris le drapeau Orientation, mais les lecteurs PDF n’appliquent pas l’orientation EXIF. Une photo de téléphone stockée de côté avec un drapeau de rotation apparaîtra de côté dans le PDF ; convertissez-la d’abord une fois en JPG (ce qui applique l’orientation automatique), puis en PDF.',
+        'La valeur de qualité envoyée par le formulaire est acceptée mais inutilisée sur ce chemin, et il n’existe pas de mode multi-images : un import produit un PDF d’une seule page.',
+      ],
+      whyItMatters: [
+        'Les portails de visas, d’universités et de ressources humaines n’acceptent souvent que le PDF, même pour la photo d’un reçu.',
+        'Un PDF s’imprime et s’affiche de la même façon sur tous les appareils, alors qu’une simple image peut être tournée ou redimensionnée par le lecteur.',
+        'Intégrer le JPEG tel quel signifie que le PDF a une qualité de preuve : rien n’a été réencodé en entrée.',
+      ],
+      useCases: [
+        {
+          title: 'Reçus et formulaires',
+          description: 'Transformez la photo d’une page signée en un PDF qu’un portail acceptera.',
+        },
+        {
+          title: 'Pièces d’identité et justificatifs',
+          description: 'Envoyez une carte ou un certificat numérisé sous la forme du PDF que le formulaire exige.',
+        },
+        {
+          title: 'Épreuves graphiques',
+          description: 'Envoyez à un client le PDF d’une création PNG dont la transparence est aplatie sur du blanc.',
+        },
+        {
+          title: 'Archivage',
+          description: 'Conservez une photo aux côtés d’autres documents dans un seul format.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un JPEG de téléphone de 3024 x 4032 (2,9 Mo)',
+          body: 'Entrée : un JPEG de 2,9 Mo, 3024 de large sur 4032 de haut, RGB. L’en-tête est lu pour les dimensions et le flux JPEG est intégré tel quel avec /DCTDecode. La page fait 3024 x 0,75 = 2268 points de large et 4032 x 0,75 = 3024 points de haut, soit 31,5 sur 42 pouces. Le PDF pèse environ 2,9 Mo plus moins d’un kilooctet de structure PDF, car rien n’est réencodé. Le travail consiste à lire le fichier et à le réécrire ; la tâche est donc limitée par le disque et la vitesse d’import plutôt que par le processeur, et se termine en quelques secondes.',
+        },
+        {
+          title: 'Un PNG de 1920 x 1080 avec un fond transparent',
+          body: 'Entrée : un PNG de 1,4 Mo d’un logo sur fond transparent. Le PNG est décodé, chaque pixel est composé sur du blanc, et les 1920 x 1080 x 3 = 6 220 800 octets de RGB sont compressés avec zlib et stockés en /FlateDecode. La page fait 1440 x 810 points (20 sur 11,25 pouces). Comme le blanc uni et les couleurs pleines se compressent bien avec zlib, le PDF se situe généralement dans la même fourchette que le PNG, parfois au-dessus, car le zlib brut n’a pas les filtres de ligne qu’utilise le PNG. Décoder, composer deux millions de pixels et les compresser est un travail processeur de quelques secondes ; la transparence a disparu du résultat, par conception.',
+        },
+      ],
+      whenNotToUse: 'Ce n’est pas l’outil pour un document de plusieurs pages : il produit exactement une page à partir d’une image, donc un lot de numérisations demande de convertir chaque page puis de les fusionner dans un éditeur PDF. Ne l’utilisez pas lorsque la transparence doit survivre, car chaque pixel est aplati sur du blanc. N’attendez pas un fichier plus petit : un JPEG est intégré sans modification et un PNG devient du RGB compressé avec zlib ; compressez ou redimensionnez donc l’image d’abord si la taille compte. Et une photo dont l’orientation correcte ne vit que dans un drapeau EXIF doit être convertie une fois en JPG au préalable, sinon le PDF la montre telle qu’elle est stockée.',
+      whyMediaManipulator: [
+        'Le passage direct du JPEG est un choix de conception : votre photo est intégrée sans réencodage, ce que beaucoup de convertisseurs ne promettent pas.',
+        'Ni Ghostscript ni politique PDF d’ImageMagick sur ce chemin ; la conversion ne dépend donc pas d’un réglage de sécurité côté serveur qui pourrait refuser les PDF.',
+        'Gratuit pour l’outil standard, sans compte requis. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'L’image est stockée dans uploads/<jobId>/ et le PDF dans outputs/<jobId>/converted.pdf sur notre propre serveur ; les deux sont supprimés ensemble à la fin de la période de conservation. Un JPEG conserve toutes ses métadonnées intégrées à l’intérieur du PDF, car le flux est copié mot pour mot ; les balises EXIF de position et d’appareil restent donc lisibles par quiconque extrait l’image. Supprimez-les d’abord avec l’outil de suppression EXIF si cela compte. Les PNG et autres entrées sont décodés en pixels bruts ; aucune balise n’est donc transmise. Le fichier importé étant une image, il passe aussi par l’analyse automatisée par modèle de vision exécutée sur notre serveur, dont le résumé reste avec la tâche. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'La conversion d’image en PDF est-elle gratuite ?',
+          answer: 'Oui pour l’outil standard. Chaque conversion consomme une opération quotidienne : 5 par jour en tant que visiteur avec un plafond de 200 Mo par fichier, 30 par jour et 1 Go avec un compte gratuit, et 300 ou 700 avec Premium ou Pro, le tout par défaut et indiqué sur /pricing.',
+        },
+        {
+          question: 'La photo est-elle recompressée dans le PDF ?',
+          answer: 'Pas s’il s’agit d’un JPEG : les octets d’origine sont intégrés avec /DCTDecode. Les PNG, GIF et WebP sont stockés sans perte en RGB compressé avec zlib après aplatissement ; aucune qualité n’est perdue là non plus.',
+        },
+        {
+          question: 'Quelle taille de page a le PDF ?',
+          answer: 'La page correspond à l’image à 96 pixels par pouce ; la largeur et la hauteur en points valent donc 0,75 fois les dimensions en pixels. Une image de 1200 x 1600 donne une page de 12,5 sur 16,7 pouces ; les lecteurs et les imprimantes l’ajustent.',
+        },
+        {
+          question: 'Puis-je combiner plusieurs images dans un seul PDF ?',
+          answer: 'Pas sur cette page. Chaque import produit un PDF d’une seule page. Convertissez chaque image et fusionnez les PDF obtenus dans un éditeur PDF.',
+        },
+        {
+          question: 'Qu’arrive-t-il à la transparence ?',
+          answer: 'Elle est aplatie sur du blanc. Les XObjects image de ce chemin n’ont pas d’alpha ; les pixels transparents deviennent donc des pixels blancs.',
+        },
+        {
+          question: 'Pourquoi ma photo de téléphone est-elle de côté dans le PDF ?',
+          answer: 'Les téléphones stockent souvent les pixels en paysage et définissent un drapeau EXIF Orientation. Le JPEG est intégré tel quel et les lecteurs PDF ignorent ce drapeau. Passez d’abord la photo dans le convertisseur d’images en JPG, qui applique l’orientation automatique, puis convertissez le résultat en PDF.',
+        },
+        {
+          question: 'Le PDF conserve-t-il mes données EXIF ?',
+          answer: 'Pour un JPEG, oui, car tout le flux JPEG, y compris ses EXIF, se trouve dans le PDF. Utilisez d’abord l’outil de suppression EXIF si vous ne le souhaitez pas. Pour les PNG et autres entrées, seuls les pixels sont conservés.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est un PDF d’une seule page. La transparence est aplatie sur du blanc, car les pages PDF sont opaques.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF en JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Reconvertissez des pages PDF en images.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les balises avant qu’elles soient intégrées au PDF.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez d’abord le JPEG, puisque le PDF l’intègre tel quel.',
+        },
+        {
+          label: 'Numérisation de documents par IA',
+          to: '/tools/ai-document-scan',
+          description: 'Nettoyez et océrisez une page photographiée au lieu de simplement l’envelopper.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Fixez d’abord la taille en pixels, et donc la taille de la page.',
+        },
+      ],
+      embed: {
+        title: 'Convertir une image en PDF',
+        description: 'Importez n’importe quelle image : JPG, PNG et plus encore. La sortie est verrouillée sur PDF pour cet outil ; vous obtenez donc un PDF d’une seule page enveloppant votre image à sa résolution native.',
+      },
     },
     'pdf-to-jpg': {
       name: 'PDF en JPG',
+      h1: 'Convertir un PDF en JPG en ligne gratuitement',
       tagline: 'Convertissez chaque page d’un PDF en images JPG de haute qualité que vous pouvez partager, modifier ou publier.',
       metaTitle: 'Convertir un PDF en JPG en ligne gratuitement | Media Manipulator',
       metaDescription: 'Convertisseur de PDF en JPG gratuit en ligne. Convertissez chaque page d’un PDF en images JPG de haute qualité, téléchargées dans un ZIP. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un PDF en JPG en ligne gratuitement',
+      ogDescription: 'Convertissez chaque page d’un PDF en images JPG de haute qualité. Gratuit, rapide, sans inscription.',
+      intro: 'Importez un PDF et notre serveur effectue le rendu de chaque page avec pdftoppm, de la suite Poppler, le même moteur de pixellisation qu’utilisent de nombreux lecteurs PDF de bureau. Le formulaire de cette page est préréglé sur JPG, toutes les pages et 150 DPI ; vous pouvez passer le DPI à 100, 200 ou 300, limiter la tâche à la première page et régler la qualité JPEG, qui vaut 90 par défaut. Avec toutes les pages sélectionnées, vous obtenez un ZIP contenant page-001.jpg, page-002.jpg et ainsi de suite ; avec la première page seulement, vous obtenez un seul JPG. Avant le rendu, pdfinfo compte les pages et la tâche est refusée s’il y en a plus de 500.',
+      whatItDoes: [
+        'Pixellise chaque page, ou seulement la première, en un JPG à la résolution que vous choisissez.',
+        'Regroupe la sortie multipage dans un seul ZIP avec des noms de fichiers triables, complétés par des zéros.',
+        'Utilise la qualité JPEG que vous définissez (90 par défaut) pour chaque page.',
+        'Lit d’abord le nombre de pages, pour qu’un document trop volumineux échoue avant tout rendu.',
+        'Tient les PDF à l’écart de l’analyse d’image automatisée, qui ne s’exécute que sur les imports d’images, de vidéos et d’audio.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un PDF',
+          description: 'Tout .pdf jusqu’à votre plafond par fichier ; le nombre de pages doit être de 500 au maximum.',
+        },
+        {
+          title: 'Choisissez les pages, le DPI et la qualité',
+          description: 'Toutes les pages ou la première seulement ; 100, 150, 200 ou 300 DPI ; qualité JPEG de 1 à 100.',
+        },
+        {
+          title: 'pdftoppm effectue le rendu',
+          description: 'pdftoppm -r <dpi> -jpeg -jpegopt quality=<q> [-f 1 -l 1] input page',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'converted.jpg pour une seule page, converted.zip pour toutes les pages.',
+        },
+      ],
+      advancedDetails: [
+        'Le moteur de rendu est convertPDFToImages dans pdf_tools.go. Il appelle pdfinfo pour le nombre de pages, refuse plus de 500 pages, puis exécute pdftoppm avec -r pour le DPI, -jpeg et -jpegopt quality=N pour la sortie JPG, et -f 1 -l 1 lorsque seule la première page est demandée.',
+        'Le serveur borne le DPI à la plage 50 à 400 et la qualité à 1 à 100, quoi qu’envoie le formulaire ; le formulaire lui-même propose 100, 150, 200 et 300.',
+        'pdftoppm écrit un fichier par page ; le serveur les renomme en page-001.jpg, page-002.jpg et ainsi de suite (trois chiffres, complétés par des zéros) et les compresse en ZIP, pour que les fichiers se trient dans l’ordre des pages dans n’importe quel gestionnaire de fichiers.',
+        'Les dimensions en pixels découlent directement du DPI : une page US Letter (8,5 x 11 pouces) fait 1275 x 1650 pixels à 150 DPI et 2550 x 3300 à 300 ; une page A4 (8,27 x 11,69 pouces) fait 1240 x 1754 à 150 et 2480 x 3508 à 300.',
+        'Un PDF qui est lui-même une numérisation est repixellisé : si le scan intégré était à 300 DPI et que vous effectuez le rendu à 150, chaque page sort à la moitié de la résolution linéaire du scan. Choisissez 300 pour conserver ce que le scan avait.',
+        'La variante PNG de cet outil utilise le même moteur de rendu avec -png et sans option de qualité ; le JPG est le bon choix pour les pages photographiques ou numérisées, le PNG pour les pages au texte net et aux couleurs unies où le halo JPEG serait visible.',
+      ],
+      whyItMatters: [
+        'De nombreux outils et plateformes acceptent les images mais pas les PDF : présentations, publications sur les réseaux sociaux, applications de messagerie et éditeurs d’images.',
+        'Une page rendue est une image fidèle de la mise en page, des polices et des graphiques vectoriels, sans rien à intégrer ni à remettre en forme.',
+        'Choisir le DPI vous-même signifie que vous décidez entre un aperçu rapide et un export en résolution d’impression.',
+      ],
+      useCases: [
+        {
+          title: 'Présentations et réseaux sociaux',
+          description: 'Transformez une page de rapport ou une affiche en une image que vous pouvez publier ou glisser dans une présentation.',
+        },
+        {
+          title: 'Vignettes et aperçus',
+          description: 'Rendez seulement la première page à 100 DPI pour une image de couverture.',
+        },
+        {
+          title: 'Annotation dans un éditeur',
+          description: 'Ouvrez une page dans un éditeur d’images pour l’annoter, la caviarder ou la recadrer.',
+        },
+        {
+          title: 'Extraction de scans',
+          description: 'Récupérez chaque page numérisée d’un PDF sous forme de JPG séparé à la résolution d’origine.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un rapport A4 de 12 pages, toutes les pages à 150 DPI',
+          body: 'Entrée : un PDF A4 de 12 pages et 1,8 Mo contenant du texte et quelques graphiques. Réglages laissés sur le préréglage : JPG, toutes les pages, 150 DPI, qualité 90. pdfinfo indique 12 pages, sous le plafond de 500, et pdftoppm s’exécute avec -r 150 -jpeg -jpegopt quality=90. Chaque page est rendue à 8,27 x 150 sur 11,69 x 150, soit 1240 x 1754 pixels (2,2 mégapixels). Les douze fichiers sont renommés de page-001.jpg à page-012.jpg et compressés dans converted.zip. Le rendu se fait page par page et dépend surtout de la quantité de contenu vectoriel et de texte de chaque page ; une douzaine de pages de texte prend quelques secondes au total. La taille JPEG par page dépend du contenu : les pages de texte majoritairement blanches se compressent bien mieux qu’un graphique pleine page.',
+        },
+        {
+          title: 'Première page seulement d’un scan US Letter à 300 DPI',
+          body: 'Entrée : un contrat numérisé de 40 pages, au format Letter, de 28 Mo. Choisissez la première page seulement et 300 DPI, gardez la qualité 90. Le serveur exécute pdftoppm -r 300 -jpeg -jpegopt quality=90 -f 1 -l 1 ; une seule page est donc pixellisée, à 8,5 x 300 sur 11 x 300 = 2550 x 3300 pixels (8,4 mégapixels). La sortie est un seul converted.jpg, pas un ZIP. Le rendu d’une page numérisée est rapide, car la page est une seule image intégrée ; l’import de 28 Mo prend plus de temps que le rendu. À 150 DPI, la même page ferait 1275 x 1650, soit un quart des pixels, ce qui suffit pour la lecture à l’écran mais pas pour réimprimer le scan.',
+        },
+      ],
+      whenNotToUse: 'Ne convertissez pas un PDF en JPG lorsque le texte doit rester sélectionnable ou interrogeable : le résultat est fait de pixels, et un lecteur d’écran ou un index de recherche n’y trouvera rien. N’utilisez pas le JPG pour des pages composées surtout de texte net et de dessins au trait si vous comptez zoomer, car la compression JPEG laisse un léger halo autour des contours ; la variante PNG est plus propre dans ce cas. Les documents de plus de 500 pages sont refusés d’emblée, et un DPI très élevé sur un long document produit un gros ZIP ; ne rendez donc que les pages dont vous avez réellement besoin. Et si l’objectif est de modifier le contenu du PDF plutôt que d’en faire une image, un éditeur PDF est le bon outil.',
+      whyMediaManipulator: [
+        'Le rendu Poppler avec les vrais réglages de DPI et de qualité exposés, pas une taille d’aperçu fixe.',
+        'Un seul ZIP avec des noms de fichiers numérotés par page au lieu d’une pile de téléchargements.',
+        'Sans inscription pour l’outil standard. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre PDF est stocké dans uploads/<jobId>/ sur notre serveur et les JPG rendus, ou leur ZIP, dans outputs/<jobId>/ ; les pages sont rendues dans un répertoire temporaire à l’intérieur du dossier de sortie, supprimé dès que le ZIP est écrit. Les imports de PDF sont détectés comme des documents et ne passent pas par l’analyse automatisée par modèle de vision que reçoivent les imports d’images, de vidéos et d’audio. Poppler s’exécute entièrement sur notre machine, et aucune page n’est envoyée à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'La conversion de PDF en JPG est-elle gratuite ?',
+          answer: 'Oui pour l’outil standard. Un PDF, quel que soit son nombre de pages, compte pour une opération quotidienne : 5 par jour en tant que visiteur avec un plafond de 200 Mo par fichier, 30 par jour et 1 Go avec un compte gratuit, 300 avec Premium et 700 avec Pro, le tout par défaut et indiqué sur /pricing.',
+        },
+        {
+          question: 'Combien d’images vais-je obtenir ?',
+          answer: 'Une par page lorsque toutes les pages sont sélectionnées, livrées dans converted.zip avec des fichiers nommés à partir de page-001.jpg. Avec la première page seulement, vous obtenez un seul converted.jpg et pas de ZIP.',
+        },
+        {
+          question: 'Quel DPI choisir ?',
+          answer: '150 pour la lecture à l’écran et le partage (1240 x 1754 pour l’A4). 300 pour l’impression ou pour les scans réalisés à 300 (2480 x 3508 pour l’A4). 100 pour de petits aperçus. Le serveur accepte de 50 à 400.',
+        },
+        {
+          question: 'À quoi sert le réglage de qualité ?',
+          answer: 'Il est transmis à pdftoppm sous la forme -jpegopt quality=N, l’échelle de qualité JPEG standard. 90 est la valeur par défaut ; baissez-la pour obtenir des fichiers plus petits sur les pages riches en photos.',
+        },
+        {
+          question: 'Y a-t-il une limite de pages ?',
+          answer: 'Oui, 500 pages. pdfinfo les compte avant le début du rendu, et un document plus long est refusé avec un message indiquant le nombre de pages et la limite ; l’opération est alors remboursée.',
+        },
+        {
+          question: 'Le texte de l’image sera-t-il interrogeable ?',
+          answer: 'Non. La sortie est une image matricielle de chaque page. Si vous avez besoin du texte, conservez le PDF ou utilisez l’outil de numérisation de documents par IA, qui applique l’OCR à une page photographiée.',
+        },
+        {
+          question: 'Puis-je obtenir du PNG au lieu du JPG ?',
+          answer: 'Cette page verrouille le format sur JPG. Le même moteur de rendu produit du PNG via la page PDF en PNG, qui utilise -png et n’a pas de réglage de qualité.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie pour toutes les pages est livrée en .zip ; la sortie pour la première page est un seul .jpg.',
+          'La résolution de rendu par défaut est de 150 DPI ; augmentez-la pour une sortie de qualité impression.',
+        ],
+      },
+      related: [
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Dans l’autre sens : enveloppez une image dans une page PDF.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez les JPG rendus pour le web.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Mettez une page rendue à la taille d’une vignette ou d’une bannière.',
+        },
+        {
+          label: 'Numérisation de documents par IA',
+          to: '/tools/ai-document-scan',
+          description: 'Océrisez et nettoyez une page photographiée.',
+        },
+        {
+          label: 'Caviarder du texte dans une image',
+          to: '/tools/redact-text-in-image',
+          description: 'Masquez des noms ou des numéros sur une page rendue.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un PDF en JPG',
+        description: 'Importez un PDF. Chaque page est rendue en image JPG. Choisissez « toutes les pages » pour un ZIP d’images, ou « première page seulement » pour un seul JPG. Choisissez un DPI de rendu pour une sortie plus nette.',
+      },
     },
     'compress-video': {
       name: 'Compresser une vidéo',
+      h1: 'Compresser une vidéo en ligne sans ruiner la qualité',
       tagline: 'Réduisez le poids de vos fichiers MP4, WebM, MOV, MKV et AVI pour le web, l’e-mail, les réseaux sociaux et le cloud.',
       metaTitle: 'Compresser une vidéo en ligne (gratuit) | Media Manipulator',
       metaDescription: 'Compresseur vidéo gratuit en ligne. Réduisez le poids des fichiers MP4, WebM, MOV, MKV et AVI tout en gardant une bonne qualité. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Compresser une vidéo en ligne sans ruiner la qualité',
+      ogDescription: 'Réduisez le poids des fichiers vidéo MP4, WebM, MOV et AVI pour le web sans perdre une qualité regardable.',
+      intro: 'Un fichier vidéo est lourd à cause de son débit : le nombre de bits que l’encodeur a dépensés par seconde d’images. Les téléphones et les enregistreurs d’écran dépensent généreusement, c’est pourquoi un court clip 1080p peut atteindre des dizaines ou des centaines de mégaoctets. Cette page ouvre un compresseur à trois commandes au lieu du convertisseur complet : un niveau de compression, un conteneur de sortie, et une résolution et un codec facultatifs. Sur notre serveur, la tâche est une seule commande FFmpeg qui réencode l’image à un réglage de qualité constante (CRF) choisi par le niveau, réencode l’audio en AAC ou Opus, et écrit le résultat avec l’index en tête du fichier pour qu’il commence à se lire avant d’être entièrement téléchargé.',
+      whatItDoes: [
+        'Réencode la vidéo à un niveau de qualité fixe plutôt qu’à un débit fixe : Fichier le plus léger correspond à CRF 31, Équilibré à CRF 26 et Haute qualité à CRF 22.',
+        'Produit du MP4 (H.264 par défaut, ou H.265/HEVC si vous le choisissez) ou du WebM (VP9 avec audio Opus).',
+        'Réduit en option l’image en 1080p, 720p ou 480p dans la même passe tout en conservant le rapport d’image.',
+        'Supprime en option toute la piste audio pour obtenir le fichier le plus léger possible.',
+        'Accepte les téléversements MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG et MPG ; la page du convertisseur complet prend en charge ProRes et les autres formats de montage.',
+      ],
+      flowSteps: [
+        {
+          title: 'Téléverser la vidéo',
+          description: 'Le navigateur place le fichier directement dans notre bucket de stockage, puis demande à l’API de lancer la tâche.',
+        },
+        {
+          title: 'Choisir un niveau',
+          description: 'Équilibré est présélectionné. Fichier le plus léger sacrifie des détails visibles au profit de la taille ; Haute qualité en conserve davantage.',
+        },
+        {
+          title: 'Changer en option le format, la résolution ou le codec',
+          description: 'Le MP4 en H.264 se lit partout ; H.265 et WebM sont plus légers sur les appareils qui les décodent.',
+        },
+        {
+          title: 'FFmpeg réencode',
+          description: 'libx264, libx265 ou libvpx-vp9 avec le CRF de votre niveau, plus de l’audio AAC ou Opus et faststart pour le MP4.',
+        },
+        {
+          title: 'Télécharger le fichier allégé',
+          description: 'Le résultat reste dans le dossier de la tâche jusqu’à la fin de sa fenêtre de conservation.',
+        },
+      ],
+      advancedDetails: [
+        'La commande exacte pour le MP4 est ffmpeg -i input [-vf scale=-1:H] -c:v libx264 -crf N -pix_fmt yuv420p -movflags +faststart -c:a aac output.mp4, où N vaut 31, 26 ou 22 pour les trois niveaux (buildVideoCodecArgs et videoCRF dans converter.go). Aucun preset de vitesse d’encodeur n’est passé, donc libx264 tourne à sa valeur par défaut, medium.',
+        'Choisir H.265 remplace l’encodeur par libx265 et ajoute -tag:v hvc1, l’étiquette dont QuickTime et Safari ont besoin pour reconnaître le HEVC dans un MP4. Les anciens téléphones Android, les téléviseurs connectés et de nombreux lecteurs web ne peuvent pas décoder le H.265 du tout.',
+        'La sortie WebM exécute libvpx-vp9 avec -b:v 0 -crf N et de l’audio Opus ; si la version FFmpeg du serveur manquait de VP9 ou d’Opus, elle se rabattrait sur VP8 et Vorbis. Le même N est passé, mais VP9 lit le CRF sur une échelle de 0 à 63, donc 26 y est un réglage de qualité relativement élevé.',
+        'Un choix de résolution devient scale=-1:1080, scale=-1:720 ou scale=-1:480 : hauteur fixée, largeur calculée d’après le rapport d’image de la source. La hauteur est appliquée telle quelle ; choisir 1080p pour une source 720p l’agrandit et rend le fichier plus gros, pas plus petit ; choisissez une hauteur inférieure ou égale à celle de la source.',
+        'Supprimer la piste audio ajoute -an. Sinon, l’audio est réencodé par l’encodeur AAC natif de FFmpeg à son débit par défaut (aucun -b:a n’est passé ; pour la stéréo, c’est typiquement environ 128 kbps), ce qui représente une petite fraction du fichier à n’importe quel niveau.',
+        'La compression est pilotée par le CRF, donc la taille de sortie dépend du contenu : des diapositives statiques se compressent bien plus fort que des confettis ou de l’eau. Le serveur valide le CRF entre 0 et 51 et le niveau de compression parmi les trois noms avant tout encodage.',
+        'Le téléversement est aussi mis en file pour l’analyse automatisée de contenu que reçoit chaque conversion standard : des images sont échantillonnées et décrites par un modèle de vision local, et l’audio est transcrit sur notre propre matériel. Le résultat de l’analyse est stocké avec la tâche, pas partagé.',
+      ],
+      whyItMatters: [
+        'Les applications de messagerie, les serveurs de messagerie et les plateformes d’apprentissage imposent des plafonds en mégaoctets, et un clip de téléphone à son débit natif les dépasse largement.',
+        'Une page qui lit automatiquement une vidéo de fond de 60 Mo bloque sur les connexions mobiles ; le même clip à CRF 26 n’en est qu’une fraction.',
+        'Les factures de stockage et de bande passante évoluent avec les octets, donc conserver des copies compressées d’originaux que vous ouvrez rarement finit par compter.',
+      ],
+      useCases: [
+        {
+          title: 'E-mail et messagerie',
+          description: 'Faites passer un enregistrement de téléphone de 1 minute sous une limite de 25 Mo ou 100 Mo sans lien de partage séparé.',
+        },
+        {
+          title: 'Vidéos d’en-tête et boucles de fond de site web',
+          description: 'Encodez un WebM ou un MP4 H.264 qu’une page peut lire automatiquement sans long chargement.',
+        },
+        {
+          title: 'Enregistrements de cours et de réunions',
+          description: 'Réduisez des enregistrements d’écran dont les diapositives statiques se compressent extrêmement bien à n’importe quel CRF.',
+        },
+        {
+          title: 'Copies d’archive',
+          description: 'Conservez une copie Équilibré en 720p des originaux longs et déplacez le master vers un stockage froid.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un clip de téléphone 1080p de 48 Mo et 30 secondes au niveau Équilibré',
+          body: 'Entrée : un MP4 de 30 secondes venant d’un téléphone, 1920 x 1080, 48 Mo, soit environ 12,8 Mbps. Réglages : Équilibré, MP4, H.264, résolution conservée, audio conservé. Le serveur exécute libx264 à CRF 26 avec yuv420p et faststart, et réencode l’audio en AAC à 128 kbps, de sorte que la bande-son seule représente environ 0,5 Mo du résultat (128 kbps x 30 s). Tout le reste est décidé par l’image : CRF 26 renonce d’abord au grain fin et au bruit, donc un plan à main levée stable sort à une petite fraction de la source à 12,8 Mbps, tandis qu’une action rapide ou un fort bruit de capteur se réduit moins. L’encodage est une seule passe sur 900 images de 1080p avec le preset medium par défaut ; sur notre serveur, c’est une tâche courte, et le téléversement des 48 Mo domine en général l’attente.',
+        },
+        {
+          title: 'Un clip 4K de 160 Mo et 60 secondes vers du H.265 720p au niveau Fichier le plus léger',
+          body: 'Entrée : un MP4 de 60 secondes en 3840 x 2160 de 160 Mo, environ 21 Mbps, sous le plafond visiteur de 200 Mo. Réglages : Fichier le plus léger, MP4, codec H.265, résolution 720p, audio supprimé. FFmpeg applique scale=-1:720, ce qui produit du 1280 x 720 : 0,92 mégapixel par image contre 8,3 pour la source, à peu près un neuvième des pixels avant que le codec ne fasse quoi que ce soit. Puis libx265 tourne à CRF 31 avec -tag:v hvc1 et -an supprime l’audio. La combinaison de neuf fois moins de pixels, d’un codec plus efficace et d’un CRF élevé est ce qui produit les plus fortes réductions ; attendez-vous donc à un résultat qui se mesure en quelques mégaoctets plutôt qu’en dizaines. Le temps est dominé par le décodage des images 4K et par libx265, nettement plus lent que libx264 au même preset, donc cette tâche prend plus longtemps que l’exemple 1080p même si la sortie est plus petite.',
+        },
+      ],
+      whenNotToUse: 'Ne compressez pas un fichier que vous comptez encore monter ou étalonner ; chaque réencodage perd des détails, et un éditeur veut l’original ou un intermédiaire ProRes issu du convertisseur complet. Ne l’utilisez pas pour faire lire un clip sur un appareil donné si le problème vient du conteneur plutôt que de la taille ; le convertisseur vidéo change de format sans baisser la qualité. Si votre seul objectif est de couper une section, l’outil de découpage copie les flux sans réencodage et est à la fois plus rapide et sans perte. Et si le fichier est lourd parce qu’il est long, la compression aide moins que vous l’espérez ; un enregistrement de 20 minutes à CRF 26 reste un enregistrement de 20 minutes.',
+      whyMediaManipulator: [
+        'Le CRF derrière chaque niveau est écrit sur cette page, pour que vous puissiez prévoir ce que Fichier le plus léger fera à des images détaillées avant d’attendre le résultat.',
+        'Le H.265 dans un MP4 reçoit l’étiquette hvc1 exigée par les lecteurs Apple, que beaucoup de compresseurs en ligne oublient.',
+        'L’encodage tourne sur nos propres serveurs avec FFmpeg ; rien n’est confié à un service de traitement externe, et aucun filigrane n’est ajouté.',
+        'Une compression compte comme une opération de votre quota quotidien : 5 par jour sans compte par défaut, 30 avec un compte gratuit. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Le compresseur réencode votre vidéo sur nos propres serveurs avec FFmpeg. Le téléversement est stocké sous uploads/<jobId>/ et le fichier compressé sous outputs/<jobId>/ ; les deux figurent dans le registre de conservation et sont supprimés à la fin de la fenêtre. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Comme il s’agit d’une conversion standard, le téléversement passe aussi par notre analyse automatisée de contenu sur le même matériel (images échantillonnées décrites par un modèle de vision local, audio transcrit localement) ; ce rapport est conservé avec la tâche et n’est pas partagé avec des tiers. Les métadonnées du conteneur sont conservées sauf si vous choisissez de les supprimer ; rien n’est envoyé à un fournisseur d’IA ou de traitement externe.',
+      faq: [
+        {
+          question: 'La compression va-t-elle dégrader l’aspect de ma vidéo ?',
+          answer: 'Un réencodage perd toujours un peu de détail. En Haute qualité (CRF 22) et en Équilibré (CRF 26), la perte touche surtout le grain fin et le bruit que la plupart des spectateurs ne remarquent pas ; en Fichier le plus léger (CRF 31), on peut voir un adoucissement sur les images détaillées. Conserver la résolution évite le flou qu’ajoute la réduction d’échelle.',
+        },
+        {
+          question: 'Dois-je choisir H.264, H.265 ou WebM ?',
+          answer: 'Le MP4 H.264 se lit sur tout, y compris les vieux téléviseurs et les ordinateurs portables d’entreprise. H.265 donne un fichier plus léger au même CRF mais exige un appareil qui décode le HEVC ; nous l’étiquetons hvc1 pour que les lecteurs Apple l’acceptent. WebM (VP9 et Opus) est le choix pour les pages web où vous contrôlez le lecteur.',
+        },
+        {
+          question: 'De combien le fichier sera-t-il réduit ?',
+          answer: 'Cela dépend du débit de la source et du contenu. Un clip de téléphone à 12 Mbps a beaucoup de marge et se réduit énormément à CRF 26 ; un fichier déjà encodé à un débit modeste se réduit peu, parce que le CRF dépense ce dont l’image a besoin. Passer en 720p et supprimer l’audio aide toujours.',
+        },
+        {
+          question: 'Le compresseur ajoute-t-il un filigrane ou change-t-il la fréquence d’images ?',
+          answer: 'Non. La fréquence d’images, la durée et le rapport d’image sont préservés, et rien n’est dessiné sur l’image. Seuls le codec, le CRF, la hauteur facultative et la suppression facultative de l’audio changent.',
+        },
+        {
+          question: 'Compresser une vidéo est-il gratuit, et quelles sont les limites ?',
+          answer: 'Par défaut, un visiteur dispose de 5 opérations par jour avec des fichiers jusqu’à 200 Mo et 5 minutes de vidéo, sortie jusqu’en 1080p ; un compte gratuit porte cela à 30 par jour, 1 Go et 20 minutes. Une compression qui échoue est remboursée. Les chiffres en vigueur sont sur la page des tarifs.',
+        },
+        {
+          question: 'Pourquoi la sortie n’est-elle pas plus petite que l’original ?',
+          answer: 'La source était probablement déjà compressée efficacement, ou elle est à un faible débit pour sa résolution. Le CRF ne peut pas descendre sous ce que l’image exige sans un niveau plus bas. Essayez Fichier le plus léger, ou baissez la résolution, ou passez en H.265.',
+        },
+        {
+          question: 'Puis-je compresser une vidéo sans audio ou garder l’audio d’origine intact ?',
+          answer: 'Une source muette reste muette. L’audio d’une piste conservée est toujours réencodé en AAC (MP4) ou Opus (WebM) par cette page ; le convertisseur vidéo complet est l’endroit où définir un débit audio explicite.',
+        },
+      ],
+      related: [
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez d’abord le clip ; le compresseur aura ensuite moins à encoder.',
+        },
+        {
+          label: 'Convertir une vidéo en GIF animé',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Pour des clips de quelques secondes, le GIF est le format qui se lit en ligne dans la page.',
+        },
+        {
+          label: 'Transcoder en HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Empaquetez une vidéo en flux adaptatif au lieu d’un seul fichier.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Ne gardez que la bande-son en MP3, WAV ou FLAC.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenez les paroles sous forme de texte avant ou après la compression.',
+        },
+        {
+          label: 'Tutoriel du convertisseur vidéo',
+          to: '/tutorials/video/getting-started',
+          description: 'Présentation pas à pas de chaque option vidéo.',
+        },
+      ],
+      embed: {
+        title: 'Compresser une vidéo',
+        description: 'Téléversez une vidéo et choisissez un préréglage de qualité inférieur ou un débit plus bas. Conservez le même codec pour le résultat le plus rapide, ou passez en WebM/H.265 pour des fichiers plus légers sur les appareils modernes. Conserver la même résolution donne le résultat le plus naturel.',
+      },
     },
     'video-trimmer': {
       name: 'Découper une vidéo',
+      h1: 'Découper une vidéo en ligne gratuitement',
       tagline: 'Coupez un clip pour ne garder que la partie voulue, avec un découpage rapide qui préserve la qualité, sans réencodage lorsque c’est possible.',
       metaTitle: 'Découper une vidéo en ligne gratuitement | Media Manipulator',
       metaDescription: 'Outil gratuit en ligne pour découper une vidéo. Définissez un début et une fin et coupez votre clip avec un découpage rapide et sans perte. Sortie MP4, sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Découper une vidéo en ligne gratuitement',
+      ogDescription: 'Découpez vos vidéos pour ne garder que la partie voulue, avec une coupe rapide qui préserve la qualité. Gratuit, sans filigrane.',
+      intro: 'Découper une vidéo consiste à garder un seul passage et à écarter le reste. La plupart des outils de découpe en ligne réencodent tout le clip pour y parvenir, ce qui est lent et coûte en qualité. Cette page fait quelque chose de plus simple par défaut : elle demande à FFmpeg de se positionner à votre temps de début et de copier les paquets vidéo et audio compressés dans un nouveau fichier pendant la durée demandée, sans les décoder. C’est une copie de flux, elle est sans perte et elle s’exécute à peu près aussi vite que le fichier peut être lu. Si la copie est impossible, parce que le codec source n’est pas autorisé dans le conteneur que vous avez choisi ou parce que vous avez coché l’option de coupe à l’image près, le serveur réencode uniquement le passage sélectionné.',
+      whatItDoes: [
+        'Extrait une seule plage d’une vidéo, d’un temps de début à un temps de fin, saisis en secondes ou choisis sur une timeline visuelle.',
+        'Copie les flux sans réencodage chaque fois que le conteneur de sortie accepte les codecs source, de sorte que la partie conservée est l’original bit pour bit.',
+        'Bascule automatiquement sur un réencodage lorsque la copie est refusée, et vous permet de forcer un réencodage pour une coupe à l’image exacte.',
+        'Écrit du MP4 par défaut, ou du MOV ou du WebM ; le MP4 et le MOV reçoivent l’indicateur faststart pour que la lecture démarre avant la fin du téléchargement.',
+        'Vérifie avec ffprobe que le fichier contient bien un flux vidéo et refuse les envois audio seuls avec un message clair.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez la vidéo',
+          description: 'MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG ou MPG, envoyé directement dans notre espace de stockage.',
+        },
+        {
+          title: 'Définissez le début et la fin',
+          description: 'Saisissez les secondes ou faites glisser les deux poignées ; le panneau affiche la durée du clip obtenu.',
+        },
+        {
+          title: 'Choisissez un conteneur et, au besoin, la précision à l’image',
+          description: 'Le MP4 est prédéfini. Cochez Réencoder pour une coupe à l’image près uniquement lorsque l’image exacte compte.',
+        },
+        {
+          title: 'FFmpeg coupe',
+          description: 'Une copie de flux avec -ss, -t et -c copy ; ou un réencodage libx264 CRF 18 lorsque la copie est impossible ou que vous l’avez demandé.',
+        },
+        {
+          title: 'Téléchargez le clip',
+          description: 'La sortie porte le suffixe _trimmed et reste dans le dossier de la tâche jusqu’à la fin de sa période de conservation.',
+        },
+      ],
+      advancedDetails: [
+        'La commande de copie de flux est ffmpeg -ss START -i input -t DURATION -map 0 -c copy -avoid_negative_ts make_zero [-movflags +faststart] output (runTrimVideo dans specialized_tools.go). -map 0 conserve tous les flux, y compris les pistes audio supplémentaires et les sous-titres, et les temps sont écrits à la milliseconde près.',
+        'Avec -ss placé avant -i et sans décodage, FFmpeg ne peut commencer qu’à une image clé : la copie démarre donc à l’image clé la plus proche située à votre temps de début ou avant. Sur un enregistrement de téléphone, les images clés sont généralement espacées de 1 à 2 secondes, ce qui est le décalage maximal du début ; -avoid_negative_ts make_zero recale ensuite les horodatages pour que les lecteurs démarrent proprement.',
+        'Le chemin de réencodage utilise buildVideoCodecArgs au réglage de qualité haute : libx264 -crf 18 -pix_fmt yuv420p avec AAC pour le MP4 et le MOV, ou libvpx-vp9 -b:v 0 -crf 18 avec Opus pour le WebM. Seuls le premier flux vidéo et le premier flux audio (s’il existe) sont mappés, les pistes supplémentaires sont donc abandonnées sur ce chemin.',
+        'Le mode de copie est envoyé en auto, ce qui tente la copie et réencode en cas d’échec. Choisir le WebM pour une source H.264 aboutit toujours au chemin de réencodage, car le WebM n’accepte que la vidéo VP8, VP9 et AV1.',
+        'Validation côté serveur : le début doit être 0 ou plus, le clip doit durer au moins 0,1 seconde et au plus 6 heures, et la fin doit être après le début. Tout le reste est rejeté avant le lancement de FFmpeg et l’opération est remboursée.',
+        'Comme la découpe est un mode spécialisé, l’envoi ne passe pas par l’analyse automatisée du contenu que reçoivent les conversions standard ; le serveur n’exécute que ffprobe et la coupe.',
+      ],
+      whyItMatters: [
+        'Un silence au début et un arrêt maladroit à la fin se retrouvent dans presque tous les enregistrements, et les supprimer est la retouche la plus courante qui soit.',
+        'Une coupe sans perte signifie que vous pouvez découper un fichier maître sans créer de copie de seconde génération.',
+        'Couper d’abord rend chaque étape suivante moins coûteuse : compresser, sous-titrer ou transformer le clip en GIF ne touche plus que la partie que vous avez gardée.',
+      ],
+      useCases: [
+        {
+          title: 'Enregistrements de réunions et de cours',
+          description: 'Supprimez les minutes où les participants se connectent avant le début du contenu.',
+        },
+        {
+          title: 'Moments forts pour les réseaux sociaux',
+          description: 'Gardez les 20 secondes qui comptent et ne mettez en ligne que celles-là.',
+        },
+        {
+          title: 'Preuves et rapports de bug',
+          description: 'Partagez exactement le moment où un problème s’est produit, avec la qualité d’origine intacte.',
+        },
+        {
+          title: 'Préparer un GIF ou un extrait à restaurer',
+          description: 'Coupez à quelques secondes avant de confier le clip à un outil qui fonctionne mieux sur une entrée courte.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Une coupe par copie de flux de 30 secondes dans un MP4 1080p de 180 Mo et 4,5 minutes',
+          body: 'Entrée : un MP4 H.264 de 4 minutes 30 secondes en 1920 × 1080 pesant 180 Mo, soit environ 5,3 Mbit/s, qui tient dans les plafonds visiteurs par défaut de 200 Mo et 5 minutes. Réglages : début 45.000, fin 75.000, sortie MP4, réencodage non coché. Le serveur exécute la commande de copie avec -ss 45.000 et -t 30.000. Comme les paquets sont copiés, la sortie contient à peu près 30 des 270 secondes de données, environ 20 Mo, exactement à la qualité, au codec et à la fréquence d’images d’origine. La coupe commence à la dernière image clé avant 45 s, le clip peut donc s’ouvrir jusqu’à une ou deux secondes plus tôt. La tâche est limitée par la lecture du fichier, pas par le calcul, et se termine en quelques secondes.',
+        },
+        {
+          title: 'Une coupe à l’image près de 12 secondes dans un MP4 1080p de 60 Mo',
+          body: 'Entrée : un MP4 de 2 minutes en 1920 × 1080 pesant 60 Mo. Réglages : début 30.250, fin 42.250, sortie MP4, Réencoder pour une coupe à l’image près coché. FFmpeg décode désormais exactement à partir de 30.250, encode 12 secondes (360 images à 30 images par seconde) avec libx264 en CRF 18, yuv420p et faststart, et réencode l’audio en AAC. Le CRF 18 garde une image visuellement très proche de la source, le résultat est donc du même ordre de taille par seconde que la source, soit quelques mégaoctets pour 12 secondes. Seules les 12 secondes conservées sont encodées, jamais les 2 minutes complètes : il s’agit donc d’un encodage court plutôt que d’une copie de quelques secondes.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas l’outil de découpe pour retirer plusieurs sections distinctes d’une même vidéo ; il conserve exactement une plage, une coupe au milieu nécessite donc deux découpes et un assemblage dans Darkroom. N’attendez pas d’une copie de flux qu’elle tombe sur l’image exacte ; si une coupe une seconde trop tôt pose problème, cochez l’option de réencodage et acceptez un encodage court. Si votre véritable objectif est un fichier plus léger, la découpe n’aide qu’à hauteur de ce que vous coupez ; c’est le compresseur qui modifie le débit. Et si l’envoi ne contient aucun flux vidéo, par exemple un M4A renommé en MP4, l’outil de découpe le refuse ; les outils audio prennent en charge les fichiers audio seuls.',
+      whyMediaManipulator: [
+        'La copie de flux sans perte est le comportement par défaut, et le repli sur le réencodage est documenté plutôt que caché derrière un réencodage intégral, lent mais sûr.',
+        'Les options FFmpeg exactes figurent sur cette page, y compris la raison pour laquelle une coupe peut commencer à l’image clé précédente et la façon de l’éviter.',
+        'Une découpe consomme une opération de votre quota quotidien (5 par jour en tant que visiteur par défaut, 30 avec un compte gratuit), et une tâche échouée est remboursée. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'L’outil de découpe exécute ffprobe et une seule commande FFmpeg sur nos propres serveurs. Dans le chemin par défaut, les paquets vidéo et audio sont copiés, jamais décodés : le serveur ne reconstruit donc pas une seule image de votre fichier ; dans le chemin de réencodage, FFmpeg ne décode que les secondes que vous avez gardées. L’envoi se trouve dans uploads/<jobId>/ et le clip dans outputs/<jobId>/, tous deux inscrits dans le registre de conservation et supprimés à la fin de la période. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. La découpe est un mode spécialisé : l’analyse automatisée du contenu que reçoivent les conversions standard n’est donc pas exécutée sur cet envoi, et rien n’est transmis à un service tiers.',
+      faq: [
+        {
+          question: 'La découpe réencode-t-elle ma vidéo ?',
+          answer: 'Pas par défaut. Le serveur copie les flux compressés avec -c copy, la partie conservée est donc identique à l’original. Il ne réencode que si vous cochez l’option de coupe à l’image près ou si le conteneur choisi ne peut pas contenir le codec source, comme le WebM pour un fichier H.264.',
+        },
+        {
+          question: 'Pourquoi mon clip commence-t-il un instant avant le temps que j’ai saisi ?',
+          answer: 'Une copie de flux ne peut commencer qu’à une image clé, et FFmpeg choisit la plus proche située à votre temps de début ou avant. Sur des images de caméra, les images clés sont généralement espacées de 1 à 2 secondes. Cochez Réencoder pour une coupe à l’image près pour démarrer sur l’image exacte.',
+        },
+        {
+          question: 'Quels conteneurs de sortie puis-je choisir, et lesquels conservent la qualité d’origine ?',
+          answer: 'MP4, MOV et WebM. Le MP4 et le MOV acceptent la vidéo H.264 ou HEVC et l’audio AAC que produisent la plupart des caméras, ils restent donc sans perte. Le WebM n’accepte que le VP8, le VP9 et l’AV1 : une source H.264 est donc réencodée en VP9 en CRF 18 pour ce choix.',
+        },
+        {
+          question: 'Quelle durée minimale ou maximale le clip découpé peut-il avoir ?',
+          answer: 'Au moins 0,1 seconde et au plus 6 heures, avec la fin après le début. En pratique, ce sont les plafonds d’envoi qui s’appliquent d’abord : par défaut 5 minutes de vidéo pour un visiteur, 20 minutes avec un compte gratuit, 2 heures avec Premium.',
+        },
+        {
+          question: 'Toutes les pistes audio et les sous-titres sont-ils conservés ?',
+          answer: 'Dans le chemin de copie de flux, oui : -map 0 copie chaque flux du fichier. Dans le chemin de réencodage, seuls le premier flux vidéo et le premier flux audio sont conservés.',
+        },
+        {
+          question: 'Puis-je découper une vidéo en plusieurs parties à la fois ?',
+          answer: 'Non. Un envoi produit un clip à partir d’une plage. Pour plusieurs morceaux, lancez l’outil de découpe une fois par plage, ou assemblez les parties sur une timeline dans Darkroom.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Copie de flux lorsque c’est possible (aucune perte de qualité) ; le repli sur le réencodage utilise H.264 + AAC pour le MP4.',
+        ],
+      },
+      related: [
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez le clip après l’avoir découpé.',
+        },
+        {
+          label: 'Convertir une vidéo en GIF animé',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Transformez les secondes découpées en GIF.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'N’enregistrez que le son du clip.',
+        },
+        {
+          label: 'Restauration vidéo par IA',
+          to: '/tools/ai-video-restoration',
+          description: 'La restauration fonctionne sur des extraits de 15 secondes ou moins ; découpez d’abord.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Assemblez plusieurs morceaux découpés en un seul montage.',
+        },
+      ],
+      embed: {
+        title: 'Découper une vidéo',
+        description: 'Importez une vidéo, puis définissez un temps de début et de fin (ou choisissez la plage visuellement). Nous conservons la qualité d’origine avec une coupe rapide et sans perte chaque fois que c’est possible.',
+      },
     },
     'extract-audio-from-video': {
       name: 'Extraire l’audio d’une vidéo',
+      h1: 'Extraire l’audio d’une vidéo',
       tagline: 'Enregistrez la piste audio de n’importe quelle vidéo en fichier MP3, WAV, M4A, AAC, FLAC ou OGG propre.',
       metaTitle: 'Extraire l’audio d’une vidéo : MP3, WAV, M4A et plus | Media Manipulator',
       metaDescription: 'Outil gratuit en ligne pour extraire l’audio de n’importe quel fichier vidéo (MP4, MOV, MKV, WebM, AVI). Sortie en MP3, WAV, M4A, AAC, FLAC ou OGG. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Extraire l’audio d’une vidéo',
+      ogDescription: 'Enregistrez les pistes audio de fichiers MP4/MOV/MKV/WebM/AVI en MP3, WAV, M4A, AAC, FLAC ou OGG. Gratuit, sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      intro: 'Chaque conteneur vidéo transporte son audio dans un flux séparé ; en extraire le son ne fait donc pas intervenir l’image. Cette page demande à FFmpeg de sélectionner le premier flux audio, d’ignorer la vidéo et d’encoder ce flux dans le format que vous choisissez : MP3 pour tout ce qui lit de la musique, WAV ou FLAC lorsque vous voulez des échantillons intacts, M4A ou AAC pour un fichier léger que les téléphones lisent nativement, ou OGG Vorbis. Avant de commencer, le serveur vérifie avec ffprobe qu’un flux audio existe, car FFmpeg écrirait sinon un fichier vide sans se plaindre.',
+      whatItDoes: [
+        'Sélectionne le premier flux audio (-map 0:a:0) des conteneurs MP4, MOV, M4V, WebM, MKV, AVI et des autres conteneurs vidéo courants, et écarte la vidéo (-vn).',
+        'Encode le MP3 avec libmp3lame en qualité 2 (débit variable d’environ 190 kbit/s en moyenne), le WAV en PCM 16 bits, le M4A ou l’AAC à 192 kbit/s, le FLAC sans perte, ou l’OGG avec libvorbis en qualité 5.',
+        'Conserve la fréquence d’échantillonnage et le nombre de canaux d’origine ; rien n’est rééchantillonné ni mixé.',
+        'Refuse d’emblée une vidéo sans flux audio, avec le message qu’il n’y a rien à extraire.',
+        'Renvoie un seul fichier audio portant le nom de l’original avec l’extension choisie.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez la vidéo',
+          description: 'N’importe quel conteneur courant ; le fichier va directement dans notre espace de stockage et l’API le récupère.',
+        },
+        {
+          title: 'Choisissez le format audio',
+          description: 'Le MP3 est présélectionné. WAV et FLAC sont sans perte ; M4A et AAC sont compacts ; OGG est l’option ouverte avec perte.',
+        },
+        {
+          title: 'ffprobe confirme la présence d’un flux audio',
+          description: 'Une vidéo muette s’arrête ici avec une erreur claire au lieu de produire un fichier vide.',
+        },
+        {
+          title: 'FFmpeg encode le flux',
+          description: 'Une seule commande avec -map 0:a:0 -vn et l’encodeur de votre format.',
+        },
+        {
+          title: 'Téléchargez l’audio',
+          description: 'Le fichier reste dans le dossier de la tâche jusqu’à la fin de sa période de conservation.',
+        },
+      ],
+      advancedDetails: [
+        'La commande est ffmpeg -y -i input -map 0:a:0 -vn <encoder args> output (runExtractAudio dans specialized_tools.go). -vn signifie que le flux vidéo n’est jamais décodé, ce qui explique que l’extraction soit rapide même sur des sources 4K.',
+        'Le MP3 utilise -c:a libmp3lame -q:a 2, le réglage LAME V2 à débit variable, qui tourne en moyenne autour de 190 kbit/s sur la musique et moins sur la parole. Le WAV utilise -c:a pcm_s16le ; une source stéréo à 44,1 kHz pèse donc environ 10,1 Mo par minute et une source à 48 kHz environ 11 Mo par minute.',
+        'M4A et AAC utilisent tous deux l’encodeur AAC natif de FFmpeg avec -b:a 192k. Le FLAC est sans perte et se situe généralement entre 50 et 70 pour cent de la taille du WAV. L’OGG utilise -c:a libvorbis -q:a 5, soit environ 160 kbit/s.',
+        'Aucun indicateur -ar ni -ac n’est transmis ; la sortie conserve donc la fréquence d’échantillonnage et la configuration des canaux de la source : le surround 5.1 reste en 5.1 en WAV et FLAC, tandis que le MP3 ne transportera que deux canaux au maximum.',
+        'Seul le flux 0:a:0 est sélectionné. Un fichier avec une piste de commentaires ou une seconde langue conserve la piste listée en premier dans le conteneur.',
+        'L’extraction est un mode spécialisé : l’import n’est pas mis en file d’attente pour l’analyse automatique de contenu que reçoivent les conversions standard, et les réglages de qualité, de redimensionnement et d’effets du convertisseur vidéo ne s’appliquent pas.',
+      ],
+      whyItMatters: [
+        'Les podcasteurs, les transcripteurs et les monteurs ont généralement besoin du son sans les pixels, et la vidéo est souvent 20 à 50 fois plus volumineuse que l’audio qu’elle contient.',
+        'Un MP3 ou un M4A correctement balisé se lit sur tous les téléphones et dans tous les lecteurs, sans le décodage vidéo qui vide les batteries.',
+        'Une sortie WAV ou FLAC sans perte est la bonne entrée pour un nettoyage du bruit, une séparation de la voix ou une transcription soignée.',
+      ],
+      useCases: [
+        {
+          title: 'Épisodes audio seuls',
+          description: 'Publiez le son d’une interview filmée sous forme de podcast MP3.',
+        },
+        {
+          title: 'Préparation à la transcription',
+          description: 'Donnez un enregistrement de 18 minutes à un transcripteur sous forme de MP3 de 25 Mo plutôt que de MP4 de 540 Mo.',
+        },
+        {
+          title: 'Design sonore et échantillonnage',
+          description: 'Extrayez un WAV d’un clip pour réutiliser une ambiance ou une musique dans un autre montage.',
+        },
+        {
+          title: 'Notes de cours',
+          description: 'Gardez l’audio d’un cours enregistré pour l’écouter en déplacement.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un enregistrement 720p de 18 minutes et 540 Mo en MP3',
+          body: 'Entrée : un MP4 de 18 minutes en 1280 x 720 et 540 Mo (environ 4 Mbit/s), importé avec un compte gratuit car il dépasse les limites par défaut des visiteurs de 200 Mo et 5 minutes. Réglages : MP3. Le serveur confirme la piste AAC stéréo à 48 kHz avec ffprobe et exécute libmp3lame -q:a 2. À environ 190 kbit/s, cela représente environ 1,4 Mo par minute ; le résultat pèse donc environ 25 Mo, soit à peu près un vingtième de l’import. Comme -vn ignore entièrement la vidéo, la tâche se résume à un décodage et un encodage audio et est rapide ; importer 540 Mo prend bien plus de temps que d’en extraire l’audio.',
+        },
+        {
+          title: 'Un clip musical 1080p de 4 minutes et 95 Mo en WAV',
+          body: 'Entrée : un MP4 de 4 minutes en 1920 x 1080 et 95 Mo avec une piste AAC stéréo à 44,1 kHz, dans les limites des visiteurs. Réglages : WAV. FFmpeg décode l’AAC une fois et écrit du PCM 16 bits avec pcm_s16le, en conservant 44,1 kHz et deux canaux. Le PCM à cette fréquence représente 44 100 x 16 x 2 bits par seconde, soit environ 10,1 Mo par minute ; le fichier pèse donc environ 40 Mo, quelle que soit la puissance ou la densité de la musique. Choisir FLAC à la place compresserait ces mêmes échantillons sans perte à quelque chose entre 20 et 28 Mo selon le contenu. Le traitement dure quelques secondes de décodage audio ; la vidéo n’est jamais touchée.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas cette page pour améliorer le son ; elle copie ce qui existe, et un enregistrement bruyant ou lointain reste bruyant. Les outils Nettoyer l’audio d’une voix et Supprimer le bruit de fond sont faits pour cela. N’attendez pas d’un WAV qu’il récupère la qualité perdue par la vidéo ; la piste source est presque toujours de l’AAC avec perte, un WAV est donc une copie fidèle d’un signal compressé, pas un master de studio. Si la vidéo contient deux pistes de langue et que vous avez besoin de la seconde, cet outil ne prend que la première. Et si ce que vous voulez vraiment, ce sont les paroles, le transcripteur lit l’audio et vous donne directement du texte et des sous-titres.',
+      whyMediaManipulator: [
+        'Les réglages d’encodage sont explicites : LAME V2 pour le MP3, 192 kbit/s pour l’AAC, PCM 16 bits pour le WAV, et la fréquence d’échantillonnage d’origine partout.',
+        'Une vidéo muette est détectée par ffprobe avant tout traitement ; vous ne téléchargez donc jamais un fichier vide.',
+        'Une extraction compte pour une opération de votre quota quotidien : 5 par jour sans compte par défaut, 30 avec un compte gratuit ; une tâche refusée ou échouée est remboursée. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'L’extraction s’exécute sur nos propres serveurs sous la forme d’une seule commande FFmpeg qui ne lit que le premier flux audio de votre import ; les images de la vidéo ne sont jamais décodées. Le fichier importé se trouve dans uploads/<jobId>/ et l’audio dans outputs/<jobId>/, tous deux inscrits dans le registre de conservation et supprimés à la fin de la période. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Comme l’extraction est un mode spécialisé, l’import ne passe pas par l’analyse automatique de contenu que reçoivent les conversions standard ; il n’est ni transcrit ni décrit, et rien ne quitte notre matériel.',
+      faq: [
+        {
+          question: 'Vers quels formats audio puis-je extraire, et lesquels sont sans perte ?',
+          answer: 'MP3, WAV, M4A, AAC, FLAC et OGG. WAV et FLAC sont des copies sans perte de la piste décodée. MP3 (environ 190 kbit/s VBR), M4A et AAC (192 kbit/s) et OGG (qualité 5) sont avec perte, mais au-dessus du débit de la plupart des pistes sonores de vidéos.',
+        },
+        {
+          question: 'Quelle sera la taille de l’audio extrait ?',
+          answer: 'Le WAV pèse environ 10,1 Mo par minute en stéréo à 44,1 kHz, ou 11 Mo à 48 kHz. Le MP3 avec le réglage de cette page pèse environ 1,4 Mo par minute, le M4A et l’AAC environ 1,4 Mo par minute à 192 kbit/s, l’OGG environ 1,2 Mo par minute. Le FLAC se situe généralement entre la moitié et les deux tiers de la taille du WAV.',
+        },
+        {
+          question: 'L’extraction modifie-t-elle la fréquence d’échantillonnage ou l’image stéréo ?',
+          answer: 'Non. FFmpeg est exécuté sans -ar ni -ac ; la sortie conserve donc la fréquence d’échantillonnage et la configuration des canaux de la source. Une piste stéréo à 48 kHz reste en stéréo à 48 kHz.',
+        },
+        {
+          question: 'Que se passe-t-il si ma vidéo n’a pas d’audio ?',
+          answer: 'Le serveur analyse d’abord le fichier et s’arrête avec le message qu’il n’y a rien à extraire. L’opération est remboursée et aucun fichier vide n’est produit.',
+        },
+        {
+          question: 'Ma vidéo a deux pistes audio ; laquelle vais-je obtenir ?',
+          answer: 'La première du conteneur, le flux 0:a:0. Il n’y a pas encore de sélecteur de piste. Si celle dont vous avez besoin est la seconde, remultiplexez ou réexportez d’abord la vidéo avec cette piste en premier.',
+        },
+        {
+          question: 'L’extraction audio est-elle gratuite, et quelle durée de vidéo puis-je importer ?',
+          answer: 'Oui. Par défaut, un visiteur peut lancer 5 opérations par jour sur des fichiers jusqu’à 200 Mo et 5 minutes ; un compte gratuit permet 30 opérations par jour, 1 Go et 20 minutes ; Premium accepte 5 Go et 2 heures. Les limites en vigueur sont indiquées sur la page des tarifs.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Nous extrayons le premier flux audio. Les vidéos sans aucun flux audio renvoient une erreur claire au lieu d’un fichier vide.',
+        ],
+      },
+      related: [
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Passez le fichier audio et obtenez directement les paroles.',
+        },
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Débruitez et nivelez la parole extraite.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Retirez le ronflement et le souffle de la piste extraite.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Transformez la musique extraite en instrumental.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez la vidéo à la partie voulue avant l’extraction.',
+        },
+      ],
+      embed: {
+        title: 'Extraire la piste audio d’une vidéo',
+        description: 'Importez n’importe quel conteneur vidéo courant. Choisissez MP3 pour une large compatibilité, WAV pour du sans perte, ou M4A/AAC pour un fichier compressé compact. Les vidéos sans piste audio renvoient une erreur claire.',
+      },
     },
     'convert-video-to-animated-gif': {
       name: 'Convertir une vidéo en GIF animé',
+      h1: 'Convertir une vidéo en GIF animé en ligne',
       tagline: 'Transformez en quelques secondes de courts clips MP4, WebM, MOV ou MKV en GIF animés faciles à partager.',
       metaTitle: 'Convertir une vidéo en GIF animé en ligne (gratuit) | Media Manipulator',
       metaDescription: 'Convertisseur de vidéo en GIF gratuit en ligne. Transformez de courts clips MP4, WebM, MOV et MKV en GIF animés, avec contrôle de la taille et de la fréquence d’images.',
+      ogTitle: 'Convertir une vidéo en GIF animé en ligne',
+      ogDescription: 'Transformez de courts clips vidéo en GIF animés faciles à partager. Contrôlez la fréquence d’images, les dimensions et la boucle.',
+      intro: 'Un GIF animé est une pile d’images en couleurs indexées, 256 couleurs au plus par palette, sans compression inter-images au-delà d’un simple codage par plages. C’est pourquoi un GIF de quelques secondes peut peser plus qu’un MP4 d’une minute, et pourquoi en réussir un consiste surtout à choisir la largeur, la fréquence d’images et la taille de la palette. Cette page exécute une chaîne en deux étapes : FFmpeg redimensionne la vidéo à la largeur que vous définissez et l’échantillonne à votre fréquence d’images, en écrivant un GIF brut, puis gifsicle requantifie la palette à votre nombre de couleurs, règle le délai entre images et optimise les images pour ne stocker que les pixels modifiés. Les valeurs par défaut sont réglées pour les enregistrements d’écran : 900 pixels de large, 12 images par seconde, 128 couleurs.',
+      whatItDoes: [
+        'Redimensionne le clip à une largeur choisie (16 à 2000 px), la hauteur étant calculée d’après le rapport d’image et arrondie à un multiple de 4.',
+        'Échantillonne la source à une fréquence d’images choisie (1 à 50 fps ; 12 par défaut) avec FFmpeg.',
+        'Quantifie chaque image sur une palette de 2 à 256 couleurs (128 par défaut) et optimise le stockage inter-images avec gifsicle au niveau 1 à 3.',
+        'Règle le délai entre images en centièmes de seconde, ce qui décide de la vitesse de lecture indépendamment de la fréquence d’échantillonnage.',
+        'Respecte une plage de découpage définie dans le formulaire du convertisseur, pour que seules les secondes sélectionnées deviennent des images.',
+      ],
+      flowSteps: [
+        {
+          title: 'Téléverser une vidéo et choisir GIF',
+          description: 'GIF est déjà sélectionné comme sortie sur cette page ; la commande Qualité est désactivée parce qu’elle ne s’applique pas.',
+        },
+        {
+          title: 'Découper à quelques secondes',
+          description: 'Utilisez la commande de découpage pour ne garder que le moment voulu ; chaque seconde supplémentaire représente 12 images de plus à la fréquence par défaut.',
+        },
+        {
+          title: 'Régler la largeur, la fréquence d’images, les couleurs et le délai',
+          description: 'Le panneau Paramètres du GIF animé démarre à 900 px, 12 fps, 128 couleurs, délai 3, optimisation 3.',
+        },
+        {
+          title: 'FFmpeg échantillonne, gifsicle optimise',
+          description: 'ffmpeg scale=W:-4 -pix_fmt rgb8 -r FPS, puis gifsicle --optimize --delay --colors --interlace.',
+        },
+        {
+          title: 'Télécharger le GIF',
+          description: 'Un GIF en boucle standard que les applications de messagerie et les navigateurs lisent directement dans la page.',
+        },
+      ],
+      advancedDetails: [
+        'La première étape est ffmpeg -i input [-ss START -t DURATION] -vf scale=W:-4 -pix_fmt rgb8 -r FPS -f gif raw.gif (convertVideoToGIF dans converter.go). Le -4 demande une hauteur qui conserve le rapport d’image et est divisible par 4 ; rgb8 est un intermédiaire indexé 8 bits que la seconde étape requantifie.',
+        'La seconde étape est gifsicle --optimize=L --delay=D --colors C --interlace raw.gif -o output.gif. Le niveau d’optimisation 3 est le plus lent et le plus compact : il ne stocke que le rectangle de pixels qui a changé entre deux images, ce qui explique qu’une capture d’écran avec une barre d’outils statique se compresse bien mieux qu’un panoramique de caméra.',
+        'Le délai est appliqué à chaque image après l’échantillonnage et est indépendant de la fréquence d’échantillonnage. Aux valeurs par défaut de 12 fps et délai 3 (30 ms par image), un clip se lit environ 2,8 fois plus vite que le temps réel ; réglez le délai à 8 (80 ms, 12,5 fps) pour une lecture à peu près en temps réel à 12 fps, ou à 10 à 10 fps.',
+        'Une largeur saisie dans le champ Largeur principal du convertisseur remplace la largeur du panneau GIF, pour que les utilisateurs avertis puissent ne garder qu’un seul réglage. Les couleurs sont bornées entre 2 et 256 par le formulaire ; une palette GIF ne peut jamais dépasser 256.',
+        'Il n’y a pas de passe palettegen dans FFmpeg ici ; la qualité de la palette vient de gifsicle --colors, qui construit une seule palette optimisée pour toute l’animation. Les clips photographiques aux dégradés doux profitent de 256 couleurs ; les images d’interface à aplats sont identiques à 64.',
+        'L’étape gifsicle s’exécute avec un délai maximal de 6 heures, et le téléversement reçoit aussi l’analyse automatisée de contenu des conversions standard, puisque le GIF est un format du convertisseur vidéo classique.',
+      ],
+      whyItMatters: [
+        'Les GIF se lisent automatiquement dans la page des gestionnaires de tickets, des applications de messagerie, des sites de documentation et des clients e-mail, là où une pièce jointe vidéo afficherait un bouton de lecture ou rien du tout.',
+        'Un GIF de 5 secondes d’un bug le reproduit plus vite qu’un paragraphe et n’a pas besoin de lecteur vidéo.',
+        'Les choix de palette et de fréquence d’images changent la taille d’un ordre de grandeur, donc les exposer vaut mieux qu’un préréglage unique.',
+      ],
+      useCases: [
+        {
+          title: 'Reproductions de bugs',
+          description: 'Enregistrez l’écran, découpez jusqu’à la défaillance et déposez le GIF dans le ticket.',
+        },
+        {
+          title: 'Démos pour README et documentation',
+          description: 'Montrez une fonctionnalité en mouvement là où une intégration vidéo n’est pas autorisée.',
+        },
+        {
+          title: 'Clips de réaction',
+          description: 'Coupez 3 secondes d’une vidéo et partagez-les partout où les images sont acceptées.',
+        },
+        {
+          title: 'Aperçus pour e-mail',
+          description: 'Un petit GIF en boucle renvoyant vers la vidéo complète, là où la vidéo elle-même ne se lira pas.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un enregistrement d’écran 1080p de 8 secondes aux valeurs par défaut',
+          body: 'Entrée : un enregistrement d’écran MP4 de 8 secondes en 1920 x 1080 d’environ 15 Mo. Réglages : GIF, largeur 900, 12 fps, 128 couleurs, délai 3, optimisation 3. FFmpeg redimensionne à 900 pixels de large sur environ 506 de haut (ajusté à un multiple de 4) et échantillonne 96 images. Non compressées, ces 96 images indexées représenteraient environ 43 Mo (900 x 504 x 96 octets), le plafond à partir duquel gifsicle travaille à la baisse ; avec une barre d’outils statique et un curseur en mouvement, l’optimisation de niveau 3 ne stocke que les rectangles qui changent, de sorte qu’une capture d’écran atterrit bien en dessous de cette borne, typiquement à quelques mégaoctets. Avec un délai de 3, les 96 images se lisent en environ 2,9 secondes, à peu près 2,8 fois plus vite que la source de 8 secondes ; réglez le délai à 8 pour une lecture en environ 7,7 secondes. La tâche est un encodage court plus une passe gifsicle sur 96 images.',
+        },
+        {
+          title: 'Un clip de réaction de 5 secondes à 480 px, 10 fps et 64 couleurs',
+          body: 'Entrée : un MP4 1080p de 20 secondes de 40 Mo, découpé dans le formulaire à une plage de 5 secondes. Réglages : GIF, largeur 480, 10 fps, 64 couleurs, délai 10, optimisation 3. FFmpeg coupe les 5 secondes, redimensionne à 480 pixels de large sur environ 270 de haut (arrondi à un multiple de 4) et échantillonne 50 images. Les données d’images brutes représentent environ 6,5 Mo (480 x 268 x 50 octets) avant optimisation, et une palette de 64 couleurs n’a besoin que de 6 bits par pixel ; un plan de caméra avec du mouvement sur toute l’image restera donc bien en dessous, tandis qu’un présentateur immobile se compresse à une fraction de cela. Un délai de 10 correspond à 100 ms par image, donc 50 images se lisent en exactement 5 secondes, au rythme du temps réel à 10 fps.',
+        },
+      ],
+      whenNotToUse: 'Ne faites pas de GIF de quoi que ce soit de plus long qu’environ 10 secondes ou avec du mouvement photographique sur toute l’image ; le format n’a pas de véritable compression inter-images, donc de tels clips atteignent des dizaines de mégaoctets alors qu’un MP4 ou un WebM de la même chose en fait le dixième. N’utilisez pas le GIF quand la fidélité des couleurs compte, puisque chaque image est limitée à une palette de 256 couleurs et que les dégradés se strient. Si la destination lit la vidéo dans la page, un MP4 compressé est meilleur en tout point. Et si vous avez besoin d’audio, un GIF ne peut tout simplement pas en transporter.',
+      whyMediaManipulator: [
+        'Les deux étapes de la chaîne et leurs valeurs par défaut sont documentées ici, y compris le comportement du délai qui fait que les GIF par défaut se lisent vite.',
+        'Largeur, fréquence d’images, nombre de couleurs, délai et niveau d’optimisation sont tous exposés, pas un simple curseur de taille.',
+        'Une conversion en GIF compte comme une opération (5 par jour pour les visiteurs par défaut, 30 avec un compte gratuit), et une tâche échouée est remboursée. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'La conversion en GIF s’exécute sur nos propres serveurs : FFmpeg échantillonne et redimensionne les images, puis gifsicle les quantifie et les optimise ; un GIF brut temporaire est supprimé dès que gifsicle a terminé. Le téléversement est conservé dans uploads/<jobId>/ et le GIF dans outputs/<jobId>/, tous deux inscrits dans le registre de conservation et supprimés à la fin de la fenêtre. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. En tant que format du convertisseur vidéo standard, le téléversement passe aussi par notre analyse automatisée de contenu sur le même matériel (images échantillonnées décrites par un modèle de vision local, audio éventuel transcrit localement) ; ce rapport reste avec la tâche et n’est pas partagé avec des tiers.',
+      faq: [
+        {
+          question: 'Pourquoi mon GIF se lit-il plus vite que la vidéo d’origine ?',
+          answer: 'Le délai entre images est réglé après l’échantillonnage et vaut par défaut 3 centièmes de seconde, soit environ 33 images par seconde de lecture pour des images échantillonnées à 12 par seconde. Réglez le délai à 8 à 12 fps, ou à 10 à 10 fps, pour une lecture en temps réel.',
+        },
+        {
+          question: 'Comment réduire la taille du GIF ?',
+          answer: 'Par ordre d’effet : découpez à moins de secondes, baissez la largeur (480 suffit largement pour la messagerie), baissez la fréquence d’images à 8 ou 10, et réduisez les couleurs à 64 sur des images d’interface à aplats. Gardez l’optimisation à 3 ; les niveaux 1 et 2 ne font qu’échanger de la taille contre de la vitesse.',
+        },
+        {
+          question: 'Combien de couleurs utiliser ?',
+          answer: '128, la valeur par défaut, convient à la plupart des enregistrements d’écran. Les interfaces à aplats sont identiques à 64 et économisent des octets. Les images photographiques avec des dégradés demandent 256, le maximum du GIF.',
+        },
+        {
+          question: 'Puis-je choisir quelle partie de la vidéo devient le GIF ?',
+          answer: 'Oui. Utilisez la commande de découpage du convertisseur pour définir un début et une fin ; seule cette plage est échantillonnée. Plus court est mieux, puisque chaque seconde ajoute des images à la fréquence choisie.',
+        },
+        {
+          question: 'Le GIF bouclera-t-il, et garde-t-il le son ?',
+          answer: 'Il boucle, comme les GIF le font par défaut dans tous les lecteurs. Il ne peut pas transporter d’audio ; le format n’a pas de piste sonore. Extrayez l’audio séparément si vous en avez besoin.',
+        },
+        {
+          question: 'Quel est le plus grand GIF que je puisse créer ?',
+          answer: 'Le formulaire autorise jusqu’à 2000 px de large, 50 fps et 256 couleurs, mais un GIF à ces réglages devient énorme très vite. Le téléversement lui-même est borné par votre offre, 200 Mo et 5 minutes de vidéo pour un visiteur par défaut.',
+        },
+      ],
+      related: [
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez d’abord les secondes exactes, sans perte.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Pour tout ce qui dépasse quelques secondes, un petit MP4 bat un GIF.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Ajoutez des sous-titres ou recadrez avant d’exporter le clip.',
+        },
+        {
+          label: 'Tutoriel du convertisseur vidéo',
+          to: '/tutorials/video/getting-started',
+          description: 'Parcourez les réglages de découpage, de redimensionnement et de filtres.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un clip vidéo en GIF',
+        description: 'Téléversez une courte vidéo et choisissez GIF comme format de sortie. Découpez à moins de ~10 secondes et baissez la fréquence d’images pour un fichier plus léger.',
+      },
     },
     'transcribe-video': {
       name: 'Transcrire une vidéo',
+      h1: 'Transcrire une vidéo en texte en ligne',
       tagline: 'Extrayez les paroles d’une vidéo ou d’un fichier audio sous forme de sous-titres WebVTT ou SRT, de texte brut ou de JSON horodaté.',
       metaTitle: 'Transcrire une vidéo en texte en ligne (gratuit) | Media Manipulator',
       metaDescription: 'Transcription vidéo gratuite en ligne. Convertissez des fichiers MP4, MOV, WebM, MKV et audio en texte consultable, en sous-titres VTT ou en transcriptions JSON.',
+      ogTitle: 'Transcrire une vidéo en texte en ligne',
+      ogDescription: 'Extrayez les paroles des vidéos en texte, en sous-titres ou en transcriptions JSON. Fonctionne sur un serveur GPU local.',
+      intro: 'Transcrire une vidéo prend un MP4, MOV, WebM, MKV ou un simple fichier audio, en sépare la piste audio et la passe dans Whisper sur un serveur GPU que nous exploitons. Vous choisissez la forme du résultat avant de téléverser : un fichier de sous-titres WebVTT ou SRT avec le minutage des repères, un fichier texte brut avec seulement les mots, ou un document JSON avec chaque segment et ses temps de début et de fin à la milliseconde. La langue est détectée automatiquement, ou vous pouvez saisir un code à deux lettres pour l’imposer.',
+      whatItDoes: [
+        'Décode la piste audio avec ffmpeg en un WAV mono 16 kHz, la fréquence d’échantillonnage attendue par Whisper, et supprime cet intermédiaire à la fin de la tâche.',
+        'Exécute whisper-ctranslate2 avec le modèle Whisper medium en float16 sur notre GPU, avec le filtrage d’activité vocale activé pour que le silence et les longs passages de musique soient ignorés.',
+        'Écrit un seul fichier nommé transcript.vtt, transcript.srt, transcript.txt ou transcript.json, selon le format choisi.',
+        'Détecte la langue parlée à partir de l’audio lui-même ; un code de langue saisi dans le formulaire remplace la détection pour les clips courts ou mixtes.',
+        'Signale honnêtement quand il n’y a rien à transcrire : une vidéo sans flux audio, ou un audio sans parole reconnaissable, se termine quand même avec un court message au lieu d’un fichier vide.',
+      ],
+      flowSteps: [
+        {
+          title: 'Téléverser une vidéo ou un audio',
+          description: 'MP4, MOV, WebM, MKV, AVI, ou un fichier audio tel que MP3, WAV, M4A ou FLAC.',
+        },
+        {
+          title: 'Choisir un format',
+          description: 'VTT ou SRT pour les sous-titres, TXT pour une transcription lisible, JSON pour des horodatages que vous pouvez traiter.',
+        },
+        {
+          title: 'ffmpeg extrait l’audio',
+          description: 'La piste est convertie en PCM mono 16 kHz ; les images vidéo ne sont jamais décodées.',
+        },
+        {
+          title: 'Whisper transcrit sur notre GPU',
+          description: 'La tâche attend un créneau GPU libre, puis le modèle medium parcourt tout le fichier en une seule passe.',
+        },
+        {
+          title: 'Télécharger la transcription',
+          description: 'Le fichier apparaît avec la tâche et peut être téléchargé tant que la tâche est conservée.',
+        },
+      ],
+      advancedDetails: [
+        'La commande d’extraction exacte est ffmpeg -vn -acodec pcm_s16le -ar 16000 -ac 1 ; une piste stéréo 48 kHz est donc repliée en mono et rééchantillonnée avant que Whisper la voie. Cet intermédiaire coûte 32 Ko par seconde (environ 1,9 Mo par minute) de disque pendant la tâche et est supprimé ensuite.',
+        'whisper-ctranslate2 est lancé avec --model medium --device cuda --compute_type float16 --vad_filter True et --output_format json ; l’API analyse ce JSON et produit elle-même le format choisi. Le modèle est un réglage du serveur (WHISPER_CT2_MODEL), donc medium est la valeur par défaut, pas une promesse.',
+        'La sortie VTT commence par l’en-tête WEBVTT et numérote chaque repère ; les horodatages sont au format HH:MM:SS.mmm. Le SRT est la même liste de repères avec des virgules comme séparateurs de millisecondes. Un segment dont la fin égale le début reçoit une demi-seconde pour que les lecteurs l’affichent quand même.',
+        'La sortie JSON contient language, hasAudio, hasSpeech, transcript, durationSeconds et un tableau segments de {id, start, end, text} avec des temps arrondis à la milliseconde. Il n’y a ni minutage par mot ni score de confiance dans cette sortie.',
+        'Un seul processus Whisper tourne à la fois par défaut (WHISPER_GPU_CONCURRENCY=1), et l’ordonnanceur GPU vérifie la VRAM libre avant de démarrer ; le modèle medium en float16 a besoin d’environ 3,5 Go plus une marge de 512 Mo. Si la carte est occupée, votre tâche attend dans la file au lieu d’échouer.',
+        'Avec le filtre VAD activé, un fichier qui n’est que musique ou parole très faible peut revenir avec « Audio was detected but no recognizable speech was found. » Ce message est écrit dans le fichier de transcription pour que le téléchargement ne soit jamais vide.',
+      ],
+      whyItMatters: [
+        'Un fichier de sous-titres fait la différence entre une vidéo qui peut être regardée en sourdine, recherchée ou citée, et une qui ne le peut pas.',
+        'Les segments horodatés permettent de sauter au moment où une phrase a été dite, ce qui transforme un enregistrement de deux heures en quelque chose de réellement utilisable.',
+        'Garder la transcription sur du matériel que nous exploitons signifie que l’audio n’est pas confié à une API de reconnaissance vocale externe.',
+      ],
+      useCases: [
+        {
+          title: 'Sous-titres pour une vidéo publiée',
+          description: 'Exportez en VTT pour la vidéo HTML et la plupart des lecteurs web, ou en SRT pour les logiciels de montage et les flux de sous-titrage de type télévision.',
+        },
+        {
+          title: 'Notes de réunion et d’interview',
+          description: 'Reprenez la sortie TXT dans un document et modifiez-la à partir de là au lieu de tout saisir de zéro.',
+        },
+        {
+          title: 'Indexation d’une archive d’enregistrements',
+          description: 'Utilisez les segments JSON pour construire un index de recherche qui pointe vers la seconde exacte où un mot a été prononcé.',
+        },
+        {
+          title: 'Premier jet d’un article',
+          description: 'Transcrivez une conférence ou une capture d’écran commentée, puis réécrivez le texte brut en prose.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un MP4 1080p de 9 minutes et 120 Mo, en sous-titres VTT',
+          body: 'Les 120 Mo sont sous le plafond visiteur de 200 Mo, mais 9 minutes dépassent la limite visiteur de 5 minutes ; celui-ci a donc besoin d’un compte gratuit, qui autorise 20 minutes par défaut. ffmpeg écrit un WAV mono 16 kHz d’environ 17 Mo (32 000 octets par seconde pendant 540 secondes), supprimé après l’exécution. Whisper medium produit ensuite des repères numérotés avec des minutages HH:MM:SS.mmm, et le transcript.vtt obtenu ne pèse que quelques kilooctets, parce qu’il ne contient que du texte et des horodatages. Téléverser 120 Mo sur une connexion domestique prend en général plus longtemps que l’extraction, qui dure quelques secondes ; la passe Whisper fait le reste et évolue avec la durée de la parole, pas avec la taille de la vidéo.',
+        },
+        {
+          title: 'Un MP3 de podcast de 18 minutes et environ 26 Mo, en JSON',
+          body: 'Un MP3 à 192 kbps pèse 24 Ko par seconde, donc 1 080 secondes font environ 26 Mo. Les fichiers uniquement audio sont soumis à la même limite de durée que la vidéo ; 18 minutes exigent donc un compte gratuit (plafond de 20 minutes) plutôt qu’une session visiteur (5 minutes). Il n’y a pas de vidéo à ignorer, mais le fichier est quand même converti d’abord en PCM mono 16 kHz (environ 35 Mo sur disque, supprimés ensuite). La langue est détectée à partir de l’audio et écrite dans le JSON sous forme de code à deux lettres, et chaque segment porte ses propres temps de début et de fin. Le JSON est plus gros que le TXT du même enregistrement parce que chaque segment est enveloppé dans son propre objet, mais il reste bien en dessous d’un mégaoctet.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas cet outil si vous avez besoin de minutages par mot, d’identification des locuteurs ou de scores de confiance : la sortie n’en contient aucun, seulement des horodatages au niveau du segment. C’est aussi le mauvais outil pour un fichier dont l’audio est de la musique sans parole, puisque le filtre d’activité vocale l’ignorera et que vous obtiendrez un court message au lieu des paroles. Si vous voulez seulement écouter le fichier, ou si vous voulez des sous-titres traduits dans une autre langue, c’est une autre étape qu’il vous faut. Et si l’enregistrement est plus long que ce que votre offre autorise (5 minutes en visiteur, 20 minutes avec un compte gratuit par défaut), découpez-le d’abord ou connectez-vous.',
+      whyMediaManipulator: [
+        'Vous choisissez VTT, SRT, TXT ou JSON avant de téléverser, donc il n’y a pas de seconde étape de conversion une fois la transcription produite.',
+        'Whisper tourne sur notre propre GPU avec le cache de modèles en mode hors ligne ; aucun service de reconnaissance vocale externe ne reçoit l’audio.',
+        'La transcription compte comme une tâche IA, prise sur le quota IA, distinct du quota courant : par défaut 3 par jour pour un visiteur et 10 avec un compte gratuit, et vos tâches courantes restent intactes (voir /pricing).',
+      ],
+      privacyNote: 'Votre fichier vidéo ou audio est stocké dans le dossier de sa tâche sur notre serveur. ffmpeg écrit un WAV mono 16 kHz temporaire que Whisper lit sur notre GPU, et ce WAV est supprimé à la fin de la tâche. Le fichier de transcription et une copie transcribe_result.json des segments restent avec la tâche, et le texte de la transcription est aussi passé à un modèle de langage fonctionnant sur notre propre matériel pour un résumé automatisé et un examen de sécurité dont le résultat est conservé avec la tâche. Rien n’est envoyé à un fournisseur d’IA tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Quel format de sous-titres choisir, VTT ou SRT ?',
+          answer: 'VTT si les sous-titres sont destinés au web (vidéo HTML, la plupart des lecteurs) et SRT s’ils vont dans un logiciel de montage vidéo ou un flux de type broadcast. Les deux contiennent les mêmes repères ; seuls l’en-tête et le séparateur de millisecondes diffèrent, un point en VTT et une virgule en SRT.',
+        },
+        {
+          question: 'La transcription JSON inclut-elle des scores de confiance ou des minutages par mot ?',
+          answer: 'Non. Chaque segment a un id, un temps de début et de fin en secondes (arrondi à la milliseconde) et son texte. Le fichier enregistre aussi la langue détectée, la durée et si de la parole a été trouvée, mais il n’y a ni minutage par mot ni probabilités.',
+        },
+        {
+          question: 'Quelle longueur de fichier puis-je transcrire ?',
+          answer: 'Les téléversements uniquement audio sont soumis au même plafond de durée que la vidéo : 5 minutes pour un visiteur, 20 minutes avec un compte gratuit, 2 heures avec Premium et Pro par défaut, et respectivement 200 Mo, 1 Go ou 5 Go par fichier. Le formulaire affiche les limites qui s’appliquent à vous, et /pricing liste les chiffres en vigueur.',
+        },
+        {
+          question: 'Pourquoi ai-je obtenu « no recognizable speech was found » ?',
+          answer: 'Whisper tourne avec la détection d’activité vocale activée ; un fichier qui n’est que musique, son ambiant, silence ou parole très faible peut donc être réduit à rien. Le message est écrit dans le fichier de transcription lui-même pour que le téléchargement fonctionne quand même. Réenregistrez plus fort ou découpez jusqu’à la partie parlée et réessayez.',
+        },
+        {
+          question: 'Puis-je imposer la langue au lieu de la laisser détecter ?',
+          answer: 'Oui. Saisissez un code de langue à deux lettres tel que en, de ou es dans le champ de langue et Whisper transcrira dans cette langue. Laissez-le vide pour la détection automatique, qui fonctionne bien sur les clips de plus de quelques secondes.',
+        },
+        {
+          question: 'La transcription utilise-t-elle mon quota IA ?',
+          answer: 'Oui. Chaque transcription est une tâche IA : par défaut 3 par jour en visiteur, 10 avec un compte gratuit, 100 avec Premium et 200 avec Pro. Le quota IA est un compteur à part, donc transcrire n’épuise jamais le quota courant des conversions. Une tâche qui échoue rembourse l’unité.',
+        },
+        {
+          question: 'Quel modèle est utilisé, et puis-je en choisir un plus grand ?',
+          answer: 'Le service exécute whisper-ctranslate2 avec le modèle medium en float16 sur un GPU CUDA par défaut. Il n’y a pas de sélecteur de modèle dans le formulaire ; le modèle est défini sur le serveur, donc les variantes très rapides ou très grandes ne peuvent pas être demandées tâche par tâche.',
+        },
+      ],
+      related: [
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez un gros enregistrement avant de le téléverser pour une transcription.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Extrayez la piste audio si vous voulez aussi en garder une copie.',
+        },
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Améliorez un enregistrement bruyant avant de le transcrire.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Réduisez d’abord le fichier à la partie parlée.',
+        },
+        {
+          label: 'Tutoriel du convertisseur vidéo',
+          to: '/tutorials/video/getting-started',
+          description: 'Préparez et convertissez la vidéo avant de la transcrire.',
+        },
+      ],
+      embed: {
+        title: 'Transcrire une vidéo',
+        description: 'Téléversez une vidéo. Le modèle de transcription IA tourne sur notre serveur GPU local et exporte en sous-titres VTT, en texte brut ou en JSON : VTT pour les sous-titres, texte brut pour un article, JSON pour vos outils en aval.',
+      },
     },
     'transcode-to-hls': {
       name: 'Transcoder une vidéo en HLS',
+      h1: 'Transcoder une vidéo en HLS en ligne',
       tagline: 'Empaquetez n’importe quelle vidéo en un lot Apple HLS VOD : master.m3u8 et segments .ts par rendition, prêts pour le web.',
-      metaTitle: 'Transcoder une vidéo en HLS en ligne | Outil de streaming adaptatif gratuit',
+      metaTitle: 'Transcoder une vidéo en HLS en ligne | Streaming adaptatif | Media Manipulator',
       metaDescription: 'Transcodeur HLS gratuit en ligne. Convertissez MP4, MOV, WebM et MKV en un paquet HLS VOD avec des renditions 360p/480p/720p, sous-titres et storyboards en option.',
+      ogTitle: 'Transcoder une vidéo en HLS en ligne',
+      ogDescription: 'Générez un paquet HLS adaptatif (master.m3u8 + playlists de variantes + segments .ts) à partir de n’importe quelle vidéo, gratuitement, dans votre navigateur.',
+      intro: 'HTTP Live Streaming diffuse une vidéo sous forme de playlist de courts segments à plusieurs niveaux de qualité, pour qu’un lecteur démarre vite et change de niveau quand la connexion varie. Produire ce paquet à la main implique d’encoder chaque rendition avec des images clés alignées, de les segmenter et d’écrire une playlist master qui décrit correctement chaque variante. Cette page fait tout le travail : elle analyse votre fichier, propose les niveaux de l’échelle que votre source et votre offre autorisent, encode chacun avec libx264 et AAC en segments MPEG-TS de 2 secondes, ajoute en option des sous-titres issus de notre propre transcripteur Whisper, une planche de vignettes storyboard et une playlist I-frame pour la navigation, et regroupe le tout dans un tar.gz ou un zip que vous pouvez décompresser sur n’importe quel hébergement statique.',
+      whatItDoes: [
+        'Analyse la source avec ffprobe et liste les niveaux de l’échelle : 144p, 240p, 360p, 480p, 720p, 1080p et 2160p, chacun activé seulement si la source est assez haute et si votre offre le permet.',
+        'Encode chaque niveau sélectionné avec libx264 profil High niveau 4.1 et AAC stéréo à 48 kHz, en segments .ts de 2 secondes avec une image clé à chaque frontière de segment.',
+        'Écrit hls/master.m3u8 avec BANDWIDTH, RESOLUTION, FRAME-RATE et CODECS pour chaque variante, plus un index.m3u8 par niveau.',
+        'Transcrit en option l’audio avec Whisper en une piste WebVTT, la traduit dans jusqu’à 3 langues supplémentaires avec un modèle local, et lie chacune comme rendition de sous-titres dans le master.',
+        'Génère en option une planche de vignettes storyboard avec un index WebVTT pour les miniatures de navigation, et essaie toujours d’ajouter une playlist 240p composée uniquement d’I-frames.',
+        'Empaquette le dossier avec README.txt et report.json dans un tar.gz (ou un zip) et vous donne un lien de téléchargement présigné.',
+      ],
+      flowSteps: [
+        {
+          title: 'Téléverser',
+          description: 'Le navigateur téléverse directement dans notre bucket de stockage via un PUT présigné ; l’API le télécharge ensuite pour travailler dessus.',
+        },
+        {
+          title: 'Analyser',
+          description: 'ffprobe lit la largeur, la hauteur, la fréquence d’images, la durée et la présence d’audio ; les niveaux plus hauts que la source sont grisés.',
+        },
+        {
+          title: 'Choisir les niveaux et les extras',
+          description: '360p, 480p et 720p sont présélectionnés. Cochez les sous-titres, les langues de sous-titres supplémentaires, les storyboards, et tar.gz ou zip.',
+        },
+        {
+          title: 'Encoder chaque niveau',
+          description: 'libx264 au CRF et au débit du niveau avec un GOP de 2 secondes, AAC au débit audio du niveau, sortie HLS VOD.',
+        },
+        {
+          title: 'Ajouter les extras et écrire le master',
+          description: 'Les sous-titres, les storyboards et la playlist I-frame sont générés, puis master.m3u8 est réécrit pour les référencer.',
+        },
+        {
+          title: 'Télécharger le paquet',
+          description: 'Un lien présigné valable 30 minutes par défaut ; la page de la tâche vous permet de le récupérer tant qu’il dure.',
+        },
+      ],
+      advancedDetails: [
+        'L’échelle (transcode_profiles.go) est la suivante : 144p vidéo 200 kbps et audio 64 kbps, CRF 26 ; 240p 400/64, CRF 25 ; 360p 800/96, CRF 23 ; 480p 1200/128, CRF 23 ; 720p 2800/128, CRF 22 ; 1080p 5000/192, CRF 22 ; 2160p 12000/256, CRF 21. Tous les niveaux utilisent le preset veryfast sauf 2160p, qui utilise slow.',
+        'Chaque niveau est encodé avec ffmpeg -i input -map 0:v:0 -vf scale=-2:H -r FPS -c:v libx264 -profile:v high -level 4.1 -preset P -crf N -sc_threshold 0 -g GOP -keyint_min GOP -b:v B -maxrate 1.2B -bufsize 2B -force_key_frames expr:gte(t,n_forced*2) -map 0:a:0? -c:a aac -b:a A -ac 2 -ar 48000 -hls_time 2 -hls_playlist_type vod -hls_flags independent_segments. GOP vaut la fréquence d’images fois 2, pour que les segments commencent sur une image clé dans chaque niveau.',
+        'Comme l’encodage est piloté par le CRF avec -maxrate comme plafond, un niveau atteint au plus environ son débit indiqué en moyenne (le plafond en vaut 1,2 fois) et descend plus bas sur un contenu facile. La playlist master annonce BANDWIDTH comme le débit vidéo indiqué plus le débit audio, et CODECS comme avc1.640028 avec mp4a.40.2 ajouté lorsque de l’audio est présent.',
+        'Par défaut, un visiteur peut sélectionner de 360p à 720p, un compte gratuit de 360p à 1080p, et Premium ou Pro toute l’échelle de 144p à 2160p ; les sources de moins de 360p sont refusées en dessous de Premium. Le serveur revalide les niveaux au démarrage, de sorte qu’un client ne peut pas demander un niveau qui ne lui a pas été proposé.',
+        'Les sous-titres utilisent le même modèle Whisper (whisper-ctranslate2, medium) que le transcripteur ; la piste principale est écrite dans captions/<lang>/auto.vtt avec un enveloppeur subs.m3u8 à un seul segment et référencée depuis le master comme EXT-X-MEDIA TYPE=SUBTITLES. Jusqu’à 3 langues supplémentaires parmi une liste de 37 sont traduites segment par segment par un modèle Ollama local (une version translategemma 12b) ; une traduction échouée est enregistrée comme avertissement, jamais comme tâche échouée.',
+        'Les storyboards sont une seule passe ffmpeg : fps=1/N avec N de 5, 10 ou 15 secondes selon la durée (moins de 10 minutes, moins de 30, plus long), des vignettes de 160 x 90 complétées en 16:9 dans une grille de 10 x 10 par planche JPEG, plus storyboard.vtt avec des repères #xywh. La playlist I-frame réencode uniquement les images clés en 240p (select=eq(pict_type,I), libx264 CRF 30, segments de 4 secondes) et est déclarée comme EXT-X-I-FRAME-STREAM-INF.',
+        'Le master porte EXT-X-VERSION:6, EXT-X-INDEPENDENT-SEGMENTS et trois entrées EXT-X-SESSION-DATA nommant le producteur, le site et le titulaire du copyright. report.json enregistre l’analyse, les variantes avec le nombre de segments et les tailles en octets, les avertissements et les horodatages.',
+      ],
+      whyItMatters: [
+        'HLS est le format de streaming natif d’iOS, de Safari et de tous les CDN, et avec hls.js il se lit aussi dans tous les autres navigateurs.',
+        'Les niveaux adaptatifs permettent à un spectateur sur une connexion faible de continuer à regarder en 360p au lieu de patienter en 1080p.',
+        'Un paquet VOD pré-segmenté n’est que des fichiers statiques ; il peut donc être hébergé sur un stockage objet sans serveur de transcodage derrière.',
+      ],
+      useCases: [
+        {
+          title: 'Plateformes de cours',
+          description: 'Diffusez des leçons depuis un bucket avec débit adaptatif et sous-titres en plusieurs langues.',
+        },
+        {
+          title: 'Pages produit et marketing',
+          description: 'Diffusez une démo sans hébergeur vidéo tiers ni la marque de son lecteur.',
+        },
+        {
+          title: 'Portails internes',
+          description: 'Hébergez des vidéos de formation sur votre propre CDN avec des miniatures de navigation.',
+        },
+        {
+          title: 'Archives',
+          description: 'Convertissez un catalogue existant en une structure diffusable que vous contrôlez et pouvez répliquer.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un clip 1080p de 3 minutes aux trois niveaux par défaut',
+          body: 'Entrée : un MP4 de 3 minutes en 1920 x 1080 à 30 fps de 140 Mo avec audio stéréo, sous les plafonds visiteur. Réglages : 360p, 480p et 720p (la sélection par défaut et le maximum qu’un visiteur peut choisir), sans sous-titres ni storyboards, tar.gz. Chaque niveau est découpé en segments de 2 secondes, 90 par niveau, avec un GOP de 60 images pour que chaque segment commence sur une image clé. Aux débits indiqués, les niveaux pèsent au plus environ 20 Mo pour le 360p (800 + 96 kbps x 180 s), 30 Mo pour le 480p (1200 + 128 kbps) et 66 Mo pour le 720p (2800 + 128 kbps), soit environ 116 Mo en tout avant la petite playlist I-frame 240p, et moins sur un contenu facile parce que l’encodage est piloté par le CRF avec le débit comme plafond. Le paquet obtenu compte 270 segments .ts, trois fichiers index.m3u8 et le master. Le temps correspond à trois encodages libx264 veryfast de 5400 images chacun exécutés l’un après l’autre ; le niveau 720p prend le plus de temps.',
+        },
+        {
+          title: 'Un webinaire 720p de 12 minutes avec sous-titres anglais, traduction espagnole et storyboards',
+          body: 'Entrée : un MP4 de 12 minutes en 1280 x 720 à 25 fps de 380 Mo, téléversé avec un compte gratuit parce qu’il dépasse la limite visiteur par défaut de 5 minutes. Réglages : 360p et 720p (1080p est grisé parce que la source est en 720p), sous-titres activés avec l’espagnol comme langue supplémentaire, storyboards activés, zip. Whisper transcrit d’abord les 12 minutes et écrit captions/en/auto.vtt ; la piste espagnole est traduite par lots de 30 segments dans captions/es/auto.vtt, et les deux sont déclarées comme renditions de sous-titres dans le master. Les storyboards utilisent un intervalle de 10 secondes pour une source de plus de 10 minutes : 72 vignettes de 160 x 90 tiennent dans une seule planche sprite_001.jpg de 1600 x 900, avec un storyboard.vtt pointant vers chaque vignette. Les deux niveaux comptent 360 segments de 2 secondes chacun, avec un GOP de 50 images à 25 fps, et pèsent au plus environ 81 Mo (360p) et 264 Mo (720p) aux débits indiqués. La tâche passe plus de temps sur Whisper et les deux encodages que sur tout le reste ; la traduction est une courte étape supplémentaire.',
+        },
+      ],
+      whenNotToUse: 'Ne transcodez pas en HLS si vous voulez simplement un fichier unique plus léger à envoyer ou à intégrer ; le compresseur le fait en une passe sans segments ni playlists. Ne l’utilisez pas pour des événements en direct, puisque la sortie est une playlist VOD terminée, pas une origine live. Si votre source est en dessous de 360p, l’échelle ne peut pas être construite sans Premium. Et si votre lecteur est une simple balise video sans prise en charge HLS, il vous faut d’abord un MP4 ou un lecteur de type hls.js ; un master.m3u8 seul ne se lit nativement que dans Safari et sur les appareils Apple.',
+      whyMediaManipulator: [
+        'Chaque débit de niveau, CRF, preset et option FFmpeg est listé sur cette page, pour que le contenu du paquet ne soit pas une surprise.',
+        'Les sous-titres viennent de notre propre transcripteur Whisper et les traductions d’un modèle sur notre propre matériel, tous deux correctement référencés dans la playlist master.',
+        'Le paquet n’est que des fichiers ordinaires avec un README et un report.json ; décompressez-le sur n’importe quel hébergement statique et pointez un lecteur vers master.m3u8.',
+        'Un transcodage dépense une opération de votre quota quotidien (5 par jour en visiteur par défaut, 30 avec un compte gratuit) et est limité à 10 lancements par heure et par session ; une tâche échouée est remboursée. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre téléversement va directement du navigateur à notre bucket de stockage, puis est téléchargé sur notre propre serveur, où s’exécutent ffprobe, FFmpeg et, si vous cochez les sous-titres, notre transcripteur Whisper et un modèle de traduction Ollama local ; aucun service de transcodage ou d’IA tiers n’intervient. L’objet source, le répertoire de travail et le paquet terminé sont tous inscrits dans le registre de conservation et supprimés à la fin de la fenêtre, et le lien de téléchargement lui-même expire après 30 minutes par défaut. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Le transcodage n’exécute pas l’analyse automatisée de contenu que reçoivent les conversions standard. La playlist master générée contient des lignes session-data nommant Media Manipulator comme producteur ; elles ne portent aucune information sur vous.',
+      faq: [
+        {
+          question: 'Quels niveaux puis-je sélectionner avec mon offre ?',
+          answer: 'Par défaut, un visiteur dispose de 360p, 480p et 720p ; un compte gratuit ajoute 1080p ; Premium et Pro débloquent aussi 144p, 240p et 2160p. Un niveau plus haut que votre source est toujours désactivé, parce que rien n’est agrandi. Les puces affichent la raison au survol.',
+        },
+        {
+          question: 'Quelle est la longueur des segments, et pourquoi 2 secondes ?',
+          answer: 'Chaque niveau est découpé en segments MPEG-TS de 2 secondes avec une image clé forcée à chaque frontière, pour qu’un lecteur puisse changer de niveau à n’importe quel segment sans accroc visuel. La playlist I-frame utilise des segments de 4 secondes parce qu’elle ne contient que des images clés.',
+        },
+        {
+          question: 'Les sous-titres sont-ils liés dans la playlist master ?',
+          answer: 'Oui. Chaque langue est écrite dans captions/<lang>/auto.vtt avec un enveloppeur subs.m3u8 et déclarée dans master.m3u8 comme EXT-X-MEDIA TYPE=SUBTITLES dans le groupe subs, la langue source étant marquée DEFAULT. Vous pouvez ajouter jusqu’à 3 langues traduites parmi la liste de 37.',
+        },
+        {
+          question: 'Et si ma vidéo n’a pas d’audio ?',
+          answer: 'Les niveaux sont encodés en vidéo seule avec -an, l’attribut CODECS omet mp4a.40.2, et l’étape des sous-titres est sautée avec un avertissement dans report.json puisqu’il n’y a rien à transcrire.',
+        },
+        {
+          question: 'Que contient le paquet, et comment l’héberger ?',
+          answer: 'hls/master.m3u8, un dossier par niveau avec index.m3u8 et les segments, hls/iframes/, les dossiers facultatifs captions/ et storyboards/, README.txt et report.json. Décompressez-le sur n’importe quel hébergement statique ou bucket qui sert les .m3u8 et .ts avec les bons types MIME et pointez votre lecteur vers master.m3u8.',
+        },
+        {
+          question: 'Combien de temps le lien de téléchargement fonctionne-t-il, et puis-je obtenir un tar.gz ou un zip ?',
+          answer: 'Le lien présigné dure 30 minutes par défaut ; relancez la tâche s’il a expiré. Choisissez tar.gz (par défaut) ou zip dans le formulaire avant de démarrer.',
+        },
+        {
+          question: 'Combien de temps prend un transcodage HLS ?',
+          answer: 'Chaque niveau sélectionné est un encodage libx264 complet avec le preset veryfast, exécuté l’un après l’autre ; le temps croît donc avec la durée multipliée par le nombre de niveaux, et le 720p domine les trois niveaux par défaut. Les sous-titres ajoutent une passe Whisper sur tout l’audio. La page de la tâche affiche chaque étape au fur et à mesure.',
+        },
+      ],
+      related: [
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Un seul MP4 plus léger au lieu d’un paquet de streaming.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenez les mêmes sous-titres Whisper en VTT ou SRT autonome.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Retirez le début et la fin inutiles avant de transcoder.',
+        },
+        {
+          label: 'Restauration vidéo par IA',
+          to: '/tools/ai-video-restoration',
+          description: 'Agrandissez un extrait basse résolution avant d’en construire une échelle.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Montez et sous-titrez la vidéo, puis transcodez l’export.',
+        },
+      ],
+      embed: {
+        title: 'Transcoder une vidéo en HLS',
+        description: 'Téléversez un MP4/MOV/WebM/MKV. Nous analysons la source avec ffprobe, vous laissons choisir les niveaux de qualité gratuits (360p/480p/720p), puis exécutons un encodage ffmpeg H.264 + AAC et regroupons le paquet HLS dans un tar.gz téléchargeable.',
+      },
     },
     'ai-video-restoration': {
       name: 'Restauration vidéo par IA',
+      h1: 'Outil de restauration vidéo par IA',
       tagline: 'Agrandissez et restaurez un court extrait vidéo avec jusqu’à six modèles d’IA (Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT et VRT) et comparez chaque résultat côte à côte.',
       metaTitle: 'Restauration vidéo par IA : comparez 6 modèles d’upscaling en ligne | Media Manipulator',
       metaDescription: 'Outil gratuit de restauration vidéo par IA. Passez un court clip dans les modèles de super-résolution Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT et VRT sur notre propre GPU et téléchargez tous les résultats dans un seul paquet.',
+      ogTitle: 'Restauration vidéo par IA : comparez Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT et VRT',
+      ogDescription: 'Choisissez un extrait de votre vidéo, sélectionnez des modèles de restauration et téléchargez un seul paquet avec chaque version améliorée plus l’original pour une comparaison A/B.',
+      intro: 'Les modèles de restauration vidéo ne sont pas d’accord entre eux. Un upscaler GAN tel que Real-ESRGAN donne des images individuelles nettes qui peuvent scintiller en mouvement ; un transformeur vidéo tel que VRT garde la séquence stable mais peut adoucir les détails. La seule façon honnête de choisir est de passer la même séquence dans chacun d’eux et de regarder. Cette page fait exactement cela sur un extrait de 15 secondes au plus : elle extrait les images, exécute les six modèles de votre choix sur notre propre GPU, réassemble chaque résultat en un MP4 à la fréquence d’images de la source avec l’audio d’origine, et regroupe le tout, y compris l’extrait intact, dans une seule archive pour une comparaison côte à côte. Chaque chiffre ci-dessous provient de la chaîne de traitement telle qu’elle fonctionne aujourd’hui.',
+      whatItDoes: [
+        'Découpe l’extrait que vous sélectionnez (0,5 à 15 secondes, au plus 450 images à votre fréquence d’images) à l’image près, avec son audio.',
+        'Exécute n’importe quelle combinaison de Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT et VRT ; les trois premiers améliorent image par image, les trois derniers restaurent la séquence dans son ensemble.',
+        'Choisit 4x pour les sources de 540p ou moins et 2x au-dessus, puisque chaque modèle exécute son réseau 4x natif et que le résultat 2x est une réduction Lanczos appliquée au moment de l’assemblage.',
+        'Assemble chaque résultat avec libx264 en CRF 16, à la fraction exacte de fréquence d’images de la source, et rattache l’audio.',
+        'Regroupe original/clip.mp4, un dossier par modèle, les images PNG améliorées en option pour les modèles image par image, manifest.json et README.txt dans un seul tar.gz.',
+        'Continue lorsqu’un modèle échoue : son dossier reçoit un FAILED.txt, le manifeste consigne la raison et tous les autres résultats sont quand même livrés.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une vidéo',
+          description: 'Jusqu’à 1920 x 1080 ; les sources longues ne posent aucun problème, car seul l’extrait est traité.',
+        },
+        {
+          title: 'Sélectionnez un extrait',
+          description: 'Faites glisser les poignées pour choisir jusqu’à 15 secondes ; 10 secondes ou moins est recommandé et le sélecteur vous avertit au-delà.',
+        },
+        {
+          title: 'Choisissez les modèles et l’inclusion ou non des images',
+          description: 'N’importe lequel des six ; le sélecteur affiche une estimation de durée par modèle à partir des chiffres de secondes par image publiés par le serveur.',
+        },
+        {
+          title: 'Suivez les étapes',
+          description: 'Téléchargement, analyse, extraction du clip, extraction des images, puis chaque modèle du plus rapide au plus lent, puis l’empaquetage.',
+        },
+        {
+          title: 'Comparez et téléchargez',
+          description: 'Lisez le MP4 de chaque modèle à côté de l’original dans la visionneuse, puis récupérez l’archive pendant que son lien de 6 heures est valide.',
+        },
+      ],
+      advancedDetails: [
+        'Le clip de référence est découpé avec ffmpeg -ss START -i source -t WINDOW -c:v libx264 -crf 10 -preset medium -pix_fmt yuv420p -c:a aac, puis les images sont extraites avec -vsync 0 en PNG numérotés ; si leur nombre dépasse 450, les images excédentaires sont écartées.',
+        'Real-ESRGAN exécute realesrgan-ncnn-vulkan avec le modèle realesrgan-x4plus, à l’échelle 4 et avec des tuiles de 256 px. SwinIR utilise les poids 003_realSR_BSRGAN SwinIR-L x4 GAN et HAT utilise Real_HAT_GAN_SRx4, tous deux par inférence en tuiles (tuiles de 320 px, chevauchement de 32 px) pour que les images 1080p tiennent en mémoire.',
+        'BasicVSR++ exécute le générateur REDS4 c64n7 via mmagic par fenêtres de 16 images ; RVRT (001_RVRT_videosr_bi_REDS_30frames) et VRT (001_VRT_videosr_bi_REDS_6frames) s’exécutent via leurs scripts de test KAIR avec des tuiles temporelles de 30 et 12 images et des tuiles spatiales de 128 x 128.',
+        'L’assemblage est uniforme : ffmpeg -framerate FPS_FRACTION -i frames/%06d.png [-i clip.mp4 -map 0:v -map 1:a -c:a aac] [-vf scale=iw/2:ih/2:flags=lanczos] -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart -shortest. La fraction de fréquence d’images, par exemple 30000/1001, est reprise mot pour mot de ffprobe pour que l’audio reste synchronisé.',
+        'Les modèles s’exécutent dans un ordre fixe, Real-ESRGAN, BasicVSR++, SwinIR, RVRT, HAT, VRT, sous un bail du planificateur GPU avec des budgets de VRAM de 3, 11, 9, 12, 10 et 14 Go respectivement, une seule tâche de restauration à la fois sur tout le serveur et un délai maximal de 75 minutes par modèle.',
+        'Les estimations par image publiées, que le sélecteur multiplie par votre nombre d’images, sont de 0,8 s (Real-ESRGAN), 1,0 s (BasicVSR++), 3,0 s (RVRT), 3,5 s (SwinIR), 5,0 s (HAT) et 7,0 s (VRT) ; ce sont des valeurs par défaut côté serveur qui peuvent changer, pas des mesures de votre clip.',
+        'Le 4x explicite est refusé pour les sources de plus de 1080p, car la sortie dépasserait la 4K ; le mode auto choisit 2x de 541p à 1080p et 4x à 540p ou moins. Les images incluses sont les PNG 4x natifs même sur le chemin 2x, de sorte qu’une source 1080p produit des images de 7680 x 4320.',
+      ],
+      whyItMatters: [
+        'Aucun modèle de restauration ne l’emporte sur toutes les séquences, et les comparaisons d’images fixes cachent le scintillement que seule la lecture révèle.',
+        'Un extrait de 10 secondes passé dans chaque modèle coûte quelques minutes de GPU et vous dit quel modèle mérite un traitement complet ailleurs.',
+        'Les cassettes numérisées, les clips des premiers appareils numériques et les exports compressés des réseaux sociaux se dégradent chacun différemment et réagissent à des familles de modèles différentes.',
+      ],
+      useCases: [
+        {
+          title: 'Vieilles vidéos de famille',
+          description: 'Voyez quel modèle restitue les visages et les tissus sur un transfert de cassette en 480p avant de restaurer toute la bobine.',
+        },
+        {
+          title: 'Images d’archives',
+          description: 'Testez le 4x sur du matériau en 360p et 480p et jugez la sortie de classe 4K sur votre propre écran.',
+        },
+        {
+          title: 'Choix du modèle avant un long rendu',
+          description: 'Choisissez le modèle d’une tâche de plusieurs heures à partir d’un test représentatif de 10 secondes.',
+        },
+        {
+          title: 'Téléchargements compressés',
+          description: 'Comparez la netteté des GAN à la stabilité des transformeurs sur des exports pixelisés des réseaux sociaux.',
+        },
+        {
+          title: 'Contrôles de stabilité temporelle',
+          description: 'Lisez les MP4 de chaque modèle côte à côte pour repérer le scintillement et le clignotement que les images fixes cachent.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Une vidéo familiale de 8 secondes en 640 x 480 dans les six modèles',
+          body: 'Entrée : un MP4 de 640 x 480 à 29,97 images/s issu d’une cassette numérisée, avec audio. Réglages : un extrait de 8 secondes, les six modèles, images améliorées incluses, échelle auto. La chaîne de traitement découpe un clip de référence de 8 secondes et extrait 240 images (8 x 29,97, arrondi). En 480p, la règle auto choisit 4x, de sorte que chaque modèle écrit des images de 2560 x 1920 et que les MP4 assemblés sont en 2560 x 1920 à 30000/1001 images/s avec l’audio d’origine. L’estimation du sélecteur est le nombre d’images multiplié par les secondes par image publiées : environ 3,2 minutes pour Real-ESRGAN, 4 minutes pour BasicVSR++, 12 pour RVRT, 14 pour SwinIR, 20 pour HAT et 28 pour VRT, soit environ 81 minutes au total, car les modèles s’exécutent l’un après l’autre. L’inclusion des images ajoute 3 x 240 PNG de 2560 x 1920 à l’archive, raison pour laquelle le téléchargement se mesure en gigaoctets plutôt qu’en mégaoctets.',
+        },
+        {
+          title: 'Un clip 1080p de 10 secondes à l’échelle auto avec Real-ESRGAN et BasicVSR++',
+          body: 'Entrée : un MP4 de 1920 x 1080 à 30 images/s de 90 Mo, la plus grande résolution source acceptée par l’outil. Réglages : un extrait de 10 secondes, Real-ESRGAN et BasicVSR++, images exclues, échelle auto. L’extraction produit 300 images, sous le plafond de 450 (à 60 images/s, le même plafond limiterait l’extrait à 7,5 secondes). Au-dessus de 540p, le mode auto choisit 2x : chaque modèle exécute donc quand même son réseau 4x natif, produisant des images de 7680 x 4320, et l’assemblage applique scale=iw/2:ih/2:flags=lanczos pour livrer des MP4 de 3840 x 2160 en CRF 16. Les estimations publiées donnent environ 4 minutes pour Real-ESRGAN (0,8 s x 300) et 5 minutes pour BasicVSR++ (1,0 s x 300) ; la tâche se termine donc bien avant le délai maximal de 75 minutes par modèle, et l’archive contient deux MP4 en 4K, le clip d’origine, manifest.json et README.txt.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas cette page pour restaurer un film entier : c’est un outil de comparaison plafonné à 15 secondes et 450 images, et l’archive, même pour cela, peut peser plusieurs gigaoctets. N’attendez pas d’elle qu’elle invente ce qui n’a jamais été enregistré : un flou de mouvement sévère, des blocs de compression extrêmes et des séquences très sombres s’améliorent mais ne deviennent pas impeccables. Les sources de plus de 1920 x 1080 sont refusées, car la restauration vise le matériau basse résolution et le 2x de 1080p est déjà de la 4K. Si votre clip n’a besoin que d’un fichier plus petit, d’un changement de format ou d’une coupe, le compresseur, le convertisseur et l’outil de découpe font cela en quelques secondes sans GPU.',
+      whyMediaManipulator: [
+        'Six modèles de niveau recherche derrière un seul import, avec les poids, les tailles de tuiles et la commande d’assemblage nommés sur cette page plutôt que cachés derrière une marque.',
+        'Tout s’exécute sur notre propre GPU ; vos séquences ne vont jamais chez un fournisseur d’IA tiers, et rien ne sert à l’entraînement.',
+        'Une restauration consomme une tâche IA de votre quota IA quotidien, qui est de 3 par jour sans compte par défaut et de 10 avec un compte gratuit, et est limitée à 2 lancements par heure et par session ; une tâche échouée est remboursée. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre import passe du navigateur à notre espace de stockage et est téléchargé sur notre propre serveur GPU, où FFmpeg découpe l’extrait et où les six modèles s’exécutent comme des processus locaux ; aucun fournisseur d’IA extérieur n’intervient et rien ne sert à l’entraînement. Seul l’extrait sélectionné est décodé en images ; le reste de la source n’est jamais traité. L’objet source, les images de travail, les MP4 par modèle conservés pour la visionneuse de comparaison et l’archive des résultats sont tous inscrits dans le registre de conservation et supprimés à la fin de la période, et le lien de l’archive expire après 6 heures. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Les tâches de restauration ne passent pas par l’analyse de contenu automatisée que reçoivent les conversions standard.',
+      faq: [
+        {
+          question: 'Quel modèle d’upscaling vidéo par IA est le meilleur ?',
+          answer: 'Cela dépend des séquences, et c’est précisément la raison d’être de cet outil. Les upscalers GAN comme Real-ESRGAN et HAT produisent des images nettes qui peuvent scintiller en mouvement ; les modèles de séquence comme BasicVSR++, RVRT et VRT s’appuient sur les images voisines pour la stabilité et peuvent paraître plus doux. Passez votre propre extrait dans chacun d’eux et jugez en mouvement.',
+        },
+        {
+          question: 'Pourquoi le clip est-il limité à 15 secondes et 450 images ?',
+          answer: 'La restauration est coûteuse par image : l’estimation publiée pour VRT seul est de 7 secondes par image en 4x. Le plafond d’images est vérifié par rapport à votre fréquence d’images réelle, de sorte qu’une source à 60 images/s est limitée à 7,5 secondes. Un court extrait suffit pour juger de la qualité avant une restauration plus longue ailleurs.',
+        },
+        {
+          question: 'Comment fonctionne le choix entre 2x et 4x ?',
+          answer: 'Le mode auto choisit 4x pour les sources de 540p ou moins et 2x au-dessus. Chaque modèle exécute dans tous les cas son réseau 4x natif ; sur le chemin 2x, l’assemblage réduit les images de moitié avec un filtre Lanczos. Le 4x explicite est refusé au-dessus de 1080p, car la sortie dépasserait la 4K.',
+        },
+        {
+          question: 'La vidéo restaurée conserve-t-elle mon audio et ma fréquence d’images ?',
+          answer: 'Oui. L’extrait est découpé avec son audio, et chaque assemblage utilise la fraction exacte de fréquence d’images fournie par ffprobe (par exemple 30000/1001) et rattache cet audio en AAC, de sorte que tous les résultats s’alignent pour une lecture A/B.',
+        },
+        {
+          question: 'Que contient l’archive des résultats, et quelle est sa taille ?',
+          answer: 'original/clip.mp4, un dossier par modèle avec son MP4 (et, pour Real-ESRGAN, SwinIR et HAT avec les images incluses, chaque PNG amélioré en 4x natif), manifest.json avec les durées et les dimensions, et README.txt. Avec les images activées, un clip de 10 secondes ajoute des centaines de gros PNG par modèle ; attendez-vous donc à plusieurs gigaoctets.',
+        },
+        {
+          question: 'Que se passe-t-il si un modèle échoue ou dépasse le délai ?',
+          answer: 'La tâche continue. Le dossier de ce modèle contient un FAILED.txt avec la raison, manifest.json la consigne, et chaque autre modèle sélectionné est quand même livré dans l’archive. La tâche n’échoue que lorsque tous les modèles sélectionnés échouent.',
+        },
+        {
+          question: 'Combien de temps dure une restauration ?',
+          answer: 'Le nombre d’images multiplié par l’estimation de chaque modèle, additionné sur les modèles choisis, puisqu’ils s’exécutent l’un après l’autre : 0,8, 1,0, 3,0, 3,5, 5,0 et 7,0 secondes par image pour Real-ESRGAN, BasicVSR++, RVRT, SwinIR, HAT et VRT. Un clip de 300 images dans les six modèles prend environ 100 minutes ; dans Real-ESRGAN seul, environ 4.',
+        },
+        {
+          question: 'Combien de restaurations puis-je lancer, et cela coûte-t-il une tâche IA ?',
+          answer: 'Lancer une restauration consomme une tâche IA : par défaut 3 par jour sans compte, 10 avec un compte gratuit, 100 avec Premium et 200 avec Pro, plus une limite de 2 lancements par heure et par session. Une tâche qui échoue complètement est remboursée. Consultez la page des tarifs pour les chiffres à jour.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Les extraits sont plafonnés à 15 secondes ou 450 images (la plus petite des deux valeurs à la fréquence d’images de votre vidéo) ; 10 secondes ou moins est recommandé.',
+          'La résolution source est plafonnée à 1920×1080 : la restauration vise les séquences basse résolution, et la sortie 4x de 1080p est déjà de la 4K ou plus.',
+        ],
+        processingNotes: [
+          'Les modèles s’exécutent du plus rapide au plus lent (Real-ESRGAN en premier, VRT en dernier), de sorte que des résultats partiels existent rapidement.',
+          'Un modèle en échec ne fait jamais échouer la tâche : son dossier contient un FAILED.txt et les autres résultats restent téléchargeables.',
+          'Les liens de téléchargement restent valides 6 heures ; l’archive peut être volumineuse lorsque les images améliorées sont incluses.',
+        ],
+      },
+      related: [
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez l’extrait que vous voulez restaurer avant de l’importer.',
+        },
+        {
+          label: 'Restauration d’images par IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Les mêmes familles de modèles pour une seule photo ou image.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez un résultat 4K restauré pour le partager.',
+        },
+        {
+          label: 'Transcoder en HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Empaquetez un clip restauré pour le streaming adaptatif.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Ajoutez des sous-titres aux séquences restaurées.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Montez l’extrait restauré dans une œuvre plus longue.',
+        },
+      ],
+      embed: {
+        title: 'Restauration vidéo par IA',
+        description: 'Importez une vidéo, sélectionnez un court extrait en faisant glisser les poignées (10 secondes ou moins donne les meilleurs résultats), choisissez les modèles de restauration à comparer et téléchargez un seul paquet avec chaque résultat amélioré.',
+      },
     },
     'ai-image-restoration': {
       name: 'Restauration et upscaling d’images par IA',
+      h1: 'Outil de restauration et d’upscaling d’images par IA',
       tagline: 'Nettoyez, agrandissez et restaurez une photo avec jusqu’à huit modèles d’IA : pré-nettoyage fidèle (FBCNN, SCUNet, NAFNet), upscalers généralistes (Real-ESRGAN, SwinIR, HAT) et amélioration des visages (GFPGAN, CodeFormer), et comparez chaque résultat à l’original.',
       metaTitle: 'Restauration et upscaling d’images par IA : 8 modèles à comparer | Media Manipulator',
       metaDescription: 'Restauration et agrandissement de photos par IA, gratuits. Supprimez les artefacts JPEG, le bruit et le flou, agrandissez jusqu’en 4K/8K avec Real-ESRGAN, SwinIR ou HAT et améliorez les visages avec GFPGAN/CodeFormer, le tout sur notre propre GPU et comparé côte à côte.',
+      ogTitle: 'Restauration et upscaling d’images par IA : pré-nettoyage, agrandissement et amélioration des visages',
+      ogDescription: 'Importez une image, recadrez-la et pré-nettoyez-la en option, puis exécutez plusieurs modèles d’upscaling et de visage et comparez chaque résultat à l’original directement sur la page.',
+      intro: 'La restauration d’images par IA passe une photo dans une chaîne configurable de huit modèles au plus et affiche chaque résultat à côté de l’original. Une étape de pré-nettoyage fidèle (FBCNN pour les artefacts JPEG, SCUNet pour le bruit, NAFNet pour le flou de mouvement) supprime la dégradation sans inventer de détails ; des upscalers généralistes (Real-ESRGAN, SwinIR, HAT) agrandissent ensuite en 2x ou 4x ; et une amélioration des visages facultative (GFPGAN, CodeFormer) reconstruit les visages. Le pré-nettoyage est non génératif : il filtre le signal présent. L’amélioration des visages est générative : elle synthétise des détails plausibles et ne doit pas être considérée comme une restitution fidèle de la source. Chaque modèle s’exécute sur notre propre serveur GPU.',
+      whatItDoes: [
+        'Vous permet de sélectionner un recadrage en faisant glisser la souris, afin que le budget de pixels et le temps GPU aillent à la zone qui vous intéresse ; le recadrage est appliqué côté serveur sur l’original auto-orienté, donc aucune qualité n’est perdue dans le navigateur.',
+        'Pré-nettoie d’abord, en option, toujours dans l’ordre FBCNN, SCUNet, NAFNet, chaque modèle travaillant sur la sortie du précédent ; l’image nettoyée devient la base de départ de tous les modèles suivants.',
+        'Exécute n’importe quelle combinaison de Real-ESRGAN, SwinIR et HAT en 2x ou 4x. Les trois sont des réseaux x4 natifs ; un résultat 2x est la sortie x4 réduite à 50 pour cent avec un filtre Lanczos.',
+        'Exécute en option GFPGAN v1.4 et, là où il est activé sur le serveur, CodeFormer avec un poids de fidélité, sur la source et, avec Chaîner activé, sur le résultat de chaque upscaler également.',
+        'Regroupe l’original préparé, chaque PNG de sortie, un manifest.json et un README dans un seul .tar.gz, et affiche une grille de comparaison intégrée pendant que l’archive est servie depuis la tâche.',
+        'Consigne un modèle en échec comme une entrée échouée avec une raison compréhensible et regroupe quand même chaque résultat réussi.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une image',
+          description: 'PNG, JPEG, WebP, TIFF ou BMP jusqu’à 12 000 pixels de côté ; les photos anciennes, petites et trop compressées sont la cible.',
+        },
+        {
+          title: 'Recadrez ou conservez l’image entière',
+          description: 'Sélectionnez une zone (un visage, une plaque, un panneau) ou laissez le recadrage désactivé pour tout restaurer.',
+        },
+        {
+          title: 'Choisissez pré-nettoyage, upscalers, visages, échelle',
+          description: 'Cochez les modèles voulus ; le sélecteur indique combien de sorties la sélection produira sur les 12 autorisées.',
+        },
+        {
+          title: 'Suivez les étapes',
+          description: 'La tâche attend l’unique créneau de restauration, prépare l’image, puis exécute chaque unité avec sa propre progression et son badge d’échec.',
+        },
+        {
+          title: 'Comparez et téléchargez',
+          description: 'Chaque résultat est placé à côté de l’original dans la grille ; téléchargez l’archive une fois que vous avez décidé quelle chaîne l’a emporté.',
+        },
+      ],
+      advancedDetails: [
+        'L’étape de préparation exécute ImageMagick -auto-orient vers un PNG normalisé, lit ses dimensions, rejette tout ce qui dépasse 12 000 x 12 000, convertit votre rectangle de recadrage normalisé en pixels entiers et écrit working_source.png. Ce fichier est aussi enregistré sous original.png dans les résultats, de sorte que ce à quoi vous comparez est exactement ce que les modèles ont reçu.',
+        'L’échelle auto choisit 4x lorsque le recadrage fait 540 pixels de haut ou moins et 2x sinon. Quelle que soit l’échelle, la sortie est vérifiée par rapport à un budget de 67 108 864 pixels (environ 64 mégapixels) : une image entière de 6 000 x 4 000 en 2x fait 96 mégapixels et est refusée avec un message vous invitant à choisir 2x ou un recadrage plus petit.',
+        'Real-ESRGAN exécute le réseau realesrgan-x4plus via realesrgan-ncnn-vulkan avec des tuiles de 256 pixels. SwinIR utilise les poids 003_realSR_BSRGAN SwinIR-L x4 GAN et HAT les poids Real_HAT_GAN_SRx4, tous deux via le même script par image que la restauration vidéo par IA, avec des tuiles de 320 pixels et un chevauchement de 32 pixels, de sorte que les grands recadrages ne dépassent jamais la mémoire GPU.',
+        'Les poids de pré-nettoyage sont fbcnn_color.pth, scunet_color_real_psnr.pth (le modèle de bruit réel entraîné sur le PSNR, pas la variante GAN qui invente de la texture) et NAFNet-GoPro-width64.pth (flou de mouvement, pas flou de mise au point). Ils s’exécutent en tuiles de 512 pixels avec un chevauchement de 32 pixels et ne changent jamais les dimensions. FBCNN prédit le facteur de qualité JPEG à l’aveugle, sauf si vous en fixez un de 1 à 100 ; une valeur plus basse suppose une compression plus forte.',
+        'GFPGAN utilise l’architecture clean v1.4 avec le suréchantillonnage de l’arrière-plan désactivé : en dehors des visages, l’image est donc simplement redimensionnée par le facteur d’échelle plutôt qu’améliorée par le modèle, ce qui garde la comparaison honnête. CodeFormer prend un poids de fidélité w de 0 à 1 (0,7 par défaut) : plus bas, le résultat est plus flatteur ; plus haut, il reste plus proche de l’entrée. CodeFormer est distribué sous une licence non commerciale et se trouve derrière un drapeau serveur désactivé par défaut.',
+        'Chaîner relance chaque modèle de visage en 1x sur la sortie de chaque upscaler en plus de la source, de sorte que le nombre de sorties est pré-nettoyage + généralistes + visages + visages x généralistes. Le serveur plafonne une tâche à 12 sorties, exécute une seule tâche de restauration à la fois et accorde à chaque modèle 1 800 secondes avant de le marquer comme ayant dépassé le délai.',
+        'Le serveur estime la durée d’exécution par modèle à partir de ses propres valeurs par défaut de secondes par mégapixel : FBCNN 3, SCUNet 8, NAFNet 6, Real-ESRGAN 2, SwinIR 12, HAT 18, GFPGAN 6, CodeFormer 8. Elles alimentent les pondérations de progression et l’estimation de l’interface ; ce sont des valeurs de réglage, pas une garantie.',
+        'Les résultats ne sont pas envoyés vers le stockage d’objets : le .tar.gz et les PNG de résultat restent dans le dossier de sortie de la tâche et sont servis depuis la tâche pendant la période de conservation.',
+      ],
+      whyItMatters: [
+        'Aucun modèle ne l’emporte sur toutes les photos : la suppression des artefacts, le débruitage, l’upscaling et la reconstruction des visages corrigent chacun des dommages différents, et le bon ordre dépend de la façon dont l’image a été dégradée.',
+        'Exécuter plusieurs modèles sur un seul import et les voir côte à côte répond à la question « lequel, et à quelle échelle ? » avant de vous engager sur un lot plus important.',
+        'La distinction entre non génératif et génératif compte : une image pré-nettoyée est une copie filtrée de la preuve, une image aux visages améliorés est une reconstruction plausible, et la page indique laquelle est laquelle.',
+      ],
+      useCases: [
+        {
+          title: 'Restaurer des photos anciennes ou numérisées',
+          description: 'Pré-nettoyez le bruit du scanner et la compression, puis agrandissez et, si vous le souhaitez, reconstruisez les visages.',
+        },
+        {
+          title: 'Améliorer des images fixes basse résolution',
+          description: 'Recadrez sur la zone d’intérêt, supprimez les artefacts et agrandissez ; chaînez l’amélioration des visages pour la lisibilité, jamais comme preuve d’identification.',
+        },
+        {
+          title: 'Corriger des téléchargements compressés',
+          description: 'Les exports des réseaux sociaux fortement recompressés réagissent bien à FBCNN puis SCUNet, suivis d’un upscaler GAN.',
+        },
+        {
+          title: 'Comparer les upscalers avant un lot',
+          description: 'Passez une image représentative dans Real-ESRGAN, SwinIR et HAT pour choisir le modèle d’un ensemble plus important.',
+        },
+        {
+          title: 'Consacrer le budget à une seule zone',
+          description: 'Sélectionnez seulement un visage ou un panneau pour que le budget de 64 mégapixels et le temps GPU aillent là où ça compte.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un JPEG de 1 200 x 800 (environ 350 Ko), image entière, échelle auto, FBCNN + Real-ESRGAN + GFPGAN',
+          body: 'Le recadrage est l’image entière de 0,96 mégapixel et sa hauteur de 800 pixels dépasse 540, de sorte que l’échelle auto se résout en 2x. FBCNN s’exécute d’abord en 1x et sa sortie devient la source de travail. Real-ESRGAN l’agrandit en 4 800 x 3 200 avec realesrgan-x4plus, puis ImageMagick la redimensionne à 50 pour cent avec Lanczos pour obtenir un PNG de 2 400 x 1 600. GFPGAN s’exécute sur la source pré-nettoyée avec un agrandissement de 2, donnant un autre PNG de 2 400 x 1 600 avec les visages reconstruits et le reste simplement redimensionné. Cela fait trois sorties sur les 12 autorisées. D’après les propres estimations par mégapixel du serveur, le temps de calcul des modèles est d’environ 0,96 x (3 + 2 + 6), soit autour de 11 secondes, plus quelques secondes de préparation et d’empaquetage ; l’attente de l’unique créneau de restauration peut en ajouter. Une tâche consomme une tâche IA.',
+        },
+        {
+          title: 'Un recadrage de visage de 300 x 400 dans une image fixe de 640 x 480, pré-nettoyage, trois upscalers, GFPGAN avec Chaîner',
+          body: 'Le recadrage fait 0,12 mégapixel et 400 pixels de haut, de sorte que l’échelle auto choisit 4x et que chaque résultat agrandi fait 1 200 x 1 600 (1,92 mégapixel), bien en dessous du budget de 64 mégapixels. Avec le pré-nettoyage FBCNN et SCUNet, Real-ESRGAN, SwinIR et HAT, et GFPGAN chaîné, la tâche produit 2 + 3 + 1 + 1 x 3 = 9 sorties : deux étapes de pré-nettoyage, trois agrandissements, GFPGAN sur la source nettoyée et GFPGAN sur chaque résultat agrandi en 1x. Les passes de pré-nettoyage et d’agrandissement sur 0,12 mégapixel prennent chacune quelques secondes d’après les estimations du serveur, tandis que les trois passes de visage chaînées s’exécutent sur les résultats de 1,92 mégapixel et prennent proportionnellement plus de temps. Chaque sortie de visage porte une mention générative dans le manifeste, car ce que vous voyez dans ces visages est une reconstruction, pas une restitution.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas l’amélioration des visages à des fins d’identification : GFPGAN et CodeFormer dessinent des visages plausibles à partir d’un a priori appris, de sorte qu’un visage reconstruit est au mieux une piste et jamais la preuve de qui figurait sur la photo. Passez-vous de l’outil pour les images déjà grandes et nettes, où une passe 2x ajoute surtout de la texture GAN, et pour les photos de plus de 12 000 pixels de côté, qui sont refusées. Si vous n’avez besoin que d’une copie plus grande d’une image propre, sans pré-nettoyage, modèles de visage ni grille de comparaison, l’upscaler d’images par IA est plus rapide. Et si votre dommage est un flou de mise au point plutôt qu’un flou de mouvement, les poids GoPro de NAFNet ne sont pas le bon modèle.',
+      whyMediaManipulator: [
+        'Huit modèles de recherche derrière un seul import, sans notebooks, configuration CUDA ni fichiers de poids à gérer.',
+        'Chaque modèle s’exécute sur un serveur GPU que nous exploitons ; l’image n’est pas envoyée à un service d’IA tiers.',
+        'La page garde la distinction honnête : les sorties de pré-nettoyage portent une mention de fidélité, les sorties de visage une mention générative, et l’original préparé figure toujours dans la grille.',
+      ],
+      privacyNote: 'Votre image est enregistrée dans le dossier de sa tâche, auto-orientée et recadrée par ImageMagick en un PNG de travail, puis traitée par les modèles sélectionnés sur notre propre GPU. À la fin de la tâche, le dossier d’import et l’arborescence de travail sont supprimés ; ce qui reste avec la tâche est l’original préparé, chaque PNG de résultat, le manifeste et le .tar.gz empaqueté, servis depuis la tâche pour le téléchargement et pour la grille de comparaison. Les sorties des modèles de visage sont étiquetées comme reconstructions génératives dans ce manifeste. Aucun fournisseur d’IA tiers ne reçoit l’image. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Quelle est la différence entre le pré-nettoyage et les modèles d’upscaling ou de visage ?',
+          answer: 'Les modèles de pré-nettoyage (FBCNN, SCUNet, NAFNet) sont non génératifs : ils suppriment les artefacts de compression, le bruit et le flou de mouvement en filtrant le signal existant en 1x. Les upscalers ajoutent de la résolution, et les modèles de visage (GFPGAN, CodeFormer) sont génératifs : ils synthétisent des détails faciaux plausibles. Une sortie de pré-nettoyage est une image filtrée fidèle ; une sortie de visage est une reconstruction.',
+        },
+        {
+          question: 'Un visage amélioré peut-il servir de preuve d’identification ?',
+          answer: 'Non. GFPGAN et CodeFormer produisent des visages plausibles à partir d’un a priori appris ; ils ne restituent pas le vrai visage. Le manifeste marque chaque sortie de visage d’une mention générative précisément pour cette raison. Utilisez-les uniquement pour la lisibilité visuelle et comme pistes.',
+        },
+        {
+          question: 'Pourquoi les modèles de pré-nettoyage s’exécutent-ils dans un ordre fixe, quoi que je coche ?',
+          answer: 'Les artefacts de compression doivent disparaître avant le débruitage, sinon le débruiteur prend les blocs pour du signal, et le défloutage fonctionne mieux sur l’entrée la plus propre ; le serveur exécute donc toujours FBCNN, puis SCUNet, puis NAFNet, chacun sur le résultat précédent. Si l’un d’eux échoue, le suivant reprend à partir de la dernière étape réussie.',
+        },
+        {
+          question: 'Comment le mode Auto choisit-il entre 2x et 4x, et quelle est la limite de taille ?',
+          answer: 'Auto choisit 4x lorsque le recadrage fait au plus 540 pixels de haut et 2x sinon. La sortie est ensuite vérifiée par rapport à un budget d’environ 64 mégapixels (67 108 864 pixels) ; une demande qui le dépasse est refusée avec le nombre de mégapixels et une suggestion de choisir 2x ou un recadrage plus petit. Les sources de plus de 12 000 pixels de côté sont rejetées avant cela.',
+        },
+        {
+          question: 'Quel effet Chaîner a-t-il sur le nombre de sorties ?',
+          answer: 'Avec Chaîner activé, chaque modèle de visage s’exécute aussi en 1x sur le résultat de chaque upscaler, de sorte que sorties = pré-nettoyage + généralistes + visages + visages x généralistes. Deux upscalers et deux modèles de visage avec chaînage donnent 2 + 2 + 4 = 8 sorties avant tout pré-nettoyage ; le serveur en autorise 12 par tâche.',
+        },
+        {
+          question: 'Que se passe-t-il si un modèle d’image échoue ou dépasse le délai ?',
+          answer: 'La tâche continue. L’unité est marquée en échec avec une raison compréhensible (par exemple un dépassement de délai après 1 800 secondes suggérant un recadrage plus petit ou le 2x), le manifeste la consigne, et chaque autre résultat est quand même empaqueté et affiché. La tâche n’échoue que lorsque tous les modèles sélectionnés échouent, et la tâche IA est alors remboursée.',
+        },
+        {
+          question: 'Pourquoi CodeFormer est-il grisé ?',
+          answer: 'CodeFormer est sous licence non commerciale ; il se trouve donc derrière un drapeau serveur désactivé par défaut, et les capacités le signalent alors comme actuellement désactivé. GFPGAN et les trois modèles de pré-nettoyage ont des licences permissives et sont disponibles dès que leurs poids sont installés.',
+        },
+        {
+          question: 'Combien de restaurations puis-je lancer, et est-ce gratuit ?',
+          answer: 'Lancer une restauration consomme une tâche IA : 3 par jour en tant que visiteur, 10 avec un compte gratuit, 100 avec Premium et 200 avec Pro par défaut, quel que soit le nombre de modèles cochés dans cette tâche. Il existe aussi une limite dédiée de 6 lancements par session et par heure. Le plafond d’import est de 200 Mo pour les visiteurs et de 1 Go avec un compte gratuit ; /pricing affiche les chiffres actuels.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'La sortie est plafonnée par un budget de pixels (~64 mégapixels), bien au-delà de la 8K ; si un recadrage et une échelle le dépassent, choisissez 2x ou un recadrage plus petit.',
+          'Les modèles de pré-nettoyage ne changent jamais les dimensions (1x) ; seuls les upscalers généralistes modifient la résolution.',
+        ],
+        processingNotes: [
+          'Le pré-nettoyage s’exécute toujours en premier, dans un ordre fixe (FBCNN → SCUNet → NAFNet) ; l’image nettoyée devient la base de tous les autres modèles.',
+          'Un modèle en échec ne fait jamais échouer la tâche : son entrée affiche la raison et les autres résultats restent téléchargeables.',
+          'L’amélioration des visages est une reconstruction générative : utilisez-la pour la lisibilité et comme piste, pas comme preuve d’identification.',
+        ],
+      },
+      related: [
+        {
+          label: 'Restauration vidéo par IA',
+          to: '/tools/ai-video-restoration',
+          description: 'L’équivalent pour l’image animée : les mêmes upscalers sur un court clip.',
+        },
+        {
+          label: 'Upscaler d’images par IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Une seule passe Real-ESRGAN quand vous n’avez besoin que d’une image plus grande.',
+        },
+        {
+          label: 'Supprimer l’arrière-plan',
+          to: '/tools/remove-background-from-image',
+          description: 'Détourez le sujet après l’avoir restauré.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez le PNG restauré pour le partager.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Redimensionnez l’image restaurée à des dimensions exactes.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les métadonnées du résultat avant de le publier.',
+        },
+      ],
+      embed: {
+        title: 'Restauration et upscaling d’images par IA',
+        description: 'Importez une image, recadrez-la sur une zone si vous le souhaitez, pré-nettoyez-la en option, choisissez les modèles d’upscaling et d’amélioration des visages à comparer et téléchargez un seul paquet avec chaque résultat.',
+      },
     },
     'ai-document-scan': {
       name: 'Numérisation de documents par IA',
+      h1: 'Numérisation de documents par IA : pages scannées et écriture manuscrite en PDF / Word consultables',
       tagline: 'Transformez des documents numérisés et des notes manuscrites en un PDF multipage consultable et un document Word modifiable : les pages imprimées reçoivent une couche de texte Tesseract fidèle, l’écriture manuscrite est transcrite par une IA de vision, avec l’incertitude signalée et jamais inventée.',
-      metaTitle: 'Numérisation de documents par IA : pages scannées et écriture manuscrite en PDF/Word | Media Manipulator',
+      metaTitle: 'Numérisation par IA : pages scannées et manuscrits en PDF/Word | Media Manipulator',
       metaDescription: 'Numérisation de documents par IA, gratuite : convertissez des images scannées en PDF consultable et en Word par OCR, et transcrivez des notes manuscrites en texte. Réorganisez les pages, mélangez imprimé et manuscrit, le tout sur notre propre GPU, mot pour mot, avec l’incertitude signalée.',
+      ogTitle: 'Numérisation de documents par IA : PDF consultable + Word à partir de scans et d’écriture manuscrite',
+      ogDescription: 'Importez une ou plusieurs pages scannées, imprimées ou manuscrites, réorganisez-les et obtenez un PDF consultable et un DOCX modifiable. Les pages imprimées restent fidèles ; l’écriture manuscrite est transcrite mot pour mot avec les marqueurs [illegible]/[?] conservés.',
+      intro: 'La numérisation de documents par IA transforme une ou plusieurs pages photographiées ou scannées en un PDF multipage consultable et, si vous le demandez, en un document Word modifiable. Elle traite deux types de pages différemment et vous indique lequel est lequel. Les pages imprimées ou dactylographiées passent par OCRmyPDF et Tesseract : la page de sortie est votre scan, intact, avec une couche de texte invisible en dessous pour que vous puissiez rechercher, sélectionner et copier. Les pages manuscrites sont lues par un modèle de vision-langage s’exécutant sur notre propre GPU, qui transcrit l’écriture mot pour mot, marque ce qu’il ne peut pas lire par [illegible], entoure un mot douteux par [?: meilleure hypothèse], et a pour consigne de ne jamais rien compléter, corriger ni arranger. Une seule tâche peut mélanger les deux types, page par page, dans l’ordre que vous fixez, et le résultat nomme le moteur et le niveau de confiance pour chaque page.',
+      whatItDoes: [
+        'Accepte jusqu’à 50 images de page par tâche (PNG, JPEG, WebP, TIFF, BMP ou HEIC, 25 Mo chacune par défaut), normalise chacune en PNG redressé et vous laisse d’abord les glisser dans l’ordre de lecture.',
+        'En mode Auto, pose au modèle de vision une question par page (imprimée ou manuscrite ?) et oriente la page en conséquence ; les modes Imprimé et Manuscrit imposent la réponse.',
+        'Construit un PDF/A dans lequel chaque page imprimée est le scan d’origine plus une couche de texte Tesseract, et chaque page manuscrite est le scan plus une couche invisible de transcription automatique placée ligne par ligne, avec un pied de page visible qui l’indique.',
+        'Construit en option un document Word : les pages imprimées reconstruites en titres, listes et tableaux par PaddleOCR-VL (ou Docling), les pages manuscrites sous forme de transcription mot pour mot sous une note en gras invitant à vérifier par rapport au scan, le tout rendu par Pandoc.',
+        'Indique, pour chaque page, le moteur utilisé, un niveau de confiance élevé, moyen ou faible, et le nombre de marqueurs d’incertitude, pour que vous sachiez où regarder.',
+        'Peut exécuter une passe de vérification qui relit uniquement les mots signalés, un second avis indépendant qui marque les désaccords par [?: vlm | other], et un résumé par IA étiqueté séparément, lorsque le serveur a ces moteurs activés.',
+      ],
+      flowSteps: [
+        {
+          title: 'Ajoutez vos pages',
+          description: 'Déposez une image de page par fichier, imprimée, manuscrite ou un mélange des deux, et glissez-les dans l’ordre.',
+        },
+        {
+          title: 'Choisissez le mode et les sorties',
+          description: 'Auto, Imprimé ou Manuscrit ; PDF toujours, Word en option ; la langue Tesseract pour les pages imprimées ; redressement et rotation automatique pour l’OCR des pages imprimées.',
+        },
+        {
+          title: 'Préparation et lecture',
+          description: 'Les pages sont auto-orientées et, pour l’écriture manuscrite, agrandies 2x avec Real-ESRGAN avant que le modèle les lise ; les pages imprimées attendent Tesseract à l’étape PDF.',
+        },
+        {
+          title: 'Construction des fichiers',
+          description: 'OCRmyPDF et reportlab produisent les PDF par page, pikepdf les fusionne ; le document Word est assemblé à partir de Markdown par Pandoc.',
+        },
+        {
+          title: 'Relecture et téléchargement',
+          description: 'Une visionneuse s’ouvre sur le PDF ; téléchargez-le, ainsi que le fichier Word si demandé et le manifeste qui consigne le moteur et le niveau de confiance de chaque page.',
+        },
+      ],
+      advancedDetails: [
+        'Pages imprimées : le PNG normalisé est encapsulé sans perte avec img2pdf, puis OCRmyPDF exécute Tesseract avec vos codes de langue, deskew et rotate_pages lorsqu’ils sont cochés, output_type pdfa et force_ocr, et écrit la couche de texte sous l’image. Si OCRmyPDF échoue sur une page, la page image seule est conservée, de sorte que le PDF reste complet.',
+        'Pages manuscrites : le modèle est qwen3-vl (8B, instruct, quantification q8_0) servi par Ollama à une température de 0,1, avec pour consigne de transcrire mot pour mot, de conserver les sauts de ligne, de marquer [illegible] et [?: hypothèse], de noter les signes tels que (flèche) ou (entouré), et de renvoyer du JSON avec le texte complet et un cadre englobant par ligne.',
+        'La page PDF manuscrite est dessinée avec reportlab à la taille en pixels de l’image : le scan est la page visible, chaque ligne transcrite est placée à son cadre englobant en mode de rendu de texte 3 (consultable, jamais dessinée) en Helvetica dimensionnée à la hauteur de la ligne entre 6 et 48 points, avec un bloc invisible pleine page en secours lorsqu’aucun cadre n’a été renvoyé, et un pied de page gris de 8 points indiquant « Machine transcription, verify against original ».',
+        'Le niveau de confiance est calculé, pas deviné : élevé lorsqu’une page n’a aucun marqueur, moyen lorsque moins de 15 pour cent de ses lignes en portent un, faible sinon. La passe de vérification (activée par défaut) renvoie la page et le brouillon au modèle avec pour consigne de ne résoudre que les mots marqués et de ne rien changer d’autre ; si elle échoue, le brouillon est conservé.',
+        'Le pré-nettoyage de l’écriture manuscrite est realesrgan-x4plus à l’échelle 2 sur le GPU Vulkan, activé par défaut pour Auto et Manuscrit et désactivé pour Imprimé ; il est fait au mieux et les originaux sont conservés s’il échoue. Le document Word est construit à partir de Markdown GitHub par Pandoc ; le résumé facultatif utilise un modèle de texte distinct et est écrit dans son propre fichier avec une étiquette « généré par IA ».',
+        'Une seule tâche de document s’exécute à la fois sur le serveur par défaut, chaque appel de modèle a un plafond de 40 minutes, et les imports ainsi que le dossier de travail sont supprimés dès la fin de la tâche ; seul le dossier de résultats (PDF, DOCX, manifest.json, README.txt) reste pendant la période de conservation.',
+      ],
+      whyItMatters: [
+        'La photo d’une page n’est pas un document tant qu’on ne peut pas la rechercher ni la citer. Le PDF ajoute cela sans toucher aux pixels, de sorte que le scan reste la référence.',
+        'Une reconnaissance d’écriture manuscrite qui devine avec assurance est pire qu’aucune. Des marqueurs explicites [illegible] et [?: hypothèse], un niveau de confiance par page et une étiquette visible rendent la transcription utilisable comme brouillon, sans jamais pouvoir être confondue avec l’original.',
+        'Les pages imprimées et manuscrites ont besoin de moteurs différents. Orienter chaque page vers le bon, au sein d’une seule tâche ordonnée, c’est ce qui permet à un carnet contenant un formulaire imprimé et des réponses manuscrites de ressortir en un seul fichier.',
+      ],
+      useCases: [
+        {
+          title: 'Paperasse consultable',
+          description: 'Les contrats, reçus et formulaires scannés deviennent un seul PDF/A dans lequel vous pouvez rechercher et copier, les images de page restant intactes.',
+        },
+        {
+          title: 'Carnets de terrain et de laboratoire',
+          description: 'Les notes manuscrites deviennent un PDF consultable et un brouillon Word, chaque mot incertain étant marqué pour que vous le vérifiiez.',
+        },
+        {
+          title: 'Image en Word',
+          description: 'Une page imprimée photographiée avec un téléphone devient un .docx modifiable avec ses titres, listes et tableaux reconstruits.',
+        },
+        {
+          title: 'Documents mixtes',
+          description: 'Un questionnaire imprimé avec des réponses manuscrites passe par les deux moteurs et revient en un seul fichier ordonné.',
+        },
+        {
+          title: 'Archives',
+          description: 'Les vieilles lettres et comptes rendus dactylographiés gagnent une couche de texte pour l’indexation tandis que le scan reste exactement tel qu’il était.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Trois pages A4 imprimées à 300 dpi',
+          body: 'Trois scans JPEG de 2480 x 3508 en mode Imprimé, PDF seul, langue eng, redressement et rotation automatique activés. Aucun modèle n’intervient : chaque page est encapsulée par img2pdf, puis OCRmyPDF exécute Tesseract et écrit une couche de texte invisible, produit du PDF/A, et pikepdf fusionne les trois en document.pdf. La couche de texte n’ajoute que quelques kilooctets par page, de sorte que le PDF a à peu près la taille des trois images de page (une page redressée est rerendue, une page intacte est intégrée telle quelle). La tâche consomme une tâche IA (remboursée en cas d’échec) et sa durée est celle de Tesseract sur le processeur, page après page, plus l’éventuelle attente dans la file, puisqu’une seule tâche de document s’exécute à la fois par défaut.',
+        },
+        {
+          title: 'Deux pages manuscrites prises au téléphone, avec Word',
+          body: 'Deux photos de téléphone de 4032 x 3024 de pages de carnet en mode Auto avec PDF et DOCX. La préparation auto-oriente les deux en PNG et, comme le mode n’est pas Imprimé, les agrandit 2x avec realesrgan-x4plus en 8064 x 6048. La classification pose à qwen3-vl une question par page, la reconnaissance renvoie la transcription avec un cadre englobant par ligne, et la vérification relit uniquement les mots signalés. Si une page compte 30 lignes dont 2 portent des marqueurs [?: ...], 2 / 30 est inférieur à 15 pour cent et la page est marquée en confiance moyenne avec illegibleCount 2. Les pages PDF sont les images traitées avec des lignes Helvetica invisibles à ces cadres et le tampon de pied de page ; le fichier Word contient le texte mot pour mot sous la note de vérification en gras. La durée correspond à trois passes séquentielles du modèle de vision par page sur notre GPU ; rien ne s’exécute ailleurs.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas cet outil lorsque vous avez besoin que le texte fasse autorité sans le vérifier : la sortie manuscrite est une lecture automatique avec des lacunes marquées, et le document Word ainsi que le résumé sont des reconstructions ; vérifiez-les donc par rapport au scan avant de les citer. Ce n’est pas un outil d’OCR de PDF en PDF : les entrées sont des images de page, convertissez donc d’abord un PDF existant en images, et ce n’est pas un traducteur. Si vous n’avez besoin que de relier les pages dans un PDF sans couche de texte, l’outil image en PDF classique le fait comme une tâche ordinaire au lieu d’une tâche IA, ce qui préserve le quota visiteur de trois tâches IA par jour pour les travaux qui ont besoin d’un modèle.',
+      whyMediaManipulator: [
+        'Le PDF des pages imprimées est fidèle par construction : OCRmyPDF place le texte sous une image de page intacte et produit du PDF/A, rien n’est redessiné.',
+        'L’écriture manuscrite est transcrite mot pour mot, avec preuves : la consigne interdit l’invention, l’incertitude est marquée dans le texte, le niveau de confiance est calculé à partir de ces marques, et la page indique qu’il s’agit d’une transcription automatique.',
+        'Chaque moteur est le nôtre : Tesseract sur le processeur, qwen3-vl et le modèle de texte via Ollama, PaddleOCR-VL et Real-ESRGAN sur nos GPU. Aucune page ne part vers un service d’IA tiers.',
+      ],
+      privacyNote: 'Vos images de page sont enregistrées dans uploads/<jobId>/src/ et leurs copies normalisées dans un dossier de travail ; les pages manuscrites sont envoyées au modèle qwen3-vl servi par Ollama sur notre propre GPU, les pages imprimées sont lues par Tesseract sur le processeur, et les brouillons de transcription par page sont conservés en JSON dans ce dossier de travail pendant l’exécution de la tâche. À la fin de la tâche, les imports et le dossier de travail sont supprimés immédiatement ; ce qui reste est le dossier de résultats dans outputs/<jobId>/ avec le PDF, le fichier Word si demandé, le manifeste (moteur, niveau de confiance et nombre de marqueurs par page) et un README, et ce dossier est supprimé à la fin de la période de conservation. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Le texte transcrit se trouve dans la couche de texte du PDF et dans le DOCX que vous téléchargez. Rien n’est envoyé à un fournisseur d’IA tiers et rien ne sert à l’entraînement.',
+      faq: [
+        {
+          question: 'Quelle est la différence entre le PDF et le document Word ?',
+          answer: 'Le PDF est votre scan avec une couche de texte consultable : une couche Tesseract sous une page imprimée, une transcription automatique invisible sous une page manuscrite, dans les deux cas avec l’image d’origine comme page visible. Le document Word est une reconstruction distincte : les pages imprimées en titres, listes et tableaux produits par PaddleOCR-VL ou Docling, les pages manuscrites sous forme de transcription mot pour mot sous une note en gras vous invitant à la vérifier. Considérez l’image du PDF comme la référence et le DOCX comme un brouillon.',
+        },
+        {
+          question: 'Quelle est la fiabilité de la transcription manuscrite ?',
+          answer: 'C’est une lecture automatique soigneuse, pas une transcription certifiée. Le modèle a pour consigne de copier exactement ce qui est écrit, de marquer tout ce qui est illisible par [illegible] et tout mot douteux par [?: meilleure hypothèse], et de ne jamais inventer ni corriger. Chaque page reçoit un niveau de confiance (élevé sans marqueur, moyen en dessous de 15 pour cent de lignes marquées, faible au-dessus) et un nombre de marqueurs, et la page PDF porte un pied de page visible de transcription automatique. Relisez les mots signalés par rapport au scan.',
+        },
+        {
+          question: 'Puis-je mélanger des pages imprimées et des pages manuscrites ?',
+          answer: 'Oui. En mode Auto, le modèle de vision est interrogé, pour chaque page, pour savoir si elle est principalement imprimée ou manuscrite, et la page va vers Tesseract ou vers le modèle d’écriture manuscrite en conséquence. Le manifeste consigne la réponse par page, et le PDF final ainsi que le fichier Word conservent l’ordre que vous avez fixé avant le lancement.',
+        },
+        {
+          question: 'Quelles langues l’OCR des pages imprimées prend-il en charge ?',
+          answer: 'Les codes de langue Tesseract, joints par un signe plus pour les pages mixtes (par exemple eng+fra). Les codes proposés par le serveur sont listés dans le formulaire ; l’anglais est installé par défaut et les autres apparaissent à mesure qu’ils sont ajoutés. L’écriture manuscrite est lue par un modèle de vision et n’utilise pas ces codes.',
+        },
+        {
+          question: 'Quelles sont les limites par tâche ?',
+          answer: 'Par défaut, jusqu’à 50 images de page par tâche (chaque image étant une page, 50 est aussi la limite de pages en pratique), 25 Mo par image, une seule tâche en cours à la fois par serveur (les autres attendent dans la file) et un plafond de 40 minutes par étape de modèle. Chaque tâche consomme une tâche IA : 3 par jour sans compte, 10 avec un compte gratuit, 100 avec Premium et 200 avec Pro, l’unité étant remboursée lorsqu’une tâche échoue. Les chiffres à jour se trouvent sur la page des tarifs.',
+        },
+        {
+          question: 'Pourquoi mon PDF manuscrit a-t-il un pied de page, et puis-je le supprimer ?',
+          answer: 'Chaque page manuscrite porte une petite ligne grise « Machine transcription, verify against original », et la section Word en a un équivalent en gras, car une copie consultable d’une écriture manuscrite peut être prise pour une copie vérifiée. Ils font partie de la sortie par conception et ne peuvent pas être désactivés. Les pages imprimées, dont la couche est une sortie Tesseract déterministe, ne portent aucun tampon.',
+        },
+        {
+          question: 'Mes pages quittent-elles vos serveurs ?',
+          answer: 'Non. Tesseract s’exécute sur le processeur, le modèle d’écriture manuscrite et de classification s’exécute via Ollama sur notre GPU, et le moteur de structure ainsi que l’upscaler s’exécutent sur un second GPU de la même machine. Les imports et les fichiers de travail sont supprimés dès que la tâche se termine.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Ajoutez jusqu’à 50 images de page par tâche par défaut ; chaque image de page a un plafond de taille individuel (~25 Mo).',
+          'Un PDF consultable est toujours produit ; le document Word modifiable est facultatif.',
+        ],
+        processingNotes: [
+          'Les pages imprimées utilisent un OCR déterministe (OCRmyPDF + Tesseract) pour une couche de texte fidèle et consultable.',
+          'L’écriture manuscrite est transcrite mot pour mot par une IA de vision avec les marqueurs [illegible]/[?] conservés : c’est une transcription automatique, pas la page de référence.',
+          'Le document Word et tout résumé par IA sont des reconstructions : vérifiez-les par rapport au scan d’origine.',
+        ],
+      },
+      related: [
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Reliez des images de page dans un PDF sans couche de texte, comme tâche ordinaire.',
+        },
+        {
+          label: 'PDF en JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Convertissez un PDF existant en images de page à fournir à la numérisation.',
+        },
+        {
+          label: 'Restauration d’images par IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Réparez un scan délavé ou flou avant de le transcrire.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les balises de position et d’appareil des photos de documents prises au téléphone.',
+        },
+        {
+          label: 'Masquer du texte dans une image',
+          to: '/tools/redact-text-in-image',
+          description: 'Noircissez des noms ou des numéros sur une page avant de partager le scan.',
+        },
+      ],
+      embed: {
+        title: 'Numérisation de documents par IA',
+        description: 'Ajoutez une ou plusieurs images de page scannées (documents imprimés ou notes manuscrites), réorganisez-les si nécessaire, choisissez un mode de contenu et les sorties, et obtenez un PDF consultable plus un document Word facultatif.',
+      },
     },
     'ai-image-upscaler': {
       name: 'Upscaler d’images par IA',
+      h1: 'Upscaler d’images par IA : agrandissez vos photos en 2x ou 4x en ligne',
       tagline: 'Agrandissez une photo petite ou floue avec un modèle Real-ESRGAN qui reconstruit les détails fins au lieu de simplement étirer les pixels.',
-      metaTitle: 'Upscaler d’images par IA : agrandissez vos photos en 2x ou 4x | Media Manipulator',
+      metaTitle: 'Upscaler d’images par IA : photos en 2x ou 4x | Media Manipulator',
       metaDescription: 'Agrandissez une photo basse résolution en 2x ou 4x avec une IA qui restaure les contours et les textures. Fonctionne sur notre propre GPU, sortie en PNG. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Upscaler d’images par IA : agrandissez vos photos en 2x ou 4x',
+      ogDescription: 'Agrandissez des photos petites ou floues avec un modèle d’IA Real-ESRGAN qui reconstruit les détails au lieu d’étirer les pixels.',
+      intro: 'Cette page ouvre le convertisseur d’images avec Agrandissement IA verrouillé et la sortie réglée sur PNG. Le serveur exécute realesrgan-ncnn-vulkan, la version Vulkan de Real-ESRGAN, sur un GPU qui nous appartient : le modèle par défaut est realesrgan-x4plus en 4x, avec realesrgan-x4plus-anime et realesr-animevideov3 disponibles pour les dessins et les images d’animation, et 2x comme échelle alternative. Plutôt que d’interpoler entre vos pixels existants, le réseau prédit à quoi ressemblent les contours, la peau, les tissus et le feuillage à la taille supérieure et dessine ces détails. Le résultat est écrit en PNG sans perte, afin qu’aucun nouvel artefact de compression ne vienne s’empiler sur les détails synthétisés.',
+      whatItDoes: [
+        'Agrandit une image à 2x ou 4x sa largeur et sa hauteur avec un modèle Real-ESRGAN exécuté sur notre GPU.',
+        'Vous laisse choisir dans le formulaire entre un modèle photo et deux modèles de style anime ; 4x et le modèle photo sont présélectionnés.',
+        'Produit toujours du PNG ; l’API impose l’extension .png pour cette opération.',
+        'Découpe automatiquement l’image en tuiles sur le GPU pour que les grandes entrées ne saturent pas la mémoire vidéo.',
+        'Consomme une tâche IA du quota IA quotidien, un compteur distinct ; le quota courant des conversions n’est pas touché.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer une image petite ou floue',
+          description: 'JPG, PNG ou WebP. Plus l’entrée est petite, plus le modèle doit inventer.',
+        },
+        {
+          title: 'Choisir 4x ou 2x et un modèle',
+          description: 'realesrgan-x4plus pour les photos, les modèles anime pour les dessins au trait et les images de dessins animés.',
+        },
+        {
+          title: 'Real-ESRGAN s’exécute sur le GPU',
+          description: 'realesrgan-ncnn-vulkan -i in -o out -n <model> -s <2|4> -t 0 -g <gpu> -f png',
+        },
+        {
+          title: 'Télécharger le PNG',
+          description: 'converted.png à 2x ou 4x les dimensions en pixels d’origine.',
+        },
+      ],
+      advancedDetails: [
+        'L’appel est UpscaleImage dans ai_tools.go. Il lance realesrgan-ncnn-vulkan avec -n pour le modèle, -s pour l’échelle, -t 0 pour la taille de tuile automatique, -g pour l’index du GPU et -f png ; l’ICD Vulkan est fixé par des variables d’environnement pour que le chargeur trouve toujours le pilote NVIDIA.',
+        'Seules les échelles 2 et 4 et seuls les trois noms de modèle realesrgan-x4plus, realesrgan-x4plus-anime et realesr-animevideov3 sont acceptés ; tout le reste est rejeté avant le démarrage de la tâche.',
+        'Le 2x exécute le même réseau x4 à demi-échelle. Le formulaire comporte une note indiquant que le 2x peut paraître légèrement recadré ou zoomé sur certaines images, ce qui a été observé sur le serveur avec une photo de 640 x 360 ; l’API ne masque délibérément pas ce phénomène en exécutant le 4x puis en réduisant.',
+        'Comme le chemin IA contourne ImageMagick et la copie exiftool, les réglages de qualité, de redimensionnement, de filtre et de métadonnées du formulaire n’ont aucun effet ici, et le PNG ne porte aucune donnée EXIF de l’original.',
+        'Le nombre de pixels croît avec le carré de l’échelle : 4x signifie 16 fois plus de pixels et 2x, 4 fois plus. Le RGB non compressé de la sortie fait largeur x hauteur x 3 octets, ce qui borne la taille maximale du PNG.',
+        'Il n’y a pas de plafond côté serveur sur les dimensions d’entrée propre à cette opération, au-delà de la limite de taille par fichier de votre offre ; les très grandes entrées prennent simplement plus de temps, tuile par tuile.',
+      ],
+      whyItMatters: [
+        'Les vieilles photos numériques, les téléchargements basse résolution et les petites images du web doivent souvent être imprimés ou affichés bien plus grands qu’ils n’ont été capturés.',
+        'Une simple interpolation produit une image plus grande, pas plus nette ; un modèle de super-résolution fait la différence entre flou et utilisable.',
+        'Partir d’un PNG sans perte vous laisse libre de compresser ou de redimensionner le résultat ensuite sans cumuler les artefacts.',
+      ],
+      useCases: [
+        {
+          title: 'Imprimer de vieilles photos',
+          description: 'Amenez une photo de 1 mégapixel d’un ancien appareil à une taille qui s’imprime bien.',
+        },
+        {
+          title: 'Sauver de petits téléchargements',
+          description: 'Agrandissez une image produit ou de référence de 400 px en quelque chose d’utilisable.',
+        },
+        {
+          title: 'Anime et illustration',
+          description: 'Agrandissez des dessins au trait avec realesrgan-x4plus-anime sans contours boueux.',
+        },
+        {
+          title: 'Images de jeux et de vidéos',
+          description: 'Utilisez realesr-animevideov3 sur des images d’animation capturées.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un JPEG de 640 x 360 en 4x avec realesrgan-x4plus',
+          body: 'Entrée : une vignette JPEG de paysage de 92 Ko, 640 x 360. Réglages laissés sur le préréglage : 4x, modèle photo, sortie PNG. Le serveur exécute realesrgan-ncnn-vulkan -n realesrgan-x4plus -s 4 -t 0 -f png et écrit converted.png en 2560 x 1440 pixels, soit 16 fois les 230 400 pixels d’origine. La sortie non compressée fait 2560 x 1440 x 3 = 11 Mo de RGB, et le PNG reste en dessous selon la quantité de ciel et de couleurs unies qu’il contient ; attendez-vous donc à plusieurs mégaoctets à partir d’une entrée de 92 Ko. La passe GPU sur les tuiles choisies automatiquement ne prend que quelques secondes pour une sortie de cette taille ; l’encodage PNG et le téléchargement d’un fichier de plusieurs mégaoctets représentent une part notable du total.',
+        },
+        {
+          title: 'Une photo de 1200 x 800 en 2x',
+          body: 'Entrée : un JPEG de 480 Ko, 1200 x 800, représentant une personne. Choisissez 2x et gardez le modèle photo. La sortie est un PNG de 2400 x 1600, soit 3,84 mégapixels, quatre fois les 0,96 d’origine. Non compressé, cela fait 11,5 Mo de RGB, et le PNG en représentera une fraction. Comme le 2x exécute le réseau x4 à demi-échelle, inspectez les bords à la recherche du léger recadrage ou zoom signalé par le formulaire ; s’il apparaît, exécutez plutôt le 4x et réduisez le résultat de 4800 x 3200 à 2400 x 1600 avec l’outil de redimensionnement d’image, ce qui coûte une opération de plus.',
+        },
+      ],
+      whenNotToUse: 'N’agrandissez pas une image déjà grande et nette : une photo de 12 mégapixels en 4x devient un PNG de 192 mégapixels, lent à produire, de plusieurs centaines de mégaoctets non compressé, et sans aucun gain visible. Ne vous y fiez pas pour les visages, le texte, les logos ou tout ce dont l’original exact doit être préservé, car les détails ajoutés sont prédits, pas récupérés, et un petit texte peut ressortir sous forme de lettres plausibles mais fausses. Un fort flou de mouvement et une mise au point ratée ne se corrigent pas par la résolution. Si vous avez seulement besoin d’une taille en pixels précise à partir d’un original plus grand, le simple outil de redimensionnement est plus rapide et moins coûteux.',
+      whyMediaManipulator: [
+        'Le vrai binaire, les modèles et les options sont nommés ici, vous savez donc qu’il s’agit de Real-ESRGAN avec découpage automatique en tuiles, et non d’une « amélioration » générique.',
+        'La réserve sur le 2x est énoncée plutôt que cachée, et l’opération est verrouillée : aucun menu à parcourir.',
+        'Fonctionne sur du matériel qui nous appartient ; l’outil standard ne nécessite aucun compte. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre image est stockée sous uploads/<jobId>/ sur notre serveur et lue directement par le binaire realesrgan-ncnn-vulkan sur un GPU de la même machine ; le PNG qu’il produit va dans outputs/<jobId>/converted.png. Aucun fournisseur d’IA extérieur n’intervient et votre image ne sert à entraîner quoi que ce soit. Comme pour tout envoi d’image, une étape d’analyse automatisée sur notre serveur passe une fois un modèle de vision local sur le fichier et enregistre son résumé avec la tâche. Le résultat ne porte aucune donnée EXIF de l’original, car les opérations IA sautent la copie des métadonnées. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'L’upscaler IA est-il gratuit ?',
+          answer: 'Oui, dans la limite du quota IA quotidien. Chaque agrandissement consomme une tâche IA : par défaut 3 par jour pour les visiteurs et 10 avec un compte gratuit, avec des plafonds par fichier de 200 Mo et 1 Go ; 100 et 200 avec Premium et Pro. Ce quota est distinct du quota courant, vos conversions ne sont donc pas affectées. Les chiffres à jour sont sur /pricing.',
+        },
+        {
+          question: 'En quoi est-ce différent de l’outil de redimensionnement d’image ?',
+          answer: 'L’outil de redimensionnement exécute ImageMagick, qui interpole les pixels existants et produit une image plus grande mais plus douce. Cet outil exécute un réseau Real-ESRGAN entraîné qui synthétise contours et textures à la taille supérieure. C’est une inférence, pas des données récupérées.',
+        },
+        {
+          question: 'Dois-je choisir 2x ou 4x ?',
+          answer: 'Le 4x est la valeur par défaut et donne le résultat le plus régulier. Le 2x exécute le même réseau à demi-échelle et peut paraître légèrement recadré sur certaines images ; si le 4x est plus que nécessaire, envisagez un 4x suivi d’une réduction.',
+        },
+        {
+          question: 'Quel modèle convient aux dessins ?',
+          answer: 'realesrgan-x4plus-anime pour les illustrations et les aplats de couleur ; realesr-animevideov3 pour les images tirées d’animations. Le modèle photo ajoute une texture semblable à de la peau, qui paraît fausse sur les dessins au trait.',
+        },
+        {
+          question: 'Pourquoi la sortie est-elle en PNG et si lourde ?',
+          answer: 'Le PNG est imposé pour que les détails synthétisés ne soient pas immédiatement dégradés par la compression JPEG. Un résultat en 4x a 16 fois plus de pixels, le fichier est donc lourd ; compressez-le ensuite en JPG ou WebP pour le partager.',
+        },
+        {
+          question: 'Peut-il corriger une photo floue ou mal mise au point ?',
+          answer: 'Il aide pour le flou dû à une faible résolution. Il ne peut pas annuler un flou de mouvement ni une mise au point ratée, et il peut lisser ou altérer les visages et le texte fin. Comparez le résultat à l’original avant de l’utiliser.',
+        },
+        {
+          question: 'Ma photo est-elle envoyée à un service d’IA tiers ?',
+          answer: 'Non. Real-ESRGAN s’exécute sur un serveur GPU que nous exploitons, et la tâche n’appelle jamais d’API externe.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est en PNG. Les limites de taille et le quota IA quotidien dépendent de votre offre et sont affichés dans le formulaire, pas fixés sur cette page.',
+        ],
+      },
+      related: [
+        {
+          label: 'Restauration d’images par IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Nettoyez la compression et le bruit avant ou après l’agrandissement.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Ramenez un résultat 4x à la taille exacte dont vous avez besoin.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Transformez le lourd PNG en JPG ou WebP partageable.',
+        },
+        {
+          label: 'Supprimer l’arrière-plan d’une image',
+          to: '/tools/remove-background-from-image',
+          description: 'Détourez le sujet agrandi sur un fond transparent.',
+        },
+        {
+          label: 'Restauration vidéo par IA',
+          to: '/tools/ai-video-restoration',
+          description: 'L’équivalent pour les images vidéo.',
+        },
+      ],
+      embed: {
+        title: 'Agrandir une image avec l’IA',
+        description: 'Envoyez une photo. Agrandissement IA est déjà sélectionné et verrouillé, avec la sortie réglée sur PNG. Choisissez 2x ou 4x et un modèle (photo ou anime), puis convertissez.',
+      },
     },
     'blur-faces-in-photo': {
       name: 'Flouter les visages sur une photo',
+      h1: 'Flouter les visages d’une photo en ligne',
       tagline: 'Détectez automatiquement les visages, puis floutez-les, pixelisez-les ou masquez-les en noir, tous ou seulement ceux que vous choisissez.',
       metaTitle: 'Flouter les visages d’une photo en ligne | Media Manipulator',
       metaDescription: 'Floutez, pixelisez ou masquez en noir les visages d’une photo. Détectez chaque visage, puis choisissez ceux à cacher. L’IA fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Flouter les visages d’une photo en ligne',
+      ogDescription: 'Repérez automatiquement les visages d’une photo et floutez, pixellisez ou masquez en noir tous les visages ou seulement ceux que vous choisissez.',
+      intro: 'Publier une photo de foule, de classe ou de rue implique généralement de cacher des personnes qui n’ont jamais accepté d’y figurer. Cette page repère les visages avec le détecteur YuNet exécuté dans OpenCV sur notre propre serveur et couvre chacun d’eux d’un flou gaussien, d’une mosaïque de pixels ou d’un rectangle noir plein. Vous pouvez couvrir tous les visages détectés en une seule étape, ou lancer d’abord la détection, voir les cadres tracés sur votre photo et ne choisir que les visages à cacher ou que les visages à conserver. Le détecteur, son seuil de confiance et la taille exacte de chaque effet sont décrits ci-dessous, pour que vous sachiez ce que le résultat protégera et ce qu’il ne protégera pas.',
+      whatItDoes: [
+        'Détecte les visages avec OpenCV FaceDetectorYN et le modèle YuNet 2023 à un seuil de confiance de 0,85, puis agrandit chaque cadre de 18 pour cent de chaque côté pour couvrir aussi les cheveux et la mâchoire.',
+        'Cache chaque visage choisi avec un flou gaussien dont le noyau vaut un tiers de la taille du cadre, une mosaïque de 14 blocs sur la largeur du cadre, ou un remplissage noir.',
+        'Propose trois modes de sélection : tous les visages détectés, seulement les visages que vous avez cochés, ou tous sauf les visages que vous avez cochés.',
+        'Conserve les résultats de détection dans une session de 30 minutes liée au SHA-256 de votre fichier, pour que les cadres appliqués soient exactement ceux que vous avez vus.',
+        'Écrit un nouveau JPG, PNG ou WebP aux mêmes dimensions en pixels ; le fichier d’origine importé n’est pas modifié.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez la photo',
+          description: 'JPG, PNG ou WebP. Flouter / pixelliser les visages est présélectionné et verrouillé sur cette page.',
+        },
+        {
+          title: 'Choisissez flou, pixellisation ou rectangle noir',
+          description: 'Le flou est préréglé ; un rectangle noir supprime entièrement les pixels.',
+        },
+        {
+          title: 'Détectez et sélectionnez si vous le souhaitez',
+          description: 'Appuyez sur Détecter les visages pour voir des cadres numérotés, puis cochez ceux à cacher ou à conserver.',
+        },
+        {
+          title: 'Lancez la tâche',
+          description: 'Le serveur applique l’effet à l’intérieur de chaque cadre choisi et enregistre une nouvelle image.',
+        },
+        {
+          title: 'Vérifiez et téléchargez',
+          description: 'Zoomez en taille réelle et cherchez les visages oubliés avant de publier.',
+        },
+      ],
+      advancedDetails: [
+        'La détection exécute face_privacy.py avec OpenCV FaceDetectorYN sur face_detection_yunet_2023mar.onnx à la résolution complète de l’image, avec un seuil de score de 0,85, un seuil NMS de 0,3 et jusqu’à 5000 candidats. Les cadres sont élargis de 0,18 fois leur largeur et leur hauteur de chaque côté, puis bornés à l’image.',
+        'Le flou applique cv2.GaussianBlur avec un noyau impair de max(3, plus grand côté du cadre / 3) pixels : un visage de 300 px reçoit donc un noyau de 101 px ; plus le visage est grand, plus le flou est fort. La pixellisation réduit le cadre à 14 blocs de largeur avec un filtrage linéaire, puis le réagrandit au plus proche voisin, ce qui donne des carreaux carrés bien visibles. Le rectangle noir écrit (0, 0, 0) dans la zone.',
+        'Quand vous détectez d’abord, le serveur calcule le SHA-256 du fichier importé, stocke les cadres normalisés dans une session qui expire après 30 minutes, et refuse d’appliquer une session dont le hachage ne correspond pas au fichier que vous soumettez ensuite : les cadres ne peuvent donc pas être transposés sur une autre image.',
+        'Sans session de détection, le script redétecte au moment de l’exécution et couvre tous les visages qu’il trouve ; le résultat est identique à celui obtenu en lançant Détecter les visages et en laissant le mode sur tous.',
+        'La sortie est écrite par OpenCV, et l’étape de recopie des métadonnées par exiftool du convertisseur ne s’exécute pas sur les sorties IA : le résultat ne contient donc aucune des balises EXIF, GPS ou d’appareil d’origine. Cela ne remplace pas pour autant l’outil EXIF, qui vous permet de voir et de choisir ce qui est supprimé.',
+        'Un flou léger sur un visage grand et net peut être partiellement inversé avec des outils de déconvolution ; le rectangle noir est le seul choix qui détruit l’information, et une mosaïque grossière se situe entre les deux.',
+      ],
+      whyItMatters: [
+        'Les photos d’autres personnes, et surtout d’enfants, impliquent un consentement et parfois des obligations légales qu’une légende ne peut pas régler.',
+        'Retoucher à la main une photo de 20 visages est lent et irrégulier ; la détection trouve les petits visages du dernier rang.',
+        'Détecter puis sélectionner vous permet de laisser votre propre groupe visible tout en anonymisant les passants.',
+      ],
+      useCases: [
+        {
+          title: 'Photos d’événements et de foules',
+          description: 'Cachez les passants avant de publier des images d’un événement public.',
+        },
+        {
+          title: 'Publications d’écoles et de clubs',
+          description: 'Couvrez certains enfants dont les familles n’ont pas donné leur consentement.',
+        },
+        {
+          title: 'Journalisme et reportage',
+          description: 'Protégez les sources ou les participants sur une image fixe de documentaire.',
+        },
+        {
+          title: 'Captures d’écran de visioconférences',
+          description: 'Anonymisez vos collègues sur une capture de réunion avant de la partager hors de l’équipe.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Une photo de groupe de 4000 x 3000 avec 14 visages, tous floutés',
+          body: 'Entrée : un JPEG de 3,5 Mo de 4000 x 3000 pixels pris avec un téléphone, avec 14 personnes. Réglages : flou, mode de sélection tous, sans détection préalable. Le script exécute YuNet sur l’image complète de 12 mégapixels ; un visage dont le cadre mesure 300 x 360 pixels est élargi de 18 pour cent à environ 408 x 490 et flouté avec un noyau gaussien de 163 px (490 / 3, arrondi à l’impair), ce qui le transforme en une tache sans traits. Un visage de 60 px au dernier rang reçoit un noyau de 27 px, suffisant pour effacer les traits à cette taille. La sortie est un JPG de 4000 x 3000 écrit par OpenCV, généralement à quelques centaines de kilooctets de la taille d’origine. La détection et le floutage prennent quelques secondes ; l’import des 3,5 Mo prend généralement plus longtemps.',
+        },
+        {
+          title: 'Une capture de visioconférence de 1920 x 1080, deux visages sur six pixellisés',
+          body: 'Entrée : une capture d’écran PNG de 1,1 Mo en 1920 x 1080 montrant six participants. Réglages : Détecter les visages d’abord, mode de sélection seulement les visages sélectionnés, deux visages cochés, pixellisation. La détection renvoie six cadres et les stocke dans une session de 30 minutes liée au hachage du fichier. À l’envoi, le serveur vérifie le hachage, transmet au script les identifiants des deux cadres sélectionnés, et chaque cadre sélectionné, d’environ 140 x 180 pixels après élargissement, est réduit à 14 blocs de largeur, si bien que chaque carreau fait à peu près 10 x 13 pixels, puis réécrit sous forme de carrés nets. Les quatre autres visages restent intacts. La sortie est un PNG de 1920 x 1080, et la tâche s’exécute en quelques secondes puisqu’aucune redétection n’est nécessaire.',
+        },
+      ],
+      whenNotToUse: 'Ne vous fiez pas à cet outil lorsqu’un seul visage oublié est inacceptable, par exemple pour un caviardage imposé par la loi ; YuNet au seuil de 0,85 ignore les visages minuscules, détournés, masqués ou dans l’ombre profonde, et vous devez vérifier vous-même le résultat. N’utilisez pas un flou léger sur un grand visage si la personne doit rester non identifiable ; utilisez le rectangle noir. Les badges nominatifs, les plaques d’immatriculation et les écrans ne sont pas des visages : l’outil de caviardage de texte ou le suppresseur d’objets est le bon choix pour eux. Et si votre objectif est de retirer entièrement une personne de la scène plutôt que de cacher son visage, c’est le suppresseur d’objets qui s’en charge.',
+      whyMediaManipulator: [
+        'Le détecteur, son seuil, l’élargissement et le calcul du noyau sont indiqués, pour que vous puissiez juger du niveau de protection offert par chaque style.',
+        'Les cadres de détection sont liés au hachage du fichier et expirent après 30 minutes : vous sélectionnez donc sur l’image exacte qui sera traitée.',
+        'Le floutage des visages consomme une tâche IA du quota IA quotidien (3 par jour sans compte par défaut, 10 avec un compte gratuit), distinct du quota standard, et l’aperçu Détecter les visages n’est pas décompté du tout. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'La détection et le floutage des visages s’exécutent dans un processus OpenCV local sur notre propre matériel ; aucun service d’IA extérieur ne reçoit votre photo, et rien ne sert à l’entraînement. L’aperçu Détecter les visages enregistre une copie temporaire, la hache, détecte, puis supprime la copie avant de répondre ; seules les coordonnées des cadres sont conservées, pendant 30 minutes. La photo importée se trouve dans uploads/<jobId>/ et le résultat dans outputs/<jobId>/, tous deux inscrits au registre de conservation et supprimés à la fin de la période. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Comme tout import d’image standard, la photo passe aussi par notre analyse de contenu automatisée sur le même serveur, où un modèle de vision local rédige une courte description qui reste attachée à la tâche et n’est pas partagée avec des tiers.',
+      faq: [
+        {
+          question: 'Quels visages le détecteur va-t-il manquer ?',
+          answer: 'YuNet est exécuté à un seuil de confiance de 0,85 et ignore donc les candidats peu sûrs : les très petits visages, les profils détournés de l’objectif, les visages couverts par un masque ou une main, et les visages dans l’ombre profonde. Vérifiez le résultat en taille réelle avant de le partager.',
+        },
+        {
+          question: 'Comment flouter seulement certains visages ?',
+          answer: 'Appuyez sur Détecter les visages, cochez les cadres numérotés, puis réglez le mode de sélection sur seulement les visages sélectionnés ou tous sauf les visages sélectionnés. Les cadres sont conservés 30 minutes en regard du hachage du fichier ; relancez la détection si vous changez d’image.',
+        },
+        {
+          question: 'Quelle est la force du flou, et peut-on l’annuler ?',
+          answer: 'Le noyau gaussien vaut un tiers de la taille du cadre : un visage de 300 px reçoit donc un noyau de 101 px. Un flou fort est difficile à inverser, mais un attaquant déterminé a une chance sur un grand visage net ; le rectangle noir supprime les pixels et ne peut pas être annulé.',
+        },
+        {
+          question: 'La sortie conserve-t-elle les données EXIF et GPS de ma photo ?',
+          answer: 'Non. Le résultat est réécrit de zéro par OpenCV et l’étape de recopie des métadonnées est sautée pour les sorties IA : les balises d’appareil et de localisation ne sont donc pas reportées. Utilisez l’outil EXIF si vous voulez inspecter ou supprimer sélectivement des balises.',
+        },
+        {
+          question: 'Ma photo est-elle envoyée à une entreprise d’IA extérieure ?',
+          answer: 'Non. La détection et l’effet s’exécutent dans un processus OpenCV local sur notre propre serveur, et le fichier n’est pas partagé avec des fournisseurs d’IA tiers.',
+        },
+        {
+          question: 'Le floutage des visages consomme-t-il mon quota IA quotidien ?',
+          answer: 'Oui. Chaque photo floutée est une tâche IA : 3 par jour en tant que visiteur par défaut, 10 avec un compte gratuit. Elle ne puise jamais dans le quota standard. L’aperçu Détecter les visages est limité en fréquence mais pas décompté. Une tâche échouée est remboursée.',
+        },
+        {
+          question: 'Et les plaques d’immatriculation, les badges nominatifs ou le texte sur les écrans ?',
+          answer: 'Ce ne sont pas des visages et ils ne sont pas détectés ici. Utilisez l’outil de caviardage de texte pour tout ce qui est lisible, ou le suppresseur d’objets pour effacer une plaque ou un panneau de l’image.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Chaque tâche consomme une tâche IA de votre quota IA quotidien ; la limite de taille par fichier de votre offre est indiquée dans le formulaire.',
+        ],
+      },
+      related: [
+        {
+          label: 'Masquer du texte dans une image',
+          to: '/tools/redact-text-in-image',
+          description: 'Cachez les e-mails, numéros de téléphone et autres textes lisibles.',
+        },
+        {
+          label: 'Supprimer un objet d’une photo',
+          to: '/tools/remove-object-from-photo',
+          description: 'Effacez entièrement une personne, une plaque ou un panneau.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Supprimez les données GPS et d’appareil de la même photo.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez la photo anonymisée avant de la publier.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Mettez le résultat à la taille voulue par une plateforme.',
+        },
+      ],
+      embed: {
+        title: 'Flouter les visages d’une photo',
+        description: 'Importez une photo. Flouter / pixelliser les visages est déjà sélectionné et verrouillé. Choisissez le style, détectez les visages et sélectionnez ceux à cacher si vous le souhaitez, puis convertissez.',
+      },
     },
     'redact-text-in-image': {
       name: 'Masquer du texte dans une image',
+      h1: 'Masquer du texte et des données personnelles dans une image',
       tagline: 'Repérez le texte lisible dans une capture d’écran ou une photo et couvrez les données personnelles, ou tout le texte, avec un flou ou un rectangle noir.',
       metaTitle: 'Masquer du texte dans une image en ligne | Media Manipulator',
       metaDescription: 'Repérez automatiquement le texte d’une image et masquez en noir ou floutez les noms, e-mails, numéros et autres données personnelles. IA sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Masquer du texte et des données personnelles dans une image',
+      ogDescription: 'Repérez le texte dans les captures d’écran et les photos et couvrez les données personnelles ou tout le texte avec un flou ou un rectangle noir.',
+      intro: 'Les captures d’écran laissent fuir ce que leurs propriétaires ne voient plus : une adresse e-mail dans un en-tête, un numéro de compte dans un tableau, un numéro de téléphone dans une bulle de discussion. Cette page lit chaque fragment de texte d’une image avec EasyOCR sur notre propre serveur et couvre les correspondances d’un rectangle noir, d’un flou ou d’une mosaïque de pixels. Dans son mode par défaut, elle ne couvre que le texte correspondant à des motifs de données personnelles : adresses e-mail, numéros de téléphone, numéros de type sécurité sociale, longues suites de chiffres semblables à un numéro de carte et adresses postales. En mode tout le texte, elle couvre chaque mot qu’elle peut lire, ce qui est le choix le plus sûr quand vous ne pouvez pas prévoir ce que contient la page.',
+      whatItDoes: [
+        'Exécute EasyOCR sur toute l’image pour trouver les zones de texte et le texte qu’elles contiennent, en utilisant le GPU de notre serveur.',
+        'En mode données personnelles, couvre les zones dont le texte correspond à l’un des cinq motifs : e-mail, numéro de téléphone, identifiant de 3-2-4 chiffres, suite de 13 à 19 chiffres de type carte, ou adresse postale se terminant par Street, Avenue, Road, Drive, Lane, Boulevard, Way, Court, Circle ou Place.',
+        'En mode tout le texte, couvre chaque zone de texte reconnue quel que soit son contenu.',
+        'Élargit chaque zone de 8 pour cent de son plus grand côté (au moins 3 pixels) et la remplit de noir, la floute avec un noyau d’un tiers de sa taille, ou la pixellise en 12 blocs.',
+        'Écrit un nouveau JPG, PNG ou WebP aux mêmes dimensions et indique le nombre de caviardages effectués.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez l’image',
+          description: 'Une capture d’écran, un formulaire numérisé ou une photo avec du texte lisible, en JPG, PNG ou WebP.',
+        },
+        {
+          title: 'Choisissez données personnelles uniquement ou tout le texte',
+          description: 'Caviarder le texte / les données personnelles est présélectionné et verrouillé sur cette page ; données personnelles uniquement est le mode de détection par défaut.',
+        },
+        {
+          title: 'Choisissez rectangle noir, flou ou pixellisation',
+          description: 'Le rectangle noir est le choix par défaut et le seul irréversible.',
+        },
+        {
+          title: 'L’OCR et le caviardage s’exécutent',
+          description: 'EasyOCR lit l’image, chaque zone correspondante est élargie et couverte, et le résultat est enregistré.',
+        },
+        {
+          title: 'Relisez attentivement et téléchargez',
+          description: 'Cherchez le texte que l’OCR n’a pas lu, surtout le texte petit, incliné ou manuscrit.',
+        },
+      ],
+      advancedDetails: [
+        'Le serveur exécute redact_text_pii.py avec --detect pii ou all-text, --redaction blackbox, blur ou pixelate et --gpu. Le script construit un Reader EasyOCR pour l’anglais (la seule langue transmise aujourd’hui) et appelle readtext sur le fichier, qui renvoie une zone, le texte et une confiance pour chaque ligne.',
+        'Les motifs de données personnelles sont des expressions régulières : un e-mail (partie locale, @, domaine avec un point et un TLD de 2 lettres ou plus) ; un numéro de téléphone nord-américain de 10 chiffres avec +1, parenthèses, points, espaces ou tirets facultatifs ; trois, deux et quatre chiffres séparés par un tiret ou une espace ; 13 à 19 chiffres éventuellement séparés par des espaces ou des tirets (numéros de carte) ; et un numéro de rue suivi d’un nom et d’un mot de type de voie. Il n’existe aucun motif pour les noms de personnes, les dates de naissance ou les identifiants hors États-Unis.',
+        'Chaque zone correspondante est agrandie de max(3, 0.08 x le plus grand de sa largeur et de sa hauteur) pixels de chaque côté et bornée à l’image. Le rectangle noir utilise cv2.rectangle avec un intérieur noir plein ; la pixellisation réduit la région à 12 blocs de largeur et la réagrandit au plus proche voisin ; le flou utilise un noyau gaussien de max(11, plus grand côté / 3), rendu impair.',
+        'L’OCR lit mieux les textes imprimés horizontaux et propres. L’écriture manuscrite, les polices décoratives, le très petit texte, une forte inclinaison et un faible contraste abaissent la confiance et peuvent être totalement manqués. Le mode tout le texte ne rattrape pas une ligne que l’OCR n’a jamais vue.',
+        'La sortie est écrite par OpenCV et la recopie exiftool du convertisseur est sautée pour les sorties IA : les balises EXIF, GPS et d’appareil d’origine ne sont donc pas reportées sur le résultat ; cet outil s’occupe des pixels, pas des métadonnées.',
+        'Le script affiche redactions=N quand il se termine ; un résultat de zéro signifie que l’OCR n’a trouvé aucun texte correspondant, pas que l’image était propre.',
+      ],
+      whyItMatters: [
+        'Les tickets d’assistance, les rapports de bogue et les publications sur les réseaux sociaux contiennent couramment des captures d’écran avec de vraies données de clients ou de comptes.',
+        'Couvrir du texte à la main avec un outil de dessin oublie des lignes et donne un résultat irrégulier ; une recherche par motif trouve le troisième e-mail que vous ne remarquiez plus.',
+        'Un rectangle opaque est le seul caviardage qui résiste à l’accentuation, à l’étirement du contraste et au zoom.',
+      ],
+      useCases: [
+        {
+          title: 'Rapports de bogue et assistance',
+          description: 'Partagez une capture d’écran sans exposer d’e-mails, de numéros de téléphone ou de chiffres de carte.',
+        },
+        {
+          title: 'Formulaires numérisés',
+          description: 'Cachez les identifiants et les adresses d’une page avant de la transmettre.',
+        },
+        {
+          title: 'Captures de discussions',
+          description: 'Retirez les numéros de téléphone et les e-mails d’une conversation avant de la publier.',
+        },
+        {
+          title: 'Supports de formation',
+          description: 'Transformez une vraie capture d’écran en exemple sûr avec tout le texte couvert.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Une capture de ticket d’assistance de 1440 x 900 en mode données personnelles',
+          body: 'Entrée : un PNG de 400 Ko de 1440 x 900 montrant une fiche client avec deux adresses e-mail, un numéro de téléphone écrit (555) 123-4567 et un nom de client. Réglages : données personnelles uniquement, rectangle noir. EasyOCR renvoie environ 40 lignes de texte ; trois d’entre elles correspondent aux motifs e-mail et téléphone, le nom ne correspond à rien. Chacune des trois zones, disons 260 x 22 pixels pour un e-mail, est élargie de 8 pour cent de 260, soit environ 21 pixels, de chaque côté et remplie de noir, ce qui produit un rectangle de 302 x 64. Le nom reste visible, car il n’existe pas de motif de nom ; passez en tout le texte s’il doit disparaître aussi. La sortie est un PNG de 1440 x 900, et la tâche prend quelques secondes, consacrées surtout au chargement du modèle OCR et à la lecture de la page.',
+        },
+        {
+          title: 'Une photo de téléphone de 3024 x 4032 d’un formulaire rempli, en mode tout le texte avec flou',
+          body: 'Entrée : une photo JPEG de 2,1 Mo d’un formulaire imprimé, 3024 x 4032 pixels, légèrement inclinée. Réglages : tout le texte, flou. Chaque ligne lue par EasyOCR est couverte : une valeur de champ dactylographiée de 600 x 40 pixels est élargie de 48 pixels par côté et floutée avec un noyau de 201 px (600 / 3, rendu impair), ce qui efface complètement les lettres à cette échelle ; une étiquette de 120 x 30 reçoit le noyau minimal de 11 px, qui, à cette taille, laisse encore deviner la forme des lettres : choisissez donc le rectangle noir pour tout ce qui est sensible. Les mentions manuscrites que l’OCR ne peut pas lire restent telles quelles et doivent être vérifiées à l’œil. La sortie est un JPG de 3024 x 4032 ; l’OCR sur une photo de 12 mégapixels est l’étape la plus lente et prend plus de temps que sur une capture d’écran.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas cet outil comme unique protection sur un document qui doit être intégralement caviardé ; l’OCR fait au mieux, il ne lit aujourd’hui que l’imprimé en anglais, et les motifs de données personnelles ignorent tout des noms, des dates de naissance et des identifiants hors Amérique du Nord. N’utilisez pas le flou sur un texte que vous publierez, car le flou de texte est le caviardage le plus facile à inverser ; utilisez le rectangle noir. Les visages, les logos et les photographies ne sont pas du texte et ne sont pas touchés ; l’outil de floutage des visages et le suppresseur d’objets s’en occupent. Et si les données sensibles se trouvent dans les métadonnées du fichier plutôt que dans les pixels, l’outil EXIF est le bon endroit.',
+      whyMediaManipulator: [
+        'Les cinq motifs de données personnelles, l’élargissement et les tailles de noyau sont écrits noir sur blanc, pour que vous sachiez exactement quel texte sera repéré et comment il sera couvert.',
+        'L’OCR et le caviardage s’exécutent dans un processus local sur notre propre GPU ; les captures d’écran pleines de données clients ne quittent jamais notre matériel.',
+        'Le caviardage de texte consomme une tâche IA (3 par jour sans compte par défaut, 10 avec un compte gratuit), décomptée du quota IA et non du quota standard, et une tâche échouée est remboursée. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'La reconnaissance et le caviardage du texte s’exécutent dans un processus EasyOCR et OpenCV local sur notre propre serveur GPU ; aucun service d’OCR ou d’IA extérieur ne reçoit l’image, et le texte reconnu sert uniquement à décider quelles zones couvrir, sans être stocké. Le fichier importé se trouve dans uploads/<jobId>/ et l’image caviardée dans outputs/<jobId>/, tous deux inscrits au registre de conservation et supprimés à la fin de la période. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Comme tout import d’image standard, le fichier passe aussi par notre analyse de contenu automatisée sur le même serveur, où un modèle de vision local rédige une courte description conservée avec la tâche et non partagée avec des tiers.',
+      faq: [
+        {
+          question: 'Quelles données personnelles le mode données personnelles détecte-t-il ?',
+          answer: 'Le texte correspondant à cinq motifs : adresses e-mail, numéros de téléphone nord-américains, identifiants de 3-2-4 chiffres, suites de 13 à 19 chiffres de type carte, et adresses postales se terminant par un mot tel que Street, Avenue ou Road. Les noms, les dates et les identifiants hors États-Unis ne sont pas reconnus ; utilisez tout le texte pour ceux-là.',
+        },
+        {
+          question: 'Quand utiliser tout le texte plutôt que données personnelles uniquement ?',
+          answer: 'Chaque fois que vous ne pouvez pas lister à l’avance ce qui est sensible : formulaires, tableaux, journaux de discussion avec des noms. Tout le texte couvre chaque ligne lue par l’OCR ; le seul risque restant est donc le texte que l’OCR n’a pas pu lire.',
+        },
+        {
+          question: 'L’outil lit-il d’autres langues que l’anglais ?',
+          answer: 'Pas aujourd’hui. Le lecteur OCR est démarré pour l’anglais uniquement : le texte en alphabet latin est lu correctement, mais les autres écritures peuvent être manquées ou mal lues. Relisez le résultat quand la page n’est pas en anglais.',
+        },
+        {
+          question: 'Un rectangle noir est-il plus sûr ici que le flou ou la pixellisation ?',
+          answer: 'Oui. La zone est remplie de noir plein, il ne reste donc rien. Le flou utilise un noyau d’un tiers de la taille de la zone avec un minimum de 11 px, et la pixellisation laisse 12 blocs de largeur ; les deux peuvent laisser deviner un texte court. Choisissez le rectangle noir pour tout ce que vous publierez.',
+        },
+        {
+          question: 'Le caviardage supprime-t-il les métadonnées cachées de ma photo ?',
+          answer: 'Le résultat est réécrit de zéro par OpenCV sans recopier les balises d’origine : les données EXIF et GPS ne sont donc pas reportées. Pour une suppression délibérée et vérifiable sur un fichier que vous ne modifiez pas par ailleurs, utilisez l’outil de métadonnées EXIF.',
+        },
+        {
+          question: 'Pourquoi certains textes sont-ils restés visibles ?',
+          answer: 'Soit l’OCR ne les a pas lus (écriture manuscrite, texte minuscule, inclinaison, faible contraste), soit, en mode données personnelles, ils ne correspondaient à aucun motif. Le serveur indique le nombre de zones couvertes ; zéro signifie que rien ne correspondait, pas qu’il n’y avait rien.',
+        },
+        {
+          question: 'Le caviardage de texte est-il gratuit, et qu’est-ce qui est décompté de mon quota ?',
+          answer: 'Oui. C’est une tâche IA, 3 par jour sans compte par défaut et 10 avec un compte gratuit, sur des images jusqu’à 200 Mo et 1 Go respectivement. Elle utilise uniquement le quota IA, jamais le quota standard. La page des tarifs indique les chiffres en vigueur.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Chaque tâche consomme une tâche IA de votre quota IA quotidien ; la limite de taille par fichier de votre offre est indiquée dans le formulaire.',
+        ],
+      },
+      related: [
+        {
+          label: 'Flouter les visages sur une photo',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Cachez les personnes présentes sur la même image.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Supprimez les données cachées de localisation et d’appareil.',
+        },
+        {
+          label: 'Numérisation de documents par IA',
+          to: '/tools/ai-document-scan',
+          description: 'Transformez une page photographiée en PDF propre et consultable.',
+        },
+        {
+          label: 'Supprimer un objet d’une photo',
+          to: '/tools/remove-object-from-photo',
+          description: 'Effacez un logo, une plaque ou un badge qui n’est pas du texte.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez la capture caviardée avant de la joindre.',
+        },
+      ],
+      embed: {
+        title: 'Masquer du texte dans une image',
+        description: 'Importez une capture d’écran ou une photo. Caviarder le texte / les données personnelles est déjà sélectionné et verrouillé. Choisissez de couvrir les données personnelles ou tout le texte, ainsi que le style de caviardage, puis convertissez.',
+      },
     },
     'remove-object-from-photo': {
       name: 'Supprimer un objet d’une photo',
+      h1: 'Supprimer un objet d’une photo en ligne',
       tagline: 'Tracez un cadre autour de ce que vous ne voulez pas voir sur l’image : un modèle d’inpainting comble le vide avec un arrière-plan cohérent.',
       metaTitle: 'Supprimer un objet d’une photo en ligne | Media Manipulator',
       metaDescription: 'Effacez les objets indésirables d’une photo. Tracez un rectangle et l’inpainting par IA remplit l’espace pour l’accorder à l’arrière-plan. Fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Supprimer un objet d’une photo en ligne',
+      ogDescription: 'Tracez un cadre sur un objet indésirable et l’inpainting par IA comble l’espace avec un arrière-plan assorti.',
+      intro: 'Importez une photo, tracez un ou plusieurs rectangles sur ce que vous voulez faire disparaître, puis convertissez. Le formulaire envoie chaque rectangle sous forme de fractions de l’image (gauche, haut, largeur et hauteur entre 0 et 1), et notre API les transforme en masque : un PNG en niveaux de gris de la même taille que votre photo, blanc à l’intérieur des rectangles et noir partout ailleurs. Un script Python ouvre ensuite l’image et le masque et exécute le modèle d’inpainting LaMa du paquet simple_lama_inpainting sur notre GPU, qui repeint les zones blanches à partir de la scène environnante. Vous récupérez la photo en taille réelle dans le format choisi, avec les zones marquées comblées.',
+      whatItDoes: [
+        'Accepte un ou plusieurs rectangles tracés sur l’aperçu et supprime tout ce qui se trouve à l’intérieur.',
+        'Construit sur le serveur un masque exact au pixel à partir des coordonnées normalisées des rectangles, pour que le masque ne dépende pas de la taille de votre écran.',
+        'Exécute l’inpainting LaMa sur un GPU que nous exploitons et comble les zones masquées avec un contenu qui prolonge l’arrière-plan.',
+        'Renvoie l’image en pleine résolution en JPG, PNG, WebP ou GIF, selon le choix fait dans le formulaire.',
+        'Compte comme une tâche IA sur le quota IA quotidien ; les conversions simples utilisent un autre quota, distinct.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez la photo',
+          description: 'JPG, PNG ou WebP. L’aperçu apparaît avec une surcouche de dessin.',
+        },
+        {
+          title: 'Tracez des rectangles',
+          description: 'Un cadre par objet, légèrement plus grand que l’objet lui-même. Au moins un cadre est requis.',
+        },
+        {
+          title: 'Masque et inpainting',
+          description: 'Le serveur écrit un masque PNG de même taille, puis exécute remove_object_lama.py avec l’image et le masque.',
+        },
+        {
+          title: 'Téléchargez et inspectez',
+          description: 'Zoomez sur les zones comblées pour vérifier les raccords avant d’utiliser l’image.',
+        },
+      ],
+      advancedDetails: [
+        'Le gestionnaire est RemoveObject dans ai_tools.go. Il lit les dimensions de l’image avec ImageMagick identify, rastérise les rectangles en un masque PNG en niveaux de gris dans le répertoire temporaire du serveur (blanc à l’intérieur, noir à l’extérieur, coordonnées arrondies au pixel entier et bornées à l’image), exécute le script, puis supprime le masque.',
+        'remove_object_lama.py ouvre l’image avec Pillow et la convertit en RGB, charge le masque en niveaux de gris, redimensionne le masque à l’image si les tailles diffèrent, appelle SimpleLama(image, mask) et enregistre le résultat dans le chemin de sortie. À cause de la conversion en RGB, un PNG transparent en entrée perd son canal alpha.',
+        'Chaque rectangle est validé côté serveur : la largeur et la hauteur doivent être positives et le cadre doit se situer entre 0 et 1 sur les deux axes, sinon la tâche est rejetée avant de démarrer et l’opération est remboursée.',
+        'Le chemin IA saute l’étape ImageMagick : les filtres, la teinte, le texte en surimpression, la qualité et les réglages de redimensionnement ne s’appliquent donc pas, et la recopie des métadonnées par exiftool ne s’exécute pas ; le résultat ne contient aucune donnée EXIF de l’original. Pillow enregistre le fichier avec ses propres réglages d’encodeur par défaut pour le format choisi.',
+        'LaMa comble à partir du contexte : la qualité du remplissage dépend donc de ce qui entoure le cadre. Ciel, herbe, sable, eau, murs et sols donnent des résultats convaincants ; un cadre qui coupe un visage, du texte ou un motif régulier oblige le modèle à inventer une structure qu’il ne peut pas connaître.',
+      ],
+      whyItMatters: [
+        'Une retouche au tampon de duplication sur un fond texturé demande de la pratique et du temps ; un rectangle prend deux secondes.',
+        'Une seule personne, un câble ou un panneau de trop peut être la seule chose qui sépare une prise exploitable d’une nouvelle séance.',
+        'C’est aussi un outil de confidentialité pour les numéros de rue, les plaques et les écrans qui n’ont pas leur place dans une photo partagée.',
+      ],
+      useCases: [
+        {
+          title: 'Voyage et paysage',
+          description: 'Retirez un touriste, un fil ou une poubelle d’une vue par ailleurs dégagée.',
+        },
+        {
+          title: 'Photos de produits',
+          description: 'Effacez une étiquette de prix, un support ou une poussière d’une image d’annonce.',
+        },
+        {
+          title: 'Immobilier',
+          description: 'Débarrassez le bord d’un cadre d’une voiture, d’une poubelle ou du désordre.',
+        },
+        {
+          title: 'Confidentialité',
+          description: 'Effacez un numéro de rue, une plaque d’immatriculation ou un écran visible.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un rectangle sur une photo de plage de 4000 x 3000',
+          body: 'Entrée : un JPEG de 5,2 Mo en 4000 x 3000 avec une personne au bord de l’eau. Tracez un cadre commençant à 60 % de la largeur et 40 % de la hauteur, large de 10 % et haut de 15 %, et gardez JPG en sortie. L’API multiplie ces fractions par la taille de l’image et écrit un masque de 4000 x 3000 avec un bloc blanc de 400 x 450 pixels en (2400, 1200). LaMa s’exécute une fois sur l’image et le masque sur le GPU et le script enregistre un JPG de 4000 x 3000 dont les 180 000 pixels masqués sont comblés à partir du sable et de l’eau environnants. La passe du modèle sur une image de 12 mégapixels prend quelques secondes sur le GPU ; l’écriture et le téléchargement d’un JPG de plusieurs mégaoctets représentent une part comparable du total.',
+        },
+        {
+          title: 'Deux rectangles sur une photo de produit PNG de 1920 x 1080',
+          body: 'Entrée : un PNG de 2,3 Mo en 1920 x 1080 montrant une lampe sur une table, avec un câble et une étiquette de prix. Tracez deux cadres : un sur le câble (environ 5 % par 30 %) et un sur l’étiquette (environ 8 % par 6 %). Les deux sont rastérisés dans le même masque de 1920 x 1080, si bien qu’une seule passe d’inpainting traite les deux régions. Choisissez PNG en sortie pour éviter les artefacts JPEG dans les zones comblées ; le résultat est un PNG de 1920 x 1080, en RGB opaque parce que Pillow convertit l’entrée en RGB avant l’inpainting. À 2 mégapixels, la passe GPU est rapide, et l’essentiel du temps total revient à l’import et à l’écriture du PNG.',
+        },
+      ],
+      whenNotToUse: 'N’utilisez pas l’inpainting sur un objet qui occupe une grande part du cadre, se trouve devant un visage, chevauche du texte lisible ou interrompt un motif régulier comme des briques, du carrelage ou un clavier : le modèle doit fabriquer une structure et le résultat paraîtra baveux ou répétitif. C’est aussi le mauvais outil si vous voulez conserver un PNG transparent intact, puisque le script aplatit l’entrée en RGB, et si la retouche doit rester honnête sur le plan légal ou judiciaire, car la zone comblée est un contenu généré. Pour remplacer tout l’arrière-plan, utilisez le suppresseur d’arrière-plan ; pour des visages qu’il suffit de cacher, l’outil de floutage des visages est plus adapté.',
+      whyMediaManipulator: [
+        'Le masque est construit sur le serveur à partir de fractions exactes : ce que vous tracez sur l’aperçu d’un téléphone correspond aux mêmes pixels que sur un ordinateur.',
+        'Le modèle est nommé (LaMa via simple_lama_inpainting) et le comportement du format et de la transparence est documenté plutôt que laissé à la devinette.',
+        'S’exécute sur notre propre GPU ; l’outil standard ne demande aucun compte. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre photo est stockée sous uploads/<jobId>/ sur notre serveur ; le masque des rectangles est écrit comme PNG temporaire dans le répertoire temporaire du serveur et supprimé dès que le script d’inpainting se termine ; l’image comblée va dans outputs/<jobId>/. Les coordonnées des rectangles sont conservées dans les options de la tâche pour pouvoir en rendre compte. LaMa s’exécute sur un GPU de la même machine et aucune partie de l’image ne part chez un fournisseur extérieur. Chaque import d’image, celui-ci compris, est aussi résumé une fois par une étape d’analyse automatisée sur notre serveur à l’aide d’un modèle de vision local, et ce résumé reste attaché à la tâche. La sortie ne contient aucune donnée EXIF, car les opérations IA sautent la recopie des métadonnées. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'La suppression d’objets est-elle gratuite ?',
+          answer: 'Oui, dans la limite du quota IA quotidien. Chaque suppression consomme une tâche IA : par défaut 3 par jour pour les visiteurs et 10 avec un compte gratuit, avec des plafonds par fichier de 200 Mo et 1 Go ; 100 et 200 avec Premium et Pro. Votre quota standard pour les conversions est distinct et reste inchangé. Les chiffres en vigueur sont sur /pricing.',
+        },
+        {
+          question: 'Le rectangle doit-il être très précis ?',
+          answer: 'Pas vraiment. Le masque est le rectangle que vous avez tracé, arrondi au pixel entier : incluez donc un peu d’arrière-plan autour de l’objet et de son ombre. Le modèle fond la marge supplémentaire.',
+        },
+        {
+          question: 'Puis-je supprimer plusieurs objets à la fois ?',
+          answer: 'Oui. Chaque rectangle que vous tracez est peint dans le même masque et tous sont comblés en une seule passe. Au moins un rectangle est requis, sinon la tâche est rejetée.',
+        },
+        {
+          question: 'Pourquoi la zone comblée paraît-elle floue ou répétitive ?',
+          answer: 'LaMa comble à partir des pixels qui entourent le cadre. Un cadre sur des détails fins ou un motif régulier le laisse deviner. Essayez un cadre plus serré, supprimez un objet à la fois, ou choisissez une prise où l’arrière-plan derrière l’objet est plus simple.',
+        },
+        {
+          question: 'Dans quel format le résultat est-il fourni ?',
+          answer: 'Celui que vous avez choisi dans le formulaire : JPG, PNG, WebP ou GIF. L’entrée est convertie en RGB avant l’inpainting, la transparence n’est donc pas conservée. Le PNG évite les artefacts JPEG dans les zones comblées.',
+        },
+        {
+          question: 'Le résultat conserve-t-il mes données EXIF ?',
+          answer: 'Non. Le chemin IA saute la recopie exiftool effectuée par le convertisseur normal, et Pillow écrit un nouveau fichier : aucune balise d’appareil, de date ou GPS n’est reportée.',
+        },
+        {
+          question: 'Le masque ou ma photo sont-ils envoyés ailleurs ?',
+          answer: 'Non. Le masque est un fichier temporaire sur notre serveur, supprimé après l’exécution, et le modèle d’inpainting s’exécute sur notre propre GPU.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Chaque tâche consomme une tâche IA de votre quota IA quotidien ; la limite de taille par fichier de votre offre est indiquée dans le formulaire.',
+        ],
+      },
+      related: [
+        {
+          label: 'Supprimer l’arrière-plan d’une image',
+          to: '/tools/remove-background-from-image',
+          description: 'Détourez entièrement le sujet au lieu de retoucher une seule zone.',
+        },
+        {
+          label: 'Flouter les visages sur une photo',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Cachez des personnes sans inventer d’arrière-plan.',
+        },
+        {
+          label: 'Masquer du texte dans une image',
+          to: '/tools/redact-text-in-image',
+          description: 'Masquez en noir le texte que l’OCR peut trouver, plutôt que de le combler par inpainting.',
+        },
+        {
+          label: 'Restauration d’images par IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Nettoyez le bruit et la compression autour de la réparation.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez la photo terminée pour la partager.',
+        },
+      ],
+      embed: {
+        title: 'Supprimer un objet d’une photo',
+        description: 'Importez une photo. Supprimer un objet est déjà sélectionné et verrouillé. Tracez un ou plusieurs rectangles sur ce que vous voulez faire disparaître, puis convertissez.',
+      },
     },
     'clean-voice-audio': {
       name: 'Nettoyer l’audio d’une voix',
+      h1: 'Nettoyer des enregistrements vocaux avec l’IA',
       tagline: 'Rendez la parole plus claire en réduisant le souffle, l’ambiance de la pièce et les grondements dans les podcasts, interviews et mémos vocaux.',
       metaTitle: 'Nettoyer un enregistrement vocal avec l’IA | Media Manipulator',
       metaDescription: 'Nettoyez un enregistrement vocal avec l’IA. Réduisez le souffle, le ronflement et le bruit de la pièce pour mieux entendre la voix. Fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Nettoyer des enregistrements vocaux avec l’IA',
+      ogDescription: 'Réduisez le souffle, le ronflement et le bruit de la pièce pour une parole plus claire dans les podcasts, les interviews et les mémos vocaux.',
+      intro: 'Un mémo vocal pris au téléphone dans une cuisine qui résonne, un invité de podcast sur un micro d’ordinateur portable, un cours enregistré du fond de la salle : les mots sont là, mais noyés sous le souffle et le son de la pièce. Nettoyer la voix fait passer l’enregistrement dans DeepFilterNet sur notre GPU, puis dans une chaîne de finition fixe de type broadcast qui coupe les grondements, plafonne les aigus, amène le niveau à une sonie constante et empêche les crêtes de saturer. L’outil est conçu pour la parole, pas pour la musique.',
+      whatItDoes: [
+        'Convertit votre fichier en mono 48 kHz avec ffmpeg, l’entrée attendue par DeepFilterNet, et transmet ce WAV au modèle sur notre GPU.',
+        'Atténue les sons de fond constants (souffle, ventilateurs, ronflement, bruit de la pièce) en conservant la parole, grâce au réseau d’amélioration DeepFilterNet.',
+        'Applique une chaîne de finition après le débruitage : un passe-haut à 80 Hz, un passe-bas à 14 kHz, une normalisation de la sonie à -16 LUFS avec un plafond de crête réelle de -1,5 dBTP, et un limiteur à 0,95.',
+        'Encode le résultat dans le format de votre choix : MP3, AAC ou OGG à 192 kbit/s, Opus à 128 kbit/s, FLAC, ou WAV 16 bits.',
+        'Ignore les commandes standard de débit, d’égaliseur, d’effets et de découpe, puisque le chemin IA remplace la chaîne de filtres ffmpeg habituelle.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un enregistrement',
+          description: 'Mémos vocaux, interviews, prises de podcast ou captations de cours en MP3, WAV, FLAC, M4A, AAC, OGG ou Opus.',
+        },
+        {
+          title: 'Nettoyer la voix est préréglé',
+          description: 'L’opération est fixée sur cette page ; le seul choix restant est le format de sortie.',
+        },
+        {
+          title: 'Normalisation, débruitage, finition',
+          description: 'ffmpeg produit un WAV mono 48 kHz, DeepFilterNet le débruite, et les filtres de finition règlent le timbre et la sonie.',
+        },
+        {
+          title: 'Téléchargez et écoutez',
+          description: 'Comparez avec l’original au casque avant de publier.',
+        },
+      ],
+      advancedDetails: [
+        'La chaîne de finition est exactement highpass=f=80,lowpass=f=14000,loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.95, appliquée une fois au WAV débruité. Le passe-haut supprime les grondements de manipulation et les coups de plosives, le passe-bas dompte le souffle au-dessus de 14 kHz, et loudnorm amène la sonie intégrée à -16 LUFS, la cible habituelle des podcasts parlés.',
+        'La sortie est toujours en mono à 48 kHz, car le modèle travaille sur un seul canal. Une interview stéréo reste intelligible mais perd son placement gauche-droite ; si vous avez besoin de stéréo, ce n’est pas le bon outil.',
+        'Les réglages d’encodeur découlent de l’extension de sortie : libmp3lame à 192 kbit/s pour MP3, aac à 192 kbit/s pour AAC ou M4A, libvorbis à 192 kbit/s pour OGG, libopus à 128 kbit/s pour Opus, flac pour FLAC et pcm_s16le pour WAV. Il n’y a pas de sélecteur de débit sur le chemin IA.',
+        'Les plages de découpe et les effets habituels sont ignorés quand une opération IA est sélectionnée ; le convertisseur envoie le fichier directement au modèle et renvoie le résultat. Découpez d’abord l’enregistrement si vous ne voulez en nettoyer qu’une partie.',
+        'Un second passage dans Nettoyer la voix renormalise un audio déjà à -16 LUFS et peut donner un rendu aqueux aux consonnes. Exécutez-le une seule fois.',
+        'Le modèle peine avec les voix concurrentes, les nappes musicales et les événements forts et soudains ; ce ne sont pas des « bruits de fond constants » et ils sont en grande partie laissés en place.',
+      ],
+      whyItMatters: [
+        'Les auditeurs arrêtent un enregistrement fatigant à écouter, même quand ce qui est dit mérite d’être entendu.',
+        'Un niveau constant de -16 LUFS signifie qu’un épisode joue au même volume que ceux qui l’entourent, sans passe de gain manuelle.',
+        'Une parole extraite du bruit se transcrit aussi plus fidèlement : nettoyer d’abord améliore donc aussi les sous-titres.',
+      ],
+      useCases: [
+        {
+          title: 'Podcasts et interviews',
+          description: 'Rendez propre un invité à distance enregistré sur un micro basique et amenez-le à la même sonie que l’animateur.',
+        },
+        {
+          title: 'Mémos vocaux et dictée',
+          description: 'Rendez un enregistrement au téléphone compréhensible plus tard, et assez fort pour s’entendre sans casque.',
+        },
+        {
+          title: 'Cours et réunions',
+          description: 'Atténuez le ronflement de la climatisation et le ventilateur du projecteur dans un enregistrement pris du fond d’une salle.',
+        },
+        {
+          title: 'Narration pour une vidéo',
+          description: 'Peaufinez une voix off avant de la placer dans l’éditeur Darkroom.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un mémo téléphonique de 12 minutes (M4A, 128 kbit/s, environ 11 Mo) vers MP3',
+          body: 'Un fichier AAC à 128 kbit/s pèse 16 Ko par seconde, donc 720 secondes font environ 11,5 Mo. Douze minutes dépassent la limite visiteur de 5 minutes, il faut donc un compte gratuit (20 minutes). ffmpeg écrit d’abord un WAV mono 48 kHz d’environ 69 Mo (96 000 octets par seconde) dans un dossier temporaire supprimé à la fin de la tâche. DeepFilterNet et la chaîne de finition s’exécutent dessus, et l’encodeur MP3 écrit le résultat à 192 kbit/s : environ 17 Mo, soit plus que l’entrée, car 192 kbit/s est un débit supérieur à celui auquel le mémo a été enregistré. Les deux étapes ffmpeg prennent quelques secondes ; la passe DeepFilterNet domine et croît avec la durée de l’enregistrement.',
+        },
+        {
+          title: 'Une interview WAV stéréo de 4 minutes (44,1 kHz, 16 bits, environ 42 Mo) vers WAV',
+          body: 'Du PCM stéréo 16 bits 44,1 kHz pèse 176 400 octets par seconde, donc 240 secondes font environ 42 Mo, dans les limites visiteur de 200 Mo et 5 minutes. Le fichier est replié en mono et rééchantillonné à 48 kHz avant l’exécution du modèle, et le WAV nettoyé revient en mono 16 bits 48 kHz : 96 000 octets par seconde, environ 23 Mo. Il est plus petit que l’entrée uniquement parce qu’il a un canal au lieu de deux. Choisir FLAC conserve les mêmes échantillons sans perte en moins d’espace ; choisir MP3 donne environ 5,8 Mo à 192 kbit/s.',
+        },
+      ],
+      whenNotToUse: 'Évitez cet outil pour la musique, le chant ou tout ce dont le fond fait partie du son que vous voulez garder : le modèle traite tout ce qui n’est pas de la parole comme du bruit, et la chaîne de finition coupe sous 80 Hz et au-dessus de 14 kHz, ce qui creuse les instruments. C’est aussi le mauvais choix quand vous devez conserver la stéréo, quand l’enregistrement est saturé ou distordu (ces dégâts ne sont pas du bruit et ne peuvent pas être filtrés), ou quand vous voulez seulement atténuer le bruit sans toucher au niveau ni au timbre, ce que fait justement la page Supprimer le bruit de fond.',
+      whyMediaManipulator: [
+        'DeepFilterNet et la chaîne de finition s’exécutent sur un GPU que nous exploitons ; l’enregistrement n’est pas envoyé à un service extérieur d’amélioration de la parole.',
+        'La page s’ouvre avec Nettoyer la voix déjà sélectionné et le menu des opérations masqué : la seule décision à prendre est le format de sortie.',
+        'Une tâche de nettoyage est une tâche standard de votre quota quotidien (5 en tant que visiteur, 30 avec un compte gratuit par défaut), pas une tâche IA, et une tâche échouée est remboursée.',
+      ],
+      privacyNote: 'Votre enregistrement est enregistré dans son dossier de tâche, converti par ffmpeg en WAV mono 48 kHz temporaire dans un répertoire de travail, et transmis à DeepFilterNet sur notre propre GPU ; ce répertoire de travail est supprimé dès que le fichier nettoyé a été encodé. La sortie nettoyée reste attachée à la tâche pour le téléchargement. Les imports audio passent aussi par une passe d’analyse automatisée sur notre serveur, qui transcrit l’enregistrement avec Whisper pour une revue de contenu interne et conserve ce résultat avec la tâche. Aucun fournisseur d’IA tiers ne reçoit le fichier. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Pourquoi le fichier nettoyé ressort-il en mono ?',
+          answer: 'La chaîne convertit chaque entrée en un seul canal à 48 kHz avant l’exécution de DeepFilterNet, et encode la sortie du modèle telle quelle. Un enregistrement stéréo revient donc en mono. Pour une interview à deux micros, séparez d’abord les canaux et nettoyez chacun séparément si vous devez conserver la séparation.',
+        },
+        {
+          question: 'À quelle sonie Nettoyer la voix normalise-t-il ?',
+          answer: 'La chaîne de finition utilise ffmpeg loudnorm avec une cible intégrée de -16 LUFS, un plafond de crête réelle de -1,5 dBTP et une plage de sonie de 11 LU, suivis d’un limiteur à 0,95. Cela correspond aux cibles de diffusion courantes pour la parole : un épisode nettoyé ici se situera à un niveau proche de celui des podcasts masterisés par des professionnels.',
+        },
+        {
+          question: 'Puis-je régler le débit ou découper le fichier sur cette page ?',
+          answer: 'Non. Quand une opération IA est active, le convertisseur envoie directement au modèle et ignore les réglages de débit, d’égaliseur, d’effets et de découpe. Le débit de sortie est fixé par le format : 192 kbit/s pour MP3, AAC et OGG, 128 kbit/s pour Opus. Découpez d’abord l’enregistrement avec un autre outil si vous n’en voulez qu’une partie.',
+        },
+        {
+          question: 'Quelle est la différence avec Supprimer le bruit de fond ?',
+          answer: 'Les deux exécutent le même modèle DeepFilterNet. Nettoyer la voix ajoute ensuite le passe-haut, le passe-bas, la normalisation de la sonie et le limiteur ; Supprimer le bruit de fond s’arrête au signal débruité et ne touche ni à vos niveaux ni à votre timbre. Choisissez Nettoyer la voix pour un fichier parlé fini et l’autre page si vous comptez mixer ou masteriser vous-même.',
+        },
+        {
+          question: 'Peut-il réparer un enregistrement saturé ou distordu ?',
+          answer: 'Non. La saturation est une forme d’onde manquante, pas un bruit ajouté, et le modèle n’a rien à soustraire. Il peut tout de même atténuer le souffle autour d’une prise distordue, mais le craquement sur les syllabes fortes restera.',
+        },
+        {
+          question: 'Combien d’enregistrements puis-je nettoyer par jour, et est-ce gratuit ?',
+          answer: 'Nettoyer la voix est délibérément compté comme une tâche standard : il consomme donc une tâche du quota standard, soit 5 par jour en tant que visiteur, 30 avec un compte gratuit, 300 avec Premium et 700 avec Pro par défaut, avec des plafonds de fichier de 200 Mo, 1 Go et 5 Go et des plafonds de durée de 5 minutes, 20 minutes et 2 heures. Le tableau actuel est sur /pricing.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Nettoyer la voix utilise le quota standard ; les limites de durée dépendent de votre offre et sont affichées en direct dans le formulaire.',
+        ],
+      },
+      related: [
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Le même débruiteur sans la finition de sonie et de timbre.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Transformez la parole nettoyée en sous-titres ou en texte.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Sortez la piste vocale d’une vidéo avant de la nettoyer.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Placez la narration peaufinée sur une timeline vidéo.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Pour la musique plutôt que la parole, séparez plutôt le chanteur.',
+        },
+      ],
+      embed: {
+        title: 'Nettoyer un enregistrement vocal',
+        description: 'Importez un enregistrement. Nettoyer la voix est déjà appliqué, il n’y a donc aucun menu d’opération à régler. Choisissez un format de sortie si vous avez besoin d’autre chose que celui par défaut, puis convertissez.',
+      },
     },
     'remove-background-noise': {
       name: 'Supprimer le bruit de fond',
+      h1: 'Supprimer le bruit de fond d’un audio en ligne',
       tagline: 'Réduisez le souffle, le ronflement, la circulation et le bruit de la pièce dans un enregistrement grâce à un débruiteur IA, en gardant le son principal au premier plan.',
       metaTitle: 'Supprimer le bruit de fond d’un audio en ligne | Media Manipulator',
       metaDescription: 'Supprimez le bruit de fond d’un audio. Un débruiteur IA atténue le souffle, le ronflement et les sons ambiants des enregistrements. Fonctionne sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Supprimer le bruit de fond d’un audio en ligne',
+      ogDescription: 'Un débruiteur IA qui atténue le souffle, le ronflement, la circulation et le bruit de la pièce dans les enregistrements audio.',
+      intro: 'Climatiseurs, ventilateurs d’ordinateur, circulation et ronflement électrique sont des sons constants qui se glissent sous ce que vous vouliez vraiment enregistrer. Cette page fait passer le fichier dans DeepFilterNet, un débruiteur par apprentissage profond, sur notre GPU et renvoie le signal débruité sans rien d’autre de modifié : pas de normalisation de la sonie, pas d’égalisation, pas de limiteur. C’est donc le bon choix quand vous comptez mixer ou masteriser le résultat vous-même, ou quand vous voulez préserver le caractère de l’original.',
+      whatItDoes: [
+        'Rééchantillonne le fichier importé en mono 48 kHz avec ffmpeg et transmet ce WAV au binaire DeepFilterNet sur notre GPU.',
+        'Estime le plancher de bruit stationnaire et le soustrait, en atténuant le souffle, le ronflement, les ventilateurs, la ventilation et la circulation constante.',
+        'Renvoie la sortie brute du modèle encodée dans le format de votre choix, avec le niveau de crête et l’équilibre tonal produits par le modèle ; il n’y a aucune étape de post-traitement sur cette page.',
+        'Garde le menu des opérations visible, pour que vous puissiez passer à Nettoyer la voix ou aux outils vocaux depuis le même formulaire.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un audio',
+          description: 'Tout fichier audio courant, y compris une piste extraite d’une vidéo.',
+        },
+        {
+          title: 'Le débruitage est présélectionné',
+          description: 'Supprimer le bruit de fond est déjà choisi ; changez le format de sortie si vous voulez autre chose que du MP3.',
+        },
+        {
+          title: 'DeepFilterNet s’exécute sur notre GPU',
+          description: 'Le modèle sépare le bruit constant du premier plan et écrit un WAV amélioré.',
+        },
+        {
+          title: 'Encodez et téléchargez',
+          description: 'ffmpeg écrit le WAV amélioré dans le format choisi ; écoutez-le à côté de l’original.',
+        },
+      ],
+      advancedDetails: [
+        'La seule différence entre cette page et Nettoyer la voix dans l’API tient à un seul indicateur : polish=false. L’étape d’encodage ffmpeg ne reçoit aucun filtre -af, si bien que le WAV amélioré est encodé tel que DeepFilterNet l’a écrit.',
+        'La normalisation d’entrée est ffmpeg -ac 1 -ar 48000 : le modèle travaille sur un canal à 48 kHz, la sortie est donc en mono à 48 kHz quelle que soit la disposition des canaux ou la fréquence d’échantillonnage de l’entrée.',
+        'Les encodeurs suivent l’extension : MP3 via libmp3lame à 192 kbit/s, AAC à 192 kbit/s, OGG via libvorbis à 192 kbit/s, Opus via libopus à 128 kbit/s, FLAC sans perte, WAV en pcm_s16le. Choisissez WAV ou FLAC si vous allez poursuivre le montage, pour ne subir qu’un seul encodage avec perte.',
+        'Comme aucune normalisation de la sonie ne s’exécute, un enregistrement faible reste faible. Le débruitage retire de l’énergie, le résultat peut donc être un peu plus bas en niveau que l’entrée ; remontez le gain dans votre éditeur ensuite si nécessaire.',
+        'DeepFilterNet est entraîné sur des bruits stationnaires ou lentement variables. Les clics de clavier, les claquements de porte, un second locuteur ou une nappe musicale sont en grande partie préservés, car ils ressemblent à du signal pour le modèle.',
+        'Le répertoire de travail contenant les WAV normalisé et amélioré est supprimé à la fin de la tâche ; seule la sortie encodée reste attachée à la tâche.',
+      ],
+      whyItMatters: [
+        'Un bruit constant masque les consonnes faibles et fatigue les auditeurs bien avant qu’ils en remarquent la cause.',
+        'Beaucoup d’enregistrements ne peuvent pas être refaits : un discours de mariage, un cours, une interview avec quelqu’un qui n’est plus disponible.',
+        'Une piste débruitée sans normalisation ni limitation vous donne un point de départ propre pour votre propre mixage, au lieu d’un fichier au rendu fini qu’il faut ensuite défaire.',
+      ],
+      useCases: [
+        {
+          title: 'Audio tiré d’une vidéo',
+          description: 'Extrayez la piste, retirez le ventilateur de la caméra ou le vent, puis replacez-la sous l’image dans Darkroom.',
+        },
+        {
+          title: 'Enregistrements de terrain',
+          description: 'Atténuez le bourdonnement d’une route ou d’un groupe électrogène sous une interview en extérieur.',
+        },
+        {
+          title: 'Exports d’appels et de réunions',
+          description: 'Réduisez le souffle de ligne d’un appel enregistré avant de le partager ou de le transcrire.',
+        },
+        {
+          title: 'Cassettes numérisées',
+          description: 'Baissez le souffle de bande d’un enregistrement converti sans modifier ses niveaux.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un enregistrement d’appel MP3 de 18 minutes à 128 kbit/s (environ 17 Mo) vers FLAC',
+          body: 'À 128 kbit/s, un MP3 pèse 16 Ko par seconde, donc 1 080 secondes font environ 17 Mo. Dix-huit minutes tiennent dans le plafond de 20 minutes du compte gratuit mais dépassent le plafond visiteur de 5 minutes : connectez-vous d’abord. ffmpeg écrit pour le modèle un WAV mono 48 kHz d’environ 104 Mo (96 000 octets par seconde), et ce WAV est supprimé après l’encodage. Choisir FLAC renvoie les échantillons mono 48 kHz améliorés sans perte ; le FLAC est plus petit que le WAV de 104 Mo d’une quantité qui dépend de la part de silence et de souffle retirée, et le débruitage lui-même rend généralement le FLAC plus compressible. Choisir MP3 à la place donnerait environ 26 Mo à 192 kbit/s.',
+        },
+        {
+          title: 'Un enregistrement de terrain FLAC stéréo de 4 minutes 30 (environ 30 Mo) vers WAV',
+          body: 'Quatre minutes et demie et 30 Mo tiennent dans les limites visiteur de 5 minutes et 200 Mo, aucun compte n’est donc nécessaire. Le fichier stéréo est replié en mono et rééchantillonné à 48 kHz, DeepFilterNet atténue la nappe de circulation, et la sortie WAV est en mono 16 bits 48 kHz : 96 000 octets par seconde pendant 270 secondes, environ 26 Mo. Le niveau est celui laissé par le modèle, sans normalisation appliquée : remontez-le dans votre éditeur si l’original était faible. Les deux conversions ffmpeg prennent quelques secondes chacune ; la passe GPU croît avec la durée.',
+        },
+      ],
+      whenNotToUse: 'Ce n’est pas l’outil pour les enregistrements dont le bruit est intermittent ou est lui-même une voix : les locuteurs qui se chevauchent, une télévision dans la pièce voisine, les raclements de chaise et le cliquetis du clavier restent en grande partie intacts, car le modèle est conçu pour le bruit constant. Ne l’utilisez pas sur de la musique finalisée, où le « bruit » qu’il retire peut être la réverbération et l’ambiance de la pièce que vous avez payées. Si vous avez besoin d’une sortie stéréo, c’est le mauvais choix, car la chaîne est en mono. Et si vous voulez un fichier parlé prêt à publier à une sonie standard, Nettoyer la voix ajoute cette finition ; cette page ne le fait délibérément pas.',
+      whyMediaManipulator: [
+        'Le débruiteur s’exécute sur un GPU que nous exploitons ; votre audio n’est pas envoyé à un service tiers de suppression de bruit.',
+        'Rien n’est ajouté après le modèle : aucun changement de sonie, aucun égaliseur, si bien que ce que vous entendez est le débruitage et seulement le débruitage.',
+        'Une tâche de débruitage est une tâche standard de votre quota quotidien, pas une tâche IA, et elle est remboursée si la tâche échoue.',
+      ],
+      privacyNote: 'Le fichier que vous importez est écrit dans son dossier de tâche, rééchantillonné par ffmpeg en WAV mono 48 kHz temporaire dans un répertoire de travail, et débruité par DeepFilterNet sur notre propre GPU ; le répertoire de travail est supprimé une fois la sortie encodée. Le résultat encodé est conservé avec la tâche pour le téléchargement. Comme tout import audio, il passe aussi par une étape d’analyse automatisée sur notre serveur, qui le transcrit avec Whisper pour une revue interne conservée avec la tâche. Rien ne part chez un fournisseur d’IA extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Quels bruits DeepFilterNet traite-t-il bien, et lesquels non ?',
+          answer: 'Les sons constants et lentement variables : souffle, ronflement secteur, ventilateurs, climatisation, bruit de la pièce, route continue. Les événements courts et tout ce qui ressemble à de la parole (une seconde personne, une télévision, des clics, des coups) passent pour du premier plan aux yeux du modèle et sont en grande partie conservés.',
+        },
+        {
+          question: 'Le niveau ou le timbre de mon enregistrement vont-ils changer ?',
+          answer: 'Seulement comme effet secondaire du retrait de l’énergie du bruit ; aucune normalisation, égalisation ni limitation n’est appliquée sur cette page. Si vous voulez un niveau parlé constant de -16 LUFS ainsi qu’un passe-haut et un passe-bas, utilisez Nettoyer la voix, qui exécute le même modèle avec cette chaîne de finition en plus.',
+        },
+        {
+          question: 'Pourquoi le fichier débruité est-il en mono ?',
+          answer: 'Le modèle prend un seul canal à 48 kHz : ffmpeg replie donc d’abord toute entrée stéréo en mono et la sortie est écrite ainsi. Un enregistrement stéréo avec un bruit différent dans chaque canal doit être séparé et débruité canal par canal si vous devez le garder en stéréo.',
+        },
+        {
+          question: 'Puis-je débruiter directement l’audio d’une vidéo ?',
+          answer: 'Importez la piste audio plutôt que la vidéo : extrayez-la avec l’outil Extraire l’audio, débruitez-la ici, puis réunissez la piste nettoyée et la vidéo dans Darkroom.',
+        },
+        {
+          question: 'Quel format de sortie est le meilleur pour poursuivre le montage ?',
+          answer: 'WAV (mono 16 bits 48 kHz, 96 Ko par seconde) ou FLAC, qui contient les mêmes échantillons en moins d’espace. MP3, AAC et OGG sont écrits à 192 kbit/s et Opus à 128 kbit/s ; ne les choisissez que pour le partage final, afin que l’encodage avec perte n’ait lieu qu’une fois.',
+        },
+        {
+          question: 'Le débruitage est-il décompté du quota IA ?',
+          answer: 'Non. La suppression du bruit de fond est délibérément comptée comme une tâche standard, comme Nettoyer la voix : 5 par jour pour un visiteur, 30 avec un compte gratuit, 300 avec Premium et 700 avec Pro par défaut. (Isoler ou supprimer les voix est différent : chacune de ces opérations est une tâche IA.) La durée est plafonnée à 5 minutes pour les visiteurs et 20 minutes pour les comptes gratuits ; les limites actuelles sont sur /pricing.',
+        },
+        {
+          question: 'Et si l’enregistrement est déjà assez propre ?',
+          answer: 'Le modèle s’exécute quand même et retirera le plancher résiduel qu’il trouve, mais la différence audible sera faible et vous préférerez peut-être l’original intact. Comparez les deux avant de remplacer quoi que ce soit.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le débruitage utilise le quota standard ; les limites de durée dépendent de votre offre et sont affichées en direct dans le formulaire.',
+        ],
+      },
+      related: [
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Le même débruiteur, plus la finition de sonie et de timbre pour la parole.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Sortez d’abord la piste audio d’une vidéo.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Replacez la piste débruitée sous la vidéo.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Transcrivez l’audio nettoyé pour des sous-titres.',
+        },
+        {
+          label: 'Supprimer la voix d’une chanson',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Séparez le chant de la musique avec un autre modèle.',
+        },
+      ],
+      embed: {
+        title: 'Supprimer le bruit de fond',
+        description: 'Importez un enregistrement. Supprimer le bruit de fond est déjà sélectionné pour vous. Vous pouvez encore changer le format de sortie, puis convertissez.',
+      },
     },
     'remove-vocals-from-song': {
       name: 'Supprimer la voix d’une chanson',
+      h1: 'Supprimer la voix d’une chanson pour une piste instrumentale ou karaoké',
       tagline: 'Retirez le chant d’un morceau et gardez la musique, pour le karaoké, l’entraînement et les pistes d’accompagnement. À utiliser uniquement sur de la musique dont vous détenez les droits.',
       metaTitle: 'Supprimer la voix d’une chanson : créateur de karaoké | Media Manipulator',
       metaDescription: 'Supprimez la voix d’une chanson avec l’IA et téléchargez l’instrumental dans le même format que votre fichier, ou en FLAC ou WAV. Pistes de karaoké et d’entraînement, sur notre propre GPU. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Supprimer la voix d’une chanson pour le karaoké',
+      ogDescription: 'Retirez le chant d’une chanson avec l’IA et téléchargez l’instrumental en MP3, FLAC ou WAV.',
+      intro: 'Les soirées karaoké, l’entraînement au chant et les enregistrements de reprises ont tous besoin du groupe sans le chanteur. Cette page fait passer la chanson dans Demucs (le modèle htdemucs) sur notre GPU en mode deux pistes, qui sépare le mixage en « voix » et « tout le reste », et renvoie la piste tout-le-reste. L’instrumental revient par défaut dans le même format que votre fichier : un MP3 à 320 kbit/s reste un MP3 à 320 kbit/s au lieu de gonfler en WAV ; FLAC et WAV sont là quand vous voulez un fichier sans perte pour le montage.',
+      whatItDoes: [
+        'Exécute Demucs htdemucs avec --two-stems=vocals, si bien que le modèle n’estime que deux parties : la voix principale et l’accompagnement.',
+        'Conserve la piste no_vocals et écarte la piste vocale ; le résultat est un seul fichier stéréo dont le chant a été retiré.',
+        'Résout « Identique à l’entrée » en un format concret à l’import : MP3 reste MP3, AAC/M4A reste AAC/M4A, OGG et Opus restent tels quels, et les entrées WAV, FLAC, AIFF ou ALAC reviennent en FLAC.',
+        'Écrit les pistes MP3 et AAC à 320 kbit/s plutôt qu’aux 192 kbit/s utilisés par les autres outils audio, pour que l’encodage n’ajoute pas de perte audible par-dessus la séparation.',
+        'Affiche une estimation de la taille de sortie pour chaque format avant de commencer, à partir de la durée de votre fichier.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une chanson',
+          description: 'Un morceau dont vous détenez les droits ou une licence d’utilisation, en MP3, WAV, FLAC, M4A, AAC, OGG ou Opus.',
+        },
+        {
+          title: 'Supprimer les voix est préréglé',
+          description: 'L’opération est fixée ; « Format de sortie » est par défaut sur Identique à l’entrée, avec MP3, FLAC et WAV en alternative.',
+        },
+        {
+          title: 'Demucs sépare le mixage',
+          description: 'Le modèle parcourt la chanson par segments de 7 secondes sur notre GPU et écrit vocals.wav et no_vocals.wav.',
+        },
+        {
+          title: 'Encodez et téléchargez',
+          description: 'La piste no_vocals est encodée dans le format résolu et proposée au téléchargement.',
+        },
+      ],
+      advancedDetails: [
+        'L’invocation exacte est demucs -n htdemucs --two-stems=vocals --segment 7 ; la longueur de segment borne la mémoire GPU et permet aux longs morceaux de tourner sur une seule carte. Demucs écrit des pistes stéréo à 44,1 kHz quelle que soit la fréquence ou le nombre de canaux de l’entrée : une source mono ou à 48 kHz revient donc en stéréo 44,1 kHz.',
+        'L’encodage des pistes est libmp3lame -b:a 320k pour MP3 et aac -b:a 320k pour AAC ou M4A ; OGG reste à 192 kbit/s, Opus à 128 kbit/s, FLAC et WAV sont sans perte. Toutes les autres opérations audio IA utilisent 192 kbit/s, le débit de 320 kbit/s est propre aux pistes séparées.',
+        'La règle « Identique à l’entrée » est la suivante : une entrée avec perte renvoie le même conteneur, une entrée sans perte renvoie du FLAC, et un fichier vidéo ou tout ce que le serveur ne peut pas classer renvoie du MP3 à 320 kbit/s. Un .m4a est sondé avec ffprobe avant la décision, car il peut contenir de l’ALAC sans perte plutôt que de l’AAC.',
+        'La règle vient d’une tâche réelle : un MP3 de 87 minutes et 68 Mo est un jour revenu en WAV de 880 Mo. Le PCM n’ajoute aucune fidélité qu’une source avec perte n’a jamais eue, le défaut ne gonfle donc plus jamais un audio avec perte en WAV ; choisir WAV explicitement reste respecté.',
+        'La séparation n’est jamais parfaite. Les queues de réverbération sur la voix, les harmonies d’accompagnement et tout ce que le modèle perçoit comme « proche de la voix » (certains leads de synthé, des sifflements) peuvent fuir dans l’instrumental, et les mixages denses se séparent moins bien que les productions modernes et bien aérées.',
+        'Le formulaire avertit quand un choix WAV dépasserait 500 Mo, puisque le WAV stéréo 44,1 kHz 16 bits pèse 176 400 octets par seconde, soit environ 10,6 Mo par minute.',
+      ],
+      whyItMatters: [
+        'Les versions instrumentales officielles n’existent pas pour la plupart des chansons, et les pistes d’accompagnement sous licence sont souvent réenregistrées plutôt que l’arrangement original.',
+        'Les chanteurs répètent plus utilement sur le véritable arrangement que sur une approximation MIDI.',
+        'Renvoyer la piste dans le format d’entrée garde un fichier taille téléphone à la taille téléphone ; un MP3 de 10 Mo ne doit pas devenir par accident un téléchargement de 50 Mo.',
+      ],
+      useCases: [
+        {
+          title: 'Karaoké à la maison',
+          description: 'Créez une version à chanter d’une chanson que vous possédez déjà.',
+        },
+        {
+          title: 'Entraînement vocal',
+          description: 'Répétez votre partie sur le groupe original sans le chanteur principal dans l’oreille.',
+        },
+        {
+          title: 'Reprises et remix',
+          description: 'Utilisez l’instrumental comme base pour votre propre prise vocale.',
+        },
+        {
+          title: 'Musique de fond pour vidéo',
+          description: 'Tirez un fond sans voix d’une musique que vous êtes autorisé à utiliser pour un projet Darkroom.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Un MP3 de 4 minutes à 320 kbit/s (environ 9,6 Mo) avec Identique à l’entrée',
+          body: 'À 320 kbit/s, un MP3 pèse 40 Ko par seconde, donc 240 secondes font environ 9,6 Mo, bien dans les limites visiteur de 5 minutes et 200 Mo. Le format se résout en MP3 parce que l’entrée est un MP3. Demucs parcourt la chanson par fenêtres de 7 secondes sur notre GPU et écrit un no_vocals.wav stéréo 44,1 kHz d’environ 42 Mo dans un dossier de travail, que ffmpeg encode ensuite avec libmp3lame à 320 kbit/s : l’instrumental fait de nouveau environ 9,6 Mo. Le WAV de travail est supprimé. La passe de séparation domine le temps d’exécution et croît avec la durée du morceau.',
+        },
+        {
+          title: 'Un WAV qualité CD de 4 minutes 50 (environ 51 Mo), FLAC par défaut ou WAV explicite',
+          body: 'Un WAV stéréo 44,1 kHz 16 bits pèse 176 400 octets par seconde, donc 290 secondes font environ 51 Mo, toujours dans le plafond visiteur de 5 minutes. Comme l’entrée est sans perte, Identique à l’entrée se résout en FLAC : le formulaire estime le FLAC à environ 55 pour cent de la taille PCM, soit environ 28 Mo, le chiffre réel dépendant de la musique. Choisir WAV à la place renvoie la piste en PCM 16 bits d’environ 51 Mo, la même taille que l’entrée ; choisir MP3 donne environ 11,6 Mo à 320 kbit/s. Les trois proviennent de la même piste no_vocals, seul l’encodeur diffère.',
+        },
+      ],
+      whenNotToUse: 'N’exécutez pas cet outil sur de la musique dont vous ne détenez ni les droits ni une licence ; vous êtes responsable de l’usage fait du résultat. C’est aussi le mauvais outil si vous voulez le chanteur plutôt que le groupe (c’est l’opération isoler les voix du même formulaire), si vous avez besoin d’une séparation en quatre parties avec batterie, basse et autres instruments (cette page ne produit que la voix et l’accompagnement), ou si l’enregistrement est de la parole plutôt que du chant, ce que les pages Nettoyer la voix et bruit de fond traitent mieux. Les très vieux enregistrements mono et les captations live pirates où la voix repisse dans chaque micro se séparent mal : attendez-vous à des fantômes audibles.',
+      whyMediaManipulator: [
+        'La séparation s’exécute sur un GPU que nous exploitons avec le modèle Demucs htdemucs ; votre musique n’est pas envoyée à un service extérieur de séparation de pistes.',
+        'La sortie suit votre fichier par défaut, avec la piste MP3 ou AAC encodée à 320 kbit/s, et FLAC ou WAV à un clic.',
+        'L’estimation de taille de chaque format est affichée avant de commencer, pour qu’un WAV surdimensionné soit un choix, pas une surprise.',
+      ],
+      privacyNote: 'Votre chanson est stockée dans son dossier de tâche et transmise à Demucs sur notre propre GPU, qui écrit les pistes voix et accompagnement dans un répertoire de travail ; seul l’accompagnement est encodé dans votre téléchargement, et le répertoire de travail (y compris la piste vocale écartée) est supprimé à la fin de la tâche. L’instrumental encodé est conservé avec la tâche. Les imports audio passent aussi par une étape d’analyse automatisée sur notre serveur qui transcrit le fichier avec Whisper pour une revue interne conservée avec la tâche. Aucun fournisseur d’IA tiers n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Toute trace du chanteur aura-t-elle disparu ?',
+          answer: 'La majeure partie de la voix principale, mais rarement tout. Les queues de réverbération, les voix doublées et les harmonies, ainsi que les sons que le modèle perçoit comme proches de la voix peuvent subsister à faible niveau. Les productions stéréo modernes se séparent le mieux ; les enregistrements mono ou live avec beaucoup de repisse le moins bien.',
+        },
+        {
+          question: 'Dans quel format et à quelle fréquence d’échantillonnage l’instrumental est-il fourni ?',
+          answer: 'Demucs écrit des pistes stéréo à 44,1 kHz, c’est donc la fréquence de chaque sortie. Le conteneur suit votre fichier par défaut : MP3 en entrée, MP3 en sortie à 320 kbit/s ; AAC ou M4A en entrée, le même en sortie à 320 kbit/s ; WAV, FLAC, AIFF ou ALAC en entrée, FLAC en sortie. Vous pouvez aussi choisir explicitement MP3, FLAC ou WAV.',
+        },
+        {
+          question: 'Pourquoi le défaut n’est-il plus le WAV ?',
+          answer: 'Parce qu’un MP3 de 87 minutes et 68 Mo revenait autrefois en WAV de 880 Mo, et que le PCM ne peut pas restaurer un détail qu’une source avec perte n’a jamais eu. La piste reste désormais dans le format d’entrée, les pistes avec perte étant écrites à 320 kbit/s pour que l’encodage supplémentaire soit inaudible. Le WAV reste disponible si vous le demandez.',
+        },
+        {
+          question: 'Puis-je obtenir la voix seule plutôt que l’accompagnement ?',
+          answer: 'Oui, choisissez Isoler les voix dans le menu des opérations du convertisseur audio ; il conserve la piste vocals.wav de la même exécution Demucs en deux pistes et écarte l’accompagnement.',
+        },
+        {
+          question: 'Puis-je importer un clip vidéo plutôt qu’un fichier audio ?',
+          answer: 'Importez l’audio : extrayez d’abord la piste de la vidéo. Si un fichier vidéo atteint tout de même cette opération, le serveur résout Identique à l’entrée en MP3 à 320 kbit/s, puisque le conteneur vidéo n’est pas un format audio.',
+        },
+        {
+          question: 'Combien de chansons par jour puis-je séparer gratuitement ?',
+          answer: 'Chaque chanson est une tâche IA : par défaut 3 par jour sans compte, 10 avec un compte gratuit, 100 avec Premium et 200 avec Pro. Le quota IA est compté à part : séparer des chansons laisse donc votre quota standard intact. Les chansons sont plafonnées à 5 minutes pour les visiteurs et 20 minutes pour les comptes gratuits, avec 2 heures sur les offres payantes ; /pricing contient le tableau actuel.',
+        },
+        {
+          question: 'Est-il légal de créer une piste karaoké de cette façon ?',
+          answer: 'Uniquement à partir de musique que vous possédez, que vous êtes autorisé à utiliser, ou que vous pouvez utiliser au titre d’une exception en vigueur là où vous vivez. L’outil ne vérifie pas les droits ; vous êtes responsable du résultat et de la façon dont vous le diffusez.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La suppression des voix utilise le quota IA ; celui-ci et les limites de durée dépendent de votre offre et sont affichés en direct dans le formulaire.',
+        ],
+      },
+      related: [
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Sortez l’audio d’un clip vidéo avant de le séparer.',
+        },
+        {
+          label: 'Nettoyer l’audio d’une voix',
+          to: '/tools/clean-voice-audio',
+          description: 'Pour les enregistrements de parole, utilisez plutôt le modèle d’amélioration de la parole.',
+        },
+        {
+          label: 'Supprimer le bruit de fond',
+          to: '/tools/remove-background-noise',
+          description: 'Atténuez le bruit constant d’un enregistrement sans le séparer.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Utilisez l’instrumental comme fond musical dans un montage vidéo.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenez les paroles sous forme de texte à partir du mixage original.',
+        },
+      ],
+      embed: {
+        title: 'Supprimer la voix d’une chanson',
+        description: 'Importez une chanson. Supprimer les voix est déjà sélectionné, et l’instrumental revient dans le même format que votre fichier (un MP3 reste un MP3) ; choisissez FLAC ou WAV sous Format de sortie pour du sans perte. Appuyez sur convertir.',
+      },
     },
 
     // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
     // and the home grid never show an English card in this locale. Model-written; native review pending.
     'transcode-to-dash': {
       name: 'Transcoder une vidéo en DASH (AV1 / VP9)',
+      h1: 'Transcoder une vidéo en DASH AV1 ou VP9 en ligne',
       tagline: 'Empaquetez n’importe quelle vidéo en un lot MPEG-DASH : manifest.mpd et segments d’initialisation et de média par rendition.',
+      metaTitle: 'Transcoder une vidéo en DASH AV1/VP9 en ligne | Outil MPEG-DASH gratuit',
+      metaDescription: 'Transcodeur MPEG-DASH gratuit en ligne. Convertissez MP4, MOV, WebM, MKV en un paquet DASH avec vidéo AV1 ou VP9, sous-titres et storyboards en option.',
+      ogTitle: 'Transcoder une vidéo en DASH AV1/VP9 en ligne',
+      ogDescription: 'Générez un paquet DASH adaptatif (manifest.mpd + segments d’initialisation et de média par rendition) à partir de n’importe quelle vidéo, gratuitement, dans votre navigateur.',
+      intro: 'MPEG-DASH est la norme ouverte de streaming adaptatif prise en charge par tous les navigateurs modernes. Media Manipulator transcode votre vidéo source en un lot DASH VOD, manifest.mpd plus un init.mp4 et des segments .m4s par rendition, en AV1 (fichiers plus légers, idéal pour les nouveaux lecteurs web) ou en VP9 (prise en charge de lecture plus large). Déposez le dossier décompressé sur n’importe quel CDN ou origine et servez manifest.mpd aux clients. L’offre gratuite couvre 360p, 480p et 720p.',
+      whatItDoes: [
+        'Analyse votre source avec ffprobe et affiche la résolution, les FPS, la durée, le codec et l’état de l’audio.',
+        'Vous laisse choisir les niveaux de qualité à encoder et s’il faut produire de l’AV1 ou du VP9.',
+        'Détecte automatiquement le meilleur encodeur AV1 disponible (av1_nvenc → libsvtav1 → libaom-av1).',
+        'Génère un manifest.mpd MPEG-DASH référençant chaque Representation vidéo plus une Representation audio AAC lorsqu’elle est présente.',
+        'Génère en option des sous-titres WebVTT et des miniatures de navigation storyboard.',
+        'Regroupe le résultat dans media-manipulator-dash-<codec>-<jobID>.tar.gz avec un report.json et un README.',
+        'Téléverse l’archive sur S3 et vous rend une URL GET présignée de courte durée.',
+      ],
+      flowSteps: [
+        {
+          title: 'Téléverser',
+          description: 'PUT présigné direct vers S3 : votre fichier ne passe jamais par le serveur d’API.',
+        },
+        {
+          title: 'Analyser',
+          description: 'ffprobe lit la résolution, les FPS, la présence d’audio et les métadonnées de codec.',
+        },
+        {
+          title: 'Choisir les niveaux et le codec',
+          description: 'Choisissez AV1 ou VP9 et n’importe quelle combinaison de 360p/480p/720p.',
+        },
+        {
+          title: 'Encoder',
+          description: 'AV1 (svtav1/libaom/nvenc) ou libvpx-vp9 en segments de 2 secondes.',
+        },
+        {
+          title: 'Empaqueter',
+          description: 'manifest.mpd + init/segments par rendition regroupés en tar.gz avec report.json et README.',
+        },
+        {
+          title: 'Télécharger',
+          description: 'URL GET S3 présignée valable 30 minutes.',
+        },
+      ],
+      advancedDetails: [
+        'La sélection de l’encodeur AV1 privilégie av1_nvenc (GPU) lorsqu’il est disponible, puis se rabat sur libsvtav1, puis sur libaom-av1.',
+        'VP9 utilise libvpx-vp9 avec row-mt, le décodage parallèle par image et un guidage CRF + débit.',
+        'Les variantes DASH sont produites avec -seg_duration 2 -use_template 1 -use_timeline 0 -single_file 0.',
+        'manifest.mpd déclare un AdaptationSet par type de contenu (vidéo + audio lorsqu’il est présent) avec les attributs codecs "av01.0.08M.08" / "vp09.00.51.08" / "mp4a.40.2".',
+        'Aucun agrandissement : les niveaux plus hauts que la résolution de la source sont désactivés avec une infobulle.',
+      ],
+      whyItMatters: [
+        'L’AV1 divise généralement le débit par deux à qualité équivalente par rapport au H.264.',
+        'DASH est le format de streaming adaptatif dominant hors de l’écosystème Apple.',
+        'Un VOD pré-empaqueté évite les factures de transcodage à la requête sur les plateformes de streaming.',
+      ],
+      useCases: [
+        {
+          title: 'Lecteurs web modernes',
+          description: 'Shaka Player et dash.js consomment manifest.mpd nativement.',
+        },
+        {
+          title: 'Distribution sensible à la bande passante',
+          description: 'L’AV1 donne près de la moitié des octets d’un paquet HLS H.264.',
+        },
+        {
+          title: 'Médiathèque interne',
+          description: 'Hébergez vous-même de la vidéo adaptative sans payer une plateforme de streaming SaaS.',
+        },
+        {
+          title: 'Tests de qualité',
+          description: 'Comparez côte à côte des encodages AV1 et VP9 à partir de la même source.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Fonctionne sur nos propres serveurs : aucun prestataire de transcodage tiers ne voit votre vidéo.',
+        'L’AV1 est sélectionné par défaut, car l’AV1 est l’avenir du streaming adaptatif de haute qualité.',
+        'Format de paquet ouvert : décompressez simplement le .tar.gz et hébergez le manifest.mpd.',
+      ],
+      privacyNote: 'Votre vidéo est lue une fois par FFmpeg, encodée en renditions AV1 ou VP9 et découpée en segments DASH avec un manifeste, le tout sur nos serveurs. Le travail s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'AV1 ou VP9 : lequel choisir ?',
+          answer: 'L’AV1 produit des fichiers plus légers à qualité équivalente, mais l’encodage est plus lent sur les hôtes sans GPU. Le VP9 bénéficie d’une prise en charge de lecture plus large et d’un encodage plus rapide. L’AV1 est le choix par défaut.',
+        },
+        {
+          question: 'Mon serveur indique que l’AV1 est indisponible ?',
+          answer: 'L’AV1 a besoin de l’un des encodeurs av1_nvenc (GPU NVIDIA), libsvtav1 ou libaom-av1 dans FFmpeg. Consultez /api/video-transcode/capabilities pour voir ce dont dispose votre installation.',
+        },
+        {
+          question: 'L’audio est-il toujours en AAC ?',
+          answer: 'Oui : l’AdaptationSet audio DASH produit actuellement de l’AAC LC à 128 kbps pour une compatibilité maximale, quel que soit le codec source.',
+        },
+        {
+          question: 'Puis-je servir ce manifeste en cross-origin ?',
+          answer: 'Oui, mais votre CDN ou origine a besoin des bons en-têtes CORS sur les fichiers .mpd, init.mp4 et .m4s. L’archive n’inclut pas ces en-têtes.',
+        },
+        {
+          question: 'Combien de temps l’URL de téléchargement reste-t-elle valable ?',
+          answer: 'Les URL GET présignées sont valables 30 minutes par défaut. Relancez le transcodage si vous avez besoin d’un nouveau lien.',
+        },
+      ],
+      related: [
+        {
+          label: 'Transcoder une vidéo en HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Même téléversement, mais produit un paquet Apple HLS en H.264 + AAC.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez un MP4 avec la chaîne FFmpeg classique.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Extrayez les paroles d’une vidéo en texte consultable.',
+        },
+      ],
+      embed: {
+        title: 'Transcoder une vidéo en DASH (AV1 / VP9)',
+        description: 'Téléversez un MP4/MOV/WebM/MKV. Nous analysons la source avec ffprobe, vous laissons choisir les niveaux de qualité gratuits (360p/480p/720p), puis exécutons un encodage ffmpeg AV1 (par défaut) ou VP9 et regroupons le tout dans un tar.gz téléchargeable avec manifest.mpd.',
+      },
     },
     'convert-webp-to-jpg': {
       name: 'Convertir un WebP en JPG',
+      h1: 'Convertir un WebP en JPG en ligne',
       tagline: 'Transformez vos images WebP en fichiers JPG largement compatibles, lisibles dans n’importe quel visualiseur ou éditeur d’images.',
+      metaTitle: 'Convertir un WebP en JPG en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Convertisseur WebP en JPG gratuit en ligne. Transformez rapidement vos images .webp en fichiers JPG compatibles partout, à la qualité de votre choix.',
+      ogTitle: 'Convertir un WebP en JPG en ligne',
+      ogDescription: 'Transformez vos images WebP en fichiers JPG compatibles partout en deux clics.',
+      intro: 'WebP est idéal pour le web, mais les logiciels anciens, les outils de présentation et les imprimantes ne savent souvent pas le lire. Media Manipulator reconvertit vos WebP en JPG pour que vous puissiez utiliser l’image partout. Choisissez la qualité souhaitée, et nous nous occupons du reste.',
+      whatItDoes: [
+        'Convertit n’importe quelle image .webp (image fixe ou image d’une animation) en .jpg standard.',
+        'Vous laisse choisir la qualité JPG : plus la qualité est élevée, plus le fichier est lourd.',
+        'Aplatit la transparence sur une couleur de fond de votre choix (le JPG n’a pas de canal alpha).',
+        'Préserve le profil colorimétrique lorsque c’est possible.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer le WebP',
+          description: 'Déposez un fichier .webp depuis votre ordinateur.',
+        },
+        {
+          title: 'Choisir la qualité JPG',
+          description: '85 est une bonne valeur par défaut ; baissez-la pour des fichiers plus légers.',
+        },
+        {
+          title: 'Encoder le JPG',
+          description: 'ImageMagick réencode l’image à la qualité choisie.',
+        },
+        {
+          title: 'Télécharger le JPG',
+          description: 'Enregistrez un fichier .jpg compatible partout.',
+        },
+      ],
+      advancedDetails: [
+        'La qualité 85 est un point d’équilibre éprouvé : au-delà de ~92, on augmente surtout le poids du fichier pour un gain visuel minime.',
+        'Le JPG n’a pas de transparence : les WebP transparents sont donc aplatis. Si vous avez besoin de transparence, convertissez plutôt en PNG.',
+        'Pour une conversion d’image sans perte ou pour les WebP animés, préférez le PNG (image fixe) ou le GIF animé.',
+      ],
+      whyItMatters: [
+        'Certains navigateurs anciens, éditeurs d’images et logiciels embarqués ne prennent toujours pas en charge le WebP.',
+        'De nombreuses imprimantes, bornes photo et outils de présentation exigent du JPG ou du PNG.',
+        'Le JPG est le format d’échange de fait pour les photos.',
+      ],
+      useCases: [
+        {
+          title: 'Envoyer des photos à des clients',
+          description: 'Assurez-vous que le destinataire pourra ouvrir le fichier sur n’importe quel appareil.',
+        },
+        {
+          title: 'Intégrer dans des présentations',
+          description: 'Les diapositives PowerPoint/Keynote acceptent le JPG partout ; avec le WebP, c’est aléatoire.',
+        },
+        {
+          title: 'Impression et laboratoires photo',
+          description: 'La plupart des laboratoires n’acceptent que le JPG.',
+        },
+        {
+          title: 'Soumissions aux banques d’images',
+          description: 'De nombreuses banques d’images exigent des envois en JPG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Sans filigrane, sans inscription, gratuit pour un usage occasionnel.',
+        'Réglez précisément la qualité et la compression, au lieu d’un préréglage unique pour tous.',
+        'Le même modèle de confidentialité et de conservation que le reste de la suite d’outils.',
+      ],
+      privacyNote: 'Votre WebP est décodé et réencodé en JPG sur notre serveur ; une zone transparente est aplatie, car le JPG ne peut pas la stocker. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Qu’en est-il de la transparence ?',
+          answer: 'Le JPG ne prend pas en charge la transparence. Les WebP transparents sont aplatis sur la couleur de fond choisie. Si vous avez besoin de transparence, convertissez plutôt en PNG.',
+        },
+        {
+          question: 'Quelle qualité utiliser ?',
+          answer: '85 est une valeur par défaut équilibrée. Utilisez 90 ou plus pour les photos où la qualité compte avant tout, et 70 pour les vignettes ou les aperçus.',
+        },
+        {
+          question: 'Cela fonctionne-t-il avec les WebP animés ?',
+          answer: 'Seule la première image devient un JPG. Pour un WebP animé, convertissez plutôt en GIF animé.',
+        },
+        {
+          question: 'Puis-je convertir plusieurs fichiers par lot ?',
+          answer: 'L’outil gratuit traite un fichier à la fois. Pour l’instant, convertissez chaque WebP individuellement.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertir un WebP en PNG',
+          to: '/tools/convert-webp-to-png',
+          description: 'Conservez plutôt la transparence avec un PNG sans perte.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et GIF.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez encore davantage le poids du fichier JPG.',
+        },
+        {
+          label: 'Supprimer les métadonnées EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retirez les métadonnées privées avant de partager le JPG.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Visite guidée, pas à pas, de chaque option d’image.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un WebP en JPG',
+        description: 'Importez une image WebP et choisissez JPG comme format de sortie. Ajustez le curseur de qualité pour équilibrer le poids du fichier et la qualité de l’image. Le JPG supprime la transparence ; utilisez plutôt le PNG si votre image a un fond transparent.',
+      },
     },
     'convert-png-to-jpg': {
       name: 'Convertir un PNG en JPG',
+      h1: 'Convertir un PNG en JPG en ligne gratuitement',
       tagline: 'Transformez en quelques secondes de lourdes captures d’écran et images PNG en photos JPG légères et compatibles partout.',
+      metaTitle: 'Convertir un PNG en JPG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur PNG en JPG gratuit en ligne. Transformez vos fichiers .png en images JPG plus légères et compatibles partout, à la qualité de votre choix. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un PNG en JPG en ligne gratuitement',
+      ogDescription: 'Transformez vos images PNG en fichiers JPG plus légers et compatibles partout. Gratuit, rapide, sans inscription.',
+      intro: 'Le PNG est un format sans perte, ce qui le rend parfait pour les captures d’écran et les graphismes, mais souvent bien plus lourd que nécessaire pour les photos. Convertir un PNG en JPG peut réduire un fichier de 5 à 10 fois sans différence visible sur un contenu photographique. Media Manipulator convertit votre PNG en un JPG propre, à la qualité de votre choix : gratuitement, en ligne et sans inscription.',
+      whatItDoes: [
+        'Convertit n’importe quelle image .png en fichier .jpg (JPEG) standard.',
+        'Vous laisse choisir la qualité JPG pour équilibrer le poids du fichier et la fidélité.',
+        'Aplatit la transparence sur un fond uni, puisque le JPG n’a pas de canal alpha.',
+        'Les pixels que vous voyez restent les mêmes ; seul le fichier est réencodé du PNG vers le JPG.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer le PNG',
+          description: 'Déposez une capture d’écran, un graphisme ou une photo .png.',
+        },
+        {
+          title: 'Choisir la qualité JPG',
+          description: '85 est une valeur par défaut équilibrée ; baissez-la pour des fichiers plus légers.',
+        },
+        {
+          title: 'Encoder le JPG',
+          description: 'ImageMagick réencode votre image en JPEG.',
+        },
+        {
+          title: 'Télécharger le JPG',
+          description: 'Enregistrez un fichier .jpg plus léger et compatible partout.',
+        },
+      ],
+      advancedDetails: [
+        'La qualité 85 est le point d’équilibre éprouvé : au-delà de ~92, vous ajoutez surtout du poids pour un gain visible minime.',
+        'Un PNG photographique passe souvent de plusieurs mégaoctets à quelques centaines de kilooctets en JPG.',
+        'Pour les graphismes aux contours nets ou le texte, le PNG ou le WebP sont généralement plus propres que le JPG à poids égal.',
+        'Si votre PNG a une transparence que vous voulez conserver, convertissez plutôt en WebP : le JPG ne peut pas stocker de canal alpha.',
+      ],
+      whyItMatters: [
+        'Le JPG est le format photo le plus universellement accepté : chaque appareil, éditeur et formulaire d’envoi le prend en charge.',
+        'Des JPG plus légers se chargent plus vite sur le web et restent sous les limites d’envoi des e-mails et des formulaires.',
+        'De nombreux laboratoires photo, places de marché et banques d’images n’acceptent que le JPG.',
+      ],
+      useCases: [
+        {
+          title: 'Alléger des captures d’écran',
+          description: 'Transformez une lourde capture d’écran PNG en un JPG léger pour l’e-mail ou la messagerie.',
+        },
+        {
+          title: 'Envoyer des photos',
+          description: 'Convertissez un PNG photographique en JPG pour respecter l’exigence de format d’un site.',
+        },
+        {
+          title: 'Impression et laboratoires photo',
+          description: 'La plupart des laboratoires exigent du JPG : convertissez avant de commander.',
+        },
+        {
+          title: 'Des pages web plus rapides',
+          description: 'Remplacez les lourdes photos PNG par des JPG compacts pour alléger la page.',
+        },
+      ],
+      whyMediaManipulator: [
+        'La sortie est véritablement verrouillée sur JPG : il n’y a donc rien à mal configurer.',
+        'Un contrôle précis de la qualité au lieu d’un préréglage unique pour tous.',
+      ],
+      privacyNote: 'Votre PNG est réencodé en JPG à la qualité que vous définissez, sur notre serveur, et toute transparence est aplatie sur un fond uni. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un PNG en JPG gratuitement ?',
+          answer: 'Importez votre .png ci-dessus, choisissez une qualité JPG et cliquez sur convertir. Le téléchargement est un fichier .jpg standard.',
+        },
+        {
+          question: 'Convertir un PNG en JPG réduit-il la qualité ?',
+          answer: 'Le JPG est un format avec perte : il y a donc un léger compromis sur la qualité. À une qualité de 85–90, la différence est invisible sur les photos. Pour les graphismes avec du texte net, gardez le PNG ou utilisez le WebP.',
+        },
+        {
+          question: 'Que devient la transparence quand je convertis un PNG en JPG ?',
+          answer: 'Le JPG ne prend pas en charge la transparence : les zones transparentes sont donc aplaties sur un fond uni. Si vous devez conserver la transparence, convertissez plutôt le PNG en WebP.',
+        },
+        {
+          question: 'Pourquoi mon PNG est-il tellement plus lourd que le JPG ?',
+          answer: 'Le PNG est sans perte et stocke chaque pixel exactement, ce qui est volumineux pour les photos. Le JPG utilise une compression perceptuelle : les images photographiques se réduisent donc énormément avec peu de changement visible.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Les zones transparentes du PNG sont aplaties sur un fond uni, car le JPG n’a pas de transparence.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un JPG en PNG',
+          to: '/tools/convert-jpg-to-png',
+          description: 'Faites le chemin inverse et obtenez un PNG capable de transparence.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus encore.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez encore le JPG sans changer de format.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez chaque option d’image en détail.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un PNG en JPG',
+        description: 'Importez une image PNG. Pour cet outil, la sortie est verrouillée sur JPG : choisissez simplement une qualité et convertissez. Les zones transparentes sont aplaties sur un fond uni, car le JPG n’a pas de canal alpha.',
+      },
     },
     'convert-jpg-to-png': {
       name: 'Convertir un JPG en PNG',
+      h1: 'Convertir un JPG en PNG en ligne gratuitement',
       tagline: 'Transformez vos photos JPG en fichiers PNG sans perte, prêts pour la retouche, la transparence et les travaux graphiques de qualité.',
+      metaTitle: 'Convertir un JPG en PNG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur JPG en PNG gratuit en ligne. Transformez vos photos .jpg en fichiers PNG sans perte pour la retouche, la transparence et les graphismes. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un JPG en PNG en ligne gratuitement',
+      ogDescription: 'Transformez vos photos JPG en fichiers PNG sans perte pour la retouche et les graphismes. Gratuit, rapide, sans inscription.',
+      intro: 'Le PNG est un format sans perte qui n’ajoute jamais d’artefacts de compression, ce qui le rend idéal dès que vous commencez à retoucher une image, à ajouter de la transparence ou à superposer des graphismes. Convertir un JPG en PNG fige les pixels actuels, pour que les retouches suivantes ne dégradent pas la qualité. Media Manipulator convertit votre JPG en un PNG propre, en ligne, gratuitement et sans inscription.',
+      whatItDoes: [
+        'Convertit n’importe quelle image .jpg/.jpeg en fichier .png sans perte.',
+        'Préserve exactement les pixels actuels, pour que les retouches répétées n’ajoutent pas d’artefacts.',
+        'Produit un PNG que vous pourrez ensuite superposer, masquer ou rendre transparent dans un éditeur.',
+        'Chaque pixel du JPG est conservé à l’identique ; le PNG les stocke sans perte supplémentaire.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer le JPG',
+          description: 'Déposez une photo .jpg ou .jpeg.',
+        },
+        {
+          title: 'Convertir en PNG',
+          description: 'Nous réencodons l’image sans perte en PNG.',
+        },
+        {
+          title: 'Encoder le PNG',
+          description: 'ImageMagick écrit un PNG standard 24/32 bits.',
+        },
+        {
+          title: 'Télécharger le PNG',
+          description: 'Enregistrez un .png sans perte, prêt pour la retouche.',
+        },
+      ],
+      advancedDetails: [
+        'Le PNG est sans perte : le fichier converti sera donc généralement plus lourd que le JPG source, ce qui est normal.',
+        'Convertir un JPG en PNG ne récupère pas les détails que le JPG a déjà écartés ; cela fige les pixels actuels sans perte.',
+        'Le PNG prend en charge un canal alpha : le résultat est donc prêt pour que vous ajoutiez de la transparence dans un éditeur.',
+        'Pour les fichiers web sans perte les plus légers, le WebP (sans perte) est souvent plus petit que le PNG.',
+      ],
+      whyItMatters: [
+        'Le PNG sans perte est le bon format de travail dès qu’une image sera retouchée à plusieurs reprises.',
+        'Les outils de design, les ressources d’applications et le travail d’interface attendent du PNG pour ses contours nets et sa prise en charge de la transparence.',
+        'Le PNG évite la perte de génération qui survient quand on réenregistre un JPG encore et encore.',
+      ],
+      useCases: [
+        {
+          title: 'Préparation à la retouche',
+          description: 'Convertissez un JPG en PNG avant la retouche pour que les modifications restent sans perte.',
+        },
+        {
+          title: 'Ajouter de la transparence',
+          description: 'Obtenez une toile PNG prête à détourer un arrière-plan.',
+        },
+        {
+          title: 'Ressources d’interface et d’applications',
+          description: 'La plupart des systèmes de design attendent du PNG pour les icônes et les graphismes.',
+        },
+        {
+          title: 'Intégration dans des documents',
+          description: 'Utilisez le PNG là où la netteté du texte et des traits compte plus que le poids du fichier.',
+        },
+      ],
+      whyMediaManipulator: [
+        'La sortie est véritablement verrouillée sur PNG : le résultat est donc toujours sans perte.',
+        'Fonctionne sur nos propres serveurs : aucun traitement de votre image par un tiers.',
+      ],
+      privacyNote: 'Votre JPG est décodé sur notre serveur et écrit sous forme de PNG sans perte avec exactement les mêmes pixels. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un JPG en PNG gratuitement ?',
+          answer: 'Importez votre .jpg ci-dessus et cliquez sur convertir : la sortie est un .png sans perte. C’est gratuit, sans inscription, et cela fonctionne dans votre navigateur.',
+        },
+        {
+          question: 'Convertir un JPG en PNG améliore-t-il la qualité ?',
+          answer: 'Non. La conversion est sans perte, mais elle ne peut pas récupérer les détails que le JPG a déjà écartés. Elle fige les pixels actuels pour que les futures retouches restent exemptes d’artefacts.',
+        },
+        {
+          question: 'Le PNG sera-t-il plus lourd que mon JPG ?',
+          answer: 'Généralement, oui. Le PNG stocke chaque pixel exactement, sans compression avec perte : un PNG photographique est donc typiquement plus lourd que le JPG équivalent.',
+        },
+        {
+          question: 'Puis-je ajouter de la transparence après la conversion en PNG ?',
+          answer: 'Oui. Le PNG prend en charge un canal alpha : une fois le PNG obtenu, vous pouvez effacer ou détourer un arrière-plan dans n’importe quel éditeur d’images.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le PNG est sans perte : la sortie est donc généralement plus lourde que le JPG source.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un PNG en JPG',
+          to: '/tools/convert-png-to-jpg',
+          description: 'Faites le chemin inverse et réduisez un PNG en JPG.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus encore.',
+        },
+        {
+          label: 'Supprimer l’arrière-plan d’une image',
+          to: '/tools/remove-background-from-image',
+          description: 'Obtenez automatiquement un détourage PNG transparent.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez chaque option d’image en détail.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un JPG en PNG',
+        description: 'Importez une image JPG. Pour cet outil, la sortie est verrouillée sur PNG : vous obtenez un fichier sans perte, prêt pour la retouche ou la superposition sur une toile transparente.',
+      },
     },
     'convert-webp-to-png': {
       name: 'Convertir un WebP en PNG',
+      h1: 'Convertir un WebP en PNG en ligne gratuitement',
       tagline: 'Transformez vos images WebP en fichiers PNG sans perte, qui s’ouvrent partout et conservent toute la transparence.',
+      metaTitle: 'Convertir un WebP en PNG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur WebP en PNG gratuit en ligne. Transformez vos images .webp en fichiers PNG sans perte qui conservent la transparence et s’ouvrent dans n’importe quel éditeur. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un WebP en PNG en ligne gratuitement',
+      ogDescription: 'Transformez vos images WebP en fichiers PNG sans perte qui préservent la transparence. Gratuit, rapide, sans inscription.',
+      intro: 'WebP est idéal pour le web, mais bien des éditeurs, logiciels anciens et outils de design attendent encore du PNG ; et contrairement au JPG, le PNG conserve toute la transparence. Media Manipulator convertit votre WebP en un PNG propre et sans perte, pour qu’il s’ouvre partout et que votre canal alpha survive.',
+      whatItDoes: [
+        'Convertit n’importe quelle image .webp en fichier .png sans perte.',
+        'Préserve le canal alpha, pour que les WebP transparents restent transparents.',
+        'Produit un PNG qui s’ouvre dans n’importe quel éditeur, visualiseur ou outil de design.',
+        'L’image ne change pas ; la compression WebP est remplacée par un stockage PNG sans perte.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer le WebP',
+          description: 'Déposez un fichier .webp, transparent ou opaque.',
+        },
+        {
+          title: 'Convertir en PNG',
+          description: 'Nous décodons le WebP et le réencodons en PNG.',
+        },
+        {
+          title: 'Encoder le PNG',
+          description: 'ImageMagick écrit un PNG sans perte 24/32 bits.',
+        },
+        {
+          title: 'Télécharger le PNG',
+          description: 'Enregistrez un fichier .png qui préserve la transparence.',
+        },
+      ],
+      advancedDetails: [
+        'La transparence du WebP source est préservée sous forme de canal alpha PNG.',
+        'Seule la première image d’un WebP animé devient un PNG fixe ; pour l’animation, convertissez plutôt en GIF.',
+        'Le PNG est sans perte : la sortie est donc généralement plus lourde que le WebP source ; c’est le prix de la compatibilité universelle et du stockage sans perte.',
+      ],
+      whyItMatters: [
+        'Certains éditeurs, outils de présentation et logiciels anciens ne peuvent toujours pas ouvrir le WebP.',
+        'Le PNG conserve la transparence, ce que le JPG ne peut pas faire : essentiel pour les logos et les détourages.',
+        'Le PNG est un format d’échange sûr et sans perte pour le travail graphique.',
+      ],
+      useCases: [
+        {
+          title: 'Ouvrir un WebP dans un éditeur',
+          description: 'Convertissez en PNG pour qu’un éditeur sans prise en charge du WebP puisse l’ouvrir.',
+        },
+        {
+          title: 'Conserver la transparence',
+          description: 'Préservez un logo WebP transparent sous forme de PNG transparent.',
+        },
+        {
+          title: 'Passations de design',
+          description: 'Remettez un PNG aux outils ou aux collègues qui attendent des ressources PNG.',
+        },
+        {
+          title: 'Présentations',
+          description: 'Déposez un PNG dans un logiciel de diapositives qui refuse le WebP.',
+        },
+      ],
+      whyMediaManipulator: [
+        'La sortie est verrouillée sur PNG, avec la transparence préservée automatiquement.',
+        'Fonctionne sur nos propres serveurs : aucun traitement de votre image par un tiers.',
+      ],
+      privacyNote: 'Votre WebP est décodé sur notre serveur et enregistré sous forme de PNG sans perte, en conservant sa transparence. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un WebP en PNG gratuitement ?',
+          answer: 'Importez votre .webp ci-dessus et cliquez sur convertir. Le téléchargement est un .png sans perte, avec la transparence préservée. C’est gratuit et sans inscription.',
+        },
+        {
+          question: 'La conversion WebP en PNG conserve-t-elle la transparence ?',
+          answer: 'Oui. Si votre WebP a un fond transparent, le PNG obtenu conserve ce canal alpha intact.',
+        },
+        {
+          question: 'Pourquoi convertir un WebP en PNG plutôt qu’en JPG ?',
+          answer: 'Le PNG est sans perte et préserve la transparence, tandis que le JPG aplatit la transparence et ajoute de la compression. Choisissez le PNG quand vous avez besoin de transparence ou de graphismes sans perte ; choisissez le JPG pour les fichiers photo les plus légers.',
+        },
+        {
+          question: 'Puis-je convertir un WebP animé ?',
+          answer: 'Seule la première image devient un PNG. Pour l’animation, convertissez plutôt le WebP en GIF animé.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La transparence est préservée. Seule la première image d’un WebP animé est convertie.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un PNG en WebP',
+          to: '/tools/convert-png-to-webp',
+          description: 'Faites le chemin inverse et réduisez un PNG en WebP.',
+        },
+        {
+          label: 'Convertir un WebP en JPG',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Convertissez plutôt le WebP en un JPG compact.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus encore.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez une image sans vous soucier d’un changement de format.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un WebP en PNG',
+        description: 'Importez une image WebP. Pour cet outil, la sortie est verrouillée sur PNG : la transparence est préservée et le fichier s’ouvre dans n’importe quel éditeur ou visualiseur d’images.',
+      },
     },
     'convert-png-to-webp': {
       name: 'Convertir un PNG en WebP',
+      h1: 'Convertir un PNG en WebP en ligne gratuitement',
       tagline: 'Réduisez le poids de vos images PNG avec le format moderne WebP, plus rapide à charger sur le web, tout en conservant toute la transparence.',
+      metaTitle: 'Convertir un PNG en WebP en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur PNG en WebP gratuit en ligne. Réduisez vos fichiers .png en images WebP plus légères pour des sites plus rapides, tout en conservant la transparence. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un PNG en WebP en ligne gratuitement',
+      ogDescription: 'Réduisez vos graphismes PNG en fichiers WebP plus légers qui préservent la transparence, pour des sites plus rapides. Gratuit, sans inscription.',
+      intro: 'WebP est le format d’image moderne du web : il produit des fichiers nettement plus légers que le PNG tout en préservant la transparence, ce qui signifie des pages plus rapides et de meilleurs Core Web Vitals. Media Manipulator convertit votre PNG en WebP à la qualité de votre choix : gratuitement, en ligne, avec la transparence intacte et sans inscription.',
+      whatItDoes: [
+        'Convertit n’importe quelle image .png en fichier .webp moderne.',
+        'Préserve le canal alpha, pour que les PNG transparents restent transparents.',
+        'Vous laisse choisir la qualité pour équilibrer le poids du fichier et la fidélité.',
+        'Produit typiquement des fichiers 25–80 % plus légers que le PNG source.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer le PNG',
+          description: 'Déposez un graphisme, une icône ou une capture d’écran .png.',
+        },
+        {
+          title: 'Choisir la qualité WebP',
+          description: '80–85 est une excellente valeur par défaut pour le web.',
+        },
+        {
+          title: 'Encoder le WebP',
+          description: 'ImageMagick réencode votre image en WebP.',
+        },
+        {
+          title: 'Télécharger le WebP',
+          description: 'Enregistrez un fichier .webp plus léger qui préserve la transparence.',
+        },
+      ],
+      advancedDetails: [
+        'Le WebP prend en charge les modes avec perte et sans perte ; à une qualité de ~80, il bat généralement le PNG de loin en poids de fichier tout en restant visuellement propre.',
+        'La transparence est préservée : les logos et les ressources d’interface conservent donc leur canal alpha.',
+        'Le WebP est pris en charge par tous les navigateurs modernes : servez-le directement pour accélérer le chargement des pages.',
+        'Pour une compatibilité maximale avec des logiciels très anciens, gardez une version PNG de secours.',
+      ],
+      whyItMatters: [
+        'Des images plus légères sont le levier numéro un pour des pages plus rapides et un meilleur SEO.',
+        'Le WebP conserve la transparence : vous n’avez donc pas à sacrifier le canal alpha au profit du poids, comme avec le JPG.',
+        'Les Core Web Vitals de Google récompensent les pages plus légères ; le WebP y contribue directement.',
+      ],
+      useCases: [
+        {
+          title: 'Des sites plus rapides',
+          description: 'Remplacez les lourdes ressources PNG par du WebP pour alléger la page.',
+        },
+        {
+          title: 'Logos transparents',
+          description: 'Réduisez un logo PNG transparent en conservant son canal alpha.',
+        },
+        {
+          title: 'Ressources d’applications et d’interface',
+          description: 'Livrez des graphismes plus légers sans perdre en netteté.',
+        },
+        {
+          title: 'Galeries riches en images',
+          description: 'Convertissez un lot de PNG en WebP pour une galerie plus réactive.',
+        },
+      ],
+      whyMediaManipulator: [
+        'La sortie est verrouillée sur WebP, avec la transparence préservée.',
+        'Un contrôle précis de la qualité : vous décidez du compromis entre poids et fidélité.',
+      ],
+      privacyNote: 'Votre PNG est réencodé en WebP sur notre serveur, à la qualité de votre choix, avec sa transparence conservée. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un PNG en WebP gratuitement ?',
+          answer: 'Importez votre .png ci-dessus, choisissez une qualité et cliquez sur convertir. Le téléchargement est un fichier .webp. C’est gratuit et sans inscription.',
+        },
+        {
+          question: 'La conversion PNG en WebP conserve-t-elle la transparence ?',
+          answer: 'Oui. Le WebP prend en charge un canal alpha : les PNG transparents restent donc transparents après la conversion.',
+        },
+        {
+          question: 'De combien le WebP sera-t-il plus léger ?',
+          answer: 'Cela dépend de l’image, mais le WebP est couramment 25–80 % plus léger que le PNG source, à qualité visuelle similaire.',
+        },
+        {
+          question: 'Le WebP est-il pris en charge partout ?',
+          answer: 'Tous les navigateurs modernes prennent en charge le WebP. Quelques programmes anciens ou spécialisés ne le font pas : gardez une version PNG de secours si vous devez les prendre en charge.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La transparence est préservée dans la sortie WebP.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un WebP en PNG',
+          to: '/tools/convert-webp-to-png',
+          description: 'Faites le chemin inverse, vers un PNG sans perte.',
+        },
+        {
+          label: 'Convertir un JPG en WebP',
+          to: '/tools/convert-jpg-to-webp',
+          description: 'Réduisez vos photos JPG en WebP pour le web.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez encore vos images sans changer de format.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et GIF.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez chaque option d’image en détail.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un PNG en WebP',
+        description: 'Importez une image PNG. Pour cet outil, la sortie est verrouillée sur WebP : choisissez une qualité et convertissez. La transparence est préservée, et les fichiers WebP sont typiquement bien plus légers que les PNG.',
+      },
     },
     'convert-jpg-to-webp': {
       name: 'Convertir un JPG en WebP',
+      h1: 'Convertir un JPG en WebP en ligne gratuitement',
       tagline: 'Réduisez le poids de vos photos JPG avec le format moderne WebP, plus rapide à charger sur le web, à qualité visuelle égale.',
+      metaTitle: 'Convertir un JPG en WebP en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur JPG en WebP gratuit en ligne. Réduisez vos photos .jpg en images WebP plus légères pour des sites plus rapides, à la qualité de votre choix. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un JPG en WebP en ligne gratuitement',
+      ogDescription: 'Réduisez vos photos JPG en fichiers WebP plus légers pour des sites plus rapides, à qualité visuelle égale. Gratuit, sans inscription.',
+      intro: 'Le WebP offre la même qualité visuelle que le JPG dans un fichier nettement plus léger ; c’est pourquoi il est devenu le format d’image par défaut des sites rapides. Media Manipulator convertit votre JPG en WebP à la qualité de votre choix : vos photos ont le même rendu, mais se chargent plus vite.',
+      whatItDoes: [
+        'Convertit n’importe quelle photo .jpg/.jpeg en fichier .webp moderne.',
+        'Vous laisse choisir la qualité WebP pour équilibrer le poids du fichier et la fidélité.',
+        'Produit typiquement des fichiers 25–35 % plus légers que le JPG source, à qualité égale.',
+        'La photo a le même rendu ; ses octets sont réencodés en WebP pour alléger le fichier.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importer le JPG',
+          description: 'Déposez une photo .jpg ou .jpeg.',
+        },
+        {
+          title: 'Choisir la qualité WebP',
+          description: '80–85 correspond de près à la qualité JPG habituelle.',
+        },
+        {
+          title: 'Encoder le WebP',
+          description: 'ImageMagick réencode votre photo en WebP.',
+        },
+        {
+          title: 'Télécharger le WebP',
+          description: 'Enregistrez un .webp plus léger, prêt pour le web.',
+        },
+      ],
+      advancedDetails: [
+        'À qualité visuelle équivalente, le WebP est couramment 25–35 % plus léger que le JPG grâce à une compression plus moderne.',
+        'Évitez d’empiler les compressions fortes : réencoder un JPG déjà compressé avec perte à une qualité WebP très basse peut cumuler les artefacts.',
+        'Le WebP est pris en charge par tous les navigateurs modernes : servez-le directement pour accélérer le chargement des pages.',
+        'Pour une compatibilité maximale avec des logiciels très anciens, gardez une version JPG de secours.',
+      ],
+      whyItMatters: [
+        'Des images plus légères améliorent directement le temps de chargement, le taux de rebond et le SEO.',
+        'Le WebP vous donne une qualité comparable au JPG dans un fichier plus léger, en une seule conversion.',
+        'Les Core Web Vitals récompensent les images plus légères : le WebP est un gain rapide.',
+      ],
+      useCases: [
+        {
+          title: 'Des sites plus rapides',
+          description: 'Convertissez les JPG d’en-tête et de galerie en WebP pour alléger la page.',
+        },
+        {
+          title: 'Catalogues e-commerce',
+          description: 'Réduisez les photos produit pour que les fiches se chargent instantanément.',
+        },
+        {
+          title: 'Blogs et articles',
+          description: 'Servez des images intégrées plus légères sans perte de qualité visible.',
+        },
+        {
+          title: 'Photos adaptées à l’e-mail',
+          description: 'Obtenez des fichiers plus légers qui restent sous les limites de pièces jointes.',
+        },
+      ],
+      whyMediaManipulator: [
+        'La sortie est verrouillée sur WebP : il n’y a donc rien à mal configurer.',
+        'Un contrôle précis de la qualité au lieu d’un préréglage fixe.',
+      ],
+      privacyNote: 'Votre JPG est réencodé en un WebP plus léger sur notre serveur, à la qualité de votre choix. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un JPG en WebP gratuitement ?',
+          answer: 'Importez votre .jpg ci-dessus, choisissez une qualité et cliquez sur convertir. Le téléchargement est un fichier .webp. C’est gratuit et sans inscription.',
+        },
+        {
+          question: 'Le WebP est-il meilleur que le JPG ?',
+          answer: 'Pour le web, généralement oui : le WebP offre une qualité similaire dans un fichier plus léger. Le JPG garde l’avantage de la compatibilité universelle avec les logiciels très anciens.',
+        },
+        {
+          question: 'De combien le WebP est-il plus léger que le JPG ?',
+          answer: 'À qualité visuelle équivalente, le WebP est couramment 25–35 % plus léger que le JPG, même si le gain exact dépend de l’image.',
+        },
+        {
+          question: 'Convertir un JPG en WebP fait-il perdre en qualité ?',
+          answer: 'Les deux formats sont avec perte. À une qualité de 80–85, le résultat a le même rendu que le JPG. Évitez de régler la qualité WebP très bas pour ne pas cumuler les artefacts.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le JPG n’a pas de transparence : la sortie WebP est donc entièrement opaque.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un WebP en JPG',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Faites le chemin inverse, vers un JPG universel.',
+        },
+        {
+          label: 'Convertir un PNG en WebP',
+          to: '/tools/convert-png-to-webp',
+          description: 'Réduisez vos graphismes PNG en WebP pour le web.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez encore vos images sans changer de format.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et GIF.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez chaque option d’image en détail.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un JPG en WebP',
+        description: 'Importez une image JPG. Pour cet outil, la sortie est verrouillée sur WebP : choisissez une qualité et convertissez. Le WebP produit généralement un fichier plus léger que le JPG à qualité visuelle égale.',
+      },
     },
     'jpg-converter': {
       name: 'Convertisseur JPG',
@@ -735,43 +9049,1174 @@ const frToolPages = {
     },
     'convert-jpg-to-pdf': {
       name: 'Convertir un JPG en PDF',
+      h1: 'Convertir un JPG en PDF en ligne gratuitement',
       tagline: 'Transformez vos photos et scans JPG en documents PDF propres, prêts à être partagés, imprimés ou envoyés.',
+      metaTitle: 'Convertir un JPG en PDF en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur JPG en PDF gratuit en ligne. Transformez vos photos et scans .jpg en documents PDF propres, sans perte de qualité. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un JPG en PDF en ligne gratuitement',
+      ogDescription: 'Transformez vos photos et scans JPG en documents PDF propres. Sans perte, gratuit, sans inscription.',
+      intro: 'Le JPG est le format dans lequel votre téléphone et votre appareil photo prennent leurs photos, mais le PDF est ce que la plupart des formulaires, des candidatures et des bureaux attendent. Media Manipulator intègre votre JPG directement dans un PDF sans recompression ; le document ressemble donc exactement à votre photo et reste léger.',
+      whatItDoes: [
+        'Enveloppe une photo JPG/JPEG dans un document PDF d’une seule page.',
+        'Intègre les octets d’origine du JPG sans perte : aucune compression ajoutée.',
+        'Dimensionne la page à la photo, pour que rien ne soit recadré ni étiré.',
+        'Produit un PDF standard qui s’ouvre et s’imprime partout.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez le JPG',
+          description: 'Déposez une photo ou un scan .jpg ou .jpeg.',
+        },
+        {
+          title: 'Nous l’intégrons',
+          description: 'Le JPG est placé sur une page de taille identique, sans compression.',
+        },
+        {
+          title: 'Générez le PDF',
+          description: 'Un PDF standard d’une seule page est assemblé.',
+        },
+        {
+          title: 'Téléchargez le PDF',
+          description: 'Enregistrez un .pdf propre, prêt à être partagé ou envoyé.',
+        },
+      ],
+      advancedDetails: [
+        'Le flux JPG est intégré avec le filtre PDF /DCTDecode, ce qui signifie que la photo est stockée telle quelle : aucun second passage de compression avec perte.',
+        'Comme il n’y a pas de réencodage, un document JPG en PDF a généralement à peu près la même taille que la photo d’origine.',
+        'La page est dimensionnée à partir de l’image à 96 DPI ; une photo de téléphone typique produit donc une page de taille confortable.',
+      ],
+      whyItMatters: [
+        'Les formulaires, les portails et les candidatures exigent souvent le PDF, pas le JPG.',
+        'Un PDF s’imprime de façon prévisible là où un JPG brut pourrait être découpé ou redimensionné.',
+        'L’intégration sans perte garde lisible le texte d’un document numérisé.',
+      ],
+      useCases: [
+        {
+          title: 'Candidatures',
+          description: 'Transformez la photo d’un formulaire signé en un PDF qu’un portail accepte.',
+        },
+        {
+          title: 'Reçus et notes de frais',
+          description: 'Convertissez les photos de reçus en PDF pour vos notes de frais.',
+        },
+        {
+          title: 'Documents numérisés',
+          description: 'Enveloppez le scan d’une page pris au téléphone dans un PDF soigné.',
+        },
+        {
+          title: 'Impression',
+          description: 'Obtenez une impression prévisible à partir d’un JPG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Réellement sans perte : le JPG à l’intérieur du PDF est identique à votre original.',
+        'La sortie est verrouillée sur PDF ; il n’y a donc rien à mal configurer.',
+      ],
+      privacyNote: 'Votre JPG est placé, sans être recompressé, sur une page PDF unique que notre serveur construit. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un JPG en PDF gratuitement ?',
+          answer: 'Importez votre .jpg ci-dessus et cliquez sur convertir : la sortie est un PDF d’une seule page. C’est gratuit et sans inscription.',
+        },
+        {
+          question: 'Convertir un JPG en PDF réduit-il la qualité ?',
+          answer: 'Non. Le JPG est intégré directement dans le PDF sans recompression ; la qualité de l’image est donc identique à celle de votre fichier d’origine.',
+        },
+        {
+          question: 'Le PDF sera-t-il beaucoup plus gros que mon JPG ?',
+          answer: 'Non : comme il n’y a pas de réencodage, le PDF a à peu près la même taille que le JPG source, plus une minuscule enveloppe de document.',
+        },
+        {
+          question: 'Puis-je combiner plusieurs JPG dans un seul PDF ?',
+          answer: 'Cet outil produit un PDF par image. Convertissez chaque JPG et fusionnez les PDF dans un outil de fusion si vous avez besoin de plusieurs pages.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le JPG est intégré sans perte (aucune recompression) dans un PDF d’une seule page.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un PNG en PDF',
+          to: '/tools/convert-png-to-pdf',
+          description: 'Convertisseur dédié PNG → PDF.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Convertissez n’importe quel format d’image en PDF.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus encore.',
+        },
+        {
+          label: 'PDF en JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Dans l’autre sens : convertissez un PDF en JPG.',
+        },
+        {
+          label: 'Convertisseur PDF',
+          to: '/tools/pdf-converter',
+          description: 'Le centre complet de conversion PDF.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un JPG en PDF',
+        description: 'Importez une image JPG. La sortie est verrouillée sur PDF et votre JPG est intégré sans perte : la photo à l’intérieur du PDF est identique bit pour bit à votre original.',
+      },
     },
     'convert-png-to-pdf': {
       name: 'Convertir un PNG en PDF',
+      h1: 'Convertir un PNG en PDF en ligne gratuitement',
       tagline: 'Transformez vos captures d’écran, images et scans PNG en documents PDF propres et nets.',
+      metaTitle: 'Convertir un PNG en PDF en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur PNG en PDF gratuit en ligne. Transformez vos captures d’écran et graphiques .png en documents PDF nets et sans perte. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un PNG en PDF en ligne gratuitement',
+      ogDescription: 'Transformez vos captures d’écran et graphiques PNG en documents PDF nets et sans perte. Gratuit, sans inscription.',
+      intro: 'Le PNG est le format des captures d’écran, des schémas et des graphiques au texte net et aux bords précis. Lorsque vous devez en envoyer ou en imprimer un comme document, le PDF est la bonne enveloppe. Media Manipulator intègre votre PNG sans perte dans un PDF, pour que chaque bord reste net.',
+      whatItDoes: [
+        'Enveloppe une image PNG dans un document PDF d’une seule page.',
+        'Intègre l’image sans perte, pour que le texte et les dessins au trait restent nets.',
+        'Aplatit la transparence sur du blanc, puisque les pages PDF sont opaques.',
+        'Produit un PDF standard qui s’ouvre et s’imprime partout.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez le PNG',
+          description: 'Déposez une capture d’écran, un schéma ou un graphique .png.',
+        },
+        {
+          title: 'Nous l’intégrons',
+          description: 'Le PNG est composé sur une page blanche et intégré sans perte.',
+        },
+        {
+          title: 'Générez le PDF',
+          description: 'Un PDF standard d’une seule page est assemblé.',
+        },
+        {
+          title: 'Téléchargez le PDF',
+          description: 'Enregistrez un .pdf net, prêt à être partagé ou imprimé.',
+        },
+      ],
+      advancedDetails: [
+        'Les PNG sont décodés et intégrés avec la compression sans perte zlib (Flate) ; le texte et les bords nets sont donc préservés exactement, sans artefacts JPEG.',
+        'Les zones transparentes deviennent blanches, car les pages PDF n’ont pas de canal alpha.',
+        'La page est dimensionnée à partir de l’image à 96 DPI, pour une taille physique par défaut raisonnable.',
+      ],
+      whyItMatters: [
+        'Les captures d’écran et les schémas sont souvent joints en PDF aux tickets et aux rapports.',
+        'L’intégration sans perte garde lisibles les petits textes et les lignes fines.',
+        'Le PDF s’imprime de façon prévisible là où un PNG brut peut être redimensionné de manière inattendue.',
+      ],
+      useCases: [
+        {
+          title: 'Rapports de bugs',
+          description: 'Transformez une capture d’écran en PDF à joindre à un ticket.',
+        },
+        {
+          title: 'Schémas et graphiques',
+          description: 'Enveloppez un graphique exporté dans un PDF facile à partager.',
+        },
+        {
+          title: 'Formulaires numérisés',
+          description: 'Convertissez un scan PNG en un document PDF soigné.',
+        },
+        {
+          title: 'Impression',
+          description: 'Obtenez des impressions nettes et prévisibles à partir d’un PNG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'L’intégration sans perte garde le texte et les bords parfaitement nets.',
+        'La sortie est verrouillée sur PDF ; il n’y a donc rien à mal configurer.',
+      ],
+      privacyNote: 'Votre PNG est intégré sans perte dans un PDF d’une page sur notre serveur, avec la transparence aplatie sur du blanc. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un PNG en PDF gratuitement ?',
+          answer: 'Importez votre .png ci-dessus et cliquez sur convertir : la sortie est un PDF d’une seule page. C’est gratuit et sans inscription.',
+        },
+        {
+          question: 'La conversion PNG en PDF garde-t-elle le texte net ?',
+          answer: 'Oui. Le PNG est intégré sans perte ; le texte et les dessins au trait restent donc nets, sans artefacts de type JPEG.',
+        },
+        {
+          question: 'Qu’arrive-t-il à un PNG transparent ?',
+          answer: 'Les zones transparentes sont aplaties sur un fond blanc, car les pages PDF sont opaques. Le contenu visible reste inchangé.',
+        },
+        {
+          question: 'Puis-je fusionner plusieurs PNG dans un seul PDF ?',
+          answer: 'Cet outil crée un PDF par image. Convertissez chaque PNG et fusionnez les PDF dans un outil de fusion pour obtenir un document de plusieurs pages.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le PNG est intégré sans perte. La transparence est aplatie sur du blanc, car les pages PDF sont opaques.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un JPG en PDF',
+          to: '/tools/convert-jpg-to-pdf',
+          description: 'Convertisseur dédié JPG → PDF.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Convertissez n’importe quel format d’image en PDF.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus encore.',
+        },
+        {
+          label: 'PDF en PNG',
+          to: '/tools/pdf-to-png',
+          description: 'Dans l’autre sens : convertissez un PDF en PNG.',
+        },
+        {
+          label: 'Convertisseur PDF',
+          to: '/tools/pdf-converter',
+          description: 'Le centre complet de conversion PDF.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un PNG en PDF',
+        description: 'Importez une image PNG. La sortie est verrouillée sur PDF et votre PNG est intégré sans perte, pour que le texte et les bords nets le restent sur la page.',
+      },
     },
     'pdf-to-png': {
       name: 'PDF en PNG',
+      h1: 'Convertir un PDF en PNG en ligne gratuitement',
       tagline: 'Convertissez chaque page d’un PDF en images PNG nettes et sans perte, idéales pour le texte, les schémas et la retouche.',
+      metaTitle: 'Convertir un PDF en PNG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur PDF en PNG gratuit en ligne. Convertissez chaque page d’un PDF en images PNG nettes et sans perte, téléchargées dans un ZIP. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un PDF en PNG en ligne gratuitement',
+      ogDescription: 'Convertissez chaque page d’un PDF en images PNG nettes et sans perte. Gratuit, rapide, sans inscription.',
+      intro: 'Le PNG est le meilleur choix lorsqu’une page PDF contient du texte net, des lignes fines ou des schémas que vous voulez garder parfaitement nets. Media Manipulator rend chaque page en PNG sans perte avec Poppler ; il n’y a donc aucun artefact JPEG autour du texte. Choisissez toutes les pages ou seulement la première, et sélectionnez la résolution.',
+      whatItDoes: [
+        'Rend chaque page du PDF en une image PNG sans perte au DPI que vous choisissez.',
+        'Convertit toutes les pages (téléchargées dans un ZIP) ou seulement la première (un seul PNG).',
+        'Nomme clairement la sortie multipage : page-001.png, page-002.png, et ainsi de suite.',
+        'Garde le texte et les dessins au trait nets grâce à l’encodage PNG sans perte.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez le PDF',
+          description: 'Déposez n’importe quel document .pdf.',
+        },
+        {
+          title: 'Choisissez les pages et le DPI',
+          description: 'Toutes les pages ou la première seulement ; 150 DPI est une bonne valeur par défaut.',
+        },
+        {
+          title: 'Rendu en PNG',
+          description: 'Poppler pixellise chaque page en un PNG sans perte.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Obtenez un seul PNG, ou un ZIP avec un PNG par page.',
+        },
+      ],
+      advancedDetails: [
+        'Le rendu utilise Poppler (pdftoppm) pour une sortie de page précise et fidèle.',
+        'Le PNG est sans perte ; c’est donc un meilleur choix que le JPG lorsque la page contient surtout du texte, des schémas ou des graphiques nets.',
+        'Un DPI plus élevé donne des images plus nettes et plus grandes : 150 DPI convient aux écrans, 300 DPI à l’impression.',
+        'Les PNG rendus ont un fond blanc ; les pages PDF sont opaques, il n’y a donc aucune transparence à préserver.',
+      ],
+      whyItMatters: [
+        'Le PNG sans perte garde lisibles les petits textes et les lignes fines, sans artefacts.',
+        'Les pages PNG s’insèrent proprement dans les éditeurs, les documents et les outils de design.',
+        'Une page rendue capture la mise en page visuelle exacte du document.',
+      ],
+      useCases: [
+        {
+          title: 'Schémas et plans techniques',
+          description: 'Rendez des pages techniques sans artefacts.',
+        },
+        {
+          title: 'Annotation et relecture',
+          description: 'Ouvrez une page nette dans un éditeur pour l’annoter.',
+        },
+        {
+          title: 'Ressources de design',
+          description: 'Récupérez un graphique de page propre dans un outil de design.',
+        },
+        {
+          title: 'Vignettes',
+          description: 'Générez un aperçu PNG net de la première page.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Le rendu PNG sans perte garde le texte et les bords nets.',
+        'Un ZIP clair et soigné avec des noms de fichiers numérotés par page et triables.',
+      ],
+      privacyNote: 'Les pages de votre PDF sont rendues en images PNG avec Poppler sur notre serveur et, au-delà d’une page, regroupées dans un ZIP. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un PDF en PNG gratuitement ?',
+          answer: 'Importez votre .pdf ci-dessus, choisissez toutes les pages ou seulement la première, sélectionnez un DPI et cliquez sur convertir.',
+        },
+        {
+          question: 'Pourquoi choisir le PNG plutôt que le JPG pour un PDF ?',
+          answer: 'Le PNG est sans perte ; il garde donc le texte, les lignes fines et les schémas nets, sans artefacts de compression. Le JPG est préférable lorsque vous voulez des fichiers plus petits pour des pages riches en photos.',
+        },
+        {
+          question: 'Vais-je obtenir une image ou plusieurs ?',
+          answer: 'Choisissez « toutes les pages » pour obtenir un ZIP avec un PNG par page (page-001.png, …), ou « première page seulement » pour un seul PNG.',
+        },
+        {
+          question: 'Les PNG ont-ils un fond transparent ?',
+          answer: 'Non : les pages PDF sont opaques, les pages rendues ont donc un fond blanc. Il n’y a aucune transparence à préserver.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie pour toutes les pages est livrée en .zip ; la sortie pour la première page est un seul .png.',
+          'Les pages rendues ont un fond blanc : les pages PDF sont opaques, il n’y a donc pas de transparence.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF en JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Rendez plutôt les pages PDF en JPG compact.',
+        },
+        {
+          label: 'Convertisseur PDF',
+          to: '/tools/pdf-converter',
+          description: 'Convertissez des PDF en images et des images en PDF.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez les images rendues d’un format à l’autre.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Dans l’autre sens : transformez des images en PDF.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un PDF en PNG',
+        description: 'Importez un PDF. Chaque page est rendue en image PNG sans perte. Choisissez « toutes les pages » pour un ZIP, ou « première page seulement » pour un seul PNG. Choisissez un DPI de rendu pour une sortie plus nette.',
+      },
     },
     'pdf-converter': {
       name: 'Convertisseur PDF',
+      h1: 'Convertisseur PDF gratuit en ligne',
       tagline: 'Convertissez des PDF en images JPG ou PNG, et des images en PDF, le tout au même endroit.',
+      metaTitle: 'Convertisseur PDF gratuit en ligne | Media Manipulator',
+      metaDescription: 'Convertisseur PDF gratuit en ligne. Convertissez des PDF en images JPG ou PNG, et des images en PDF. Sans inscription, sans filigrane. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertisseur PDF gratuit en ligne',
+      ogDescription: 'Convertissez des PDF en images JPG/PNG et des images en PDF, le tout dans un seul outil gratuit. Sans inscription.',
+      intro: 'Le convertisseur PDF gère les deux sens au même endroit : rendez les pages d’un PDF en images JPG ou PNG, ou enveloppez une image dans un document PDF. Importez un PDF et vous obtenez les réglages d’export en images ; importez une image et vous obtenez la conversion d’image en PDF. Tout s’exécute sur nos propres serveurs.',
+      whatItDoes: [
+        'Convertit les pages d’un PDF en JPG ou PNG à la résolution que vous choisissez.',
+        'Convertit les images JPG, PNG et autres en PDF d’une seule page.',
+        'Regroupe les exports de PDF multipages dans un ZIP soigné d’images numérotées.',
+        'Adapte automatiquement le formulaire au fichier que vous importez.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un fichier',
+          description: 'Déposez un PDF, ou une image comme un JPG ou un PNG.',
+        },
+        {
+          title: 'Choisissez votre sortie',
+          description: 'Pour un PDF, choisissez JPG/PNG, les pages et le DPI ; pour une image, la sortie est le PDF.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'Nous rendons ou enveloppons votre fichier sur notre serveur.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez un PDF, une seule image ou un ZIP d’images de pages.',
+        },
+      ],
+      advancedDetails: [
+        'Le rendu PDF → image utilise Poppler (pdftoppm) ; la conversion image → PDF intègre les JPG sans perte et les autres formats avec la compression sans perte Flate.',
+        'Les exports de PDF multipages sont livrés en .zip avec des noms de fichiers triables page-001/page-002.',
+        'La conversion image en PDF dimensionne la page à l’image à 96 DPI ; la conversion PDF en image est par défaut à 150 DPI et prend en charge jusqu’à 300+ pour l’impression.',
+        'Une limite de nombre de pages protège contre les PDF trop volumineux.',
+      ],
+      whyItMatters: [
+        'Un seul outil couvre les deux sens courants de conversion PDF.',
+        'Plus besoin de chercher un outil distinct selon le sens de la conversion.',
+        'Une qualité constante, côté serveur, quels que soient votre navigateur ou votre appareil.',
+      ],
+      useCases: [
+        {
+          title: 'Flux de travail mixtes',
+          description: 'Passez de PDF→image à image→PDF sans changer d’outil.',
+        },
+        {
+          title: 'Préparation de documents',
+          description: 'Transformez des images en PDF pour les formulaires d’envoi.',
+        },
+        {
+          title: 'Réutilisation',
+          description: 'Rendez des pages PDF en images pour des présentations ou les réseaux sociaux.',
+        },
+        {
+          title: 'Aperçus rapides',
+          description: 'Générez une image de la première page de n’importe quel PDF.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Les deux sens de conversion dans un seul outil adaptatif.',
+        'Conversion image→PDF sans perte et rendu PDF→image fidèle avec Poppler.',
+      ],
+      privacyNote: 'Votre PDF est rendu page par page en images, ou votre image est enveloppée dans un PDF, par Poppler et ImageMagick sur notre serveur. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Que peut faire le convertisseur PDF ?',
+          answer: 'Il convertit les pages d’un PDF en images JPG ou PNG, et convertit les images (JPG, PNG et plus encore) en documents PDF, le tout dans un seul outil gratuit.',
+        },
+        {
+          question: 'Comment sait-il dans quel sens convertir ?',
+          answer: 'Il s’adapte à votre import : un PDF affiche les réglages d’export en images (format, pages, DPI), tandis qu’une image est convertie en PDF.',
+        },
+        {
+          question: 'Puis-je convertir un PDF de plusieurs pages en images ?',
+          answer: 'Oui. Choisissez « toutes les pages » et vous obtenez un ZIP contenant une image par page, nommées page-001, page-002, et ainsi de suite.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Importez un PDF pour PDF→image ; importez une image pour image→PDF. Le formulaire s’adapte automatiquement.',
+          'L’export de toutes les pages d’un PDF est livré en .zip d’images numérotées.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF en JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Rendez les pages PDF en images JPG.',
+        },
+        {
+          label: 'PDF en PNG',
+          to: '/tools/pdf-to-png',
+          description: 'Rendez les pages PDF en images PNG sans perte.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Transformez n’importe quelle image en PDF.',
+        },
+        {
+          label: 'Convertir un JPG en PDF',
+          to: '/tools/convert-jpg-to-pdf',
+          description: 'Convertisseur dédié JPG → PDF.',
+        },
+        {
+          label: 'Convertir un PNG en PDF',
+          to: '/tools/convert-png-to-pdf',
+          description: 'Convertisseur dédié PNG → PDF.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez d’un format d’image à l’autre.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un PDF ou une image',
+        description: 'Importez un PDF pour rendre ses pages en images JPG ou PNG, ou importez une image pour la transformer en PDF. Le formulaire s’adapte au fichier que vous choisissez.',
+      },
     },
     'convert-heic-to-jpg': {
       name: 'Convertir un HEIC en JPG',
+      h1: 'Convertir un HEIC en JPG en ligne gratuitement',
       tagline: 'Transformez les photos HEIC de votre iPhone en fichiers JPG compatibles partout, que vous pouvez ouvrir et envoyer n’importe où.',
+      metaTitle: 'Convertir un HEIC en JPG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur HEIC en JPG gratuit en ligne. Transformez les photos .heic/.heif de votre iPhone en fichiers JPG compatibles partout. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un HEIC en JPG en ligne gratuitement',
+      ogDescription: 'Transformez les photos HEIC de votre iPhone en fichiers JPG compatibles partout. Gratuit, rapide, sans inscription.',
+      intro: 'Le HEIC est le format haute efficacité qu’utilisent les iPhone pour gagner de la place, mais il ne s’ouvre pas sur de nombreux PC Windows, sites web ou applications plus anciennes. Media Manipulator convertit vos photos HEIC en JPG, le format qui fonctionne partout, avec la bonne orientation et la qualité que vous choisissez.',
+      whatItDoes: [
+        'Convertit les photos Apple HEIC/HEIF en JPG standard.',
+        'Oriente automatiquement l’image à partir des données EXIF, pour que les portraits ne soient pas de côté.',
+        'Vous laisse choisir la qualité JPG pour équilibrer taille de fichier et fidélité.',
+        'Produit un JPG qui s’ouvre sur n’importe quel appareil, site ou application.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez le HEIC',
+          description: 'Déposez une photo .heic ou .heif de votre iPhone.',
+        },
+        {
+          title: 'Orientation automatique',
+          description: 'Nous lisons l’orientation EXIF pour que la photo soit à l’endroit.',
+        },
+        {
+          title: 'Encodage en JPG',
+          description: 'ImageMagick décode le HEIC (libheif) et écrit un JPG.',
+        },
+        {
+          title: 'Téléchargez le JPG',
+          description: 'Enregistrez un fichier .jpg compatible partout.',
+        },
+      ],
+      advancedDetails: [
+        'Le décodage HEIC repose sur ImageMagick compilé avec le délégué libheif. Si le serveur ne prend pas en charge le HEIC, l’outil renvoie une erreur claire plutôt qu’un fichier corrompu.',
+        'Une qualité de 85–90 est une excellente valeur par défaut : le HEIC est déjà efficace, donc un JPG de haute qualité garde la photo visuellement identique.',
+        'L’orientation EXIF est appliquée avant l’encodage, ce qui corrige le problème courant de « rotation à 90° » lorsqu’un HEIC est converti naïvement.',
+      ],
+      whyItMatters: [
+        'Windows, de nombreux formulaires d’envoi web et les logiciels plus anciens ne peuvent toujours pas ouvrir le HEIC.',
+        'Partager un JPG garantit que le destinataire pourra le voir sur n’importe quel appareil.',
+        'La plupart des laboratoires photo et des places de marché exigent le JPG.',
+      ],
+      useCases: [
+        {
+          title: 'Partage de photos iPhone',
+          description: 'Envoyez des photos qui s’ouvrent sur n’importe quel téléphone ou PC.',
+        },
+        {
+          title: 'Envois sur le web',
+          description: 'Satisfaites les formulaires et les sites qui refusent le HEIC.',
+        },
+        {
+          title: 'Impression',
+          description: 'Convertissez en JPG avant de commander des tirages.',
+        },
+        {
+          title: 'Retouche dans des applications plus anciennes',
+          description: 'Ouvrez votre photo dans un logiciel sans prise en charge du HEIC.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Orientation automatique correcte : pas de photos de côté.',
+        'Un contrôle de la qualité au lieu d’un préréglage fixe.',
+      ],
+      privacyNote: 'Votre photo HEIC est décodée sur notre serveur, remise à l’endroit et enregistrée en JPG. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un HEIC en JPG gratuitement ?',
+          answer: 'Importez votre photo .heic ci-dessus, choisissez une qualité et cliquez sur convertir. Vous obtenez un .jpg standard en retour.',
+        },
+        {
+          question: 'Pourquoi ma photo HEIC ne s’ouvre-t-elle pas sur Windows ?',
+          answer: 'Le HEIC est un format privilégié par Apple que les anciennes versions de Windows et de nombreuses applications ne peuvent pas lire. La conversion en JPG permet d’ouvrir la photo partout.',
+        },
+        {
+          question: 'La photo va-t-elle perdre en qualité ?',
+          answer: 'Le JPG est un format avec perte, mais à une qualité de 85–90, le résultat est visuellement identique au HEIC d’origine pour la quasi-totalité des photos.',
+        },
+        {
+          question: 'Pourquoi ma photo convertie était-elle tournée auparavant ?',
+          answer: 'Les convertisseurs naïfs ignorent l’orientation EXIF. Nous orientons automatiquement l’image, pour que votre photo ressorte à l’endroit.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le décodage HEIC nécessite ImageMagick avec le délégué libheif sur le serveur.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus encore.',
+        },
+        {
+          label: 'Convertir un AVIF en JPG',
+          to: '/tools/convert-avif-to-jpg',
+          description: 'Convertissez les photos AVIF modernes en JPG.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez le JPG pour le web.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Parcourez chaque option d’image.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un HEIC en JPG',
+        description: 'Importez une photo HEIC ou HEIF de votre iPhone. La sortie est verrouillée sur JPG, orientée automatiquement pour apparaître à l’endroit, à la qualité que vous choisissez.',
+      },
     },
     'convert-avif-to-jpg': {
       name: 'Convertir un AVIF en JPG',
+      h1: 'Convertir un AVIF en JPG en ligne gratuitement',
       tagline: 'Transformez des images AVIF modernes en fichiers JPG compatibles partout, pour les applications et sites qui n’acceptent pas l’AVIF.',
+      metaTitle: 'Convertir un AVIF en JPG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur AVIF en JPG gratuit en ligne. Transformez vos images .avif en fichiers JPG compatibles partout, à la qualité de votre choix. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un AVIF en JPG en ligne gratuitement',
+      ogDescription: 'Transformez des images AVIF modernes en fichiers JPG compatibles partout. Gratuit, rapide, sans inscription.',
+      intro: 'L’AVIF est un format d’image de pointe qui produit des fichiers minuscules, mais de nombreuses applications, éditeurs et formulaires d’envoi ne savent toujours pas l’ouvrir. Media Manipulator convertit l’AVIF en JPG pour que votre image fonctionne partout. Choisissez une qualité et téléchargez.',
+      whatItDoes: [
+        'Convertit les images AVIF en JPG standard.',
+        'Aplatit toute transparence sur un arrière-plan, puisque le JPG n’a pas de couche alpha.',
+        'Vous laisse choisir la qualité JPG pour obtenir l’équilibre poids/fidélité souhaité.',
+        'Produit un JPG qui s’ouvre sur n’importe quel appareil ou application.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer l’AVIF',
+          description: 'Déposez une image .avif.',
+        },
+        {
+          title: 'Choisir la qualité JPG',
+          description: '85 est une valeur par défaut équilibrée.',
+        },
+        {
+          title: 'Encoder le JPG',
+          description: 'ImageMagick décode l’AVIF (libaom/libheif) et écrit un JPG.',
+        },
+        {
+          title: 'Télécharger le JPG',
+          description: 'Enregistrez un .jpg compatible partout.',
+        },
+      ],
+      advancedDetails: [
+        'Le décodage AVIF repose sur une version d’ImageMagick compilée avec un délégué AVIF (libaom ou libheif). Si le serveur ne prend pas en charge l’AVIF, l’outil renvoie une erreur explicite.',
+        'L’AVIF prend en charge la transparence ; lors de la conversion en JPG, les zones transparentes sont aplaties, car le JPG n’a pas de couche alpha. Utilisez AVIF → PNG pour conserver la transparence.',
+        'Une qualité de 85–90 garde le JPG visuellement identique à l’AVIF pour la plupart des images.',
+      ],
+      whyItMatters: [
+        'De nombreuses applications et formulaires d’envoi ne prennent toujours pas en charge l’AVIF.',
+        'Le JPG garantit que le destinataire pourra ouvrir l’image.',
+        'La conversion vous permet d’utiliser un AVIF téléchargé partout où il vous faut un JPG.',
+      ],
+      useCases: [
+        {
+          title: 'Enregistrer des images du web',
+          description: 'Convertissez un AVIF téléchargé en JPG utilisable.',
+        },
+        {
+          title: 'Compatibilité des applications',
+          description: 'Ouvrez un AVIF dans un logiciel qui ne prend pas en charge l’AVIF.',
+        },
+        {
+          title: 'Envois',
+          description: 'Satisfaites un formulaire qui n’accepte que le JPG.',
+        },
+        {
+          title: 'Impression',
+          description: 'Produisez un JPG pour un laboratoire photo.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Un contrôle de la qualité au lieu d’un préréglage unique pour tous.',
+        'Fonctionne sur nos propres serveurs : aucun traitement par un tiers.',
+      ],
+      privacyNote: 'Votre AVIF est décodé sur notre serveur et réencodé en JPG à la qualité que vous définissez. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un AVIF en JPG gratuitement ?',
+          answer: 'Envoyez votre image .avif ci-dessus, choisissez une qualité et cliquez sur convertir. Vous recevez un .jpg standard.',
+        },
+        {
+          question: 'Pourquoi ne puis-je pas ouvrir les fichiers AVIF ?',
+          answer: 'L’AVIF est un format récent ; de nombreuses applications, éditeurs et sites web ne l’ont pas encore pris en charge. La conversion en JPG permet d’ouvrir l’image partout.',
+        },
+        {
+          question: 'Qu’en est-il de la transparence ?',
+          answer: 'Le JPG n’a pas de transparence, les zones transparentes de l’AVIF sont donc aplaties sur un arrière-plan. Si vous devez conserver la transparence, utilisez l’outil AVIF → PNG.',
+        },
+        {
+          question: 'Vais-je perdre en qualité ?',
+          answer: 'À une qualité de 85–90, le JPG paraît pratiquement identique à l’AVIF pour la plupart des images.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le décodage AVIF nécessite ImageMagick avec un délégué AVIF sur le serveur. La transparence est aplatie dans la sortie JPG.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un AVIF en PNG',
+          to: '/tools/convert-avif-to-png',
+          description: 'Conservez plutôt la transparence avec un PNG.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus.',
+        },
+        {
+          label: 'Convertir un HEIC en JPG',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Convertissez les photos HEIC d’iPhone en JPG.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez le poids du JPG pour le web.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un AVIF en JPG',
+        description: 'Envoyez une image AVIF. La sortie est verrouillée sur JPG : vous obtenez un fichier que toutes les applications, tous les éditeurs et tous les formulaires d’envoi acceptent, à la qualité de votre choix.',
+      },
     },
     'convert-avif-to-png': {
       name: 'Convertir un AVIF en PNG',
+      h1: 'Convertir un AVIF en PNG en ligne gratuitement',
       tagline: 'Transformez vos images AVIF en fichiers PNG sans perte, qui s’ouvrent partout et conservent toute la transparence.',
+      metaTitle: 'Convertir un AVIF en PNG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur AVIF en PNG gratuit en ligne. Transformez vos images .avif en fichiers PNG sans perte qui conservent la transparence et s’ouvrent dans n’importe quel éditeur. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un AVIF en PNG en ligne gratuitement',
+      ogDescription: 'Transformez des images AVIF en fichiers PNG sans perte qui conservent la transparence. Gratuit, rapide, sans inscription.',
+      intro: 'Quand une image AVIF comporte de la transparence, comme un logo ou un détourage, la convertir en JPG l’aplatirait. Le PNG conserve la couche alpha et est sans perte : c’est donc la bonne cible pour les graphiques. Media Manipulator convertit l’AVIF en PNG en gardant la transparence intacte.',
+      whatItDoes: [
+        'Convertit les images AVIF en PNG sans perte.',
+        'Préserve la couche alpha pour que les AVIF transparents restent transparents.',
+        'Produit un PNG qui s’ouvre dans n’importe quel éditeur, visualiseur ou outil de design.',
+        'L’image est préservée pixel par pixel lorsque l’AVIF devient un PNG.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer l’AVIF',
+          description: 'Déposez une image .avif, transparente ou opaque.',
+        },
+        {
+          title: 'Décoder l’AVIF',
+          description: 'ImageMagick décode l’AVIF avec son délégué AVIF.',
+        },
+        {
+          title: 'Encoder le PNG',
+          description: 'Un PNG sans perte est écrit, transparence préservée.',
+        },
+        {
+          title: 'Télécharger le PNG',
+          description: 'Enregistrez un fichier .png qui conserve la transparence.',
+        },
+      ],
+      advancedDetails: [
+        'Le décodage AVIF repose sur une version d’ImageMagick compilée avec un délégué AVIF (libaom ou libheif). Si le serveur ne prend pas en charge l’AVIF, l’outil renvoie une erreur explicite.',
+        'La transparence de l’AVIF est préservée sous forme de couche alpha PNG.',
+        'Le PNG est sans perte, la sortie est donc généralement plus lourde que l’AVIF source : c’est le prix de la compatibilité universelle et de la transparence.',
+      ],
+      whyItMatters: [
+        'Le PNG conserve la transparence que le JPG détruirait, ce qui est essentiel pour les logos et les détourages.',
+        'Certains éditeurs et applications ne peuvent pas ouvrir l’AVIF ; le PNG s’ouvre partout.',
+        'Le PNG est un format d’échange sûr et sans perte pour les graphiques.',
+      ],
+      useCases: [
+        {
+          title: 'Logos transparents',
+          description: 'Convertissez un logo AVIF transparent en PNG utilisable.',
+        },
+        {
+          title: 'Passations de design',
+          description: 'Fournissez un PNG aux outils qui ne lisent pas l’AVIF.',
+        },
+        {
+          title: 'Retouche',
+          description: 'Ouvrez l’image sans perte dans votre éditeur.',
+        },
+        {
+          title: 'Ressources web',
+          description: 'Gardez un PNG de secours pour les navigateurs plus anciens.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Transparence préservée automatiquement.',
+        'Sortie PNG sans perte pour le travail graphique.',
+      ],
+      privacyNote: 'Votre AVIF est décodé sur notre serveur et enregistré en PNG sans perte, transparence intacte. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un AVIF en PNG gratuitement ?',
+          answer: 'Envoyez votre image .avif ci-dessus et cliquez sur convertir : la sortie est un .png sans perte, transparence préservée.',
+        },
+        {
+          question: 'La conversion AVIF en PNG conserve-t-elle la transparence ?',
+          answer: 'Oui. Le PNG prend en charge une couche alpha, un AVIF transparent reste donc transparent après la conversion.',
+        },
+        {
+          question: 'Dois-je choisir PNG ou JPG pour mon AVIF ?',
+          answer: 'Choisissez le PNG quand vous avez besoin de transparence ou d’une qualité sans perte (logos, graphiques). Choisissez le JPG pour obtenir le fichier le plus léger quand l’image est une photo sans transparence.',
+        },
+        {
+          question: 'Pourquoi le PNG est-il plus lourd que l’AVIF ?',
+          answer: 'L’AVIF est un format compressé très efficace, tandis que le PNG est sans perte ; le PNG est donc généralement plus lourd. C’est normal.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le décodage AVIF nécessite ImageMagick avec un délégué AVIF. La transparence est préservée dans la sortie PNG.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un AVIF en JPG',
+          to: '/tools/convert-avif-to-jpg',
+          description: 'Convertissez plutôt l’AVIF en un JPG compact.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus.',
+        },
+        {
+          label: 'Convertir un HEIC en JPG',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Convertissez les photos HEIC d’iPhone en JPG.',
+        },
+        {
+          label: 'Supprimer l’arrière-plan d’une image',
+          to: '/tools/remove-background-from-image',
+          description: 'Créez automatiquement un détourage PNG transparent.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un AVIF en PNG',
+        description: 'Envoyez une image AVIF. La sortie est verrouillée sur PNG : la transparence est préservée et le fichier s’ouvre sans perte dans n’importe quel éditeur ou visualiseur.',
+      },
     },
     'convert-svg-to-png': {
       name: 'Convertir un SVG en PNG',
+      h1: 'Convertir un SVG en PNG en ligne gratuitement',
       tagline: 'Convertissez vos icônes et logos SVG en images PNG de la taille de votre choix, pour vos envois, présentations et applications.',
+      metaTitle: 'Convertir un SVG en PNG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur SVG en PNG gratuit en ligne. Rastérisez vos icônes et logos SVG en images PNG à la taille de votre choix. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un SVG en PNG en ligne gratuitement',
+      ogDescription: 'Rastérisez vos icônes et logos SVG en images PNG à n’importe quelle taille. Gratuit, rapide, sans inscription.',
+      intro: 'Les SVG sont des vecteurs parfaits, mais de nombreuses plateformes (réseaux sociaux, places de marché, outils de présentation et applications) n’acceptent que des images matricielles comme le PNG. Media Manipulator rastérise votre SVG en un PNG net qui conserve la transparence, à la taille de votre choix. Les SVG sont traités comme des entrées non fiables avec un moteur de rendu sécurisé.',
+      whatItDoes: [
+        'Rastérise les fichiers vectoriels SVG en images PNG.',
+        'Vous laisse définir une largeur et/ou une hauteur cible pour la résolution de sortie.',
+        'Préserve la transparence du SVG dans le PNG.',
+        'Effectue le rendu avec un rastériseur sécurisé qui ne récupère aucune ressource réseau externe.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer le SVG',
+          description: 'Déposez une icône, un logo ou une illustration .svg.',
+        },
+        {
+          title: 'Définir la taille (facultatif)',
+          description: 'Choisissez une largeur/hauteur, ou utilisez la taille naturelle du SVG.',
+        },
+        {
+          title: 'Rastériser',
+          description: 'Le SVG est rendu en image pixel sur notre serveur.',
+        },
+        {
+          title: 'Télécharger le PNG',
+          description: 'Enregistrez un .png net qui conserve la transparence.',
+        },
+      ],
+      advancedDetails: [
+        'Le rendu utilise rsvg-convert (librsvg) quand il est disponible (il ne charge pas de ressources distantes par défaut), avec ImageMagick comme solution de repli renforcée.',
+        'Comme le SVG est vectoriel, vous pouvez le rendre à n’importe quelle résolution sans perte de qualité ; choisissez une largeur plus grande pour une sortie plus nette.',
+        'Les SVG envoyés sont considérés comme des entrées non fiables et traités avec l’accès réseau désactivé, afin d’éviter les risques de SSRF ou de récupération de ressources externes.',
+      ],
+      whyItMatters: [
+        'La plupart des formulaires d’envoi et des plateformes sociales refusent le SVG mais acceptent le PNG.',
+        'Rastériser à une taille choisie garantit une sortie nette pour cet usage.',
+        'Le PNG conserve la transparence dont dépendent les icônes et les logos.',
+      ],
+      useCases: [
+        {
+          title: 'Réseaux sociaux et envois',
+          description: 'Transformez un logo SVG en PNG qu’une plateforme accepte.',
+        },
+        {
+          title: 'Présentations',
+          description: 'Insérez un PNG net d’une icône dans une diapositive.',
+        },
+        {
+          title: 'Ressources d’application',
+          description: 'Exportez un PNG à la taille exacte dont votre application a besoin.',
+        },
+        {
+          title: 'E-mail',
+          description: 'Utilisez un PNG là où le SVG n’est pas pris en charge.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Rendu à n’importe quelle taille sans perte de qualité : les vecteurs se redimensionnent parfaitement.',
+        'Traitement sécurisé des SVG, récupérations externes désactivées.',
+      ],
+      privacyNote: 'Votre SVG est rendu en PNG par librsvg sur notre serveur, sans récupérer les images et polices externes qu’il référence. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un SVG en PNG gratuitement ?',
+          answer: 'Envoyez votre .svg ci-dessus, définissez éventuellement une largeur ou une hauteur, puis cliquez sur convertir. Vous recevez un .png net.',
+        },
+        {
+          question: 'Quelle sera la taille du PNG ?',
+          answer: 'Par défaut, la taille naturelle du SVG est utilisée. Définissez une largeur et/ou une hauteur pour un rendu plus grand ou plus petit : les vecteurs se redimensionnent sans perte de qualité.',
+        },
+        {
+          question: 'Le PNG conserve-t-il la transparence ?',
+          answer: 'Oui. Les zones transparentes du SVG sont préservées comme transparence dans le PNG.',
+        },
+        {
+          question: 'Est-il sûr d’envoyer un SVG ?',
+          answer: 'Oui. Nous traitons les SVG comme des entrées non fiables et les rendons avec les récupérations réseau externes désactivées, de sorte que les références distantes intégrées ne peuvent pas être chargées.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Rendu avec rsvg-convert (de préférence) ou une solution de repli ImageMagick renforcée. Les récupérations réseau externes depuis le SVG sont désactivées.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un PNG en SVG',
+          to: '/tools/convert-png-to-svg',
+          description: 'Dans l’autre sens : vectorisez un PNG en SVG.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus.',
+        },
+        {
+          label: 'PNG en ICO',
+          to: '/tools/png-to-ico',
+          description: 'Transformez le PNG en favicon.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un SVG en PNG',
+        description: 'Envoyez un SVG. La sortie est verrouillée sur PNG. Définissez éventuellement une largeur ou une hauteur pour contrôler la résolution du rendu ; laissez-les vides pour utiliser la taille naturelle du SVG.',
+      },
     },
     'convert-png-to-svg': {
       name: 'Convertir un PNG en SVG',
+      h1: 'Convertir un PNG en SVG en ligne gratuitement',
       tagline: 'Vectorisez logos, icônes et dessins au trait PNG en véritables tracés SVG redimensionnables grâce à potrace.',
+      metaTitle: 'Convertir un PNG en SVG en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Vectoriseur PNG en SVG gratuit en ligne. Vectorisez logos, icônes et dessins au trait en véritables tracés SVG redimensionnables. Idéal pour les graphiques simples, pas pour les photos. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un PNG en SVG en ligne gratuitement',
+      ogDescription: 'Vectorisez logos, icônes et dessins au trait PNG en véritables tracés SVG redimensionnables. Gratuit, sans inscription.',
+      intro: 'Une véritable conversion PNG en SVG consiste à vectoriser votre image en vrais tracés vectoriels qui se redimensionnent à n’importe quelle taille sans pixelisation. Media Manipulator utilise potrace pour vectoriser votre PNG : idéal pour les logos, icônes, signatures et dessins au trait en noir et blanc. Il s’agit d’une vectorisation authentique, pas d’un PNG caché dans un SVG. L’outil n’est pas conçu pour transformer des photographies en dessin vectoriel propre.',
+      whatItDoes: [
+        'Vectorise un PNG en véritables tracés vectoriels SVG redimensionnables grâce à potrace.',
+        'Réduit l’image à un bitmap noir/blanc propre, puis vectorise les formes.',
+        'Vous laisse ajuster le seuil noir/blanc pour capturer plus ou moins de détails.',
+        'Produit un vrai .svg, pas une image matricielle enveloppée dans une balise <image>.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer le PNG',
+          description: 'Déposez un logo, une icône, une signature ou un dessin au trait PNG.',
+        },
+        {
+          title: 'Définir le seuil',
+          description: 'Choisissez le point de bascule noir/blanc pour contrôler le niveau de détail.',
+        },
+        {
+          title: 'Vectoriser',
+          description: 'ImageMagick prépare un bitmap ; potrace dessine les tracés.',
+        },
+        {
+          title: 'Télécharger le SVG',
+          description: 'Enregistrez un vrai fichier .svg redimensionnable.',
+        },
+      ],
+      advancedDetails: [
+        'Le pipeline aplatit le PNG en bitmap à deux niveaux (seuil ImageMagick), puis exécute potrace pour produire des tracés vectoriels de Bézier lisses.',
+        'La vectorisation fonctionne au mieux sur des graphiques simples et très contrastés : logos, icônes, monogrammes, signatures et dessins au trait en noir et blanc.',
+        'Elle ne reproduira pas fidèlement les photographies ni les dégradés complexes : vectoriser une photo produit des tracés lourds et confus, pas un dessin vectoriel propre.',
+        'Augmentez le seuil pour capturer les détails plus fins ou plus clairs ; baissez-le pour ne garder que les formes les plus marquées.',
+      ],
+      whyItMatters: [
+        'Les logos vectoriels se redimensionnent à n’importe quelle taille, du favicon au panneau d’affichage, sans pixelisation.',
+        'Les SVG sont minuscules pour les graphiques simples et modifiables dans des outils vectoriels comme Illustrator ou Inkscape.',
+        'Récupérer un vecteur à partir d’un logo PNG évite de le recréer de zéro.',
+      ],
+      useCases: [
+        {
+          title: 'Récupération de logo',
+          description: 'Vectorisez un logo PNG dont vous n’avez plus la source.',
+        },
+        {
+          title: 'Icônes et monogrammes',
+          description: 'Transformez une icône simple en SVG redimensionnable.',
+        },
+        {
+          title: 'Signatures',
+          description: 'Vectorisez une signature numérisée pour la réutiliser proprement.',
+        },
+        {
+          title: 'Dessin au trait',
+          description: 'Vectorisez une œuvre en noir et blanc en tracés modifiables.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Une véritable vectorisation potrace, honnête sur ce qu’elle fait bien (et moins bien).',
+        'Un contrôle du seuil pour affiner la vectorisation.',
+      ],
+      privacyNote: 'Votre image est réduite en noir et blanc et vectorisée en tracés par potrace sur notre serveur. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un PNG en SVG gratuitement ?',
+          answer: 'Envoyez votre .png ci-dessus, ajustez le seuil si nécessaire et cliquez sur convertir. Vous recevez un vrai .svg vectoriel.',
+        },
+        {
+          question: 'S’agit-il d’une vraie vectorisation ou d’un simple PNG enveloppé ?',
+          answer: 'Il s’agit d’une vraie vectorisation. Nous vectorisons l’image en véritables tracés SVG avec potrace ; nous n’intégrons pas le PNG dans un SVG pour nous en contenter.',
+        },
+        {
+          question: 'Vectorisera-t-il ma photo ?',
+          answer: 'Pas bien. La vectorisation est conçue pour les logos, icônes, signatures et dessins au trait. Les photographies et les dégradés complexes produisent des tracés lourds et confus plutôt que des vecteurs propres.',
+        },
+        {
+          question: 'À quoi sert le réglage du seuil ?',
+          answer: 'Il fixe le point de bascule noir/blanc avant la vectorisation. Augmentez-le pour capturer plus de détails (plus clairs) ; baissez-le pour ne garder que les formes les plus marquées.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La vectorisation nécessite potrace sur le serveur. Idéal pour les logos, icônes et dessins au trait, pas pour les photographies.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un SVG en PNG',
+          to: '/tools/convert-svg-to-png',
+          description: 'Dans l’autre sens : rastérisez un SVG en PNG.',
+        },
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus.',
+        },
+        {
+          label: 'PNG en ICO',
+          to: '/tools/png-to-ico',
+          description: 'Transformez un PNG en favicon.',
+        },
+      ],
+      embed: {
+        title: 'Vectoriser un PNG en SVG',
+        description: 'Envoyez un PNG. La sortie est verrouillée sur SVG et produite par une véritable vectorisation (potrace), pas une image matricielle enveloppée dans un SVG. Ajustez le seuil noir/blanc pour capturer plus ou moins de détails. Idéal pour les logos, icônes, signatures et dessins au trait.',
+      },
     },
     'png-to-ico': {
       name: 'PNG en ICO',
+      h1: 'Convertir un PNG en ICO en ligne gratuitement',
       tagline: 'Transformez un PNG en véritable favicon .ico multi-tailles, pour les sites web et les icônes d’applications Windows.',
+      metaTitle: 'Convertir un PNG en ICO en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur PNG en ICO gratuit en ligne. Générez un véritable favicon .ico multi-tailles (16–256 px) pour les sites web et les icônes Windows. Sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un PNG en ICO en ligne gratuitement',
+      ogDescription: 'Générez un véritable favicon .ico multi-tailles à partir d’un PNG. Gratuit, rapide, sans inscription.',
+      intro: 'Un favicon doit être un vrai fichier .ico contenant plusieurs tailles, pour que les navigateurs et Windows puissent choisir la bonne. Media Manipulator génère un véritable ICO multi-tailles à partir de votre PNG, et non un fichier renommé, en y rassemblant la gamme standard d’icônes de 16–256 px.',
+      whatItDoes: [
+        'Génère un vrai conteneur .ico à partir d’une image PNG.',
+        'Rassemble plusieurs tailles (16, 32, 48, 64, 128, 256 px) dans un seul fichier.',
+        'Préserve la transparence pour que l’icône s’intègre proprement sur n’importe quel arrière-plan.',
+        'Produit un fichier que les navigateurs et Windows acceptent comme favicon ou icône d’application.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer le PNG',
+          description: 'Déposez un PNG : une image carrée donne la meilleure icône.',
+        },
+        {
+          title: 'Générer les tailles',
+          description: 'Nous rendons chaque taille d’icône standard à partir de votre image.',
+        },
+        {
+          title: 'Assembler l’ICO',
+          description: 'Les tailles sont rassemblées dans un seul vrai conteneur .ico.',
+        },
+        {
+          title: 'Télécharger l’ICO',
+          description: 'Enregistrez favicon.ico pour votre site ou votre application.',
+        },
+      ],
+      advancedDetails: [
+        'L’ICO est construit avec le redimensionnement automatique d’icônes d’ImageMagick, qui produit un véritable conteneur multi-images, pas un PNG renommé.',
+        'Inclure plusieurs tailles permet aux navigateurs et à Windows de choisir l’icône la plus nette pour chaque contexte (onglet, barre des tâches, bureau).',
+        'Pour le résultat le plus propre, partez d’un PNG carré de 256×256 ou plus, afin que chaque taille soit réduite avec netteté.',
+      ],
+      whyItMatters: [
+        'Les navigateurs attendent un vrai favicon .ico ; un PNG renommé peut échouer ou paraître flou.',
+        'Une icône multi-tailles reste nette, de l’onglet de 16 px au raccourci de bureau de 256 px.',
+        'Les icônes d’applications Windows exigent le format .ico.',
+      ],
+      useCases: [
+        {
+          title: 'Favicons de sites web',
+          description: 'Générez favicon.ico pour l’icône d’onglet de votre site.',
+        },
+        {
+          title: 'Icônes d’applications Windows',
+          description: 'Créez un .ico pour une application de bureau.',
+        },
+        {
+          title: 'Raccourcis',
+          description: 'Créez une icône nette pour un raccourci de bureau.',
+        },
+        {
+          title: 'Image de marque',
+          description: 'Transformez un logo PNG en véritable fichier d’icône.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Un véritable ICO multi-tailles, pas un PNG renommé.',
+        'Transparence préservée pour des icônes propres.',
+      ],
+      privacyNote: 'Votre image est redimensionnée à chaque taille d’icône standard et rassemblée dans un seul fichier .ico par ImageMagick sur notre serveur. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un PNG en ICO gratuitement ?',
+          answer: 'Envoyez votre .png ci-dessus et cliquez sur convertir : vous recevez un vrai .ico multi-tailles.',
+        },
+        {
+          question: 'S’agit-il d’un vrai ICO ou d’un PNG renommé ?',
+          answer: 'D’un vrai ICO. Nous générons plusieurs tailles d’icône et les rassemblons dans un véritable conteneur .ico, ce qu’attendent les navigateurs et Windows.',
+        },
+        {
+          question: 'Quelles tailles sont incluses ?',
+          answer: 'La gamme standard des favicons : 16, 32, 48, 64, 128 et 256 px. Les navigateurs et Windows choisissent la meilleure taille pour chaque contexte.',
+        },
+        {
+          question: 'Quelle image fonctionne le mieux ?',
+          answer: 'Un PNG carré de 256×256 ou plus donne le résultat le plus net, puisque chaque taille inférieure en est réduite proprement.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Un ICO multi-tailles (16/32/48/64/128/256 px) est généré. Partez d’une image carrée pour le meilleur résultat.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur d’images',
+          to: '/tools/image-converter',
+          description: 'Convertissez entre JPG, PNG, WebP, AVIF et plus.',
+        },
+        {
+          label: 'Convertir un SVG en PNG',
+          to: '/tools/convert-svg-to-png',
+          description: 'Rastérisez un logo SVG avant d’en faire une icône.',
+        },
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Créez une image carrée avant de générer l’icône.',
+        },
+        {
+          label: 'Supprimer l’arrière-plan d’une image',
+          to: '/tools/remove-background-from-image',
+          description: 'Créez une source d’icône transparente.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un PNG en ICO',
+        description: 'Envoyez un PNG (une image carrée fonctionne le mieux). La sortie est verrouillée sur ICO, et une véritable icône multi-tailles est générée, contenant les versions 16, 32, 48, 64, 128 et 256 px.',
+      },
     },
     'svg-converter': {
       name: 'Convertisseur SVG',
@@ -779,19 +10224,511 @@ const frToolPages = {
     },
     'convert-wav-to-mp3': {
       name: 'Convertir un WAV en MP3',
+      h1: 'Convertir un WAV en MP3 en ligne',
       tagline: 'Réduisez le poids de vos gros enregistrements WAV sans perte en fichiers MP3 largement compatibles, pour les podcasts, le partage et le stockage.',
+      metaTitle: 'Convertir un WAV en MP3 en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Convertisseur WAV en MP3 gratuit en ligne. Compressez vos enregistrements .wav sans perte en fichiers MP3 plus légers, au débit de votre choix.',
+      ogTitle: 'Convertir un WAV en MP3 en ligne',
+      ogDescription: 'Compressez vos enregistrements WAV en fichiers MP3 largement compatibles, au débit de votre choix.',
+      intro: 'Les fichiers WAV sont sans perte et volumineux. Le MP3 est le format audio compressé compatible partout : chaque téléphone, ordinateur portable et application musicale le lit. Media Manipulator réencode votre WAV en MP3 au débit que vous choisissez, pour un fichier 5–10× plus léger au prix d’une infime perte de qualité.',
+      whatItDoes: [
+        'Réencode les enregistrements WAV en MP3 au débit de votre choix.',
+        'Prend en charge des fréquences d’échantillonnage, des canaux et un débit personnalisés (128 à 320 kbit/s).',
+        'Préserve le volume sonore et évite tout rééchantillonnage inutile.',
+        'Produit un fichier .mp3 standard avec étiquettes ID3.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer le WAV',
+          description: 'Déposez n’importe quel fichier .wav depuis votre ordinateur.',
+        },
+        {
+          title: 'Choisir le débit',
+          description: '192 kbit/s pour la voix, 256–320 kbit/s pour la musique.',
+        },
+        {
+          title: 'Encoder le MP3',
+          description: 'FFmpeg encode un MP3 propre avec les réglages choisis.',
+        },
+        {
+          title: 'Télécharger le MP3',
+          description: 'Enregistrez un .mp3 largement compatible.',
+        },
+      ],
+      advancedDetails: [
+        'Utilise en interne un encodage de type LAME via FFmpeg.',
+        'Le MP3 est un codec avec perte : la qualité plafonne autour de 256 kbit/s pour la musique. La voix sonne très bien à 128–192 kbit/s.',
+        'Si vous avez besoin de fichiers sans perte plus légers, utilisez plutôt FLAC ou ALAC. Utilisez Opus (dans un OGG) pour les fichiers modernes avec perte les plus légers, lorsque vous maîtrisez le lecteur.',
+      ],
+      whyItMatters: [
+        'Les fichiers WAV sont 5–10× plus lourds qu’un MP3 équivalent à des débits raisonnables.',
+        'Le MP3 se lit sur tous les appareils : aucun problème de compatibilité de codec.',
+        'Les plateformes de podcasts, de livres audio et de musique exigent ou préfèrent généralement des envois en MP3.',
+      ],
+      useCases: [
+        {
+          title: 'Épisodes de podcast',
+          description: 'Masterisez en WAV, publiez en MP3 à 96–128 kbit/s mono.',
+        },
+        {
+          title: 'Mémos vocaux',
+          description: 'Allégez les enregistrements de votre téléphone avant de les partager ou de les archiver.',
+        },
+        {
+          title: 'Démos musicales',
+          description: 'Envoyez vos mixages à 256–320 kbit/s sans pièces jointes énormes.',
+        },
+        {
+          title: 'Intégration sur un site web',
+          description: 'Utilisez le MP3 pour la compatibilité : tous les navigateurs le lisent nativement.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Choisissez précisément le débit, la fréquence d’échantillonnage et la configuration des canaux.',
+        'Gratuit, sans inscription, sans filigrane : la sortie vous appartient entièrement.',
+        'Le même modèle de confidentialité et de conservation que le reste des outils.',
+      ],
+      privacyNote: 'Votre WAV est encodé en MP3 par FFmpeg sur notre serveur, au débit que vous choisissez. Aucun service audio extérieur n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous recevez un nouveau fichier ; le fichier envoyé lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Quel débit choisir ?',
+          answer: '192 kbit/s est une valeur par défaut équilibrée. Utilisez 128 kbit/s pour la voix et les podcasts, 256–320 kbit/s pour la musique.',
+        },
+        {
+          question: 'La qualité audio va-t-elle baisser ?',
+          answer: 'Légèrement : le MP3 est un format avec perte. À 256 kbit/s et plus, la plupart des auditeurs ne font pas la différence avec le WAV d’origine.',
+        },
+        {
+          question: 'Puis-je convertir d’autres formats en MP3 ?',
+          answer: 'Oui : le convertisseur audio accepte FLAC, M4A/AAC, OGG, OPUS et plus. Utilisez l’outil de conversion audio généraliste.',
+        },
+        {
+          question: 'Y a-t-il une limite de taille de fichier ?',
+          answer: 'Les fichiers de taille raisonnable sont acceptés. Pour les enregistrements très longs, pensez à les découper d’abord.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez entre n’importe quelle paire de formats audio.',
+        },
+        {
+          label: 'Isoler la voix d’une chanson',
+          to: '/tools/isolate-vocals-from-song',
+          description: 'Extrayez la voix de vos morceaux de musique.',
+        },
+        {
+          label: 'Tutoriel du convertisseur audio',
+          to: '/tutorials/audio/getting-started',
+          description: 'Parcourez toutes les options audio, y compris les outils IA.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un WAV en MP3',
+        description: 'Envoyez un fichier WAV et choisissez MP3 comme format de sortie. 192 kbit/s est une bonne valeur par défaut pour la voix ; utilisez 256–320 kbit/s pour la musique.',
+      },
     },
     'isolate-vocals-from-song': {
       name: 'Isoler la voix d’une chanson',
+      h1: 'Isoler la voix d’une chanson en ligne',
       tagline: 'Extrayez la voix d’un morceau pour des remix, des reprises, de la transcription et de l’analyse. À utiliser uniquement sur de la musique dont vous détenez les droits.',
+      metaTitle: 'Isoler la voix d’une chanson en ligne (gratuit) | Media Manipulator',
+      metaDescription: 'Isolation vocale gratuite en ligne. Extrayez la voix d’une chanson en une piste propre pour des remix, des reprises, de la transcription ou de l’analyse.',
+      ogTitle: 'Isoler la voix d’une chanson en ligne',
+      ogDescription: 'Extrayez la voix d’une chanson en une piste isolée propre, pour des remix, des reprises, de la transcription ou de l’analyse.',
+      intro: 'La séparation de sources par IA peut extraire la piste vocale d’un mixage terminé : parfait pour les remix, les reprises, la préparation de karaoké ou la transcription des paroles. Media Manipulator exécute la séparation sur notre propre serveur GPU. Le résultat est une piste vocale unique que vous pouvez télécharger et utiliser où vous voulez, à condition d’en avoir le droit pour votre matériel source.',
+      whatItDoes: [
+        'Exécute une séparation de sources par IA pour extraire la piste vocale d’un enregistrement musical.',
+        'Produit une seule piste vocale isolée, dans le même format que votre fichier (un MP3 reste un MP3), ou en FLAC, WAV ou MP3 si vous le choisissez.',
+        'Se combine bien avec les outils de nettoyage audio comme le débruitage et l’égaliseur pour un résultat soigné.',
+        'Accepte en entrée WAV, MP3, FLAC, M4A, OGG, OPUS et plus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Envoyer la chanson',
+          description: 'Déposez n’importe quel fichier audio courant mêlant voix et musique.',
+        },
+        {
+          title: 'Lancer la séparation IA',
+          description: 'Un modèle sur GPU local sépare la voix du reste du mixage.',
+        },
+        {
+          title: 'Nettoyer (facultatif)',
+          description: 'Appliquez un débruitage, un égaliseur ou un gain pour peaufiner la piste.',
+        },
+        {
+          title: 'Télécharger la piste vocale',
+          description: 'Enregistrez la voix isolée : même format que votre fichier par défaut, ou FLAC, WAV ou MP3.',
+        },
+      ],
+      advancedDetails: [
+        'La séparation de sources est imparfaite par nature : la réverbération, les harmonies et les effets prononcés débordent dans le résultat.',
+        'Un MP3 ou un autre fichier compressé revient dans son propre format (MP3 à 320 kbit/s). Les fichiers sans perte (WAV, FLAC, AIFF) reviennent en FLAC. FLAC et WAV conservent le plus de détails pour la suite du travail dans une DAW ; le WAV est le plus lourd.',
+        'Pour le karaoké (instrumental uniquement), utilisez plutôt le mode dédié « Supprimer les voix » du convertisseur audio.',
+      ],
+      whyItMatters: [
+        'Les producteurs et remixeurs peuvent construire de nouveaux morceaux autour d’une voix existante.',
+        'Les chanteurs peuvent transcrire plus précisément les paroles ou les mélodies.',
+        'Les enseignants et les ingénieurs du son utilisent des pistes isolées pour étudier les techniques de mixage.',
+      ],
+      useCases: [
+        {
+          title: 'Remix et reprises',
+          description: 'Construisez un nouvel instrumental autour d’une voix isolée.',
+        },
+        {
+          title: 'Transcription des paroles et des mélodies',
+          description: 'Obtenez un signal plus clair pour une transcription manuelle ou par IA.',
+        },
+        {
+          title: 'Préparation de karaoké',
+          description: 'Associez la voix isolée à une version instrumentale séparée.',
+        },
+        {
+          title: 'Entraînement à l’ingénierie du son',
+          description: 'Étudiez les techniques de mixage sur des enregistrements commerciaux.',
+        },
+      ],
+      whyMediaManipulator: [
+        'IA sur GPU local : aucun fournisseur d’IA tiers ne voit votre audio.',
+        'Combinez égaliseur, débruitage et découpage en un seul envoi.',
+        'Gratuit, sans inscription, sans filigrane sur le résultat.',
+      ],
+      privacyNote: 'Votre chanson est séparée en pistes par Demucs sur notre propre serveur GPU, et seule la piste vocale vous est renvoyée. Aucun service audio extérieur n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous recevez un nouveau fichier ; le fichier envoyé lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'La séparation est-elle parfaitement propre ?',
+          answer: 'Aucun outil de séparation de sources n’est parfait. Attendez-vous à quelques artefacts, surtout autour des fortes réverbérations et des harmonies. Choisissez une sortie FLAC ou WAV si vous prévoyez de nettoyer ensuite la piste dans une DAW.',
+        },
+        {
+          question: 'Quels formats audio sont pris en charge ?',
+          answer: 'WAV, MP3, FLAC, M4A/AAC, OGG, OPUS et la plupart des autres formats audio courants.',
+        },
+        {
+          question: 'Puis-je l’utiliser sur de la musique protégée par le droit d’auteur ?',
+          answer: 'Uniquement si vous détenez les droits, disposez d’une licence ou agissez dans le cadre d’une exception d’usage équitable (fair use) applicable dans votre juridiction. Vous êtes responsable de l’usage que vous faites du résultat.',
+        },
+        {
+          question: 'Où puis-je obtenir seulement l’instrumental ?',
+          answer: 'Utilisez le mode IA « Supprimer les voix » du convertisseur audio : même envoi, résultat différent.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertisseur audio',
+          to: '/tools/audio-converter',
+          description: 'Convertissez et nettoyez la piste après l’isolation.',
+        },
+        {
+          label: 'Convertir un WAV en MP3',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Compressez la piste WAV en MP3 pour la partager.',
+        },
+        {
+          label: 'Tutoriel du convertisseur audio',
+          to: '/tutorials/audio/getting-started',
+          description: 'Parcourez toutes les options audio, y compris les outils IA.',
+        },
+      ],
+      embed: {
+        title: 'Isoler la voix',
+        description: 'Envoyez une chanson et appuyez sur le bouton : Isoler les voix est déjà sélectionné. Votre résultat revient dans le même format que votre fichier (un MP3 reste un MP3) ; choisissez FLAC ou WAV sous Format de sortie pour une version sans perte.',
+      },
     },
     'image-converter': {
       name: 'Convertisseur d’images',
+      h1: 'Convertisseur d’images en ligne gratuit',
       tagline: 'Convertissez entre JPG, PNG, WebP, AVIF, GIF et bien d’autres, avec un contrôle de la qualité, du redimensionnement, du recadrage et des métadonnées.',
+      metaTitle: 'Convertisseur d’images en ligne gratuit | Media Manipulator',
+      metaDescription: 'Convertisseur d’images en ligne gratuit pour JPG, PNG, WebP, AVIF, GIF et HEIC. Redimensionnez, compressez, recadrez et supprimez les métadonnées en un seul import.',
+      ogTitle: 'Convertisseur d’images en ligne gratuit',
+      ogDescription: 'Convertissez JPG, PNG, WebP, AVIF, GIF et HEIC. Redimensionnez, compressez et supprimez les métadonnées en un seul import.',
+      intro: 'Une même image doit souvent vivre à plusieurs endroits : votre site web, une présentation, un document imprimé, une annonce sur une place de marché. Chacun préfère un format différent. Media Manipulator prend en charge tous les formats d’image courants en un seul endroit, avec un contrôle fin de la qualité, du redimensionnement et des métadonnées.',
+      whatItDoes: [
+        'Convertit entre JPG, PNG, WebP, AVIF, GIF, HEIC et bien d’autres.',
+        'Redimensionnez, recadrez, faites pivoter et appliquez des filtres visuels en une seule passe.',
+        'Supprimez ou conservez les métadonnées EXIF/IPTC/XMP selon vos besoins.',
+        'Outils IA : floutage des visages, suppression de l’arrière-plan, upscaling et caviardage du texte et des données personnelles.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une image',
+          description: 'Déposez n’importe quel fichier image courant.',
+        },
+        {
+          title: 'Choisissez le format de sortie',
+          description: 'JPG, PNG, WebP, AVIF, GIF.',
+        },
+        {
+          title: 'Réglez la qualité et les métadonnées',
+          description: 'Redimensionnez, recadrez ou supprimez les EXIF.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez l’image convertie.',
+        },
+      ],
+      advancedDetails: [
+        'WebP et AVIF donnent les fichiers web les plus légers : l’AVIF bat souvent le WebP à qualité visuelle égale.',
+        'Le PNG est sans perte et prend en charge la transparence ; idéal pour les éléments d’interface et les captures d’écran.',
+        'Le JPG est le format d’échange le plus sûr pour les photos.',
+      ],
+      whyItMatters: [
+        'Les plateformes et les outils acceptent chacun des formats d’image différents.',
+        'Des fichiers image plus légers chargent les pages plus vite, et Google classe mieux les pages rapides.',
+        'Supprimer les métadonnées avant de partager protège votre vie privée.',
+      ],
+      useCases: [
+        {
+          title: 'Optimisation web',
+          description: 'Convertissez des photos PNG en WebP/AVIF pour alléger le poids des pages.',
+        },
+        {
+          title: 'Partage multiplateforme',
+          description: 'Convertissez les photos HEIC d’iPhone en JPG.',
+        },
+        {
+          title: 'Annonces sur les places de marché',
+          description: 'Supprimez les métadonnées et redimensionnez avant de publier.',
+        },
+        {
+          title: 'Impression et présentations',
+          description: 'Produisez du JPG avec un préréglage de haute qualité.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Un seul import couvre la conversion, le redimensionnement, le recadrage, les filtres, l’IA et les métadonnées.',
+        'Gratuit, sans inscription, sans filigrane.',
+        'Les outils IA s’exécutent sur notre propre serveur GPU.',
+      ],
+      privacyNote: 'Votre image est convertie, et redimensionnée ou recadrée si vous l’avez demandé, par ImageMagick sur notre serveur. Rien n’est envoyé à un service extérieur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. L’original n’est jamais modifié : vous téléchargez un nouveau fichier.',
+      faq: [
+        {
+          question: 'Quel est le meilleur format d’image ?',
+          answer: 'Cela dépend : WebP/AVIF pour le web, PNG pour la transparence, JPG pour la compatibilité.',
+        },
+        {
+          question: 'Puis-je convertir par lots ?',
+          answer: 'L’outil gratuit convertit une image à la fois. Enchaînez plusieurs conversions l’une après l’autre.',
+        },
+        {
+          question: 'Supprime-t-il les métadonnées ?',
+          answer: 'Seulement si vous réglez le mode de métadonnées sur « Supprimer ». Par défaut, les métadonnées sont conservées.',
+        },
+        {
+          question: 'Fonctionne-t-il avec le HEIC ?',
+          answer: 'Oui : les photos HEIC d’iPhone se convertissent proprement en JPG, PNG ou WebP.',
+        },
+      ],
+      related: [
+        {
+          label: 'Redimensionner une image',
+          to: '/tools/image-resizer',
+          description: 'Redimensionnez aux dimensions exactes en pixels.',
+        },
+        {
+          label: 'Compresser une image',
+          to: '/tools/compress-image',
+          description: 'Réduisez le poids d’une image pour le web.',
+        },
+        {
+          label: 'Image en PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Intégrez une image dans un document PDF.',
+        },
+        {
+          label: 'Convertisseur PDF',
+          to: '/tools/pdf-converter',
+          description: 'Convertissez des PDF en images et inversement.',
+        },
+        {
+          label: 'Convertir un HEIC en JPG',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Convertissez les photos HEIC d’iPhone en JPG.',
+        },
+        {
+          label: 'Supprimer l’arrière-plan d’une image',
+          to: '/tools/remove-background-from-image',
+          description: 'Effacez automatiquement un arrière-plan en PNG transparent.',
+        },
+        {
+          label: 'Convertir un WebP en JPG',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Convertisseur dédié WebP → JPG.',
+        },
+        {
+          label: 'Tutoriel du convertisseur d’images',
+          to: '/tutorials/image/getting-started',
+          description: 'Présentation complète de chaque option.',
+        },
+      ],
+      embed: {
+        title: 'Convertir une image',
+        description: 'Importez n’importe quelle image et choisissez le format de sortie, la qualité et les réglages de redimensionnement et de recadrage. Le JPG convient aux photos, le PNG conserve la transparence, et WebP/AVIF donnent les fichiers web les plus légers.',
+      },
     },
     'video-converter': {
       name: 'Convertisseur vidéo',
+      h1: 'Convertisseur vidéo en ligne gratuit',
       tagline: 'Convertissez entre MP4, WebM, MOV, AVI, MKV et bien d’autres, avec un contrôle complet des codecs, de la résolution et de l’audio.',
+      metaTitle: 'Convertisseur vidéo en ligne gratuit | Media Manipulator',
+      metaDescription: 'Convertisseur vidéo en ligne gratuit pour MP4, WebM, MOV, AVI, MKV et bien d’autres. Choisissez les codecs, le débit, la résolution et les réglages audio.',
+      ogTitle: 'Convertisseur vidéo en ligne gratuit',
+      ogDescription: 'Convertissez MP4, WebM, MOV, AVI, MKV, FLV, WMV et bien d’autres. Choisissez le codec, le débit et les réglages audio.',
+      intro: 'Chaque plateforme veut un format vidéo différent. Montez sur Mac en MOV, publiez sur le web en MP4 ou WebM, archivez en MKV. Media Manipulator prend en charge tous les conteneurs et codecs vidéo courants en un seul endroit, avec un contrôle complet du débit, de la résolution et de l’audio.',
+      whatItDoes: [
+        'Convertit entre MP4, WebM, MOV, AVI, MKV, FLV, WMV et ProRes.',
+        'Choisissez le codec (H.264, H.265, VP9, ProRes, DNxHD).',
+        'Redimensionnez, changez la fréquence d’images, découpez et réencodez l’audio.',
+        'Appliquez des filtres et un étalonnage des couleurs en option.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une vidéo',
+          description: 'Déposez n’importe quel conteneur vidéo courant.',
+        },
+        {
+          title: 'Choisissez le format cible',
+          description: 'MP4, WebM, MOV, AVI, MKV.',
+        },
+        {
+          title: 'Réglez le codec et la qualité',
+          description: 'Débit, résolution, audio.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez la vidéo convertie.',
+        },
+      ],
+      advancedDetails: [
+        'Le H.264 en MP4 est le choix par défaut sûr partout.',
+        'Le H.265 (HEVC) et le VP9 donnent des fichiers environ 25–50 % plus légers à qualité visuelle égale, mais exigent un lecteur moderne.',
+        'Pour les transferts vers un logiciel de montage, le ProRes (en MOV) ou le DNxHD (en MOV/MXF) préservent le plus de qualité.',
+      ],
+      whyItMatters: [
+        'Les logiciels de montage, les navigateurs et les réseaux sociaux préfèrent chacun des formats différents.',
+        'Des fichiers vidéo plus légers améliorent le temps de chargement des pages et réduisent les coûts de bande passante.',
+        'Le réencodage permet de corriger un mauvais codec ou un fichier illisible.',
+      ],
+      useCases: [
+        {
+          title: 'MOV → MP4',
+          description: 'Rendez les vidéos filmées sur Apple lisibles partout.',
+        },
+        {
+          title: 'AVI → MP4',
+          description: 'Modernisez une vieille vidéo d’archive.',
+        },
+        {
+          title: 'MP4 → WebM',
+          description: 'Allégez une vidéo web pour les navigateurs modernes.',
+        },
+        {
+          title: 'Transferts vers le montage',
+          description: 'Exportez en ProRes ou DNxHD pour un montage de haute qualité.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Contrôle complet du codec, du débit et de l’audio en un seul import.',
+        'Transcription par IA disponible sur le même fichier.',
+        'Gratuit, sans inscription, sans filigrane.',
+      ],
+      privacyNote: 'Votre vidéo est réencodée par FFmpeg sur notre serveur dans le conteneur et le codec de votre choix. Le travail s’effectue sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Quel format de sortie est le meilleur ?',
+          answer: 'MP4 avec H.264 pour la compatibilité, WebM avec VP9 pour les fichiers web les plus légers.',
+        },
+        {
+          question: 'Puis-je découper avant de convertir ?',
+          answer: 'Oui : la section de découpe du formulaire vous permet de raccourcir le clip avant le réencodage.',
+        },
+        {
+          question: 'Mon audio restera-t-il synchronisé ?',
+          answer: 'Oui : FFmpeg maintient la synchronisation audio/vidéo. Si vous changez la fréquence d’images ou la vitesse, l’audio est rééchantillonné en conséquence.',
+        },
+        {
+          question: 'Y a-t-il une limite de taille de fichier ?',
+          answer: 'Les très gros fichiers peuvent être refusés sur l’offre gratuite. Essayez d’abord de réduire la résolution.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertir un MOV en MP4',
+          to: '/tools/convert-mov-to-mp4',
+          description: 'Rendez les vidéos QuickTime/iPhone lisibles partout.',
+        },
+        {
+          label: 'Convertir un WebM en MP4',
+          to: '/tools/convert-webm-to-mp4',
+          description: 'Transformez une vidéo web en MP4 montable.',
+        },
+        {
+          label: 'Convertir un MP4 en WebM',
+          to: '/tools/convert-mp4-to-webm',
+          description: 'Allégez un MP4 en WebM VP9 pour le web.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Compresseur dédié pour alléger les fichiers vidéo.',
+        },
+        {
+          label: 'Convertir une vidéo en GIF',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Transformez de courts clips en GIF animés.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Enregistrez la bande-son en MP3, WAV ou M4A.',
+        },
+        {
+          label: 'Découper une vidéo',
+          to: '/tools/video-trimmer',
+          description: 'Coupez un clip pour ne garder que la partie voulue, sans perte.',
+        },
+        {
+          label: 'Redimensionner une vidéo',
+          to: '/tools/resize-video',
+          description: 'Changez la résolution en 1080p, 720p ou sur mesure.',
+        },
+        {
+          label: 'Faire pivoter une vidéo',
+          to: '/tools/rotate-video',
+          description: 'Corrigez une vidéo de travers ou à l’envers.',
+        },
+        {
+          label: 'Transcrire une vidéo',
+          to: '/tools/transcribe-video',
+          description: 'Extrayez la parole d’une vidéo en texte ou en sous-titres VTT.',
+        },
+        {
+          label: 'Interpolation d’images par IA',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Montez la fréquence d’images d’une vidéo à 48, 60 ou 120 FPS avec des images générées par IA.',
+        },
+        {
+          label: 'Transcoder une vidéo en HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Générez un paquet HLS adaptatif à partir de n’importe quelle vidéo.',
+        },
+        {
+          label: 'Transcoder une vidéo en DASH',
+          to: '/tools/transcode-to-dash',
+          description: 'Générez un paquet MPEG-DASH AV1/VP9 à partir de n’importe quelle vidéo.',
+        },
+        {
+          label: 'Tutoriel du convertisseur vidéo',
+          to: '/tutorials/video/getting-started',
+          description: 'Présentation complète de chaque option.',
+        },
+      ],
+      embed: {
+        title: 'Convertir une vidéo',
+        description: 'Importez n’importe quelle vidéo et choisissez le conteneur et le codec cibles. Le préréglage de qualité « moyenne » est un bon choix par défaut. Le MP4 se lit partout ; le WebM donne des fichiers plus légers dans les navigateurs modernes.',
+      },
     },
     'mp4-converter': {
       name: 'Convertisseur MP4',
@@ -799,23 +10736,567 @@ const frToolPages = {
     },
     'convert-mov-to-mp4': {
       name: 'Convertir un MOV en MP4',
+      h1: 'Convertir un MOV en MP4 en ligne gratuitement',
       tagline: 'Transformez vos fichiers .mov QuickTime et iPhone en un MP4 universel, lisible et facile à envoyer partout.',
+      metaTitle: 'Convertir un MOV en MP4 en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur MOV en MP4 gratuit en ligne. Convertissez vos vidéos .mov QuickTime et iPhone en un MP4 lisible partout. Sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un MOV en MP4 en ligne gratuitement',
+      ogDescription: 'Convertissez vos fichiers MOV QuickTime / iPhone en un MP4 universel qui se met en ligne et se lit sur n’importe quel appareil.',
+      intro: 'MOV est le conteneur QuickTime d’Apple : c’est le format dans lequel les iPhone, les Mac et de nombreuses caméras enregistrent par défaut. Il est parfait au sein de l’écosystème Apple, mais il peut refuser de se lire sous Windows, sur Android ou dans certains formulaires d’envoi. Convertir un MOV en MP4 conserve la même vidéo H.264 et le même audio AAC dans un conteneur accepté par le monde entier, en général sans changement de qualité visible.',
+      whatItDoes: [
+        'Convertit les fichiers .mov QuickTime / iPhone en MP4.',
+        'Verrouille la sortie sur MP4 (H.264 + AAC) pour que le résultat se lise partout.',
+        'Ajoute -pix_fmt yuv420p et +faststart pour que le MP4 se lise dans les navigateurs et démarre instantanément.',
+        'Découpez le MOV, redimensionnez-le ou choisissez un préréglage de qualité lors du même envoi.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre MOV',
+          description: 'Déposez un fichier .mov provenant de votre iPhone, de votre Mac ou de votre caméra.',
+        },
+        {
+          title: 'La sortie est verrouillée sur MP4',
+          description: 'Aucun format à choisir : le MP4 est défini pour cet outil.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'Nous réempaquetons/réencodons la vidéo dans un MP4 propre.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez votre MP4, prêt pour n’importe quel appareil ou plateforme.',
+        },
+      ],
+      advancedDetails: [
+        'La plupart des fichiers MOV contiennent déjà de la vidéo H.264 : la conversion est donc rapide et quasi sans perte en qualité Haute.',
+        'Nous forçons la chrominance yuv420p pour que le MP4 se lise dans Safari et sur les réseaux sociaux qui rejettent la vidéo 4:2:2/4:4:4.',
+        'Si votre MOV contient du ProRes, le convertisseur le transcode en H.264 : choisissez la qualité Haute pour conserver le maximum de détails.',
+      ],
+      whyItMatters: [
+        'Le MOV ne se lit souvent pas sous Windows ni sur Android sans codecs supplémentaires.',
+        'De nombreux formulaires d’envoi et logiciels de montage acceptent le MP4 mais rejettent le MOV.',
+        'Le MP4 est le format le plus sûr pour partager une vidéo iPhone avec n’importe qui.',
+      ],
+      useCases: [
+        {
+          title: 'Vidéos iPhone',
+          description: 'Convertissez un .mov enregistré sur un iPhone pour qu’il se lise sur un PC Windows.',
+        },
+        {
+          title: 'Mise en ligne sur le web',
+          description: 'Transformez un export QuickTime en un MP4 qu’un site web acceptera.',
+        },
+        {
+          title: 'Envoi à des utilisateurs hors Apple',
+          description: 'Partagez vos images avec des utilisateurs Android et Windows sans problème de lecture.',
+        },
+        {
+          title: 'Compatibilité avec les logiciels de montage',
+          description: 'Fournissez un MP4 aux logiciels de montage qui peinent avec le MOV brut.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Sortie verrouillée sur un profil MP4 éprouvé : aucun réglage à deviner.',
+        'FFmpeg côté serveur prend aussi en charge les sources ProRes dans MOV et HEVC dans MOV.',
+      ],
+      privacyNote: 'Votre MOV est réencodé par FFmpeg sur notre serveur en un MP4 H.264 et AAC. Le traitement s’exécute sur nos propres serveurs, et non sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un MOV en MP4 ?',
+          answer: 'Importez votre fichier .mov et cliquez sur Convertir : la sortie est déjà réglée sur MP4, il n’y a donc rien d’autre à choisir.',
+        },
+        {
+          question: 'La conversion de MOV en MP4 fait-elle perdre en qualité ?',
+          answer: 'La plupart des fichiers MOV utilisent le H.264 : en qualité Haute, le réencodage est donc visuellement quasi sans perte. Les préréglages inférieurs sacrifient un peu de qualité pour un fichier plus petit.',
+        },
+        {
+          question: 'Pourquoi mon MOV iPhone ne se lit-il pas sous Windows ?',
+          answer: 'Windows peut ne pas disposer des codecs QuickTime/HEVC. Un MP4 en H.264 + AAC se lit sans logiciel supplémentaire.',
+        },
+        {
+          question: 'QuickTime en MP4, est-ce la même chose ?',
+          answer: 'Oui : les fichiers QuickTime utilisent le conteneur .mov, donc convertir QuickTime en MP4, c’est exactement ce que fait cet outil.',
+        },
+        {
+          question: 'Y a-t-il un filigrane ou une inscription ?',
+          answer: 'Aucun filigrane et aucun compte requis. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est verrouillée sur MP4 (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez n’importe quelle vidéo en MP4.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez le MP4 pour l’e-mail ou le web.',
+        },
+        {
+          label: 'Convertir une vidéo en GIF',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Découpez un clip et exportez un GIF animé.',
+        },
+        {
+          label: 'Tutoriel du convertisseur vidéo',
+          to: '/tutorials/video/getting-started',
+          description: 'Passez en revue les options de découpe, de redimensionnement et de qualité.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un MOV en MP4',
+        description: 'Importez votre fichier .mov. Pour cet outil, la sortie est verrouillée sur MP4 (H.264 + AAC) : il vous suffit d’importer et de convertir.',
+      },
     },
     'convert-webm-to-mp4': {
       name: 'Convertir un WebM en MP4',
+      h1: 'Convertir un WebM en MP4 en ligne gratuitement',
       tagline: 'Transformez une vidéo .webm optimisée pour le web en un MP4 que vous pouvez monter, partager et lire sur n’importe quel appareil.',
+      metaTitle: 'Convertir un WebM en MP4 en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur WebM en MP4 gratuit en ligne. Convertissez une vidéo .webm (VP8/VP9) en MP4 (H.264 + AAC) pour les logiciels de montage et les appareils qui ne peuvent pas ouvrir le WebM. Sans filigrane ni inscription.',
+      ogTitle: 'Convertir un WebM en MP4 en ligne gratuitement',
+      ogDescription: 'Convertissez une vidéo .webm en un MP4 universel que les logiciels de montage, les téléphones et les téléviseurs peuvent lire.',
+      intro: 'WebM est un conteneur moderne et ouvert conçu pour le web : des fichiers légers, parfaits pour la vidéo dans le navigateur. Mais de nombreux logiciels de montage, appareils plus anciens et applications de messagerie ne peuvent pas ouvrir le WebM. Convertir un WebM en MP4 réencode la vidéo VP8/VP9 en H.264 et l’audio en AAC, pour obtenir un fichier qui fonctionne dans Premiere, dans Resolve, sur les téléphones et sur les téléviseurs.',
+      whatItDoes: [
+        'Convertit les vidéos .webm (VP8/VP9 + Vorbis/Opus) en MP4.',
+        'Verrouille la sortie sur MP4 (H.264 + AAC) pour une compatibilité maximale.',
+        'Ajoute yuv420p et +faststart pour que le MP4 se lise dans tous les navigateurs et démarre instantanément.',
+        'Une capture d’écran WebM peut être découpée ou redimensionnée lors de son passage en MP4.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre WebM',
+          description: 'Déposez un fichier .webm téléchargé sur le web ou issu d’un enregistreur d’écran.',
+        },
+        {
+          title: 'La sortie est verrouillée sur MP4',
+          description: 'Le MP4 est prédéfini pour cet outil : rien à configurer.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'Nous transcodons le VP8/VP9 en H.264 + AAC.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez votre MP4 pour le monter ou le lire partout.',
+        },
+      ],
+      advancedDetails: [
+        'Le WebM utilise de la vidéo VP8/VP9, que la plupart des logiciels de montage ne peuvent pas importer ; le MP4/H.264 s’importe proprement dans n’importe quel logiciel de montage.',
+        'Nous forçons yuv420p pour que le MP4 se lise dans Safari et sur les réseaux sociaux.',
+        'Si vous voulez en réalité un fichier web plus léger, l’outil inverse MP4 en WebM produit à la place un WebM VP9.',
+      ],
+      whyItMatters: [
+        'La plupart des logiciels de montage de bureau ne peuvent pas importer le WebM mais gèrent le MP4 nativement.',
+        'Certains téléphones, téléviseurs et applications de discussion refusent de lire le WebM.',
+        'Le MP4 est le format de transfert sûr pour une vidéo que vous avez téléchargée en WebM.',
+      ],
+      useCases: [
+        {
+          title: 'Monter une vidéo téléchargée',
+          description: 'Importez un clip .webm dans Premiere ou Resolve sous forme de MP4.',
+        },
+        {
+          title: 'Enregistrements d’écran',
+          description: 'Convertissez une capture d’écran WebM en un MP4 facile à partager.',
+        },
+        {
+          title: 'Lecture sur des appareils plus anciens',
+          description: 'Faites lire un fichier WebM sur un téléviseur ou un téléphone qui ne le prend pas en charge.',
+        },
+        {
+          title: 'Applications de messagerie',
+          description: 'Envoyez une vidéo aux applications qui acceptent le MP4 mais pas le WebM.',
+        },
+      ],
+      whyMediaManipulator: [
+        'FFmpeg côté serveur décode le VP8 et le VP9 de manière fiable.',
+        'Sortie verrouillée sur un profil MP4 éprouvé.',
+      ],
+      privacyNote: 'Votre WebM est réencodé par FFmpeg sur notre serveur, du VP8 ou du VP9 vers un MP4 H.264. Le traitement s’exécute sur nos propres serveurs, et non sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un WebM en MP4 ?',
+          answer: 'Importez votre fichier .webm et cliquez sur Convertir : la sortie est déjà réglée sur MP4.',
+        },
+        {
+          question: 'Pourquoi mon logiciel de montage ne peut-il pas ouvrir le WebM ?',
+          answer: 'La plupart des logiciels de montage n’intègrent pas l’import VP8/VP9. La conversion en MP4 (H.264) règle le problème d’import.',
+        },
+        {
+          question: 'Le fichier va-t-il grossir ?',
+          answer: 'Un MP4/H.264 peut être légèrement plus volumineux qu’un WebM VP9 à qualité égale. Choisissez un préréglage de qualité inférieur si la taille compte.',
+        },
+        {
+          question: 'L’audio est-il conservé ?',
+          answer: 'Oui : l’audio Vorbis/Opus est réencodé en AAC et reste synchronisé.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est verrouillée sur MP4 (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez n’importe quelle vidéo en MP4.',
+        },
+        {
+          label: 'Convertir un MP4 en WebM',
+          to: '/tools/convert-mp4-to-webm',
+          description: 'L’inverse : créez un WebM VP9 léger.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez le MP4 pour le partager.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un WebM en MP4',
+        description: 'Importez votre fichier .webm. Pour cet outil, la sortie est verrouillée sur MP4 (H.264 + AAC) : il vous suffit d’importer et de convertir.',
+      },
     },
     'convert-avi-to-mp4': {
       name: 'Convertir un AVI en MP4',
+      h1: 'Convertir un AVI en MP4 en ligne gratuitement',
       tagline: 'Modernisez vos anciennes vidéos .avi en un MP4 compact, lisible sur tous les téléphones, navigateurs et téléviseurs.',
+      metaTitle: 'Convertir un AVI en MP4 en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur AVI en MP4 gratuit en ligne. Convertissez vos anciennes vidéos .avi (Xvid/DivX) en MP4 (H.264 + AAC) lisible partout. Sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un AVI en MP4 en ligne gratuitement',
+      ogDescription: 'Convertissez une ancienne vidéo .avi en un MP4 moderne et compact qui se lit sur n’importe quel appareil.',
+      intro: 'L’AVI est un conteneur Windows classique de l’époque DivX/Xvid. Les fichiers sont souvent volumineux et utilisent des codecs que les téléphones, navigateurs et téléviseurs modernes ne lisent plus. Convertir un AVI en MP4 réencode la vidéo en H.264, bien plus efficace, et l’audio en AAC, pour produire un fichier plus petit qui se lit sur tout ce que vous possédez aujourd’hui.',
+      whatItDoes: [
+        'Convertit les anciens fichiers .avi (Xvid, DivX, MJPEG et autres) en MP4.',
+        'Verrouille la sortie sur MP4 (H.264 + AAC) pour une lecture moderne.',
+        'Produit généralement un fichier nettement plus petit que l’AVI source.',
+        'Un vieil AVI peut être raccourci et mis à l’échelle pendant sa conversion.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre AVI',
+          description: 'Déposez un ancien fichier .avi issu d’une archive ou d’une caméra.',
+        },
+        {
+          title: 'La sortie est verrouillée sur MP4',
+          description: 'Le MP4 est prédéfini : rien à configurer.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'Nous réencodons en H.264 + AAC.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez un MP4 moderne et plus léger.',
+        },
+      ],
+      advancedDetails: [
+        'L’AVI utilise couramment le Xvid/DivX (MPEG-4 Part 2) ; le H.264 est environ deux fois plus efficace, le MP4 est donc généralement bien plus petit.',
+        'Nous forçons yuv420p pour que le résultat se lise dans les navigateurs et sur les réseaux sociaux.',
+        'Les captures AVI entrelacées peuvent bénéficier de l’option de désentrelacement du convertisseur vidéo complet.',
+      ],
+      whyItMatters: [
+        'Les fichiers AVI sont volumineux et de moins en moins lisibles sur les appareils modernes.',
+        'Le MP4/H.264 est plus léger et se lit partout.',
+        'Convertir vos anciennes archives en MP4 les pérennise.',
+      ],
+      useCases: [
+        {
+          title: 'Anciennes archives vidéo',
+          description: 'Modernisez vos AVI de caméscope ou d’extraction de DVD en MP4.',
+        },
+        {
+          title: 'Libérer de l’espace',
+          description: 'Réduisez un gros AVI en un MP4 plus léger.',
+        },
+        {
+          title: 'Lecture sur téléphone et téléviseur',
+          description: 'Faites lire un AVI sur les appareils qui ont abandonné la prise en charge de l’AVI.',
+        },
+        {
+          title: 'Mise en ligne sur le web',
+          description: 'Transformez un AVI en un MP4 qu’un site acceptera.',
+        },
+      ],
+      whyMediaManipulator: [
+        'FFmpeg côté serveur décode les vieux codecs AVI sur lesquels d’autres outils s’étranglent.',
+        'Sortie verrouillée sur un profil MP4 éprouvé.',
+      ],
+      privacyNote: 'Votre AVI est réencodé par FFmpeg sur notre serveur en un MP4 H.264 moderne. Le traitement s’exécute sur nos propres serveurs, et non sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un AVI en MP4 ?',
+          answer: 'Importez votre fichier .avi et cliquez sur Convertir : la sortie est déjà réglée sur MP4.',
+        },
+        {
+          question: 'Le MP4 sera-t-il plus petit que l’AVI ?',
+          answer: 'En général, oui. Le H.264 est bien plus efficace que les codecs Xvid/DivX utilisés par la plupart des AVI.',
+        },
+        {
+          question: 'Les anciens AVI DivX/Xvid sont-ils pris en charge ?',
+          answer: 'Oui : FFmpeg décode les codecs AVI courants et les réencode en H.264.',
+        },
+        {
+          question: 'Vais-je perdre en qualité ?',
+          answer: 'Le réencodage se fait avec perte, mais en qualité Haute la différence est minime et le fichier reste plus petit.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est verrouillée sur MP4 (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez n’importe quelle vidéo en MP4.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez encore le MP4.',
+        },
+        {
+          label: 'Tutoriel du convertisseur vidéo',
+          to: '/tutorials/video/getting-started',
+          description: 'Passez en revue la découpe, le redimensionnement et le désentrelacement.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un AVI en MP4',
+        description: 'Importez votre fichier .avi. Pour cet outil, la sortie est verrouillée sur MP4 (H.264 + AAC) : il vous suffit d’importer et de convertir.',
+      },
     },
     'convert-mkv-to-mp4': {
       name: 'Convertir un MKV en MP4',
+      h1: 'Convertir un MKV en MP4 en ligne gratuitement',
       tagline: 'Transformez vos fichiers Matroska .mkv en un MP4 que l’on peut diffuser, envoyer et lire sur les appareils qui refusent le MKV.',
+      metaTitle: 'Convertir un MKV en MP4 en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur MKV en MP4 gratuit en ligne. Convertissez une vidéo Matroska .mkv en MP4 (H.264 + AAC) pour les appareils et les sites qui ne peuvent pas lire le MKV. Sans filigrane ni inscription.',
+      ogTitle: 'Convertir un MKV en MP4 en ligne gratuitement',
+      ogDescription: 'Convertissez une vidéo Matroska .mkv en un MP4 universel qui se lit et se met en ligne partout.',
+      intro: 'Le MKV (Matroska) est un conteneur souple, prisé pour la vidéo de haute qualité, mais beaucoup de téléphones, de navigateurs, de téléviseurs connectés et de formulaires d’envoi ne le lisent pas. Convertir un MKV en MP4 place la vidéo dans un conteneur que ces appareils comprennent. Media Manipulator réencode en H.264 + AAC pour que le résultat se lise et se mette en ligne sans accroc.',
+      whatItDoes: [
+        'Convertit les fichiers Matroska .mkv en MP4.',
+        'Verrouille la sortie sur MP4 (H.264 + AAC) pour une large prise en charge des appareils.',
+        'Ajoute yuv420p et +faststart pour que le MP4 se diffuse en streaming et démarre instantanément.',
+        'Découpez un épisode MKV ou changez sa taille avant l’écriture du MP4.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre MKV',
+          description: 'Déposez un fichier .mkv.',
+        },
+        {
+          title: 'La sortie est verrouillée sur MP4',
+          description: 'Le MP4 est prédéfini pour cet outil.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'Nous déplaçons/transcodons la vidéo dans un MP4.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez un MP4 qui se lit partout.',
+        },
+      ],
+      advancedDetails: [
+        'Si le MKV contient déjà du H.264 + AAC, la conversion est rapide et visuellement sans perte.',
+        'Nous forçons yuv420p pour que le MP4 se lise dans Safari et sur les réseaux sociaux.',
+        'Un MKV peut transporter de nombreuses pistes de sous-titres et d’audio ; le convertisseur conserve la vidéo principale et la première piste audio.',
+      ],
+      whyItMatters: [
+        'De nombreux appareils et sites web ne prennent tout simplement pas en charge le MKV.',
+        'Le MP4 est le conteneur sûr pour le partage et la mise en ligne.',
+        'La conversion garde votre vidéo de haute qualité utilisable partout.',
+      ],
+      useCases: [
+        {
+          title: 'Lecture sur téléphone et téléviseur',
+          description: 'Faites lire un MKV sur un appareil qui le rejette.',
+        },
+        {
+          title: 'Mise en ligne sur le web',
+          description: 'Transformez un MKV en un MP4 qu’un site acceptera.',
+        },
+        {
+          title: 'Transfert vers un logiciel de montage',
+          description: 'Importez un MP4 dans les logiciels de montage qui peinent avec le MKV.',
+        },
+        {
+          title: 'Uniformiser une bibliothèque',
+          description: 'Alignez vos téléchargements MKV sur votre collection de MP4.',
+        },
+      ],
+      whyMediaManipulator: [
+        'FFmpeg côté serveur gère les MKV à pistes multiples.',
+        'Sortie verrouillée sur un profil MP4 éprouvé.',
+      ],
+      privacyNote: 'Votre MKV est réencodé par FFmpeg sur notre serveur en un MP4 que les téléphones et les navigateurs lisent. Le traitement s’exécute sur nos propres serveurs, et non sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un MKV en MP4 ?',
+          answer: 'Importez votre fichier .mkv et cliquez sur Convertir : la sortie est déjà réglée sur MP4.',
+        },
+        {
+          question: 'La conversion de MKV en MP4 fait-elle perdre en qualité ?',
+          answer: 'Si le MKV utilise déjà le H.264, le résultat est visuellement sans perte en qualité Haute. Sinon, il s’agit d’un réencodage avec perte classique.',
+        },
+        {
+          question: 'Qu’advient-il des pistes audio ou de sous-titres supplémentaires ?',
+          answer: 'Le convertisseur conserve la vidéo principale et la première piste audio. Pour des besoins multipistes, contactez-nous et nous pourrons étudier la sélection des pistes.',
+        },
+        {
+          question: 'Pourquoi mon MKV ne se lit-il pas ?',
+          answer: 'De nombreux téléphones, téléviseurs, navigateurs et sites ne prennent pas en charge le conteneur MKV, même lorsque les codecs qu’il contient sont courants.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est verrouillée sur MP4 (H.264 + AAC, yuv420p, +faststart). La vidéo principale et la première piste audio sont conservées.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez n’importe quelle vidéo en MP4.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez le MP4 pour le partager.',
+        },
+        {
+          label: 'Tutoriel du convertisseur vidéo',
+          to: '/tutorials/video/getting-started',
+          description: 'Passez en revue toutes les options.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un MKV en MP4',
+        description: 'Importez votre fichier .mkv. Pour cet outil, la sortie est verrouillée sur MP4 (H.264 + AAC) : il vous suffit d’importer et de convertir.',
+      },
     },
     'convert-mp4-to-webm': {
       name: 'Convertir un MP4 en WebM',
+      h1: 'Convertir un MP4 en WebM en ligne gratuitement',
       tagline: 'Réencodez un MP4 en un WebM VP9 ouvert et plus léger, parfait pour une vidéo web qui se charge vite.',
+      metaTitle: 'Convertir un MP4 en WebM en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Convertisseur MP4 en WebM gratuit en ligne. Réencodez un MP4 en WebM VP9 + Opus pour une vidéo web plus légère et plus rapide. Sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Convertir un MP4 en WebM en ligne gratuitement',
+      ogDescription: 'Convertissez un MP4 en un WebM VP9 ouvert et plus léger, idéal pour l’intégration sur le web moderne.',
+      intro: 'Le WebM est le format vidéo ouvert conçu pour le web. Avec de la vidéo VP9 et de l’audio Opus, il produit des fichiers plus légers que le MP4 à qualité égale, ce qui signifie des pages plus rapides à charger pour la vidéo intégrée. Convertir votre MP4 en WebM est le bon choix lorsque vous maîtrisez le lecteur : tous les navigateurs modernes le prennent en charge nativement.',
+      whatItDoes: [
+        'Convertit le MP4 (H.264) en WebM (VP9 + Opus).',
+        'Verrouille la sortie sur WebM pour des intégrations web ouvertes et cohérentes.',
+        'Produit généralement un fichier plus petit que le MP4 à qualité visuelle égale.',
+        'Raccourcissez ou réduisez le clip et choisissez un préréglage de qualité avant la création du WebM.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre MP4',
+          description: 'Déposez un fichier .mp4.',
+        },
+        {
+          title: 'La sortie est verrouillée sur WebM',
+          description: 'Le WebM (VP9 + Opus) est prédéfini pour cet outil.',
+        },
+        {
+          title: 'Convertissez',
+          description: 'Nous réencodons le H.264 en VP9 et l’AAC en Opus.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez un .webm plus léger pour le web.',
+        },
+      ],
+      advancedDetails: [
+        'La sortie WebM utilise de la vidéo VP9 avec de l’audio Opus lorsqu’ils sont disponibles, et se rabat sur VP8 + Vorbis sur les builds FFmpeg dépourvus de VP9/Opus.',
+        'L’encodage VP9 est plus lent que le H.264, mais donne des fichiers environ 25 à 50 % plus légers à qualité comparable.',
+        'Utilisez la balise <video> avec une source WebM et une source MP4 pour que les navigateurs choisissent la meilleure qu’ils prennent en charge.',
+      ],
+      whyItMatters: [
+        'Une vidéo web plus légère, ce sont des pages plus rapides et une facture de bande passante réduite.',
+        'Le WebM est libre de redevances et pris en charge par tous les navigateurs modernes.',
+        'Un duo WebM + MP4 couvre pratiquement tous les navigateurs avec les fichiers les plus légers possible.',
+      ],
+      useCases: [
+        {
+          title: 'Vidéo d’en-tête de site',
+          description: 'Diffusez un clip d’arrière-plan ou d’en-tête léger et rapide à charger.',
+        },
+        {
+          title: 'Intégrations web ouvertes',
+          description: 'Intégrez une vidéo sans vous soucier des codecs propriétaires.',
+        },
+        {
+          title: 'Économies de bande passante',
+          description: 'Réduisez le poids diffusé sur les pages à fort trafic.',
+        },
+        {
+          title: '<video> HTML5',
+          description: 'Fournissez une source WebM accompagnée d’un MP4 de secours.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Encodage VP9 + Opus avec repli automatique sur VP8 + Vorbis.',
+        'Sortie verrouillée sur WebM pour un résultat prévisible.',
+      ],
+      privacyNote: 'Votre vidéo est réencodée par FFmpeg sur notre serveur en un WebM VP9. Le traitement s’exécute sur nos propres serveurs, et non sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment convertir un MP4 en WebM ?',
+          answer: 'Importez votre fichier .mp4 et cliquez sur Convertir : la sortie est déjà réglée sur WebM.',
+        },
+        {
+          question: 'Le WebM est-il plus léger que le MP4 ?',
+          answer: 'À qualité visuelle égale, un WebM VP9 est généralement 25 à 50 % plus léger qu’un MP4 H.264.',
+        },
+        {
+          question: 'Tous les navigateurs prennent-ils en charge le WebM ?',
+          answer: 'Tous les navigateurs modernes, oui. Pour les navigateurs plus anciens, prévoyez un MP4 de secours dans votre balise <video>.',
+        },
+        {
+          question: 'Pourquoi l’encodage WebM est-il plus lent ?',
+          answer: 'Le VP9 demande plus de calcul que le H.264. La contrepartie est un fichier plus léger.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La sortie est verrouillée sur WebM (VP9 + Opus, ou VP8 + Vorbis si VP9/Opus n’est pas disponible).',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertir un WebM en MP4',
+          to: '/tools/convert-webm-to-mp4',
+          description: 'Le sens inverse.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez n’importe quelle vidéo en MP4.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez une vidéo sans changer de conteneur.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un MP4 en WebM',
+        description: 'Importez votre fichier .mp4. Pour cet outil, la sortie est verrouillée sur WebM (VP9 + Opus) : il vous suffit d’importer et de convertir.',
+      },
     },
     'mp4-to-mp3': {
       name: 'Convertir un MP4 en MP3',
@@ -859,51 +11340,1472 @@ const frToolPages = {
     },
     'crop-video': {
       name: 'Recadrer une vidéo',
+      h1: 'Recadrer une vidéo en ligne gratuitement',
       tagline: 'Supprimez les bords d’une vidéo, pour changer le cadrage ou le format d’image sans logiciel de montage.',
+      metaTitle: 'Recadrer une vidéo en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour recadrer une vidéo. Supprimez les bords d’une vidéo pour changer le cadrage ou le format d’image. Sortie MP4, sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Recadrer une vidéo en ligne gratuitement',
+      ogDescription: 'Supprimez les bords d’une vidéo pour changer le cadrage ou le format d’image. Gratuit, sans filigrane.',
+      intro: 'Le recadrage supprime les bords extérieurs d’une vidéo : pratique pour recomposer un plan, éliminer des bandes noires ou un filigrane, ou changer le format d’image pour une plateforme. L’outil de recadrage vidéo de Media Manipulator prend un rectangle en pixels (où commencer et quelle taille) et n’exporte que cette zone dans un MP4 propre.',
+      whatItDoes: [
+        'Recadre une vidéo selon un rectangle que vous indiquez en pixels.',
+        'Supprime les bandes noires, les bords, les filigranes ou les zones indésirables.',
+        'Aide à recomposer au format carré ou vertical pour les réseaux sociaux.',
+        'Exporte en MP4 (H.264 + AAC) par défaut.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre vidéo',
+          description: 'MP4, MOV, MKV, WebM, AVI ou M4V à recadrer.',
+        },
+        {
+          title: 'Saisissez le rectangle de recadrage',
+          description: 'Définissez le décalage X/Y et la largeur/hauteur à conserver.',
+        },
+        {
+          title: 'Recadrez',
+          description: 'FFmpeg recadre exactement sur cette zone et réencode.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez la vidéo recadrée.',
+        },
+      ],
+      advancedDetails: [
+        'Les coordonnées de recadrage sont en pixels depuis le coin supérieur gauche : X/Y indique où commence la zone conservée, largeur/hauteur sa taille.',
+        'Le recadrage réencode la vidéo ; la sortie MP4 utilise H.264 + AAC + yuv420p + faststart.',
+        'Pour un cadrage au pixel près sur un aperçu, le convertisseur complet de la page d’accueil propose un calque de recadrage visuel.',
+      ],
+      whyItMatters: [
+        'Le recadrage recompose un plan sans refaire la prise.',
+        'Il supprime les bandes noires (letterboxing/pillarboxing) et les bords indésirables.',
+        'Changer le format d’image (par ex. en 9:16) aide la vidéo à s’adapter à une plateforme.',
+      ],
+      useCases: [
+        {
+          title: 'Passer en vertical',
+          description: 'Recadrez un clip horizontal en 9:16 pour Reels/Shorts/TikTok.',
+        },
+        {
+          title: 'Supprimer les bandes noires',
+          description: 'Recadrez pour éliminer le letterboxing.',
+        },
+        {
+          title: 'Masquer un filigrane',
+          description: 'Recadrez pour exclure un logo ou un horodatage dans un coin.',
+        },
+        {
+          title: 'Recomposer sur un sujet',
+          description: 'Resserrez le plan sur ce qui compte.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Recadrage précis au pixel, côté serveur avec FFmpeg.',
+        'Sortie MP4 propre, sans filigrane.',
+      ],
+      privacyNote: 'Votre vidéo est recadrée sur le rectangle que vous avez tracé et réencodée par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, et non sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment recadrer une vidéo ?',
+          answer: 'Importez-la, saisissez le rectangle à conserver (décalage X/Y et largeur/hauteur en pixels), puis téléchargez la vidéo recadrée.',
+        },
+        {
+          question: 'Puis-je recadrer au format carré ou vertical ?',
+          answer: 'Oui : réglez la largeur et la hauteur selon le rapport voulu (par ex. des valeurs égales pour un carré, plus haut que large pour du 9:16).',
+        },
+        {
+          question: 'Le recadrage réduit-il la qualité ?',
+          answer: 'Le recadrage réencode, mais à notre qualité par défaut la perte est minime.',
+        },
+        {
+          question: 'Puis-je supprimer un filigrane par recadrage ?',
+          answer: 'Oui, si le filigrane se trouve près d’un bord : recadrez l’image pour l’exclure.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le recadrage réencode ; la sortie MP4 utilise H.264 + AAC + yuv420p + faststart.',
+        ],
+      },
+      related: [
+        {
+          label: 'Redimensionner une vidéo',
+          to: '/tools/resize-video',
+          description: 'Changez la résolution au lieu de recadrer.',
+        },
+        {
+          label: 'Faire pivoter une vidéo',
+          to: '/tools/rotate-video',
+          description: 'Redressez une vidéo couchée ou à l’envers.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez d’un format vidéo à un autre.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez la vidéo recadrée.',
+        },
+      ],
+      embed: {
+        title: 'Recadrer une vidéo',
+        description: 'Importez une vidéo et saisissez le rectangle à conserver (décalage + largeur/hauteur en pixels). Nous recadrons exactement sur cette zone et exportons en MP4.',
+      },
     },
     'resize-video': {
       name: 'Redimensionner une vidéo',
+      h1: 'Redimensionner une vidéo en ligne gratuitement',
       tagline: 'Modifiez la résolution d’une vidéo : passez en 1080p, 720p, 480p, ou à la largeur et la hauteur de votre choix.',
+      metaTitle: 'Redimensionner une vidéo en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour redimensionner une vidéo. Changez la résolution d’une vidéo en 1080p, 720p, 480p ou à une taille personnalisée. Sortie MP4, sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Redimensionner une vidéo en ligne gratuitement',
+      ogDescription: 'Changez la résolution d’une vidéo en 1080p, 720p, 480p ou à une taille personnalisée. Gratuit, sans filigrane.',
+      intro: 'Le redimensionnement change la résolution d’une vidéo : passez un clip 4K en 1080p, réduisez-le en 720p pour le web ou atteignez la taille exacte en pixels qu’exige une plateforme. L’outil de redimensionnement vidéo de Media Manipulator met votre vidéo à l’échelle aux dimensions de votre choix, en conservant le rapport d’image par défaut, et exporte un MP4 propre.',
+      whatItDoes: [
+        'Met une vidéo à l’échelle vers une largeur et/ou une hauteur cibles.',
+        'Conserve le rapport d’image par défaut (laissez une dimension vide pour une mise à l’échelle automatique).',
+        'Réduit la résolution pour alléger le fichier ou l’augmente pour atteindre une taille cible.',
+        'Exporte en MP4 (H.264 + AAC) par défaut.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre vidéo',
+          description: 'Choisissez le clip que vous voulez dans une autre taille.',
+        },
+        {
+          title: 'Définissez la taille',
+          description: 'Saisissez une largeur et/ou une hauteur en pixels.',
+        },
+        {
+          title: 'Redimensionnez',
+          description: 'FFmpeg met la vidéo à l’échelle et la réencode.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez la vidéo redimensionnée.',
+        },
+      ],
+      advancedDetails: [
+        'Laissez une dimension vide pour une mise à l’échelle proportionnelle qui conserve le rapport d’image d’origine.',
+        'Laissez « Conserver le rapport d’image » activé pour tenir dans le cadre sans déformation lorsque les deux dimensions sont définies.',
+        'Le redimensionnement réencode ; la sortie MP4 utilise H.264 + AAC + yuv420p + faststart. 4096 px maximum par côté.',
+      ],
+      whyItMatters: [
+        'Une résolution plus basse signifie des fichiers plus légers et des envois plus rapides.',
+        'Certaines plateformes exigent une résolution exacte.',
+        'Le redimensionnement uniformise une bibliothèque aux résolutions mélangées.',
+      ],
+      useCases: [
+        {
+          title: 'Alléger pour le web',
+          description: 'Passez de la 4K à 1080p ou 720p pour des pages plus rapides.',
+        },
+        {
+          title: 'Atteindre une taille cible',
+          description: 'Respectez exactement les spécifications d’une plateforme.',
+        },
+        {
+          title: 'Réduire le poids du fichier',
+          description: 'Baissez la résolution pour économiser des octets.',
+        },
+        {
+          title: 'Uniformiser des séquences',
+          description: 'Ramenez vos clips à une seule résolution.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Mise à l’échelle respectueuse du rapport d’image, côté serveur avec FFmpeg.',
+        'Sortie MP4 propre, sans filigrane.',
+      ],
+      privacyNote: 'Votre vidéo est mise à l’échelle à la largeur et à la hauteur que vous avez définies et réencodée par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, et non sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment redimensionner une vidéo ?',
+          answer: 'Importez-la, définissez une largeur et/ou une hauteur cibles, puis téléchargez la vidéo redimensionnée.',
+        },
+        {
+          question: 'Comment passer la résolution en 720p ?',
+          answer: 'Réglez la hauteur sur 720 et laissez la largeur vide pour une mise à l’échelle proportionnelle.',
+        },
+        {
+          question: 'Le redimensionnement conserve-t-il le rapport d’image ?',
+          answer: 'Oui : laissez une dimension vide, ou gardez « Conserver le rapport d’image » activé pour que la vidéo ne soit pas déformée.',
+        },
+        {
+          question: 'Puis-je agrandir une vidéo ?',
+          answer: 'Vous pouvez la mettre à l’échelle vers une taille supérieure, mais l’agrandissement ne peut pas ajouter des détails qui n’ont pas été capturés.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le redimensionnement réencode ; la sortie MP4 utilise H.264 + AAC + yuv420p + faststart. 4096 px maximum par côté.',
+        ],
+      },
+      related: [
+        {
+          label: 'Recadrer une vidéo',
+          to: '/tools/crop-video',
+          description: 'Supprimez les bords au lieu de mettre à l’échelle.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Allégez le fichier avec des préréglages.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez en MP4.',
+        },
+        {
+          label: 'Faire pivoter une vidéo',
+          to: '/tools/rotate-video',
+          description: 'Corrigez l’orientation.',
+        },
+      ],
+      embed: {
+        title: 'Redimensionner une vidéo',
+        description: 'Importez une vidéo et définissez une largeur et/ou une hauteur cibles. Laissez l’une des deux vide pour une mise à l’échelle proportionnelle. La sortie est en MP4 par défaut.',
+      },
     },
     'rotate-video': {
       name: 'Faire pivoter une vidéo',
+      h1: 'Faire pivoter une vidéo en ligne gratuitement',
       tagline: 'Redressez une vidéo couchée ou à l’envers : faites-la pivoter de 90°, 180° ou 270° et retournez-la en un clic.',
+      metaTitle: 'Faire pivoter une vidéo en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour faire pivoter une vidéo. Tournez une vidéo de 90°, 180° ou 270° et redressez les clips couchés ou à l’envers. Sortie MP4, sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Faire pivoter une vidéo en ligne gratuitement',
+      ogDescription: 'Faites pivoter une vidéo de 90°, 180° ou 270° pour redresser des images couchées ou à l’envers. Gratuit, sans filigrane.',
+      intro: 'Les vidéos de téléphone sont souvent filmées de travers, et certains clips se retrouvent à l’envers. L’outil de rotation vidéo de Media Manipulator corrige l’orientation pour de bon : choisissez 90°, 180° ou 270° et nous faisons pivoter les images elles-mêmes (en échangeant largeur et hauteur pour 90°/270°), pour que la vidéo s’affiche dans le bon sens sur tous les lecteurs, et pas seulement sur ceux qui lisent l’indicateur de rotation.',
+      whatItDoes: [
+        'Fait pivoter une vidéo de 90° dans le sens des aiguilles d’une montre, de 180° ou de 270° (90° dans le sens inverse).',
+        'Retourne la vidéo horizontalement ou verticalement si vous le souhaitez (effet miroir).',
+        'Réencode la vidéo pour que la rotation soit inscrite dans les images, et pas seulement dans un indicateur de métadonnées.',
+        'Exporte en MP4 (H.264 + AAC) par défaut.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre vidéo',
+          description: 'Un clip de téléphone filmé de travers, par exemple.',
+        },
+        {
+          title: 'Choisissez une rotation',
+          description: '90°, 180° ou 270°, et un retournement si nécessaire.',
+        },
+        {
+          title: 'Faites pivoter',
+          description: 'FFmpeg fait pivoter les images (transpose) et réencode la vidéo.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez la vidéo correctement orientée.',
+        },
+      ],
+      advancedDetails: [
+        'Nous utilisons le filtre transpose de FFmpeg pour 90°/270° (qui échange correctement largeur et hauteur) et un double transpose pour 180°.',
+        'Inscrire la rotation dans les pixels corrige l’affichage sur les lecteurs qui ignorent l’indicateur de rotation du conteneur.',
+        'La rotation réencode la vidéo ; la sortie MP4 utilise H.264 + AAC + yuv420p + faststart.',
+      ],
+      whyItMatters: [
+        'Les vidéos de téléphone filmées de travers sont l’un des désagréments vidéo les plus fréquents.',
+        'Une rotation inscrite dans les images s’affiche correctement partout, contrairement à un indicateur de rotation.',
+        'Le retournement corrige les selfies et les enregistrements de webcam inversés en miroir.',
+      ],
+      useCases: [
+        {
+          title: 'Redresser un clip couché',
+          description: 'Faites pivoter une vidéo de téléphone verticale pour qu’elle s’affiche droite.',
+        },
+        {
+          title: 'Retourner une vidéo selfie',
+          description: 'Supprimez l’effet miroir des enregistrements de webcam ou de caméra frontale.',
+        },
+        {
+          title: 'Tourner de 180°',
+          description: 'Corrigez un enregistrement à l’envers.',
+        },
+        {
+          title: 'Réorienter avant le montage',
+          description: 'Obtenez la bonne orientation avant l’import.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Une vraie rotation des images (transpose), pas seulement un indicateur de métadonnées.',
+        'Rotation et retournement dans un seul panneau dédié.',
+      ],
+      privacyNote: 'Votre vidéo est tournée selon l’angle que vous choisissez et réencodée par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment faire pivoter une vidéo ?',
+          answer: 'Importez-la, choisissez 90°, 180° ou 270°, puis téléchargez la vidéo pivotée.',
+        },
+        {
+          question: 'Comment redresser une vidéo de téléphone filmée de travers ?',
+          answer: 'Faites-la pivoter de 90° dans un sens ou dans l’autre jusqu’à ce qu’elle s’affiche droite ; la rotation est inscrite dans les images.',
+        },
+        {
+          question: 'Les images sont-elles vraiment pivotées, ou s’agit-il d’un simple indicateur ?',
+          answer: 'Les images elles-mêmes sont pivotées (filtre transpose de FFmpeg), la vidéo est donc droite dans tous les lecteurs.',
+        },
+        {
+          question: 'Puis-je aussi retourner la vidéo (effet miroir) ?',
+          answer: 'Oui : des options de retournement horizontal et vertical sont incluses.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La rotation réencode la vidéo via le filtre transpose de FFmpeg ; la sortie MP4 utilise H.264 + AAC + yuv420p + faststart.',
+        ],
+      },
+      related: [
+        {
+          label: 'Recadrer une vidéo',
+          to: '/tools/crop-video',
+          description: 'Supprimez les bords.',
+        },
+        {
+          label: 'Redimensionner une vidéo',
+          to: '/tools/resize-video',
+          description: 'Modifiez la résolution.',
+        },
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez entre formats vidéo.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids de la vidéo pivotée.',
+        },
+      ],
+      embed: {
+        title: 'Faire pivoter une vidéo',
+        description: 'Importez une vidéo et choisissez une rotation (90°, 180° ou 270°). Vous pouvez aussi la retourner. Nous faisons pivoter les images elles-mêmes et exportons en MP4.',
+      },
     },
     'remove-audio-from-video': {
       name: 'Supprimer l’audio d’une vidéo',
+      h1: 'Supprimer l’audio d’une vidéo en ligne gratuitement',
       tagline: 'Rendez une vidéo muette pour de bon : supprimez la piste audio et téléchargez un fichier silencieux, contenant uniquement la vidéo.',
+      metaTitle: 'Supprimer l’audio d’une vidéo en ligne gratuitement | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour supprimer l’audio d’une vidéo. Retirez le son et téléchargez un MP4 silencieux, contenant uniquement la vidéo. Sans filigrane ni inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ogTitle: 'Supprimer l’audio d’une vidéo en ligne gratuitement',
+      ogDescription: 'Retirez la piste audio d’une vidéo et téléchargez un fichier silencieux, contenant uniquement la vidéo. Gratuit, sans filigrane.',
+      intro: 'Supprimer l’audio d’une vidéo vous donne un fichier silencieux, contenant uniquement la vidéo : pratique pour faire taire un bruit de fond, retirer une musique protégée par le droit d’auteur avant une nouvelle publication, ou préparer un clip auquel vous ajouterez un nouvel audio. Media Manipulator retire la piste audio et renvoie la vidéo, en copiant le flux vidéo tel quel lorsque c’est possible, donc sans perte de qualité.',
+      whatItDoes: [
+        'Supprime (coupe) la piste audio et renvoie un fichier contenant uniquement la vidéo.',
+        'Copie le flux vidéo tel quel lorsque c’est possible : pas de réencodage, pas de perte de qualité.',
+        'Se replie sur un réencodage lorsque le conteneur ou le codec l’exige.',
+        'Produit un MP4 par défaut (WebM également disponible).',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre vidéo',
+          description: 'Le clip dont vous voulez supprimer le son.',
+        },
+        {
+          title: 'Choisissez le format de sortie',
+          description: 'MP4 (par défaut) ou WebM.',
+        },
+        {
+          title: 'Supprimez l’audio',
+          description: 'FFmpeg retire l’audio et conserve la vidéo.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez le fichier silencieux, contenant uniquement la vidéo.',
+        },
+      ],
+      advancedDetails: [
+        'Nous copions le flux vidéo tel quel (`-c:v copy -an`) pour que l’image reste intacte ; si le conteneur n’accepte pas le codec source, nous réencodons en H.264.',
+        'La sortie ne contient aucune piste audio : elle est silencieuse, et pas simplement ramenée à un volume nul.',
+        'Le nom du fichier téléchargé reçoit le suffixe `_silent` pour que vous puissiez le distinguer de l’original.',
+      ],
+      whyItMatters: [
+        'Couper le son élimine pour de bon le bruit de fond, les bavardages ou le vent.',
+        'Retirer une musique protégée par le droit d’auteur évite les retraits lors d’une nouvelle publication.',
+        'Un clip de base silencieux est le point de départ pour ajouter un nouvel audio ou une voix off.',
+      ],
+      useCases: [
+        {
+          title: 'Couper le bruit de fond',
+          description: 'Supprimez un son indésirable d’un clip.',
+        },
+        {
+          title: 'Retirer un audio protégé',
+          description: 'Retirez la musique avant de republier.',
+        },
+        {
+          title: 'Préparer un nouvel audio',
+          description: 'Obtenez une base silencieuse pour y ajouter une voix off.',
+        },
+        {
+          title: 'Confidentialité',
+          description: 'Supprimez une conversation captée en arrière-plan.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Copie du flux vidéo tel quel, sans perte de qualité.',
+        'Une sortie vraiment silencieuse (piste audio supprimée, pas simplement baissée).',
+      ],
+      privacyNote: 'La piste audio de votre vidéo est retirée par FFmpeg sur notre serveur et l’image est conservée. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment supprimer l’audio d’une vidéo ?',
+          answer: 'Importez la vidéo, choisissez un format de sortie et téléchargez le fichier silencieux, contenant uniquement la vidéo.',
+        },
+        {
+          question: 'Cet outil coupe-t-il le son ou supprime-t-il la piste ?',
+          answer: 'Il supprime entièrement la piste audio ; le résultat est donc vraiment silencieux, et non simplement ramené à un volume nul.',
+        },
+        {
+          question: 'La qualité de la vidéo va-t-elle changer ?',
+          answer: 'Non : nous copions le flux vidéo tel quel lorsque c’est possible, l’image reste donc intacte.',
+        },
+        {
+          question: 'Pourquoi le fichier est-il nommé « _silent » ?',
+          answer: 'Nous ajoutons un suffixe _silent pour que vous puissiez distinguer la copie sans audio de l’original.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La vidéo est copiée telle quelle lorsque c’est possible ; la piste audio est entièrement supprimée. Suffixe du téléchargement : _silent.',
+        ],
+      },
+      related: [
+        {
+          label: 'Supprimer l’audio (vidéo seule)',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Le même outil de vidéo silencieuse.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Enregistrez l’audio au lieu de le supprimer.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids de la vidéo silencieuse.',
+        },
+        {
+          label: 'Ajouter de l’audio à une vidéo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Ajoutez une nouvelle bande-son au clip silencieux.',
+        },
+      ],
+      embed: {
+        title: 'Supprimer l’audio d’une vidéo',
+        description: 'Importez une vidéo et nous retirons la piste audio pour renvoyer un fichier silencieux, contenant uniquement la vidéo. La sortie est en MP4 par défaut. Nous copions la vidéo telle quelle lorsque c’est possible (sans perte de qualité).',
+      },
     },
     'audio-converter': {
       name: 'Convertisseur audio',
+      h1: 'Convertisseur audio en ligne gratuit',
       tagline: 'Convertissez entre MP3, WAV, M4A, OGG, FLAC, OPUS et bien d’autres, avec un contrôle complet du débit, de la fréquence d’échantillonnage et des canaux.',
+      metaTitle: 'Convertisseur audio en ligne gratuit | Media Manipulator',
+      metaDescription: 'Convertisseur audio gratuit en ligne pour MP3, WAV, M4A, OGG, FLAC, OPUS et bien d’autres. Choisissez le débit, la fréquence d’échantillonnage et les canaux.',
+      ogTitle: 'Convertisseur audio en ligne gratuit',
+      ogDescription: 'Convertissez WAV, MP3, M4A, OGG, FLAC, OPUS et bien d’autres. Choisissez le débit, la fréquence d’échantillonnage et les canaux.',
+      intro: 'Chaque appareil, hébergeur de podcast et éditeur audio attend un format différent. Media Manipulator prend en charge tous les formats audio courants au même endroit, avec un contrôle précis du débit, de la fréquence d’échantillonnage et de la configuration des canaux.',
+      whatItDoes: [
+        'Convertit entre MP3, WAV, M4A/AAC, OGG, FLAC, ALAC, OPUS, AC3 et DTS.',
+        'Choisissez le débit, la fréquence d’échantillonnage et la configuration des canaux.',
+        'Découpez et appliquez un égaliseur, un débruitage ou un nettoyage par IA dans le même import.',
+        'Produit des fichiers valides, avec balises ID3 lorsque c’est applicable.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez l’audio',
+          description: 'MP3, WAV, M4A, FLAC, OGG et plus.',
+        },
+        {
+          title: 'Choisissez le format de sortie',
+          description: 'MP3, WAV, FLAC, M4A, OGG, OPUS.',
+        },
+        {
+          title: 'Réglez le débit et la fréquence',
+          description: 'Découpez ou lancez un nettoyage par IA.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez l’audio converti.',
+        },
+      ],
+      advancedDetails: [
+        'Le MP3 est le format compressé universel : tous les appareils le lisent.',
+        'FLAC et ALAC sont sans perte : plus volumineux que le MP3, plus légers que le WAV.',
+        'OPUS (dans un conteneur OGG) est le format moderne avec perte le plus compact pour la voix et la musique, idéal lorsque vous maîtrisez le lecteur.',
+      ],
+      whyItMatters: [
+        'Les plateformes de podcast, les services de musique et les éditeurs audio préfèrent chacun des formats différents.',
+        'Des fichiers plus légers signifient moins de stockage et une diffusion plus rapide.',
+        'Les formats sans perte sont essentiels lorsque l’audio sera remonté.',
+      ],
+      useCases: [
+        {
+          title: 'Publication de podcast',
+          description: 'Master WAV → épisode MP3.',
+        },
+        {
+          title: 'Partage de mémo vocal',
+          description: 'Découpez et compressez en MP3.',
+        },
+        {
+          title: 'Archivage musical',
+          description: 'Convertissez MP3 → FLAC (sans gain de qualité) ou WAV → FLAC pour un stockage sans perte.',
+        },
+        {
+          title: 'Ressources pour jeux et applications',
+          description: 'Convertissez WAV → OPUS pour des ressources mobiles ultralégères.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Contrôle complet du débit, de la fréquence d’échantillonnage et des canaux.',
+        'Outils de nettoyage par IA (débruitage, isolation de la voix, suppression de la voix) dans le même import.',
+        'Gratuit, sans inscription, sans filigrane.',
+      ],
+      privacyNote: 'Votre audio est décodé et réencodé par FFmpeg sur notre serveur dans le format et au débit que vous choisissez. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Quel est le meilleur format pour la musique ?',
+          answer: 'FLAC pour un stockage sans perte, MP3 à 256–320 kbit/s pour le partage, OPUS pour le fichier diffusable le plus léger.',
+        },
+        {
+          question: 'Quel est le meilleur format pour la voix ?',
+          answer: 'Le MP3 à 96–128 kbit/s est un excellent choix par défaut pour un podcast.',
+        },
+        {
+          question: 'Puis-je découper pendant la conversion ?',
+          answer: 'Oui : définissez les secondes de début et de fin dans la section de découpage avant de valider.',
+        },
+        {
+          question: 'Le FLAC est-il vraiment sans perte ?',
+          answer: 'Oui : le FLAC compresse sans supprimer aucune donnée. Le décodage donne une copie identique au bit près de l’entrée.',
+        },
+      ],
+      related: [
+        {
+          label: 'Convertir un WAV en MP3',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Convertisseur dédié WAV → MP3.',
+        },
+        {
+          label: 'Isoler la voix d’une chanson',
+          to: '/tools/isolate-vocals-from-song',
+          description: 'Extrayez la voix des morceaux de musique.',
+        },
+        {
+          label: 'Tutoriel du convertisseur audio',
+          to: '/tutorials/audio/getting-started',
+          description: 'Présentation complète de chaque option.',
+        },
+      ],
+      embed: {
+        title: 'Convertir un fichier audio',
+        description: 'Importez n’importe quel fichier audio et choisissez le format cible. Le MP3 à 192 kbit/s est un choix par défaut raisonnable. Le WAV est sans perte mais volumineux ; le M4A/AAC est un bon choix compressé pour la musique.',
+      },
     },
     'srt-generator': {
       name: 'Générateur de sous-titres SRT',
+      h1: 'Générateur SRT gratuit',
       tagline: 'Importez un fichier vidéo ou audio et générez un fichier de sous-titres .srt à télécharger, prêt pour YouTube, les logiciels de montage et les outils d’accessibilité.',
+      metaTitle: 'Générateur SRT gratuit en ligne : vidéo et audio en SRT | Media Manipulator',
+      metaDescription: 'Générez des fichiers de sous-titres SRT à partir de MP4, MOV, MP3, WAV et plus. Gratuit, sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Compatible avec YouTube, Premiere et DaVinci Resolve.',
+      ogTitle: 'Générateur SRT gratuit : vidéo et audio en SRT',
+      ogDescription: 'Générez des fichiers de sous-titres SRT précis à partir de n’importe quelle vidéo ou audio. Transcription par IA locale, sans fournisseur tiers.',
+      intro: 'Le SRT (SubRip) est le format de sous-titres le plus largement pris en charge sur Internet : YouTube, Vimeo, Premiere, DaVinci Resolve, Final Cut et presque toutes les plateformes sociales l’acceptent. Media Manipulator vous permet de générer un fichier SRT à partir de n’importe quelle vidéo ou audio en un seul import. La transcription s’exécute sur notre propre serveur GPU avec whisper-ctranslate2 ; l’audio ne quitte donc jamais notre infrastructure et n’est jamais vu par un fournisseur d’IA tiers.',
+      whatItDoes: [
+        'Transcrit n’importe quel fichier vidéo ou audio en un fichier de sous-titres .srt horodaté.',
+        'Utilise whisper-ctranslate2 sur notre serveur GPU local : aucun fournisseur d’IA tiers ne voit vos médias.',
+        'Produit des fichiers au format SubRip (horodatages HH:MM:SS,mmm, numéros de sous-titres séquentiels) compatibles avec tous les grands logiciels de montage et lecteurs vidéo.',
+        'Prend en charge la détection automatique de la langue ou une indication de langue BCP-47 facultative pour une meilleure précision sur les clips courts.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre média',
+          description: 'Déposez n’importe quel fichier MP4, MOV, MP3, WAV ou autre format pris en charge.',
+        },
+        {
+          title: 'Nous extrayons l’audio',
+          description: 'FFmpeg extrait la piste audio et la convertit dans le format attendu par whisper.',
+        },
+        {
+          title: 'Whisper transcrit',
+          description: 'Notre serveur GPU exécute whisper-ctranslate2 pour produire des segments horodatés.',
+        },
+        {
+          title: 'Téléchargez le .srt',
+          description: 'Un fichier SubRip propre est généré, avec des sous-titres numérotés dans l’ordre et un minutage précis.',
+        },
+      ],
+      advancedDetails: [
+        'Whisper s’exécute sur notre propre serveur GPU NVIDIA via ctranslate2 : aucune API externe n’intervient.',
+        'La sortie SRT utilise des horodatages avec millisecondes séparées par une virgule (00:00:01,234) et des numéros de sous-titres séquentiels à partir de 1, le format qui maximise la compatibilité avec les logiciels de montage.',
+        'Le pipeline de transcription prend en charge la détection automatique de la langue ou une indication BCP-47 facultative de type WHISPER_CT2_LANGUAGE via le champ de langue.',
+        'Les résultats passent par le même système de tâches que le reste de l’application : vous pouvez aussi choisir VTT, texte brut ou JSON structuré depuis le formulaire de transcription.',
+      ],
+      whyItMatters: [
+        'YouTube, Vimeo, Premiere, DaVinci Resolve, Final Cut et la plupart des plateformes sociales acceptent le SRT comme format de sous-titres par défaut.',
+        'Les sous-titres rendent les vidéos accessibles aux spectateurs sourds et malentendants et augmentent l’engagement sur les plateformes sociales, où la plupart des vidéos sont lues sans le son.',
+        'Les moteurs de recherche peuvent indexer le contenu de la transcription de vos vidéos lorsque vous publiez un fichier .srt correspondant à leurs côtés.',
+      ],
+      useCases: [
+        {
+          title: 'Créateurs YouTube',
+          description: 'Générez des sous-titres précis et importez-les comme piste SRT sur chaque vidéo.',
+        },
+        {
+          title: 'Producteurs de cours',
+          description: 'Ajoutez des transcriptions aux vidéos de cours pour que les étudiants puissent les rechercher, les réviser et les traduire plus tard.',
+        },
+        {
+          title: 'Podcasteurs qui republient en vidéo',
+          description: 'Transformez des épisodes de podcast en clips vidéo sous-titrés pour les plateformes sociales.',
+        },
+        {
+          title: 'Équipes marketing et réseaux sociaux',
+          description: 'Sous-titrez chaque clip pour que le message passe même en lecture automatique silencieuse.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper s’exécute sur notre propre infrastructure GPU : vos médias ne passent jamais par un fournisseur d’IA tiers.',
+        'Sans inscription, sans filigrane. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+        'Le même moteur de transcription que le reste de l’application, pour une précision constante entre les sorties SRT, VTT, texte brut et JSON.',
+      ],
+      privacyNote: 'La parole de votre fichier est transcrite par Whisper sur notre propre serveur GPU et minutée dans un fichier de sous-titres SRT. Le traitement par IA s’exécute sur du matériel que nous exploitons, jamais chez un fournisseur d’IA tiers, et rien de ce que vous importez ne sert à entraîner un modèle. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Qu’est-ce qu’un fichier SRT ?',
+          answer: 'Le SRT (SubRip) est un fichier de sous-titres en texte brut avec des horodatages et des numéros de sous-titres. C’est le format de sous-titres par défaut accepté par YouTube, la plupart des logiciels de montage et la plupart des lecteurs vidéo.',
+        },
+        {
+          question: 'Puis-je générer des sous-titres à partir d’un MP4 ?',
+          answer: 'Oui. Importez n’importe quel MP4 (ou MOV, MKV, WebM, AVI, M4V) et nous produirons un fichier de sous-titres .srt téléchargeable.',
+        },
+        {
+          question: 'Puis-je utiliser le fichier SRT sur YouTube ?',
+          answer: 'Oui : YouTube accepte directement le SRT. Importez votre vidéo, puis ajoutez le fichier de sous-titres via Sous-titres → Ajouter une langue → Importer un fichier.',
+        },
+        {
+          question: 'Quelles langues sont prises en charge ?',
+          answer: 'Whisper prend en charge des dizaines de langues et peut détecter automatiquement la langue parlée. Vous pouvez aussi fournir une indication BCP-47 (par ex. en, es, ja) pour une meilleure précision sur les clips très courts.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'La transcription s’exécute sur notre serveur GPU local : votre fichier n’est jamais envoyé à un fournisseur d’IA externe.',
+          'Pour les longues vidéos, la tâche s’exécute de manière asynchrone et vous pouvez garder l’onglet ouvert pour suivre la progression.',
+        ],
+      },
+      related: [
+        {
+          label: 'Traducteur de sous-titres',
+          to: '/tools/caption-translator',
+          description: 'Traduisez le SRT généré dans d’autres langues.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Extrayez l’audio avant une transcription manuelle.',
+        },
+        {
+          label: 'Extraire des images d’une vidéo',
+          to: '/tools/extract-frames-from-video',
+          description: 'Récupérez des images fixes pour les vignettes et les références.',
+        },
+        {
+          label: 'Transcoder une vidéo en HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Préparez votre vidéo pour le streaming.',
+        },
+        {
+          label: 'Transcoder une vidéo en DASH',
+          to: '/tools/transcode-to-dash',
+          description: 'Empaquetage DASH AV1 / VP9.',
+        },
+      ],
+      embed: {
+        title: 'Générer un fichier de sous-titres SRT',
+        description: 'Importez un fichier vidéo ou audio. Nous le transcrivons sur notre propre serveur GPU avec whisper-ctranslate2 et renvoyons un fichier de sous-titres .srt que vous pouvez glisser dans n’importe quel logiciel de montage.',
+      },
     },
     'caption-translator': {
       name: 'Traducteur de sous-titres',
+      h1: 'Traducteur de sous-titres gratuit',
       tagline: 'Traduisez des fichiers de sous-titres SRT et VTT en préservant les minutages, l’ordre et la structure des sous-titres, sans fournisseur d’IA tiers.',
+      metaTitle: 'Traducteur de sous-titres SRT et VTT gratuit, minutages préservés | Media Manipulator',
+      metaDescription: 'Traduisez des sous-titres SRT et VTT en ligne en préservant exactement les minutages. S’exécute sur notre propre serveur d’IA local : vos sous-titres ne sont jamais envoyés à des fournisseurs tiers.',
+      ogTitle: 'Traducteur de sous-titres gratuit : SRT et VTT',
+      ogDescription: 'Traduisez des sous-titres SRT ou VTT en préservant les horodatages et l’ordre des sous-titres. IA locale, sans fournisseur tiers.',
+      intro: 'Traduisez des fichiers de sous-titres existants d’une langue à une autre sans jamais toucher au minutage. Media Manipulator analyse les sous-titres de votre fichier .srt ou .vtt, traduit uniquement le texte avec notre modèle de traduction de sous-titres hébergé localement, et réécrit les horodatages d’origine à l’identique. Aucune API de traduction tierce ne voit vos sous-titres : le modèle s’exécute sur notre propre serveur GPU.',
+      whatItDoes: [
+        'Accepte les fichiers de sous-titres .srt ou .vtt et produit une copie traduite dans le même format (ou dans l’autre, si vous le souhaitez).',
+        'Préserve exactement les numéros, l’ordre et les horodatages des sous-titres : seul le texte est traduit.',
+        'Exécute la traduction sur notre serveur de modèles Ollama local avec un modèle spécialement ajusté pour les sous-titres : vos sous-titres ne quittent jamais notre infrastructure.',
+        'Prend en charge plus de 30 langues cibles, dont les principales langues européennes, asiatiques et du Moyen-Orient.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez un .srt ou .vtt',
+          description: 'Déposez votre fichier de sous-titres existant dans la zone d’import.',
+        },
+        {
+          title: 'Choisissez les langues',
+          description: 'Détectez automatiquement ou choisissez une langue source, puis choisissez une langue cible.',
+        },
+        {
+          title: 'Nous traduisons le texte des sous-titres',
+          description: 'Notre IA locale traduit uniquement le texte des sous-titres ; les horodatages et l’ordre restent figés.',
+        },
+        {
+          title: 'Téléchargez les sous-titres traduits',
+          description: 'Récupérez un .srt ou .vtt propre, avec un minutage identique et une traduction de chaque sous-titre.',
+        },
+      ],
+      advancedDetails: [
+        'La traduction s’exécute sur notre propre serveur Ollama avec un dérivé de Translate-Gemma ajusté pour les sous-titres (mm-captions-translategemma-12b).',
+        'Nous n’envoyons au modèle que le texte des sous-titres et un en-tête de schéma JSON strict, puis nous réappliquons le minutage du fichier d’origine à la lecture de la réponse : même un modèle défaillant ne peut donc pas corrompre le minutage de vos sous-titres.',
+        'Les blocs NOTE et STYLE des fichiers VTT sont préservés et ne sont jamais envoyés au traducteur.',
+        'Pour les longues pistes de sous-titres, nous traitons les sous-titres par lots afin que le modèle n’approche jamais sa limite de contexte.',
+      ],
+      whyItMatters: [
+        'Traduire des sous-titres à la main est source d’erreurs : il est très facile de casser le format des horodatages ou de réordonner des sous-titres par accident.',
+        'Un traducteur conçu pour les sous-titres préserve la structure de fichier attendue par les logiciels de montage et les lecteurs.',
+        'Traduire en interne sur un modèle local garde les flux de travail des créateurs indépendants des tarifs et des politiques des services de traduction tiers.',
+      ],
+      useCases: [
+        {
+          title: 'Chaînes YouTube multilingues',
+          description: 'Traduisez un SRT anglais de référence en 5 langues ou plus pour la même vidéo.',
+        },
+        {
+          title: 'Cours en ligne',
+          description: 'Touchez des étudiants internationaux avec des sous-titres dans leur langue maternelle.',
+        },
+        {
+          title: 'Documentaires et festivals de cinéma',
+          description: 'Préparez des pistes de traduction sans toucher au minutage des sous-titres.',
+        },
+        {
+          title: 'Actualités et journalisme',
+          description: 'Traduisez les pistes de sous-titres de dernière minute en gardant une synchronisation précise.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Traduction par IA locale : vos sous-titres ne sont jamais envoyés à un fournisseur d’IA tiers.',
+        'Une analyse qui protège le minutage et réapplique les heures de début et de fin d’origine, même si le modèle se comporte mal.',
+      ],
+      privacyNote: 'Seul le texte de votre fichier SRT ou VTT est lu : chaque sous-titre est traduit par un modèle de langage que nous exécutons sur notre propre serveur GPU, et les minutages sont recopiés sans modification. Le traitement par IA s’exécute sur du matériel que nous exploitons, jamais chez un fournisseur d’IA tiers, et rien de ce que vous importez ne sert à entraîner un modèle. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'Puis-je traduire un fichier SRT sans casser les horodatages ?',
+          answer: 'Oui : c’est tout l’intérêt de cet outil. Nous analysons les sous-titres, traduisons uniquement le texte, puis réappliquons exactement les horodatages d’origine avant d’écrire le résultat.',
+        },
+        {
+          question: 'Quels formats de sous-titres sont pris en charge ?',
+          answer: 'SubRip (.srt) et WebVTT (.vtt) sont tous deux pris en charge. Vous pouvez garder le même format de sortie que l’entrée ou convertir de l’un à l’autre.',
+        },
+        {
+          question: 'Puis-je traduire des sous-titres pour des vidéos YouTube ?',
+          answer: 'Oui. Générez (ou exportez) un SRT à partir de votre vidéo, traduisez-le ici et importez le nouveau SRT comme piste de langue supplémentaire sur YouTube.',
+        },
+        {
+          question: 'Les sous-titres sont-ils traduits par un fournisseur d’IA tiers ?',
+          answer: 'Non. La traduction s’exécute sur notre propre modèle hébergé avec Ollama : vos sous-titres ne quittent jamais notre infrastructure.',
+        },
+        {
+          question: 'Qu’advient-il du minutage des sous-titres ?',
+          answer: 'Les heures de début et de fin de chaque sous-titre sont préservées exactement : nous les réappliquons depuis le fichier d’origine après la traduction, de sorte que même un modèle défaillant ne peut pas corrompre votre minutage.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Taille maximale du fichier de sous-titres : 2 Mo (les vraies pistes de sous-titres sont généralement bien en dessous).',
+        ],
+        processingNotes: [
+          'La traduction s’exécute sur un modèle Ollama hébergé localement : aucune API de traduction tierce n’est contactée.',
+          'Les blocs NOTE et STYLE des fichiers WebVTT sont préservés tels quels.',
+        ],
+      },
+      related: [
+        {
+          label: 'Générateur de sous-titres SRT',
+          to: '/tools/srt-generator',
+          description: 'Générez un nouveau SRT à partir d’un fichier vidéo ou audio.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Extrayez l’audio pour le vérifier ou le retranscrire.',
+        },
+        {
+          label: 'Ajouter de l’audio à une vidéo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Ajoutez une voix off traduite après avoir traduit les sous-titres.',
+        },
+        {
+          label: 'Transcoder une vidéo en HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Empaquetez votre vidéo pour le streaming.',
+        },
+        {
+          label: 'Transcoder une vidéo en DASH',
+          to: '/tools/transcode-to-dash',
+          description: 'Empaquetage DASH AV1 / VP9.',
+        },
+      ],
+      embed: {
+        title: 'Traduire un fichier de sous-titres SRT ou VTT',
+        description: 'Importez un fichier .srt ou .vtt existant, choisissez une langue cible et récupérez un fichier de sous-titres traduit dont les minutages d’origine sont préservés exactement.',
+      },
     },
     'audio-waveform-generator': {
       name: 'Générateur de forme d’onde audio',
+      h1: 'Générateur de forme d’onde audio gratuit',
       tagline: 'Transformez n’importe quel fichier audio en vidéo de forme d’onde configurable, en image de forme d’onde, ou les deux, parfait pour les podcasts, les aperçus musicaux et les clips pour les réseaux sociaux.',
+      metaTitle: 'Générateur de forme d’onde audio gratuit : vidéos et images | Media Manipulator',
+      metaDescription: 'Générez des vidéos et des images de forme d’onde à partir de n’importe quel fichier audio. Bandes larges 10:1 pour podcasts, aperçus carrés pour les réseaux sociaux, canaux stéréo séparés, couleurs personnalisées et plus.',
+      ogTitle: 'Générateur de forme d’onde audio gratuit',
+      ogDescription: 'Générez des vidéos et des images de forme d’onde à partir de MP3, WAV, M4A, FLAC et plus. Hautement configurable, sans inscription.',
+      intro: 'Une forme d’onde rend l’audio visible : une ressource essentielle pour les podcasts, les aperçus musicaux, les vignettes de clips pour les réseaux sociaux et les timelines de montage. Media Manipulator génère les formes d’onde avec les filtres showwaves / showwavespic de FFmpeg, avec des réglages par défaut judicieux (une bande large 10:1 en 1600×160) et un panneau avancé complet pour ajuster le mode de rendu, la couleur, l’échelle et la séparation stéréo.',
+      whatItDoes: [
+        'Génère des vidéos de forme d’onde animées avec le filtre showwaves de FFmpeg, en modes point / line / p2p / cline.',
+        'Génère des images fixes de forme d’onde avec le filtre showwavespic de FFmpeg, parfaites pour les vignettes et les pochettes d’album.',
+        'Prend en charge des préréglages de format recommandés (10:1 large, 8:1, 6:1, 16:9, 1:1) ainsi qu’une largeur et une hauteur personnalisées.',
+        'Rendu par canal séparé en option, pour dessiner les canaux gauche et droit dans des couleurs distinctes.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez l’audio',
+          description: 'Déposez n’importe quel fichier MP3, WAV, M4A, AAC, FLAC ou OGG.',
+        },
+        {
+          title: 'Choisissez la sortie et la taille',
+          description: 'Choisissez une vidéo de forme d’onde, une image, ou les deux, puis un préréglage de format ou une taille personnalisée.',
+        },
+        {
+          title: 'Ajustez l’apparence (facultatif)',
+          description: 'Réglez le mode de rendu, la fréquence d’images, les couleurs, l’échelle et le mode de tracé dans le panneau avancé.',
+        },
+        {
+          title: 'Téléchargez',
+          description: 'Enregistrez votre vidéo de forme d’onde, votre image, ou un .zip contenant les deux.',
+        },
+      ],
+      advancedDetails: [
+        'Les modes de rendu correspondent directement aux modes showwaves de FFmpeg : point, line, p2p, cline. Chacun est prévisualisé dans le formulaire pour que vous puissiez choisir à l’œil.',
+        'Vous pouvez choisir soit la fréquence d’images de sortie (rate=), soit le nombre d’échantillons par colonne (n=), jamais les deux, conformément au paramètre mutuellement exclusif de FFmpeg.',
+        'Les options d’échelle (lin, log, sqrt, cbrt) vous permettent de décider à quel point les passages calmes doivent rester visibles.',
+        'Lorsque la vidéo et l’image sont toutes deux demandées, nous les regroupons dans un seul .zip, via le même système de tâches que tous les autres téléchargements de Media Manipulator.',
+      ],
+      whyItMatters: [
+        'Les visuels de forme d’onde rendent le contenu audio partageable : un clip avec une forme d’onde animée fonctionne bien mieux dans les fils sociaux en lecture automatique silencieuse qu’une vignette statique.',
+        'Les monteurs et les producteurs utilisent les formes d’onde comme ressources de référence pour organiser des timelines ou concevoir des pochettes d’album.',
+        'Une forme d’onde bien réglée sert à la fois de vignette, d’audiogramme et de teaser audio.',
+      ],
+      useCases: [
+        {
+          title: 'Podcasts',
+          description: 'Créez des audiogrammes pour les réseaux sociaux : clip + forme d’onde + sous-titres = le format de promotion de podcast le plus performant.',
+        },
+        {
+          title: 'Aperçus musicaux',
+          description: 'Générez une carte de forme d’onde carrée pour Instagram ou une version large pour les descriptions YouTube.',
+        },
+        {
+          title: 'Timelines de montage',
+          description: 'Utilisez l’image fixe de forme d’onde comme image de référence dans Premiere ou DaVinci Resolve.',
+        },
+        {
+          title: 'Livraison de voix off',
+          description: 'Envoyez à vos clients une carte de forme d’onde avec le WAV pour qu’ils en aient un aperçu d’un coup d’œil.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Les réglages par défaut privilégient la forme la plus utile (10:1 large) plutôt que le 600×240 par défaut de FFmpeg.',
+        'Des réglages FFmpeg avancés exposés en toute sécurité : chaque paramètre est validé côté serveur avant d’être transmis au graphe de filtres.',
+        'Sortie en MP4, PNG ou ZIP des deux : pas besoin de lancer une seconde tâche.',
+      ],
+      privacyNote: 'Votre audio est dessiné sous forme d’image ou de vidéo de forme d’onde par FFmpeg sur notre serveur. Aucun service audio externe n’intervient. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Vous obtenez un nouveau fichier ; l’import lui-même n’est pas modifié.',
+      faq: [
+        {
+          question: 'Qu’est-ce qu’une forme d’onde audio ?',
+          answer: 'Une forme d’onde est une représentation visuelle de l’amplitude d’un signal audio au fil du temps. C’est la ligne animée que vous voyez dans les logiciels de montage vidéo et sur des plateformes comme SoundCloud.',
+        },
+        {
+          question: 'Puis-je créer une vidéo de forme d’onde à partir d’un MP3 ?',
+          answer: 'Oui. Importez le MP3 (ou WAV/M4A/FLAC/OGG/AAC) et l’outil génère une vidéo de forme d’onde avec le filtre showwaves de FFmpeg.',
+        },
+        {
+          question: 'Puis-je aussi créer une image de forme d’onde ?',
+          answer: 'Oui. Réglez la sortie sur « Image » pour un PNG/WebP fixe, ou sur « Les deux » pour recevoir un ZIP contenant la vidéo et l’image.',
+        },
+        {
+          question: 'Quelle taille utiliser pour une forme d’onde ?',
+          answer: 'Pour la plupart des usages podcast et musique, le préréglage large 10:1 (1600×160) donne le meilleur résultat. Utilisez 16:9 ou 1:1 si vous avez besoin d’un format adapté aux réseaux sociaux.',
+        },
+        {
+          question: 'Que signifient les modes point, line, p2p et cline ?',
+          answer: 'Ce sont les modes de rendu showwaves de FFmpeg. Point dessine un point par échantillon, line dessine une barre verticale, p2p relie chaque point par une ligne et cline dessine une barre verticale centrée. Le formulaire prévisualise chacun d’eux.',
+        },
+        {
+          question: 'Puis-je séparer les canaux audio gauche et droit ?',
+          answer: 'Oui : activez « Séparer les canaux stéréo » dans les réglages avancés et choisissez une couleur différente pour chaque canal.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Réglage par défaut recommandé : forme d’onde large 10:1 (1600×160), idéale pour les podcasts, les aperçus musicaux et les timelines de montage.',
+          'Lorsque vous sélectionnez « Les deux », le résultat est regroupé dans un seul ZIP contenant la vidéo et l’image.',
+        ],
+      },
+      related: [
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Extrayez l’audio d’une vidéo avant de générer une forme d’onde.',
+        },
+        {
+          label: 'Générateur de sous-titres SRT',
+          to: '/tools/srt-generator',
+          description: 'Associez la forme d’onde à des sous-titres pour des audiogrammes sociaux.',
+        },
+        {
+          label: 'Ajouter de l’audio à une vidéo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Combinez votre rendu de forme d’onde avec une autre vidéo.',
+        },
+      ],
+      embed: {
+        title: 'Générer une forme d’onde à partir d’un fichier audio',
+        description: 'Importez un fichier audio et indiquez si vous voulez une vidéo de forme d’onde, une image de forme d’onde, ou les deux. Les réglages avancés vous permettent d’ajuster la taille, les couleurs, le mode de rendu et le comportement stéréo. Par défaut, vous obtenez une vidéo de forme d’onde large 10:1, adaptée aux podcasts et aux aperçus musicaux.',
+      },
     },
     'extract-video-only-from-video': {
       name: 'Extraire la vidéo sans l’audio',
+      h1: 'Extraire la vidéo sans l’audio (vidéo seule)',
       tagline: 'Exportez une copie silencieuse, contenant uniquement la vidéo, sans aucune piste audio, parfaite pour les aperçus muets, les plans de coupe, le montage et la remusicalisation.',
+      metaTitle: 'Extraire la vidéo sans l’audio : export vidéo seule | Media Manipulator',
+      metaDescription: 'Outil gratuit en ligne pour exporter une copie silencieuse (vidéo seule) d’une vidéo, sans aucune piste audio. Copie le flux vidéo tel quel lorsque c’est possible : sans réencodage, sans perte de qualité.',
+      ogTitle: 'Extraire la vidéo sans l’audio (vidéo seule)',
+      ogDescription: 'Exportez une copie silencieuse (vidéo seule) de votre vidéo, sans aucune piste audio. Gratuit, sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      intro: 'Il arrive que l’on veuille la vidéo sans l’audio : pour un aperçu silencieux dans un fil social, un plan de coupe à insérer dans un nouveau montage, ou une remusicalisation où vous ajouterez une nouvelle musique. Media Manipulator retire toutes les pistes audio et produit un fichier propre contenant uniquement la vidéo. Le flux vidéo est copié tel quel chaque fois que c’est possible ; il n’y a donc ni réencodage ni perte de qualité.',
+      whatItDoes: [
+        'Supprime tous les flux audio de votre vidéo.',
+        'Copie le flux vidéo tel quel chaque fois que c’est possible : sans réencodage, sans perte de qualité.',
+        'Réencode en H.264 baseline compatible uniquement si le conteneur de destination l’exige.',
+        'Renvoie un MP4 (ou WebM) silencieux que vous pouvez insérer directement dans un nouveau montage.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre vidéo',
+          description: 'Déposez n’importe quel fichier MP4, MOV, MKV, WebM, AVI ou M4V.',
+        },
+        {
+          title: 'Choisissez le conteneur de sortie',
+          description: 'MP4 est le choix sûr par défaut. WebM est proposé pour les sources VP9/AV1.',
+        },
+        {
+          title: 'Nous retirons l’audio',
+          description: 'FFmpeg supprime le flux audio et copie le flux vidéo lorsque c’est possible.',
+        },
+        {
+          title: 'Téléchargez la vidéo silencieuse',
+          description: 'Enregistrez une copie propre et sans audio de votre vidéo.',
+        },
+      ],
+      advancedDetails: [
+        'La tentative par défaut utilise `-c:v copy`, il n’y a donc aucun réencodage : la qualité du flux vidéo est préservée au bit près.',
+        'Si le conteneur de destination refuse le codec source, nous nous replions sur un réencodage libx264 + yuv420p en CRF 20.',
+        'Pas de filigrane, pas d’incrustation, pas de redimensionnement : par défaut, la sortie visuelle est identique à la source.',
+      ],
+      whyItMatters: [
+        'La vidéo silencieuse est le format de lecture automatique de fait sur la plupart des plateformes sociales.',
+        'Supprimer l’audio est aussi une mesure de confidentialité : cela retire les voix et conversations intégrées aux enregistrements d’écran avant que vous les partagiez.',
+        'Les monteurs veulent souvent un fichier propre contenant uniquement la vidéo pour la remusicaliser ou la synchroniser avec un autre enregistrement audio.',
+      ],
+      useCases: [
+        {
+          title: 'Aperçus sociaux silencieux',
+          description: 'Créez un clip propre en lecture automatique pour Instagram, X, LinkedIn ou TikTok.',
+        },
+        {
+          title: 'Projets de remusicalisation',
+          description: 'Retirez l’audio d’origine avant d’ajouter de la musique ou une voix off.',
+        },
+        {
+          title: 'Partages sensibles',
+          description: 'Supprimez une conversation d’arrière-plan captée pendant un enregistrement d’écran.',
+        },
+        {
+          title: 'Préparation de plans de coupe',
+          description: 'Insérez un clip sans audio dans un montage multicaméra ou construit sur des plans de coupe.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Copie du flux lorsque c’est possible : la qualité vidéo d’origine est préservée.',
+        'Clair, rapide, sans inscription, sans filigrane.',
+        'Gratuit. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre vidéo est copiée sans sa piste audio par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment supprimer l’audio d’une vidéo ?',
+          answer: 'Importez votre vidéo et cliquez sur « Supprimer l’audio de la vidéo ». L’outil produit une copie contenant uniquement la vidéo, dans le conteneur de votre choix.',
+        },
+        {
+          question: 'La qualité de la vidéo va-t-elle changer ?',
+          answer: 'Non, dans le cas par défaut. Nous copions le flux vidéo tel quel ; la sortie est donc identique au bit près côté vidéo. Nous ne réencodons que si le conteneur de destination l’exige.',
+        },
+        {
+          question: 'Puis-je rendre un MP4 silencieux ?',
+          answer: 'Oui : MP4 est le conteneur de sortie par défaut et le cas d’usage le plus courant.',
+        },
+        {
+          question: 'La vidéo d’origine est-elle modifiée ?',
+          answer: 'Non. L’import d’origine reste intact. Nous produisons un nouveau fichier et conservons ou supprimons l’import selon la règle de conservation : les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+        },
+        {
+          question: 'Et si ma vidéo n’a pas d’audio ?',
+          answer: 'Aucun problème : l’outil s’exécute normalement et renvoie une copie propre, réempaquetée.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le flux vidéo est copié sans réencodage chaque fois que le conteneur de destination le permet.',
+          'Les vidéos d’entrée sans flux audio sont traitées normalement et renvoient une copie réempaquetée.',
+        ],
+      },
+      related: [
+        {
+          label: 'Supprimer l’audio d’une vidéo',
+          to: '/tools/remove-audio-from-video',
+          description: 'La page grand public pour couper ou supprimer le son.',
+        },
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Extrayez la piste audio en MP3, WAV, etc.',
+        },
+        {
+          label: 'Ajouter de l’audio à une vidéo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Ajoutez une nouvelle bande-son à votre vidéo silencieuse.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez le poids de la vidéo silencieuse.',
+        },
+        {
+          label: 'Extraire des images d’une vidéo',
+          to: '/tools/extract-frames-from-video',
+          description: 'Extrayez des images fixes de la vidéo silencieuse.',
+        },
+      ],
+      embed: {
+        title: 'Supprimer l’audio d’une vidéo',
+        description: 'Importez votre vidéo et nous produisons une copie silencieuse, contenant uniquement la vidéo. Le flux vidéo est copié tel quel chaque fois que c’est possible ; il n’y a donc ni réencodage ni perte de qualité.',
+      },
     },
     'extract-frames-from-video': {
       name: 'Extraire des images d’une vidéo',
+      h1: 'Extraire des images d’une vidéo',
       tagline: 'Extrayez des images fixes de n’importe quelle vidéo, toutes les N secondes, à une fréquence d’images cible ou à des instants précis, et téléchargez-les dans un ZIP.',
+      metaTitle: 'Extraire des images d’une vidéo : extracteur gratuit | Media Manipulator',
+      metaDescription: 'Outil en ligne gratuit pour extraire des images fixes de n’importe quelle vidéo. Choisissez toutes les N secondes, un nombre d’images par seconde ou des instants précis. Sortie en ZIP d’images JPG, PNG ou WebP.',
+      ogTitle: 'Extraire des images d’une vidéo',
+      ogDescription: 'Extrayez des images fixes de fichiers MP4, MOV, MKV, WebM, AVI et M4V. Téléchargez-les dans un ZIP d’images JPG, PNG ou WebP.',
+      intro: 'L’extraction d’images retransforme une vidéo en une suite d’images fixes, utile pour les vignettes, les plans de référence, les maquettes de design, les jeux de données d’apprentissage automatique et les aperçus d’animation ou de storyboard. Media Manipulator vous permet d’échantillonner des images toutes les N secondes, à une fréquence d’images cible ou à des instants précis, et regroupe les images obtenues dans un seul ZIP à télécharger.',
+      whatItDoes: [
+        'Extrait des images fixes au format JPG, PNG ou WebP.',
+        'Prend en charge trois modes d’échantillonnage : toutes les N secondes, un nombre d’images par seconde cible ou des instants précis.',
+        'Regroupe les images dans un seul ZIP à télécharger en un clic.',
+        'Applique une limite maximale d’images pour que les traitements restent rapides et prévisibles.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez votre vidéo',
+          description: 'Déposez n’importe quel fichier MP4, MOV, MKV, WebM, AVI ou M4V.',
+        },
+        {
+          title: 'Choisissez un mode d’échantillonnage',
+          description: 'Toutes les N secondes, une fréquence d’images cible ou une liste d’instants séparés par des virgules.',
+        },
+        {
+          title: 'Choisissez le format d’image',
+          description: 'JPG pour des vignettes compactes, PNG pour des images fixes sans perte, WebP pour des fichiers modernes plus légers.',
+        },
+        {
+          title: 'Téléchargez le ZIP',
+          description: 'Toutes les images extraites sont regroupées dans un seul fichier .zip que vous pouvez décompresser où vous voulez.',
+        },
+      ],
+      advancedDetails: [
+        'Les modes « toutes les N secondes » et « fréquence d’images » utilisent le filtre fps de FFmpeg pour échantillonner uniformément sur toute la durée.',
+        'Le mode « instants précis » lance une exécution de FFmpeg par instant demandé, de sorte que les échecs par image (demandes hors limites, etc.) apparaissent clairement.',
+        'La limite maximale d’images est de 300 par défaut et plafonnée à 1000 : elle garde les tâches rapides et évite les extractions incontrôlées.',
+      ],
+      whyItMatters: [
+        'L’extraction d’images est le moyen le plus simple de récupérer des vignettes ou des images de référence à partir de vidéos existantes.',
+        'Les designers et les animateurs utilisent les images échantillonnées comme référence de dessin et comme plans d’illustration pour leurs storyboards.',
+        'Les praticiens de l’apprentissage automatique s’en servent pour constituer des jeux de données de classification ou de détection sans avoir à créer une chaîne de traitement sur mesure.',
+      ],
+      useCases: [
+        {
+          title: 'Vignettes et aperçus',
+          description: 'Choisissez une seule image à utiliser comme vignette YouTube ou Vimeo.',
+        },
+        {
+          title: 'Références de design',
+          description: 'Échantillonnez une suite d’images d’une séquence de jeu ou d’animation comme référence de dessin.',
+        },
+        {
+          title: 'Storyboards',
+          description: 'Générez une suite d’images clés pour présenter un storyboard.',
+        },
+        {
+          title: 'Jeux de données d’apprentissage automatique',
+          description: 'Constituez rapidement de petits jeux de données d’images à partir d’un petit nombre de vidéos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Trois modes d’échantillonnage couvrent presque tous les besoins réels : intervalle, fréquence d’images ou instants précis.',
+        'La sortie en ZIP garde un téléchargement en un clic, quel que soit le nombre d’images récupérées.',
+        'FFmpeg côté serveur garantit une sortie homogène, indépendamment du navigateur ou des codecs pris en charge.',
+      ],
+      privacyNote: 'Les images sont prélevées dans votre vidéo, au rythme que vous choisissez, par FFmpeg sur notre serveur et renvoyées sous forme de ZIP d’images. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Comment extraire des images d’une vidéo ?',
+          answer: 'Importez votre vidéo, choisissez un mode d’échantillonnage (toutes les N secondes est le mode par défaut), choisissez un format d’image et cliquez sur « Extraire les images ». Le résultat est un ZIP d’images fixes.',
+        },
+        {
+          question: 'Puis-je exporter une image toutes les quelques secondes ?',
+          answer: 'Oui, c’est le mode par défaut. Réglez « Secondes entre les images » sur l’intervalle de votre choix.',
+        },
+        {
+          question: 'Quels formats d’image sont pris en charge ?',
+          answer: 'JPG (compact, idéal pour les vignettes), PNG (sans perte) et WebP (fichiers modernes plus légers).',
+        },
+        {
+          question: 'Pourquoi l’outil renvoie-t-il un fichier ZIP ?',
+          answer: 'Même une courte vidéo peut produire des dizaines d’images. Renvoyer un seul ZIP garde un téléchargement en un clic et évite de se battre avec le navigateur pour plusieurs téléchargements de fichiers.',
+        },
+        {
+          question: 'Pourquoi y a-t-il une limite maximale d’images ?',
+          answer: 'La limite évite les tâches incontrôlées lancées par accident (par exemple extraire des dizaines de milliers d’images d’une longue vidéo). La valeur par défaut est 300 et le plafond absolu est 1000.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Le plafond d’images par défaut est de 300 ; augmentez-le jusqu’à 1000 dans le formulaire si vous en avez vraiment besoin.',
+          'Le mode « instants précis » accepte une liste de secondes séparées par des virgules (par exemple « 1, 5.5, 12.25, 30 »).',
+        ],
+      },
+      related: [
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Récupérez l’audio de la même vidéo.',
+        },
+        {
+          label: 'Générateur de sous-titres SRT',
+          to: '/tools/srt-generator',
+          description: 'Transcrivez la même vidéo en sous-titres .srt.',
+        },
+        {
+          label: 'Supprimer l’audio d’une vidéo',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Retirez l’audio pour conserver une copie muette de la vidéo.',
+        },
+      ],
+      embed: {
+        title: 'Extraire des images d’une vidéo',
+        description: 'Importez une vidéo, choisissez un mode d’échantillonnage (toutes les N secondes, à une fréquence d’images ou à des instants précis) et téléchargez un ZIP d’images fixes.',
+      },
     },
     'stitch-audio-to-video': {
       name: 'Ajouter de l’audio à une vidéo',
+      h1: 'Ajouter de l’audio à une vidéo',
       tagline: 'Combinez une vidéo de base avec jusqu’à trois fichiers audio supplémentaires (voix off, musique, narration) et téléchargez un nouveau MP4.',
+      metaTitle: 'Ajouter de l’audio à une vidéo : voix off, musique, mixage | Media Manipulator',
+      metaDescription: 'Outil en ligne gratuit pour ajouter une voix off, de la musique ou une narration à une vidéo, ou remplacer entièrement l’audio d’origine. Réglages de volume et de décalage par piste, sortie MP4.',
+      ogTitle: 'Ajouter de l’audio à une vidéo',
+      ogDescription: 'Ajoutez une voix off, de la musique, une narration, ou remplacez l’audio d’origine. Réglages de volume et de décalage par piste, sortie MP4, sans inscription.',
+      intro: 'Combiner une vidéo de base avec un ou plusieurs fichiers audio supplémentaires est l’une des tâches de montage les plus courantes : ajouter une voix off, poser une musique de fond, commenter un enregistrement d’écran ou remplacer entièrement l’audio d’origine. Media Manipulator vous donne des réglages de volume et de décalage par piste, un sélecteur mixage/remplacement et une sortie MP4 qui se lit sans accroc dans n’importe quel lecteur.',
+      whatItDoes: [
+        'Combine une vidéo de base avec jusqu’à trois pistes audio supplémentaires.',
+        'Réglages par piste : volume (0–4×), décalage de départ en secondes, lecture en boucle facultative jusqu’à la durée de la vidéo.',
+        'Sélecteur de mode global : « mixage » conserve l’audio d’origine, « remplacement » le supprime.',
+        'La sortie est toujours un MP4 avec audio AAC à 192 kbit/s, le choix par défaut qui fonctionne partout.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez la vidéo de base',
+          description: 'Déposez n’importe quel fichier MP4, MOV, MKV, WebM, AVI ou M4V.',
+        },
+        {
+          title: 'Ajoutez des pistes audio',
+          description: 'Ajoutez jusqu’à trois fichiers audio (voix off, musique, narration) avec des réglages par piste.',
+        },
+        {
+          title: 'Choisissez mixage ou remplacement',
+          description: 'Conservez l’audio d’origine et mixez-y les nouvelles pistes, ou supprimez l’original et n’utilisez que le nouvel audio.',
+        },
+        {
+          title: 'Téléchargez le nouveau MP4',
+          description: 'Nous assemblons le tout sur notre serveur et renvoyons un MP4 propre.',
+        },
+      ],
+      advancedDetails: [
+        'Le graphe de filtres est construit automatiquement : des nœuds adelay + volume par piste, puis un seul amix pour les combiner.',
+        'Le flux vidéo est copié tel quel chaque fois que c’est possible : seul l’audio est réencodé (en AAC à 192 kbit/s).',
+        'La lecture en boucle est réalisée avec `-stream_loop -1` sur l’entrée audio, de sorte que les musiques de fond courtes s’étendent proprement jusqu’à la durée de la vidéo.',
+        'La durée de sortie est « ajustée à la durée de la vidéo » par défaut ; décochez l’option si vous voulez que la sortie s’étende jusqu’à l’entrée la plus longue.',
+      ],
+      whyItMatters: [
+        'La voix off, la musique et la narration sont les ajouts audio les plus courants dans les vidéos courtes.',
+        'Les réglages de volume et de décalage par piste vous permettent de composer un vrai mixage plutôt que de simplement plaquer une piste.',
+        'Faire cela dans le navigateur serait lent et peu fiable ; FFmpeg côté serveur est rapide et exact.',
+      ],
+      useCases: [
+        {
+          title: 'Vidéos de créateurs',
+          description: 'Ajoutez un fond musical sous une séquence face caméra, ou remplacez le son ambiant par une voix off propre.',
+        },
+        {
+          title: 'Tutoriels',
+          description: 'Posez une piste de narration sur un enregistrement d’écran.',
+        },
+        {
+          title: 'Clips pour les réseaux sociaux',
+          description: 'Ajoutez un morceau tendance à un décalage précis sur un montage de 15 secondes.',
+        },
+        {
+          title: 'Vidéos familiales et personnelles',
+          description: 'Ajoutez une musique de fond à un montage de vacances.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Réglages de volume et de décalage par piste, et pas seulement un fichier audio plaqué sur la vidéo.',
+        'Copie le flux vidéo tel quel quand c’est possible, ce qui préserve la qualité vidéo d’origine.',
+        'Gratuit, sans inscription, FFmpeg côté serveur. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'Votre vidéo et le fichier audio que vous ajoutez sont assemblés en un seul MP4 par FFmpeg sur notre serveur. Le traitement s’exécute sur nos propres serveurs, pas sur un service de transcodage tiers. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans. Votre fichier source reste intact et le résultat est un nouveau fichier.',
+      faq: [
+        {
+          question: 'Puis-je ajouter de la musique à une vidéo ?',
+          answer: 'Oui : ajoutez le fichier musical comme piste audio, réglez son volume et laissez le mode sur « mixage » pour conserver l’audio d’origine en dessous.',
+        },
+        {
+          question: 'Puis-je ajouter une voix off tout en conservant l’audio d’origine ?',
+          answer: 'Oui : laissez le mode sur « mixage », ajoutez la voix off et atténuez l’audio d’origine en réglant un volume bas sur les pistes supplémentaires si vous voulez que la voix off passe au premier plan.',
+        },
+        {
+          question: 'Puis-je remplacer la piste audio d’origine ?',
+          answer: 'Oui : réglez le mode sur « remplacement » et l’audio d’origine est supprimé. Seules les pistes ajoutées sont mixées dans la sortie.',
+        },
+        {
+          question: 'Que se passe-t-il si l’audio est plus long que la vidéo ?',
+          answer: 'Par défaut, nous ajustons la durée à celle de la vidéo. Décochez « Ajuster à la durée de la vidéo » si vous voulez que la sortie s’étende jusqu’à l’entrée la plus longue.',
+        },
+        {
+          question: 'Puis-je régler le volume de l’audio ajouté ?',
+          answer: 'Oui : chaque piste ajoutée possède son propre facteur de volume (0–4×) et un décalage de départ en secondes.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Maximum 3 pistes audio ajoutées par tâche.',
+        ],
+        processingNotes: [
+          'Le flux vidéo est copié tel quel quand c’est possible ; seul l’audio est réencodé (en AAC 192 kbit/s).',
+          'La case Boucle étend les musiques de fond courtes jusqu’à la durée de la vidéo.',
+        ],
+      },
+      related: [
+        {
+          label: 'Extraire l’audio d’une vidéo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Récupérez l’audio d’une vidéo pour le réutiliser dans une autre.',
+        },
+        {
+          label: 'Supprimer l’audio d’une vidéo',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Retirez l’audio pour préparer une base propre à remettre en musique.',
+        },
+        {
+          label: 'Générateur de forme d’onde audio',
+          to: '/tools/audio-waveform-generator',
+          description: 'Créez un visuel qui accompagne votre piste audio.',
+        },
+      ],
+      embed: {
+        title: 'Ajouter ou remplacer la piste audio d’une vidéo',
+        description: 'Importez une vidéo de base, ajoutez un à trois fichiers audio, réglez le volume et le décalage par piste, puis choisissez « mixage » ou « remplacement ». Nous renvoyons un MP4 avec le tout combiné.',
+      },
     },
     'ai-frame-interpolation': {
       name: 'Interpolation d’images par IA',
+      h1: 'Outil d’interpolation d’images par IA',
       tagline: 'Portez la fréquence d’images d’une vidéo à 48, 60 ou 120 images/s grâce à des images intermédiaires générées par IA, pour des mouvements plus fluides.',
+      metaTitle: 'Interpolation d’images par IA : vidéo en 60 ou 120 images/s | Media Manipulator',
+      metaDescription: 'Outil en ligne gratuit d’interpolation d’images par IA. Utilisez RIFE pour transformer une vidéo à 24/30 images/s en MP4 plus fluide à 48, 60 ou 120 images/s. Aucune API tierce : tout s’exécute sur notre propre GPU.',
+      ogTitle: 'Outil d’interpolation d’images par IA : vidéo fluide à 60 ou 120 images/s',
+      ogDescription: 'Importez une vidéo, choisissez une fréquence d’images cible et téléchargez un MP4 avec des images intermédiaires générées par IA pour un mouvement plus fluide.',
+      intro: 'L’interpolation d’images par IA augmente la fréquence d’images d’une vidéo en générant de nouvelles images intermédiaires avec un réseau de neurones (RIFE), au lieu de simplement dupliquer ou fondre les images existantes. Le résultat est un mouvement nettement plus fluide : une séquence à 24/30 images/s commence à ressembler à du 60 images/s, et un clip à 60 images/s peut être porté à 120 images/s, adapté aux écrans à haute fréquence de rafraîchissement. Le traitement s’exécute sur notre propre serveur GPU, pas sur une API tierce, et la sortie est un MP4 que vous pouvez lire directement dans n’importe quel lecteur.',
+      whatItDoes: [
+        'Synthétise de nouvelles images intermédiaires avec RIFE (rife-ncnn-vulkan) au lieu de dupliquer ou de fondre les images existantes.',
+        'Vise 48, 60 ou 120 images/s avec des préréglages de qualité et de hauteur de traitement maximale que vous contrôlez.',
+        'S’exécute sur notre propre serveur GPU : aucun fournisseur d’IA tiers ne voit votre fichier.',
+        'Renvoie un MP4 en H.264 + AAC (la piste audio de la source est conservée par défaut).',
+        'Limite d’emblée les sources longues ou très hautes pour qu’une seule tâche ne puisse pas monopoliser le GPU.',
+      ],
+      flowSteps: [
+        {
+          title: 'Importez une vidéo',
+          description: 'Déposez un court clip MP4, MOV, WebM, MKV ou AVI.',
+        },
+        {
+          title: 'Ouvrez les outils vidéo IA',
+          description: 'Dans le formulaire vidéo, faites défiler jusqu’à « Outils vidéo IA » et sélectionnez Interpolation d’images par IA.',
+        },
+        {
+          title: 'Choisissez la fréquence cible et la qualité',
+          description: 'Choisissez 48, 60 ou 120 images/s, ainsi qu’une qualité d’encodage et une hauteur de traitement maximale.',
+        },
+        {
+          title: 'Lancez l’interpolation',
+          description: 'Nous extrayons les images, exécutons RIFE sur notre GPU et réencodons un MP4 à la nouvelle fréquence.',
+        },
+        {
+          title: 'Téléchargez le MP4',
+          description: 'Enregistrez le clip interpolé et prévisualisez-le à côté de l’original.',
+        },
+      ],
+      advancedDetails: [
+        'L’extraction des images utilise ffmpeg avec vsync=0, de sorte que le nombre d’images en entrée corresponde exactement à la fréquence de la source.',
+        'RIFE s’exécute via rife-ncnn-vulkan avec le répertoire de modèle choisi (rife-v4.6 est la valeur recommandée par défaut ; rife-v4 et rife-v2.3 sont aussi disponibles pour la compatibilité).',
+        'Après l’interpolation, ffmpeg réencode en H.264 (libx264) + AAC à la qualité choisie (CRF 26/20/17 pour basse/moyenne/haute).',
+        'L’audio source est remappé sur le nouvel encodage et la sortie utilise +faststart pour que le fichier se diffuse proprement en HTTP.',
+        'Une hauteur de traitement maximale (720p par défaut) limite la pression sur la mémoire GPU pour les sources hautes ; le rapport d’aspect d’origine est préservé grâce à une mise à l’échelle -2:min(ih,N).',
+      ],
+      whyItMatters: [
+        'La fluidité du mouvement est l’une des plus grandes différences perceptibles entre une vidéo grand public et une vidéo de qualité broadcast.',
+        'Les écrans modernes et de nombreuses plateformes sociales privilégient les contenus à 60 et 120 images/s pour une lecture plus fluide.',
+        'Des séquences anciennes ou à faible fréquence d’images peuvent gagner un cran sans retourner le matériau source.',
+      ],
+      useCases: [
+        {
+          title: '30 → 60 images/s pour le web',
+          description: 'Portez des séquences face caméra, des captures d’écran ou des vlogs dans la plage plus fluide des 60 images/s, typique des sites sociaux et vidéo modernes.',
+        },
+        {
+          title: '60 → 120 images/s pour une lecture à haute fréquence',
+          description: 'Préparez des séquences pour les écrans 120 Hz/144 Hz ou pour un montage au ralenti en aval.',
+        },
+        {
+          title: 'Clips courts plus fluides',
+          description: 'Rendez un montage de 5 à 10 secondes nettement plus fluide avant de le partager.',
+        },
+        {
+          title: 'Restauration de clips anciens',
+          description: 'Portez d’anciens clips à 24/30 images/s vers 48 ou 60 images/s pour une sensation de lecture plus moderne.',
+        },
+        {
+          title: 'Préparation au montage',
+          description: 'Générez une timeline d’images plus dense avant d’appliquer un ralenti ou des animations graphiques dans un éditeur en aval.',
+        },
+      ],
+      whyMediaManipulator: [
+        'S’exécute sur notre propre infrastructure GPU : aucun fournisseur d’IA tiers ne reçoit le fichier.',
+        'Utilise rife-ncnn-vulkan, un binaire Vulkan portable, plutôt qu’une lourde pile PyTorch : moins de dépendances, démarrages à froid plus rapides.',
+        'Gratuit, sans inscription. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      ],
+      privacyNote: 'De nouvelles images intermédiaires sont générées pour votre vidéo par RIFE sur notre propre serveur GPU. Le traitement IA s’exécute sur du matériel que nous exploitons, jamais chez un fournisseur d’IA tiers, et rien de ce que vous importez ne sert à entraîner un modèle. Les fichiers sont conservés 24 heures pour les visiteurs ; avec un compte gratuit, vous choisissez entre 24 heures et 2 ans.',
+      faq: [
+        {
+          question: 'L’interpolation d’images par IA améliore-t-elle vraiment la qualité vidéo ?',
+          answer: 'Elle améliore la fluidité du mouvement, pas la résolution ni la netteté. Si votre source est déjà à 60 images/s, elle paraîtra plus fluide à 120 images/s. Si votre source est à 24/30 images/s, elle se rapprochera du rendu à 60 images/s. Elle ne recrée pas par magie un mouvement réel que la caméra n’a jamais capturé.',
+        },
+        {
+          question: 'L’interpolation d’images par IA revient-elle simplement à augmenter la fréquence d’images ?',
+          answer: 'Non. Une conversion de fréquence classique duplique, supprime ou fond généralement les images existantes. L’interpolation par IA synthétise de toutes nouvelles images intermédiaires à partir du mouvement estimé, ce qui paraît en général bien plus naturel que la duplication.',
+        },
+        {
+          question: 'Puis-je convertir du 30 images/s en 60 images/s ?',
+          answer: 'Oui : le passage de 30 à 60 images/s est l’un des objectifs les plus courants et un bon premier essai.',
+        },
+        {
+          question: 'Puis-je convertir du 60 images/s en 120 images/s ?',
+          answer: 'Oui. Le 120 images/s double le travail du GPU par rapport au 60 images/s et produit un fichier plus volumineux ; essayez donc d’abord un clip court.',
+        },
+        {
+          question: 'Pourquoi l’interpolation d’images peut-elle créer des artefacts ?',
+          answer: 'L’estimation du mouvement doit deviner ce qui se passe entre deux images réelles. Les mouvements rapides, les mains, les cheveux, les roues, les occlusions et les changements de plan sont intrinsèquement plus difficiles : l’image synthétisée peut se déformer, laisser des images fantômes ou baver dans ces zones.',
+        },
+        {
+          question: 'Quel format de sortie l’outil produit-il ?',
+          answer: 'Du MP4 avec vidéo H.264 et audio AAC. La v1 ne produit que du MP4, car ce conteneur se lit partout et prend en charge les fréquences d’images élevées que cet outil génère.',
+        },
+        {
+          question: 'Le 60 images/s est-il toujours meilleur que le 30 images/s ?',
+          answer: 'Pour les captures d’interface, le sport, les séquences de jeu et les clips riches en mouvement, le 60 images/s paraît en général plus fluide. Pour les contenus cinématographiques, le 24/30 images/s est souvent le rendu voulu. Choisissez la fréquence qui correspond à la sensation que vous recherchez.',
+        },
+        {
+          question: 'L’interpolation d’images par IA est-elle meilleure que le filtre minterpolate de FFmpeg ?',
+          answer: 'L’interpolation par IA (RIFE) produit en général un mouvement plus propre que le filtre minterpolate intégré à FFmpeg, surtout pour les mouvements non rigides. minterpolate est plus rapide, plus simple et reste utile pour des conversions rapides de secours.',
+        },
+        {
+          question: 'Pourquoi les changements de plan paraissent-ils parfois étranges après l’interpolation ?',
+          answer: 'Le modèle suppose que deux images adjacentes appartiennent à la même séquence de mouvement. Une coupe franche rompt cette hypothèse, de sorte que l’image synthétisée à la frontière peut présenter une brève déformation. Des coupes nettes et des clips courts aident.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'La durée maximale de la source et la hauteur de traitement sont bornées par AI_FRAME_INTERPOLATION_MAX_DURATION_SECONDS et AI_FRAME_INTERPOLATION_MAX_HEIGHT sur le serveur.',
+        ],
+        processingNotes: [
+          'L’interpolation par IA sollicite fortement le GPU. Abaissez la hauteur de traitement maximale pour un traitement plus rapide des sources hautes.',
+          'La sortie est un MP4 (H.264 + AAC) en v1. L’audio de la source est conservé par défaut.',
+        ],
+      },
+      related: [
+        {
+          label: 'Convertisseur vidéo',
+          to: '/tools/video-converter',
+          description: 'Convertissez MP4, WebM, MOV, AVI, MKV et plus encore.',
+        },
+        {
+          label: 'Compresser une vidéo',
+          to: '/tools/compress-video',
+          description: 'Réduisez la taille du fichier vidéo après l’interpolation.',
+        },
+        {
+          label: 'Convertir une vidéo en GIF animé',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Transformez de courts clips en GIF animés faciles à partager.',
+        },
+        {
+          label: 'Extraire des images d’une vidéo',
+          to: '/tools/extract-frames-from-video',
+          description: 'Extrayez des images individuelles au format PNG.',
+        },
+        {
+          label: 'Tutoriel sur l’interpolation d’images par IA',
+          to: '/tutorials/ai-frame-interpolation',
+          description: 'Découvrez comment fonctionne l’interpolation par IA et quand l’utiliser.',
+        },
+      ],
+      embed: {
+        title: 'Interpolation d’images par IA',
+        description: 'Importez une courte vidéo. L’interpolation d’images par IA est déjà sélectionnée : choisissez une fréquence cible (48, 60 ou 120 images/s) et l’outil synthétise de nouvelles images intermédiaires et renvoie un MP4.',
+      },
     },
   },
 } as const;
