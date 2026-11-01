@@ -83,6 +83,7 @@ export const EVENTS = {
   SIGNIN_COMPLETED: 'signin_completed',
   SIGNOUT: 'signout',
   AUTH_FAILED: 'auth_failed',
+  PASSWORD_RESET_REQUESTED: 'password_reset_requested',
 
   // --- Monetization ---------------------------------------------------------
   PRICING_VIEWED: 'pricing_viewed',
@@ -241,6 +242,7 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   signin_completed: PRIORITY_HIGH,
   signout: PRIORITY_NORMAL,
   auth_failed: PRIORITY_HIGH,
+  password_reset_requested: PRIORITY_NORMAL,
 
   // Monetization
   pricing_viewed: PRIORITY_HIGH,
@@ -553,7 +555,7 @@ export interface OptionsChangedProps {
   value?: PropertyValue;
 }
 
-export type AuthMethod = 'google' | 'email' | 'other';
+export type AuthMethod = 'google' | 'email' | 'apple' | 'other';
 
 export interface AuthPromptShownProps {
   source: string;
@@ -578,6 +580,10 @@ export interface AuthFailedProps {
   method: AuthMethod;
   stage?: string;
   reason?: string;
+}
+
+export interface PasswordResetRequestedProps {
+  surface: 'web' | 'app';
 }
 
 export interface PricingViewedProps {
@@ -1146,6 +1152,7 @@ export interface EventPropsMap {
   signin_completed: AuthMethodProps;
   signout: EventProperties;
   auth_failed: AuthFailedProps;
+  password_reset_requested: PasswordResetRequestedProps;
 
   pricing_viewed: PricingViewedProps;
   upgrade_cta_clicked: UpgradeCTAClickedProps;

@@ -45,7 +45,7 @@ const propertyValue: z.ZodType<PropertyValue> = z.lazy(() =>
 
 const mediaKind = z.enum(['image', 'video', 'audio', 'document', 'unknown']);
 const tier = z.enum(['anonymous', 'free', 'premium', 'pro', 'operator']);
-const authMethod = z.enum(['google', 'email', 'other']);
+const authMethod = z.enum(['google', 'email', 'apple', 'other']);
 const metadataTagBucket = z.enum(['0', '1-25', '26-100', '101-500', '500+']);
 const resultSurface = z.enum(['home', 'tool_page', 'tutorial', 'history', 'shared']);
 const transport = z.enum(['post', 'presigned_put']);
@@ -280,6 +280,7 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       reason: z.string().optional(),
     })
     .strict(),
+  password_reset_requested: z.object({ surface: z.enum(['web', 'app']) }).strict(),
 
   pricing_viewed: z.object({ placement: z.string().optional() }).strict(),
   upgrade_cta_clicked: z
