@@ -25,6 +25,9 @@ import {
   onAuthStateChange,
   signInWithEmail,
   signInWithGoogle as firebaseSignInWithGoogle,
+  signInWithApple as firebaseSignInWithApple,
+  linkPendingCredential,
+  type PendingCredential,
   signOut as firebaseSignOut,
   signUpWithEmail,
   getCurrentIdToken,
@@ -89,9 +92,15 @@ export interface AuthContextValue {
   /** True while the account/usage snapshot is in flight. */
   refreshing: boolean;
 
-  signIn: (email: string, password: string) => Promise<void>;
+  /**
+   * The sign-in methods take an optional `pending` credential (kept from an
+   * `account-exists-with-different-credential` error); after the sign-in succeeds it is linked
+   * to the account. `linked` is null when nothing was pending.
+   */
+  signIn: (email: string, password: string, pending?: PendingCredential | null) => Promise<SignInResult>;
   signUp: (email: string, password: string, displayName: string) => Promise<void>;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: (pending?: PendingCredential | null) => Promise<SignInResult>;
+  signInWithApple: (pending?: PendingCredential | null) => Promise<SignInResult>;
   signOut: () => Promise<void>;
   /** Re-reads the snapshot from the API. */
   refresh: () => void;
@@ -121,6 +130,14 @@ export interface AuthContextValue {
   prompt: AuthPromptState;
   openAuth: (options?: OpenAuthOptions) => void;
   closeAuth: () => void;
+}
+
+/** What a completed sign-in tells the caller. */
+export interface SignInResult {
+  /** True when Firebase created the account with this sign-in (unreliable after linking). */
+  isNewUser: boolean;
+  /** Whether a pending credential was linked; null when none was pending. */
+  linked: boolean | null;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -353,10 +370,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signIn = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string, pending?: PendingCredential | null): Promise<SignInResult> => {
       await signInWithEmail(email, password);
+      const linked = pending ? await linkPendingCredential(pending) : null;
       setPrompt(CLOSED_PROMPT);
       refresh();
+      return { isNewUser: false, linked };
     },
     [refresh],
   );
@@ -370,11 +389,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [refresh],
   );
 
-  const signInWithGoogle = useCallback(async () => {
-    await firebaseSignInWithGoogle();
-    setPrompt(CLOSED_PROMPT);
-    refresh();
-  }, [refresh]);
+  const signInWithGoogle = useCallback(
+    async (pending?: PendingCredential | null): Promise<SignInResult> => {
+      await firebaseSignInWithGoogle();
+      const linked = pending ? await linkPendingCredential(pending) : null;
+      setPrompt(CLOSED_PROMPT);
+      refresh();
+      return { isNewUser: false, linked };
+    },
+    [refresh],
+  );
+
+  const signInWithApple = useCallback(
+    async (pending?: PendingCredential | null): Promise<SignInResult> => {
+      const { isNewUser } = await firebaseSignInWithApple();
+      const linked = pending ? await linkPendingCredential(pending) : null;
+      setPrompt(CLOSED_PROMPT);
+      refresh();
+      return { isNewUser, linked };
+    },
+    [refresh],
+  );
 
   const signOut = useCallback(async () => {
     await firebaseSignOut();
@@ -402,6 +437,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signIn,
       signUp,
       signInWithGoogle,
+      signInWithApple,
       signOut,
       refresh,
       remainingFor,
@@ -426,6 +462,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       refreshIdentityAndSnapshot,
       remainingFor,
       signIn,
+      signInWithApple,
       signInWithGoogle,
       signOut,
       signUp,
