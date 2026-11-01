@@ -41,7 +41,8 @@
       "googleSuccess": "Sesión iniciada correctamente con Google.",
       "authFailed": "Error de autenticación",
       "nameRequired": "Nombre obligatorio",
-      "nameRequiredDesc": "Ingresa tu nombre."
+      "nameRequiredDesc": "Ingresa tu nombre.",
+      "appleSuccess": "Sesión iniciada correctamente con Apple."
     },
     "contextual": {
       "signupTitle": "Usaste tus {{limit}} conversiones gratuitas de hoy",
@@ -68,7 +69,21 @@
       "noAds": "Sin anuncios",
       "retentionGuest": "Archivos conservados 24 horas"
     },
-    "loadingPlans": "Cargando planes…"
+    "loadingPlans": "Cargando planes…",
+    "appleSignIn": "Continuar con Apple",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "reset": {
+      "title": "Restablece tu contraseña",
+      "body": "Ingresa el correo electrónico de tu cuenta y te enviaremos un enlace.",
+      "submit": "Enviar enlace de restablecimiento",
+      "sending": "Enviando…",
+      "sent": "Si existe una cuenta con ese correo electrónico, te enviamos un enlace para restablecer tu contraseña.",
+      "back": "Volver a iniciar sesión"
+    },
+    "link": {
+      "notice": "Este correo electrónico ya está registrado con otro método de inicio de sesión. Inicia sesión con ese método para vincularlos.",
+      "linked": "Cuentas vinculadas. Ahora puedes iniciar sesión con cualquiera de los dos métodos."
+    }
   },
   "imageCropModal": {
     "title": "Recortar imagen",

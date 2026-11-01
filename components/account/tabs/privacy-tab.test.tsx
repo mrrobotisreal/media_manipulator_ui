@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const track = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/analytics/client', () => ({ analytics: { track } }));
 
-const h = vi.hoisted(() => ({ push: vi.fn(), signOut: vi.fn(async () => undefined), save: vi.fn() }));
+const h = vi.hoisted(() => ({ push: vi.fn(), signOut: vi.fn(async () => undefined), save: vi.fn(), providers: ['password', 'google.com'] as string[], appleFlag: false }));
 
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: h.push, replace: vi.fn() }) }));
 vi.mock('@/i18n/useLocalizedHref', () => ({ useLocalizedHref: () => (p: string) => p }));
@@ -15,7 +15,8 @@ vi.mock('@/lib/results/save', () => ({ saveBlobToDisk: h.save }));
 vi.mock('@/lib/firebase', () => ({
   getCurrentIdToken: async () => 'tok',
   getFreshIdToken: async () => 'fresh',
-  getSignInProviders: async () => ['password', 'google.com'],
+  getSignInProviders: async () => h.providers,
+  isAppleAuthEnabled: () => h.appleFlag,
   reauthenticate: vi.fn(async () => 'reauthed'),
 }));
 vi.mock('@/lib/auth/accountApi', async (orig) => ({
@@ -65,7 +66,11 @@ beforeEach(() => {
   vi.mocked(deleteAccount).mockReset();
   vi.mocked(exportData).mockReset();
 });
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  h.providers = ['password', 'google.com'];
+  h.appleFlag = false;
+});
 
 describe('PrivacyTab', () => {
   it('loads settings into the picker, with the metadata toggle at the default (keep)', async () => {
@@ -154,6 +159,22 @@ describe('PrivacyTab', () => {
     await waitFor(() => expect(h.signOut).toHaveBeenCalled());
     await waitFor(() => expect(h.push).toHaveBeenCalledWith('/?accountDeleted=1'));
     expect(track.mock.calls.filter(([n]) => n === 'data_deleted')).toEqual([['data_deleted', { scope: 'account', kind: 'account' }]]);
+  });
+
+  it('an Apple-only user re-authenticates with Apple (flag on) and the deletion retries', async () => {
+    h.providers = ['apple.com'];
+    h.appleFlag = true;
+    vi.mocked(deleteAccount)
+      .mockRejectedValueOnce(new AccountApiError(401, 'reauth_required'))
+      .mockResolvedValueOnce({ status: 'completed', steps: [], deleted: {}, stripe: 'none', analytics: 'ok', retryable: false } as never);
+    renderTab();
+    fireEvent.click(await screen.findByRole('button', { name: 'Delete my account' }));
+    const dialog = await screen.findByRole('alertdialog');
+    fireEvent.change(within(dialog).getByLabelText('Confirmation text'), { target: { value: 'DELETE MY ACCOUNT' } });
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Delete my account' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Continue with Apple' }));
+    await waitFor(() => expect(reauthenticate).toHaveBeenCalledWith({ kind: 'apple' }));
+    await waitFor(() => expect(deleteAccount).toHaveBeenLastCalledWith('reauthed', 'DELETE MY ACCOUNT'));
   });
 
   it('a retryable 502 keeps the dialog open with a retry, and does not sign out', async () => {

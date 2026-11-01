@@ -23,6 +23,15 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MA09: Sign in with Apple, Forgot password, account linking (Apple button ships behind
+  // NEXT_PUBLIC_AUTH_APPLE_ENABLED; Mitch flips it after the Preview check).
+  {
+    id: '2026-11-01-sign-in-with-apple',
+    date: '2026-11-01',
+    title: 'Sign in with Apple, and reset a forgotten password',
+    body: 'You can now create an account or sign in with your Apple Account, including Hide My Email. The sign-in window also has a Forgot password? link that emails you a reset link. If your email already has an account with another sign-in method, you can link the two.',
+    tags: ['new'],
+  },
   // MM92: the English copy left on Pricing, Account, Tools and Voices in every other language.
   {
     id: '2026-10-31-locale-copy-gaps',

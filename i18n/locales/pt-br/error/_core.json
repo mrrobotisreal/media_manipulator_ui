@@ -48,7 +48,10 @@
     "userNotFound": "Nenhuma conta encontrada com este e-mail.",
     "wrongPassword": "Senha incorreta.",
     "emailAlreadyInUse": "Já existe uma conta com este e-mail.",
-    "weakPassword": "A senha deve ter pelo menos 6 caracteres."
+    "weakPassword": "A senha deve ter pelo menos 6 caracteres.",
+    "invalidEmail": "Informe um endereço de e-mail válido.",
+    "tooManyRequests": "Muitas tentativas. Aguarde alguns minutos e tente de novo.",
+    "network": "Erro de rede. Verifique sua conexão e tente de novo."
   },
   "ad": {
     "loadFailed": "Não foi possível carregar o anúncio."

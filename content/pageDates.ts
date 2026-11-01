@@ -23,9 +23,9 @@ export const PAGE_DATES = {
   // MM48 added the Motion tutorial card.
   '/tutorials': '2026-10-26',
   // MM85: section 1.11 (contact messages).
-  '/privacy-policy': '2026-10-28',
+  '/privacy-policy': '2026-11-01',
   // MM78 voices terms (section 8.11).
-  '/terms-of-service': '2026-10-28',
+  '/terms-of-service': '2026-11-01',
   // MM84: review mode (copy-bar tools first, the rest collapsed) and aliases.
   '/tools': '2026-10-29',
   // MM69 currency toggle.

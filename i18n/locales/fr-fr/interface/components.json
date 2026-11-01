@@ -41,7 +41,8 @@
       "googleSuccess": "Connexion avec Google réussie.",
       "authFailed": "Échec de l'authentification",
       "nameRequired": "Nom obligatoire",
-      "nameRequiredDesc": "Veuillez saisir votre nom."
+      "nameRequiredDesc": "Veuillez saisir votre nom.",
+      "appleSuccess": "Connexion avec Apple réussie."
     },
     "contextual": {
       "signupTitle": "Vous avez utilisé vos {{limit}} conversions gratuites du jour",
@@ -68,7 +69,21 @@
       "noAds": "Sans publicité",
       "retentionGuest": "Fichiers conservés 24 heures"
     },
-    "loadingPlans": "Chargement des offres…"
+    "loadingPlans": "Chargement des offres…",
+    "appleSignIn": "Continuer avec Apple",
+    "forgotPassword": "Mot de passe oublié ?",
+    "reset": {
+      "title": "Réinitialisez votre mot de passe",
+      "body": "Saisissez l'adresse e-mail de votre compte et nous vous enverrons un lien.",
+      "submit": "Envoyer le lien de réinitialisation",
+      "sending": "Envoi en cours…",
+      "sent": "Si un compte existe pour cette adresse e-mail, nous vous avons envoyé un lien pour réinitialiser votre mot de passe.",
+      "back": "Retour à la connexion"
+    },
+    "link": {
+      "notice": "Cette adresse e-mail est déjà enregistrée avec une autre méthode de connexion. Connectez-vous avec cette méthode pour les associer.",
+      "linked": "Comptes associés. Vous pouvez désormais vous connecter avec l'une ou l'autre méthode."
+    }
   },
   "imageCropModal": {
     "title": "Recadrer l'image",

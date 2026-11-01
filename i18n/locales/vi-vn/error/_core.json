@@ -48,7 +48,10 @@
     "userNotFound": "Không tìm thấy tài khoản nào với email này.",
     "wrongPassword": "Mật khẩu không đúng.",
     "emailAlreadyInUse": "Đã có tài khoản dùng email này.",
-    "weakPassword": "Mật khẩu nên có ít nhất 6 ký tự."
+    "weakPassword": "Mật khẩu nên có ít nhất 6 ký tự.",
+    "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ.",
+    "tooManyRequests": "Quá nhiều lần thử. Hãy đợi vài phút rồi thử lại.",
+    "network": "Lỗi mạng. Hãy kiểm tra kết nối rồi thử lại."
   },
   "ad": {
     "loadFailed": "Không tải được quảng cáo."
