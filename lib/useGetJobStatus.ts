@@ -1,6 +1,7 @@
 'use client';
 
 import { getBaseURL } from '@/lib/utils';
+import { authedFetch } from '@/lib/auth/authedFetch';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner';
@@ -67,8 +68,8 @@ const resultFormatOf = (fileName: string | undefined): string | undefined => {
   return /^[a-z0-9]{1,12}$/.test(ext) && ext !== (fileName || '').toLowerCase() ? ext : undefined;
 };
 
-const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
-  const response = await fetch(`${getBaseURL()}/job/${jobId}`);
+export const checkJobStatus = async (jobId: string): Promise<ConversionJob> => {
+  const response = await authedFetch(`${getBaseURL()}/job/${jobId}`);
 
   if (!response.ok) {
     throw new Error(`Failed to check job status: ${response.statusText}`);
