@@ -41,7 +41,8 @@
       "googleSuccess": "Login com o Google feito com sucesso.",
       "authFailed": "Falha na autenticação",
       "nameRequired": "Nome obrigatório",
-      "nameRequiredDesc": "Digite seu nome."
+      "nameRequiredDesc": "Digite seu nome.",
+      "appleSuccess": "Login com a Apple feito com sucesso"
     },
     "contextual": {
       "signupTitle": "Você usou suas {{limit}} conversões gratuitas de hoje",
@@ -68,7 +69,21 @@
       "noAds": "Sem anúncios",
       "retentionGuest": "Arquivos guardados por 24 horas"
     },
-    "loadingPlans": "Carregando planos…"
+    "loadingPlans": "Carregando planos…",
+    "appleSignIn": "Continuar com a Apple",
+    "forgotPassword": "Esqueceu a senha?",
+    "reset": {
+      "title": "Redefinir sua senha",
+      "body": "Informe o e-mail da sua conta e enviaremos um link.",
+      "submit": "Enviar link de redefinição",
+      "sending": "Enviando...",
+      "sent": "Se existir uma conta com esse e-mail, enviamos um link para redefinir sua senha.",
+      "back": "Voltar para o login"
+    },
+    "link": {
+      "notice": "Este e-mail já está cadastrado com outro método de login. Entre com esse método para vincular os dois.",
+      "linked": "Contas vinculadas. Agora você pode entrar com qualquer um dos métodos."
+    }
   },
   "imageCropModal": {
     "title": "Recortar imagem",

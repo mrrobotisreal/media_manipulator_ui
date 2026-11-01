@@ -41,7 +41,8 @@
       "googleSuccess": "Sessão iniciada com sucesso através do Google.",
       "authFailed": "A autenticação falhou",
       "nameRequired": "Nome obrigatório",
-      "nameRequiredDesc": "Introduza o seu nome."
+      "nameRequiredDesc": "Introduza o seu nome.",
+      "appleSuccess": "Sessão iniciada com sucesso através da Apple."
     },
     "contextual": {
       "signupTitle": "Já utilizou as suas {{limit}} conversões gratuitas de hoje",
@@ -68,7 +69,21 @@
       "noAds": "Sem anúncios",
       "retentionGuest": "Ficheiros guardados durante 24 horas"
     },
-    "loadingPlans": "A carregar planos…"
+    "loadingPlans": "A carregar planos…",
+    "appleSignIn": "Continuar com a Apple",
+    "forgotPassword": "Esqueceu-se da palavra-passe?",
+    "reset": {
+      "title": "Repor a palavra-passe",
+      "body": "Introduza o e-mail da sua conta e enviamos-lhe uma ligação.",
+      "submit": "Enviar ligação de reposição",
+      "sending": "A enviar...",
+      "sent": "Se existir uma conta com esse e-mail, enviámos uma ligação para repor a palavra-passe.",
+      "back": "Voltar ao início de sessão"
+    },
+    "link": {
+      "notice": "Este e-mail já está registado com outro método de início de sessão. Inicie sessão com esse método para associar os dois.",
+      "linked": "Contas associadas. Agora pode iniciar sessão com qualquer um dos métodos."
+    }
   },
   "imageCropModal": {
     "title": "Recortar imagem",

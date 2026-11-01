@@ -41,7 +41,8 @@
       "googleSuccess": "Googleでサインインしました。",
       "authFailed": "認証に失敗しました",
       "nameRequired": "名前が必要です",
-      "nameRequiredDesc": "名前を入力してください。"
+      "nameRequiredDesc": "名前を入力してください。",
+      "appleSuccess": "Appleでサインインしました。"
     },
     "contextual": {
       "signupTitle": "本日の無料変換枠{{limit}}回を使い切りました",
@@ -68,7 +69,21 @@
       "noAds": "広告なし",
       "retentionGuest": "ファイルを24時間保存"
     },
-    "loadingPlans": "プランを読み込み中…"
+    "loadingPlans": "プランを読み込み中…",
+    "appleSignIn": "Appleで続行",
+    "forgotPassword": "パスワードをお忘れですか？",
+    "reset": {
+      "title": "パスワードをリセット",
+      "body": "アカウントのメールアドレスを入力してください。リンクをお送りします。",
+      "submit": "リセットリンクを送信",
+      "sending": "送信中...",
+      "sent": "そのメールアドレスのアカウントが存在する場合、パスワードをリセットするためのリンクを送信しました。",
+      "back": "サインインに戻る"
+    },
+    "link": {
+      "notice": "このメールアドレスはすでに別のサインイン方法で登録されています。その方法でサインインすると、両方を連携できます。",
+      "linked": "アカウントを連携しました。どちらの方法でもサインインできます。"
+    }
   },
   "imageCropModal": {
     "title": "画像を切り抜く",

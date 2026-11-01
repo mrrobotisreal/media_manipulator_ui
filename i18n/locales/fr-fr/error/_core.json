@@ -48,7 +48,10 @@
     "userNotFound": "Aucun compte n'est associé à cette adresse e-mail.",
     "wrongPassword": "Mot de passe incorrect.",
     "emailAlreadyInUse": "Un compte existe déjà avec cette adresse e-mail.",
-    "weakPassword": "Le mot de passe doit contenir au moins 6 caractères."
+    "weakPassword": "Le mot de passe doit contenir au moins 6 caractères.",
+    "invalidEmail": "Saisissez une adresse e-mail valide.",
+    "tooManyRequests": "Trop de tentatives. Patientez quelques minutes, puis réessayez.",
+    "network": "Erreur réseau. Vérifiez votre connexion et réessayez."
   },
   "ad": {
     "loadFailed": "La publicité n'a pas pu être chargée."

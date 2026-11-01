@@ -41,7 +41,8 @@
       "googleSuccess": "Erfolgreich mit Google angemeldet.",
       "authFailed": "Authentifizierung fehlgeschlagen",
       "nameRequired": "Name erforderlich",
-      "nameRequiredDesc": "Bitte geben Sie Ihren Namen ein."
+      "nameRequiredDesc": "Bitte geben Sie Ihren Namen ein.",
+      "appleSuccess": "Erfolgreich mit Apple angemeldet."
     },
     "contextual": {
       "signupTitle": "Sie haben Ihre {{limit}} kostenlosen Konvertierungen für heute aufgebraucht",
@@ -68,7 +69,21 @@
       "noAds": "Keine Werbung",
       "retentionGuest": "Dateien werden 24 Stunden aufbewahrt"
     },
-    "loadingPlans": "Tarife werden geladen …"
+    "loadingPlans": "Tarife werden geladen …",
+    "appleSignIn": "Mit Apple fortfahren",
+    "forgotPassword": "Passwort vergessen?",
+    "reset": {
+      "title": "Passwort zurücksetzen",
+      "body": "Gib die E-Mail-Adresse deines Kontos ein, dann senden wir dir einen Link.",
+      "submit": "Link zum Zurücksetzen senden",
+      "sending": "Wird gesendet …",
+      "sent": "Falls zu dieser E-Mail-Adresse ein Konto existiert, haben wir einen Link zum Zurücksetzen deines Passworts gesendet.",
+      "back": "Zurück zur Anmeldung"
+    },
+    "link": {
+      "notice": "Diese E-Mail-Adresse ist bereits mit einer anderen Anmeldemethode registriert. Melde dich mit dieser Methode an, um beide zu verknüpfen.",
+      "linked": "Konten verknüpft. Du kannst dich jetzt mit beiden Methoden anmelden."
+    }
   },
   "imageCropModal": {
     "title": "Bild zuschneiden",

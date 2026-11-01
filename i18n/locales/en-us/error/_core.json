@@ -48,7 +48,10 @@
     "userNotFound": "No account found with this email.",
     "wrongPassword": "Incorrect password.",
     "emailAlreadyInUse": "An account with this email already exists.",
-    "weakPassword": "Password should be at least 6 characters."
+    "weakPassword": "Password should be at least 6 characters.",
+    "invalidEmail": "Enter a valid email address.",
+    "tooManyRequests": "Too many attempts. Wait a few minutes and try again.",
+    "network": "Network error. Check your connection and try again."
   },
   "ad": {
     "loadFailed": "Advertisement failed to load."

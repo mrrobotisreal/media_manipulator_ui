@@ -48,7 +48,10 @@
     "userNotFound": "未找到使用此电子邮件的账号。",
     "wrongPassword": "密码不正确。",
     "emailAlreadyInUse": "此电子邮件已注册账号。",
-    "weakPassword": "密码至少需要6个字符。"
+    "weakPassword": "密码至少需要6个字符。",
+    "invalidEmail": "请输入有效的电子邮件地址。",
+    "tooManyRequests": "尝试次数过多。请等待几分钟后重试。",
+    "network": "网络错误。请检查网络连接后重试。"
   },
   "ad": {
     "loadFailed": "广告加载失败。"

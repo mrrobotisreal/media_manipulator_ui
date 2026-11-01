@@ -41,7 +41,8 @@
       "googleSuccess": "已成功使用 Google 帳號登入。",
       "authFailed": "驗證失敗",
       "nameRequired": "請輸入姓名",
-      "nameRequiredDesc": "請輸入你的姓名。"
+      "nameRequiredDesc": "請輸入你的姓名。",
+      "appleSuccess": "已成功使用 Apple 登入。"
     },
     "contextual": {
       "signupTitle": "你今天的 {{limit}} 次免費轉換已用完",
@@ -68,7 +69,21 @@
       "noAds": "無廣告",
       "retentionGuest": "檔案保留 24 小時"
     },
-    "loadingPlans": "正在載入方案…"
+    "loadingPlans": "正在載入方案…",
+    "appleSignIn": "使用 Apple 繼續",
+    "forgotPassword": "忘記密碼？",
+    "reset": {
+      "title": "重設密碼",
+      "body": "請輸入你的帳號電子郵件，我們會寄給你一個連結。",
+      "submit": "傳送重設連結",
+      "sending": "傳送中…",
+      "sent": "如果該電子郵件對應的帳號存在，我們已寄出重設密碼的連結。",
+      "back": "返回登入"
+    },
+    "link": {
+      "notice": "此電子郵件已透過其他登入方式註冊。請使用該方式登入以將兩者連結。",
+      "linked": "帳號已連結。你現在可以使用任一方式登入。"
+    }
   },
   "imageCropModal": {
     "title": "裁切圖片",

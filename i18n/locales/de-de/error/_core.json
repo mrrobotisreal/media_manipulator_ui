@@ -48,7 +48,10 @@
     "userNotFound": "Kein Konto mit dieser E-Mail-Adresse gefunden.",
     "wrongPassword": "Falsches Passwort.",
     "emailAlreadyInUse": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse.",
-    "weakPassword": "Das Passwort sollte mindestens 6 Zeichen lang sein."
+    "weakPassword": "Das Passwort sollte mindestens 6 Zeichen lang sein.",
+    "invalidEmail": "Gib eine gültige E-Mail-Adresse ein.",
+    "tooManyRequests": "Zu viele Versuche. Warte einige Minuten und versuche es dann erneut.",
+    "network": "Netzwerkfehler. Überprüfe deine Verbindung und versuche es erneut."
   },
   "ad": {
     "loadFailed": "Werbung konnte nicht geladen werden."

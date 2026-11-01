@@ -41,7 +41,8 @@
       "googleSuccess": "Accesso effettuato con Google.",
       "authFailed": "Autenticazione non riuscita",
       "nameRequired": "Nome obbligatorio",
-      "nameRequiredDesc": "Inserisci il tuo nome."
+      "nameRequiredDesc": "Inserisci il tuo nome.",
+      "appleSuccess": "Accesso effettuato con Apple."
     },
     "contextual": {
       "signupTitle": "Hai usato le tue {{limit}} conversioni gratuite di oggi",
@@ -68,7 +69,21 @@
       "noAds": "Senza pubblicità",
       "retentionGuest": "File conservati per 24 ore"
     },
-    "loadingPlans": "Caricamento dei piani…"
+    "loadingPlans": "Caricamento dei piani…",
+    "appleSignIn": "Continua con Apple",
+    "forgotPassword": "Password dimenticata?",
+    "reset": {
+      "title": "Reimposta la password",
+      "body": "Inserisci l'email del tuo account e ti invieremo un link.",
+      "submit": "Invia link di reimpostazione",
+      "sending": "Invio in corso...",
+      "sent": "Se esiste un account associato a questa email, ti abbiamo inviato un link per reimpostare la password.",
+      "back": "Torna all'accesso"
+    },
+    "link": {
+      "notice": "Questa email è già registrata con un altro metodo di accesso. Accedi con quel metodo per collegarli.",
+      "linked": "Account collegati. Ora puoi accedere con entrambi i metodi."
+    }
   },
   "imageCropModal": {
     "title": "Ritaglia immagine",
