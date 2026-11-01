@@ -33,3 +33,13 @@ export function inlineResultUrl(
 export function restoreResultUrl(jobId: string, name: string): string {
   return `${getBaseURL()}/video-restore/${encodeURIComponent(jobId)}/result/${encodeURIComponent(name)}?sid=${encodeURIComponent(getSessionId())}`;
 }
+
+/**
+ * URL of the job SSE stream (`GET /api/job/:jobId/events`). EventSource cannot send
+ * X-MM-Session-ID, so `?sid=` carries the session for the API's job-status ownership check
+ * (MA08). A signed-in user whose session rotated mid-job fails the check, the stream errors
+ * and the hooks fall back to polling, which sends the Bearer token.
+ */
+export function jobEventsUrl(jobId: string): string {
+  return `${getBaseURL()}/job/${encodeURIComponent(jobId)}/events?sid=${encodeURIComponent(getSessionId())}`;
+}
