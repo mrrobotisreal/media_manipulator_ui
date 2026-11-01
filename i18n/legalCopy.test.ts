@@ -34,6 +34,7 @@ function legalDay(text: string): string {
   if (dmy) return `${dmy[3]}-${dmy[2].padStart(2, "0")}-${dmy[1].padStart(2, "0")}`;
   const word = text.match(/(\d{1,2})\s+(\p{L}+)\.?\s+(\d{4})/u);
   if (word && /^(октября|жовтня|October|Oktober|octubre)$/iu.test(word[2])) return `${word[3]}-10-${word[1].padStart(2, "0")}`;
+  if (word && /^(ноября|листопада|November|noviembre)$/iu.test(word[2])) return `${word[3]}-11-${word[1].padStart(2, "0")}`;
   return `unparsed:${text}`;
 }
 
@@ -71,8 +72,8 @@ describe("legal retention copy", () => {
         expect(pages.legalCommon.effectiveDate).toMatch(/24/);
         // MM48: Motion was added on 2026-10-26 (MM40's Pro update was the 25th); MM78's
         // voices update is 2026-10-28, and its note keeps the 2026-10-26 one.
-        expect(pages.legalCommon.lastUpdated).toMatch(/28/);
-        expect(pages.legalCommon.whatChangedTitle).toMatch(/28/);
+        expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01"); // MA09 bumped it from the 28th
+        expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-01");
         expect(pages.legalCommon.whatChangedBody).toMatch(/2026-10-26/);
       });
 
@@ -358,8 +359,8 @@ describe("MM78 voices legal copy", () => {
       expect(pages.termsOfService.sections[0].bullets?.[8]).toContain("8.11");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Chatterbox");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Qwen3-TTS");
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-10-28");
-      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-10-28");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01"); // MA09 bumped it past the 28th
+      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-01");
       expect(pages.legalCommon.whatChangedBody).toContain("1.10");
       expect(pages.legalCommon.whatChangedBody).toContain("8.11");
       // The consent sentence in the Terms is the one the checkbox shows.
@@ -451,7 +452,7 @@ describe("MM87 advertising disclosures", () => {
       expect(pages.pricing.faq.a3).toMatch(/Pro/);
       expect(sentences(pages.pricing.faq.a3)).toBe(sentences(enA3));
 
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-10-28");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01"); // MA09
       const note = pages.legalCommon.whatChangedBody;
       for (const s of ["5.1", "1.5", "8.9", "aboutads.info", "youronlinechoices.eu", "ads.txt"]) expect(note).toContain(s);
       // The earlier 2026-10-28 voices note is kept after the new one.
@@ -473,7 +474,7 @@ describe("MM85 contact-form legal copy", () => {
       expect(p111).toContain(fact);
     }
     expect(en.privacyPolicy.sections[15].paragraphs?.[0]).toContain("media-manipulator.com/contact");
-    expect(en.legalCommon.whatChangedBody.startsWith("We added a contact form")).toBe(true);
+    expect(en.legalCommon.whatChangedBody).toContain("We added a contact form");
   });
 
   for (const { code } of locales) {
@@ -493,6 +494,30 @@ describe("MM85 contact-form legal copy", () => {
       expect(pages.legalCommon.whatChangedBody).toContain("1.11");
       // Terms are unchanged by MM85 (decision 11).
       expect(flatten(pages.termsOfService)).not.toContain("media-manipulator.com/contact");
+    });
+  }
+});
+
+// MA09: Sign in with Apple. Privacy §1.7 (+ reset sentence), §8 sharing bullet and Terms §9 name
+// Apple in every locale, the stale "or with Google." sentence is gone, and the note is on top.
+describe("MA09 Sign in with Apple legal copy", () => {
+  it("en-US has the exact new sentences", () => {
+    expect(en.privacyPolicy.sections[0].subsections?.[6].paragraphs?.[0]).toContain("with your Apple Account");
+    expect(en.privacyPolicy.sections[0].subsections?.[6].paragraphs?.[0]).toContain("Hide My Email");
+    expect(en.privacyPolicy.sections[0].subsections?.[6].paragraphs?.[0]).toContain("Firebase sends a reset link");
+    expect(en.termsOfService.sections[8].paragraphs?.[1]).toContain("with Google or with Apple");
+    expect(flatten(en)).not.toContain("or with Google.");
+  });
+
+  for (const { code } of locales) {
+    it(`${code}: names Apple in §1.7, §8 and Terms §9, with the 2026-11-01 note first`, () => {
+      const pages = load(code);
+      expect(pages.privacyPolicy.sections[0].subsections?.[6].paragraphs?.[0]).toMatch(/Apple/);
+      expect(pages.privacyPolicy.sections[7].bullets?.some((b) => /Apple/.test(b))).toBe(true);
+      expect(pages.termsOfService.sections[8].paragraphs?.[1]).toMatch(/Apple/);
+      expect(pages.legalCommon.whatChangedBody).toMatch(/Apple/);
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01");
+      expect(pages.legalCommon.whatChangedBody).toMatch(/1\.7/);
     });
   }
 });

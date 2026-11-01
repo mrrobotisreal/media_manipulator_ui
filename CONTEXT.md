@@ -222,3 +222,15 @@ _Avoid_: "support ticket", "ticket number" (it is a **reference**).
 
 **Page dates** (MM85):
 `content/pageDates.ts`: the real "last materially changed" date of each core page (`PAGE_DATES`) and each tutorial (`TUTORIAL_DATES`), read from `git log`. They feed the sitemap's `lastModified`, the tutorial bylines and the TechArticle JSON-LD; tool pages use their own `lastReviewed`, blog posts `dateModified`. Bump a page's date in the commit that changes what a visitor reads on it; never `new Date()`.
+
+### Accounts and sign-in
+
+**Sign in with Apple** (MA09):
+Firebase's `signInWithPopup(new OAuthProvider('apple.com'))` with scopes `email` and `name` (`signInWithApple` in `lib/firebase.ts`). The button, the Apple re-auth option for account deletion and the linking option all sit behind `NEXT_PUBLIC_AUTH_APPLE_ENABLED=true` (`isAppleAuthEnabled()`, default off). Apple returns the name only on the first sign-in; it is stored with `updateProfile` and sent as `displayName` on `/account/sync` with `signupSource: 'apple'`. Analytics: `method: 'apple'`.
+_Avoid_: "Apple login" in UI copy; the Apple Account is "your Apple Account".
+
+**Account linking** (MA09):
+Firebase allows one account per email. When Google or Apple sign-in fails with `auth/account-exists-with-different-credential`, the auth modal keeps the pending credential (`pendingCredentialFromError`), shows the link notice, and after the user signs in with the existing method calls `linkWithCredential` (`linkPendingCredential`, which never throws or signs anyone out).
+
+**Password reset** (MA09):
+The inline "Forgot password?" view inside the auth modal (no route). `sendPasswordReset` always ends in the neutral confirmation (no account enumeration; `auth/user-not-found` is swallowed); Firebase's hosted page handles the emailed link. Analytics: `password_reset_requested {surface: 'web'}`, registered in the analytics catalog by MA06.
