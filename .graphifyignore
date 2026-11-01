@@ -1,0 +1,41 @@
+# graphify: paths kept out of the knowledge graph (on top of .gitignore).
+# Build/deps dirs (node_modules, .next, .git, __pycache__) are pruned by graphify itself.
+
+graphify-out/
+coverage/
+out/
+build/
+
+# Binary/media assets — no code structure, transcription/vision adds noise
+public/audio/
+public/fonts/
+public/*.png
+public/*.jpg
+public/*.webp
+public/*.svg
+app/*.png
+app/*.ico
+
+# Test goldens and fixtures (generated expectations, not source)
+**/__golden__/
+**/__snapshots__/
+lib/vector/fixtures/*.svg
+lib/results/fixtures/
+parity-harness/goldens/
+parity-harness/fixtures/
+parity-harness/capture/
+e2e/fixtures/
+
+# Static text that is not project knowledge
+public/ads.txt
+public/humans.txt
+LICENSE
+
+# Locale string bundles (pure translation data)
+i18n/locales/**/*.json
+
+# Untracked one-off scripts/dirs at the repo root
+cardconv.py
+jsxconv.py
+sweep.py
+mm93-it-bodies/
