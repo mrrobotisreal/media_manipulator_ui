@@ -16,8 +16,8 @@
  */
 import { colorBalanceMidtoneWeight, colorBalanceMidtones, eqAdjust, vibranceAdjust, type RGB } from '@/lib/studio/colorMath';
 import { parseCubeLut, type ParsedLut } from '@/lib/studio/lutParser';
-import type { AdjustmentLayer, CurvePoint, HslRange, LayerOf, LevelsChannel, PhotoDoc } from '@/lib/photo/photoTypes';
-import { HSL_RANGE_IDS, defaultHslRanges } from '@/lib/photo/photoTypes';
+import type { AdjustmentLayer, CurvePoint, Geometry, HslRange, LayerOf, LevelsChannel, Mask, MaskComponent, PhotoDoc } from '@/lib/photo/photoTypes';
+import { HSL_RANGE_IDS, defaultHslRanges, isMaskRef } from '@/lib/photo/photoTypes';
 
 export type { RGB };
 
@@ -522,11 +522,12 @@ export function applyLayer(c: RGB, plan: LayerPlan, maskValue = 1): RGB {
 }
 
 // ---------------------------------------------------------------------------
-// Masks (design §5.2): the fold only; pixels sources and feather blur are MM98.
+// Masks (design §5.2, MM98). Conventions are pinned in
+// `.scratch/mm96-mm98/NOTES.md` "Mask and geometry math as implemented".
 // ---------------------------------------------------------------------------
 
 export type MaskMode = 'add' | 'subtract' | 'intersect';
-/** Fold component values left to right: add = max, subtract = min(m, 1-c), intersect = min. */
+/** Fold component values left to right: add = max, subtract = min(m, 1-c), intersect = min. Starts at 0. */
 export function foldMask(parts: { mode: MaskMode; value: number }[]): number {
   let m = 0;
   for (const { mode, value } of parts) {
@@ -536,8 +537,414 @@ export function foldMask(parts: { mode: MaskMode; value: number }[]): number {
   }
   return m;
 }
+/** After the feather blur: invert, then scale by the mask opacity, clamped. */
 export function finishMask(m: number, invert: boolean, opacity: number): number {
   return clamp01((invert ? 1 - m : m) * opacity);
+}
+
+/** Max ΔE76 radius (Lab units) at fuzziness 100. */
+export const COLOR_RANGE_MAX_DE = 60;
+/** Feather σ is `feather/100 * MASK_FEATHER_SIGMA * longSide` pixels. */
+export const MASK_FEATHER_SIGMA = 0.05;
+
+const mmin = (a: number, b: number) => (a < b ? a : b);
+
+/**
+ * Linear gradient: pixel-space projection `t` of the point on the line
+ * from→to (0 at `from`, 1 at `to`), value `smoothstep(-f, 1+f, t)`.
+ * Degenerate lines (from == to) give 0.
+ */
+export function gradientValue(c: Extract<MaskComponent, { kind: 'gradient' }>, px: number, py: number, w: number, h: number): number {
+  const fx = c.from.x * w;
+  const fy = c.from.y * h;
+  const dx = c.to.x * w - fx;
+  const dy = c.to.y * h - fy;
+  const len2 = dx * dx + dy * dy;
+  if (len2 < 1e-12) return 0;
+  const t = ((px - fx) * dx + (py - fy) * dy) / len2;
+  return smoothstep(-c.feather, 1 + c.feather, t);
+}
+
+/**
+ * Radial: ellipse with semi-axes `rx*w`, `ry*h` pixels, rotated `rotate`
+ * degrees clockwise (y down) about `center`. `d` = elliptic radius;
+ * value `1 - smoothstep(1-f, 1, d)` (1 inside `1-f`, 0 at the rim).
+ */
+export function radialValue(c: Extract<MaskComponent, { kind: 'radial' }>, px: number, py: number, w: number, h: number): number {
+  const [cs, sn] = trig(c.rotate);
+  const dx = px - c.center.x * w;
+  const dy = py - c.center.y * h;
+  const u = dx * cs + dy * sn; // inverse rotation
+  const v = -dx * sn + dy * cs;
+  const rx = Math.max(c.rx * w, 1e-6);
+  const ry = Math.max(c.ry * h, 1e-6);
+  const d = Math.sqrt((u / rx) * (u / rx) + (v / ry) * (v / ry));
+  return 1 - smoothstep(1 - c.feather, 1, d);
+}
+
+/** `smoothstep(lo-f, lo, L) * (1 - smoothstep(hi, hi+f, L))`. */
+export function luminosityValue(c: Extract<MaskComponent, { kind: 'luminosity' }>, L: number): number {
+  return smoothstep(c.lo - c.feather, c.lo, L) * (1 - smoothstep(c.hi, c.hi + c.feather, L));
+}
+
+/** `1 - smoothstep(0.5R, R, ΔE76)` with `R = fuzziness/100 * 60`, max over the targets (none = 0). */
+export function colorRangeValue(c: Extract<MaskComponent, { kind: 'colorRange' }>, src: RGB): number {
+  if (c.colors.length === 0) return 0;
+  const R = (c.fuzziness / 100) * COLOR_RANGE_MAX_DE;
+  const lab = rgbToLab(src);
+  let best = 0;
+  for (const t of c.colors) {
+    const tl = rgbToLab([t.r / 255, t.g / 255, t.b / 255]);
+    const de = Math.hypot(lab[0] - tl[0], lab[1] - tl[1], lab[2] - tl[2]);
+    best = Math.max(best, 1 - smoothstep(0.5 * R, R, de));
+  }
+  return best;
+}
+
+/** An 8-bit alpha raster (brush or subject mask) covering the whole mask space. */
+export interface AlphaImage {
+  width: number;
+  height: number;
+  alpha: ArrayLike<number>;
+}
+/** Where the brush PNG and the subject mask pixels come from (the caller decodes). */
+export interface MaskAssets {
+  brush?: (png: string) => AlphaImage | null;
+  subject?: (maskRef: string) => AlphaImage | null;
+}
+
+/** Bilinear sample of an alpha raster at normalized (nx, ny): texel centres at +0.5, edge clamped. */
+export function sampleAlpha(img: AlphaImage, nx: number, ny: number): number {
+  const u = nx * img.width - 0.5;
+  const v = ny * img.height - 0.5;
+  const x0 = Math.floor(u);
+  const y0 = Math.floor(v);
+  const tx = u - x0;
+  const ty = v - y0;
+  const cx = (x: number) => (x < 0 ? 0 : x >= img.width ? img.width - 1 : x);
+  const cy = (y: number) => (y < 0 ? 0 : y >= img.height ? img.height - 1 : y);
+  const at = (x: number, y: number) => img.alpha[cy(y) * img.width + cx(x)] / 255;
+  return lerp(lerp(at(x0, y0), at(x0 + 1, y0), tx), lerp(at(x0, y0 + 1), at(x0 + 1, y0 + 1), tx), ty);
+}
+
+/** Normalised 1-D Gaussian taps for σ (radius ceil(3σ)); empty when σ < 1e-3 (no blur). */
+export function gaussianTaps(sigma: number): Float32Array {
+  if (sigma < 1e-3) return new Float32Array([1]);
+  const r = Math.ceil(3 * sigma);
+  const taps = new Float32Array(2 * r + 1);
+  let sum = 0;
+  for (let k = -r; k <= r; k += 1) {
+    const v = Math.exp(-(k * k) / (2 * sigma * sigma));
+    taps[k + r] = v;
+    sum += v;
+  }
+  for (let i = 0; i < taps.length; i += 1) taps[i] /= sum;
+  return taps;
+}
+
+/** Separable Gaussian blur of a single-channel image, edge pixels replicated. */
+export function blurMask(m: Float32Array, w: number, h: number, sigma: number): Float32Array {
+  const taps = gaussianTaps(sigma);
+  if (taps.length === 1) return m;
+  const r = (taps.length - 1) / 2;
+  const tmp = new Float32Array(m.length);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      let acc = 0;
+      for (let k = -r; k <= r; k += 1) {
+        const xx = x + k < 0 ? 0 : x + k >= w ? w - 1 : x + k;
+        acc += taps[k + r] * m[y * w + xx];
+      }
+      tmp[y * w + x] = acc;
+    }
+  }
+  const out = new Float32Array(m.length);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      let acc = 0;
+      for (let k = -r; k <= r; k += 1) {
+        const yy = y + k < 0 ? 0 : y + k >= h ? h - 1 : y + k;
+        acc += taps[k + r] * tmp[yy * w + x];
+      }
+      out[y * w + x] = acc;
+    }
+  }
+  return out;
+}
+
+/** Feather σ in pixels for a mask feather (0..100) on a `w`×`h` mask space. */
+export const featherSigma = (feather: number, w: number, h: number): number => (feather / 100) * MASK_FEATHER_SIGMA * Math.max(w, h);
+
+/**
+ * The full mask raster (w*h values in [0,1]) for `image`, the
+ * geometry-corrected source (luminosity and colour range read it; they never
+ * see earlier layers, so a mask depends only on the source and its own
+ * components). Order: fold → feather blur → invert → opacity. A component
+ * whose asset is unavailable (no decoded brush/subject) is skipped.
+ */
+export function renderMaskCPU(mask: Mask, image: FloatImage, assets: MaskAssets = {}): Float32Array {
+  const { width: w, height: h } = image;
+  const folded = new Float32Array(w * h);
+  const brush: (AlphaImage | null)[] = mask.components.map((c) => (c.kind === 'brush' ? assets.brush?.(c.png) ?? null : c.kind === 'subject' ? assets.subject?.(c.maskRef) ?? null : null));
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      const i = y * w + x;
+      const px = x + 0.5;
+      const py = y + 0.5;
+      let m = 0;
+      for (let k = 0; k < mask.components.length; k += 1) {
+        const c = mask.components[k];
+        let v: number;
+        switch (c.kind) {
+          case 'gradient':
+            v = gradientValue(c, px, py, w, h);
+            break;
+          case 'radial':
+            v = radialValue(c, px, py, w, h);
+            break;
+          case 'brush': {
+            const a = brush[k];
+            if (!a) continue;
+            v = sampleAlpha(a, px / w, py / h);
+            break;
+          }
+          case 'subject': {
+            const a = brush[k];
+            if (!a) continue;
+            v = sampleAlpha(a, px / w, py / h);
+            if (c.invert) v = 1 - v;
+            break;
+          }
+          case 'luminosity':
+            v = luminosityValue(c, luma([image.data[i * 4], image.data[i * 4 + 1], image.data[i * 4 + 2]]));
+            break;
+          default:
+            v = colorRangeValue(c, [image.data[i * 4], image.data[i * 4 + 1], image.data[i * 4 + 2]]);
+            break;
+        }
+        if (c.mode === 'add') m = Math.max(m, v);
+        else if (c.mode === 'subtract') m = mmin(m, 1 - v);
+        else m = mmin(m, v);
+      }
+      folded[i] = m;
+    }
+  }
+  const blurred = mask.feather > 0 ? blurMask(folded, w, h, featherSigma(mask.feather, w, h)) : folded;
+  const out = new Float32Array(w * h);
+  for (let i = 0; i < out.length; i += 1) out[i] = finishMask(blurred[i], mask.invert, mask.opacity);
+  return out;
+}
+
+/** A layer's effective mask: inline, resolved from `doc.masks`, or null (unmasked; unknown refs too). */
+export function resolveLayerMask(doc: Pick<PhotoDoc, 'masks'>, layer: Pick<AdjustmentLayer, 'mask'>): Mask | null {
+  const m = layer.mask;
+  if (!m) return null;
+  if (isMaskRef(m)) return doc.masks?.[m.ref] ?? null;
+  return m;
+}
+
+// ---------------------------------------------------------------------------
+// Geometry (design §5.3, MM98)
+// ---------------------------------------------------------------------------
+
+/** cos/sin of an angle in degrees, exact for multiples of 90. */
+export function trig(deg: number): [number, number] {
+  const r = (deg * Math.PI) / 180;
+  const snap = (v: number) => (Math.abs(v) < 1e-12 ? 0 : Math.abs(Math.abs(v) - 1) < 1e-12 ? Math.sign(v) : v);
+  return [snap(Math.cos(r)), snap(Math.sin(r))];
+}
+
+/**
+ * Unit square → quad projective map (Heckbert). Corners tl, tr, br, bl of the
+ * unit square go to `q[0..3]`. Returns [a,b,c,d,e,f,g,h]:
+ * x = (a u + b v + c) / (g u + h v + 1), y = (d u + e v + f) / (g u + h v + 1).
+ */
+export function unitSquareToQuad(q: [number, number][]): number[] {
+  const [[x0, y0], [x1, y1], [x2, y2], [x3, y3]] = q;
+  const sx = x0 - x1 + x2 - x3;
+  const sy = y0 - y1 + y2 - y3;
+  if (Math.abs(sx) < 1e-12 && Math.abs(sy) < 1e-12) return [x1 - x0, x3 - x0, x0, y1 - y0, y3 - y0, y0, 0, 0];
+  const dx1 = x1 - x2;
+  const dx2 = x3 - x2;
+  const dy1 = y1 - y2;
+  const dy2 = y3 - y2;
+  const den = dx1 * dy2 - dx2 * dy1;
+  const g = (sx * dy2 - dx2 * sy) / den;
+  const hh = (dx1 * sy - sx * dy1) / den;
+  return [x1 - x0 + g * x1, x3 - x0 + hh * x3, x0, y1 - y0 + g * y1, y3 - y0 + hh * y3, y0, g, hh];
+}
+
+export interface GeometryPlan {
+  /** Source size. */
+  w0: number;
+  h0: number;
+  /** Post-rotate canvas size (grown to the rotated bounding box). */
+  wr: number;
+  hr: number;
+  /** Crop origin and output size, pixels of the canvas. */
+  ox: number;
+  oy: number;
+  wo: number;
+  ho: number;
+  cos: number;
+  sin: number;
+  flipH: boolean;
+  flipV: boolean;
+  /** Unit-square→quad homography in canvas-normalized coords, or null. */
+  persp: number[] | null;
+  fill: 'transparent' | 'edge' | RGB;
+}
+
+const isIdentityGeometry = (g: Geometry): boolean =>
+  g.rotate === 0 && !g.flipH && !g.flipV && !g.perspective && !g.crop;
+
+export function planGeometry(g: Geometry, w0: number, h0: number): GeometryPlan {
+  const [cos, sin] = trig(g.rotate);
+  const wr = Math.max(1, Math.round(Math.abs(w0 * cos) + Math.abs(h0 * sin) - 1e-9));
+  const hr = Math.max(1, Math.round(Math.abs(w0 * sin) + Math.abs(h0 * cos) - 1e-9));
+  let ox = 0;
+  let oy = 0;
+  let wo = wr;
+  let ho = hr;
+  if (g.crop) {
+    ox = Math.min(wr - 1, Math.round(g.crop.x * wr));
+    oy = Math.min(hr - 1, Math.round(g.crop.y * hr));
+    wo = Math.max(1, Math.min(wr - ox, Math.round(g.crop.width * wr)));
+    ho = Math.max(1, Math.min(hr - oy, Math.round(g.crop.height * hr)));
+  }
+  let persp: number[] | null = null;
+  if (g.perspective) {
+    const p = g.perspective;
+    persp = unitSquareToQuad([
+      [p.tl.x, p.tl.y],
+      [1 + p.tr.x, p.tr.y],
+      [1 + p.br.x, 1 + p.br.y],
+      [p.bl.x, 1 + p.bl.y],
+    ]);
+  }
+  const fill = g.fill === 'transparent' || g.fill === 'edge' ? g.fill : hexToRgb(g.fill);
+  return { w0, h0, wr, hr, ox, oy, wo, ho, cos, sin, flipH: g.flipH, flipV: g.flipV, persp, fill };
+}
+
+/**
+ * Source-pixel coordinates (continuous, texel edges at integers) for the
+ * centre of output pixel (i, j): crop → perspective → flip → rotate, inverse.
+ */
+export function geometrySourcePoint(p: GeometryPlan, i: number, j: number): [number, number] {
+  let qx = p.ox + i + 0.5;
+  let qy = p.oy + j + 0.5;
+  if (p.persp) {
+    const [a, b, c, d, e, f, g, h] = p.persp;
+    const u = qx / p.wr;
+    const v = qy / p.hr;
+    const den = g * u + h * v + 1;
+    qx = ((a * u + b * v + c) / den) * p.wr;
+    qy = ((d * u + e * v + f) / den) * p.hr;
+  }
+  if (p.flipH) qx = p.wr - qx;
+  if (p.flipV) qy = p.hr - qy;
+  const dx = qx - p.wr / 2;
+  const dy = qy - p.hr / 2;
+  return [p.w0 / 2 + dx * p.cos + dy * p.sin, p.h0 / 2 - dx * p.sin + dy * p.cos];
+}
+
+/**
+ * Apply `doc.geometry` to a float image: one inverse-mapped bilinear resample
+ * (identity geometry returns the input). Points outside the source rectangle
+ * take the fill (`transparent` = RGBA 0, `#rrggbb` = opaque colour, `edge` =
+ * the clamped edge texel). Alpha is interpolated like colour.
+ */
+export function applyGeometryCPU(image: FloatImage, g: Geometry): FloatImage {
+  if (isIdentityGeometry(g)) return image;
+  const p = planGeometry(g, image.width, image.height);
+  const out = new Float32Array(p.wo * p.ho * 4);
+  const { width: w, height: h, data } = image;
+  for (let j = 0; j < p.ho; j += 1) {
+    for (let i = 0; i < p.wo; i += 1) {
+      const [sx, sy] = geometrySourcePoint(p, i, j);
+      const o = (j * p.wo + i) * 4;
+      const inside = sx >= 0 && sx <= w && sy >= 0 && sy <= h;
+      if (!inside && p.fill !== 'edge') {
+        if (p.fill !== 'transparent') {
+          out[o] = p.fill[0];
+          out[o + 1] = p.fill[1];
+          out[o + 2] = p.fill[2];
+          out[o + 3] = 1;
+        }
+        continue;
+      }
+      const u = sx - 0.5;
+      const v = sy - 0.5;
+      const x0 = Math.floor(u);
+      const y0 = Math.floor(v);
+      const tx = u - x0;
+      const ty = v - y0;
+      const cx = (x: number) => (x < 0 ? 0 : x >= w ? w - 1 : x);
+      const cy = (y: number) => (y < 0 ? 0 : y >= h ? h - 1 : y);
+      const xa = cx(x0);
+      const xb = cx(x0 + 1);
+      const ya = cy(y0);
+      const yb = cy(y0 + 1);
+      for (let k = 0; k < 4; k += 1) {
+        const top = lerp(data[(ya * w + xa) * 4 + k], data[(ya * w + xb) * 4 + k], tx);
+        const bot = lerp(data[(yb * w + xa) * 4 + k], data[(yb * w + xb) * 4 + k], tx);
+        out[o + k] = lerp(top, bot, ty);
+      }
+    }
+  }
+  return { width: p.wo, height: p.ho, data: out };
+}
+
+/** Output (geometry-corrected) size for a source size. */
+export function geometryOutputSize(g: Geometry, w0: number, h0: number): { width: number; height: number } {
+  const p = planGeometry(g, w0, h0);
+  return { width: p.wo, height: p.ho };
+}
+
+/**
+ * Largest centred crop (normalized to the post-rotate canvas, same aspect as
+ * the canvas unless `aspect` is given as w/h pixels) whose perimeter samples
+ * all land inside the source: the "auto-crop" for straighten and perspective.
+ * Binary search on the scale; null crop when nothing smaller is needed.
+ */
+export function autoCropRect(g: Geometry, w0: number, h0: number, aspect?: number): { x: number; y: number; width: number; height: number } {
+  const base = planGeometry({ ...g, crop: null }, w0, h0);
+  const asp = aspect ?? base.wr / base.hr;
+  // max normalized size with this aspect inside the canvas
+  const maxW = Math.min(1, (asp * base.hr) / base.wr);
+  const maxH = (maxW * base.wr) / asp / base.hr;
+  const valid = (s: number): boolean => {
+    const cw = maxW * s;
+    const ch = maxH * s;
+    const x0 = (1 - cw) / 2;
+    const y0 = (1 - ch) / 2;
+    const N = 24;
+    for (let k = 0; k <= N; k += 1) {
+      const t = k / N;
+      const pts: [number, number][] = [
+        [x0 + cw * t, y0],
+        [x0 + cw * t, y0 + ch],
+        [x0, y0 + ch * t],
+        [x0 + cw, y0 + ch * t],
+      ];
+      for (const [nx, ny] of pts) {
+        const [sx, sy] = geometrySourcePoint({ ...base, ox: 0, oy: 0 }, nx * base.wr - 0.5, ny * base.hr - 0.5);
+        if (sx < 0 || sx > w0 || sy < 0 || sy > h0) return false;
+      }
+    }
+    return true;
+  };
+  let lo = 0;
+  let hi = 1;
+  if (valid(1)) lo = 1;
+  else for (let it = 0; it < 30; it += 1) {
+    const mid = (lo + hi) / 2;
+    if (valid(mid)) lo = mid;
+    else hi = mid;
+  }
+  const cw = maxW * lo;
+  const ch = maxH * lo;
+  return { x: (1 - cw) / 2, y: (1 - ch) / 2, width: cw, height: ch };
 }
 
 // ---------------------------------------------------------------------------
@@ -552,17 +959,34 @@ export interface FloatImage {
 }
 
 /**
- * Apply the document to an image. Geometry is the identity in MM97 (rung 3 is
- * MM98); masks are ignored (rung 2 is MM98) so a document that carries one
- * renders unmasked. Pure and deterministic.
+ * Apply the document to an image: geometry (one bilinear resample, may change
+ * the size) → each enabled layer, scaled by its mask (rendered once per mask in
+ * the geometry-corrected space). Rung-4 types are identity (MM99). Pure and
+ * deterministic; alpha is never touched by layers.
  */
-export function renderDocCPU(doc: Pick<PhotoDoc, 'layers'>, image: FloatImage): FloatImage {
+export function renderDocCPU(
+  doc: Pick<PhotoDoc, 'layers'> & Partial<Pick<PhotoDoc, 'geometry' | 'masks'>>,
+  source: FloatImage,
+  assets: MaskAssets = {},
+): FloatImage {
+  const image = doc.geometry ? applyGeometryCPU(source, doc.geometry) : source;
   const plans = planLayers(doc);
+  const cache = new Map<Mask, Float32Array>();
+  const masks = plans.map((plan) => {
+    const m = resolveLayerMask(doc, plan.layer);
+    if (!m) return null;
+    let r = cache.get(m);
+    if (!r) {
+      r = renderMaskCPU(m, image, assets);
+      cache.set(m, r);
+    }
+    return r;
+  });
   const out = new Float32Array(image.data.length);
   const px = image.width * image.height;
   for (let i = 0; i < px; i += 1) {
     let c: RGB = [image.data[i * 4], image.data[i * 4 + 1], image.data[i * 4 + 2]];
-    for (const plan of plans) c = applyLayer(c, plan);
+    for (let k = 0; k < plans.length; k += 1) c = applyLayer(c, plans[k], masks[k] ? (masks[k] as Float32Array)[i] : 1);
     out[i * 4] = c[0];
     out[i * 4 + 1] = c[1];
     out[i * 4 + 2] = c[2];

@@ -270,6 +270,18 @@ export const maskSchema = obj({
 });
 export type Mask = z.infer<typeof maskSchema>;
 
+/**
+ * A reference to a named mask in `doc.masks` (MM98 decision D3, additive):
+ * several layers can share one mask. Both forms are valid on `layer.mask`.
+ */
+export const maskRefSchema = obj({ ref: photoIdSchema });
+export type MaskRef = { ref: string };
+export type LayerMask = Mask | MaskRef;
+export const layerMaskSchema = z.union([maskRefSchema, maskSchema]);
+export const PHOTO_MAX_NAMED_MASKS = 64;
+export const isMaskRef = (m: LayerMask | null | undefined): m is MaskRef =>
+  !!m && typeof (m as MaskRef).ref === 'string';
+
 // ---------------------------------------------------------------------------
 // Layers
 // ---------------------------------------------------------------------------
@@ -316,7 +328,7 @@ const layerBase = {
   enabled: z.boolean().default(true),
   opacity: unit.default(1),
   blend: z.enum(BLEND_MODES).default('normal'),
-  mask: maskSchema.nullable().default(null),
+  mask: layerMaskSchema.nullable().default(null),
 };
 
 function layerOf(type: LayerType) {
@@ -330,7 +342,7 @@ type LayerCommon = {
   enabled: boolean;
   opacity: number;
   blend: BlendMode;
-  mask: Mask | null;
+  mask: LayerMask | null;
 };
 export type AdjustmentLayer = {
   [K in LayerType]: LayerCommon & { type: K; params: ParamsOf<K> };
@@ -373,6 +385,10 @@ export const outputSchema = obj({
   metadataMode: z.enum(['keep', 'strip']).optional(),
 });
 
+/** A heal's stroke mask (server file) and its healed base (server file or a guest's `local:` marker). */
+export const HEAL_MASK_REF = /^masks\/[A-Za-z0-9_-]{1,40}\.png$/;
+export const HEAL_BASE_REF = /^(bases\/[A-Za-z0-9_-]{1,64}\.png|local:[A-Za-z0-9_-]{1,64})$/;
+
 export const photoDocSchema = obj({
   version: z.literal(1),
   source: obj({
@@ -381,13 +397,28 @@ export const photoDocSchema = obj({
     orientation: z.literal(1).default(1),
   }),
   heals: z
-    .array(obj({ id: photoIdSchema, maskRef: z.string().regex(/^masks\/[A-Za-z0-9_-]{1,40}\.png$/) }))
+    .array(
+      obj({
+        id: photoIdSchema,
+        maskRef: z.string().regex(HEAL_MASK_REF).optional(),
+        baseRef: z.string().regex(HEAL_BASE_REF).optional(),
+      }).refine((h) => h.maskRef !== undefined || h.baseRef !== undefined, { message: 'heal needs maskRef or baseRef' }),
+    )
     .max(256)
     .default([]),
   geometry: geometrySchema.default({}),
+  masks: z
+    .record(photoIdSchema, maskSchema)
+    .refine((r) => Object.keys(r).length <= PHOTO_MAX_NAMED_MASKS, { message: 'too many named masks' })
+    .transform((r) => (Object.keys(r).length === 0 ? undefined : r))
+    .optional(),
   layers: z.array(layerSchema).max(PHOTO_MAX_LAYERS).default([]),
   output: outputSchema.default({}),
 }).superRefine((doc, ctx) => {
+  const named = (doc as { masks?: Record<string, unknown> }).masks ?? {};
+  (doc.layers as { mask: LayerMask | null }[]).forEach((l, i) => {
+    if (isMaskRef(l.mask) && !(l.mask.ref in named)) ctx.addIssue({ code: 'custom', message: `unknown mask ref ${l.mask.ref}`, path: ['layers', i, 'mask'] });
+  });
   const dup = (ids: string[], path: string) => {
     const seen = new Set<string>();
     for (const id of ids) {
@@ -402,8 +433,10 @@ export const photoDocSchema = obj({
 export type PhotoDoc = {
   version: 1;
   source: { width: number; height: number; orientation: 1 };
-  heals: { id: string; maskRef: string }[];
+  heals: { id: string; maskRef?: string; baseRef?: string }[];
   geometry: Geometry;
+  /** Named masks layers may reference with `mask: { ref }` (MM98 D3); absent when empty. */
+  masks?: Record<string, Mask>;
   layers: AdjustmentLayer[];
   output: z.infer<typeof outputSchema>;
 };
@@ -416,7 +449,7 @@ export type ParsePhotoResult =
   | { ok: true; doc: PhotoDoc; warnings: string[] }
   | { ok: false; error: string };
 
-const KNOWN_TOP = new Set(['version', 'source', 'heals', 'geometry', 'layers', 'output']);
+const KNOWN_TOP = new Set(['version', 'source', 'heals', 'geometry', 'masks', 'layers', 'output']);
 
 /** Parse an unknown value (or JSON text). Never throws. Unknown keys survive. */
 export function parsePhotoDoc(input: unknown): ParsePhotoResult {

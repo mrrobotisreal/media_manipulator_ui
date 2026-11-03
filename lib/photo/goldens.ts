@@ -12,13 +12,28 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
 
-import { fromBytes, renderDocCPU, toBytes, type FloatImage } from '@/lib/photo/colorMath';
+import { fromBytes, renderDocCPU, toBytes, type AlphaImage, type FloatImage, type MaskAssets } from '@/lib/photo/colorMath';
 import { canonicalPhotoDoc, parsePhotoDoc, type PhotoDoc } from '@/lib/photo/photoTypes';
 
 const DIR = join(__dirname, 'fixtures');
+export const FIXTURES_ROOT = DIR;
 export const GOLDEN_IMAGES = ['photo', 'chart', 'alpha'] as const;
 /** Shared canonical fixtures the MM97 renderer covers completely. */
-export const SHARED_GOLDEN_DOCS = ['blank', 'defaults', 'curves-s', 'hsl-grey-except-red', 'levels-channels', 'rung1-all-layers'];
+export const SHARED_GOLDEN_DOCS = [
+  'blank',
+  'defaults',
+  'curves-s',
+  'hsl-grey-except-red',
+  'levels-channels',
+  'rung1-all-layers',
+  // MM98: masks and geometry
+  'masks-all-kinds',
+  'masks-named-ref',
+  'geometry-rotate-crop',
+  'geometry-perspective',
+];
+/** Golden docs whose output is geometry-resampled: comparisons exclude this many px at every output edge. */
+export const GEOMETRY_BORDER_PX: Record<string, number> = { 'geometry-rotate-crop': 2, 'geometry-perspective': 2, 'geometry-straighten-edge': 2 };
 
 export function readImage(name: string): FloatImage {
   const png = PNG.sync.read(readFileSync(join(DIR, 'images', `${name}.png`)));
@@ -38,9 +53,26 @@ export function goldenDocs(): { name: string; doc: PhotoDoc }[] {
   return out;
 }
 
+/** Decode a `data:image/png;base64,` brush into its alpha raster (the mask value). */
+export function brushAlpha(dataUri: string): AlphaImage | null {
+  const m = /^data:image\/png;base64,(.*)$/.exec(dataUri);
+  if (!m) return null;
+  const png = PNG.sync.read(Buffer.from(m[1], 'base64'));
+  const alpha = new Uint8Array(png.width * png.height);
+  for (let i = 0; i < alpha.length; i += 1) alpha[i] = png.data[i * 4 + 3];
+  return { width: png.width, height: png.height, alpha };
+}
+
+/**
+ * Mask pixel sources for the goldens: brush PNGs are decoded; `subject`
+ * masks have no pixels in the fixtures (server files), so those components
+ * are skipped, identically in every renderer.
+ */
+export const GOLDEN_ASSETS: MaskAssets = { brush: brushAlpha, subject: () => null };
+
 export function renderGolden(doc: PhotoDoc, image: string): Buffer {
   const src = readImage(image);
-  const out = renderDocCPU(doc, src);
+  const out = renderDocCPU(doc, src, GOLDEN_ASSETS);
   const png = new PNG({ width: out.width, height: out.height });
   png.data = Buffer.from(toBytes(out));
   return PNG.sync.write(png, { colorType: 6 });
@@ -102,6 +134,133 @@ export const EXTRA_DOC_LAYERS: Record<string, { id: string; type: string; params
     { id: 'l2', type: 'hsl', params: { master: { hue: 90, saturation: 20 } }, blend: 'color', opacity: 0.8 },
   ],
 };
+
+/** A deterministic RGBA PNG data URI whose alpha is `fn(x, y)` in [0,1] (brush fixtures). */
+export function makeBrushPng(width: number, height: number, fn: (x: number, y: number) => number): string {
+  const png = new PNG({ width, height });
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const o = (y * width + x) * 4;
+      png.data[o] = 255;
+      png.data[o + 1] = 255;
+      png.data[o + 2] = 255;
+      png.data[o + 3] = Math.round(Math.max(0, Math.min(1, fn(x, y))) * 255);
+    }
+  }
+  return `data:image/png;base64,${PNG.sync.write(png, { colorType: 6 }).toString('base64')}`;
+}
+
+const REDEYE_MASK = { components: [{ kind: 'radial', center: { x: 0.5, y: 0.5 }, rx: 0.12, ry: 0.12, feather: 0.4 }] };
+
+/** Extra golden docs with masks/geometry (MM98); full doc bodies minus version/source. */
+export const EXTRA_FULL_DOCS: Record<string, () => Record<string, unknown>> = {
+  'mask-gradient-tone': () => ({
+    layers: [
+      {
+        id: 'sky',
+        type: 'tone',
+        params: { shadows: 60, highlights: -50 },
+        mask: { components: [{ kind: 'gradient', from: { x: 0.5, y: 0.1 }, to: { x: 0.5, y: 0.6 }, feather: 0.1 }] },
+      },
+    ],
+  }),
+  'mask-colorrange-hsl': () => ({
+    layers: [
+      {
+        id: 'grey',
+        type: 'hsl',
+        params: { master: { saturation: -100 } },
+        mask: { components: [{ kind: 'colorRange', colors: [{ r: 220, g: 40, b: 40 }], fuzziness: 50 }], invert: true },
+      },
+    ],
+  }),
+  'mask-brush-exposure': () => ({
+    layers: [
+      {
+        id: 'dodge',
+        type: 'exposure',
+        params: { ev: 1.2 },
+        mask: {
+          feather: 6,
+          components: [
+            {
+              kind: 'brush',
+              png: makeBrushPng(16, 12, (x, y) => (Math.hypot(x - 7.5, y - 5.5) < 5 ? 1 - Math.hypot(x - 7.5, y - 5.5) / 6 : 0)),
+              width: 16,
+              height: 12,
+            },
+          ],
+        },
+      },
+    ],
+  }),
+  'mask-luminosity-curves': () => ({
+    layers: [
+      {
+        id: 'hi',
+        type: 'curves',
+        params: { master: { points: [{ x: 0, y: 0 }, { x: 0.5, y: 0.35 }, { x: 1, y: 1 }] } },
+        mask: { components: [{ kind: 'luminosity', lo: 0.55, hi: 1, feather: 0.15 }], feather: 2 },
+      },
+    ],
+  }),
+  redeye: () => ({ layers: [{ id: 'eye', type: 'redEye', mask: REDEYE_MASK }] }),
+  'mask-radial-subtract': () => ({
+    layers: [
+      {
+        id: 'vig',
+        type: 'exposure',
+        params: { ev: -1 },
+        mask: {
+          opacity: 0.75,
+          components: [
+            { kind: 'gradient', from: { x: 0, y: 0 }, to: { x: 1, y: 1 } },
+            { kind: 'radial', mode: 'subtract', center: { x: 0.5, y: 0.5 }, rx: 0.25, ry: 0.35, rotate: 30, feather: 0.6 },
+          ],
+        },
+      },
+    ],
+  }),
+  'geometry-straighten-edge': () => ({
+    geometry: { rotate: 12, fill: 'edge', crop: { x: 0.05, y: 0.05, width: 0.9, height: 0.9 } },
+    layers: [{ id: 'l1', type: 'exposure', params: { ev: 0.3 }, mask: { components: [{ kind: 'radial', feather: 0.5 }] } }],
+  }),
+  'geometry-flip-fill-colour': () => ({ geometry: { rotate: 30, flipV: true, fill: '#336699' }, layers: [] }),
+};
+
+/** New shared docs (docs/): authored here, copied to the API; valid for the Go sanitizer after MM96's D2/D3. */
+export const NEW_SHARED_DOCS: Record<string, () => Record<string, unknown>> = {
+  'masks-named-ref': () => ({
+    source: { width: 4000, height: 3000 },
+    masks: {
+      face: {
+        components: [{ kind: 'radial', center: { x: 0.4, y: 0.45 }, rx: 0.2, ry: 0.28, rotate: 10, feather: 0.5 }],
+        feather: 4,
+      },
+    },
+    layers: [
+      { id: 'exp', type: 'exposure', params: { ev: 0.7 }, mask: { ref: 'face' } },
+      { id: 'tone', type: 'tone', params: { shadows: 30 }, mask: { ref: 'face' } },
+      { id: 'sat', type: 'vibranceSaturation', params: { saturation: 20 }, mask: { ref: 'face' } },
+      { id: 'all', type: 'invert', enabled: false },
+    ],
+  }),
+  'heal-bases': () => ({
+    source: { width: 4000, height: 3000 },
+    heals: [
+      { id: 'h1', maskRef: 'masks/h1.png', baseRef: 'bases/0a1b2c3d4e5f.png' },
+      { id: 'h2', baseRef: 'local:7f3e9d21c0a4' },
+      { id: 'h3', maskRef: 'masks/h3.png' },
+    ],
+    layers: [{ id: 'ex', type: 'exposure', params: { ev: 0.5 } }],
+  }),
+};
+
+export function buildFullDoc(body: Record<string, unknown>, source = { width: 256, height: 192 }): PhotoDoc {
+  const r = parsePhotoDoc({ version: 1, source, ...body });
+  if (!r.ok) throw new Error(r.error);
+  return r.doc;
+}
 
 export function buildExtraDoc(layers: (typeof EXTRA_DOC_LAYERS)[string]): PhotoDoc {
   const r = parsePhotoDoc({ version: 1, source: { width: 256, height: 192 }, layers });
