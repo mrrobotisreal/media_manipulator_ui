@@ -21,10 +21,11 @@ describe('program / define selection', () => {
     }
     expect(FRAG_SRC).toContain('#ifdef T_COPY');
   });
-  it('skips disabled, transparent and rung-4 layers', () => {
+  it('skips disabled and transparent layers; detail layers are planned too (MM99)', () => {
     const layers = [layer('invert'), layer('exposure', {}, { enabled: false }), layer('gamma', {}, { opacity: 0 }), layer('sharpen')];
-    expect(planGpuLayers(layers).map((l) => l.type)).toEqual(['invert']);
-    expect(isGpuLayer('sharpen')).toBe(false);
+    expect(planGpuLayers(layers).map((l) => l.type)).toEqual(['invert', 'sharpen']);
+    expect(isGpuLayer('sharpen')).toBe(true);
+    expect(isGpuLayer('lens')).toBe(false);
   });
 });
 

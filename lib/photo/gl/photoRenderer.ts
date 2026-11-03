@@ -12,8 +12,11 @@ import { featherSigma, parseLutCached, planGeometry } from '@/lib/photo/colorMat
 import type { PhotoDoc } from '@/lib/photo/photoTypes';
 import { FRAG_SRC, VERT_SRC } from './shaders/adjustSource';
 import { GEO_MASK_FRAG } from './shaders/maskGeoSource';
+import { DETAIL_FRAG } from './shaders/detailSource';
+import { DEHAZE_GRID, isDetailType, planDetail, type DetailPlan } from './detailPlan';
+import { dehazeLight } from '@/lib/photo/colorMath';
 import { hasGeometry, KeyedCache, packAlphaTexture, packGeometry, packMaskComponent, planPasses, type MaskView } from './maskPlan';
-import { fitTextureSize, packCurveTexture, packLayerUniforms, UNIFORM_SLOTS } from './uniforms';
+import { BLEND_INDEX, fitTextureSize, packCurveTexture, packLayerUniforms, UNIFORM_SLOTS } from './uniforms';
 
 export type PhotoSource = ImageBitmap | HTMLImageElement | HTMLCanvasElement | OffscreenCanvas;
 
@@ -30,7 +33,7 @@ interface Prog {
 const UNIFORMS = [
   'uSource', 'uCurves', 'uLut', 'uP', 'uN', 'uLutSize', 'uOpacity', 'uBlend', 'uFlipY', 'uMask', 'uHasMask',
   'uPrev', 'uAlpha', 'uSize', 'uMode', 'uFirst', 'uM0', 'uM1', 'uLab', 'uG0', 'uG1', 'uG2', 'uG3', 'uG4', 'uG5',
-  'uFillColor', 'uDir', 'uSigma', 'uInvert',
+  'uFillColor', 'uDir', 'uSigma', 'uInvert', 'uA', 'uU',
 ] as const;
 
 /** What the preview should draw besides the layer stack. */
@@ -75,6 +78,9 @@ export class PhotoRenderer {
   private maskTmp: [MaskTarget, MaskTarget] | null = null;
   private maskTmpSize = '';
   private alphas = new Map<string, { tex: WebGLTexture }>();
+  private detailTmp: [Target, Target] | null = null;
+  private detailTmpSize = '';
+  private dehazeGrid: Target | null = null;
   /** Counts mask-texture computes (tests and the cache-hit check read it). */
   get maskComputes(): number {
     return this.masks.computes;
@@ -206,7 +212,7 @@ export class PhotoRenderer {
   }
 
   private program(define: string, fragSrc: string = FRAG_SRC): Prog {
-    const cacheKey = fragSrc === FRAG_SRC ? define : `geo:${define}`;
+    const cacheKey = fragSrc === FRAG_SRC ? define : fragSrc === DETAIL_FRAG ? `detail:${define}` : `geo:${define}`;
     const hit = this.programs.get(cacheKey);
     if (hit) return hit;
     const gl = this.gl;
@@ -307,6 +313,105 @@ export class PhotoRenderer {
     return { tex: this.geoTarget.tex, w, h };
   }
 
+  /** Two float scratch targets for multi-pass detail ops (output-sized). */
+  private detailTargets(w: number, h: number): [Target, Target] {
+    const key = `${w}x${h}`;
+    if (!this.detailTmp || this.detailTmpSize !== key) {
+      this.detailTmp?.forEach((t) => (this.gl.deleteTexture(t.tex), this.gl.deleteFramebuffer(t.fb)));
+      this.detailTmp = [this.makeTarget(w, h), this.makeTarget(w, h)];
+      this.detailTmpSize = key;
+    }
+    return this.detailTmp;
+  }
+
+  /** The 99.5th-percentile atmospheric light from a down-sampled dark-channel grid (preview approximation, design 5.4). */
+  private dehazeLightFrom(dark: WebGLTexture, w: number, h: number): number {
+    const gl = this.gl;
+    if (!this.dehazeGrid) {
+      const tex = this.makeTexture(DEHAZE_GRID, DEHAZE_GRID, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, null, gl.NEAREST);
+      const fb = gl.createFramebuffer() as WebGLFramebuffer;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+      this.dehazeGrid = { tex, fb };
+    }
+    const prog = this.program('D_DARK_SAMPLE', DETAIL_FRAG);
+    this.pass(prog, dark, this.dehazeGrid, () => {
+      gl.uniform2f(prog.loc.uSize, DEHAZE_GRID, DEHAZE_GRID);
+      gl.uniform4f(prog.loc.uP, w, h, 0, 0);
+    }, { w: DEHAZE_GRID, h: DEHAZE_GRID });
+    const buf = new Uint8Array(DEHAZE_GRID * DEHAZE_GRID * 4);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, this.dehazeGrid.fb);
+    gl.readPixels(0, 0, DEHAZE_GRID, DEHAZE_GRID, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+    const vals = new Float64Array(DEHAZE_GRID * DEHAZE_GRID);
+    for (let i = 0; i < vals.length; i += 1) vals[i] = buf[i * 4] / 255;
+    return dehazeLight(vals);
+  }
+
+  /**
+   * Run one detail layer (design 5.4) as a chain of passes: the original is
+   * `input`, the result lands in `out`. Blend/opacity/mask are applied by the
+   * last pass (`tail` in detailSource.ts).
+   */
+  private runDetail(plan: DetailPlan, input: WebGLTexture, out: Target, tail: { opacity: number; blend: number; mask: WebGLTexture | null }): void {
+    const gl = this.gl;
+    const w = this.width;
+    const h = this.height;
+    const [a, b] = this.detailTargets(w, h);
+    const common = (prog: Prog) => {
+      gl.uniform2f(prog.loc.uSize, w, h);
+      gl.uniform1f(prog.loc.uOpacity, tail.opacity);
+      gl.uniform1i(prog.loc.uBlend, tail.blend);
+    };
+    const mask = tail.mask;
+    const run = (define: string, src: WebGLTexture, dst: Target, setup: (prog: Prog) => void, opts: { prev?: WebGLTexture | null; mask?: WebGLTexture | null } = {}) => {
+      const prog = this.program(define, DETAIL_FRAG);
+      this.pass(prog, src, dst, () => {
+        common(prog);
+        setup(prog);
+      }, opts);
+    };
+    switch (plan.kind) {
+      case 'unsharp':
+        run('D_LUMA_H', input, a, (p) => (gl.uniform2f(p.loc.uDir, 1, 0), gl.uniform1f(p.loc.uSigma, plan.sigma)));
+        run('D_UNSHARP_V', input, out, (p) => {
+          gl.uniform2f(p.loc.uDir, 0, 1);
+          gl.uniform1f(p.loc.uSigma, plan.sigma);
+          gl.uniform4f(p.loc.uP, plan.gain, plan.mid ? 1 : 0, plan.threshold, 0);
+        }, { prev: a.tex, mask });
+        break;
+      case 'blur':
+        run('D_BLUR_H', input, a, (p) => (gl.uniform2f(p.loc.uDir, 1, 0), gl.uniform1f(p.loc.uSigma, plan.sigma)));
+        run('D_BLUR_V', input, out, (p) => (gl.uniform2f(p.loc.uDir, 0, 1), gl.uniform1f(p.loc.uSigma, plan.sigma)), { prev: a.tex, mask });
+        break;
+      case 'nr':
+        run('D_NR_LAB', input, a, () => undefined);
+        run('D_NR_BIL', a.tex, b, (p) => gl.uniform4f(p.loc.uP, plan.sigmaS, plan.sigmaR, plan.chroma, plan.luma ? 1 : 0));
+        run('D_NR_FIN', input, out, (p) => gl.uniform4f(p.loc.uP, plan.sigmaS, plan.sigmaR, plan.chroma, plan.luma ? 1 : 0), { prev: b.tex, mask });
+        break;
+      case 'dehaze': {
+        run('D_DARK_H', input, a, () => undefined);
+        run('D_DARK_V', a.tex, b, () => undefined);
+        const light = this.dehazeLightFrom(b.tex, w, h);
+        run('D_DEHAZE', input, out, (p) => {
+          gl.uniform1f(p.loc.uA, light);
+          gl.uniform4f(p.loc.uP, plan.amount, 0, 0, 0);
+        }, { prev: b.tex, mask });
+        break;
+      }
+      case 'vignette':
+        run('D_VIGNETTE', input, out, (p) => {
+          gl.uniform4fv(p.loc.uP, new Float32Array([plan.amount, plan.midpoint, plan.roundness, plan.feather, plan.highlights, 0, 0, 0]));
+        }, { mask });
+        break;
+      case 'grain':
+        run('D_GRAIN', input, out, (p) => {
+          gl.uniform4f(p.loc.uP, plan.amount, plan.size, plan.roughness, 0);
+          gl.uniform4ui(p.loc.uU, plan.seed, 0, 0, 0);
+        }, { mask });
+        break;
+    }
+  }
+
   /** Fold + feather + finish one mask into a cached R8 texture (mask space = the output size). */
   private computeMask(mask: import('@/lib/photo/photoTypes').Mask, image: WebGLTexture): MaskTarget {
     const gl = this.gl;
@@ -397,6 +502,16 @@ export class PhotoRenderer {
       }
       if (p.kind !== 'adjust') continue;
       const layer = p.layer;
+      if (isDetailType(layer.type)) {
+        const dplan = planDetail(layer, this.width, this.height);
+        if (!dplan) continue;
+        const dout = this.targets[which];
+        this.runDetail(dplan, input, dout, { opacity: layer.opacity, blend: BLEND_INDEX[layer.blend], mask: p.maskKey ? maskTex.get(p.maskKey) ?? null : null });
+        this.lastOut = dout;
+        input = dout.tex;
+        which = 1 - which;
+        continue;
+      }
       const packed = packLayerUniforms(layer);
       const prog = this.program(packed.define);
       let lutSize = 0;
@@ -474,6 +589,8 @@ export class PhotoRenderer {
     if (this.sourceTex) gl.deleteTexture(this.sourceTex);
     this.targets?.forEach((t) => (gl.deleteTexture(t.tex), gl.deleteFramebuffer(t.fb)));
     if (this.geoTarget) (gl.deleteTexture(this.geoTarget.tex), gl.deleteFramebuffer(this.geoTarget.fb));
+    this.detailTmp?.forEach((t) => (gl.deleteTexture(t.tex), gl.deleteFramebuffer(t.fb)));
+    if (this.dehazeGrid) (gl.deleteTexture(this.dehazeGrid.tex), gl.deleteFramebuffer(this.dehazeGrid.fb));
     this.masks.clear();
     this.maskTmp?.forEach((m) => this.freeMask(m));
     this.alphas.forEach((a) => gl.deleteTexture(a.tex));

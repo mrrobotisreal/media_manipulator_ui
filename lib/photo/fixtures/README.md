@@ -46,7 +46,7 @@ This directory is the **contract** between the Go sanitizer (`internal/photo`, M
 1. Compact (no whitespace outside strings); object keys **sorted by code point at every depth** (known and unknown keys together; JS: `Object.keys(o).sort()` compares UTF-16 code units, which agrees for BMP keys; use a code-point comparator). Array order is preserved.
 2. Strings escaped exactly as `JSON.stringify` does: `"` `\\` `\b \f \n \r \t`, other controls `\u00xx` lowercase hex; **no HTML escaping**; U+2028/U+2029 are written **raw** (the sanitizer emits them raw, like JS).
 3. Numbers as `Number.prototype.toString` (plain for 1e-6 <= |x| < 1e21, else `1e-7`, `1e+21`); `-0` is `0`; integers print without `.0`.
-4. **Defaults are filled**: every known field is present after sanitizing. **Nullable** fields are present as `null` when unset: `geometry.perspective`, `geometry.crop`, `layer.mask`, `blackWhite.tint`. **Optional** fields are **absent** when unset (never `null`): `output.format`, `output.quality`, `output.metadataMode`, `layer.name`, `hsl.ranges[].name`. A present `null` for an optional field is refused.
+4. **Defaults are filled**: every known field is present after sanitizing. **Nullable** fields are present as `null` when unset: `geometry.perspective`, `geometry.crop`, `layer.mask`, `blackWhite.tint`. **Optional** fields are **absent** when unset (never `null`): `output.format`, `output.quality`, `output.metadataMode`, `layer.name`, `layer.group`, `hsl.ranges[].name`. A present `null` for an optional field is refused.
 5. **Unknown fields round-trip** at every object depth (doc, source, geometry, layer, params, mask, mask component, hsl range, ...), verbatim, sorted with the known keys. Unknown `version`, unknown layer `type`, unknown mask `kind` are refused.
 6. Out-of-range numbers are **clamped** (never refused); integer fields are rounded with `Math.round` semantics (half up). A non-number where a number is required, a bad enum, a bad colour, a bad id are refused (`invalid_doc` / `bad_id`).
 7. `version` is always `1`; `source.orientation` is always `1` (whatever was sent); `source.width`/`height` are **required** integers 1..100000.
@@ -74,7 +74,7 @@ Errors: Go `*ValidationError{Code, Path, Message}` wrapping `photo.ErrInvalidDoc
 
 ## Layer
 
-`{id, type, name?, enabled, opacity, blend, params, mask}`: `id` required id; `type` one of the 27 below (else `unknown_layer_type`); `name?` string <= 80 (absent when unset; additive field decided by the coordinator); `enabled` true; `opacity` 0..1 (1); `blend` `normal | luminosity | color` (`normal`); `params` per type (all params default, so `params` may be omitted); `mask` `null` (default) or Mask.
+`{id, type, name?, enabled, opacity, blend, params, mask}`: `id` required id; `type` one of the 27 below (else `unknown_layer_type`); `name?` string <= 80 (absent when unset; additive field decided by the coordinator); `group?` string <= 80 (absent when unset; MM99: the preset group header the layers panel collapses on); `enabled` true; `opacity` 0..1 (1); `blend` `normal | luminosity | color` (`normal`); `params` per type (all params default, so `params` may be omitted); `mask` `null` (default) or Mask.
 
 ### Layer types and params (min..max, default)
 

@@ -325,6 +325,8 @@ export const LAYER_TYPES = Object.keys(LAYER_PARAMS) as LayerType[];
 const layerBase = {
   id: photoIdSchema,
   name: z.string().max(80).optional(),
+  /** MM99: preset group header the layers panel collapses on; absent when unset. */
+  group: z.string().max(80).optional(),
   enabled: z.boolean().default(true),
   opacity: unit.default(1),
   blend: z.enum(BLEND_MODES).default('normal'),
@@ -339,6 +341,7 @@ type ParamsOf<K extends LayerType> = z.infer<(typeof LAYER_PARAMS)[K]>;
 type LayerCommon = {
   id: string;
   name?: string;
+  group?: string;
   enabled: boolean;
   opacity: number;
   blend: BlendMode;

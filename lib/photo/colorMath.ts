@@ -496,7 +496,7 @@ export function applyLayerType(c: RGB, plan: LayerPlan): RGB {
     case 'redEye':
       return [Math.min(c[0], (c[1] + c[2]) / 2), c[1], c[2]];
     default:
-      // Rung-4 detail ops (MM99) are neighbourhood ops: identity per pixel here.
+      // Rung-4 detail ops (MM99) are neighbourhood ops (applyDetailCPU): identity per pixel.
       return c;
   }
 }
@@ -513,12 +513,16 @@ export function blendLayer(mode: AdjustmentLayer['blend'], input: RGB, adjusted:
   return [clamp01(base[0] + d), clamp01(base[1] + d), clamp01(base[2] + d)];
 }
 
-export function applyLayer(c: RGB, plan: LayerPlan, maskValue = 1): RGB {
-  const l = plan.layer;
-  const adjusted = blendLayer(l.blend, c, applyLayerType(c, plan));
-  const a = clamp01(l.opacity * maskValue);
+/** Blend + opacity/mask step shared by per-pixel layers and the whole-image detail layers (MM99). */
+export function mixLayer(c: RGB, layer: AdjustmentLayer, adjustedRaw: RGB, maskValue = 1): RGB {
+  const adjusted = blendLayer(layer.blend, c, adjustedRaw);
+  const a = clamp01(layer.opacity * maskValue);
   if (a >= 1) return adjusted;
   return [lerp(c[0], adjusted[0], a), lerp(c[1], adjusted[1], a), lerp(c[2], adjusted[2], a)];
+}
+
+export function applyLayer(c: RGB, plan: LayerPlan, maskValue = 1): RGB {
+  return mixLayer(c, plan.layer, applyLayerType(c, plan), maskValue);
 }
 
 // ---------------------------------------------------------------------------
@@ -948,6 +952,359 @@ export function autoCropRect(g: Geometry, w0: number, h0: number, aspect?: numbe
 }
 
 // ---------------------------------------------------------------------------
+// Detail (design §5.4, MM99). Whole-image ops on interleaved float64 RGB
+// (`px * 3`). Conventions pinned here (the design table leaves them open) and
+// mirrored by `scripts/server/photo_render.py` and `gl/shaders/detailSource.ts`:
+// - Gaussian: taps k = -r..r, r = ceil(3σ), exp(-k²/2σ²) normalised in float64,
+//   edge pixels replicated, separable (horizontal then vertical); σ < 1e-3 = identity.
+// - Unsharp (sharpen, clarity, texture): d = L - gauss(L, σ) with L = BT.709 luma
+//   of the input; shift = gain·d·W added to R, G and B, then clamped.
+// - Bilateral (noise reduction luminance): fixed 9×9 window (radius 4), edges
+//   replicated, spatial σs = 2 + l·6, range σr = max(l·0.2, 1e-3) on Lab L/100.
+// - Dehaze: dark channel = 15×15 min of min(r,g,b), window clipped at the edges;
+//   A = max(linear 99.5th percentile of the dark channel, 0.05).
+// - Grain: monochrome; the 32-bit PCG hash below; pixel coordinates of the
+//   image being rendered (not scaled by resolution).
+// ---------------------------------------------------------------------------
+
+export const DETAIL_LAYER_TYPES = ['sharpen', 'blur', 'noiseReduction', 'clarity', 'texture', 'dehaze', 'vignette', 'grain'] as const;
+export type DetailLayerType = (typeof DETAIL_LAYER_TYPES)[number];
+export const isDetailType = (t: string): t is DetailLayerType => (DETAIL_LAYER_TYPES as readonly string[]).includes(t);
+
+export const CLARITY_RADIUS = 0.02; // fraction of the long side
+export const CLARITY_GAIN = 0.6;
+export const TEXTURE_RADIUS = 0.003;
+export const TEXTURE_MIN_RADIUS = 1.5;
+export const TEXTURE_GAIN = 0.5;
+export const BILATERAL_RADIUS = 4;
+export const NR_CHROMA_SIGMA = 6;
+export const DEHAZE_WINDOW_RADIUS = 7;
+export const DEHAZE_OMEGA = 0.95;
+export const DEHAZE_PERCENTILE = 0.995;
+export const DEHAZE_MIN_A = 0.05;
+export const DEHAZE_MIN_T = 0.1;
+export const DEHAZE_HAZE_GAIN = 0.5;
+export const GRAIN_GAIN = 0.2;
+export const GRAIN_Y_OFFSET = 0x9e3779b9;
+export const GRAIN_SALT = 0x85ebca6b;
+export const GRAIN_ROUGHNESS_MIX = 0.5;
+
+/** Normalised float64 Gaussian taps (`gaussianTaps` is float32 for the mask path). */
+export function gaussianTaps64(sigma: number): Float64Array {
+  if (sigma < 1e-3) return new Float64Array([1]);
+  const r = Math.ceil(3 * sigma);
+  const taps = new Float64Array(2 * r + 1);
+  let sum = 0;
+  for (let k = -r; k <= r; k += 1) {
+    const v = Math.exp(-(k * k) / (2 * sigma * sigma));
+    taps[k + r] = v;
+    sum += v;
+  }
+  for (let i = 0; i < taps.length; i += 1) taps[i] /= sum;
+  return taps;
+}
+
+/** Separable Gaussian of `ch` interleaved channels, edge pixels replicated. */
+export function gaussBlurPlanes(src: Float64Array, w: number, h: number, ch: number, sigma: number): Float64Array {
+  const taps = gaussianTaps64(sigma);
+  if (taps.length === 1) return src;
+  const r = (taps.length - 1) / 2;
+  const tmp = new Float64Array(src.length);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      for (let c = 0; c < ch; c += 1) {
+        let acc = 0;
+        for (let k = -r; k <= r; k += 1) {
+          const xx = x + k < 0 ? 0 : x + k >= w ? w - 1 : x + k;
+          acc += taps[k + r] * src[(y * w + xx) * ch + c];
+        }
+        tmp[(y * w + x) * ch + c] = acc;
+      }
+    }
+  }
+  const out = new Float64Array(src.length);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      for (let c = 0; c < ch; c += 1) {
+        let acc = 0;
+        for (let k = -r; k <= r; k += 1) {
+          const yy = y + k < 0 ? 0 : y + k >= h ? h - 1 : y + k;
+          acc += taps[k + r] * tmp[(yy * w + x) * ch + c];
+        }
+        out[(y * w + x) * ch + c] = acc;
+      }
+    }
+  }
+  return out;
+}
+
+function lumaPlane(rgb: Float64Array, px: number): Float64Array {
+  const L = new Float64Array(px);
+  for (let i = 0; i < px; i += 1) L[i] = rgb[i * 3] * LUMA[0] + rgb[i * 3 + 1] * LUMA[1] + rgb[i * 3 + 2] * LUMA[2];
+  return L;
+}
+
+/** Unsharp mask on luma: `gain·(L - gauss(L, σ))·W` added to every channel; `thr` in 0..1; W = 1-|2L-1| when `midWeight`. */
+export function unsharpLuma(rgb: Float64Array, w: number, h: number, sigma: number, gain: number, midWeight: boolean, thr = 0): Float64Array {
+  const px = w * h;
+  const L = lumaPlane(rgb, px);
+  const Lb = gaussBlurPlanes(L, w, h, 1, sigma);
+  const out = new Float64Array(rgb.length);
+  for (let i = 0; i < px; i += 1) {
+    let d = L[i] - Lb[i];
+    if (thr > 0 && !(Math.abs(d) > thr)) d = 0;
+    const wt = midWeight ? 1 - Math.abs(2 * L[i] - 1) : 1;
+    const shift = gain * d * wt;
+    out[i * 3] = clamp01(rgb[i * 3] + shift);
+    out[i * 3 + 1] = clamp01(rgb[i * 3 + 1] + shift);
+    out[i * 3 + 2] = clamp01(rgb[i * 3 + 2] + shift);
+  }
+  return out;
+}
+
+/** CIE Lab (D65) → sRGB, clamped. Inverse of `rgbToLab` (standard inverse matrix constants). */
+export function labToRgb(L: number, a: number, b: number): RGB {
+  const fy = (L + 16) / 116;
+  const fx = fy + a / 500;
+  const fz = fy - b / 200;
+  const finv = (f: number) => (f > 6 / 29 ? f * f * f : ((116 * f - 16) * 27) / 24389);
+  const x = finv(fx) * 0.95047;
+  const y = finv(fy);
+  const z = finv(fz) * 1.08883;
+  const r = 3.2404542 * x - 1.5371385 * y - 0.4985314 * z;
+  const g = -0.969266 * x + 1.8760108 * y + 0.041556 * z;
+  const bl = 0.0556434 * x - 0.2040259 * y + 1.0572252 * z;
+  return [clamp01(linearToSrgb(clamp01(r))), clamp01(linearToSrgb(clamp01(g))), clamp01(linearToSrgb(clamp01(bl)))];
+}
+
+/** 9×9 bilateral of a single plane (values in 0..1), edges replicated. */
+export function bilateral9(plane: Float64Array, w: number, h: number, sigmaS: number, sigmaR: number): Float64Array {
+  const R = BILATERAL_RADIUS;
+  const spatial = new Float64Array((2 * R + 1) * (2 * R + 1));
+  for (let dy = -R; dy <= R; dy += 1) for (let dx = -R; dx <= R; dx += 1) spatial[(dy + R) * (2 * R + 1) + dx + R] = Math.exp(-(dx * dx + dy * dy) / (2 * sigmaS * sigmaS));
+  const out = new Float64Array(plane.length);
+  const inv2r = 1 / (2 * sigmaR * sigmaR);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      const p = plane[y * w + x];
+      let acc = 0;
+      let ws = 0;
+      for (let dy = -R; dy <= R; dy += 1) {
+        const yy = y + dy < 0 ? 0 : y + dy >= h ? h - 1 : y + dy;
+        for (let dx = -R; dx <= R; dx += 1) {
+          const xx = x + dx < 0 ? 0 : x + dx >= w ? w - 1 : x + dx;
+          const q = plane[yy * w + xx];
+          const wt = spatial[(dy + R) * (2 * R + 1) + dx + R] * Math.exp(-(q - p) * (q - p) * inv2r);
+          acc += wt * q;
+          ws += wt;
+        }
+      }
+      out[y * w + x] = acc / ws;
+    }
+  }
+  return out;
+}
+
+export function noiseReduction(rgb: Float64Array, w: number, h: number, p: P<'noiseReduction'>): Float64Array {
+  if (p.luminance <= 0 && p.color <= 0) return rgb;
+  const px = w * h;
+  const lab = new Float64Array(px * 3);
+  for (let i = 0; i < px; i += 1) {
+    const [L, a, b] = rgbToLab([rgb[i * 3], rgb[i * 3 + 1], rgb[i * 3 + 2]]);
+    lab[i * 3] = L;
+    lab[i * 3 + 1] = a;
+    lab[i * 3 + 2] = b;
+  }
+  let Lp: Float64Array = new Float64Array(px);
+  for (let i = 0; i < px; i += 1) Lp[i] = lab[i * 3] / 100;
+  if (p.luminance > 0) {
+    const l = p.luminance / 100;
+    Lp = bilateral9(Lp, w, h, 2 + l * 6, Math.max(l * 0.2, 1e-3));
+  }
+  let ab: Float64Array = new Float64Array(px * 2);
+  for (let i = 0; i < px; i += 1) {
+    ab[i * 2] = lab[i * 3 + 1];
+    ab[i * 2 + 1] = lab[i * 3 + 2];
+  }
+  if (p.color > 0) ab = gaussBlurPlanes(ab, w, h, 2, (p.color / 100) * NR_CHROMA_SIGMA);
+  const out = new Float64Array(px * 3);
+  for (let i = 0; i < px; i += 1) {
+    const c = labToRgb(Lp[i] * 100, ab[i * 2], ab[i * 2 + 1]);
+    out[i * 3] = c[0];
+    out[i * 3 + 1] = c[1];
+    out[i * 3 + 2] = c[2];
+  }
+  return out;
+}
+
+/** Clipped-window min of a single plane over a (2r+1)² box (separable). */
+export function minFilter(plane: Float64Array, w: number, h: number, r: number): Float64Array {
+  const tmp = new Float64Array(plane.length);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      let m = Infinity;
+      for (let k = Math.max(0, x - r); k <= Math.min(w - 1, x + r); k += 1) m = Math.min(m, plane[y * w + k]);
+      tmp[y * w + x] = m;
+    }
+  }
+  const out = new Float64Array(plane.length);
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      let m = Infinity;
+      for (let k = Math.max(0, y - r); k <= Math.min(h - 1, y + r); k += 1) m = Math.min(m, tmp[k * w + x]);
+      out[y * w + x] = m;
+    }
+  }
+  return out;
+}
+
+/** Linear-interpolated percentile (q in 0..1) like `numpy.percentile(·, 100q)`. */
+export function percentile(values: ArrayLike<number>, q: number): number {
+  const s = Float64Array.from(values as ArrayLike<number>).sort();
+  if (s.length === 0) return 0;
+  const pos = q * (s.length - 1);
+  const lo = Math.floor(pos);
+  const hi = Math.min(lo + 1, s.length - 1);
+  return s[lo] + (s[hi] - s[lo]) * (pos - lo);
+}
+
+/** Atmospheric light from a dark-channel plane. */
+export const dehazeLight = (dark: ArrayLike<number>): number => Math.max(percentile(dark, DEHAZE_PERCENTILE), DEHAZE_MIN_A);
+
+/** Dark channel: window min of min(r,g,b). */
+export function darkChannel(rgb: Float64Array, w: number, h: number): Float64Array {
+  const m = new Float64Array(w * h);
+  for (let i = 0; i < m.length; i += 1) m[i] = Math.min(rgb[i * 3], rgb[i * 3 + 1], rgb[i * 3 + 2]);
+  return minFilter(m, w, h, DEHAZE_WINDOW_RADIUS);
+}
+
+/** Dehaze one pixel given its dark-channel value `d` and the light `A`. */
+export function dehazePixel(c: RGB, d: number, A: number, amount: number): RGB {
+  const amt = amount / 100;
+  if (amt === 0) return c;
+  if (amt > 0) {
+    const t = Math.max(1 - DEHAZE_OMEGA * (d / A), DEHAZE_MIN_T);
+    return [0, 1, 2].map((i) => c[i] + (clamp01((c[i] - A) / t + A) - c[i]) * amt) as RGB;
+  }
+  const k = -amt * DEHAZE_HAZE_GAIN;
+  return [0, 1, 2].map((i) => clamp01(c[i] * (1 - k) + A * k)) as RGB;
+}
+
+export function dehaze(rgb: Float64Array, w: number, h: number, p: P<'dehaze'>): Float64Array {
+  if (p.amount === 0) return rgb;
+  const dark = darkChannel(rgb, w, h);
+  const A = dehazeLight(dark);
+  const out = new Float64Array(rgb.length);
+  for (let i = 0; i < w * h; i += 1) {
+    const c = dehazePixel([rgb[i * 3], rgb[i * 3 + 1], rgb[i * 3 + 2]], dark[i], A, p.amount);
+    out[i * 3] = c[0];
+    out[i * 3 + 1] = c[1];
+    out[i * 3 + 2] = c[2];
+  }
+  return out;
+}
+
+/**
+ * Vignette frame distance: 0 at the centre, 1 at the corners for every
+ * roundness. `nx`, `ny` in -1..1 (image rectangle); `roundness` -100..100 mixes
+ * the rectangle metric (max(|nx|,|ny|)) with the circle metric (distance over
+ * the half diagonal) with weight (roundness + 100)/200 on the circle.
+ */
+export function vignetteDistance(nx: number, ny: number, w: number, h: number, roundness: number): number {
+  const rect = Math.max(Math.abs(nx), Math.abs(ny));
+  const circ = Math.hypot((nx * w) / 2, (ny * h) / 2) / Math.hypot(w / 2, h / 2);
+  const r = (roundness + 100) / 200;
+  return rect * (1 - r) + circ * r;
+}
+
+/** Vignette factor `v` in 0..1 (the smoothstep of the frame distance). */
+export const vignetteFactor = (d: number, midpoint: number, feather: number): number => smoothstep(midpoint / 100, midpoint / 100 + feather / 100, d);
+
+export function vignette(rgb: Float64Array, w: number, h: number, p: P<'vignette'>): Float64Array {
+  const out = new Float64Array(rgb.length);
+  const amt = p.amount / 100;
+  for (let y = 0; y < h; y += 1) {
+    const ny = ((y + 0.5) / h) * 2 - 1;
+    for (let x = 0; x < w; x += 1) {
+      const nx = ((x + 0.5) / w) * 2 - 1;
+      const i = y * w + x;
+      const v = vignetteFactor(vignetteDistance(nx, ny, w, h, p.roundness), p.midpoint, p.feather);
+      const L = rgb[i * 3] * LUMA[0] + rgb[i * 3 + 1] * LUMA[1] + rgb[i * 3 + 2] * LUMA[2];
+      const prot = amt < 0 ? 1 - (p.highlights / 100) * L : 1;
+      const k = 1 + amt * v * prot;
+      out[i * 3] = clamp01(rgb[i * 3] * k);
+      out[i * 3 + 1] = clamp01(rgb[i * 3 + 1] * k);
+      out[i * 3 + 2] = clamp01(rgb[i * 3 + 2] * k);
+    }
+  }
+  return out;
+}
+
+/** PCG output hash of a 32-bit word (Jarzynski/Olano): the only integer primitive of the grain. */
+export function pcgHash(v: number): number {
+  const s = (Math.imul(v >>> 0, 747796405) + 2891336453) >>> 0;
+  const word = Math.imul(((s >>> ((s >>> 28) + 4)) ^ s) >>> 0, 277803737) >>> 0;
+  return ((word >>> 22) ^ word) >>> 0;
+}
+
+/** Grain hash of integer cell (x, y) and a seed, a uint32: `pcg(pcg(x ^ seed) ^ (y + 0x9E3779B9))`. */
+export function grainHash(x: number, y: number, seed: number): number {
+  return pcgHash((pcgHash((x ^ seed) >>> 0) ^ ((y + GRAIN_Y_OFFSET) >>> 0)) >>> 0);
+}
+
+/** Noise value in [0,1) for pixel (x, y): cell hash at `size`, plus a pixel-level second octave mixed by roughness. */
+export function grainNoise(x: number, y: number, p: P<'grain'>): number {
+  const size = Math.max(1, Math.floor(p.size));
+  const n1 = grainHash(Math.floor(x / size), Math.floor(y / size), p.seed) / 4294967296;
+  const q = (p.roughness / 100) * GRAIN_ROUGHNESS_MIX;
+  if (q <= 0) return n1;
+  const n2 = grainHash(x, y, (p.seed ^ GRAIN_SALT) >>> 0) / 4294967296;
+  return n1 * (1 - q) + n2 * q;
+}
+
+export function grain(rgb: Float64Array, w: number, h: number, p: P<'grain'>): Float64Array {
+  const out = new Float64Array(rgb.length);
+  const k = (p.amount / 100) * GRAIN_GAIN;
+  for (let y = 0; y < h; y += 1) {
+    for (let x = 0; x < w; x += 1) {
+      const i = y * w + x;
+      const s = k * (grainNoise(x, y, p) - 0.5);
+      out[i * 3] = clamp01(rgb[i * 3] + s);
+      out[i * 3 + 1] = clamp01(rgb[i * 3 + 1] + s);
+      out[i * 3 + 2] = clamp01(rgb[i * 3 + 2] + s);
+    }
+  }
+  return out;
+}
+
+/** The adjusted image of a detail layer (before blend / opacity / mask) for the whole current image. */
+export function applyDetailCPU(rgb: Float64Array, w: number, h: number, layer: AdjustmentLayer): Float64Array {
+  const long = Math.max(w, h);
+  switch (layer.type) {
+    case 'sharpen':
+      return unsharpLuma(rgb, w, h, layer.params.radius, layer.params.amount / 100, false, layer.params.threshold / 255);
+    case 'blur': {
+      const out = gaussBlurPlanes(rgb, w, h, 3, layer.params.radius / 2);
+      return out === rgb ? rgb : out.map(clamp01);
+    }
+    case 'noiseReduction':
+      return noiseReduction(rgb, w, h, layer.params);
+    case 'clarity':
+      return unsharpLuma(rgb, w, h, CLARITY_RADIUS * long, (layer.params.amount / 100) * CLARITY_GAIN, true);
+    case 'texture':
+      return unsharpLuma(rgb, w, h, Math.max(TEXTURE_MIN_RADIUS, TEXTURE_RADIUS * long), (layer.params.amount / 100) * TEXTURE_GAIN, false);
+    case 'dehaze':
+      return dehaze(rgb, w, h, layer.params);
+    case 'vignette':
+      return vignette(rgb, w, h, layer.params);
+    case 'grain':
+      return grain(rgb, w, h, layer.params);
+    default:
+      return rgb;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Whole-image reference render
 // ---------------------------------------------------------------------------
 
@@ -961,7 +1318,7 @@ export interface FloatImage {
 /**
  * Apply the document to an image: geometry (one bilinear resample, may change
  * the size) → each enabled layer, scaled by its mask (rendered once per mask in
- * the geometry-corrected space). Rung-4 types are identity (MM99). Pure and
+ * the geometry-corrected space), detail layers see the whole current image. Pure and
  * deterministic; alpha is never touched by layers.
  */
 export function renderDocCPU(
@@ -983,16 +1340,55 @@ export function renderDocCPU(
     return r;
   });
   const out = new Float32Array(image.data.length);
-  const px = image.width * image.height;
+  const w = image.width;
+  const h = image.height;
+  const px = w * h;
+  // Working colour, float64 RGB. Runs of per-pixel layers are applied pixel by
+  // pixel (identical arithmetic to MM97/MM98); a detail layer (neighbourhood op,
+  // design 5.4) sees the whole current image, then is blended per pixel.
+  let cur: Float64Array = new Float64Array(px * 3);
   for (let i = 0; i < px; i += 1) {
-    let c: RGB = [image.data[i * 4], image.data[i * 4 + 1], image.data[i * 4 + 2]];
-    for (let k = 0; k < plans.length; k += 1) c = applyLayer(c, plans[k], masks[k] ? (masks[k] as Float32Array)[i] : 1);
-    out[i * 4] = c[0];
-    out[i * 4 + 1] = c[1];
-    out[i * 4 + 2] = c[2];
+    cur[i * 3] = image.data[i * 4];
+    cur[i * 3 + 1] = image.data[i * 4 + 1];
+    cur[i * 3 + 2] = image.data[i * 4 + 2];
+  }
+  let k = 0;
+  while (k < plans.length) {
+    if (isDetailType(plans[k].layer.type)) {
+      const layer = plans[k].layer;
+      const adjusted = applyDetailCPU(cur, w, h, layer);
+      const mk = masks[k] as Float32Array | null;
+      const next = new Float64Array(px * 3);
+      for (let i = 0; i < px; i += 1) {
+        const o = i * 3;
+        const r = mixLayer([cur[o], cur[o + 1], cur[o + 2]], layer, [adjusted[o], adjusted[o + 1], adjusted[o + 2]], mk ? mk[i] : 1);
+        next[o] = r[0];
+        next[o + 1] = r[1];
+        next[o + 2] = r[2];
+      }
+      cur = next;
+      k += 1;
+      continue;
+    }
+    let end = k;
+    while (end < plans.length && !isDetailType(plans[end].layer.type)) end += 1;
+    for (let i = 0; i < px; i += 1) {
+      const o = i * 3;
+      let c: RGB = [cur[o], cur[o + 1], cur[o + 2]];
+      for (let m = k; m < end; m += 1) c = applyLayer(c, plans[m], masks[m] ? (masks[m] as Float32Array)[i] : 1);
+      cur[o] = c[0];
+      cur[o + 1] = c[1];
+      cur[o + 2] = c[2];
+    }
+    k = end;
+  }
+  for (let i = 0; i < px; i += 1) {
+    out[i * 4] = cur[i * 3];
+    out[i * 4 + 1] = cur[i * 3 + 1];
+    out[i * 4 + 2] = cur[i * 3 + 2];
     out[i * 4 + 3] = image.data[i * 4 + 3];
   }
-  return { width: image.width, height: image.height, data: out };
+  return { width: w, height: h, data: out };
 }
 
 /** 8-bit quantization used by the goldens: round-half-up of v·255. */
