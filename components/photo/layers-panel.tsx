@@ -10,10 +10,11 @@ import { useLocalization } from '@/i18n/useLocalization';
 import { duplicateLayer, moveLayer, patchLayer, removeLayer } from '@/lib/photo/layerOps';
 import { usePhotoStore } from '@/lib/photo/photoStore';
 import { BLEND_MODES, type AdjustmentLayer } from '@/lib/photo/photoTypes';
+import { useToolStore } from '@/lib/photo/toolStore';
 import { cn } from '@/lib/utils';
 import { AdjustSlider } from './controls';
 
-export type PanelId = 'basic' | 'curves' | 'levels' | 'hsl' | 'colorBalance' | 'blackWhite' | 'channelMixer' | 'photoFilter' | 'splitTone' | 'lut' | 'effects';
+export type PanelId = 'masks' | 'geometry' | 'heal' | 'redEye' | 'basic' | 'curves' | 'levels' | 'hsl' | 'colorBalance' | 'blackWhite' | 'channelMixer' | 'photoFilter' | 'splitTone' | 'lut' | 'effects';
 
 /** The panel a layer type opens when selected. */
 export function panelForLayer(type: AdjustmentLayer['type']): PanelId | null {
@@ -34,6 +35,8 @@ export function panelForLayer(type: AdjustmentLayer['type']): PanelId | null {
     case 'splitTone':
     case 'lut':
       return type;
+    case 'redEye':
+      return 'redEye';
     case 'invert':
     case 'posterize':
     case 'threshold':
@@ -135,8 +138,16 @@ function Row({ layer, selected, onSelect, onOpenPanel }: { layer: AdjustmentLaye
               ))}
             </select>
           </label>
-          <button type="button" disabled className="w-full cursor-not-allowed rounded border border-dashed border-edge px-2 py-1 text-xs text-muted-foreground" title={t('photo.layers.mask')}>
-            {t('photo.layers.mask')}
+          <button
+            type="button"
+            data-testid="layer-mask-open"
+            className="w-full rounded border border-dashed border-edge px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
+            onClick={() => {
+              useToolStore.getState().setMaskLayer(layer.id);
+              onOpenPanel('masks');
+            }}
+          >
+            {layer.mask ? t('photo.layers.maskEdit') : t('photo.layers.mask')}
           </button>
         </div>
       ) : null}

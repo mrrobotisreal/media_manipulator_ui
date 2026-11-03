@@ -36,7 +36,7 @@ export interface PhotoCanvasProps {
   onSplitChange: (v: number) => void;
   /** Eyedropper armed: the next click reports the pixel (0..255). */
   picking: boolean;
-  onPick: (rgb: { r: number; g: number; b: number }) => void;
+  onPick: (rgb: { r: number; g: number; b: number }, shift?: boolean) => void;
   onReducedPreview: (reduced: boolean) => void;
   onRendered: () => void;
   handleRef?: React.Ref<CanvasHandle>;
@@ -48,10 +48,12 @@ export interface PhotoCanvasProps {
   /** MM98: canvas tools draw above the image in viewport space and own the pointer while active. */
   overlay?: (ctx: { view: View; iw: number; ih: number; wrap: HTMLDivElement | null }) => React.ReactNode;
   toolActive?: boolean;
+  /** Show the whole post-rotate canvas (crop ignored) while the crop tool edits it. */
+  ignoreCrop?: boolean;
 }
 
 /** Canvas viewport: WebGL2 preview (or CPU fallback), wheel/pinch zoom, drag pan, split view, eyedropper. */
-export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, picking, onPick, onReducedPreview, onRendered, handleRef, maskView = 'off', viewLayerId = null, fetchMaskBlob, overlay, toolActive = false }: PhotoCanvasProps) {
+export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, picking, onPick, onReducedPreview, onRendered, handleRef, maskView = 'off', viewLayerId = null, fetchMaskBlob, overlay, toolActive = false, ignoreCrop = false }: PhotoCanvasProps) {
   const { t } = useLocalization('interface');
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const glRef = React.useRef<HTMLCanvasElement>(null);
@@ -71,7 +73,8 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
   const cpuPixels = React.useRef<{ w: number; h: number; data: Uint8ClampedArray } | null>(null);
 
   // The displayed size is the geometry-corrected size (crop/rotate change it); the source stays the texture.
-  const out = source && doc ? geometryOutputSize(doc.geometry, source.width, source.height) : { width: source?.width ?? 0, height: source?.height ?? 0 };
+  const renderDoc = React.useMemo(() => (doc && ignoreCrop && doc.geometry.crop ? { ...doc, geometry: { ...doc.geometry, crop: null } } : doc), [doc, ignoreCrop]);
+  const out = source && renderDoc ? geometryOutputSize(renderDoc.geometry, source.width, source.height) : { width: source?.width ?? 0, height: source?.height ?? 0 };
   const iw = showOriginal && source ? source.width : out.width;
   const ih = showOriginal && source ? source.height : out.height;
   const cachedMaskAssetsView = cachedMaskAssets;
@@ -181,9 +184,9 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
   React.useEffect(() => {
     if (!source || !doc) return;
     const id = requestAnimationFrame(() => {
-      const effective = showOriginal ? { layers: [], geometry: undefined, masks: undefined } : doc;
+      const effective = showOriginal ? { layers: [], geometry: undefined, masks: undefined } : (renderDoc as NonNullable<typeof renderDoc>);
       if (mode === 'gl' && renderer.current) {
-        renderer.current.render(showOriginal ? { ...doc, layers: [], masks: undefined, geometry: { ...doc.geometry, rotate: 0, flipH: false, flipV: false, perspective: null, crop: null } } : doc, { maskView, viewLayerId });
+        renderer.current.render(showOriginal ? { ...doc, layers: [], masks: undefined, geometry: { ...doc.geometry, rotate: 0, flipH: false, flipV: false, perspective: null, crop: null } } : (renderDoc as NonNullable<typeof renderDoc>), { maskView, viewLayerId });
       } else if (mode === 'cpu' && cpuRef.current && origRef.current) {
         const sz = cpuPreviewSize(source.width, source.height);
         const tmp = document.createElement('canvas');
@@ -202,7 +205,7 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
       onRendered();
     });
     return () => cancelAnimationFrame(id);
-  }, [source, doc, showOriginal, mode, onRendered, maskView, viewLayerId, assetTick]);
+  }, [source, doc, renderDoc, showOriginal, mode, onRendered, maskView, viewLayerId, assetTick]);
 
   // Keep the fit when the viewport resizes.
   React.useEffect(() => {
@@ -237,7 +240,7 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
     const sy = (p.ny * src.height) | 0;
     ctx.drawImage(src, sx, sy, 1, 1, 0, 0, 1, 1);
     const d = ctx.getImageData(0, 0, 1, 1).data;
-    onPick({ r: d[0], g: d[1], b: d[2] });
+    onPick({ r: d[0], g: d[1], b: d[2] }, e.shiftKey);
   };
 
   const onDown = (e: React.PointerEvent) => {

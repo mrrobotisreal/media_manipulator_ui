@@ -32,3 +32,33 @@ export function onAdjustmentChanged(type: string, param: string): void {
     }, ADJUSTMENT_DEBOUNCE_MS),
   );
 }
+
+// ---------------------------------------------------------------------------
+// MM98 seams (decision 10): what happened, nothing else. MM101 wires them.
+// ---------------------------------------------------------------------------
+export interface Mm98Listener {
+  onMaskAdded?: (kind: string) => void;
+  onAiMaskRequested?: () => void;
+  onAiMaskCompleted?: () => void;
+  onAiMaskFailed?: (reason: string) => void;
+  onHealRequested?: (strokes: number) => void;
+  onHealCompleted?: () => void;
+  onHealFailed?: (reason: string) => void;
+  onCompareUsed?: (mode: string) => void;
+}
+let mm98: Mm98Listener | null = null;
+/** MM101 installs its emitters here. Returns an uninstaller. */
+export function setMm98Listener(l: Mm98Listener | null): () => void {
+  mm98 = l;
+  return () => {
+    if (mm98 === l) mm98 = null;
+  };
+}
+export const onMaskAdded = (kind: string): void => mm98?.onMaskAdded?.(kind);
+export const onAiMaskRequested = (): void => mm98?.onAiMaskRequested?.();
+export const onAiMaskCompleted = (): void => mm98?.onAiMaskCompleted?.();
+export const onAiMaskFailed = (reason: string): void => mm98?.onAiMaskFailed?.(reason);
+export const onHealRequested = (strokes: number): void => mm98?.onHealRequested?.(strokes);
+export const onHealCompleted = (): void => mm98?.onHealCompleted?.();
+export const onHealFailed = (reason: string): void => mm98?.onHealFailed?.(reason);
+export const onCompareUsed = (mode: string): void => mm98?.onCompareUsed?.(mode);

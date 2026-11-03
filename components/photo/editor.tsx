@@ -39,6 +39,20 @@ import { usePhotoStore } from '@/lib/photo/photoStore';
 import { getBaseURL } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { PhotoCanvas, type CanvasHandle, type PhotoSourceInfo } from './canvas';
+import { fetchProjectFile, proxyCandidates, type HealOutcome } from '@/lib/photo/aiApi';
+import { currentBaseRef } from '@/lib/photo/healOps';
+import { onCompareUsed } from '@/lib/photo/seams';
+import { setLocalBase } from '@/lib/photo/localProject';
+import { clearMaskAssets, registerSubjectMask } from '@/lib/photo/maskAssets';
+import { useToolStore } from '@/lib/photo/toolStore';
+import { BRUSH_SIZE_MAX, BRUSH_SIZE_MIN } from '@/lib/photo/brushEngine';
+import { getHealStrokes, setHealStrokes } from './heal-session';
+import { PhotoSessionProvider, type PhotoSession } from './session-context';
+import { ToolOverlay } from './tool-overlay';
+import { MasksPanel } from './masks/masks-panel';
+import { GeometryPanel } from './panels/geometry-panel';
+import { HealPanel } from './panels/heal-panel';
+import { RedEyePanel } from './panels/redeye-panel';
 import { ConflictDialog, DraftDialog, LocalBanner, ReplaceLocalDialog, UploadOffer } from './dialogs';
 import { ExportDialog } from './export-dialog';
 import { LayersPanel, panelForLayer, type PanelId } from './layers-panel';
@@ -52,7 +66,7 @@ import { EffectsPanel, LutPanel } from './panels/lut-effects-panels';
 import { HistogramPlot } from './histogram-plot';
 import { useSignedIn } from './use-signed-in';
 
-const PANELS: PanelId[] = ['basic', 'curves', 'levels', 'hsl', 'colorBalance', 'blackWhite', 'channelMixer', 'photoFilter', 'splitTone', 'lut', 'effects'];
+const PANELS: PanelId[] = ['basic', 'geometry', 'masks', 'heal', 'redEye', 'curves', 'levels', 'hsl', 'colorBalance', 'blackWhite', 'channelMixer', 'photoFilter', 'splitTone', 'lut', 'effects'];
 const AUTOSAVE_MS = 2500;
 
 type Picked = { r: number; g: number; b: number; n: number } | null;
@@ -91,7 +105,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const [exportOpen, setExportOpen] = React.useState(false);
   const [showOriginal, setShowOriginal] = React.useState(false);
   const [split, setSplit] = React.useState<number | null>(null);
-  const [picking, setPicking] = React.useState<'curves' | 'hsl' | null>(null);
+  const [picking, setPicking] = React.useState<'curves' | 'hsl' | 'mask' | null>(null);
   const [picked, setPicked] = React.useState<Picked>(null);
   const [reduced, setReduced] = React.useState(false);
   const [histogram, setHistogram] = React.useState<Histogram | null>(null);
@@ -101,6 +115,15 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const [offerError, setOfferError] = React.useState(false);
   const [freeProjects, setFreeProjects] = React.useState<number>(5);
   const [sheetOpen, setSheetOpen] = React.useState(true);
+  const [pickedMask, setPickedMask] = React.useState<{ r: number; g: number; b: number; n: number; shift: boolean } | null>(null);
+  const [thumb, setThumb] = React.useState<import('@/lib/photo/colorMath').FloatImage | null>(null);
+  const tool = useToolStore((st) => st.tool);
+  const maskView = useToolStore((st) => st.maskView);
+  const maskLayerId = useToolStore((st) => st.maskLayerId);
+  /** Heal bases already decoded for this session (hash/local id → bytes). */
+  const baseBlobs = React.useRef(new Map<string, Blob>());
+  const loadedBase = React.useRef<string | null>(null);
+  const originalBlob = React.useRef<Blob | null>(null);
 
   const canvasRef = React.useRef<CanvasHandle>(null);
   const histPort = React.useRef<HistogramPort | null>(null);
@@ -146,11 +169,31 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
     (src: PhotoSourceInfo, file: File | null, id: string, docIn: ReturnType<typeof newPhotoDoc>, projName: string, serverRev: number | null) => {
       setSource(src);
       setOriginalFile(file);
+      clearMaskAssets();
+      setHealStrokes(null);
+      useToolStore.getState().setTool('none');
+      useToolStore.getState().setMaskView('off');
+      loadedBase.current = currentBaseRef(docIn);
       usePhotoStore.getState().load(id, docIn, projName, serverRev);
       revisionRef.current = usePhotoStore.getState().revision;
       setLoading(false);
     },
     [],
+  );
+
+  /** A server heal base as a decodable proxy (`bases/<hash>.proxy.jpg|png`); null when unavailable. */
+  const loadServerBase = React.useCallback(
+    async (projectId: string, ref: string): Promise<PhotoSourceInfo | null> => {
+      for (const rel of proxyCandidates(ref)) {
+        try {
+          return await decode(await fetchProjectFile(projectId, rel));
+        } catch {
+          // try the next candidate
+        }
+      }
+      return null;
+    },
+    [decode],
   );
 
   // Open a server project (by id).
@@ -171,6 +214,12 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         } catch {
           src = await decode(await fetchProjectImage(id, 'proxy'));
         }
+        const healed = currentBaseRef(p.doc);
+        if (healed?.startsWith('bases/')) {
+          const hs = await loadServerBase(id, healed);
+          if (hs) src = hs;
+        }
+        originalBlob.current = blob;
         setServerId(id);
         setIsLocal(false);
         beginEditing(src, null, id, p.doc, p.name, p.revision);
@@ -194,6 +243,9 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       }
       try {
         const src = await decode(lp.base ?? lp.original);
+        originalBlob.current = lp.original;
+        const lb = currentBaseRef(lp.doc);
+        if (lb && lp.base) baseBlobs.current.set(lb, lp.base);
         setServerId(null);
         setIsLocal(true);
         setLocalProject(lp);
@@ -477,7 +529,39 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT' || el.isContentEditable);
     };
     const down = (e: KeyboardEvent) => {
-      if (e.key === '\\' && !typing(e)) setShowOriginal(true);
+      if (e.key === '\\' && !typing(e)) {
+        setShowOriginal(true);
+        onCompareUsed('hold');
+      }
+      if (!typing(e) && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const ts = useToolStore.getState();
+        const key = e.key.toLowerCase();
+        if (key === 'm') {
+          ts.cycleMaskView();
+          setPanel('masks');
+        } else if (key === 'b') {
+          ts.toggleTool('brush');
+          ts.setBrush({ erase: false });
+          setPanel('masks');
+        } else if (key === 'e') {
+          ts.setBrush({ erase: !ts.brush.erase });
+          if (ts.tool !== 'brush' && ts.tool !== 'heal') ts.setTool('brush');
+        } else if (e.key === '[') ts.setBrush({ size: Math.max(BRUSH_SIZE_MIN, Math.round(ts.brush.size * 0.85)) });
+        else if (e.key === ']') ts.setBrush({ size: Math.min(BRUSH_SIZE_MAX, Math.round(ts.brush.size / 0.85) + 1) });
+        else if (key === 'g') {
+          ts.toggleTool('gradient');
+          setPanel('masks');
+        } else if (key === 'r') {
+          ts.toggleTool('radial');
+          setPanel('masks');
+        } else if (key === 'c') {
+          ts.toggleTool('crop');
+          setPanel('geometry');
+        } else if (key === 'h') {
+          ts.toggleTool('heal');
+          setPanel('heal');
+        } else if (e.key === 'Escape') ts.setTool('none');
+      }
       const mod = e.metaKey || e.ctrlKey;
       if (mod && e.key.toLowerCase() === 'z' && !typing(e)) {
         e.preventDefault();
@@ -513,10 +597,105 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
     if (p) setPanel(p);
   }
 
-  const onPick = (rgb: { r: number; g: number; b: number }) => {
+  const onPick = (rgb: { r: number; g: number; b: number }, shift = false) => {
+    if (picking === 'mask') {
+      setPickedMask({ ...rgb, n: Date.now(), shift });
+      setPicking(null);
+      return;
+    }
     setPicked({ ...rgb, n: Date.now() });
     setPicking(null);
   };
+
+  // ---- heal base swapping (MM98) -----------------------------------------------
+  const healRef = usePhotoStore((st) => (st.doc ? currentBaseRef(st.doc) : null));
+  const swapSource = React.useCallback(async (ref: string | null) => {
+    try {
+      let next: PhotoSourceInfo | null = null;
+      if (ref === null) {
+        const blob = originalBlob.current;
+        if (blob) next = await decode(blob);
+      } else if (ref.startsWith('local:')) {
+        const b = baseBlobs.current.get(ref);
+        if (b) next = await decode(b);
+      } else if (serverId) {
+        next = await loadServerBase(serverId, ref);
+      }
+      if (next) {
+        loadedBase.current = ref;
+        setSource(next);
+        if (isLocal) void setLocalBase(ref ? baseBlobs.current.get(ref) ?? null : null);
+      }
+    } catch {
+      // keep the current source; the doc and the pixels stay consistent with each other
+    }
+  }, [decode, isLocal, loadServerBase, serverId]);
+  React.useEffect(() => {
+    if (!source || loadedBase.current === healRef) return;
+    void swapSource(healRef);
+  }, [healRef, source, swapSource]);
+
+  // A <= 64 px float thumbnail of the source for mask thumbnails.
+  React.useEffect(() => {
+    if (!source) return;
+    try {
+      const k = Math.min(1, 64 / Math.max(source.width, source.height));
+      const w = Math.max(1, Math.round(source.width * k));
+      const h = Math.max(1, Math.round(source.height * k));
+      const c = document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return;
+      ctx.drawImage(source.bitmap, 0, 0, w, h);
+      const px = ctx.getImageData(0, 0, w, h).data;
+      const data = new Float32Array(w * h * 4);
+      for (let i = 0; i < data.length; i += 1) data[i] = px[i] / 255;
+      setThumb({ width: w, height: h, data });
+    } catch {
+      setThumb(null);
+    }
+  }, [source]);
+
+  const session = React.useMemo<PhotoSession>(
+    () => ({
+      projectId: serverId,
+      signedIn: signedIn === true,
+      capabilities: caps,
+      source: source ? { width: source.width, height: source.height } : null,
+      currentFile: () => {
+        if (isLocal && localProject) {
+          const b = (healRef ? baseBlobs.current.get(healRef) : null) ?? localProject.base ?? localProject.original;
+          return b ? { blob: b, name: localProject.fileName } : null;
+        }
+        const f = originalFile ?? (originalBlob.current ? new File([originalBlob.current], 'photo') : null);
+        return f ? { blob: f, name: f.name } : null;
+      },
+      thumb,
+      histogram,
+      requestPick: () => setPicking('mask'),
+      picked: pickedMask,
+      keepLocalMask: (ref, blob) => registerSubjectMask(ref, blob),
+      onHealed: async (outcome: HealOutcome) => {
+        let next: PhotoSourceInfo | null = null;
+        if (outcome.blob) {
+          baseBlobs.current.set(outcome.baseRef, outcome.blob);
+          next = await decode(outcome.blob);
+          if (isLocal) void setLocalBase(outcome.blob);
+        } else if (serverId) {
+          next = await loadServerBase(serverId, outcome.baseRef);
+        }
+        if (!next) throw new Error('heal base could not be loaded');
+        loadedBase.current = outcome.baseRef;
+        setSource(next);
+      },
+    }),
+    [serverId, signedIn, caps, source, isLocal, localProject, healRef, originalFile, thumb, histogram, pickedMask, decode, loadServerBase],
+  );
+  const fetchMaskBlob = React.useCallback(
+    (ref: string) => (serverId ? fetchProjectFile(serverId, ref) : Promise.reject(new Error('no project'))),
+    [serverId],
+  );
 
   // ---- render ------------------------------------------------------------------------
   if (!doc || !source) {
@@ -578,12 +757,21 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         return <LutPanel />;
       case 'effects':
         return <EffectsPanel />;
+      case 'masks':
+        return <MasksPanel />;
+      case 'geometry':
+        return <GeometryPanel />;
+      case 'heal':
+        return <HealPanel />;
+      case 'redEye':
+        return <RedEyePanel />;
       case 'layers':
         return <LayersPanel onOpenPanel={openPanel} />;
     }
   })();
 
   return (
+    <PhotoSessionProvider value={session}>
     <div className="flex h-dvh flex-col bg-background text-foreground" data-testid="photo-editor">
       <header className="flex flex-wrap items-center gap-2 border-b border-edge px-3 py-2">
         <Link href={localized('/')} aria-label={t('photo.backHome', { brand: PHOTO_BRAND })} className="shrink-0">
@@ -620,7 +808,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         <Button size="sm" variant="outline" onClick={() => canvasRef.current?.actualSize()}>
           {t('photo.bar.actualSize')}
         </Button>
-        <Button size="sm" variant="outline" aria-pressed={split !== null} onClick={() => setSplit((s) => (s === null ? 0.5 : null))}>
+        <Button size="sm" variant="outline" aria-pressed={split !== null} onClick={() => { if (split === null) onCompareUsed('split'); setSplit((s) => (s === null ? 0.5 : null)); }}>
           {t('photo.bar.split')}
         </Button>
         <Button size="sm" variant="outline" disabled={!canSave} onClick={() => void save()}>
@@ -649,6 +837,12 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
             onPick={onPick}
             onReducedPreview={setReduced}
             onRendered={onRendered}
+            maskView={maskView}
+            viewLayerId={maskLayerId ?? selection}
+            fetchMaskBlob={fetchMaskBlob}
+            toolActive={tool !== 'none' && tool !== 'eyedropper'}
+            ignoreCrop={tool === 'crop'}
+            overlay={({ view, iw, ih, wrap }) => <ToolOverlay view={view} iw={iw} ih={ih} wrap={wrap} source={{ width: source.width, height: source.height }} />}
           />
           <div className="pointer-events-none absolute bottom-2 start-2 w-48 opacity-90" dir="ltr">
             <HistogramPlot histogram={histogram} className="h-14 w-full" />
@@ -709,5 +903,6 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       />
       <ReplaceLocalDialog open={!!pendingFile} onCancel={() => setPendingFile(null)} onConfirm={() => { const f = pendingFile; setPendingFile(null); if (f) void openFile(f, true); }} />
     </div>
+    </PhotoSessionProvider>
   );
 }
