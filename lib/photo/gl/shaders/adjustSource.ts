@@ -31,6 +31,8 @@ out vec4 fragColor;
 uniform sampler2D uSource;
 uniform sampler2D uCurves; // 256x1 RGBA: r, g, b, master curves
 uniform sampler3D uLut;
+uniform sampler2D uMask; // MM98: the layer's mask (R), bound only when uHasMask == 1
+uniform int uHasMask;
 uniform vec4 uP[40];
 uniform int uN;
 uniform float uLutSize;
@@ -262,19 +264,26 @@ vec3 adjust(vec3 c) {
 #ifdef T_COPY
   return c;
 #endif
+#ifdef T_MASKOVERLAY
+  return mix(c, vec3(1.0, 0.0, 0.0), 0.5 * (1.0 - texture(uMask, vUV).r));
+#endif
+#ifdef T_MASKALPHA
+  return vec3(texture(uMask, vUV).r);
+#endif
 }
 
 void main() {
   vec4 src = texture(uSource, vUV);
   vec3 c = src.rgb;
   vec3 a = adjust(c);
-#ifndef T_COPY
+#if !defined(T_COPY) && !defined(T_MASKOVERLAY) && !defined(T_MASKALPHA)
   if (uBlend == 1) {
     a = clamp01(c + (luma(a) - luma(c)));
   } else if (uBlend == 2) {
     a = clamp01(a + (luma(c) - luma(a)));
   }
-  a = mix(c, a, clamp(uOpacity, 0.0, 1.0));
+  float mv = uHasMask == 1 ? texture(uMask, vUV).r : 1.0;
+  a = mix(c, a, clamp(uOpacity * mv, 0.0, 1.0));
 #endif
   fragColor = vec4(a, src.a);
 }`;
