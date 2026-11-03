@@ -53,6 +53,7 @@ describe('ROUTE_SEO_MAP /tools/motion', () => {
     expect(isReviewSafeInternalHref('/tools/motion')).toBe(true);
     expect(isReviewSafeInternalHref('/tutorials/motion')).toBe(true);
     expect(isReviewSafeInternalHref('/licenses')).toBe(true);
+    expect(isReviewSafeInternalHref('/delete-account')).toBe(true);
   });
 
   it('the tutorial has its own route entry', () => {

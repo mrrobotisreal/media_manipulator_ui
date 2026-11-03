@@ -692,7 +692,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "What changed on 2026-11-03",
-    "whatChangedBody": "We added Aperture, our photo editor (in beta). The Privacy Policy has a new section 1.12: in Aperture your photo is edited in your browser, and it is uploaded to our servers only when you save a project to your account, export, select a subject with AI, heal spots or apply your edits to more photos; projects saved to your account are stored on our servers under the retention period you choose, can be deleted and are deleted with your account; subject selection and healing run on our own GPU server and no photo is sent to a third-party service; and for each export, subject selection and healing we record the kind of job, the result's format and size, the time and your plan to enforce the daily allowance. Sections 3, 3.3, 3.4 and 4 now name Aperture projects and the models used. The Terms list Aperture in section 1, and section 13 says your Aperture exports belong to you. Everything from the 2026-11-01 update still applies: You can now sign in with Apple, in addition to an email address and password or your Google account. The Privacy Policy (section 1.7) explains that if you sign in with Apple, Apple shares your name and email address with us, or a private relay address if you choose \"Hide My Email\", and that Apple's privacy policy applies to your Apple Account; section 8 lists Apple among the parties we share sign-in information with, and section 1.7 now says Firebase sends a reset link to your email address if you ask to reset your password. Section 9 of the Terms now says you can sign in with an email address and password, with Google or with Apple. Everything from the 2026-10-28 update still applies: We added a contact form at media-manipulator.com/contact: the Privacy Policy has a new section 1.11 on the messages you send us (your name, email address, subject and message, delivered to our support mailbox through Resend and kept there until the conversation is closed, never longer than 12 months), and section 16 now points to the form. Added the advertising-cookie disclosures Google requires and the opt-out links. The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense: Google’s advertising cookies, non-personalised ads, Google’s consent message in the EEA, the UK and Switzerland, the links to opt out of personalised ads (Google Ads Settings, aboutads.info and youronlinechoices.eu) and to how Google uses information from sites that use its services, who sees ads (only visitors without an account and free accounts) and our public ads.txt file; section 1.5 now lists the advertising identifiers Google’s ad script may set. Section 8.9 of the Terms now says that ads are shown only without an account or with a free account, and that Premium and Pro remove them. Section 5 (Advertising) of the Privacy Policy now says that Google's ad script loads on pages that can show ads, with all consent signals denied until you choose, and serves non-personalised ads until then. Earlier the same day: We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
+    "whatChangedBody": "The Privacy Policy has a new Section 17 and the Terms a new Section 25 for the Media Manipulator app for Android. Section 17 explains what the app collects (your account data, device and app information, a per-install identifier, the app's usage analytics, a push notification token if you allow notifications, crash reports from Firebase Crashlytics, and the files you choose to process), the permissions it uses, how to turn analytics off and erase it in Account → Privacy & data, push notifications, crash reports, and how to delete your account in the app, on the web or by email. Section 6 now says Firebase is also used in the app for push notifications and crash reports, and Section 8 names Firebase Cloud Messaging and Firebase Crashlytics. Section 25 of the Terms covers the app, the app stores' own terms, automatic updates and plans bought on the web, and Section 1 now lists the app. There is also a new public page at media-manipulator.com/delete-account that explains how to delete your account without signing in. Everything from the earlier update on 2026-11-03 still applies: We added Aperture, our photo editor (in beta). The Privacy Policy has a new section 1.12: in Aperture your photo is edited in your browser, and it is uploaded to our servers only when you save a project to your account, export, select a subject with AI, heal spots or apply your edits to more photos; projects saved to your account are stored on our servers under the retention period you choose, can be deleted and are deleted with your account; subject selection and healing run on our own GPU server and no photo is sent to a third-party service; and for each export, subject selection and healing we record the kind of job, the result's format and size, the time and your plan to enforce the daily allowance. Sections 3, 3.3, 3.4 and 4 now name Aperture projects and the models used. The Terms list Aperture in section 1, and section 13 says your Aperture exports belong to you. Everything from the 2026-11-01 update still applies: You can now sign in with Apple, in addition to an email address and password or your Google account. The Privacy Policy (section 1.7) explains that if you sign in with Apple, Apple shares your name and email address with us, or a private relay address if you choose \"Hide My Email\", and that Apple's privacy policy applies to your Apple Account; section 8 lists Apple among the parties we share sign-in information with, and section 1.7 now says Firebase sends a reset link to your email address if you ask to reset your password. Section 9 of the Terms now says you can sign in with an email address and password, with Google or with Apple. Everything from the 2026-10-28 update still applies: We added a contact form at media-manipulator.com/contact: the Privacy Policy has a new section 1.11 on the messages you send us (your name, email address, subject and message, delivered to our support mailbox through Resend and kept there until the conversation is closed, never longer than 12 months), and section 16 now points to the form. Added the advertising-cookie disclosures Google requires and the opt-out links. The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense: Google’s advertising cookies, non-personalised ads, Google’s consent message in the EEA, the UK and Switzerland, the links to opt out of personalised ads (Google Ads Settings, aboutads.info and youronlinechoices.eu) and to how Google uses information from sites that use its services, who sees ads (only visitors without an account and free accounts) and our public ads.txt file; section 1.5 now lists the advertising identifiers Google’s ad script may set. Section 8.9 of the Terms now says that ads are shown only without an account or with a free account, and that Premium and Pro remove them. Section 5 (Advertising) of the Privacy Policy now says that Google's ad script loads on pages that can show ads, with all consent signals denied until you choose, and serves non-personalised ads until then. Earlier the same day: We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -1003,7 +1003,7 @@
         "title": "6. Analytics",
         "paragraphs": [
           "Media Manipulator uses its own first-party analytics, built and operated by us and hosted on our own infrastructure at analytics.media-manipulator.com. It is the primary way we understand which tools are used, where they fail, and what to build next.",
-          "We previously used Mixpanel and Firebase Analytics. Both have been removed, as has Firebase Performance monitoring. Firebase is now used only for account sign-in."
+          "We previously used Mixpanel and Firebase Analytics. Both have been removed, as has Firebase Performance monitoring. Firebase is used for account sign-in and, in the mobile app only, for push notifications (Firebase Cloud Messaging) and crash reports (Firebase Crashlytics) — see Section 17."
         ],
         "subsections": [
           {
@@ -1094,7 +1094,7 @@
         "bullets": [
           "hosting and cloud infrastructure providers;",
           "Amazon Web Services, which hosts our file storage (Amazon S3, region us-west-2);",
-          "Google, for Firebase Authentication (sign-in), the limited Google Analytics 4 events described in Section 6.4 and, where ads are shown, Google AdSense;",
+          "Google, for Firebase Authentication (sign-in), the limited Google Analytics 4 events described in Section 6.4, Firebase Cloud Messaging and Firebase Crashlytics for the mobile app (Section 17) and, where ads are shown, Google AdSense;",
           "Apple, when you choose Sign in with Apple (Apple verifies your sign-in; we receive the name and email address or relay address you allow);",
           "advertising partners;",
           "security, abuse-detection, and content-safety providers;",
@@ -1193,6 +1193,67 @@
         ],
         "contactBlock": true,
         "contactEmail": "privacy@media-manipulator.com"
+      },
+      {
+        "title": "17. The Media Manipulator App",
+        "paragraphs": [
+          "This section applies to the Media Manipulator app for Android, operated by CreaTV Ltd. It adds to the rest of this Privacy Policy, which also applies: the app uses the same account, the same servers and the same retention settings as the website. To use the app you sign in to your Media Manipulator account."
+        ],
+        "subsections": [
+          {
+            "title": "17.1 What the app collects",
+            "paragraphs": [
+              "When you use the app, we and our providers receive:"
+            ],
+            "bullets": [
+              "your account data, as described in Section 1.7;",
+              "device and app information: your device model, Android version, the app version and build, your language, your time zone and your connection type (Wi-Fi, mobile data or none);",
+              "a per-install identifier that the app creates when you first open it, and a visit identifier that changes after 30 minutes of inactivity;",
+              "the app's analytics events: which screens you view, which tools you use, when jobs start, finish or fail, and when you save or share a result. They are linked to your account and plan while you are signed in. They never contain the names or the contents of your files;",
+              "a push notification token for your device, with the platform, app version and language of the device and when the token was created and last updated, if you allow notifications (Section 17.4). One account can have up to 10 tokens;",
+              "crash reports from Firebase Crashlytics: the technical details of a crash (stack trace, device model, Android version, app version, language), the identifier of your account and your plan (Section 17.5);",
+              "the files you choose to process, which the app uploads to our servers over an encrypted connection. They are kept for the retention period you set (Section 3) and you can delete them at any time."
+            ]
+          },
+          {
+            "title": "17.2 Permissions",
+            "bullets": [
+              "Photos and videos: you pick files with Android's system photo and file pickers. The app does not read your photo library and does not ask for access to it.",
+              "Notifications: the app asks the first time a job runs long. It is optional, and the app works without it.",
+              "Saving to your gallery: when you save a result, the app adds it to your gallery. It does not read what is already there."
+            ]
+          },
+          {
+            "title": "17.3 Analytics in the app",
+            "paragraphs": [
+              "The app's analytics are first-party: they go to the same service as the website's analytics (Section 6) and not to an advertising network. They are on from the first launch, without a consent prompt. You can turn them off at any time in the app under Account → Privacy & data → Analytics. Turning them off stops collection and does not delete what was already collected. To erase it, use Account → Privacy & data → Delete my analytics data: it deletes the analytics data linked to your account and this device, and the app starts with a new identifier. The analytics switch does not control crash reports (Section 17.5)."
+            ]
+          },
+          {
+            "title": "17.4 Push notifications",
+            "paragraphs": [
+              "We send one notification when a long job finishes or fails. We send no marketing notifications. Notifications are delivered through Firebase Cloud Messaging, a Google service, which receives the token and the notification text. You can turn them off in the app under Account → Notifications or in Android's settings. We delete the token when you sign out of the app or delete your account."
+            ]
+          },
+          {
+            "title": "17.5 Crash reports",
+            "paragraphs": [
+              "Crash reports are collected by Firebase Crashlytics, a Google service that acts as our processor. We use them only to find and fix crashes. They include the details listed in Section 17.1 and are linked to your account identifier, plan and language so we can reproduce a problem. Google keeps Crashlytics data for 90 days before it starts removing it from its live and backup systems. Crash reports are not collected in development builds of the app."
+            ]
+          },
+          {
+            "title": "17.6 Deleting your account",
+            "paragraphs": [
+              "You can delete your account in the app under Account → Privacy & data → Delete my account (you may need to sign in again to confirm), on the website under Account → Privacy & data, or by following the instructions at https://www.media-manipulator.com/delete-account, which also explains how to ask us by email if you cannot sign in. What is deleted, and what is kept and for how long, is described in Sections 3.4 and 13; the app also deletes its push tokens and your analytics data. In the app you can also export your data, delete all your files, and sign out of all devices."
+            ]
+          },
+          {
+            "title": "17.7 App stores",
+            "paragraphs": [
+              "Google Play's terms and privacy policy apply to downloading and updating the app, and other app stores' terms apply if we offer the app there. The stores do not receive your files."
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1219,6 +1280,7 @@
           "creating, animating and exporting vector graphics and animations with Motion;",
           "editing photos with adjustment layers, masks, geometry and healing, and exporting the result, with Aperture;",
           "creating voices from your own recordings, designing voices from a description, generating speech from text and changing the voice in a recording (Voices, see Section 8.11);",
+          "a mobile app for Android with the same tools and account (Section 25);",
           "temporary conversion history and downloadable processed outputs."
         ],
         "afterBullets": [
@@ -1686,6 +1748,16 @@
         ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
+      },
+      {
+        "title": "25. The Media Manipulator App",
+        "paragraphs": [
+          "The Media Manipulator app for Android is provided by CreaTV Ltd. and these Terms apply to it as they do to the website. To use the app you need a Media Manipulator account.",
+          "The Google Play terms apply to downloading the app. Google is not responsible for the app, for its support or for these Terms, and we are responsible for them. Terms of other app stores apply in the same way if we offer the app there.",
+          "We may deliver updates to the app automatically, including updates to the app's code that arrive without a new download from the store. The app may need a recent version of Android, and we may stop supporting older versions.",
+          "Plans are bought and managed on the website, not in the app. The app uses your plan and its limits as described in Section 10; you can manage or cancel your plan on the website.",
+          "The Privacy Policy explains what the app collects (Section 17 of the Privacy Policy)."
+        ]
       }
     ]
   },
@@ -2694,5 +2766,45 @@
       "unavailable": "The plan table could not be loaded right now. The pricing page lists every plan's allowance.",
       "seePlans": "Compare all plans"
     }
+  },
+  "deleteAccount": {
+    "metaTitle": "Delete your account | Media Manipulator",
+    "metaDesc": "How to delete your Media Manipulator account and its data: in the app, on the website, or by email if you cannot sign in.",
+    "title": "Delete your Media Manipulator account",
+    "intro": "This page explains how to delete your account for the Media Manipulator app for Android and for media-manipulator.com. The app and the website are operated by CreaTV Ltd. and share one account, so deleting it removes it everywhere.",
+    "inAppTitle": "In the app",
+    "inAppSteps": [
+      "Open the app and sign in.",
+      "Go to Account, then Privacy & data.",
+      "Tap Delete my account.",
+      "Type DELETE MY ACCOUNT to confirm. You may be asked to sign in again."
+    ],
+    "webTitle": "On the website",
+    "webSteps": [
+      "Sign in at media-manipulator.com.",
+      "Open your Account page and choose the Privacy & data tab.",
+      "Choose Delete account and type DELETE MY ACCOUNT to confirm."
+    ],
+    "webLink": "Open Privacy & data",
+    "emailTitle": "If you cannot sign in",
+    "emailBody": "Email privacy@media-manipulator.com from the email address of your account and write that you want your account deleted. We verify that the request comes from the owner of the account and delete it within 30 days.",
+    "whatIsDeletedTitle": "What is deleted",
+    "whatIsDeleted": [
+      "your account record, your settings and your sign-in;",
+      "your files, results and history, and your Darkroom, Motion and Aperture projects;",
+      "your saved voices;",
+      "the push notification tokens of your devices;",
+      "the analytics data linked to your account;",
+      "your Premium or Pro subscription, which is cancelled immediately."
+    ],
+    "whatIsKeptTitle": "What is kept, and for how long",
+    "whatIsKept": [
+      "a minimal deletion record with only a one-way hash of your account identifier and the date, for 30 days;",
+      "the log of your consent and opt-out choices, for five years, as the law requires us to be able to prove them;",
+      "payment records held by Stripe, our payment processor, for as long as the law requires;",
+      "crash reports held by Firebase Crashlytics, which Google removes after 90 days."
+    ],
+    "timing": "Deleting from the app or the website starts immediately. If a step cannot be completed, you are told, and you can write to us at the address above.",
+    "moreInfo": "For everything we collect and how we use it, read the Privacy Policy."
   }
 }

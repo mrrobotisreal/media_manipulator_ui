@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MA26: the Android app's legal copy and the public account-deletion page.
+  {
+    id: '2026-11-03-mobile-legal',
+    date: '2026-11-03',
+    title: 'Privacy Policy and Terms now cover the Android app; new account deletion page',
+    body: 'The Privacy Policy has a new Section 17 and the Terms a new Section 25 for the Media Manipulator app for Android: what the app collects (device and app information, a per-install identifier, app analytics you can turn off in Account, a push notification token if you allow notifications, and crash reports), the permissions it uses, and how to delete your account. Section 6 now says Firebase is also used in the app for push notifications and crash reports, and Section 8 names the two services. A new public page, Delete account, explains how to delete your account in the app, on the website or by email if you cannot sign in, and what is deleted and what is kept. All of it is available in all 18 languages.',
+    tags: ['improved'],
+    links: [
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Delete account', href: '/delete-account' },
+    ],
+  },
   // MM103: Aperture presets move to the account.
   {
     id: '2026-11-03-aperture-presets-account',

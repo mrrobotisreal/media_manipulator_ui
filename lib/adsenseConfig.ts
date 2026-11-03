@@ -68,6 +68,7 @@ export function isAdDisallowedPath(pathname: string): boolean {
     normalized === '/' ||
     normalized === '/privacy-policy' ||
     normalized === '/terms-of-service' ||
+    normalized === '/delete-account' ||
     normalized === '/about' ||
     normalized === '/how-it-works' ||
     normalized === '/tools' ||

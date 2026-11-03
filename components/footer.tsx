@@ -38,6 +38,8 @@ const LEGAL_LINK_KEYS: { key: string; href: string; labelKey?: string }[] = [
   { key: 'termsOfService', href: '/terms-of-service' },
   // MM48: MM47's open-source licence notices.
   { key: 'licenses', href: '/licenses', labelKey: 'interface:footer.licenses' },
+  // MA26: public account-deletion page (Google Play requirement).
+  { key: 'deleteAccount', href: '/delete-account', labelKey: 'interface:footer.deleteAccount' },
 ];
 
 const Footer: React.FC = () => {
