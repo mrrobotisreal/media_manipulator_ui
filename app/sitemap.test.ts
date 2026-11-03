@@ -81,6 +81,8 @@ const REVIEW_SAFE_URLS = [
   APERTURE_URL,
   ...TODAY_URLS.slice(2, 10),
   MM48_URLS[1],
+  // MA26: the public account-deletion page follows /licenses.
+  new URL('/delete-account', ORIGIN).toString(),
   MM85_CONTACT_URL,
   ...TODAY_URLS.slice(10),
   ...MM85_ARTICLE_URLS,
@@ -94,7 +96,7 @@ describe('MM34 flag off (default)', () => {
   it('sitemap equals the pre-MM34 review-safe list plus the MM48 and MM85 routes, exactly', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
     expect(urls()).toEqual(REVIEW_SAFE_URLS);
-    expect(urls()).toHaveLength(39);
+    expect(urls()).toHaveLength(40);
     for (const u of TODAY_URLS) expect(urls()).toContain(u);
   });
 
@@ -160,11 +162,11 @@ describe('MM34 flag on', () => {
     for (const u of TODAY_URLS) expect(list).toContain(u);
   });
 
-  it('URL count = core (14) + tool slugs + blog + tutorials + changelog', () => {
+  it('URL count = core (15) + tool slugs + blog + tutorials + changelog', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'true');
     // /tools/content-studio and /tools/motion are core routes, so they are not double counted.
     const toolsOutsideCore = TOOL_PAGES.filter((t) => t.slug !== 'content-studio' && t.slug !== 'motion' && t.slug !== 'aperture').length;
-    const expected = 14 + toolsOutsideCore + BLOG_POSTS.length + 7 + 1;
+    const expected = 15 + toolsOutsideCore + BLOG_POSTS.length + 7 + 1;
     expect(urls()).toHaveLength(expected);
     expect(urls()).toContain(new URL('/changelog', ORIGIN).toString());
   });

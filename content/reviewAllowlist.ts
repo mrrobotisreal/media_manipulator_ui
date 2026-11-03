@@ -126,6 +126,7 @@ export function isReviewSafeInternalHref(href: string): boolean {
   if (href === '/terms-of-service') return true;
   if (href === '/voices') return true;
   if (href === '/licenses') return true;
+  if (href === '/delete-account') return true;
 
   if (href.startsWith('/tutorials/')) return true;
   if (href.startsWith('/blog/')) return true;

@@ -43,6 +43,8 @@ const CORE_ROUTES = [
   // MM47's open-source licence notices (mediabunny MPL-2.0, anime.js, fflate);
   // indexable in translated locales, listed here by MM48.
   '/licenses',
+  // MA26: the public account-deletion page (Google Play requires a web URL).
+  '/delete-account',
   // MM85: the contact page (who runs the site, how to reach them).
   '/contact',
 ] as const;

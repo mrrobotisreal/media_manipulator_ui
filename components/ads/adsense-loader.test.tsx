@@ -64,6 +64,7 @@ describe('AdsenseLoader', () => {
     '/account',
     '/privacy-policy',
     '/terms-of-service',
+    '/delete-account',
     '/blog/video/video-compression-guide',
     '/tools/some-unlisted-tool',
     '/ru/tools/compress-image',
