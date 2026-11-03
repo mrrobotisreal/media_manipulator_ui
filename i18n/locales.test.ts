@@ -154,6 +154,24 @@ describe("localizeHref and the Motion editor (MM42)", () => {
   });
 });
 
+describe("localizeHref and the Aperture editor (MM97)", () => {
+  it("leaves /photo/x unchanged for ru-RU while /tools/aperture is prefixed", () => {
+    expect(localizeHref("/photo/x", "ru-RU")).toBe("/photo/x");
+    expect(localizeHref("/tools/aperture", "ru-RU")).toBe("/ru/tools/aperture");
+  });
+
+  it.each(locales.map((l) => [l.code]))("never prefixes the photo editor route for %s", (code) => {
+    for (const href of ["/photo", "/photo/new", "/photo/abc?x=1", "/photo#top", "/photo/new?from=job1"]) {
+      expect(localizeHref(href, code)).toBe(href);
+    }
+  });
+
+  it("still localizes look-alikes", () => {
+    expect(localizeHref("/photography", "de-DE")).toBe("/de/photography");
+    expect(localizeHref("/photo-tips", "de-DE")).toBe("/de/photo-tips");
+  });
+});
+
 /** MM56: on a translator deployment English is reached under `/en` (proxy lands `/` on the locale). */
 describe("translator deployment hrefs (MM56)", () => {
   afterEach(() => vi.unstubAllEnvs());
