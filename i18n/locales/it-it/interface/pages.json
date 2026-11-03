@@ -856,7 +856,7 @@
             "title": "1.12 Progetti ed esportazioni di Aperture",
             "paragraphs": [
               "Aperture, il nostro editor di foto, modifica la Sua foto nel Suo browser: l'anteprima che vede viene disegnata sul Suo dispositivo. Una foto lascia il Suo dispositivo solo quando richiede qualcosa che necessita dei nostri server: salvarla nel Suo account come progetto, esportare il file finale, selezionare un soggetto con l'IA, ritoccare macchie con l'IA o applicare le Sue modifiche a più foto.",
-              "Se ha effettuato l'accesso e salva un progetto, la foto originale, una copia di anteprima fino a 1920 pixel, una piccola miniatura, il documento di modifica (l'elenco delle regolazioni, delle maschere e delle aree ritoccate) e le eventuali maschere e versioni ritoccate della foto sono archiviati sui nostri server nella cartella del progetto. Costituiscono un Suo contenuto, seguono il periodo di conservazione che sceglie (Sezione 3), può eliminare un progetto dalla pagina Account, vengono eliminati insieme al Suo account e i progetti sono elencati nell'esportazione dei Suoi dati. Senza un account, una sola foto viene conservata unicamente nel Suo browser (in IndexedDB) e non viene caricata finché non esporta, non seleziona un soggetto o non ritocca; tale caricamento è un normale lavoro temporaneo e viene conservato per 24 ore.",
+              "Se ha effettuato l'accesso e salva un progetto, la foto originale, una copia di anteprima fino a 1920 pixel, una piccola miniatura, il documento di modifica (l'elenco delle regolazioni, delle maschere e delle aree ritoccate) e le eventuali maschere e versioni ritoccate della foto sono archiviati sui nostri server nella cartella del progetto. Costituiscono un Suo contenuto, seguono il periodo di conservazione che sceglie (Sezione 3), può eliminare un progetto dalla pagina Account, vengono eliminati insieme al Suo account e i progetti sono elencati nell'esportazione dei Suoi dati. Senza un account, una sola foto viene conservata unicamente nel Suo browser (in IndexedDB) e non viene caricata finché non esporta, non seleziona un soggetto o non ritocca; tale caricamento è un normale lavoro temporaneo e viene conservato per 24 ore. I preset che salva sono conservati insieme al Suo account finché non li elimina o non elimina l'account.",
               "Le esportazioni, la selezione del soggetto con l'IA e il ritocco sono lavori eseguiti sui nostri server. Le esportazioni vengono generate dalla Sua foto originale, la selezione del soggetto e il ritocco girano sul nostro server GPU e nessuna delle Sue foto viene inviata a un servizio di terze parti. Ogni esportazione, selezione del soggetto e ritocco viene conteggiato per far rispettare la quota giornaliera del Suo piano: conserviamo il tipo di lavoro, il formato e la dimensione del risultato, l'ora, il Suo piano e un identificativo del Suo account, della sessione del browser o di un indirizzo IP sottoposto ad hashing. I file risultanti sono conservati secondo le consuete regole di conservazione (Sezione 3), e quando elimina il Suo account tali registrazioni vengono dissociate dalla Sua identità."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Progetti Motion salvati",
       "photoProjects": "Progetti {{brand}} salvati",
       "photoMaxMegapixels": "Esportazione {{brand}} massima",
-      "photoBatch": "Foto {{brand}} per lotto"
+      "photoBatch": "Foto {{brand}} per lotto",
+      "photoPresets": "Preset {{brand}} salvati"
     },
     "values": {
       "yes": "Incluso",
@@ -1942,7 +1943,23 @@
       "renameSave": "Salva",
       "renamed": "Progetto rinominato.",
       "renameFailed": "Impossibile rinominare questo progetto. Non è stato modificato nulla; riprova.",
-      "photoDeleteBody": "Il progetto {{brand}}, la sua foto originale, le sue anteprime e tutte le versioni ritoccate vengono rimossi dai nostri server. Non si può annullare."
+      "photoDeleteBody": "Il progetto {{brand}}, la sua foto originale, le sue anteprime e tutte le versioni ritoccate vengono rimossi dai nostri server. Non si può annullare.",
+      "presetsHeading": "Preset",
+      "presetsIntro": "I tuoi preset {{brand}} salvati. Restano nel tuo account finché non li elimini.",
+      "presetsEmpty": "Nessun preset salvato. Salvane uno dal pannello Preset in {{brand}}.",
+      "presetsLoadFailed": "Impossibile caricare i tuoi preset.",
+      "presetDeleteBody": "Il preset viene rimosso dal tuo account. Non si può annullare.",
+      "presetDeleted": "Preset eliminato.",
+      "presetDeleteFailed": "Impossibile eliminare questo preset. Non è stato modificato nulla; riprova.",
+      "presetRenamed": "Preset rinominato.",
+      "presetRenameFailed": "Impossibile rinominare questo preset. Non è stato modificato nulla; riprova.",
+      "presetCategory": {
+        "color": "Colore",
+        "bw": "Bianco e nero",
+        "film": "Pellicola",
+        "fix": "Correzione",
+        "custom": "Personalizzato"
+      }
     },
     "billing": {
       "plans": "Confronta i piani"

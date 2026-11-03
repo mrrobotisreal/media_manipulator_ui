@@ -187,6 +187,9 @@ export const EVENTS = {
   PHOTO_EXPORT_COMPLETED: 'photo_export_completed',
   PHOTO_EXPORT_FAILED: 'photo_export_failed',
   PHOTO_EXPORT_GATED: 'photo_export_gated',
+  // MM103: user presets on the account.
+  PHOTO_PRESET_SAVED: 'photo_preset_saved',
+  PHOTO_PRESETS_MIGRATED: 'photo_presets_migrated',
 
   // --- Video / audio summary (MM75) -----------------------------------------
   // One per completed summary job, from the summarize panel. The server twin is the
@@ -349,6 +352,8 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   photo_heal_completed: PRIORITY_NORMAL,
   photo_heal_failed: PRIORITY_NORMAL,
   photo_preset_applied: PRIORITY_NORMAL,
+  photo_preset_saved: PRIORITY_NORMAL,
+  photo_presets_migrated: PRIORITY_NORMAL,
   photo_compare_used: PRIORITY_LOW,
   photo_project_saved: PRIORITY_NORMAL,
   photo_export_started: PRIORITY_HIGH,
@@ -1141,6 +1146,26 @@ export interface PhotoPresetAppliedProps {
   /** The built-in id (or `auto`); `custom` for the visitor's own presets. */
   preset_id: string;
   builtin: boolean;
+  /** MM103: where the preset came from. */
+  scope: PhotoPresetScope;
+}
+
+/** `builtin` ships with the app, `server` is on the visitor's account, `local` is this browser's IndexedDB. */
+export type PhotoPresetScope = 'builtin' | 'server' | 'local';
+
+export interface PhotoPresetSavedProps {
+  /** Always false: a saved preset is the visitor's own. */
+  builtin: false;
+  scope: 'server' | 'local';
+  /** countBucket of the layers in the preset. */
+  layers: string;
+}
+
+export interface PhotoPresetsMigratedProps {
+  /** countBucket of the browser presets offered. */
+  count: string;
+  /** True when the visitor kept them in the browser. */
+  declined: boolean;
 }
 
 export interface PhotoCompareUsedProps {
@@ -1379,6 +1404,8 @@ export interface EventPropsMap {
   photo_heal_completed: PhotoAiCompletedProps;
   photo_heal_failed: PhotoAiFailedProps;
   photo_preset_applied: PhotoPresetAppliedProps;
+  photo_preset_saved: PhotoPresetSavedProps;
+  photo_presets_migrated: PhotoPresetsMigratedProps;
   photo_compare_used: PhotoCompareUsedProps;
   photo_project_saved: PhotoProjectSavedProps;
   photo_export_started: PhotoExportStartedProps;

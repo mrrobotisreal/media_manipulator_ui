@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM103: Aperture presets move to the account.
+  {
+    id: '2026-11-03-aperture-presets-account',
+    date: '2026-11-03',
+    title: 'Aperture presets now follow your account',
+    body: 'Presets you save in Aperture are kept on your account when you are signed in, so a look you make on your laptop is there on your phone. You can see, rename and delete them under Account, Projects. You can keep 10 on Free, 100 on Premium and any number on Pro. If you already had presets saved in your browser, Aperture asks once whether to move them to your account; if you decline they stay in the browser. Without an account nothing changes: presets stay in your browser.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Aperture', href: '/tools/aperture' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MM100: Aperture's public face (the editor itself shipped over MM97-MM99).
   {
     id: '2026-11-03-aperture-beta',

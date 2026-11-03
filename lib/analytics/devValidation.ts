@@ -542,7 +542,9 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   photo_heal_requested: z.object({}).strict(),
   photo_heal_completed: photoAiCompleted,
   photo_heal_failed: photoAiFailed,
-  photo_preset_applied: z.object({ preset_id: z.string(), builtin: z.boolean() }).strict(),
+  photo_preset_applied: z.object({ preset_id: z.string(), builtin: z.boolean(), scope: z.enum(['builtin', 'server', 'local']) }).strict(),
+  photo_preset_saved: z.object({ builtin: z.literal(false), scope: z.enum(['server', 'local']), layers: z.string() }).strict(),
+  photo_presets_migrated: z.object({ count: z.string(), declined: z.boolean() }).strict(),
   photo_compare_used: z.object({ mode: z.enum(['hold', 'split', 'wipe']) }).strict(),
   photo_project_saved: z.object({ layers: z.string(), masks: z.string(), heals: z.string(), doc_bytes_bucket: z.string() }).strict(),
   photo_export_started: z

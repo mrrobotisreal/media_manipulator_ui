@@ -53,15 +53,15 @@ describe('usePhotoAnalytics', () => {
     onCompareUsed('split');
     onCompareUsed('hold');
     onCompareUsed('weird');
-    onPresetApplied('warm', true);
-    onPresetApplied('my-own-look', false);
+    onPresetApplied('warm', 'builtin');
+    onPresetApplied('my-own-look', 'local');
     expect(rec.events).toEqual([
       ['photo_mask_added', { mask_kind: 'radial' }],
       ['photo_mask_added', { mask_kind: 'brush' }],
       ['photo_compare_used', { mode: 'split' }],
       ['photo_compare_used', { mode: 'hold' }],
-      ['photo_preset_applied', { preset_id: 'warm', builtin: true }],
-      ['photo_preset_applied', { preset_id: 'custom', builtin: false }],
+      ['photo_preset_applied', { preset_id: 'warm', builtin: true, scope: 'builtin' }],
+      ['photo_preset_applied', { preset_id: 'custom', builtin: false, scope: 'local' }],
     ]);
   });
 
@@ -120,7 +120,7 @@ describe('usePhotoAnalytics', () => {
     const { unmount } = renderHook(() => usePhotoAnalytics({ track: rec.track }));
     unmount();
     onMaskAdded('radial');
-    onPresetApplied('warm', true);
+    onPresetApplied('warm', 'builtin');
     onAdjustmentChanged('exposure', 'ev');
     vi.advanceTimersByTime(1000);
     expect(rec.events).toEqual([]);

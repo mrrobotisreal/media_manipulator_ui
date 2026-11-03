@@ -856,7 +856,7 @@
             "title": "1.12 Projetos e exportações do Aperture",
             "paragraphs": [
               "O Aperture, o nosso editor de fotografias, edita a sua fotografia no seu navegador: a pré-visualização que vê é desenhada no seu próprio dispositivo. Uma fotografia só sai do seu dispositivo quando pede algo que exige os nossos servidores: guardá-la na sua conta como projeto, exportar o ficheiro final, selecionar um motivo com IA, corrigir manchas com IA ou aplicar as suas edições a mais fotografias.",
-              "Se tiver sessão iniciada e guardar um projeto, a fotografia original, uma cópia de pré-visualização da mesma com até 1920 píxeis, uma miniatura pequena, o documento de edição (a lista de ajustes, máscaras e zonas corrigidas) e quaisquer máscaras e versões corrigidas da fotografia são armazenados nos nossos servidores na pasta do projeto. São o seu conteúdo, seguem o período de conservação que escolher (Secção 3), pode eliminar um projeto na página Conta, são eliminados juntamente com a sua conta e os projetos constam da exportação dos seus dados. Sem conta, uma fotografia é guardada apenas no seu navegador (em IndexedDB) e não é carregada até exportar, selecionar um motivo ou corrigir; esse carregamento é uma tarefa temporária normal e é conservado durante 24 horas.",
+              "Se tiver sessão iniciada e guardar um projeto, a fotografia original, uma cópia de pré-visualização da mesma com até 1920 píxeis, uma miniatura pequena, o documento de edição (a lista de ajustes, máscaras e zonas corrigidas) e quaisquer máscaras e versões corrigidas da fotografia são armazenados nos nossos servidores na pasta do projeto. São o seu conteúdo, seguem o período de conservação que escolher (Secção 3), pode eliminar um projeto na página Conta, são eliminados juntamente com a sua conta e os projetos constam da exportação dos seus dados. Sem conta, uma fotografia é guardada apenas no seu navegador (em IndexedDB) e não é carregada até exportar, selecionar um motivo ou corrigir; esse carregamento é uma tarefa temporária normal e é conservado durante 24 horas. As predefinições que guarda ficam armazenadas na sua conta até as eliminar ou eliminar a conta.",
               "As exportações, a seleção de motivo com IA e a correção são tarefas nos nossos servidores. As exportações são geradas a partir da sua fotografia original, a seleção de motivo e a correção são executadas no nosso próprio servidor GPU, e nenhuma das suas fotografias é enviada para um serviço de terceiros. Cada exportação, seleção de motivo e correção é contabilizada para fazer cumprir a quota diária do seu plano: guardamos o tipo de tarefa, o formato e o tamanho do resultado, a hora, o seu plano e um identificador da sua conta, da sua sessão do navegador ou de um endereço IP com hash. Os ficheiros de resultado são conservados segundo as regras de conservação habituais (Secção 3) e, quando elimina a sua conta, estes registos são desvinculados da sua identidade."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Projetos do Motion guardados",
       "photoProjects": "Projetos do {{brand}} guardados",
       "photoMaxMegapixels": "Maior exportação do {{brand}}",
-      "photoBatch": "Fotografias do {{brand}} por lote"
+      "photoBatch": "Fotografias do {{brand}} por lote",
+      "photoPresets": "Predefinições do {{brand}} guardadas"
     },
     "values": {
       "yes": "Incluído",
@@ -1942,7 +1943,23 @@
       "renameSave": "Guardar",
       "renamed": "Projeto renomeado.",
       "renameFailed": "Não foi possível renomear este projeto. Nada foi alterado; tente novamente.",
-      "photoDeleteBody": "O projeto do {{brand}}, a fotografia original, as pré-visualizações e as versões corrigidas são removidos dos nossos servidores. Esta ação não pode ser anulada."
+      "photoDeleteBody": "O projeto do {{brand}}, a fotografia original, as pré-visualizações e as versões corrigidas são removidos dos nossos servidores. Esta ação não pode ser anulada.",
+      "presetsHeading": "Predefinições",
+      "presetsIntro": "As suas predefinições guardadas do {{brand}}. Ficam na sua conta até as eliminar.",
+      "presetsEmpty": "Ainda não há predefinições guardadas. Guarde uma no painel Predefinições do {{brand}}.",
+      "presetsLoadFailed": "Não foi possível carregar as suas predefinições.",
+      "presetDeleteBody": "A predefinição é removida da sua conta. Esta ação não pode ser anulada.",
+      "presetDeleted": "Predefinição eliminada.",
+      "presetDeleteFailed": "Não foi possível eliminar esta predefinição. Nada foi alterado; tente novamente.",
+      "presetRenamed": "Predefinição renomeada.",
+      "presetRenameFailed": "Não foi possível renomear esta predefinição. Nada foi alterado; tente novamente.",
+      "presetCategory": {
+        "color": "Cor",
+        "bw": "Preto e branco",
+        "film": "Película",
+        "fix": "Correção",
+        "custom": "Personalizada"
+      }
     },
     "billing": {
       "plans": "Comparar planos"

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { FakeIDBFactory } from '@/lib/vector/testing/fakeIndexedDb';
+import { listUserPresets, saveUserPreset } from '@/lib/photo/presets/userStore';
 import { usePhotoStore } from '@/lib/photo/photoStore';
 import { newPhotoDoc } from '@/lib/photo/photoTypes';
 import { useSnapshotStore } from '@/lib/photo/history';
@@ -22,6 +23,7 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/photo/x', useRouter: ()
 
 const original = globalThis.indexedDB;
 beforeEach(() => {
+  localStorage.clear();
   (globalThis as { indexedDB: unknown }).indexedDB = new FakeIDBFactory();
   usePhotoStore.getState().load('p', newPhotoDoc(400, 300), 'Test');
   vi.stubGlobal('ResizeObserver', class { observe() {} unobserve() {} disconnect() {} });
@@ -66,8 +68,8 @@ describe('detail panel', () => {
 
 describe('presets panel', () => {
   it('lists the built-ins; applying one appends its layers as one group and reports the seam', () => {
-    const seen: [string, boolean][] = [];
-    const off = setMm99Listener({ onPresetApplied: (id, b) => seen.push([id, b]) });
+    const seen: [string, string][] = [];
+    const off = setMm99Listener({ onPresetApplied: (id, sc) => seen.push([id, sc]) });
     render(<Wrap><PhotoSessionProvider value={session({ thumb: thumb() })}><PresetsPanel /></PhotoSessionProvider></Wrap>);
     expect(screen.getByTestId('preset-grid').querySelectorAll('button')).toHaveLength(19);
     fireEvent.click(screen.getByTestId('preset-vivid'));
@@ -76,7 +78,7 @@ describe('presets panel', () => {
     fireEvent.click(screen.getByTestId('preset-vintage'));
     expect(layers()).toHaveLength(5);
     expect(new Set(layers().map((l) => l.group))).toEqual(new Set(['Preset: Vivid', 'Preset: Vintage']));
-    expect(seen).toEqual([['vivid', true], ['vintage', true]]);
+    expect(seen).toEqual([['vivid', 'builtin'], ['vintage', 'builtin']]);
     expect(usePhotoStore.getState().past.map((e) => e.label)).toEqual(['Preset|builtin:vivid', 'Preset|builtin:vintage']);
     off();
   });
@@ -208,5 +210,123 @@ describe('export dialog: size estimates and batch', () => {
     fireEvent.change(screen.getByTestId('batch-input'), { target: { files: [new File(['1'], 'a.jpg')] } });
     await waitFor(() => expect(screen.getByTestId('batch-limit')).toBeTruthy());
     expect(gated).toHaveBeenCalledWith('limit');
+  });
+});
+
+// MM103: the presets panel against the account (signed in) and the one-time migration prompt.
+describe('presets panel: account presets (MM103)', () => {
+  const layers1 = () => [{ id: 'a', type: 'exposure', name: undefined, enabled: true, opacity: 1, blend: 'normal', params: { ev: 0.5, gamma: 1, offset: 0 }, mask: null }];
+  const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
+  const wire = (id: string, name: string) => ({ id, name, category: 'custom', revision: 1, hasThumbnail: false, layers: layers1(), createdAt: '2026-11-03T00:00:00Z', updatedAt: '2026-11-03T00:00:00Z' });
+
+  it('signed in: lists, saves, renames and deletes against the server (IndexedDB untouched)', async () => {
+    const calls: string[] = [];
+    let server = [wire('s1', 'Server look')];
+    vi.stubGlobal('fetch', vi.fn(async (url: string, init?: RequestInit) => {
+      const m = init?.method ?? 'GET';
+      calls.push(`${m} ${String(url).replace(/^.*\/photo/, '/photo')}`);
+      if (m === 'GET') return json(200, { presets: server, limit: 10, used: server.length });
+      if (m === 'POST') {
+        const b = JSON.parse(String(init?.body));
+        server = [...server, wire('s2', b.name)];
+        return json(201, wire('s2', b.name));
+      }
+      if (m === 'PUT') return json(200, { ...wire('s1', JSON.parse(String(init?.body)).name), revision: 2 });
+      server = [];
+      return json(200, { deleted: { objects: 1, bytes: 0 }, pending: 0 });
+    }));
+    render(<Wrap><PhotoSessionProvider value={session({ signedIn: true, thumb: thumb() })}><PresetsPanel /></PhotoSessionProvider></Wrap>);
+    await waitFor(() => expect(screen.getByTestId('my-presets').textContent).toContain('Server look'));
+    expect(screen.getByText('Saved to your account.')).toBeTruthy();
+    // apply: the id is re-prefixed and grouped like any preset
+    fireEvent.click(screen.getByText('Server look'));
+    expect(layers().some((l) => l.group === 'Preset: Server look' && l.id.startsWith('preset-'))).toBe(true);
+    // save current edits -> POST
+    fireEvent.click(screen.getByTestId('preset-save-open'));
+    fireEvent.change(screen.getByLabelText('Preset name'), { target: { value: 'Fresh' } });
+    fireEvent.click(screen.getByTestId('preset-save-confirm'));
+    await waitFor(() => expect(calls.some((c) => c.startsWith('POST /photo/presets'))).toBe(true));
+    await waitFor(() => expect(screen.getByTestId('my-presets').textContent).toContain('Fresh'));
+    // rename -> PUT
+    fireEvent.click(screen.getAllByLabelText('Rename preset')[0]);
+    const input = screen.getByDisplayValue('Server look');
+    fireEvent.change(input, { target: { value: 'Renamed' } });
+    fireEvent.blur(input);
+    await waitFor(() => expect(calls.some((c) => c.startsWith('PUT /photo/presets/s1'))).toBe(true));
+    // delete -> DELETE
+    fireEvent.click(screen.getAllByLabelText('Delete preset')[0]);
+    await waitFor(() => expect(calls.some((c) => c.startsWith('DELETE /photo/presets/'))).toBe(true));
+    expect(await listUserPresets()).toEqual([]);
+  });
+
+  it('signed out: IndexedDB only, no network call', async () => {
+    const f = vi.fn();
+    vi.stubGlobal('fetch', f);
+    render(<Wrap><PhotoSessionProvider value={session({ signedIn: false, thumb: thumb() })}><PresetsPanel /></PhotoSessionProvider></Wrap>);
+    fireEvent.click(screen.getByTestId('preset-vivid'));
+    fireEvent.click(screen.getByTestId('preset-save-open'));
+    fireEvent.change(screen.getByLabelText('Preset name'), { target: { value: 'Local' } });
+    fireEvent.click(screen.getByTestId('preset-save-confirm'));
+    await waitFor(() => expect(screen.getByTestId('my-presets').textContent).toContain('Local'));
+    expect(f).not.toHaveBeenCalled();
+  });
+
+  it('migration prompt: accept uploads and clears the browser; decline sets the flag once', async () => {
+    await saveUserPreset({ name: 'Browser look', layers: layers1() as never });
+    const posts: string[] = [];
+    vi.stubGlobal('fetch', vi.fn(async (_u: string, init?: RequestInit) => {
+      if ((init?.method ?? 'GET') === 'POST') {
+        posts.push(JSON.parse(String(init?.body)).name);
+        return json(201, wire('n1', 'Browser look'));
+      }
+      return json(200, { presets: [], limit: 10, used: 0 });
+    }));
+    const { unmount } = render(<Wrap><PhotoSessionProvider value={session({ signedIn: true })}><PresetsPanel /></PhotoSessionProvider></Wrap>);
+    await waitFor(() => expect(screen.getByTestId('preset-migrate')).toBeTruthy());
+    expect(screen.getByTestId('preset-migrate').textContent).toContain('Keep your 1 preset on your account?');
+    const seen: [number, boolean][] = [];
+    const off = setMm99Listener({ onPresetsMigrated: (c, d) => seen.push([c, d]) });
+    fireEvent.click(screen.getByTestId('preset-migrate-accept'));
+    await waitFor(() => expect(posts).toEqual(['Browser look']));
+    await waitFor(() => expect(screen.queryByTestId('preset-migrate')).toBeNull());
+    expect(await listUserPresets()).toEqual([]);
+    expect(seen).toEqual([[1, false]]);
+    off();
+    unmount();
+    cleanup();
+
+    // decline: the browser keeps its presets, the flag is set and the prompt never returns
+    await saveUserPreset({ name: 'Keep me', layers: layers1() as never });
+    const seen2: [number, boolean][] = [];
+    const off2 = setMm99Listener({ onPresetsMigrated: (c, d) => seen2.push([c, d]) });
+    const again = render(<Wrap><PhotoSessionProvider value={session({ signedIn: true })}><PresetsPanel /></PhotoSessionProvider></Wrap>);
+    await waitFor(() => expect(screen.getByTestId('preset-migrate')).toBeTruthy());
+    fireEvent.click(screen.getByTestId('preset-migrate-decline'));
+    await waitFor(() => expect(screen.queryByTestId('preset-migrate')).toBeNull());
+    expect(seen2).toEqual([[1, true]]);
+    expect((await listUserPresets()).map((p) => p.name)).toEqual(['Keep me']);
+    again.unmount();
+    render(<Wrap><PhotoSessionProvider value={session({ signedIn: true })}><PresetsPanel /></PhotoSessionProvider></Wrap>);
+    await waitFor(() => expect(screen.getByTestId('my-presets')).toBeTruthy());
+    await new Promise((r) => setTimeout(r, 50));
+    expect(screen.queryByTestId('preset-migrate')).toBeNull();
+    off2();
+  });
+
+  it('JSON import goes to the server when signed in', async () => {
+    const posts: string[] = [];
+    vi.stubGlobal('fetch', vi.fn(async (_u: string, init?: RequestInit) => {
+      if ((init?.method ?? 'GET') === 'POST') {
+        posts.push(JSON.parse(String(init?.body)).name);
+        return json(201, wire('i1', 'Imported'));
+      }
+      return json(200, { presets: [wire('x', 'Existing')], limit: 10, used: 1 });
+    }));
+    render(<Wrap><PhotoSessionProvider value={session({ signedIn: true })}><PresetsPanel /></PhotoSessionProvider></Wrap>);
+    await waitFor(() => expect(screen.getByTestId('my-presets').textContent).toContain('Existing'));
+    const file = new File([JSON.stringify({ format: 'aperture-presets', version: 1, presets: [{ id: 'p1', name: 'Imported', category: 'custom', layers: layers1(), createdAt: '2026-11-03T00:00:00Z' }] })], 'p.json', { type: 'application/json' });
+    Object.defineProperty(file, 'text', { value: async () => JSON.stringify({ format: 'aperture-presets', version: 1, presets: [{ id: 'p1', name: 'Imported', category: 'custom', layers: layers1(), createdAt: '2026-11-03T00:00:00Z' }] }) });
+    fireEvent.change(screen.getByTestId('preset-import-input'), { target: { files: [file] } });
+    await waitFor(() => expect(posts).toEqual(['Imported']));
   });
 });

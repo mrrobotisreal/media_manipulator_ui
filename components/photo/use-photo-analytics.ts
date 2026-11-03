@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { EVENTS, type PhotoEditorSource } from '@/lib/analytics/events';
-import { photoMegapixelBucket, vectorMsBucket } from '@/lib/analytics/buckets';
+import { countBucket, photoMegapixelBucket, vectorMsBucket } from '@/lib/analytics/buckets';
 import {
   bitmapHasAlpha,
   exportStartedProps,
@@ -84,7 +84,9 @@ export function usePhotoAnalytics(opts: { track?: PhotoTracker } = {}) {
     });
     const off99 = setMm99Listener({
       // A browser-local (or account) preset has no stable public id: it reports as `custom`.
-      onPresetApplied: (id, builtin) => t().track(EVENTS.PHOTO_PRESET_APPLIED, { preset_id: builtin ? id : 'custom', builtin }),
+      onPresetApplied: (id, scope) => t().track(EVENTS.PHOTO_PRESET_APPLIED, { preset_id: scope === 'builtin' ? id : 'custom', builtin: scope === 'builtin', scope }),
+      onPresetSaved: (layers, scope) => t().track(EVENTS.PHOTO_PRESET_SAVED, { builtin: false, scope, layers: countBucket(layers) }),
+      onPresetsMigrated: (count, declined) => t().track(EVENTS.PHOTO_PRESETS_MIGRATED, { count: countBucket(count), declined }),
       onBatchStarted: (n) => {
         const ctx = getPhotoBatchContext();
         if (ctx) t().track(EVENTS.PHOTO_EXPORT_STARTED, exportStartedProps({ ...ctx, batchSize: n }));

@@ -856,7 +856,7 @@
             "title": "1.12 Aperture-Projekte und -Exporte",
             "paragraphs": [
               "Aperture, unser Fotoeditor, bearbeitet Ihr Foto in Ihrem Browser: Die Vorschau, die Sie sehen, wird auf Ihrem eigenen Gerät gezeichnet. Ein Foto verlässt Ihr Gerät nur, wenn Sie etwas verlangen, das unsere Server erfordert: es als Projekt in Ihrem Konto zu speichern, die fertige Datei zu exportieren, ein Motiv mit KI auszuwählen, Flecken mit KI zu reparieren oder Ihre Bearbeitungen auf weitere Fotos anzuwenden.",
-              "Wenn Sie angemeldet sind und ein Projekt speichern, werden das Originalfoto, eine Vorschaukopie mit bis zu 1920 Pixeln, ein kleines Vorschaubild, das Bearbeitungsdokument (die Liste der Anpassungen, Masken und reparierten Bereiche) sowie alle Masken und reparierten Versionen des Fotos im Ordner des Projekts auf unseren Servern gespeichert. Sie sind Ihre Inhalte, sie folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3), Sie können ein Projekt auf Ihrer Kontoseite löschen, sie werden mit Ihrem Konto gelöscht, und die Projekte sind in Ihrem Datenexport aufgeführt. Ohne Konto wird ein Foto nur in Ihrem Browser (in IndexedDB) aufbewahrt und erst hochgeladen, wenn Sie exportieren, ein Motiv auswählen oder reparieren; dieser Upload ist ein normaler vorübergehender Auftrag und wird 24 Stunden aufbewahrt.",
+              "Wenn Sie angemeldet sind und ein Projekt speichern, werden das Originalfoto, eine Vorschaukopie mit bis zu 1920 Pixeln, ein kleines Vorschaubild, das Bearbeitungsdokument (die Liste der Anpassungen, Masken und reparierten Bereiche) sowie alle Masken und reparierten Versionen des Fotos im Ordner des Projekts auf unseren Servern gespeichert. Sie sind Ihre Inhalte, sie folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3), Sie können ein Projekt auf Ihrer Kontoseite löschen, sie werden mit Ihrem Konto gelöscht, und die Projekte sind in Ihrem Datenexport aufgeführt. Ohne Konto wird ein Foto nur in Ihrem Browser (in IndexedDB) aufbewahrt und erst hochgeladen, wenn Sie exportieren, ein Motiv auswählen oder reparieren; dieser Upload ist ein normaler vorübergehender Auftrag und wird 24 Stunden aufbewahrt. Von Ihnen gespeicherte Voreinstellungen werden in Ihrem Konto gespeichert, bis Sie sie oder das Konto löschen.",
               "Exporte, die KI-Motivauswahl und die Reparatur sind Aufträge auf unseren Servern. Exporte werden aus Ihrem Originalfoto gerendert, Motivauswahl und Reparatur laufen auf unserem eigenen GPU-Server, und keines Ihrer Fotos wird an einen Drittanbieterdienst gesendet. Jeder Export, jede Motivauswahl und jede Reparatur wird gezählt, um das Tageskontingent Ihres Tarifs durchzusetzen: Wir speichern die Art des Auftrags, das Format und die Größe des Ergebnisses, den Zeitpunkt, Ihren Tarif und eine Kennung für Ihr Konto, Ihre Browsersitzung oder eine gehashte IP-Adresse. Die Ergebnisdateien werden nach den üblichen Aufbewahrungsregeln (Abschnitt 3) aufbewahrt, und wenn Sie Ihr Konto löschen, werden diese Datensätze von Ihrer Identität getrennt."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Gespeicherte Motion-Projekte",
       "photoProjects": "Gespeicherte {{brand}}-Projekte",
       "photoMaxMegapixels": "Größter {{brand}}-Export",
-      "photoBatch": "{{brand}}-Fotos pro Stapel"
+      "photoBatch": "{{brand}}-Fotos pro Stapel",
+      "photoPresets": "Gespeicherte {{brand}}-Voreinstellungen"
     },
     "values": {
       "yes": "Enthalten",
@@ -1942,7 +1943,23 @@
       "renameSave": "Speichern",
       "renamed": "Projekt umbenannt.",
       "renameFailed": "Dieses Projekt konnte nicht umbenannt werden. Es wurde nichts geändert; versuchen Sie es erneut.",
-      "photoDeleteBody": "Das {{brand}}-Projekt, sein Originalfoto, seine Vorschauen und alle reparierten Versionen werden von unseren Servern entfernt. Dies kann nicht rückgängig gemacht werden."
+      "photoDeleteBody": "Das {{brand}}-Projekt, sein Originalfoto, seine Vorschauen und alle reparierten Versionen werden von unseren Servern entfernt. Dies kann nicht rückgängig gemacht werden.",
+      "presetsHeading": "Voreinstellungen",
+      "presetsIntro": "Ihre gespeicherten {{brand}}-Voreinstellungen. Sie bleiben in Ihrem Konto, bis Sie sie löschen.",
+      "presetsEmpty": "Noch keine gespeicherten Voreinstellungen. Speichern Sie eine im Bereich „Voreinstellungen“ in {{brand}}.",
+      "presetsLoadFailed": "Ihre Voreinstellungen konnten nicht geladen werden.",
+      "presetDeleteBody": "Die Voreinstellung wird aus Ihrem Konto entfernt. Dies kann nicht rückgängig gemacht werden.",
+      "presetDeleted": "Voreinstellung gelöscht.",
+      "presetDeleteFailed": "Diese Voreinstellung konnte nicht gelöscht werden. Es wurde nichts geändert; versuchen Sie es erneut.",
+      "presetRenamed": "Voreinstellung umbenannt.",
+      "presetRenameFailed": "Diese Voreinstellung konnte nicht umbenannt werden. Es wurde nichts geändert; versuchen Sie es erneut.",
+      "presetCategory": {
+        "color": "Farbe",
+        "bw": "Schwarzweiß",
+        "film": "Film",
+        "fix": "Korrektur",
+        "custom": "Benutzerdefiniert"
+      }
     },
     "billing": {
       "plans": "Pläne vergleichen"

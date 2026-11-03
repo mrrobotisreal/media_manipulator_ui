@@ -61,6 +61,7 @@ export default async function Account({ params }: PageParams) {
       { label: t('interface:pricing.rows.maxOutputHeight'), value: 'output' },
       { label: t('interface:pricing.rows.studioProjects'), value: 'projects' },
       { label: t('interface:pricing.rows.photoProjects', { values: { brand: PHOTO_BRAND } }), value: 'photoProjects' },
+      { label: t('interface:pricing.rows.photoPresets', { values: { brand: PHOTO_BRAND } }), value: 'photoPresets' },
     ],
   };
 

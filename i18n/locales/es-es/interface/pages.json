@@ -856,7 +856,7 @@
             "title": "1.12 Proyectos y exportaciones de Aperture",
             "paragraphs": [
               "Aperture, nuestro editor de fotos, edita tu foto en tu navegador: la vista previa que ves se dibuja en tu propio dispositivo. Una foto sale de tu dispositivo únicamente cuando solicitas algo que requiere nuestros servidores: guardarla en tu cuenta como proyecto, exportar el archivo terminado, seleccionar un sujeto con IA, reparar manchas con IA o aplicar tus ediciones a más fotos.",
-              "Si has iniciado sesión y guardas un proyecto, la foto original, una copia de vista previa de hasta 1920 píxeles, una miniatura pequeña, el documento de edición (la lista de ajustes, máscaras y zonas reparadas) y las máscaras y versiones reparadas de la foto se almacenan en nuestros servidores en la carpeta del proyecto. Son tu contenido, siguen el período de conservación que elijas (sección 3), puedes eliminar un proyecto desde la página Cuenta, se eliminan junto con tu cuenta y los proyectos figuran en la exportación de tus datos. Sin cuenta, una foto se conserva únicamente en tu navegador (en IndexedDB) y no se sube hasta que exportas, seleccionas un sujeto o reparas; esa subida es un trabajo temporal normal y se conserva durante 24 horas.",
+              "Si has iniciado sesión y guardas un proyecto, la foto original, una copia de vista previa de hasta 1920 píxeles, una miniatura pequeña, el documento de edición (la lista de ajustes, máscaras y zonas reparadas) y las máscaras y versiones reparadas de la foto se almacenan en nuestros servidores en la carpeta del proyecto. Son tu contenido, siguen el período de conservación que elijas (sección 3), puedes eliminar un proyecto desde la página Cuenta, se eliminan junto con tu cuenta y los proyectos figuran en la exportación de tus datos. Sin cuenta, una foto se conserva únicamente en tu navegador (en IndexedDB) y no se sube hasta que exportas, seleccionas un sujeto o reparas; esa subida es un trabajo temporal normal y se conserva durante 24 horas. Los preajustes que guardas se almacenan en tu cuenta hasta que los eliminas o hasta que se elimina la cuenta.",
               "Las exportaciones, la selección de sujeto con IA y la reparación son trabajos en nuestros servidores. Las exportaciones se generan a partir de tu foto original, la selección de sujeto y la reparación se ejecutan en nuestro propio servidor GPU, y ninguna de tus fotos se envía a un servicio de terceros. Cada exportación, selección de sujeto y reparación se contabiliza para hacer cumplir el límite diario de tu plan: almacenamos el tipo de trabajo, el formato y el tamaño del resultado, la hora, tu plan y un identificador de tu cuenta, de tu sesión del navegador o de una dirección IP con hash. Los archivos de resultado se conservan según las normas de conservación habituales (sección 3), y cuando eliminas tu cuenta estos registros se desvinculan de tu identidad."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Proyectos de Motion guardados",
       "photoProjects": "Proyectos de {{brand}} guardados",
       "photoMaxMegapixels": "Exportación más grande de {{brand}}",
-      "photoBatch": "Fotos de {{brand}} por lote"
+      "photoBatch": "Fotos de {{brand}} por lote",
+      "photoPresets": "Preajustes de {{brand}} guardados"
     },
     "values": {
       "yes": "Incluido",
@@ -1942,7 +1943,23 @@
       "renameSave": "Guardar",
       "renamed": "Proyecto renombrado.",
       "renameFailed": "No se pudo renombrar este proyecto. No se ha cambiado nada; inténtalo de nuevo.",
-      "photoDeleteBody": "El proyecto de {{brand}}, su foto original, sus vistas previas y las versiones reparadas se eliminan de nuestros servidores. Esta acción no se puede deshacer."
+      "photoDeleteBody": "El proyecto de {{brand}}, su foto original, sus vistas previas y las versiones reparadas se eliminan de nuestros servidores. Esta acción no se puede deshacer.",
+      "presetsHeading": "Preajustes",
+      "presetsIntro": "Tus preajustes guardados de {{brand}}. Permanecen en tu cuenta hasta que los eliminas.",
+      "presetsEmpty": "Aún no hay preajustes guardados. Guarda uno desde el panel Preajustes de {{brand}}.",
+      "presetsLoadFailed": "No se pudieron cargar tus preajustes.",
+      "presetDeleteBody": "El preajuste se elimina de tu cuenta. Esta acción no se puede deshacer.",
+      "presetDeleted": "Preajuste eliminado.",
+      "presetDeleteFailed": "No se pudo eliminar este preajuste. No se ha cambiado nada; inténtalo de nuevo.",
+      "presetRenamed": "Preajuste renombrado.",
+      "presetRenameFailed": "No se pudo renombrar este preajuste. No se ha cambiado nada; inténtalo de nuevo.",
+      "presetCategory": {
+        "color": "Color",
+        "bw": "Blanco y negro",
+        "film": "Película",
+        "fix": "Corrección",
+        "custom": "Personalizado"
+      }
     },
     "billing": {
       "plans": "Comparar planes"

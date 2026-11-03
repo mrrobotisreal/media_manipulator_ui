@@ -856,7 +856,7 @@
             "title": "1.12 Projets et exports Aperture",
             "paragraphs": [
               "Aperture, notre éditeur de photos, retouche votre photo dans votre navigateur : l'aperçu que vous voyez est dessiné sur votre propre appareil. Une photo ne quitte votre appareil que lorsque vous demandez une opération qui nécessite nos serveurs : l'enregistrer dans votre compte comme projet, exporter le fichier final, sélectionner un sujet par IA, corriger des taches par IA ou appliquer vos retouches à d'autres photos.",
-              "Si vous êtes connecté et enregistrez un projet, la photo originale, une copie d'aperçu de celle-ci jusqu'à 1920 pixels, une petite vignette, le document de retouche (la liste des réglages, des masques et des zones corrigées) ainsi que les masques et les versions corrigées de la photo sont stockés sur nos serveurs dans le dossier du projet. Ils constituent votre contenu, ils suivent la durée de conservation que vous choisissez (section 3), vous pouvez supprimer un projet depuis votre page Compte, ils sont supprimés avec votre compte, et les projets figurent dans l'export de vos données. Sans compte, une seule photo est conservée uniquement dans votre navigateur (dans IndexedDB) et n'est pas envoyée tant que vous n'exportez pas, ne sélectionnez pas un sujet et ne corrigez pas ; cet envoi est une tâche temporaire ordinaire et est conservé pendant 24 heures.",
+              "Si vous êtes connecté et enregistrez un projet, la photo originale, une copie d'aperçu de celle-ci jusqu'à 1920 pixels, une petite vignette, le document de retouche (la liste des réglages, des masques et des zones corrigées) ainsi que les masques et les versions corrigées de la photo sont stockés sur nos serveurs dans le dossier du projet. Ils constituent votre contenu, ils suivent la durée de conservation que vous choisissez (section 3), vous pouvez supprimer un projet depuis votre page Compte, ils sont supprimés avec votre compte, et les projets figurent dans l'export de vos données. Sans compte, une seule photo est conservée uniquement dans votre navigateur (dans IndexedDB) et n'est pas envoyée tant que vous n'exportez pas, ne sélectionnez pas un sujet et ne corrigez pas ; cet envoi est une tâche temporaire ordinaire et est conservé pendant 24 heures. Les préréglages que vous enregistrez sont conservés avec votre compte jusqu'à ce que vous les supprimiez ou que le compte soit supprimé.",
               "Les exports, la sélection de sujet par IA et la correction sont des tâches exécutées sur nos serveurs. Les exports sont générés à partir de votre photo originale, la sélection de sujet et la correction s'exécutent sur notre propre serveur GPU, et aucune de vos photos n'est envoyée à un service tiers. Chaque export, chaque sélection de sujet et chaque correction est comptabilisé afin d'appliquer le quota quotidien de votre offre : nous conservons le type de tâche, le format et la taille du résultat, l'heure, votre offre et un identifiant de votre compte, de votre session de navigateur ou une adresse IP hachée. Les fichiers résultats sont conservés selon les règles de conservation habituelles (section 3), et lorsque vous supprimez votre compte, ces enregistrements sont dissociés de votre identité."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Projets Motion enregistrés",
       "photoProjects": "Projets {{brand}} enregistrés",
       "photoMaxMegapixels": "Export {{brand}} maximal",
-      "photoBatch": "Photos {{brand}} par lot"
+      "photoBatch": "Photos {{brand}} par lot",
+      "photoPresets": "Préréglages {{brand}} enregistrés"
     },
     "values": {
       "yes": "Inclus",
@@ -1942,7 +1943,23 @@
       "renameSave": "Enregistrer",
       "renamed": "Projet renommé.",
       "renameFailed": "Impossible de renommer ce projet. Rien n'a été modifié ; réessayez.",
-      "photoDeleteBody": "Le projet {{brand}}, sa photo originale, ses aperçus et toutes les versions corrigées sont retirés de nos serveurs. Cette action est irréversible."
+      "photoDeleteBody": "Le projet {{brand}}, sa photo originale, ses aperçus et toutes les versions corrigées sont retirés de nos serveurs. Cette action est irréversible.",
+      "presetsHeading": "Préréglages",
+      "presetsIntro": "Vos préréglages {{brand}} enregistrés. Ils restent dans votre compte jusqu'à ce que vous les supprimiez.",
+      "presetsEmpty": "Aucun préréglage enregistré pour le moment. Enregistrez-en un depuis le panneau Préréglages de {{brand}}.",
+      "presetsLoadFailed": "Impossible de charger vos préréglages.",
+      "presetDeleteBody": "Le préréglage est retiré de votre compte. Cette action est irréversible.",
+      "presetDeleted": "Préréglage supprimé.",
+      "presetDeleteFailed": "Impossible de supprimer ce préréglage. Rien n'a été modifié ; réessayez.",
+      "presetRenamed": "Préréglage renommé.",
+      "presetRenameFailed": "Impossible de renommer ce préréglage. Rien n'a été modifié ; réessayez.",
+      "presetCategory": {
+        "color": "Couleur",
+        "bw": "Noir et blanc",
+        "film": "Pellicule",
+        "fix": "Correction",
+        "custom": "Personnalisé"
+      }
     },
     "billing": {
       "plans": "Comparer les offres"

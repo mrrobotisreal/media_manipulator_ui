@@ -587,3 +587,25 @@ describe("MM100 Aperture legal copy", () => {
     });
   }
 });
+
+// MM103: the preset sentence in Privacy 1.12 (second paragraph) and the account strings, in every locale.
+describe("MM103 presets copy", () => {
+  for (const { code } of locales) {
+    it(`${code}: Privacy 1.12 carries the preset sentence, and the new keys exist`, () => {
+      const pages = load(code);
+      const sub = pages.privacyPolicy.sections[0].subsections?.[11];
+      expect(sub?.title).toMatch(/^1\.12/);
+      expect(sub?.paragraphs).toHaveLength(3);
+      if (code.toLowerCase() === "en-us") {
+        expect(sub?.paragraphs?.[1]).toContain("Presets you save are stored with your account until you delete them or the account.");
+      } else {
+        // translated: the paragraph grew by one sentence over the MM100 text
+        expect(sub?.paragraphs?.[1].length).toBeGreaterThan(en.privacyPolicy.sections[0].subsections?.[11]?.paragraphs?.[1].length ? 200 : 0);
+      }
+      const proj = (pages as unknown as { account: { projects: Record<string, unknown> } }).account.projects;
+      for (const k of ["presetsHeading", "presetsIntro", "presetsEmpty", "presetDeleteBody", "presetDeleted", "presetRenamed", "presetCategory"]) expect(proj[k], k).toBeTruthy();
+      const rows = (pages as unknown as { pricing: { rows: Record<string, string> } }).pricing.rows;
+      expect(rows.photoPresets).toContain("{{brand}}");
+    });
+  }
+});

@@ -1951,6 +1951,20 @@
         "format": "Il file non è un'esportazione di preset.",
         "invalid": "Il file contiene preset non utilizzabili.",
         "empty": "Il file non contiene preset."
+      },
+      "accountNote": "Salvato nel tuo account.",
+      "limitReached": "Hai raggiunto il limite di preset salvati previsto dal tuo piano.",
+      "signInAgain": "Accedi di nuovo per salvare i preset nel tuo account.",
+      "saveFailedAccount": "Impossibile salvare il preset nel tuo account.",
+      "migrate": {
+        "title": "Conserva i tuoi preset",
+        "prompt_one": "Vuoi conservare il tuo preset ({{count}}) nel tuo account?",
+        "prompt_many": "Vuoi conservare i tuoi {{count}} preset nel tuo account?",
+        "prompt_other": "Vuoi conservare i tuoi {{count}} preset nel tuo account?",
+        "keepLocal": "Mantieni in questo browser",
+        "accept": "Sposta nel mio account",
+        "done": "I tuoi preset ora sono nel tuo account.",
+        "partial": "Alcuni preset sono rimasti in questo browser perché è stato raggiunto il limite del tuo piano."
       }
     },
     "history": {
