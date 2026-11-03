@@ -2,11 +2,10 @@
  * Brazilian Portuguese partial overrides for the data-driven tool pages
  * (see `i18n/toolPageContent.ts` — anything omitted falls back to English).
  *
- * Scope (MM66, 2026-10-27): only Motion's full page body, which
- * `i18n/motionTranslations.test.ts` requires for every `translated: true`
- * locale (coordinator decision; the ticket otherwise keeps toolPages out of
- * scope). The other tool pages render English until a later session adds
- * per-slug entries here, as de/es do.
+ * Scope: MM66 (2026-10-27) added Motion's full page body; MM92 (2026-10-31)
+ * added `name` + `tagline` for every tool; MM93 (2026-11-03) added the full
+ * body of every non-alias tool page (98), model-written by Fable 5.1 and
+ * Opus 5.5; native review pending.
  *
  * Register: "você", Brazilian vocabulary (arquivo, navegador, baixar, salvar);
  * brand names, formats and codecs stay untranslated; "Darkroom" and "Motion"
@@ -22,11 +21,11 @@ const ptBrToolPages = {
       tagline: 'Desenhe ou importe um SVG, anime em uma linha do tempo de keyframes e exporte como SVG animado, Lottie, React, JavaScript, Flutter ou GIF, tudo no seu navegador.',
       intro: 'O Motion é um editor de SVG com linha do tempo de animação, integrado ao Media Manipulator. Abra um arquivo SVG (ou uma animação Lottie) e cada forma vira uma camada que você pode selecionar, mover, recolorir e animar, ou comece com uma tela em branco e desenhe com as ferramentas de retângulo, elipse, linha, caneta e texto. Cada propriedade animada tem a própria trilha de keyframes, com predefinições de suavização, um editor de curvas para suavizações personalizadas e keyframes de retenção para saltos instantâneos. Os animadores de um clique adicionam desenho progressivo do traço, movimento ao longo de um caminho, morph de formas, mudanças de cor em gradientes, animação de máscaras e desfoque. Quando o movimento estiver do jeito que você quer, exporte como SVG animado, arquivo Lottie, componente React, módulo JavaScript ou TypeScript, widget Flutter ou GIF. A edição e todas as exportações rodam no seu navegador, então sua arte nunca é enviada para ser exportada.',
       whatItDoes: [
-        'Importa arquivos SVG como uma árvore de camadas editável (grupos, caminhos, formas, texto, imagens, gradientes, máscaras e caminhos de recorte) e importa animações Lottie JSON com seus keyframes.',
+        'Importa arquivos SVG como uma árvore de camadas editável (grupos, caminhos, formas, texto, imagens, gradientes, máscaras e caminhos de recorte) e importa animações Lottie JSON com seus keyframes, cada arquivo com até 4 MB.',
         'Desenha artes novas com as ferramentas de retângulo, elipse, linha, caneta (Bézier) e texto, e edita os nós dos caminhos diretamente na tela.',
         'Anima posição, escala, rotação, inclinação, opacidade, preenchimento, traço e espessura do traço em uma linha do tempo de keyframes com suavização linear, de entrada, de saída, de entrada e saída, cubic-bezier personalizada e retenção.',
-        'Adiciona animações avançadas com um clique: desenho progressivo do traço, movimento ao longo de um caminho com giro automático opcional, morph de formas, cores dos pontos de gradiente, animação de máscaras e caminhos de recorte, e desfoque.',
-        'Exporta SVG estático (sempre gratuito), SVG animado que toca sem nenhuma biblioteca, Lottie JSON, componente React, módulo JavaScript ou TypeScript, widget Flutter e GIF animado.',
+        'Adiciona seis animadores de um clique: desenho progressivo do traço, movimento ao longo de um caminho com giro automático opcional, morph de formas, cores dos pontos de gradiente, animação de máscaras e caminhos de recorte, e desfoque.',
+        'Exporta SVG estático (sempre gratuito e nunca contabilizado), SVG animado que toca sem nenhuma biblioteca, Lottie JSON, componente React, módulo JavaScript ou TypeScript, widget Flutter e GIF animado, tudo gerado no seu computador.',
       ],
       flowSteps: [
         {
@@ -93,31 +92,31 @@ const ptBrToolPages = {
         'Exportações tanto para designers quanto para desenvolvedores: SVG animado, Lottie, React, JavaScript ou TypeScript, Flutter e GIF a partir de um mesmo projeto.',
         'As exportações são feitas no seu navegador, e o único código de terceiros que uma exportação usa tem licença permissiva (anime.js sob MIT; flutter_svg e webview_flutter para Flutter), com o aviso de licença preservado no arquivo.',
       ],
-      privacyNote: 'A edição e a exportação acontecem no seu navegador; sua arte não é enviada para ser exportada. Sem conta, os projetos ficam guardados só neste navegador. Se você entrar e salvar um projeto na sua conta, ele é armazenado nos nossos servidores como um projeto do Darkroom, segue o período de retenção que você escolher e pode ser excluído na sua página Conta. De cada exportação registramos apenas formato, tamanho, duração e horário, para aplicar a cota diária.',
+      privacyNote: 'A edição e a exportação acontecem no seu navegador; sua arte não é enviada para ser exportada. Sem conta, os projetos ficam guardados só neste navegador. Se você entrar e salvar um projeto na sua conta, o documento já higienizado (até 4 MB) e uma miniatura são armazenados nos nossos servidores como um projeto do Darkroom, seguem o período de retenção que você escolher e podem ser excluídos na sua página Conta. De cada exportação contabilizada registramos apenas formato, altura, taxa de quadros, duração e horário, com sua conta ou sessão como proprietária, para aplicar a cota diária; o registro da exportação nunca contém a arte.',
       faq: [
         {
           question: 'O Motion é gratuito?',
-          answer: 'Sim. Abrir o Motion, desenhar, animar, salvar e exportar um SVG estático é gratuito e ilimitado, sem conta. As exportações animadas contam em uma cota diária que depende do seu plano; a tabela de planos desta página mostra a cota e os formatos de cada plano.',
+          answer: 'Sim. Abrir o Motion, desenhar, animar, salvar neste navegador e exportar um SVG estático é gratuito, ilimitado e não exige conta. As exportações animadas contam em uma cota diária que depende do seu plano: por padrão, 2 por dia sem conta (só SVG animado), 5 com uma conta gratuita, 30 com o Premium e 150 com o Pro. A tabela de planos desta página mostra a cota atual e os formatos de cada plano.',
         },
         {
           question: 'Quais formatos posso exportar?',
-          answer: 'SVG estático, SVG animado (CSS ou um pequeno script embutido quando necessário), Lottie JSON, componente React (.tsx), módulo JavaScript ou TypeScript, widget Flutter (.dart) e GIF animado. Quais deles seu plano inclui e o número diário de exportações aparecem na tabela de planos desta página.',
+          answer: 'SVG estático, SVG animado (CSS ou um pequeno script embutido quando necessário), Lottie JSON, componente React (.tsx), módulo JavaScript ou TypeScript, widget Flutter (.dart) e GIF animado. Por padrão, o SVG animado está em todos os planos, o Lottie a partir da conta gratuita, e React, JS/TS, Flutter e GIF a partir do Premium. Quais deles seu plano inclui e o número diário de exportações aparecem na tabela de planos desta página.',
         },
         {
           question: 'Quais são os limites?',
-          answer: 'As exportações animadas são contadas por dia e renovadas à meia-noite UTC. Visitantes sem conta só podem salvar projetos no navegador; os planos com login salvam um número de projetos na conta. Visitantes também têm uma duração máxima de animação para exportar, e a exportação em GIF tem limite de tamanho e duração. Todos os números atuais estão na tabela de planos desta página e na página de preços.',
+          answer: 'As exportações animadas são contadas por dia e renovadas à meia-noite UTC; uma exportação recusada não é contabilizada, mas uma exportação que você cancela depois de a contagem ser feita é contabilizada. Visitantes sem conta salvam projetos só no navegador e podem exportar animações de até 10 segundos; uma conta gratuita salva 3 projetos na conta, o Premium 25 e o Pro sem limite. As importações de SVG e Lottie são limitadas a 4 MB cada, e a exportação em GIF a 50 fps e 2 GB de saída. Todos os números atuais estão na tabela de planos desta página e na página de preços.',
         },
         {
           question: 'Posso animar um SVG que já tenho?',
-          answer: 'Sim. Importe qualquer SVG e seus grupos, caminhos, formas, texto, gradientes, máscaras e caminhos de recorte viram camadas editáveis. As partes que o editor não consegue editar, como padrões ou filtros complexos, são mantidas e exportadas sem alteração, e tudo o que não for seguro (scripts ou links externos) é removido e listado após a importação.',
+          answer: 'Sim. Importe qualquer SVG e seus grupos, caminhos, formas, texto, gradientes, máscaras e caminhos de recorte viram camadas editáveis. As partes que o editor não consegue editar, como padrões ou filtros complexos, são mantidas e exportadas sem alteração, e tudo o que não for seguro (scripts, manipuladores de evento ou links externos) é removido e listado após a importação.',
         },
         {
           question: 'É compatível com Lottie?',
-          answer: 'Sim, nos dois sentidos. Você pode importar um arquivo Lottie JSON para editá-lo e exportar sua animação como Lottie JSON para o lottie-web e os players Lottie de iOS, Android e Flutter. Os recursos que um dos lados não consegue representar são listados na caixa de diálogo em vez de descartados em silêncio.',
+          answer: 'Sim, nos dois sentidos. Você pode importar um arquivo Lottie JSON para editá-lo (a importação conta como uma unidade, a partir do plano gratuito) e exportar sua animação como Lottie JSON para o lottie-web e os players Lottie de iOS, Android e Flutter. Os recursos que um dos lados não consegue representar são listados na caixa de diálogo em vez de descartados em silêncio.',
         },
         {
           question: 'Quais navegadores suportam a exportação de vídeo?',
-          answer: 'A exportação em GIF funciona em todos os navegadores modernos. A exportação em MP4 e WebM depende do WebCodecs, o codificador de vídeo embutido do navegador, disponível no Chrome e no Edge e em versões recentes do Safari e do Firefox, dependendo do codec; a caixa de exportação verifica seu navegador e avisa quando não consegue codificar. A tabela de planos desta página mostra qual plano inclui cada formato de vídeo.',
+          answer: 'A exportação em GIF funciona em todos os navegadores modernos. A exportação em MP4 e WebM depende do WebCodecs, o codificador de vídeo embutido do navegador, disponível no Chrome e no Edge e em versões recentes do Safari e do Firefox, dependendo do codec; a caixa de diálogo de exportação verifica seu navegador e avisa quando não consegue codificar. A tabela de planos desta página mostra qual plano inclui cada formato de vídeo.',
         },
         {
           question: 'Qual licença se aplica ao código exportado?',
@@ -12837,7 +12836,7 @@ const ptBrToolPages = {
     'adjust-image-hue': {
       name: 'Ajustar o matiz da imagem',
       tagline: 'Gire todas as cores de uma foto em até 180 graus, ou mova só os vermelhos, os verdes ou os azuis, com pré-visualização ao vivo e exportação em resolução total.',
-      metaTitle: 'Ajustar o matiz de uma imagem online | Aperture',
+      metaTitle: 'Ajustar o matiz de uma imagem online | Media Manipulator',
       metaDescription: 'Desloque o matiz de uma foto inteira de -180 a 180 graus, ou mova só os vermelhos, amarelos, verdes, ciano, azuis ou magentas. Pré-visualização na GPU ao vivo, exportação em resolução total.',
     },
     'change-image-color': {
