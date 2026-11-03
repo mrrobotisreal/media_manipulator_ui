@@ -16,16 +16,18 @@ export const PAGE_DATES = {
   '/tools/content-studio': '2026-10-23',
   // MM85: "available on request" wording in the plan table.
   '/tools/motion': '2026-10-28',
+  // MM100: Aperture's landing page.
+  '/tools/aperture': '2026-11-03',
   // MM85: named founder block.
   '/about': '2026-10-28',
   // MM26 retention wording.
   '/how-it-works': '2026-10-23',
   // MM48 added the Motion tutorial card.
-  '/tutorials': '2026-10-26',
+  '/tutorials': '2026-11-03',
   // MM85: section 1.11 (contact messages).
-  '/privacy-policy': '2026-10-28',
+  '/privacy-policy': '2026-11-03',
   // MM78 voices terms (section 8.11).
-  '/terms-of-service': '2026-10-28',
+  '/terms-of-service': '2026-11-03',
   // MM84: review mode (copy-bar tools first, the rest collapsed) and aliases.
   '/tools': '2026-10-29',
   // MM69 currency toggle.
@@ -34,6 +36,8 @@ export const PAGE_DATES = {
   '/voices': '2026-10-28',
   // MM47 licence entries.
   '/licenses': '2026-10-26',
+  // MA26: new page.
+  '/delete-account': '2026-11-03',
   // MM85: new page.
   '/contact': '2026-10-28',
 } as const satisfies Record<string, string>;
@@ -53,6 +57,7 @@ export const TUTORIAL_DATES = {
   '/tutorials/ai-frame-interpolation': { datePublished: '2026-05-24', dateModified: '2026-05-24' },
   '/tutorials/content-studio': { datePublished: '2026-05-30', dateModified: '2026-10-24' },
   '/tutorials/motion': { datePublished: '2026-10-26', dateModified: '2026-10-26' },
+  '/tutorials/aperture': { datePublished: '2026-11-03', dateModified: '2026-11-03' },
 } as const satisfies Record<string, { datePublished: string; dateModified: string }>;
 
 export type TutorialPath = keyof typeof TUTORIAL_DATES;

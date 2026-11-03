@@ -48,7 +48,10 @@
     "userNotFound": "Nessun account trovato con questa email.",
     "wrongPassword": "Password errata.",
     "emailAlreadyInUse": "Esiste già un account con questa email.",
-    "weakPassword": "La password deve contenere almeno 6 caratteri."
+    "weakPassword": "La password deve contenere almeno 6 caratteri.",
+    "invalidEmail": "Inserisci un indirizzo email valido.",
+    "tooManyRequests": "Troppi tentativi. Attendi qualche minuto e riprova.",
+    "network": "Errore di rete. Controlla la connessione e riprova."
   },
   "ad": {
     "loadFailed": "Impossibile caricare l'annuncio."

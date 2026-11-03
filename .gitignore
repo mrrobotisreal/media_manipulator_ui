@@ -77,3 +77,6 @@ ADS.md
 lh-*.json
 /e2e/results/
 /e2e/report/
+
+# graphify knowledge graph (local, rebuilt by git hooks; see AGENTS.md)
+/graphify-out/

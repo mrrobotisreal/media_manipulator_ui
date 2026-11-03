@@ -29,6 +29,12 @@ import { CurrencyToggle } from '@/components/pricing/currency-toggle';
 import { EVENTS, useAnalytics } from '@/lib/analytics';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
+import {
+  isAppleAuthEnabled,
+  pendingCredentialFromError,
+  sendPasswordReset,
+  type PendingCredential,
+} from '@/lib/firebase';
 import { cn } from '@/lib/utils';
 
 /**
@@ -57,6 +63,15 @@ export const AuthModal: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  // 'reset' is the inline Forgot password view (same dialog, no route).
+  const [view, setView] = useState<'auth' | 'reset'>('auth');
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetState, setResetState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [resetError, setResetError] = useState('');
+  // Account linking: a Google/Apple attempt whose email already belongs to an account with
+  // another provider. The credential waits here until the user signs in with that provider.
+  const [pendingCredential, setPendingCredential] = useState<PendingCredential | null>(null);
+  const appleEnabled = isAppleAuthEnabled();
 
   const source = auth?.prompt.source ?? 'unknown';
 
@@ -120,35 +135,88 @@ export const AuthModal: React.FC = () => {
     track(EVENTS.FEATURE_USED, { feature: 'auth_modal', action: 'tab_changed', value: tab });
   };
 
-  const handleGoogleAuth = async () => {
+  const finishLinking = (linked: boolean | null) => {
+    if (linked === null) return;
+    setPendingCredential(null);
+    if (linked) toast.success(t('interface:authModal.link.linked'));
+  };
+
+  // Google and Apple share one flow. `reason` is the Firebase error CODE, never the message:
+  // messages can carry email addresses.
+  const handleProviderAuth = async (method: 'google' | 'apple') => {
     try {
       setIsLoading(true);
-      // signup_started before the attempt: without it, a Google popup that the visitor
-      // dismisses is invisible, and "how many people start and abandon Google auth" is one
-      // of the few questions with an obvious product fix attached.
-      track(EVENTS.SIGNUP_STARTED, { method: 'google' });
-      await auth.signInWithGoogle();
+      // signup_started before the attempt: without it, a popup that the visitor dismisses is
+      // invisible, and "how many people start and abandon provider auth" is one of the few
+      // questions with an obvious product fix attached.
+      track(EVENTS.SIGNUP_STARTED, { method });
+      let isNewUser = false;
+      let linked: boolean | null = null;
+      if (method === 'apple') {
+        ({ isNewUser, linked } = await auth.signInWithApple(pendingCredential));
+      } else {
+        ({ linked } = await auth.signInWithGoogle(pendingCredential));
+      }
       completedRef.current = true;
-      // Google's popup does not tell us whether the account already existed, so this is
-      // recorded as a sign-in. `signup_completed` — the event that sets persons.signup_at —
-      // is only emitted where we KNOW a new account was created, which is the email path.
-      // Over-reporting signups would corrupt the single most important growth number here.
-      track(EVENTS.SIGNIN_COMPLETED, { method: 'google' });
+      // Google's popup does not tell us whether the account already existed, so it is
+      // recorded as a sign-in; `signup_completed` (sets persons.signup_at) is only emitted
+      // where we KNOW a new account was created. Apple exposes isNewUser, so it can say.
+      track(isNewUser ? EVENTS.SIGNUP_COMPLETED : EVENTS.SIGNIN_COMPLETED, { method });
+      finishLinking(linked);
       toast.success(t('interface:authModal.toast.welcome'), {
-        description: t('interface:authModal.toast.googleSuccess'),
+        description: t(
+          method === 'apple' ? 'interface:authModal.toast.appleSuccess' : 'interface:authModal.toast.googleSuccess',
+        ),
       });
     } catch (error) {
-      console.error('Google auth error:', error);
-      toast.error(t('interface:authModal.toast.authFailed'), {
-        description: t('error:auth.tryAgain'),
-      });
+      console.error(`${method} auth error:`, error);
+      const code = (error as { code?: string } | null)?.code;
+      const pending = await pendingCredentialFromError(error);
+      if (pending) {
+        setPendingCredential(pending);
+        setActiveTab('signin');
+      } else {
+        const description =
+          code === 'auth/network-request-failed' ? t('error:auth.network') : t('error:auth.tryAgain');
+        toast.error(t('interface:authModal.toast.authFailed'), { description });
+      }
       track(EVENTS.AUTH_FAILED, {
-        method: 'google',
+        method,
         stage: 'popup',
-        reason: error instanceof Error ? error.message : 'Unknown error',
+        reason: code || 'unknown',
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+  const handleGoogleAuth = () => handleProviderAuth('google');
+  const handleAppleAuth = () => handleProviderAuth('apple');
+
+  const openReset = () => {
+    setResetEmail(email);
+    setResetState('idle');
+    setResetError('');
+    setView('reset');
+    track(EVENTS.FEATURE_USED, { feature: 'auth_modal', action: 'forgot_password_opened' });
+  };
+
+  const handleResetSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetEmail || resetState === 'sending') return;
+    setResetError('');
+    setResetState('sending');
+    try {
+      await sendPasswordReset(resetEmail.trim());
+      track(EVENTS.PASSWORD_RESET_REQUESTED, { surface: 'web' });
+      // Always the neutral confirmation, whether or not an account exists.
+      setResetState('sent');
+    } catch (error) {
+      const code = (error as { code?: string } | null)?.code;
+      setResetState('idle');
+      if (code === 'auth/invalid-email') setResetError(t('error:auth.invalidEmail'));
+      else if (code === 'auth/too-many-requests') setResetError(t('error:auth.tooManyRequests'));
+      else if (code === 'auth/network-request-failed') setResetError(t('error:auth.network'));
+      else setResetError(t('error:auth.tryAgain'));
     }
   };
 
@@ -174,9 +242,10 @@ export const AuthModal: React.FC = () => {
           description: t('interface:authModal.toast.welcomeMM'),
         });
       } else {
-        await auth.signIn(email, password);
+        const { linked } = await auth.signIn(email, password, pendingCredential);
         completedRef.current = true;
         track(EVENTS.SIGNIN_COMPLETED, { method: 'email' });
+        finishLinking(linked);
         toast.success(t('interface:authModal.toast.welcomeBack'), {
           description: t('interface:authModal.toast.signedIn'),
         });
@@ -185,7 +254,9 @@ export const AuthModal: React.FC = () => {
       console.error('Email auth error:', error);
 
       let errorMessage = t('error:auth.tryAgain');
-      if (error.code === 'auth/user-not-found') {
+      if (error.code === 'auth/invalid-credential') {
+        errorMessage = t('error:auth.invalidCredentials');
+      } else if (error.code === 'auth/user-not-found') {
         errorMessage = t('error:auth.userNotFound');
       } else if (error.code === 'auth/wrong-password') {
         errorMessage = t('error:auth.wrongPassword');
@@ -193,6 +264,12 @@ export const AuthModal: React.FC = () => {
         errorMessage = t('error:auth.emailAlreadyInUse');
       } else if (error.code === 'auth/weak-password') {
         errorMessage = t('error:auth.weakPassword');
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = t('error:auth.invalidEmail');
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = t('error:auth.tooManyRequests');
+      } else if (error.code === 'auth/network-request-failed') {
+        errorMessage = t('error:auth.network');
       }
 
       toast.error(t('interface:authModal.toast.authFailed'), { description: errorMessage });
@@ -203,7 +280,7 @@ export const AuthModal: React.FC = () => {
       track(EVENTS.AUTH_FAILED, {
         method: 'email',
         stage: error.code || activeTab,
-        reason: error.message,
+        reason: error.code || 'unknown',
       });
     } finally {
       setIsLoading(false);
@@ -258,6 +335,57 @@ export const AuthModal: React.FC = () => {
             composed. */}
         <div className="grid gap-6 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:items-start lg:gap-10">
           <div className="grid content-start gap-5">
+            {view === 'reset' ? (
+              <form onSubmit={handleResetSubmit} className="space-y-4" aria-labelledby="reset-title">
+                <div className="space-y-1">
+                  <h3 id="reset-title" className="text-base font-semibold">
+                    {t('interface:authModal.reset.title')}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{t('interface:authModal.reset.body')}</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="reset-email">{t('interface:authModal.fields.email')}</Label>
+                  <Input
+                    id="reset-email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder={t('interface:authModal.fields.emailPlaceholder')}
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    disabled={resetState === 'sending'}
+                    required
+                  />
+                </div>
+                {resetError ? (
+                  <p role="alert" className="text-sm text-destructive">
+                    {resetError}
+                  </p>
+                ) : null}
+                {resetState === 'sent' ? (
+                  <p role="status" className="text-sm text-foreground">
+                    {t('interface:authModal.reset.sent')}
+                  </p>
+                ) : null}
+                <Button type="submit" className="w-full" disabled={resetState === 'sending' || !resetEmail}>
+                  {resetState === 'sending'
+                    ? t('interface:authModal.reset.sending')
+                    : t('interface:authModal.reset.submit')}
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => setView('auth')}
+                  className="text-sm text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+                >
+                  {t('interface:authModal.reset.back')}
+                </button>
+              </form>
+            ) : (
+            <>
+            {pendingCredential ? (
+              <p role="status" className="rounded-md border border-edge bg-muted/40 p-3 text-sm">
+                {t('interface:authModal.link.notice')}
+              </p>
+            ) : null}
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="signup">{t('interface:authModal.tabs.signup')}</TabsTrigger>
@@ -345,6 +473,14 @@ export const AuthModal: React.FC = () => {
                       disabled={isLoading}
                       required
                     />
+                    <button
+                      type="button"
+                      onClick={openReset}
+                      disabled={isLoading}
+                      className="text-xs text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+                    >
+                      {t('interface:authModal.forgotPassword')}
+                    </button>
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading || !email || !password}>
                     {isLoading
@@ -378,10 +514,26 @@ export const AuthModal: React.FC = () => {
                 18px box and 8px gap (the Button's own `gap-2`) are what Google's
                 branding guidelines ask for, and the file is rendered untouched —
                 not recoloured, not redrawn, aspect ratio preserved. */}
+            {/* Sign in with Apple (behind NEXT_PUBLIC_AUTH_APPLE_ENABLED): Apple's HIG black
+                button with the white mark, same size as Google's, above it. The mark is the
+                standard Apple logo already shipped in /public for Darkroom (white fill). The
+                icon sits on the start side, so it mirrors correctly in he/ar. */}
+            {appleEnabled ? (
+              <Button
+                onClick={handleAppleAuth}
+                className="w-full bg-black text-white hover:bg-black/85 dark:border dark:border-white/30"
+                disabled={isLoading}
+              >
+                <img src="/dr-apple-logo.svg" alt="" width={16} height={18} className="shrink-0" />
+                {t('interface:authModal.appleSignIn')}
+              </Button>
+            ) : null}
             <Button onClick={handleGoogleAuth} variant="outline" className="w-full" disabled={isLoading}>
               <img src="/Google.svg" alt="" width={18} height={18} className="shrink-0" />
               {t('interface:authModal.googleSignIn')}
             </Button>
+            </>
+            )}
           </div>
 
           {/* The plans column. Two columns is the ceiling for this panel, so the

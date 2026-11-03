@@ -13,6 +13,7 @@
 import { TOOL_PAGES, type ToolPageContent } from '@/content/toolPages';
 import { cleanFaqEntries, cleanSteps, cleanStringArray } from '@/lib/schema';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { PLAN_PRICES } from '@/lib/billing/planPrices';
 import { locales, localizeHref } from '@/i18n/locales';
 import { TUTORIAL_DATES, type TutorialPath } from '@/content/pageDates';
@@ -191,7 +192,8 @@ const softwareApplicationToolLd = (
   '@type': 'SoftwareApplication',
   name: `${SITE_NAME} ${tool.name}`,
   url,
-  applicationCategory: 'DesignApplication',
+  // MM100: Google's applicationCategory list has no photography value; Aperture is MultimediaApplication.
+  applicationCategory: tool.category === 'photo' ? 'MultimediaApplication' : 'DesignApplication',
   operatingSystem: 'Web',
   description: tool.metaDescription,
   featureList,
@@ -1108,6 +1110,38 @@ const ROUTES: RouteSeo[] = [
         { name: 'Home', path: '/' },
         { name: 'Tutorials', path: '/tutorials' },
         { name: MOTION_BRAND, path: '/tutorials/motion' },
+      ]),
+    ],
+  },
+  {
+    path: '/tutorials/aperture',
+    title: `How to Edit a Photo with ${PHOTO_BRAND} | Media Manipulator Tutorial`,
+    description:
+      `Step-by-step ${PHOTO_BRAND} tutorial: open a photo, fix light and color, make one color pop, edit with masks, heal blemishes, export at full resolution, reuse looks and batch-apply.`,
+    canonicalUrl: buildCanonical('/tutorials/aperture'),
+    ogTitle: `How to Edit a Photo with ${PHOTO_BRAND}`,
+    ogDescription:
+      'Open a photo, adjust it with layers and masks, heal spots and export a full-resolution file rendered on our server. No install.',
+    ogType: 'article',
+    ogImage: DEFAULT_OG_IMAGE,
+    twitterCard: 'summary_large_image',
+    keywords: ['online photo editor tutorial', 'how to edit a photo online', 'color pop photo', 'photo masks', 'heal blemishes online'],
+    jsonLd: [
+      {
+        ...techArticleLd({
+          path: '/tutorials/aperture',
+          title: `How to Edit a Photo with ${PHOTO_BRAND}`,
+          description:
+            'Open a photo, fix light and color, use masks, heal spots, export at full resolution, reuse looks and apply edits to more photos.',
+          section: 'Photo Editing Tutorials',
+          keywords: ['online photo editor tutorial', 'how to edit a photo online', 'photo masks'],
+          dependencies: 'Modern web browser',
+        }),
+      },
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Tutorials', path: '/tutorials' },
+        { name: PHOTO_BRAND, path: '/tutorials/aperture' },
       ]),
     ],
   },

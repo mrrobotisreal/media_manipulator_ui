@@ -9,6 +9,13 @@ vi.mock('@/i18n/useLocalizedHref', () => ({
 }));
 vi.mock('@/lib/firebase', () => ({ getCurrentIdToken: async () => 'tok' }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
+vi.mock('@/lib/photo/projectsApi', async (orig) => ({
+  ...(await orig<typeof import('@/lib/photo/projectsApi')>()),
+  listPhotoProjects: vi.fn(),
+  getPhotoProject: vi.fn(),
+  savePhotoProject: vi.fn(),
+  deletePhotoProject: vi.fn(),
+}));
 vi.mock('@/lib/auth/accountApi', async (orig) => ({
   ...(await orig<typeof import('@/lib/auth/accountApi')>()),
   fetchStudioProjects: vi.fn(),
@@ -18,6 +25,7 @@ vi.mock('@/lib/auth/accountApi', async (orig) => ({
 }));
 
 import { deleteProject, deleteVectorProject, fetchStudioProjects, fetchVectorProjects } from '@/lib/auth/accountApi';
+import { deletePhotoProject, getPhotoProject, listPhotoProjects, savePhotoProject } from '@/lib/photo/projectsApi';
 import { ProjectsTab } from './projects-tab';
 import { copy } from '@/components/account/test-utils';
 import { locales } from '@/i18n/locales';
@@ -46,6 +54,14 @@ beforeEach(() => {
   hrefPrefix.value = '';
   vi.mocked(fetchVectorProjects).mockReset().mockResolvedValue([]);
   vi.mocked(deleteVectorProject).mockReset();
+  vi.mocked(listPhotoProjects).mockReset().mockResolvedValue([]);
+  vi.mocked(getPhotoProject).mockReset();
+  vi.mocked(savePhotoProject).mockReset();
+  vi.mocked(deletePhotoProject).mockReset();
+});
+
+const pproject = (id: string, name: string, updatedAt = '2026-10-04T00:00:00Z') => ({
+  id, name, revision: 3, width: 6000, height: 4000, thumbUrl: '', updatedAt,
 });
 
 afterEach(() => {
@@ -161,5 +177,61 @@ describe('ProjectsTab', () => {
     } finally {
       vi.unstubAllEnvs();
     }
+  });
+
+  // MM100: Aperture projects (kind `photo`) beside Darkroom and Motion.
+  describe('Aperture projects (MM100)', () => {
+    it('lists photo projects with an Aperture chip, size, and an unprefixed /photo/<id> Open in every locale', async () => {
+      vi.mocked(fetchStudioProjects).mockResolvedValue([project('p1', 'Trailer')] as never);
+      vi.mocked(listPhotoProjects).mockResolvedValue([pproject('ph1', 'Sunset')]);
+      for (const l of locales) {
+        hrefPrefix.value = l.code === 'en-US' ? '' : `/${l.prefix}`;
+        const view = renderTab();
+        await screen.findByText('Sunset');
+        expect(screen.getAllByTestId('project-kind').map((e) => e.textContent)).toEqual(['Aperture', 'Darkroom']);
+        expect(screen.getByText(/6000\u00d74000/)).toBeTruthy();
+        const hrefs = screen.getAllByRole('link', { name: 'Open' }).map((a) => a.getAttribute('href'));
+        expect(hrefs[0]).toBe('/photo/ph1');
+        view.unmount();
+      }
+    });
+
+    it('rename reads the latest revision, saves the new name with that revision and refetches', async () => {
+      vi.mocked(fetchStudioProjects).mockResolvedValue([]);
+      vi.mocked(listPhotoProjects).mockResolvedValue([pproject('ph1', 'Sunset')]);
+      const doc = { version: 1 } as never;
+      vi.mocked(getPhotoProject).mockResolvedValue({ ...pproject('ph1', 'Sunset'), revision: 7, doc });
+      vi.mocked(savePhotoProject).mockResolvedValue({ ...pproject('ph1', 'Dusk'), revision: 8, doc });
+      renderTab();
+      fireEvent.click(await screen.findByRole('button', { name: 'Rename' }));
+      const input = screen.getByLabelText('Project name');
+      fireEvent.change(input, { target: { value: 'Dusk' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+      await waitFor(() => expect(savePhotoProject).toHaveBeenCalledWith('ph1', 7, { name: 'Dusk', doc }));
+      await waitFor(() => expect(vi.mocked(listPhotoProjects).mock.calls.length).toBeGreaterThan(1));
+    });
+
+    it('delete on a photo row calls the photo endpoint, not the Darkroom or Motion ones', async () => {
+      vi.mocked(fetchStudioProjects).mockResolvedValue([]);
+      vi.mocked(listPhotoProjects).mockResolvedValue([pproject('ph1', 'Sunset')]);
+      vi.mocked(deletePhotoProject).mockResolvedValue(undefined);
+      renderTab();
+      fireEvent.click(await screen.findByRole('button', { name: 'Delete' }));
+      const dialog = await screen.findByRole('alertdialog');
+      expect(within(dialog).getByText(/original photo/)).toBeTruthy();
+      fireEvent.click(within(dialog).getByRole('button', { name: 'Delete project' }));
+      await waitFor(() => expect(deletePhotoProject).toHaveBeenCalledWith('ph1'));
+      expect(deleteProject).not.toHaveBeenCalled();
+      expect(deleteVectorProject).not.toHaveBeenCalled();
+      await waitFor(() => expect(vi.mocked(listPhotoProjects).mock.calls.length).toBeGreaterThan(1));
+    });
+
+    it('a failed photo list keeps the other rows and shows a note', async () => {
+      vi.mocked(fetchStudioProjects).mockResolvedValue([project('p1', 'Trailer')] as never);
+      vi.mocked(listPhotoProjects).mockRejectedValue(new Error('boom'));
+      renderTab();
+      expect(await screen.findByText('Trailer', {}, { timeout: 4000 })).toBeTruthy();
+      expect(screen.getByText(/Could not load your Aperture projects/)).toBeTruthy();
+    });
   });
 });

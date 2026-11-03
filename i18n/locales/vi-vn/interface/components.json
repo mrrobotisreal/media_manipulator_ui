@@ -41,7 +41,8 @@
       "googleSuccess": "Đăng nhập bằng Google thành công.",
       "authFailed": "Xác thực thất bại",
       "nameRequired": "Cần nhập tên",
-      "nameRequiredDesc": "Vui lòng nhập tên của bạn."
+      "nameRequiredDesc": "Vui lòng nhập tên của bạn.",
+      "appleSuccess": "Đăng nhập bằng Apple thành công."
     },
     "contextual": {
       "signupTitle": "Bạn đã dùng hết {{limit}} lượt chuyển đổi miễn phí hôm nay",
@@ -68,7 +69,21 @@
       "noAds": "Không quảng cáo",
       "retentionGuest": "Tệp được lưu trong 24 giờ"
     },
-    "loadingPlans": "Đang tải các gói…"
+    "loadingPlans": "Đang tải các gói…",
+    "appleSignIn": "Tiếp tục với Apple",
+    "forgotPassword": "Quên mật khẩu?",
+    "reset": {
+      "title": "Đặt lại mật khẩu",
+      "body": "Nhập email tài khoản của bạn và chúng tôi sẽ gửi cho bạn một liên kết.",
+      "submit": "Gửi liên kết đặt lại",
+      "sending": "Đang gửi...",
+      "sent": "Nếu có tài khoản dùng email đó, chúng tôi đã gửi một liên kết để đặt lại mật khẩu của bạn.",
+      "back": "Quay lại đăng nhập"
+    },
+    "link": {
+      "notice": "Email này đã được đăng ký bằng một phương thức đăng nhập khác. Hãy đăng nhập bằng phương thức đó để liên kết chúng.",
+      "linked": "Đã liên kết các tài khoản. Từ giờ bạn có thể đăng nhập bằng một trong hai phương thức."
+    }
   },
   "imageCropModal": {
     "title": "Cắt hình ảnh",
@@ -433,7 +448,8 @@
       "started": "Đã bắt đầu tải xuống MP3 — hãy xem mục tải xuống của trình duyệt.",
       "startedWithSize": "Đã bắt đầu tải xuống MP3 ({{size}}) — hãy xem mục tải xuống của trình duyệt.",
       "failed": "Không thể chuẩn bị tệp MP3. Hãy thử lại sau giây lát."
-    }
+    },
+    "openInPhoto": "Mở trong {{brand}}"
   },
   "billing": {
     "intervalLabel": "Chu kỳ thanh toán",

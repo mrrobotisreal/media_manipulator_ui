@@ -41,7 +41,8 @@
       "googleSuccess": "已成功通过Google登录。",
       "authFailed": "身份验证失败",
       "nameRequired": "请填写姓名",
-      "nameRequiredDesc": "请输入你的姓名。"
+      "nameRequiredDesc": "请输入你的姓名。",
+      "appleSuccess": "已成功通过Apple登录。"
     },
     "contextual": {
       "signupTitle": "你今天的{{limit}}次免费转换已用完",
@@ -68,7 +69,21 @@
       "noAds": "无广告",
       "retentionGuest": "文件保留24小时"
     },
-    "loadingPlans": "正在加载套餐…"
+    "loadingPlans": "正在加载套餐…",
+    "appleSignIn": "使用Apple继续",
+    "forgotPassword": "忘记密码？",
+    "reset": {
+      "title": "重置密码",
+      "body": "请输入你的账号电子邮件，我们会向你发送一个链接。",
+      "submit": "发送重置链接",
+      "sending": "正在发送…",
+      "sent": "如果该电子邮件对应的账号存在，我们已发送重置密码的链接。",
+      "back": "返回登录"
+    },
+    "link": {
+      "notice": "此电子邮件已通过其他登录方式注册。请使用该方式登录以将两者关联。",
+      "linked": "账号已关联。你现在可以使用任一方式登录。"
+    }
   },
   "imageCropModal": {
     "title": "裁剪图片",
@@ -433,7 +448,8 @@
       "started": "MP3下载已开始，请查看浏览器的下载列表。",
       "startedWithSize": "MP3下载已开始（{{size}}），请查看浏览器的下载列表。",
       "failed": "无法准备MP3，请稍后再试。"
-    }
+    },
+    "openInPhoto": "在{{brand}}中打开"
   },
   "billing": {
     "intervalLabel": "计费周期",

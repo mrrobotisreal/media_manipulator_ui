@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { getBaseURL } from '@/lib/utils';
+import { authedFetch } from '@/lib/auth/authedFetch';
+import { jobEventsUrl } from '@/lib/results/inline';
 import type { TranscodeJobStage, TranscodeProbeResponse } from './transcodeTypes';
 import { publishQuotaRefund } from '@/lib/auth/quotaBus';
 
@@ -100,7 +102,7 @@ const useTranscodeJobStatus = (jobId: string | null): UseTranscodeJobStatusRetur
 
     const pollOnce = async () => {
       try {
-        const response = await fetch(`${getBaseURL()}/job/${jobId}`);
+        const response = await authedFetch(`${getBaseURL()}/job/${jobId}`);
         if (!response.ok) throw new Error(`Failed to check job status: ${response.statusText}`);
         const json = (await response.json()) as TranscodeJob;
         applySnapshot(json);
@@ -123,7 +125,7 @@ const useTranscodeJobStatus = (jobId: string | null): UseTranscodeJobStatusRetur
 
     const openSSE = () => {
       try {
-        const es = new EventSource(`${getBaseURL()}/job/${jobId}/events`);
+        const es = new EventSource(jobEventsUrl(jobId));
         sseRef.current = es;
         es.addEventListener('update', (event: MessageEvent) => {
           try {

@@ -20,6 +20,7 @@ import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
 import { reviewedLocales, unreviewedLocales } from '@/i18n/locales';
 import { VOICES, VOICE_DEMO_LANGUAGES } from '@/content/voices';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 
 const abs = (path: string): string =>
   path.startsWith('http') ? path : `${SITE_ORIGIN}${path === '/' ? '/' : path}`;
@@ -30,6 +31,7 @@ const toolUrl = (slug: string): string => abs(`/tools/${slug}`);
 const CATEGORY_HEADINGS: Array<[ToolPageContent['category'], string]> = [
   ['contentStudio', 'Darkroom video editor'],
   ['motion', `${MOTION_BRAND} SVG animation editor`],
+  ['photo', `${PHOTO_BRAND} photo editor`],
   ['video', 'Video tools'],
   ['image', 'Image and PDF tools'],
   ['audio', 'Audio tools'],
@@ -186,6 +188,17 @@ function motionSection(): string[] {
   ];
 }
 
+// MM100: Aperture is in beta; list only what MM97-MM99 shipped.
+function apertureSection(): string[] {
+  return [
+    `## ${PHOTO_BRAND}`,
+    '',
+    `${PHOTO_BRAND} (${toolUrl('aperture')}) is ${SITE_NAME}'s non-destructive photo editor, in beta. Every edit is an adjustment layer over your original: exposure, brightness and contrast, highlights, shadows, whites and blacks, white balance, vibrance and saturation, curves, levels, hue, saturation and lightness by color range, color balance, black and white with channel mixing, channel mixer, photo filter, split toning, 3D LUTs (.cube), invert, posterize and threshold, sharpen, noise reduction, blur, clarity, texture, dehaze, vignette and grain. Layers can be limited to part of the photo with masks (linear gradient, radial, brush, luminosity range, color range and AI subject selection), photos can be straightened, cropped and corrected for perspective, and spots can be healed with an AI inpainting model that runs on our own GPU. Eighteen built-in looks (including six color-pop looks) and your own saved presets apply as editable layers. The preview is drawn in your browser with WebGL2; exports (JPG, PNG, WebP, AVIF or TIFF) are rendered from the original at full resolution on our server. Without an account one photo is kept in your browser; signed-in users keep projects on their account and can apply their edits to several photos at once. Each export counts as one everyday operation and each heal as one AI operation.`,
+    '',
+    `- [${PHOTO_BRAND} tutorial](${abs('/tutorials/aperture')}): ${ROUTE_SEO_MAP['/tutorials/aperture']?.description ?? ''}`.trimEnd(),
+  ];
+}
+
 function toolLine(tool: ToolPageContent): string {
   return `- [${tool.name}](${toolUrl(tool.slug)}): ${tool.tagline}`;
 }
@@ -210,6 +223,7 @@ const PAGE_PATHS = [
   '/tutorials/audio/getting-started',
   '/tutorials/ai-frame-interpolation',
   '/tutorials/motion',
+  '/tutorials/aperture',
   '/privacy-policy',
   '/terms-of-service',
 ] as const;
@@ -238,6 +252,8 @@ export function llmsIndexMarkdown(): string {
     ...darkroomSection(),
     '',
     ...motionSection(),
+    '',
+    ...apertureSection(),
     '',
     ...voicesSection(),
     '',

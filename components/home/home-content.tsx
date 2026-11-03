@@ -42,7 +42,7 @@ export function HomeContent({ locale }: { locale?: string }) {
   // conversions), so they are excluded here.
   const localizedTools = getLocalizedToolPages(locale ?? 'en-US');
   const popular: ToolPageContent[] = REVIEW_INDEXED_TOOL_SLUGS.filter(
-    (slug) => slug !== 'content-studio' && slug !== 'motion'
+    (slug) => slug !== 'content-studio' && slug !== 'motion' && slug !== 'aperture'
   )
     .map((slug) => localizedTools.find((tool) => tool.slug === slug))
     .filter((tool): tool is ToolPageContent => Boolean(tool));
@@ -70,6 +70,7 @@ export function HomeContent({ locale }: { locale?: string }) {
     docScan: link('/tools/ai-document-scan'),
     darkroom: link('/tools/content-studio'),
     motion: link('/tools/motion'),
+    aperture: link('/tools/aperture'),
   };
 
   return (

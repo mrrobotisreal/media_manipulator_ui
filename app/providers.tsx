@@ -103,7 +103,10 @@ export default function Providers({
   // like Darkroom's embed: no nav/footer/ads/consent bar. Exact match so a
   // `/motion-*` page keeps the site chrome. (Its analytics arrive with MM49.)
   const isMotionEditor = pathname === '/motion' || (pathname?.startsWith('/motion/') ?? false);
-  const isChromeless = isEmbed || isDoubleRaven || isMotionEditor;
+  // MM97: the Aperture photo editor (`/photo/[projectId]`) is chromeless too,
+  // with no ad slot and no AdSense loader (analytics seams only until MM101).
+  const isPhotoEditor = pathname === '/photo' || (pathname?.startsWith('/photo/') ?? false);
+  const isChromeless = isEmbed || isDoubleRaven || isMotionEditor || isPhotoEditor;
 
   if (isChromeless) {
     // ANALYTICS-FREE BY CONSTRUCTION, not by a runtime flag. There is no

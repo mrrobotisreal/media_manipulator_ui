@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 import type { Metadata } from 'next';
 
 import type { AccountCopy } from '@/components/account/account-copy';
@@ -59,6 +60,8 @@ export default async function Account({ params }: PageParams) {
       { label: t('interface:pricing.rows.maxVideoSeconds'), value: 'video' },
       { label: t('interface:pricing.rows.maxOutputHeight'), value: 'output' },
       { label: t('interface:pricing.rows.studioProjects'), value: 'projects' },
+      { label: t('interface:pricing.rows.photoProjects', { values: { brand: PHOTO_BRAND } }), value: 'photoProjects' },
+      { label: t('interface:pricing.rows.photoPresets', { values: { brand: PHOTO_BRAND } }), value: 'photoPresets' },
     ],
   };
 

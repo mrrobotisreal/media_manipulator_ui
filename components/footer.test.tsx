@@ -37,6 +37,7 @@ describe('footer (MM48 decision 9)', () => {
     render(<Footer />);
     expect(screen.getByRole('link', { name: 'Motion' }).getAttribute('href')).toBe('/ru/tools/motion');
     expect(screen.getByRole('link', { name: core.footer.licenses }).getAttribute('href')).toBe('/ru/licenses');
+    expect(screen.getByRole('link', { name: core.footer.deleteAccount }).getAttribute('href')).toBe('/ru/delete-account');
   });
 });
 

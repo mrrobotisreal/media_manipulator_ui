@@ -23,6 +23,52 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MA26: the Android app's legal copy and the public account-deletion page.
+  {
+    id: '2026-11-03-mobile-legal',
+    date: '2026-11-03',
+    title: 'Privacy Policy and Terms now cover the Android app; new account deletion page',
+    body: 'The Privacy Policy has a new Section 17 and the Terms a new Section 25 for the Media Manipulator app for Android: what the app collects (device and app information, a per-install identifier, app analytics you can turn off in Account, a push notification token if you allow notifications, and crash reports), the permissions it uses, and how to delete your account. Section 6 now says Firebase is also used in the app for push notifications and crash reports, and Section 8 names the two services. A new public page, Delete account, explains how to delete your account in the app, on the website or by email if you cannot sign in, and what is deleted and what is kept. All of it is available in all 18 languages.',
+    tags: ['improved'],
+    links: [
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Delete account', href: '/delete-account' },
+    ],
+  },
+  // MM103: Aperture presets move to the account.
+  {
+    id: '2026-11-03-aperture-presets-account',
+    date: '2026-11-03',
+    title: 'Aperture presets now follow your account',
+    body: 'Presets you save in Aperture are kept on your account when you are signed in, so a look you make on your laptop is there on your phone. You can see, rename and delete them under Account, Projects. You can keep 10 on Free, 100 on Premium and any number on Pro. If you already had presets saved in your browser, Aperture asks once whether to move them to your account; if you decline they stay in the browser. Without an account nothing changes: presets stay in your browser.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Aperture', href: '/tools/aperture' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
+  // MM100: Aperture's public face (the editor itself shipped over MM97-MM99).
+  {
+    id: '2026-11-03-aperture-beta',
+    date: '2026-11-03',
+    title: 'Aperture, a photo editor, is in beta',
+    body: 'Aperture edits photos without changing the original. Every adjustment is a layer you can reorder, fade, mask or delete: exposure, contrast, highlights and shadows, white balance, curves, levels, color by range, color balance, black and white, split toning, LUTs, sharpening, noise reduction, vignette and more. Limit any layer to part of the photo with a gradient, a brush, a color range or an AI subject selection, straighten or fix perspective, heal spots, start from 18 built-in looks (including color pop, where everything turns gray except one color), and apply your edits to several photos at once. The preview runs in your browser; the file you export is rendered on our server from the original. Without an account one photo is kept in your browser; with one, projects stay on your account (5 on Free, 50 on Premium, unlimited on Pro). Each export counts as one everyday job and each heal as one AI job. A tutorial and a page for each adjustment are on the site.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Aperture', href: '/tools/aperture' },
+      { label: 'Aperture tutorial', href: '/tutorials/aperture' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
+  // MA09: Sign in with Apple, Forgot password, account linking (Apple button ships behind
+  // NEXT_PUBLIC_AUTH_APPLE_ENABLED; Mitch flips it after the Preview check).
+  {
+    id: '2026-11-01-sign-in-with-apple',
+    date: '2026-11-01',
+    title: 'Sign in with Apple, and reset a forgotten password',
+    body: 'You can now create an account or sign in with your Apple Account, including Hide My Email. The sign-in window also has a Forgot password? link that emails you a reset link. If your email already has an account with another sign-in method, you can link the two.',
+    tags: ['new'],
+  },
   // MM92: the English copy left on Pricing, Account, Tools and Voices in every other language.
   {
     id: '2026-10-31-locale-copy-gaps',

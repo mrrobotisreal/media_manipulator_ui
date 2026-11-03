@@ -93,6 +93,33 @@ describe('proxy', () => {
     expect(matcher.test('/motions')).toBe(true);
     expect(matcher.test('/tools/motion')).toBe(true);
   });
+  // MM97: the chromeless Aperture editor is never localized or rewritten.
+  it.each(['', ...publicLocalePrefixes.map((p) => `/${p}`)])(
+    'does not rewrite /photo/... requested from locale %s',
+    (localePrefix) => {
+      for (const path of ['/photo', '/photo/new', '/photo/abc-123']) {
+        const res = run(path);
+        expect(isPassThrough(res), path).toBe(true);
+        expect(rewriteTarget(res), path).toBeNull();
+        expect(res.status, path).not.toBe(308);
+      }
+      if (localePrefix) expect(rewriteTarget(run(`${localePrefix}/photo/new`))).toBeNull();
+    },
+  );
+
+  it('keeps /photo-* look-alikes and /tools/aperture on the locale logic', () => {
+    expect(rewriteTarget(run('/photography'))).toBe('/en/photography');
+    expect(rewriteTarget(run('/photo-tips'))).toBe('/en/photo-tips');
+    expect(rewriteTarget(run('/tools/aperture'))).toBe('/en/tools/aperture');
+  });
+
+  it('excludes /photo in the matcher exactly', () => {
+    const matcher = new RegExp(`^${config.matcher[0]}$`);
+    expect(matcher.test('/photo')).toBe(false);
+    expect(matcher.test('/photo/new')).toBe(false);
+    expect(matcher.test('/photography')).toBe(true);
+    expect(matcher.test('/tools/aperture')).toBe(true);
+  });
 });
 
 

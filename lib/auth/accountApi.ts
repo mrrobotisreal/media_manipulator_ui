@@ -96,6 +96,15 @@ export interface TierLimits {
   vectorFormats?: string[];
   /** Saved Motion projects; -1 means unlimited (anonymous: browser-only). */
   vectorProjects?: number;
+  // Aperture (photo, MM95). Optional: absent on APIs before MM95.
+  /** Saved Aperture projects; -1 means unlimited (anonymous: one browser-local project). */
+  photoProjects?: number;
+  /** MM103: saved Aperture presets per account (-1 unlimited, 0 none). */
+  photoPresets?: number;
+  /** Largest export in megapixels (12 / 12 / 120 / 120). */
+  photoMaxMegapixels?: number;
+  /** Photos per batch run (0 / 3 / 10 / 25). */
+  photoBatch?: number;
   /** Longest counted export in ms; 0 means no cap. */
   vectorMaxDurationMs?: number;
   /** Raster export caps; a 0 field means no cap on that axis. */

@@ -24,6 +24,7 @@ import type { BillingCurrency, PaidPlan, TierDescriptor, TierLimits, TiersRespon
 import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
 import { planPrices, yearlyMonthsFree } from '@/lib/billing/price';
 import { cn } from '@/lib/utils';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 
 type T = ReturnType<typeof getServerT>;
 
@@ -91,6 +92,24 @@ const ROWS: Row[] = [
     served: (l) => typeof l.vectorProjects === 'number',
   },
   {
+    // MM100: Aperture rows. Each is hidden when the API predates MM95 (no `photo*` fields).
+    key: 'photoProjects',
+    // The anonymous allowance is one browser-local project; the server stores none.
+    render: (l, t, tier) =>
+      tier === 'anonymous' && (l.photoProjects ?? 0) === 0 ? t('interface:pricing.values.photoLocalOnly') : count(l.photoProjects ?? 0, t),
+    served: (l) => typeof l.photoProjects === 'number',
+  },
+  {
+    key: 'photoMaxMegapixels',
+    render: (l, t) => t('interface:pricing.values.megapixels', { values: { count: l.photoMaxMegapixels ?? 0 } }),
+    served: (l) => typeof l.photoMaxMegapixels === 'number',
+  },
+  {
+    key: 'photoBatch',
+    render: (l, t) => ((l.photoBatch ?? 0) > 0 ? `${l.photoBatch}` : t('interface:pricing.values.notAvailable')),
+    served: (l) => typeof l.photoBatch === 'number',
+  },
+  {
     key: 'priorityGpu',
     render: (l, t) =>
       l.priorityGpu
@@ -120,6 +139,9 @@ const NUMERIC_ROWS = new Set([
   'exportsPerDay',
   'vectorExportsPerDay',
   'vectorProjects',
+  'photoProjects',
+  'photoMaxMegapixels',
+  'photoBatch',
   'maxFileBytes',
   'maxVideoSeconds',
   'maxOutputHeight',
@@ -236,7 +258,7 @@ const RowList: React.FC<{ rows: Row[]; column: TierDescriptor; t: T }> = ({ rows
         key={row.key}
         className="flex items-baseline justify-between gap-4 border-b border-edge pb-2 last:border-0 last:pb-0"
       >
-        <dt className="text-sm text-muted-foreground">{t(`interface:pricing.rows.${row.key}`)}</dt>
+        <dt className="text-sm text-muted-foreground">{t(`interface:pricing.rows.${row.key}`, { values: { brand: PHOTO_BRAND } })}</dt>
         <dd className="text-end">
           <ValueCell numeric={NUMERIC_ROWS.has(row.key)}>
             {row.render(column.limits, t, column.tier as TierKey)}
@@ -380,7 +402,7 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
                   scope="row"
                   className="py-3 pe-4 text-start text-sm font-normal text-muted-foreground"
                 >
-                  {t(`interface:pricing.rows.${row.key}`)}
+                  {t(`interface:pricing.rows.${row.key}`, { values: { brand: PHOTO_BRAND } })}
                 </th>
                 {columns.map((column) => (
                   <td key={column.tier} className="py-3 pe-4" data-tier={column.tier} data-row={row.key}>
@@ -409,13 +431,13 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
           {t('interface:pricing.faqTitle')}
         </h2>
         <dl className="mt-5 grid gap-5">
-          {(['1', '2', '3', '4'] as const).map((n) => (
+          {(['1', '2', '3', '4', '5'] as const).map((n) => (
             <div key={n}>
               <dt className="text-sm font-medium text-foreground">
-                {t(`interface:pricing.faq.q${n}`)}
+                {t(`interface:pricing.faq.q${n}`, { values: { brand: PHOTO_BRAND } })}
               </dt>
               <dd className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                {t(`interface:pricing.faq.a${n}`)}
+                {t(`interface:pricing.faq.a${n}`, { values: { brand: PHOTO_BRAND } })}
               </dd>
             </div>
           ))}
