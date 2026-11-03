@@ -2,10 +2,10 @@
  * Italian partial overrides for the data-driven tool pages
  * (see `i18n/toolPageContent.ts` — anything omitted falls back to English).
  *
- * Scope (MM58, 2026-10-26): only the Motion tool page body, which
- * `i18n/motionTranslations.test.ts` (MM48) requires for every translated
- * locale. The other ~65 tool pages render English until a later session
- * extends this file slug by slug, as the other locales do.
+ * Scope: MM58 (2026-10-26) added Motion's full page body; MM92 (2026-10-31)
+ * added `name` + `tagline` for every tool; MM93 (2026-11-03) added the full
+ * body of every non-alias tool page (98), model-written by Fable 5.1; native
+ * review pending.
  *
  * Register: informal "tu"; brand names, formats and codecs stay untranslated;
  * "Motion" and "Darkroom" stay as they are. Model-written, needs native review.
@@ -20,11 +20,11 @@ const itToolPages = {
       tagline: 'Disegna o importa un SVG, animalo su una timeline a fotogrammi chiave ed esporta SVG animato, Lottie, React, JavaScript, Flutter o GIF, tutto nel tuo browser.',
       intro: 'Motion è un editor SVG con timeline di animazione, integrato in Media Manipulator. Apri un file SVG (o un\'animazione Lottie) e ogni forma diventa un livello che puoi selezionare, spostare, ricolorare e animare, oppure parti da una tela vuota e disegna con gli strumenti rettangolo, ellisse, linea, penna e testo. Ogni proprietà animata ha una propria traccia di fotogrammi chiave, con preset di easing, un editor di curve per easing personalizzati e chiavi di hold per i salti istantanei. Gli animatori con un clic aggiungono tracciamento del contorno, movimento lungo un tracciato, morph di forma, cambi di colore dei gradienti, animazione delle maschere e sfocatura. Quando si muove come vuoi, esportalo come SVG animato, file Lottie, componente React, modulo JavaScript o TypeScript, widget Flutter o GIF. La modifica e ogni esportazione girano nel tuo browser, quindi la tua grafica non viene mai caricata per esportarla.',
       whatItDoes: [
-        'Importa file SVG in un albero di livelli modificabile (gruppi, tracciati, forme, testo, immagini, gradienti, maschere e tracciati di ritaglio) e importa animazioni Lottie JSON con i loro fotogrammi chiave.',
+        'Importa file SVG in un albero di livelli modificabile (gruppi, tracciati, forme, testo, immagini, gradienti, maschere e tracciati di ritaglio) e importa animazioni Lottie JSON con i loro fotogrammi chiave, ogni file fino a 4 MB.',
         'Disegna nuova grafica con gli strumenti rettangolo, ellisse, linea, penna (Bézier) e testo, e modifica i nodi dei tracciati direttamente sulla tela.',
         'Anima posizione, scala, rotazione, inclinazione, opacità, riempimento, contorno e spessore del contorno su una timeline a fotogrammi chiave con easing lineare, ease-in, ease-out, ease-in-out, cubic-bezier personalizzato e hold.',
-        'Aggiunge animazioni avanzate con un clic: tracciamento del contorno, movimento lungo un tracciato con rotazione automatica facoltativa, morph di forma, colori dei punti del gradiente, animazione di maschere e tracciati di ritaglio, e sfocatura.',
-        'Esporta un SVG statico (sempre gratuito), un SVG animato che si riproduce senza alcuna libreria, Lottie JSON, un componente React, un modulo JavaScript o TypeScript, un widget Flutter e una GIF animata.',
+        'Aggiunge sei animatori con un clic: tracciamento del contorno, movimento lungo un tracciato con rotazione automatica facoltativa, morph di forma, colori dei punti del gradiente, animazione di maschere e tracciati di ritaglio, e sfocatura.',
+        'Esporta un SVG statico (sempre gratuito e mai conteggiato), un SVG animato che si riproduce senza alcuna libreria, Lottie JSON, un componente React, un modulo JavaScript o TypeScript, un widget Flutter e una GIF animata, tutti generati sul tuo computer.',
       ],
       flowSteps: [
         {
@@ -91,27 +91,27 @@ const itToolPages = {
         'Esportazioni per designer e sviluppatori insieme: SVG animato, Lottie, React, JavaScript o TypeScript, Flutter e GIF da un unico progetto.',
         'Le esportazioni vengono create nel tuo browser, e l\'unico codice di terze parti usato da un\'esportazione ha licenze permissive (anime.js sotto MIT; flutter_svg e webview_flutter per Flutter), con l\'avviso di licenza conservato nel file.',
       ],
-      privacyNote: 'Modifica ed esportazione avvengono nel tuo browser; la tua grafica non viene caricata per esportarla. Senza un account, i progetti restano solo in questo browser. Se accedi e salvi un progetto nel tuo account, viene conservato sui nostri server come un progetto Darkroom, segue il periodo di conservazione che scegli e può essere eliminato dalla pagina del tuo Account. Per ogni esportazione registriamo solo formato, dimensione, durata e ora, per applicare la quota giornaliera.',
+      privacyNote: 'Modifica ed esportazione avvengono nel tuo browser; la tua grafica non viene caricata per esportarla. Senza un account, i progetti restano solo in questo browser. Se accedi e salvi un progetto nel tuo account, il documento ripulito (fino a 4 MB) e una miniatura vengono conservati sui nostri server come un progetto Darkroom, seguono il periodo di conservazione che scegli e possono essere eliminati dalla pagina del tuo Account. Per ogni esportazione conteggiata registriamo solo formato, altezza, frame rate, durata e ora, con il tuo account o la tua sessione come proprietario, per applicare la quota giornaliera; la riga di esportazione non contiene mai la grafica.',
       faq: [
         {
           question: 'Motion è gratuito?',
-          answer: 'Sì. Aprire Motion, disegnare, animare, salvare ed esportare un SVG statico è gratuito e illimitato, senza account. Le esportazioni animate contano in una quota giornaliera che dipende dal tuo piano; la tabella dei piani in questa pagina mostra quota e formati di ogni piano.',
+          answer: 'Sì. Aprire Motion, disegnare, animare, salvare in questo browser ed esportare un SVG statico è gratuito, illimitato e non richiede alcun account. Le esportazioni animate contano in una quota giornaliera che dipende dal tuo piano: per impostazione predefinita 2 al giorno senza account (solo SVG animato), 5 con un account gratuito, 30 con Premium e 150 con Pro. La tabella dei piani in questa pagina mostra la quota aggiornata e i formati di ogni piano.',
         },
         {
           question: 'Quali formati posso esportare?',
-          answer: 'SVG statico, SVG animato (CSS, o un piccolo script in linea quando serve), Lottie JSON, un componente React (.tsx), un modulo JavaScript o TypeScript, un widget Flutter (.dart) e una GIF animata. Quali di questi include il tuo piano, e il numero giornaliero di esportazioni, sono indicati nella tabella dei piani in questa pagina.',
+          answer: 'SVG statico, SVG animato (CSS, o un piccolo script in linea quando serve), Lottie JSON, un componente React (.tsx), un modulo JavaScript o TypeScript, un widget Flutter (.dart) e una GIF animata. Per impostazione predefinita l\'SVG animato è disponibile in ogni piano, Lottie dall\'account gratuito in su, e React, JS/TS, Flutter e GIF da Premium in su. Quali di questi include il tuo piano, e il numero giornaliero di esportazioni, sono indicati nella tabella dei piani in questa pagina.',
         },
         {
           question: 'Quali sono i limiti?',
-          answer: 'Le esportazioni animate vengono conteggiate per giorno e si azzerano a mezzanotte UTC. I visitatori senza account possono salvare i progetti solo nel browser; i piani con accesso salvano un certo numero di progetti nell\'account. I visitatori hanno anche una durata massima dell\'animazione per l\'esportazione, e l\'esportazione GIF ha un limite di dimensione e durata. Tutti i numeri aggiornati sono nella tabella dei piani in questa pagina e nella pagina dei prezzi.',
+          answer: 'Le esportazioni animate vengono conteggiate per giorno e si azzerano a mezzanotte UTC; un\'esportazione rifiutata non viene conteggiata, mentre un\'esportazione che annulli dopo che il conteggio è stato registrato sì. I visitatori senza account salvano i progetti solo nel browser e possono esportare animazioni lunghe fino a 10 secondi; un account gratuito salva 3 progetti nell\'account, Premium 25, Pro senza limite. Le importazioni SVG e Lottie sono limitate a 4 MB ciascuna, l\'esportazione GIF a 50 fps e 2 GB di output. Tutti i numeri aggiornati sono nella tabella dei piani in questa pagina e nella pagina dei prezzi.',
         },
         {
           question: 'Posso animare un SVG che ho già?',
-          answer: 'Sì. Importa qualsiasi SVG e i suoi gruppi, tracciati, forme, testo, gradienti, maschere e tracciati di ritaglio diventano livelli modificabili. Le parti che l\'editor non può modificare, come pattern o filtri complessi, vengono mantenute ed esportate invariate, e tutto ciò che non è sicuro (script o collegamenti esterni) viene rimosso ed elencato dopo l\'importazione.',
+          answer: 'Sì. Importa qualsiasi SVG e i suoi gruppi, tracciati, forme, testo, gradienti, maschere e tracciati di ritaglio diventano livelli modificabili. Le parti che l\'editor non può modificare, come pattern o filtri complessi, vengono mantenute ed esportate invariate, e tutto ciò che non è sicuro (script, gestori di eventi o collegamenti esterni) viene rimosso ed elencato dopo l\'importazione.',
         },
         {
           question: 'Supporta Lottie?',
-          answer: 'Sì, in entrambe le direzioni. Puoi importare un file Lottie JSON per modificarlo ed esportare la tua animazione come Lottie JSON per lottie-web e i lettori Lottie di iOS, Android e Flutter. Le funzioni che una delle due parti non può rappresentare vengono elencate nella finestra invece di essere scartate in silenzio.',
+          answer: 'Sì, in entrambe le direzioni. Puoi importare un file Lottie JSON per modificarlo (l\'importazione conta come un\'unità dal piano gratuito in su) ed esportare la tua animazione come Lottie JSON per lottie-web e i lettori Lottie di iOS, Android e Flutter. Le funzioni che una delle due parti non può rappresentare vengono elencate nella finestra invece di essere scartate in silenzio.',
         },
         {
           question: 'Quali browser supportano l\'esportazione video?',
@@ -6492,7 +6492,7 @@ const itToolPages = {
       name: 'Transcodifica video in HLS',
       h1: 'Transcodifica video in HLS online',
       tagline: 'Crea da qualsiasi video un pacchetto Apple HLS VOD: master.m3u8 e segmenti .ts per ogni rendition, pronti per il web.',
-      metaTitle: 'Transcodifica video in HLS online | Strumento gratuito per lo streaming adattivo',
+      metaTitle: 'Transcodifica video in HLS online: streaming adattivo | Media Manipulator',
       metaDescription: 'Transcoder HLS online gratuito. Converti MP4, MOV, WebM e MKV in un pacchetto HLS VOD con rendition a 360p/480p/720p, con sottotitoli e storyboard opzionali.',
       ogTitle: 'Transcodifica video in HLS online',
       ogDescription: 'Genera un pacchetto HLS adattivo (master.m3u8 + playlist delle varianti + segmenti .ts) da qualsiasi video, gratis, nel tuo browser.',
@@ -6996,7 +6996,7 @@ const itToolPages = {
       name: 'Scansione documenti con IA',
       h1: 'Scansione documenti con IA: pagine scansionate e scrittura a mano in PDF / Word ricercabili',
       tagline: 'Trasforma documenti scansionati e appunti scritti a mano in un PDF multipagina ricercabile e in un documento Word modificabile: le pagine stampate ottengono un fedele livello di testo Tesseract, la scrittura a mano viene trascritta da una IA di visione con l\'incertezza segnalata, mai inventata.',
-      metaTitle: 'Scansione documenti con IA: pagine scansionate e scrittura a mano in PDF/Word | Media Manipulator',
+      metaTitle: 'Scansione documenti con IA: scansioni e appunti a mano in PDF/Word | Media Manipulator',
       metaDescription: 'Scansione di documenti con IA, gratis: converti immagini scansionate in PDF ricercabile e in Word con OCR, e trascrivi appunti scritti a mano in testo. Riordina le pagine, mescola stampato e manoscritto, tutto sulla nostra GPU, alla lettera e con l\'incertezza segnalata.',
       ogTitle: 'Scansione documenti con IA: PDF ricercabile + Word da scansioni e scrittura a mano',
       ogDescription: 'Carica una o più pagine scansionate, stampate o scritte a mano, riordinale e ottieni un PDF ricercabile e un DOCX modificabile. Le pagine stampate restano fedeli; la scrittura a mano viene trascritta alla lettera con i marcatori [illegible]/[?] conservati.',
@@ -7160,7 +7160,7 @@ const itToolPages = {
       name: 'Upscaler di immagini con IA',
       h1: 'Upscaler di immagini con IA: ingrandisci le foto 2x o 4x online',
       tagline: 'Ingrandisci una foto piccola o morbida con un modello Real-ESRGAN che ricostruisce i dettagli fini invece di limitarsi a stirare i pixel.',
-      metaTitle: 'Upscaler di immagini con IA: ingrandisci le foto 2x o 4x | Media Manipulator',
+      metaTitle: 'Upscaler di immagini con IA: ingrandisci foto 2x o 4x | Media Manipulator',
       metaDescription: 'Ingrandisci una foto a bassa risoluzione 2x o 4x con una IA che ripristina bordi e texture. Funziona sulla nostra GPU, output in PNG. I file degli ospiti restano 24 ore; con un account gratuito scegli tu da 24 ore a 2 anni.',
       ogTitle: 'Upscaler di immagini con IA: ingrandisci le foto 2x o 4x',
       ogDescription: 'Ingrandisci foto piccole o morbide con un modello IA Real-ESRGAN che ricostruisce i dettagli invece di stirare i pixel.',
