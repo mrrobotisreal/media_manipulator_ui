@@ -1568,7 +1568,7 @@
       "gamma": "Mitteltöne",
       "outBlack": "Ausgabe Schwarz",
       "outWhite": "Ausgabe Weiß",
-      "reset": "Tonwerte zurücksetzen"
+      "reset": "Tonwertkorrektur zurücksetzen"
     },
     "hsl": {
       "range": {
@@ -1664,7 +1664,7 @@
       "title": "Effekte",
       "invert": "Umkehren",
       "posterize": "Tonwerttrennung",
-      "levels": "Tonwerte",
+      "levels": "Tonwertkorrektur",
       "threshold": "Schwellenwert",
       "level": "Stufe",
       "gamma": "Gamma",
@@ -2011,7 +2011,7 @@
         "reset": "Zurücksetzen",
         "resetColours": "Farben zurücksetzen",
         "resetCrop": "Zuschnitt zurücksetzen",
-        "resetLevels": "Tonwerte zurücksetzen",
+        "resetLevels": "Tonwertkorrektur zurücksetzen",
         "resetPerspective": "Perspektive zurücksetzen",
         "restoreDraft": "Entwurf wiederherstellen",
         "rotate": "Drehen",

@@ -1461,7 +1461,7 @@
       "bigPhotoNote": "L'anteprima di questa foto è a dimensioni ridotte. Le esportazioni usano la risoluzione piena.",
       "exportSettingUp": "Esportazione in preparazione",
       "panelsTab": "Pannelli",
-      "layersTab": "Livelli",
+      "layersTab": "Strati",
       "shortcuts": "Scorciatoie da tastiera"
     },
     "banner": {
@@ -1500,7 +1500,7 @@
       "splitTone": "Viraggio parziale",
       "lut": "LUT",
       "effects": "Effetti",
-      "layers": "Livelli",
+      "layers": "Strati",
       "geometry": "Geometria",
       "masks": "Maschere",
       "heal": "Ritocco",
@@ -1672,10 +1672,10 @@
       "remove": "Rimuovi"
     },
     "layers": {
-      "title": "Livelli",
+      "title": "Strati",
       "empty": "Ancora nessuna regolazione. Sposta un cursore qualsiasi per aggiungerne una.",
-      "enable": "Mostra livello",
-      "disable": "Nascondi livello",
+      "enable": "Mostra strato",
+      "disable": "Nascondi strato",
       "opacity": "Opacità",
       "blend": "Fusione",
       "blendMode": {
@@ -1689,7 +1689,7 @@
       "moveUp": "Sposta su",
       "moveDown": "Sposta giù",
       "mask": "Aggiungi una maschera",
-      "selectLayer": "Seleziona il livello {{name}}",
+      "selectLayer": "Seleziona lo strato {{name}}",
       "type": {
         "exposure": "Esposizione",
         "brightnessContrast": "Luminosità / contrasto",
@@ -1778,8 +1778,8 @@
       "title": "Maschera",
       "add": "Aggiungi un componente di maschera",
       "empty": "Questa maschera è vuota. Aggiungi un componente per limitare dove si applica la regolazione.",
-      "selectLayer": "Seleziona un livello di regolazione per assegnargli una maschera.",
-      "layer": "Livello",
+      "selectLayer": "Seleziona uno strato di regolazione per assegnargli una maschera.",
+      "layer": "Strato",
       "kind": {
         "gradient": "Gradiente lineare",
         "radial": "Radiale",
@@ -1809,7 +1809,7 @@
       "localType": "Regolazione",
       "localBasic": "Esposizione, tono e saturazione",
       "addLocal": "Aggiungi regolazione locale",
-      "localHint": "Crea la regolazione con una maschera vuota e apre il pennello. Il combo condivide una maschera tra i suoi tre livelli.",
+      "localHint": "Crea la regolazione con una maschera vuota e apre il pennello. Il combo condivide una maschera tra i suoi tre strati.",
       "luminosity": {
         "lo": "Da luminosità",
         "hi": "A luminosità"
@@ -1983,8 +1983,8 @@
         "crop": "Ritaglia",
         "curves": "Curve",
         "dehaze": "Rimozione foschia",
-        "deleteLayer": "Elimina livello",
-        "duplicateLayer": "Duplica livello",
+        "deleteLayer": "Elimina strato",
+        "duplicateLayer": "Duplica strato",
         "fill": "Riempimento",
         "flip": "Rifletti",
         "gamma": "Gamma",
@@ -1992,7 +1992,7 @@
         "grayExcept": "Grigio tranne un colore",
         "heal": "Ritocco",
         "invertMask": "Inverti maschera",
-        "layerOpacity": "Opacità del livello",
+        "layerOpacity": "Opacità dello strato",
         "levels": "Livelli",
         "lut": "LUT",
         "mask": "Maschera",
@@ -2007,8 +2007,8 @@
         "removeLUT": "Rimuovi LUT",
         "removeMask": "Rimuovi maschera",
         "removeMaskComponent": "Rimuovi parte della maschera",
-        "renameLayer": "Rinomina livello",
-        "reorderLayers": "Riordina livelli",
+        "renameLayer": "Rinomina strato",
+        "reorderLayers": "Riordina strati",
         "reset": "Reimposta",
         "resetColours": "Reimposta colori",
         "resetCrop": "Reimposta ritaglio",
@@ -2023,7 +2023,7 @@
         "straighten": "Raddrizza",
         "texture": "Texture",
         "threshold": "Soglia",
-        "toggleLayer": "Mostra o nascondi livello",
+        "toggleLayer": "Mostra o nascondi strato",
         "vignette": "Vignettatura",
         "exposure": "Esposizione",
         "snapshot": "Vai all'istantanea",
@@ -2033,7 +2033,7 @@
         "brushGesture": "Impostazione pennello",
         "maskGesture": "Impostazione maschera",
         "geometryGesture": "Impostazione geometria",
-        "layerGesture": "Impostazione livello"
+        "layerGesture": "Impostazione strato"
       }
     },
     "shortcuts": {

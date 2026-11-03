@@ -72,8 +72,8 @@ describe("legal retention copy", () => {
         expect(pages.legalCommon.effectiveDate).toMatch(/24/);
         // MM48: Motion was added on 2026-10-26 (MM40's Pro update was the 25th); MM78's
         // voices update is 2026-10-28, and its note keeps the 2026-10-26 one.
-        expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01"); // MA09 bumped it from the 28th
-        expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-01");
+        expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03"); // MM100 bumped it from the 1st
+        expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-03");
         expect(pages.legalCommon.whatChangedBody).toMatch(/2026-10-26/);
       });
 
@@ -134,7 +134,7 @@ describe("legal retention copy", () => {
         expect(flatten(motionPrivacy)).toMatch(/Amazon S3/);
         expect(flatten(motionPrivacy)).toMatch(/\b3\b/);
         expect(ip.title).toMatch(/^13\./);
-        expect(ip.paragraphs).toHaveLength(6);
+        expect(ip.paragraphs).toHaveLength(7); // MM100 appends the Aperture sentence
         expect(ip.paragraphs?.[4]).toMatch(/Motion/);
         expect(ip.paragraphs?.[4]).toMatch(/anime\.js/);
         expect(ip.paragraphs?.[4]).toMatch(/\bMIT\b/);
@@ -355,12 +355,12 @@ describe("MM78 voices legal copy", () => {
       expect(t8[10].afterBullets).toHaveLength(2);
       expect(t8[10].paragraphs?.[1]).toContain(CONSENT_VERSION);
       expect(t8[10].afterBullets?.[0]).toContain("PerTh");
-      expect(pages.termsOfService.sections[0].bullets).toHaveLength(10);
-      expect(pages.termsOfService.sections[0].bullets?.[8]).toContain("8.11");
+      expect(pages.termsOfService.sections[0].bullets).toHaveLength(11);
+      expect(pages.termsOfService.sections[0].bullets?.[9]).toContain("8.11");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Chatterbox");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Qwen3-TTS");
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01"); // MA09 bumped it past the 28th
-      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-01");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03"); // MM100
+      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-03");
       expect(pages.legalCommon.whatChangedBody).toContain("1.10");
       expect(pages.legalCommon.whatChangedBody).toContain("8.11");
       // The consent sentence in the Terms is the one the checkbox shows.
@@ -452,7 +452,7 @@ describe("MM87 advertising disclosures", () => {
       expect(pages.pricing.faq.a3).toMatch(/Pro/);
       expect(sentences(pages.pricing.faq.a3)).toBe(sentences(enA3));
 
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01"); // MA09
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03"); // MM100 (MA09 set it to the 1st)
       const note = pages.legalCommon.whatChangedBody;
       for (const s of ["5.1", "1.5", "8.9", "aboutads.info", "youronlinechoices.eu", "ads.txt"]) expect(note).toContain(s);
       // The earlier 2026-10-28 voices note is kept after the new one.
@@ -481,7 +481,7 @@ describe("MM85 contact-form legal copy", () => {
     it(`${code}: §1.11 after §1.10, §16 points to the form, the what-changed note leads with it`, () => {
       const pages = load(code);
       const subs = pages.privacyPolicy.sections[0].subsections ?? [];
-      expect(subs).toHaveLength(11);
+      expect(subs).toHaveLength(12);
       expect(subs[10].title).toMatch(/^1\.11 /);
       expect(subs[10].paragraphs).toHaveLength(2);
       expect(flatten(subs[10])).toContain("Resend");
@@ -510,14 +510,80 @@ describe("MA09 Sign in with Apple legal copy", () => {
   });
 
   for (const { code } of locales) {
-    it(`${code}: names Apple in §1.7, §8 and Terms §9, with the 2026-11-01 note first`, () => {
+    it(`${code}: names Apple in §1.7, §8 and Terms §9, with their note in the body`, () => {
       const pages = load(code);
       expect(pages.privacyPolicy.sections[0].subsections?.[6].paragraphs?.[0]).toMatch(/Apple/);
       expect(pages.privacyPolicy.sections[7].bullets?.some((b) => /Apple/.test(b))).toBe(true);
       expect(pages.termsOfService.sections[8].paragraphs?.[1]).toMatch(/Apple/);
       expect(pages.legalCommon.whatChangedBody).toMatch(/Apple/);
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-01");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03");
       expect(pages.legalCommon.whatChangedBody).toMatch(/1\.7/);
+    });
+  }
+});
+
+// MM100: Aperture's data categories (Privacy §1.12) and its Terms sentences (§1 bullet, §13), in every locale.
+describe("MM100 Aperture legal copy", () => {
+  it("en-us: browser edit, uploads only on request, project storage, own GPU, counted jobs, outputs belong to you", () => {
+    const sub = flatten(en.privacyPolicy.sections[0].subsections?.[11]);
+    for (const fact of [
+      "1.12 Aperture Projects and Exports",
+      "drawn on your own device",
+      "a preview copy of it at up to 1920 pixels",
+      "follow the retention period you choose",
+      "listed in your data export",
+      "kept only in your browser",
+      "kept for 24 hours",
+      "our own GPU server",
+      "none of your photos is sent to a third-party service",
+      "hashed IP address",
+    ]) {
+      expect(sub).toContain(fact);
+    }
+    expect(flatten(en.privacyPolicy.sections[2])).toContain("Aperture projects");
+    expect(flatten(en.privacyPolicy.sections[3])).toContain("rembg and LaMa");
+    expect(flatten(en.termsOfService.sections[0].bullets)).toContain("Aperture");
+    const terms = en.termsOfService.sections[12].paragraphs ?? [];
+    expect(terms).toHaveLength(7);
+    expect(terms[6]).toContain("belong to you");
+    expect(terms[6]).toContain("never changes the original file");
+    expect(en.legalCommon.whatChangedBody.startsWith("We added Aperture")).toBe(true);
+  });
+
+  for (const { code } of locales) {
+    it(`${code}: §1.12, the §1 bullet, §13, §3 / §3.3 / §3.4 and §4 name Aperture; the note leads with it`, () => {
+      const pages = load(code);
+      const sub = pages.privacyPolicy.sections[0].subsections ?? [];
+      expect(sub).toHaveLength(12);
+      expect(sub[11].title).toMatch(/^1\.12 /);
+      expect(sub[11].title).toContain("Aperture");
+      expect(sub[11].paragraphs).toHaveLength(3);
+      // The numbers and technical terms that must survive translation.
+      expect(flatten(sub[11])).toMatch(/1920/);
+      expect(flatten(sub[11])).toMatch(/24/);
+      expect(flatten(sub[11])).toContain("IndexedDB");
+      expect(flatten(sub[11])).toContain("GPU");
+      expect(flatten(pages.privacyPolicy.sections[2])).toContain("Aperture");
+      expect(flatten(pages.privacyPolicy.sections[3])).toContain("LaMa");
+      expect(pages.termsOfService.sections[0].bullets).toHaveLength(11);
+      expect(pages.termsOfService.sections[0].bullets?.[8]).toContain("Aperture");
+      expect(pages.termsOfService.sections[12].paragraphs).toHaveLength(7);
+      expect(pages.termsOfService.sections[12].paragraphs?.[6]).toContain("Aperture");
+      expect(pages.legalCommon.whatChangedBody).toContain("Aperture");
+      expect(pages.legalCommon.whatChangedBody).toContain("1.12");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03");
+      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-03");
+      // Same day in every locale.
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe(legalDay(en.legalCommon.lastUpdated));
+    });
+
+    it(`${code}: the Aperture legal text is translated, not copied (non-English locales)`, () => {
+      if (code.toLowerCase() === "en-us") return;
+      const pages = load(code);
+      expect(flatten(pages.privacyPolicy.sections[0].subsections?.[11])).not.toBe(flatten(en.privacyPolicy.sections[0].subsections?.[11]));
+      expect(pages.termsOfService.sections[12].paragraphs?.[6]).not.toBe(en.termsOfService.sections[12].paragraphs?.[6]);
+      expect(pages.termsOfService.sections[0].bullets?.[8]).not.toBe(en.termsOfService.sections[0].bullets?.[8]);
+      expect(pages.legalCommon.whatChangedBody).not.toBe(en.legalCommon.whatChangedBody);
     });
   }
 });

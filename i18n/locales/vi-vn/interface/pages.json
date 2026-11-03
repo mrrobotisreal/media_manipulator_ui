@@ -340,6 +340,10 @@
       "motion": {
         "title": "Hướng dẫn hoạt ảnh",
         "description": "Tạo hoạt ảnh cho đồ họa SVG trên dòng thời gian keyframe và xuất thành SVG động, Lottie, mã nguồn hoặc GIF."
+      },
+      "photo": {
+        "title": "Hướng dẫn chỉnh sửa ảnh",
+        "description": "Chỉnh ánh sáng và màu sắc, tạo mặt nạ, chữa lành và xuất ảnh với {{brand}}."
       }
     },
     "tutorials": {
@@ -513,6 +517,110 @@
             "darkroomDesc": "Chỉnh sửa video trên dòng thời gian đa track và xuất MP4."
           }
         }
+      },
+      "aperture": {
+        "title": "Cách chỉnh sửa ảnh trực tuyến với {{brand}}",
+        "excerpt": "Hướng dẫn tám bước về {{brand}}: mở ảnh, chỉnh ánh sáng và màu sắc, làm nổi bật một màu, dùng mặt nạ cho một phần của ảnh, chữa lành khuyết điểm, xuất ở độ phân giải đầy đủ, lưu phong cách và áp dụng cùng chỉnh sửa cho nhiều ảnh hơn.",
+        "readTime": "Đọc trong 8 phút",
+        "page": {
+          "eyebrow": "Hướng dẫn chỉnh sửa ảnh",
+          "title": "Cách chỉnh sửa ảnh với {{brand}}",
+          "intro": "{{brand}} là trình chỉnh sửa ảnh không phá hủy của Media Manipulator. Mỗi thay đổi bạn thực hiện là một lớp chỉnh sửa xếp chồng lên bản gốc còn nguyên vẹn, nên sau này bạn có thể sắp xếp lại, tạo mặt nạ, làm mờ hoặc xóa bất kỳ bước nào, và tệp bạn đã mở không bao giờ bị thay đổi. Bản xem trước được vẽ bằng card đồ họa của bạn từ một bản sao 1920 px; bản xuất được kết xuất trên máy chủ của chúng tôi từ bản gốc ở độ phân giải đầy đủ bằng cùng các công thức. Hướng dẫn này đi qua một lần chỉnh sửa, từ lúc mở ảnh đến lúc áp dụng phong cách hoàn chỉnh cho cả một loạt ảnh, dùng đúng tên bảng và thanh trượt bạn sẽ thấy trong trình chỉnh sửa.",
+          "open": {
+            "title": "1. Mở một ảnh",
+            "body": "Mở {{brand}} từ trang công cụ của nó hoặc từ bất kỳ trang công cụ ảnh nào trên Media Manipulator. Trình chỉnh sửa chiếm toàn bộ màn hình và không có quảng cáo. Thả một ảnh vào màn hình mở đầu hoặc nhấn Chọn ảnh. Khi ảnh được giải mã, bạn có bản xem trước ở giữa, các tab Bảng và Lớp ở một bên, và biểu đồ tần suất trực tiếp hiển thị đỏ, xanh lá, xanh dương và độ chói. Giữ phím gạch chéo ngược bất cứ lúc nào để xem bản gốc, hoặc bật Chế độ chia đôi để so sánh hai nửa.",
+            "bullets": {
+              "formats": "Bạn có thể mở các tệp JPG, PNG, WebP, GIF, HEIC, HEIF, AVIF, TIFF và BMP. Trình duyệt của bạn tự giải mã các định dạng web phổ biến. HEIC, HEIF, TIFF và BMP cần có tài khoản, vì máy chủ tạo một bản xem trước trước khi trình chỉnh sửa có thể hiển thị chúng.",
+              "local": "Khi chưa có tài khoản, ảnh và các chỉnh sửa của bạn nằm trong bộ nhớ của trình duyệt này và không có gì được tải lên cho đến khi bạn xuất, chọn chủ thể hoặc chữa lành. Khách giữ được một ảnh mỗi lần; mở ảnh thứ hai sẽ thay thế dự án đã lưu, và trình chỉnh sửa sẽ hỏi trước khi làm vậy.",
+              "account": "Khi đã đăng nhập, mỗi ảnh trở thành một dự án được lưu vào tài khoản của bạn: 5 dự án với gói Miễn phí, 50 với Premium và không giới hạn với Pro. Dự án mở được trên mọi thiết bị và tự động lưu khi bạn làm việc, với trạng thái đã lưu hiển thị trên thanh trên cùng.",
+              "original": "Tệp gốc không bao giờ bị thay đổi. Mỗi chỉnh sửa là một lớp đặt trên nó, với độ mờ đục riêng từ 0 đến 100 phần trăm, chế độ hòa trộn bình thường, độ chói hoặc màu, và một mặt nạ tùy chọn. Bạn có thể xếp chồng tối đa 64 lớp, và bảng Lịch sử liệt kê mọi bước."
+            }
+          },
+          "basic": {
+            "title": "2. Chỉnh ánh sáng và màu sắc với Cơ bản",
+            "body": "Hầu hết ảnh cần đến bảng Cơ bản trước tiên. Bảng này gom các thanh trượt toàn cục thành các phần Phơi sáng, Ánh sáng, Tông, Cân bằng trắng và Màu sắc, mỗi phần trở thành một lớp chỉnh sửa riêng ngay khi bạn di chuyển một thanh trượt. Làm từ trên xuống: chỉnh độ sáng tổng thể cho đúng, rồi khôi phục vùng sáng và vùng tối, rồi sửa ám màu, rồi quyết định bạn muốn bao nhiêu màu sắc. Hãy theo dõi biểu đồ tần suất khi kéo; hiện tượng cháy sáng hoặc mất chi tiết sẽ hiện ra dưới dạng dồn cục ở một trong hai đầu.",
+            "bullets": {
+              "exposure": "Phơi sáng (EV) chạy từ -5 đến +5 stop và nhân mỗi điểm ảnh với hai mũ giá trị đó, nên +1 nhân đôi lượng ánh sáng. Độ lệch cộng hoặc trừ một lượng cố định từ -0.5 đến 0.5, và Gamma từ 0.1 đến 10 uốn cong các tông trung. Ánh sáng gồm Độ sáng và Độ tương phản từ -100 đến 100.",
+              "tone": "Tông có Vùng sáng, Vùng tối, Điểm trắng và Điểm đen. Kéo Vùng sáng xuống để lấy lại bầu trời sáng, tăng Vùng tối để làm rõ khuôn mặt tối, và dùng Điểm trắng và Điểm đen để đặt vị trí của điểm sáng nhất và tối nhất. Mỗi thanh trượt tác động lên phần riêng của dải độ chói thay vì dịch chuyển tất cả.",
+              "whiteBalance": "Cân bằng trắng có Nhiệt độ màu và Sắc thái. Nhiệt độ màu đẩy ảnh về phía xanh dương hoặc hổ phách; Sắc thái đẩy về phía xanh lá hoặc tím đỏ. Ảnh chụp trong nhà dưới bóng đèn ấm thường cần kéo Nhiệt độ màu về phía xanh dương, và ánh sáng huỳnh quang thường cần thêm một chút Sắc thái tím đỏ. Hãy đánh giá kết quả dựa trên thứ lẽ ra phải có màu xám trung tính hoặc trắng.",
+              "history": "Ở đây không có gì là vĩnh viễn. Hoàn tác và làm lại nằm trên thanh trên cùng và trên bàn phím, bảng Lịch sử cho phép nhảy về bất kỳ trạng thái nào trước đó, và bạn có thể lưu một ảnh chụp nhanh có tên của phiên bản bạn thích trong phần còn lại của phiên. Hạ độ mờ đục của một lớp để áp dụng một nửa chỉnh sửa thay vì làm lại."
+            }
+          },
+          "colorPop": {
+            "title": "3. Làm nổi bật một màu",
+            "body": "Hiệu ứng màu chọn lọc, trong đó một màu được giữ lại còn mọi thứ khác chuyển sang xám, nằm trong bảng Màu (HSL). Bạn có thể đạt được nó chỉ trong một bước bằng phong cách có sẵn hoặc tự làm thủ công. Cách thủ công cho bạn kiểm soát chính xác sắc độ nào được giữ và mức mềm của viền giữa màu và xám, điều này quan trọng với những thứ như màu da nằm giữa đỏ và vàng.",
+            "bullets": {
+              "look": "Trong bảng Phong cách, chọn Nổi bật màu: đỏ, vàng, lục, lam lục, lam hoặc đỏ tía. Phong cách này thêm một lớp Màu (HSL) lên trên các chỉnh sửa của bạn, giảm độ bão hòa của mọi dải trừ dải bạn đã chọn. Nếu không đúng ý, một lần Hoàn tác sẽ gỡ toàn bộ phong cách.",
+              "chips": "Để tự làm, hãy mở Màu (HSL). Mỗi dải trong sáu dải, Đỏ, Vàng, Xanh lá, Xanh lơ, Xanh dương và Tím đỏ, có một nút Xám trừ màu này. Nhấn nút ở màu bạn muốn giữ và năm dải còn lại giảm độ bão hòa xuống -100 chỉ trong một thao tác.",
+              "ranges": "Nếu màu bạn muốn giữ không nằm trong sáu màu đó, hãy dùng Chọn một màu từ ảnh để thêm một dải tùy chỉnh bằng ống nhỏ giọt. Mỗi dải có các điều khiển Độ rộng và Làm mờ viền, nên bạn có thể mở rộng nó để bao gồm các sắc độ lân cận hoặc làm mềm đường viền để phần chuyển tiếp không trông như bị cắt ghép.",
+              "tune": "Sau đó tinh chỉnh màu được giữ lại bằng các thanh trượt Sắc độ, Độ bão hòa và Độ sáng riêng của nó. Tăng thêm một chút Độ bão hòa và giảm nhẹ Độ sáng thường làm màu được giữ nổi hơn trên nền xám. Nếu hiệu ứng tổng thể quá mạnh, hãy hạ độ mờ đục của lớp trong tab Lớp thay vì làm lại."
+            }
+          },
+          "masks": {
+            "title": "4. Chỉ chỉnh sửa một phần của ảnh bằng mặt nạ",
+            "body": "Bất kỳ lớp chỉnh sửa nào cũng có thể mang một mặt nạ, giới hạn nơi nó được áp dụng. Chọn lớp trong tab Lớp, mở Mặt nạ và thêm một thành phần. Vùng trắng của mặt nạ nhận toàn bộ chỉnh sửa, vùng đen không nhận gì, và vùng xám nhận theo tỷ lệ. Chế độ xem mặt nạ chuyển giữa tắt, lớp phủ màu trên ảnh và chỉ mặt nạ, để bạn thấy chính xác mình đang tác động vào đâu trước khi bắt đầu kéo thanh trượt.",
+            "bullets": {
+              "kinds": "Có sáu loại mặt nạ: Dải chuyển sắc tuyến tính cho bầu trời hoặc mặt sàn, Xuyên tâm cho đèn rọi quanh một điểm, Cọ để vẽ bằng tay với kích thước điều chỉnh được và công tắc xóa, Dải độ sáng chỉ cho các phần sáng hoặc tối, Dải màu cho các điểm ảnh có màu đã chọn, và Chọn chủ thể.",
+              "combine": "Một mặt nạ có thể chứa nhiều thành phần, và mỗi thành phần được đặt là Thêm, Trừ hoặc Giao. Một công thức thường gặp là Dải chuyển sắc tuyến tính phủ lên bầu trời với một Cọ Trừ để bảo vệ tòa nhà nhô vào đó. Làm mờ viền mặt nạ làm mềm cạnh, Cường độ mặt nạ điều chỉnh toàn bộ mức tác động, và Đảo ngược lật ngược nó.",
+              "colorRange": "Dải màu dùng cùng ý tưởng ống nhỏ giọt như bảng HSL: chọn một màu, Shift+nhấp để thêm tối đa tám màu nữa, và tăng Độ nhòe để bao gồm các sắc thái lân cận. Đây là cách nhanh để chỉ làm tối bầu trời xanh hoặc chỉ làm ấm tông màu da mà không cần vẽ gì.",
+              "subject": "Chọn chủ thể nhờ GPU của chúng tôi tìm người hoặc vật chính và trả về một mặt nạ viền mềm trong vài giây. Đây là loại mặt nạ duy nhất tải ảnh lên và được tính là một tác vụ thường trong gói của bạn; một yêu cầu lặp lại y hệt là một lần dùng lại từ bộ nhớ đệm miễn phí. Mọi loại mặt nạ khác được tính toán trong trình duyệt của bạn và không tốn gì."
+            }
+          },
+          "heal": {
+            "title": "5. Chữa lành đốm và khuyết điểm",
+            "body": "Bụi trên cảm biến, một cái mụn, một sợi dây thừa hay một mẩu rác đều có thể xử lý qua bảng Chữa lành. Khác với các thanh trượt, chữa lành là một bước tạo sinh: máy chủ của chúng tôi lấp vùng đã tô bằng các điểm ảnh mới khớp với xung quanh. Nó vẫn nằm trong chồng lớp và lịch sử của bạn, nên bạn có thể hoàn tác hoặc giữ phím gạch chéo ngược để so với bản gốc, nhưng đây là công cụ duy nhất trong hướng dẫn này tốn một tác vụ AI.",
+            "bullets": {
+              "paint": "Chọn Cọ đốm và tô lên từng vết bạn muốn xóa. Hãy tô rộng hơn chính đốm đó một chút để phần lấp có kết cấu sạch mà hòa vào. Bảng đếm số đốm bạn đã đánh dấu, và Xóa các đốm cho phép bắt đầu lại nếu bạn đổi ý trước khi nhấn Chữa lành.",
+              "press": "Nhấn Chữa lành khi đã đánh dấu xong các đốm. Ảnh và vùng đã tô được gửi đến GPU của chúng tôi, nơi mô hình tô vá LaMa lấp các vùng đã đánh dấu; việc này có thể mất tới một phút với tệp lớn. Khi hoàn tất, kết quả được áp dụng như một bước trong lịch sử của bạn và vẫn có thể Hoàn tác.",
+              "cost": "Mỗi lần nhấn Chữa lành là một tác vụ AI trong gói của bạn, bất kể bạn đã tô bao nhiêu đốm, nên hãy đánh dấu mọi thứ trước rồi chỉ nhấn một lần. Hạn mức hằng ngày của từng gói được liệt kê trên trang giá. Tô đốm, xóa đốm và hoàn tác một lần chữa lành không tốn gì.",
+              "base": "Chữa lành nằm trong chồng lớp của bạn như mọi thứ khác, nên các lớp màu và tông bạn thêm sau đó sẽ áp dụng lên kết quả đã chữa, và Hoàn tác hoặc bảng Lịch sử sẽ gỡ nó ra. Với mắt đỏ trong ảnh chân dung dùng đèn flash, có một bảng Mắt đỏ riêng hoàn toàn không cần AI."
+            }
+          },
+          "export": {
+            "title": "6. Xuất ở độ phân giải đầy đủ",
+            "body": "Nhấn Xuất trên thanh trên cùng khi đã chỉnh xong. Bản xem trước bạn làm việc là một bản sao 1920 px được vẽ bằng card đồ họa; bản xuất là một tác vụ trên máy chủ kết xuất bản gốc ở kích thước đầy đủ bằng cùng các công thức, nên hai bản khớp nhau với sai lệch tối đa vài mức 8 bit. Kết quả được tải xuống thành một tệp mới đặt tên theo tệp gốc kèm thêm (retouched), còn tệp gốc không bị đụng đến.",
+            "bullets": {
+              "format": "Chọn JPG, PNG, WebP, AVIF hoặc TIFF, đặt Chất lượng từ 1 đến 100 khi áp dụng được, và chọn Giữ lại hay Xóa bỏ siêu dữ liệu. Xóa bỏ sẽ loại khối EXIF, gồm cả thông số máy ảnh và mọi vị trí GPS, thường là điều bạn muốn trước khi đăng ảnh công khai.",
+              "size": "Kích thước tối đa có Bản gốc, 12, 24, 64 và 120 megapixel. Hộp thoại ước tính dung lượng tệp cho lựa chọn của bạn: một JPG chất lượng 92 vào khoảng 0.45 MB mỗi megapixel, nên ảnh 6000 x 4000 ở 24 MP ra khoảng 10.8 MB, trong khi WebP khoảng 0.3 MB và AVIF khoảng 0.2 MB mỗi megapixel.",
+              "server": "Khách và gói Miễn phí được xuất tối đa 12 MP, nên bản gốc lớn hơn sẽ được xuất ở 12 MP. Premium và Pro xuất tối đa 120 MP. Tác vụ chạy trên máy chủ của chúng tôi, nơi kết xuất bằng NumPy và OpenCV, mã hóa bằng ImageMagick và cung cấp tệp để tải xuống khi xong.",
+              "cost": "Một lần xuất là một tác vụ thường trong gói của bạn, và sau đó bạn có thể xuất lại với cài đặt khác, ví dụ một TIFF kích thước đầy đủ để in và một WebP 12 MP cho web. Xem trước, mọi thanh trượt, mọi mặt nạ không dùng AI, phong cách và hoàn tác đều miễn phí và không giới hạn."
+            }
+          },
+          "presets": {
+            "title": "7. Lưu và dùng lại phong cách",
+            "body": "Một phong cách trong {{brand}} là một nhóm lớp chỉnh sửa đã lưu. Bảng Phong cách có sẵn 18 phong cách cùng Tự động, và cũng là nơi lưu các cài đặt sẵn của riêng bạn. Lưu một cài đặt sẵn ghi lại các lớp bạn chọn cùng giá trị hiện tại, nên phong cách ấm, hơi phai bạn đã tinh chỉnh cho một ảnh có thể được áp dụng sang ảnh tiếp theo chỉ bằng một cú nhấp, và vẫn được đưa vào dưới dạng các lớp có thể chỉnh sửa chứ không phải một bộ lọc đã gắn cứng.",
+            "bullets": {
+              "builtin": "Các phong cách có sẵn được xếp thành Màu, Đen trắng, Phim và Sửa lỗi, gồm sáu phong cách Nổi bật màu, Phim đen trắng, Đen trắng tương phản cao, Ấm, Lạnh, Mờ mịn, Phai màu, Sống động, Nổi bật, Xử lý chéo, Cổ điển, Làm mịn chân dung, Phong cảnh và Tự động. Dùng ô lọc để tìm theo tên.",
+              "append": "Áp dụng một phong cách sẽ thêm các chỉnh sửa của nó thành một nhóm có tên lên trên những gì bạn đã có thay vì thay thế công việc của bạn. Nghĩa là bạn có thể xếp Ấm lên trên các chỉnh sửa Cơ bản của riêng mình, mở nhóm trong tab Lớp để tinh chỉnh từng thanh trượt, và gỡ cả phong cách bằng một lần Hoàn tác.",
+              "mine": "Chọn Lưu các chỉnh sửa hiện tại thành cài đặt sẵn, đặt tên và đánh dấu các chỉnh sửa cần đưa vào. Nó xuất hiện dưới Cài đặt sẵn của tôi. Cài đặt sẵn của bạn được lưu trong trình duyệt này, nên chúng không tự theo bạn sang thiết bị khác, và bạn có thể đổi tên hoặc xóa chúng từ cùng bảng.",
+              "file": "Xuất cài đặt sẵn ghi các cài đặt sẵn đã lưu của bạn ra một tệp JSON; Nhập cài đặt sẵn đọc một tệp trở lại. Dùng cách này để chuyển cài đặt sẵn sang trình duyệt hoặc máy tính khác, để sao lưu, hoặc để chia sẻ một phong cách với người khác cũng dùng {{brand}} trên Media Manipulator."
+            }
+          },
+          "batch": {
+            "title": "8. Áp dụng cùng chỉnh sửa cho nhiều ảnh hơn",
+            "body": "Khi nhiều ảnh từ cùng một buổi chụp cần cùng một cách xử lý, bạn không phải lặp lại việc chỉnh sửa. Hoàn tất một ảnh, mở hộp thoại Xuất và chọn Áp dụng cho nhiều ảnh hơn. Nó lấy toàn bộ chồng lớp của dự án hiện tại, gồm cả mặt nạ và phần chữa lành bạn đã làm trên ảnh này, và kết xuất lên các tệp khác bạn chọn với cài đặt xuất bạn đã chọn, rồi giao tất cả cho bạn trong một lần tải xuống.",
+            "bullets": {
+              "limit": "Áp dụng cho nhiều ảnh hơn chỉ dùng được khi bạn đã đăng nhập; hộp thoại yêu cầu khách đăng nhập. Gói Miễn phí áp dụng chỉnh sửa cho tối đa 3 ảnh mỗi lần, Premium tối đa 10 và Pro tối đa 25. Nếu chọn nhiều hơn gói cho phép, các tệp thừa sẽ bị bỏ ra và hộp thoại cho biết số lượng.",
+              "run": "Mỗi ảnh được chọn trước tiên được tạo thành một dự án riêng trong tài khoản của bạn, lần lượt từng ảnh, nên bản gốc và các chỉnh sửa của chúng được giữ như mọi dự án khác. Sau đó một tác vụ lô duy nhất kết xuất tất cả trên máy chủ, và hộp thoại hiển thị từng ảnh chuyển từ Đang chuẩn bị sang Đang kết xuất kèm phần trăm rồi Xong.",
+              "zip": "Khi quá trình kết xuất hoàn tất, nhấn Tải xuống dạng ZIP. Tệp nén được tạo trong trình duyệt của bạn từ các tệp đã hoàn thành, nên không có gì được tải lên thêm và bạn chỉ có một tệp để lưu thay vì cả chục lần tải riêng lẻ. Nếu có tệp không thể thêm vào, hộp thoại cho biết còn thiếu bao nhiêu.",
+              "retry": "Nếu một ảnh thất bại, các ảnh khác không bị chậm lại. Hộp thoại hiển thị số ảnh thất bại và có nút Thử lại chỉ cho các tệp đó, và ZIP có thể được tạo lại khi chúng hoàn tất. Mỗi lần xuất được tính là một tác vụ thường trong gói của bạn, nên hãy xem trang giá trước khi chạy một lô lớn."
+            }
+          },
+          "cta": {
+            "title": "Thử trên ảnh của chính bạn",
+            "body": "Mở {{brand}}, thả vào một ảnh và làm theo tám bước ở trên. Mọi thanh trượt, mặt nạ và phong cách đều miễn phí để thử mà không cần tài khoản, và ảnh của bạn ở lại trong trình duyệt cho đến khi bạn chọn xuất.",
+            "button": "Mở {{brand}}"
+          },
+          "related": {
+            "title": "Liên quan",
+            "intro": "Thêm các trang để làm việc với ảnh trên Media Manipulator.",
+            "toolDesc": "Trang công cụ của trình chỉnh sửa, với danh sách đầy đủ các bảng, định dạng xuất và những gì mỗi gói cho phép.",
+            "darkroom": "Hướng dẫn trình chỉnh sửa video Darkroom",
+            "darkroomDesc": "Chỉnh sửa video trên dòng thời gian đa track và xuất MP4.",
+            "licenses": "Giấy phép mã nguồn mở",
+            "licensesDesc": "Các thư viện và mô hình mã nguồn mở đứng sau trình chỉnh sửa và phần còn lại của Media Manipulator."
+          }
+        }
       }
     },
     "newToHere": {
@@ -576,15 +684,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Ngày hiệu lực: 24/10/2026",
-    "lastUpdated": "Cập nhật lần cuối: 01/11/2026",
+    "lastUpdated": "Cập nhật lần cuối: 03/11/2026",
     "operator": "Media Manipulator là sản phẩm và dịch vụ do CreaTV Ltd. vận hành.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Hoạt động dưới tên Media Manipulator",
     "location": "Colorado, Hoa Kỳ",
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Những thay đổi ngày 01/11/2026",
-    "whatChangedBody": "Giờ đây bạn có thể đăng nhập bằng Apple, ngoài việc dùng địa chỉ email và mật khẩu hoặc Google. Chính sách quyền riêng tư (mục 1.7) giải thích rằng nếu bạn đăng nhập bằng Apple, Apple chia sẻ tên và địa chỉ email của bạn với chúng tôi, hoặc một địa chỉ chuyển tiếp riêng tư nếu bạn chọn \"Ẩn Email của tôi\", và chính sách quyền riêng tư của Apple áp dụng cho Tài khoản Apple của bạn; mục 8 liệt kê Apple trong số các bên mà chúng tôi chia sẻ thông tin đăng nhập, và mục 1.7 nay nêu rằng Firebase gửi liên kết đặt lại đến địa chỉ email của bạn nếu bạn yêu cầu đặt lại mật khẩu. Mục 9 của Điều khoản nay nêu rằng bạn có thể đăng nhập bằng địa chỉ email và mật khẩu, bằng Google hoặc bằng Apple. Mọi nội dung từ bản cập nhật ngày 2026-10-28 vẫn được áp dụng: Chúng tôi đã thêm một biểu mẫu liên hệ tại media-manipulator.com/contact: Chính sách quyền riêng tư có mục 1.11 mới về các tin nhắn bạn gửi cho chúng tôi (tên, địa chỉ email, chủ đề và tin nhắn của bạn, được chuyển đến hộp thư hỗ trợ của chúng tôi qua Resend và được lưu ở đó cho đến khi cuộc trao đổi kết thúc, không bao giờ quá 12 tháng), và mục 16 hiện trỏ đến biểu mẫu. Đã bổ sung các thông tin công bố về cookie quảng cáo mà Google yêu cầu và các liên kết từ chối. Chính sách quyền riêng tư có mục 5.1 mới về cookie quảng cáo và Google AdSense: cookie quảng cáo của Google, quảng cáo không cá nhân hóa, thông báo đồng ý của Google tại EEA, Vương quốc Anh và Thụy Sĩ, các liên kết để từ chối quảng cáo cá nhân hóa (Cài đặt quảng cáo của Google, aboutads.info và youronlinechoices.eu) và đến trang về cách Google sử dụng thông tin từ các trang web sử dụng dịch vụ của Google, ai thấy quảng cáo (chỉ khách truy cập không có tài khoản và tài khoản miễn phí) và tệp ads.txt công khai của chúng tôi; mục 1.5 nay liệt kê các mã định danh quảng cáo mà script quảng cáo của Google có thể đặt. Mục 8.9 của Điều khoản nay nêu rằng quảng cáo chỉ được hiển thị khi không có tài khoản hoặc với tài khoản miễn phí, và Premium và Pro loại bỏ chúng. Mục 5 (Quảng cáo) của Chính sách quyền riêng tư nay nêu rằng script quảng cáo của Google được tải trên các trang có thể hiển thị quảng cáo, với mọi tín hiệu đồng ý bị từ chối cho đến khi bạn lựa chọn, và cho đến lúc đó chỉ phân phối quảng cáo không được cá nhân hóa. Trước đó cùng ngày: Chúng tôi đã bổ sung các công cụ giọng nói: sao chép giọng của chính bạn từ một bản ghi âm, thiết kế một giọng nói từ mô tả, và thay đổi giọng nói trong một bản ghi âm. Chính sách quyền riêng tư có mục 1.10 mới về mẫu giọng nói và giọng nói được thiết kế: những gì chúng tôi lưu, việc chúng tôi chỉ dùng chúng để tạo và vận hành giọng nói bạn yêu cầu với sự đồng ý rõ ràng của bạn, việc chúng được lưu trong Amazon S3 theo thiết lập thời gian lưu giữ của bạn, không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào, và việc bạn có thể xóa chúng bất cứ lúc nào và chúng bị xóa cùng với tài khoản của bạn; các mục 3, 3.4, 3.5 và 4 nay có nhắc đến giọng nói. Điều khoản có mục 8.11 mới: bạn chỉ được tạo giọng nói từ giọng của chính bạn hoặc với sự cho phép rõ ràng của người đang nói; mạo danh, gian lận, deepfake chính trị và quấy rối đều không được phép; lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được còn âm thanh được đổi cao độ thì không; và chúng tôi có thể gỡ bỏ giọng nói và đình chỉ tài khoản. Mục 1 của Điều khoản liệt kê các công cụ giọng nói. Mọi nội dung từ bản cập nhật ngày 2026-10-26 vẫn được áp dụng: Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
+    "whatChangedTitle": "Những thay đổi ngày 03/11/2026",
+    "whatChangedBody": "Chúng tôi đã thêm Aperture, trình chỉnh sửa ảnh của chúng tôi (bản beta). Chính sách quyền riêng tư có mục 1.12 mới: trong Aperture, ảnh của bạn được chỉnh sửa trong trình duyệt và chỉ được tải lên máy chủ của chúng tôi khi bạn lưu dự án vào tài khoản, xuất, chọn chủ thể bằng AI, chữa lành các đốm hoặc áp dụng các chỉnh sửa cho nhiều ảnh hơn; các dự án được lưu vào tài khoản của bạn được lưu trên máy chủ của chúng tôi theo thời gian lưu giữ bạn chọn, có thể xóa và bị xóa cùng tài khoản của bạn; việc chọn chủ thể và chữa lành chạy trên máy chủ GPU của chính chúng tôi và không có ảnh nào được gửi đến dịch vụ của bên thứ ba; và với mỗi lần xuất, chọn chủ thể và chữa lành, chúng tôi ghi lại loại tác vụ, định dạng và kích thước của kết quả, thời gian và gói của bạn để thực thi hạn mức hằng ngày. Các mục 3, 3.3, 3.4 và 4 giờ đây nêu rõ các dự án Aperture và các mô hình được sử dụng. Điều khoản liệt kê Aperture trong mục 1, và mục 13 nêu rằng các bản xuất Aperture của bạn thuộc về bạn. Mọi nội dung từ bản cập nhật ngày 2026-11-01 vẫn được áp dụng: Giờ đây bạn có thể đăng nhập bằng Apple, ngoài việc dùng địa chỉ email và mật khẩu hoặc Google. Chính sách quyền riêng tư (mục 1.7) giải thích rằng nếu bạn đăng nhập bằng Apple, Apple chia sẻ tên và địa chỉ email của bạn với chúng tôi, hoặc một địa chỉ chuyển tiếp riêng tư nếu bạn chọn \"Ẩn Email của tôi\", và chính sách quyền riêng tư của Apple áp dụng cho Tài khoản Apple của bạn; mục 8 liệt kê Apple trong số các bên mà chúng tôi chia sẻ thông tin đăng nhập, và mục 1.7 nay nêu rằng Firebase gửi liên kết đặt lại đến địa chỉ email của bạn nếu bạn yêu cầu đặt lại mật khẩu. Mục 9 của Điều khoản nay nêu rằng bạn có thể đăng nhập bằng địa chỉ email và mật khẩu, bằng Google hoặc bằng Apple. Mọi nội dung từ bản cập nhật ngày 2026-10-28 vẫn được áp dụng: Chúng tôi đã thêm một biểu mẫu liên hệ tại media-manipulator.com/contact: Chính sách quyền riêng tư có mục 1.11 mới về các tin nhắn bạn gửi cho chúng tôi (tên, địa chỉ email, chủ đề và tin nhắn của bạn, được chuyển đến hộp thư hỗ trợ của chúng tôi qua Resend và được lưu ở đó cho đến khi cuộc trao đổi kết thúc, không bao giờ quá 12 tháng), và mục 16 hiện trỏ đến biểu mẫu. Đã bổ sung các thông tin công bố về cookie quảng cáo mà Google yêu cầu và các liên kết từ chối. Chính sách quyền riêng tư có mục 5.1 mới về cookie quảng cáo và Google AdSense: cookie quảng cáo của Google, quảng cáo không cá nhân hóa, thông báo đồng ý của Google tại EEA, Vương quốc Anh và Thụy Sĩ, các liên kết để từ chối quảng cáo cá nhân hóa (Cài đặt quảng cáo của Google, aboutads.info và youronlinechoices.eu) và đến trang về cách Google sử dụng thông tin từ các trang web sử dụng dịch vụ của Google, ai thấy quảng cáo (chỉ khách truy cập không có tài khoản và tài khoản miễn phí) và tệp ads.txt công khai của chúng tôi; mục 1.5 nay liệt kê các mã định danh quảng cáo mà script quảng cáo của Google có thể đặt. Mục 8.9 của Điều khoản nay nêu rằng quảng cáo chỉ được hiển thị khi không có tài khoản hoặc với tài khoản miễn phí, và Premium và Pro loại bỏ chúng. Mục 5 (Quảng cáo) của Chính sách quyền riêng tư nay nêu rằng script quảng cáo của Google được tải trên các trang có thể hiển thị quảng cáo, với mọi tín hiệu đồng ý bị từ chối cho đến khi bạn lựa chọn, và cho đến lúc đó chỉ phân phối quảng cáo không được cá nhân hóa. Trước đó cùng ngày: Chúng tôi đã bổ sung các công cụ giọng nói: sao chép giọng của chính bạn từ một bản ghi âm, thiết kế một giọng nói từ mô tả, và thay đổi giọng nói trong một bản ghi âm. Chính sách quyền riêng tư có mục 1.10 mới về mẫu giọng nói và giọng nói được thiết kế: những gì chúng tôi lưu, việc chúng tôi chỉ dùng chúng để tạo và vận hành giọng nói bạn yêu cầu với sự đồng ý rõ ràng của bạn, việc chúng được lưu trong Amazon S3 theo thiết lập thời gian lưu giữ của bạn, không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào, và việc bạn có thể xóa chúng bất cứ lúc nào và chúng bị xóa cùng với tài khoản của bạn; các mục 3, 3.4, 3.5 và 4 nay có nhắc đến giọng nói. Điều khoản có mục 8.11 mới: bạn chỉ được tạo giọng nói từ giọng của chính bạn hoặc với sự cho phép rõ ràng của người đang nói; mạo danh, gian lận, deepfake chính trị và quấy rối đều không được phép; lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được còn âm thanh được đổi cao độ thì không; và chúng tôi có thể gỡ bỏ giọng nói và đình chỉ tài khoản. Mục 1 của Điều khoản liệt kê các công cụ giọng nói. Mọi nội dung từ bản cập nhật ngày 2026-10-26 vẫn được áp dụng: Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
   },
   "privacyPolicy": {
     "title": "Chính sách quyền riêng tư",
@@ -743,6 +851,14 @@
               "Khi bạn dùng biểu mẫu liên hệ tại media-manipulator.com/contact, chúng tôi nhận được tên, địa chỉ email, chủ đề bạn chọn và tin nhắn của bạn, cùng với thời điểm gửi và một mã tham chiếu ngắn. Biểu mẫu chuyển những thông tin này đến hộp thư hỗ trợ của chúng tôi bằng email, thông qua nhà cung cấp email của chúng tôi là Resend; các tin nhắn liên hệ không được lưu trong cơ sở dữ liệu ứng dụng của chúng tôi. Khi bạn gửi email trực tiếp cho chúng tôi, chúng tôi nhận được cùng loại thông tin từ email của bạn.",
               "Chúng tôi chỉ dùng các tin nhắn này để trả lời bạn và xử lý điều bạn yêu cầu, chẳng hạn báo lỗi, câu hỏi về thanh toán hoặc yêu cầu về quyền riêng tư. Chúng được lưu trong hộp thư hỗ trợ của chúng tôi cho đến khi cuộc trao đổi kết thúc, và không bao giờ quá 12 tháng. Để hạn chế thư rác, biểu mẫu bị giới hạn tốc độ theo từng phiên trình duyệt và từng địa chỉ IP giống như phần còn lại của trang, và một lần thử bị chặn được lưu giữ như một bản ghi phòng chống lạm dụng (Mục 3.6)."
             ]
+          },
+          {
+            "title": "1.12 Dự án và bản xuất Aperture",
+            "paragraphs": [
+              "Aperture, trình chỉnh sửa ảnh của chúng tôi, chỉnh sửa ảnh của bạn trong trình duyệt: bản xem trước bạn thấy được vẽ trên chính thiết bị của bạn. Ảnh chỉ rời khỏi thiết bị của bạn khi bạn yêu cầu một việc cần đến máy chủ của chúng tôi: lưu ảnh vào tài khoản của bạn dưới dạng dự án, xuất tệp hoàn chỉnh, chọn chủ thể bằng AI, chữa lành các đốm bằng AI, hoặc áp dụng các chỉnh sửa của bạn cho nhiều ảnh hơn.",
+              "Nếu bạn đã đăng nhập và lưu một dự án, ảnh gốc, một bản xem trước của nó có kích thước tối đa 1920 pixel, một hình thu nhỏ, tài liệu chỉnh sửa (danh sách các chỉnh sửa, mặt nạ và vùng đã chữa lành) cùng mọi mặt nạ và phiên bản đã chữa lành của ảnh được lưu trên máy chủ của chúng tôi trong thư mục của dự án. Đó là nội dung của bạn, chúng tuân theo thời gian lưu giữ bạn chọn (Mục 3), bạn có thể xóa dự án từ trang Tài khoản, chúng bị xóa cùng tài khoản của bạn, và các dự án được liệt kê trong bản xuất dữ liệu của bạn. Khi không có tài khoản, một ảnh chỉ được giữ trong trình duyệt của bạn (trong IndexedDB) và không được tải lên cho đến khi bạn xuất, chọn chủ thể hoặc chữa lành; lần tải lên đó là một tác vụ tạm thời thông thường và được lưu giữ 24 giờ.",
+              "Xuất, chọn chủ thể bằng AI và chữa lành là các tác vụ trên máy chủ của chúng tôi. Bản xuất được kết xuất từ ảnh gốc của bạn, việc chọn chủ thể và chữa lành chạy trên máy chủ GPU của chính chúng tôi, và không có ảnh nào của bạn được gửi đến dịch vụ của bên thứ ba. Mỗi lần xuất, chọn chủ thể và chữa lành được đếm để thực thi hạn mức hằng ngày của gói bạn: chúng tôi lưu loại tác vụ, định dạng và kích thước của kết quả, thời gian, gói của bạn và một mã định danh cho tài khoản, phiên trình duyệt hoặc địa chỉ IP đã được băm của bạn. Các tệp kết quả được lưu giữ theo quy tắc lưu giữ thông thường (Mục 3), và khi bạn xóa tài khoản, các bản ghi này được tách khỏi danh tính của bạn."
+            ]
           }
         ]
       },
@@ -769,7 +885,7 @@
         "id": "retention",
         "title": "3. Lưu trữ, lưu giữ và xóa tệp",
         "paragraphs": [
-          "Thời gian chúng tôi lưu giữ tệp của bạn phụ thuộc vào việc bạn có tài khoản hay không. Mục này bao gồm tệp tải lên, kết quả tạo ra, phương tiện Darkroom, dự án Darkroom, dự án Motion và giọng nói đã lưu được lưu vào tài khoản của bạn, được lưu trữ trên máy chủ của chúng tôi và trong Amazon S3 (us-west-2). Các bản ghi về lượt chuyển đổi và cài đặt của bạn (như lịch sử tác vụ, lựa chọn thời gian lưu giữ và chi tiết tài khoản) được lưu trong cơ sở dữ liệu PostgreSQL, và việc xử lý AI chạy trên máy chủ GPU tự lưu trữ của chính chúng tôi."
+          "Thời gian chúng tôi lưu giữ tệp của bạn phụ thuộc vào việc bạn có tài khoản hay không. Mục này bao gồm tệp tải lên, kết quả tạo ra, phương tiện Darkroom, dự án Darkroom, dự án Motion, dự án Aperture và giọng nói đã lưu được lưu vào tài khoản của bạn, được lưu trữ trên máy chủ của chúng tôi và trong Amazon S3 (us-west-2). Các bản ghi về lượt chuyển đổi và cài đặt của bạn (như lịch sử tác vụ, lựa chọn thời gian lưu giữ và chi tiết tài khoản) được lưu trong cơ sở dữ liệu PostgreSQL, và việc xử lý AI chạy trên máy chủ GPU tự lưu trữ của chính chúng tôi."
         ],
         "subsections": [
           {
@@ -794,7 +910,7 @@
           {
             "title": "3.3 Xóa tệp của bạn",
             "paragraphs": [
-              "Nếu bạn có tài khoản, bạn có thể xóa một kết quả, dự án Darkroom hoặc dự án Motion riêng lẻ, xóa tất cả tệp của bạn cùng lúc, hoặc xóa toàn bộ tài khoản từ trang Tài khoản. Khách không có tài khoản có thể xóa kết quả của chính họ trong phiên mà kết quả đó được tạo."
+              "Nếu bạn có tài khoản, bạn có thể xóa một kết quả, dự án Darkroom, dự án Motion hoặc dự án Aperture riêng lẻ, xóa tất cả tệp của bạn cùng lúc, hoặc xóa toàn bộ tài khoản từ trang Tài khoản. Khách không có tài khoản có thể xóa kết quả của chính họ trong phiên mà kết quả đó được tạo."
             ]
           },
           {
@@ -804,7 +920,7 @@
             ],
             "bullets": [
               "hủy gói đăng ký Premium hoặc Pro của bạn với Stripe, nếu bạn có;",
-              "xóa tệp của bạn, các dự án Darkroom và Motion cùng các giọng nói đã lưu của bạn;",
+              "xóa tệp của bạn, các dự án Darkroom, Motion và Aperture cùng các giọng nói đã lưu của bạn;",
               "xóa bản ghi tài khoản và cài đặt của bạn, đồng thời tách các bản ghi hoạt động còn lại khỏi danh tính của bạn;",
               "yêu cầu hệ thống phân tích của bên thứ nhất xóa dữ liệu phân tích liên kết với tài khoản của bạn (xem Mục 6);",
               "xóa thông tin đăng nhập của bạn."
@@ -844,7 +960,7 @@
         ],
         "afterBullets": [
           "Mọi xử lý AI mà Media Manipulator sử dụng đều được thực hiện cục bộ trên máy chủ của chính chúng tôi hoặc hạ tầng do chúng tôi kiểm soát. Chúng tôi không thuê ngoài việc xử lý tệp tải lên, kết quả tạo ra, bản chép lời, tóm tắt, mô tả hoặc quét an toàn nội dung cho các nhà cung cấp AI bên thứ ba.",
-          "Các tính năng AI sử dụng các mô hình và công cụ mở do chúng tôi tự vận hành, chủ yếu trên máy chủ GPU tự lưu trữ: Whisper để chép lời, Real-ESRGAN để nâng cấp hình ảnh, Demucs để tách âm thanh, Chatterbox và Qwen3-TTS để sao chép giọng nói, thiết kế giọng nói và tạo lời nói, và các mô hình cục bộ khác, cùng các mô hình ngôn ngữ và thị giác được phục vụ qua Ollama cho các tác vụ văn bản như tóm tắt, mô tả và dịch phụ đề.",
+          "Các tính năng AI sử dụng các mô hình và công cụ mở do chúng tôi tự vận hành, chủ yếu trên máy chủ GPU tự lưu trữ: Whisper để chép lời, Real-ESRGAN để nâng cấp hình ảnh, rembg và LaMa để chọn chủ thể và chữa lành các đốm trong ảnh, Demucs để tách âm thanh, Chatterbox và Qwen3-TTS để sao chép giọng nói, thiết kế giọng nói và tạo lời nói, và các mô hình cục bộ khác, cùng các mô hình ngôn ngữ và thị giác được phục vụ qua Ollama cho các tác vụ văn bản như tóm tắt, mô tả và dịch phụ đề.",
           "Điều này có nghĩa là khi các tính năng AI được sử dụng, tệp tải lên và kết quả tạo ra của bạn vẫn nằm trong môi trường xử lý của Media Manipulator và được xử lý theo các thực hành lưu trữ, lưu giữ, xóa và bảo mật được mô tả trong Chính sách quyền riêng tư này.",
           "Tệp tải lên và kết quả tạo ra được lưu giữ và xóa như mô tả tại Mục 3, kể cả khi các tính năng AI được sử dụng. Sau thời gian lưu giữ áp dụng, chúng bị xóa khỏi các hệ thống đang hoạt động của chúng tôi trừ khi được xóa sớm hơn hoặc pháp luật yêu cầu lưu giữ hạn chế vì mục đích bảo mật, ngăn chặn lạm dụng, tuân thủ pháp lý hoặc thực thi.",
           "Đầu ra do AI tạo ra có thể không hoàn hảo, không đầy đủ hoặc không chính xác. Người dùng chịu trách nhiệm xem xét mọi đầu ra do AI tạo ra trước khi dựa vào nó.",
@@ -1101,6 +1217,7 @@
           "chép lời, tạo phụ đề, tóm tắt và mô tả có hỗ trợ AI;",
           "phân loại an toàn nội dung và quét ngăn chặn lạm dụng;",
           "tạo, tạo hoạt ảnh và xuất đồ họa vector và hoạt ảnh bằng Motion;",
+          "chỉnh sửa ảnh bằng các lớp chỉnh sửa, mặt nạ, hình học và chữa lành, rồi xuất kết quả, với Aperture;",
           "tạo giọng nói từ bản ghi âm của chính bạn, thiết kế giọng nói từ mô tả, tạo lời nói từ văn bản và thay đổi giọng nói trong một bản ghi âm (Giọng nói, xem Mục 8.11);",
           "lịch sử chuyển đổi tạm thời và đầu ra đã xử lý có thể tải xuống."
         ],
@@ -1414,7 +1531,8 @@
           "Bạn không được sao chép, sửa đổi, phân phối, bán, cho thuê, dịch ngược hoặc tạo tác phẩm phái sinh từ Media Manipulator trừ khi được pháp luật cho phép hoặc có sự cho phép bằng văn bản của chúng tôi.",
           "Bạn giữ quyền sở hữu đối với các tệp tải lên và kết quả tạo ra của chính mình, tùy thuộc vào các quyền và giấy phép được cấp trong các Điều khoản này.",
           "Hoạt ảnh và tệp bạn tạo bằng Motion, bao gồm các bản xuất SVG động, Lottie, mã nguồn và hình ảnh, thuộc về bạn theo cách giống như các kết quả tạo ra khác của bạn. Một số bản xuất bao gồm mã nguồn mở của bên thứ ba giúp hoạt ảnh chạy được: anime.js, được cấp phép theo Giấy phép MIT. Thông báo bản quyền và giấy phép của nó được ghi ở đầu tệp xuất ra, và bạn phải giữ nguyên thông báo đó nếu sử dụng hoặc phân phối tệp. Các bản xuất mã nguồn sử dụng một gói thay vì nhúng trực tiếp (gói anime.js cho React và JavaScript, và flutter_svg hoặc webview_flutter cho Flutter) nêu tên gói trong tệp, và bạn tự cài đặt nó theo giấy phép riêng của gói (MIT, hoặc BSD-3-Clause đối với webview_flutter).",
-          "Media Manipulator sử dụng các thư viện mã nguồn mở trong trình duyệt của bạn, bao gồm mediabunny, được cấp phép theo Mozilla Public License 2.0 và được sử dụng nguyên bản để đóng gói các tệp video được tạo trong trình duyệt của bạn. Giấy phép, thông báo bản quyền và liên kết mã nguồn của chúng được liệt kê trên trang giấy phép mã nguồn mở của chúng tôi: https://www.media-manipulator.com/licenses."
+          "Media Manipulator sử dụng các thư viện mã nguồn mở trong trình duyệt của bạn, bao gồm mediabunny, được cấp phép theo Mozilla Public License 2.0 và được sử dụng nguyên bản để đóng gói các tệp video được tạo trong trình duyệt của bạn. Giấy phép, thông báo bản quyền và liên kết mã nguồn của chúng được liệt kê trên trang giấy phép mã nguồn mở của chúng tôi: https://www.media-manipulator.com/licenses.",
+          "Ảnh bạn chỉnh sửa và xuất bằng Aperture thuộc về bạn theo cách giống như các đầu ra được tạo khác của bạn. Aperture không bao giờ thay đổi tệp gốc bạn tải lên: bản xuất luôn là một tệp mới. Bạn chịu trách nhiệm đảm bảo mình có quyền chỉnh sửa và xuất những ảnh bạn sử dụng."
         ]
       },
       {
@@ -1607,7 +1725,10 @@
       "adsRemoved": "Quảng cáo",
       "exportsPerDay": "Lượt xuất Darkroom mỗi ngày",
       "vectorExportsPerDay": "Lượt xuất Motion mỗi ngày",
-      "vectorProjects": "Dự án Motion được lưu"
+      "vectorProjects": "Dự án Motion được lưu",
+      "photoProjects": "Dự án {{brand}} được lưu",
+      "photoMaxMegapixels": "Bản xuất {{brand}} lớn nhất",
+      "photoBatch": "Số ảnh {{brand}} mỗi lô"
     },
     "values": {
       "yes": "Có",
@@ -1618,7 +1739,10 @@
       "gpuPriority": "Ưu tiên",
       "adsShown": "Hiển thị",
       "adsRemoved": "Đã loại bỏ",
-      "heightSuffix": "{{height}}p"
+      "heightSuffix": "{{height}}p",
+      "photoLocalOnly": "1, chỉ trong trình duyệt này",
+      "megapixels": "{{count}} MP",
+      "notAvailable": "Không có sẵn"
     },
     "unavailableTitle": "Chi tiết gói tạm thời không khả dụng",
     "unavailableBody": "Chúng tôi không kết nối được với dịch vụ gói. Mọi công cụ vẫn hoạt động — hãy tải lại sau giây lát để xem bảng so sánh.",
@@ -1631,7 +1755,9 @@
       "q3": "Tài khoản miễn phí có thấy quảng cáo không?",
       "a3": "Có. Quảng cáo chi trả cho gói miễn phí, nên chỉ Premium và Pro loại bỏ chúng. Không bao giờ có quá hai quảng cáo trên một trang, không bao giờ nằm đè lên các công cụ, và không bao giờ xuất hiện trên trang chủ, trang giá, trang tài khoản hoặc trang pháp lý. Không có quảng cáo xen giữa, đếm ngược hay chờ bắt buộc trên bất kỳ gói nào.",
       "q4": "Tôi có thể dùng mà hoàn toàn không cần tài khoản không?",
-      "a4": "Có, và đó là chủ ý. Mọi công cụ đều hoạt động khi chưa đăng nhập — tài khoản chỉ nâng giới hạn và giữ lịch sử của bạn. Không có tài khoản, tệp của bạn được lưu 24 giờ; có tài khoản, bạn chọn thời gian lưu, từ 24 giờ đến 2 năm."
+      "a4": "Có, và đó là chủ ý. Mọi công cụ đều hoạt động khi chưa đăng nhập — tài khoản chỉ nâng giới hạn và giữ lịch sử của bạn. Không có tài khoản, tệp của bạn được lưu 24 giờ; có tài khoản, bạn chọn thời gian lưu, từ 24 giờ đến 2 năm.",
+      "q5": "{{brand}} có giá bao nhiêu?",
+      "a5": "Chỉnh sửa trong {{brand}} là miễn phí: xem trước, mọi điều chỉnh, mặt nạ, phong cách và hoàn tác đều không tốn gì. Mỗi lần xuất được tính là một tác vụ thường, chọn chủ thể bằng AI được tính là một tác vụ thường (lặp lại cùng yêu cầu là miễn phí), và mỗi lần nhấn Chữa lành được tính là một tác vụ AI. Điều thay đổi theo gói là số dự án bạn có thể lưu, kích thước tối đa của một bản xuất và số ảnh bạn có thể chỉnh sửa trong một lô; bảng ở trên liệt kê các con số."
     },
     "retentionNote": "Bạn chọn: từ 24 giờ đến 2 năm. Khách không có tài khoản: 24 giờ.",
     "pendingFrom": "Premium từ {{date}}",
@@ -1810,7 +1936,13 @@
       "deleteFailed": "Không xóa được dự án này. Không có gì thay đổi; hãy thử lại.",
       "kindDarkroom": "Darkroom",
       "motionLoadFailed": "Không tải được dự án {{brand}} của bạn.",
-      "motionDeleteBody": "Dự án {{brand}} và hình thu nhỏ của nó bị xóa khỏi máy chủ của chúng tôi. Không thể hoàn tác."
+      "motionDeleteBody": "Dự án {{brand}} và hình thu nhỏ của nó bị xóa khỏi máy chủ của chúng tôi. Không thể hoàn tác.",
+      "rename": "Đổi tên",
+      "renameLabel": "Tên dự án",
+      "renameSave": "Lưu",
+      "renamed": "Đã đổi tên dự án.",
+      "renameFailed": "Không đổi được tên dự án này. Không có gì thay đổi; hãy thử lại.",
+      "photoDeleteBody": "Dự án {{brand}}, ảnh gốc, các bản xem trước và mọi phiên bản đã chữa lành của nó bị xóa khỏi máy chủ của chúng tôi. Không thể hoàn tác."
     },
     "billing": {
       "plans": "So sánh các gói"
@@ -2020,7 +2152,7 @@
       "images": "<strong>Hình ảnh và PDF.</strong> <removeExif>Xóa siêu dữ liệu EXIF</removeExif> như vị trí GPS trước khi bạn chia sẻ ảnh, <compressImage>nén hình ảnh</compressImage> để trang tải nhanh hơn, <resizeImage>đổi kích thước</resizeImage> theo đúng số pixel, và chuyển <imageToPdf>hình ảnh sang PDF</imageToPdf> hoặc <pdfToJpg>các trang PDF sang JPG</pdfToJpg>.",
       "audio": "<strong>Âm thanh và giọng nói.</strong> <extractAudio>Trích xuất track âm thanh</extractAudio> từ video thành MP3, WAV, M4A, FLAC hoặc OGG, và <transcribe>chép lại lời nói</transcribe> thành văn bản có thể tìm kiếm hoặc phụ đề. Việc chép lời chạy Whisper trên máy chủ GPU của chính chúng tôi.",
       "ai": "<strong>Công cụ AI.</strong> <removeBg>Xóa nền</removeBg> khỏi ảnh, <imageRestore>khôi phục và nâng cấp độ phân giải ảnh cũ</imageRestore>, <videoRestore>so sánh các mô hình khôi phục video</videoRestore> cạnh nhau trên một đoạn clip ngắn, hoặc <docScan>biến các trang quét thành PDF có thể tìm kiếm</docScan>. Mọi mô hình đều chạy trên máy chủ do chúng tôi vận hành.",
-      "editors": "<strong>Trình chỉnh sửa.</strong> Khi một lần chuyển đổi là chưa đủ, <darkroom>Darkroom</darkroom> là trình chỉnh sửa video nhiều track và <motion>Motion</motion> tạo hoạt ảnh cho đồ họa SVG trên dòng thời gian keyframe. Cả hai chạy trong trình duyệt của bạn, và đăng nhập sẽ giữ các dự án của bạn trong tài khoản."
+      "editors": "<strong>Trình chỉnh sửa.</strong> Khi một lần chuyển đổi là chưa đủ, <darkroom>Darkroom</darkroom> là trình chỉnh sửa video nhiều track và <motion>Motion</motion> tạo hoạt ảnh cho đồ họa SVG trên dòng thời gian keyframe, còn <aperture>Aperture</aperture> chỉnh sửa ảnh bằng các lớp chỉnh sửa và mặt nạ. Cả ba chạy trong trình duyệt của bạn, và đăng nhập sẽ giữ các dự án của bạn trong tài khoản."
     },
     "whatWeDont": {
       "eyebrow": "Những gì chúng tôi không làm",
@@ -2048,7 +2180,8 @@
       "ai": "Công cụ AI",
       "metadata": "Công cụ quyền riêng tư & siêu dữ liệu",
       "contentStudio": "Darkroom",
-      "motion": "Hoạt ảnh SVG"
+      "motion": "Hoạt ảnh SVG",
+      "photo": "Chỉnh sửa ảnh"
     },
     "multiTrackEditor": "Trình biên tập đa track",
     "open": "Mở",
@@ -2078,7 +2211,9 @@
       "editor": "Trình chỉnh sửa"
     },
     "moreTools": "{{category}}: thêm {{count}}",
-    "alsoLine": "Còn gọi là: {{names}}."
+    "alsoLine": "Còn gọi là: {{names}}.",
+    "photoEditor": "Trình chỉnh sửa ảnh",
+    "apertureTutorial": "Hướng dẫn {{brand}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Đường dẫn điều hướng",
@@ -2486,7 +2621,61 @@
       "motion": {
         "alt": "Trình chỉnh sửa Motion với một SVG đã nhập trên canvas và các keyframe trên dòng thời gian hoạt ảnh",
         "caption": "Trình chỉnh sửa Motion: các lớp, canvas và dòng thời gian keyframe."
+      },
+      "aperture": {
+        "alt": "Trình chỉnh sửa {{brand}} với một ảnh trên vùng vẽ, bảng Cơ bản ở bên phải và biểu đồ tần suất phía trên nó",
+        "caption": "Trình chỉnh sửa {{brand}}: vùng vẽ, biểu đồ tần suất và bảng Cơ bản."
       }
+    }
+  },
+  "photoPage": {
+    "guide": {
+      "summaryTitle": "Cách {{brand}} hoạt động",
+      "whatItIsTitle": "Nó là gì",
+      "whatItIsBody": "{{brand}} là trình chỉnh sửa ảnh không bao giờ thay đổi bản gốc của bạn. Mọi chỉnh sửa, từ phơi sáng và đường cong đến dải màu, mặt nạ và chữa lành, đều là một lớp đặt trên ảnh mà bạn có thể sắp xếp lại, làm mờ, ẩn hoặc xóa. Bản xem trước được vẽ trong trình duyệt của bạn, còn tệp bạn xuất ra được kết xuất từ bản gốc trên máy chủ của chúng tôi.",
+      "stepsTitle": "Bốn bước",
+      "step1": "Thả ảnh vào bên dưới hoặc chọn một ảnh. Trình chỉnh sửa mở toàn màn hình với bảng của trang này ở phía trước.",
+      "step2": "Kéo một thanh trượt và xem ảnh cùng biểu đồ tần suất thay đổi. Hoàn tác và làm lại bao quát mọi bước, và giữ phím gạch chéo ngược để xem bản gốc.",
+      "step3": "Giới hạn một lớp trong một phần của ảnh bằng mặt nạ, chỉnh thẳng hoặc cắt ảnh, chữa lành một đốm, hoặc bắt đầu từ một trong các phong cách có sẵn.",
+      "step4": "Xuất JPG, PNG, WebP, AVIF hoặc TIFF. Tệp được kết xuất trên máy chủ của chúng tôi ở độ phân giải đầy đủ, tối đa theo giới hạn của gói bạn.",
+      "editorTitle": "Trình chỉnh sửa",
+      "editorBody": "{{brand}} mở toàn màn hình, không có đầu trang của trang web hay quảng cáo. Khi chưa có tài khoản, một ảnh được giữ trong trình duyệt này; người dùng đã đăng nhập giữ các dự án của mình trong tài khoản."
+    },
+    "dropzone": {
+      "drop": "Thả ảnh vào đây hoặc chọn từ thiết bị của bạn.",
+      "choose": "Chọn ảnh",
+      "hint": "JPG, PNG, WebP, GIF, AVIF, HEIC, TIFF hoặc BMP. Không có gì được tải lên cho đến khi bạn xuất, chọn chủ thể hoặc chữa lành.",
+      "opening": "Đang mở trình chỉnh sửa…",
+      "openEmpty": "Mở trình chỉnh sửa mà không có ảnh"
+    },
+    "launcher": {
+      "recentTitle": "Dự án gần đây",
+      "sourceAccount": "Đã lưu vào tài khoản của bạn",
+      "sourceBrowser": "Đã lưu trong trình duyệt này",
+      "loading": "Đang tải dự án của bạn…",
+      "empty": "Chưa có dự án nào. Ảnh của bạn sẽ xuất hiện ở đây.",
+      "error": "Hiện chưa thể tải dự án của bạn. Bạn vẫn có thể mở một ảnh mới.",
+      "edited": "Chỉnh sửa {{date}}"
+    },
+    "plans": {
+      "title": "Dự án, kích thước xuất và số ảnh mỗi lô theo gói",
+      "intro": "Chỉnh sửa, mọi điều chỉnh, mặt nạ và phong cách đều miễn phí ở mọi gói. Điều thay đổi theo gói là số dự án bạn có thể giữ, kích thước tối đa của một bản xuất và số ảnh bạn có thể chỉnh sửa trong một lô. Các con số này lấy trực tiếp từ máy chủ của chúng tôi nên luôn được cập nhật.",
+      "caption": "Hạn mức {{brand}} theo gói",
+      "feature": "Tính năng",
+      "rows": {
+        "projects": "Dự án đã lưu",
+        "maxMegapixels": "Bản xuất lớn nhất",
+        "batch": "Số ảnh mỗi lô"
+      },
+      "values": {
+        "unlimited": "Không giới hạn",
+        "localOnly": "1, chỉ trong trình duyệt này",
+        "megapixels": "{{count}} MP",
+        "notAvailable": "Không có sẵn"
+      },
+      "costNote": "Mỗi lần xuất được tính là một tác vụ thường và mỗi lần chữa lành là một tác vụ AI. Xem trước, điều chỉnh, mặt nạ và phong cách không tốn gì.",
+      "unavailable": "Hiện chưa thể tải bảng gói. Trang giá liệt kê hạn mức của từng gói.",
+      "seePlans": "So sánh tất cả các gói"
     }
   }
 }

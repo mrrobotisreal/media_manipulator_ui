@@ -73,6 +73,21 @@ A named, session-only bookmark of the document in the History panel (`useSnapsho
 **Browser-local project**:
 Anonymous visitors get exactly one Aperture project, stored in the browser (original Blob + doc in IndexedDB, doc mirrored to `localStorage`); a second photo asks to replace it; export uses the stateless `POST /api/photo/export`; after sign-in the project is offered for upload as a server project.
 
+### Aperture tool pages (MM100)
+
+**Aperture landing** (`/tools/aperture`):
+The static localized route `app/(localized)/[lang]/tools/aperture/page.tsx` (excluded from `[slug]` by `STATIC_ROUTE_SLUGS`, in `REVIEW_INDEXED_TOOL_SLUGS` and `CORE_ROUTES`, no `REVIEW_TOOL_AD_SLOTS` entry so it carries no ad). The H1 is `PHOTO_BRAND` plus a descriptor; the four-step guide and the plan table are server-rendered (`components/photo/landing/aperture-landing.tsx`, table from `lib/photo/planTable.ts` over the served `photo*` tier fields, hidden when the API predates them); the one client island is the launcher (drop zone + five most recent projects: `GET /api/photo/projects` signed in, the one browser-local project signed out).
+
+**Aperture adjustment page**:
+One of the 24 data-driven `[slug]` pages in `content/photo/` (`pages-a..d.ts`, English prose by Fable 5.1, wiring in `content/photo/index.ts`: `embed.preset = { kind: 'photo', panel, preset? }`). They are `PHOTO_PENDING_SLUGS` in `content/reviewAllowlist.ts`: in `REVIEW_CATALOG_SLUGS` (listed, linked, held to the MM84 copy bar by `scripts/check-photo-bodies.ts` and `content/toolCopy.test.ts`) but `noindex` until Mitch moves approved slugs into `REVIEW_INDEXED_TOOL_SLUGS`. Each shows the same drop zone with its panel (and look) in front. Non-English locales render the English body (`noindex`) until MM102-`<prefix>`.
+_Avoid_: "SEO pages", "tool pages for the editor" (the editor is `/photo/*`).
+
+**Photo hand-off** (`lib/photo/handoff.ts`):
+How a tool page's drop zone passes the chosen photo to the unlocalized editor route: the bytes wait in IndexedDB `mm-photo-handoff` (one record, 10 minutes), the browser goes to `/photo/new?handoff=1&panel=<id>&preset=<id>`, and `components/photo/editor.tsx` takes it once, opens the photo and then opens the panel and applies the built-in look. When storage is unavailable the page falls back to the bare `/photo/new` link.
+
+**Fine-tune in Aperture** (`content/photo/handoffs.ts`):
+One English sentence plus one `related` link added to the eleven one-shot image tool pages by `withPhotoHandoff`, applied to the English rendering only (in `localizeTool`), so locale coverage still measures the canonical body.
+
 ### Motion domain
 
 **VectorDoc**:

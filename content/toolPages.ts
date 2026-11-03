@@ -22,6 +22,9 @@ import type {
 } from '@/components/embedded-tool-panel';
 import type { DashCodec, TranscodeProtocol } from '@/lib/transcodeTypes';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import type { PhotoPanelId } from '@/lib/photo/panelIds';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
+import { PHOTO_TOOL_PAGES } from '@/content/photo/index';
 
 import { RETENTION_PROMISE } from '@/content/retentionPromise';
 import { privacyNoteFor } from '@/content/toolPrivacy';
@@ -109,7 +112,10 @@ export type EmbedPreset =
   // the one section the page is about, with that section's values seeded.
   | { kind: 'audio_effect'; effect: AudioEffectEmphasis; defaults?: AudioEffectDefaults }
   | { kind: 'video_effect'; effect: VideoEffectEmphasis; defaults?: VideoEffectDefaults }
-  | { kind: 'image_effect'; effect: ImageEffectEmphasis; filter?: string };
+  | { kind: 'image_effect'; effect: ImageEffectEmphasis; filter?: string }
+  // MM100: an Aperture page's drop zone hands the photo to /photo/new with this panel in front
+  // and, when named, a built-in look (lib/photo/presets/builtin) applied.
+  | { kind: 'photo'; panel: PhotoPanelId; preset?: string };
 
 export interface ToolPageContent {
   /** Path slug under /tools, e.g. "remove-exif-metadata" -> /tools/remove-exif-metadata */
@@ -135,7 +141,7 @@ export interface ToolPageContent {
   /** Open Graph description (often same as metaDescription). */
   ogDescription: string;
   /** Top-level category for the /tools index grouping. */
-  category: 'image' | 'video' | 'audio' | 'ai' | 'metadata' | 'contentStudio' | 'motion';
+  category: 'image' | 'video' | 'audio' | 'ai' | 'metadata' | 'contentStudio' | 'motion' | 'photo';
   /** Embedded panel configuration. */
   embed: {
     defaultMediaKind: EmbeddedMediaKind;
@@ -8933,6 +8939,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   ...CATALOG_TOOL_PAGES,
   // MM78 voices.
   ...VOICE_TOOL_PAGES,
+  // MM100: Aperture (the landing + 24 adjustment pages), content/photo/.
+  ...PHOTO_TOOL_PAGES,
 ];
 
 /**
@@ -8987,6 +8995,11 @@ export const TOOL_CATEGORIES: Array<{
     id: 'motion',
     label: 'SVG animation',
     description: 'Animate SVG on a keyframe timeline and export it as SVG, Lottie, code or GIF.',
+  },
+  {
+    id: 'photo',
+    label: 'Photo editing',
+    description: `Adjust light and color, mask, straighten and heal photos in the ${PHOTO_BRAND} editor.`,
   },
   {
     id: 'metadata',

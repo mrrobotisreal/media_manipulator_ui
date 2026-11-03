@@ -32,6 +32,7 @@ import {
 } from "@/content/toolPages";
 import { toolPageOverrideModules } from "@/i18n/generated/toolPages.generated";
 import { defaultLocale, reviewedLocales } from "@/i18n/locales";
+import { withPhotoHandoff } from "@/content/photo/handoffs";
 
 /** Recursive deep-partial so overrides only need the fields they change. */
 type DeepPartial<T> = T extends (infer U)[]
@@ -84,6 +85,11 @@ const deepMerge = <T>(base: T, override: unknown): T => {
 };
 
 const localizeTool = (tool: ToolPageContent, langCode: string): ToolPageContent => {
+  // MM100: the "Fine-tune in Aperture" sentence and link are English copy, added to the English
+  // rendering only. TOOL_PAGES stays the canonical body that locale coverage is measured against
+  // (a translated array of the old length is still complete); each locale gets its sentence with
+  // its MM102-<prefix> body ticket.
+  if (langCode === defaultLocale) return withPhotoHandoff(tool);
   const override = TOOL_PAGE_OVERRIDES[langCode]?.pages?.[tool.slug];
   if (!override) return tool;
   return deepMerge(tool, override);
@@ -91,7 +97,7 @@ const localizeTool = (tool: ToolPageContent, langCode: string): ToolPageContent 
 
 /** Localized copy of every tool page for the given language. */
 export const getLocalizedToolPages = (langCode: string): ToolPageContent[] => {
-  if (!TOOL_PAGE_OVERRIDES[langCode]?.pages) return TOOL_PAGES;
+  if (!TOOL_PAGE_OVERRIDES[langCode]?.pages && langCode !== defaultLocale) return TOOL_PAGES;
   return TOOL_PAGES.map((tool) => localizeTool(tool, langCode));
 };
 

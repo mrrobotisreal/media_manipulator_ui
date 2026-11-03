@@ -41,7 +41,10 @@ import { cn } from '@/lib/utils';
 import { PhotoCanvas, type CanvasHandle, type PhotoSourceInfo } from './canvas';
 import { fetchProjectFile, proxyCandidates, type HealOutcome } from '@/lib/photo/aiApi';
 import { currentBaseRef } from '@/lib/photo/healOps';
-import { onCompareUsed, onShortcutsOpened } from '@/lib/photo/seams';
+import { onCompareUsed, onPresetApplied, onShortcutsOpened } from '@/lib/photo/seams';
+import { takeHandoff } from '@/lib/photo/handoff';
+import { type PhotoPanelId } from '@/lib/photo/panelIds';
+import { appendPreset, parsePresetLayers, presetById } from '@/lib/photo/presets';
 import { setLocalBase } from '@/lib/photo/localProject';
 import { clearMaskAssets, registerSubjectMask } from '@/lib/photo/maskAssets';
 import { useToolStore } from '@/lib/photo/toolStore';
@@ -129,6 +132,8 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const baseBlobs = React.useRef(new Map<string, Blob>());
   const loadedBase = React.useRef<string | null>(null);
   const originalBlob = React.useRef<Blob | null>(null);
+  /** MM100: the panel (and built-in look) a tool page asked for; applied once the photo is loaded. */
+  const pendingEntry = React.useRef<{ panel: PhotoPanelId | null; preset: string | null } | null>(null);
 
   const canvasRef = React.useRef<CanvasHandle>(null);
   const histPort = React.useRef<HistogramPort | null>(null);
@@ -181,9 +186,21 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       loadedBase.current = currentBaseRef(docIn);
       usePhotoStore.getState().load(id, docIn, projName, serverRev);
       revisionRef.current = usePhotoStore.getState().revision;
+      const entry = pendingEntry.current;
+      if (entry) {
+        pendingEntry.current = null;
+        if (entry.panel) setPanel(entry.panel);
+        const def = entry.preset ? presetById(entry.preset) : undefined;
+        const layers = def && !def.computed ? parsePresetLayers(def.layers) : null;
+        if (def && layers && layers.length > 0) {
+          const group = t('photo.presets.groupName', { name: t(def.nameKey) }).slice(0, 80);
+          usePhotoStore.getState().mutate(`Preset|builtin:${def.id}`, (d) => appendPreset(d, def.id, layers, group));
+          onPresetApplied(def.id, true);
+        }
+      }
       setLoading(false);
     },
-    [],
+    [t],
   );
 
   /** A server heal base as a decodable proxy (`bases/<hash>.proxy.jpg|png`); null when unavailable. */
@@ -377,7 +394,18 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       // /photo/new
       setLocalProject(lp);
       if (signedIn) void listPhotoProjects().then(setRecent).catch(() => undefined);
-      const from = new URLSearchParams(window.location.search).get('from');
+      const query = new URLSearchParams(window.location.search);
+      // MM100: a tool page's drop zone left the photo in IndexedDB (lib/photo/handoff.ts).
+      if (query.get('handoff') === '1') {
+        const handed = await takeHandoff();
+        if (handed) {
+          pendingEntry.current = { panel: handed.panel, preset: handed.preset };
+          setLoading(true);
+          await openFile(handed.file);
+          return;
+        }
+      }
+      const from = query.get('from');
       if (isJobId(from)) {
         setLoading(true);
         try {

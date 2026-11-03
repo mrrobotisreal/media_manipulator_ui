@@ -21,6 +21,16 @@ export interface SeoOverride {
 type LocaleOverrides = Record<string, SeoOverride>;
 
 const RU_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/aperture': {
+    title: 'Aperture: онлайн-фоторедактор со слоями и масками | Media Manipulator',
+    description:
+      'Редактируйте фото в браузере: недеструктивные корректирующие слои, кривые, цветовые диапазоны, маски и восстановление пятен, затем экспорт в JPG, PNG, WebP, AVIF или TIFF в полном разрешении.',
+  },
+  '/tutorials/aperture': {
+    title: 'Как отредактировать фото в Aperture | Урок Media Manipulator',
+    description:
+      'Пошаговый урок по Aperture: откройте фото, исправьте свет и цвет, выделите один цвет, работайте с масками, уберите дефекты, экспортируйте в полном разрешении, используйте стили и применяйте правки к серии.',
+  },
   '/tools/motion': {
     title: 'Motion: бесплатный онлайн-редактор анимации SVG | Media Manipulator',
     description:
@@ -119,6 +129,16 @@ const RU_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const UK_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/aperture': {
+    title: 'Aperture: онлайн-фоторедактор із шарами та масками | Media Manipulator',
+    description:
+      'Редагуйте фото в браузері: недеструктивні коригувальні шари, криві, діапазони кольорів, маски та відновлення плям, потім експорт у JPG, PNG, WebP, AVIF або TIFF у повній роздільності.',
+  },
+  '/tutorials/aperture': {
+    title: 'Як відредагувати фото в Aperture | Посібник Media Manipulator',
+    description:
+      'Покроковий посібник з Aperture: відкрийте фото, виправте світло й колір, виділіть один колір, працюйте з масками, приберіть дефекти, експортуйте в повній роздільності, використовуйте стилі та застосовуйте правки до серії.',
+  },
   '/tools/motion': {
     title: 'Motion: безкоштовний онлайн-редактор анімації SVG | Media Manipulator',
     description:
@@ -217,6 +237,16 @@ const UK_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const DE_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/aperture': {
+    title: 'Aperture: Online-Fotoeditor mit Ebenen und Masken | Media Manipulator',
+    description:
+      'Bearbeiten Sie Fotos im Browser mit nicht destruktiven Einstellungsebenen, Gradationskurven, Farbbereichen, Masken und Fleckenreparatur und exportieren Sie dann JPG, PNG, WebP, AVIF oder TIFF in voller Auflösung.',
+  },
+  '/tutorials/aperture': {
+    title: 'So bearbeiten Sie ein Foto mit Aperture | Media-Manipulator-Tutorial',
+    description:
+      'Schritt-für-Schritt-Tutorial zu Aperture: Foto öffnen, Licht und Farbe korrigieren, eine Farbe hervorheben, mit Masken bearbeiten, Makel reparieren, in voller Auflösung exportieren, Looks wiederverwenden und stapelweise anwenden.',
+  },
   '/tools/motion': {
     title: 'Motion: Kostenloser SVG-Animationseditor | Media Manipulator',
     description:
@@ -315,6 +345,16 @@ const DE_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const HE_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/aperture': {
+    title: 'Aperture: עורך תמונות אונליין עם שכבות ומסכות | Media Manipulator',
+    description:
+      'ערכו תמונות בדפדפן עם שכבות התאמה לא הרסניות, עקומות, טווחי צבע, מסכות ותיקון כתמים, ואז ייצאו JPG, PNG, WebP, AVIF או TIFF ברזולוציה מלאה.',
+  },
+  '/tutorials/aperture': {
+    title: 'איך לערוך תמונה עם Aperture | מדריך Media Manipulator',
+    description:
+      'מדריך Aperture צעד אחר צעד: פותחים תמונה, מתקנים אור וצבע, מדגישים צבע אחד, עורכים עם מסכות, מתקנים כתמים, מייצאים ברזולוציה מלאה, משתמשים שוב בסגנונות ומחילים על אצווה.',
+  },
   '/tools/motion': {
     title: 'Motion: עורך הנפשת SVG חינם אונליין | Media Manipulator',
     description:
@@ -413,6 +453,16 @@ const HE_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const ES_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/aperture': {
+    title: 'Aperture: editor de fotos online con capas y máscaras | Media Manipulator',
+    description:
+      'Edita fotos en tu navegador con capas de ajuste no destructivas, curvas, rangos de color, máscaras y reparación de manchas, y exporta en JPG, PNG, WebP, AVIF o TIFF a resolución completa.',
+  },
+  '/tutorials/aperture': {
+    title: 'Cómo editar una foto con Aperture | Tutorial de Media Manipulator',
+    description:
+      'Tutorial paso a paso de Aperture: abre una foto, corrige la luz y el color, haz resaltar un color, edita con máscaras, repara imperfecciones, exporta a resolución completa, reutiliza estilos y aplícalos por lotes.',
+  },
   '/tools/motion': {
     title: 'Motion: editor de animación SVG gratis en línea | Media Manipulator',
     description:
@@ -512,6 +562,16 @@ const ES_SEO_OVERRIDES: LocaleOverrides = {
 
 // MM72: Latin-American Spanish, adapted from ES_SEO_OVERRIDES (es-ES).
 const ES_MX_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/aperture': {
+    title: 'Aperture: editor de fotos en línea con capas y máscaras | Media Manipulator',
+    description:
+      'Edita fotos en tu navegador con capas de ajuste no destructivas, curvas, rangos de color, máscaras y reparación de manchas, y exporta en JPG, PNG, WebP, AVIF o TIFF a resolución completa.',
+  },
+  '/tutorials/aperture': {
+    title: 'Cómo editar una foto con Aperture | Tutorial de Media Manipulator',
+    description:
+      'Tutorial paso a paso de Aperture: abre una foto, corrige la luz y el color, haz resaltar un color, edita con máscaras, repara imperfecciones, exporta a resolución completa, reutiliza estilos y aplícalos por lotes.',
+  },
   '/tools/motion': {
     title: 'Motion: editor de animación SVG gratis en línea | Media Manipulator',
     description:

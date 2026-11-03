@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { Music, Image as ImageIcon, Spline, Video as VideoIcon } from 'lucide-react';
+import { Aperture, Music, Image as ImageIcon, Spline, Video as VideoIcon } from 'lucide-react';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { getServerT } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
@@ -13,7 +14,7 @@ interface TutorialDef {
 }
 
 interface CategoryDef {
-  id: 'audio' | 'video' | 'image' | 'motion';
+  id: 'audio' | 'video' | 'image' | 'motion' | 'photo';
   titleKey: string;
   descriptionKey: string;
   icon: React.ReactNode;
@@ -90,6 +91,21 @@ const CATEGORIES: CategoryDef[] = [
       },
     ],
   },
+  {
+    // MM100
+    id: 'photo',
+    titleKey: 'tutorials.categories.photo.title',
+    descriptionKey: 'tutorials.categories.photo.description',
+    icon: <Aperture className="w-7 h-7 text-data" />,
+    tutorials: [
+      {
+        titleKey: 'tutorials.tutorials.aperture.title',
+        excerptKey: 'tutorials.tutorials.aperture.excerpt',
+        readTimeKey: 'tutorials.tutorials.aperture.readTime',
+        slug: 'aperture',
+      },
+    ],
+  },
 ];
 
 const TutorialsPage: React.FC<{ locale?: string }> = ({ locale }) => {
@@ -108,8 +124,8 @@ const TutorialsPage: React.FC<{ locale?: string }> = ({ locale }) => {
                   <div className="flex items-start gap-4 mb-4">
                     <div className="shrink-0 mt-1">{category.icon}</div>
                     <div>
-                      <h2 className="text-2xl font-semibold text-card-foreground">{t(category.titleKey)}</h2>
-                      <p className="text-muted-foreground mt-1">{t(category.descriptionKey)}</p>
+                      <h2 className="text-2xl font-semibold text-card-foreground">{t(category.titleKey, { values: { brand: PHOTO_BRAND } })}</h2>
+                      <p className="text-muted-foreground mt-1">{t(category.descriptionKey, { values: { brand: PHOTO_BRAND } })}</p>
                     </div>
                   </div>
 
@@ -123,12 +139,12 @@ const TutorialsPage: React.FC<{ locale?: string }> = ({ locale }) => {
                         className="lg:p-6 transition-shadow"
                       >
                         <h3 className="text-xl font-semibold mb-2 text-card-foreground hover:text-data">
-                          <Link href={localizeHref(`/tutorials/${tutorial.slug}`, loc)}>{t(tutorial.titleKey)}</Link>
+                          <Link href={localizeHref(`/tutorials/${tutorial.slug}`, loc)}>{t(tutorial.titleKey, { values: { brand: PHOTO_BRAND } })}</Link>
                         </h3>
                         <div className="flex items-center gap-3 text-sm text-muted-foreground mb-3">
                           <span>{t(tutorial.readTimeKey)}</span>
                         </div>
-                        <p className="text-muted-foreground mb-4">{t(tutorial.excerptKey)}</p>
+                        <p className="text-muted-foreground mb-4">{t(tutorial.excerptKey, { values: { brand: PHOTO_BRAND } })}</p>
                         <Link
                           href={localizeHref(`/tutorials/${tutorial.slug}`, loc)}
                           className="text-data hover:text-data font-medium"

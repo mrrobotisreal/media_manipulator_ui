@@ -340,6 +340,10 @@
       "motion": {
         "title": "Tutoriales de animación",
         "description": "Anima ilustraciones SVG en una línea de tiempo de fotogramas clave y expórtalas como SVG animado, Lottie, código o GIF."
+      },
+      "photo": {
+        "title": "Tutoriales de edición de fotos",
+        "description": "Corrige la luz y el color, enmascara, repara y exporta fotos con {{brand}}."
       }
     },
     "tutorials": {
@@ -513,6 +517,110 @@
             "darkroomDesc": "Edita video en una línea de tiempo multipista y exporta MP4."
           }
         }
+      },
+      "aperture": {
+        "title": "Cómo editar una foto en línea con {{brand}}",
+        "excerpt": "Una guía en ocho pasos de {{brand}}: abre una foto, corrige la luz y el color, haz resaltar un color, enmascara una parte de la imagen, repara imperfecciones, exporta a resolución completa, guarda estilos y aplica las mismas ediciones a más fotos.",
+        "readTime": "8 min de lectura",
+        "page": {
+          "eyebrow": "Tutorial de edición de fotos",
+          "title": "Cómo editar una foto con {{brand}}",
+          "intro": "{{brand}} es el editor de fotos no destructivo de Media Manipulator. Cada cambio que haces es una capa de ajuste apilada sobre el original intacto, así que puedes reordenar, enmascarar, atenuar o eliminar cualquier paso más adelante, y el archivo que abriste nunca se altera. La vista previa se dibuja en tu tarjeta gráfica a partir de una copia de 1920 px; la exportación se genera en nuestro servidor a partir del original a resolución completa con las mismas fórmulas. Esta guía recorre una edición desde que abres una foto hasta que aplicas el estilo terminado a todo un conjunto, con los nombres de paneles y controles deslizantes que verás en el editor.",
+          "open": {
+            "title": "1. Abre una foto",
+            "body": "Abre {{brand}} desde su página de herramienta o desde cualquier página de herramientas de fotos de Media Manipulator. El editor ocupa toda la pantalla y no muestra anuncios. Suelta una foto en la pantalla de apertura o presiona Elegir una foto. Cuando se decodifica, ves la vista previa en el centro, las pestañas Paneles y Capas a un lado y un histograma en directo con el rojo, el verde, el azul y la luminancia. Mantén presionada la tecla de barra invertida en cualquier momento para ver el original, o activa Vista dividida para comparar las dos mitades.",
+            "bullets": {
+              "formats": "Puedes abrir archivos JPG, PNG, WebP, GIF, HEIC, HEIF, AVIF, TIFF y BMP. Tu navegador decodifica por sí solo los formatos web habituales. HEIC, HEIF, TIFF y BMP requieren una cuenta, porque el servidor crea una copia de vista previa antes de que el editor pueda mostrarlos.",
+              "local": "Sin cuenta, la foto y tus ediciones se quedan en el almacenamiento de este navegador y no se sube nada hasta que exportes, selecciones un sujeto o repares. Los invitados conservan una foto a la vez; abrir una segunda sustituye el proyecto guardado, y el editor te pregunta antes de hacerlo.",
+              "account": "Con la sesión iniciada, cada foto se convierte en un proyecto guardado en tu cuenta: 5 proyectos en Free, 50 en Premium e ilimitados en Pro. El proyecto se abre en cualquier dispositivo y se guarda automáticamente mientras trabajas, con el estado guardado visible en la barra superior.",
+              "original": "El archivo original nunca se modifica. Cada ajuste es una capa sobre él, con su propia opacidad de 0 a 100 por ciento, un modo de fusión normal, de luminosidad o de color, y una máscara opcional. Puedes apilar hasta 64 capas, y el panel Historial enumera cada paso."
+            }
+          },
+          "basic": {
+            "title": "2. Corrige la luz y el color con Básico",
+            "body": "La mayoría de las fotos necesitan primero el panel Básico. Agrupa los controles deslizantes globales en las secciones Exposición, Luz, Tono, Balance de blancos y Color, y cada una se convierte en su propia capa de ajuste en cuanto mueves un control. Trabaja de arriba abajo: acierta con el brillo general, recupera después las luces altas y las sombras, corrige luego la dominante de color y decide al final cuánto color quieres. Observa el histograma mientras arrastras; el recorte aparece como una acumulación en cualquiera de los extremos.",
+            "bullets": {
+              "exposure": "Exposición (EV) va de -5 a +5 pasos y multiplica cada píxel por dos elevado al valor, así que +1 duplica la luz. Compensación suma o resta una cantidad fija de -0,5 a 0,5, y Gamma, de 0,1 a 10, curva los tonos medios. Luz incluye Brillo y Contraste de -100 a 100.",
+              "tone": "Tono tiene Luces altas, Sombras, Blancos y Negros. Baja las Luces altas para recuperar un cielo brillante, sube las Sombras para abrir una cara oscura y usa Blancos y Negros para fijar dónde caen los puntos más claros y más oscuros. Cada control deslizante actúa sobre su propia parte del rango de luminancia en lugar de mover todo.",
+              "whiteBalance": "Balance de blancos tiene Temperatura y Matiz. Temperatura desplaza la foto hacia el azul o el ámbar; Matiz la desplaza hacia el verde o el magenta. Las tomas de interior con bombillas cálidas suelen necesitar la Temperatura hacia el azul, y la luz fluorescente a menudo pide un poco de Matiz magenta. Juzga el resultado con algo que debería ser gris neutro o blanco.",
+              "history": "Nada de esto es permanente. Deshacer y rehacer están en la barra superior y en el teclado, el panel Historial salta a cualquier estado anterior, y puedes guardar una instantánea con nombre de una versión que te guste durante el resto de la sesión. Baja la opacidad de una capa para aplicar la mitad de un ajuste en lugar de rehacerlo."
+            }
+          },
+          "colorPop": {
+            "title": "3. Haz resaltar un color",
+            "body": "El efecto de color selectivo, en el que un color se conserva y todo lo demás pasa a gris, está en el panel Color (HSL). Puedes llegar en un solo paso con un estilo incluido o construirlo a mano. El camino manual te da control sobre qué tonos sobreviven exactamente y lo suave que es el borde entre el color y el gris, algo que importa en casos como la piel, que se sitúa entre los rojos y los amarillos.",
+            "bullets": {
+              "look": "En el panel Estilos, elige Resalte de color: rojo, amarillo, verde, cian, azul o magenta. El estilo agrega una capa Color (HSL) sobre tus ediciones que desatura todos los rangos excepto el que elegiste. Si no es lo que querías, un solo Deshacer quita el estilo completo.",
+              "chips": "Para construirlo tú mismo, abre Color (HSL). Cada uno de los seis rangos, Rojos, Amarillos, Verdes, Cianes, Azules y Magentas, tiene un botón Gris excepto este. Presiona el botón del color que quieres conservar y los otros cinco rangos bajan a una saturación de menos 100 de una sola vez.",
+              "ranges": "Si el color que quieres conservar no es uno de los seis, usa Elegir un color de la foto para agregar un rango personalizado con el cuentagotas. Cada rango tiene controles de Ancho y Desvanecer, así que puedes ampliarlo para incluir tonos vecinos o suavizar el borde para que la transición no parezca recortada.",
+              "tune": "Después afina el color que sobrevive con sus propios controles de Tono, Saturación y Luminosidad. Un poco más de Saturación y algo menos de Luminosidad suelen hacer que el color conservado destaque más frente al gris. Si el resultado es demasiado intenso en conjunto, baja la opacidad de la capa en la pestaña Capas en lugar de rehacerlo."
+            }
+          },
+          "masks": {
+            "title": "4. Edita solo una parte de la foto con máscaras",
+            "body": "Cualquier capa de ajuste puede llevar una máscara, que limita dónde se aplica. Selecciona la capa en la pestaña Capas, abre Máscaras y agrega un componente. Las zonas blancas de la máscara reciben el ajuste completo, las negras no reciben nada y las grises reciben una proporción. La vista de máscara alterna entre desactivada, una superposición de color sobre la foto y la máscara sola, para que veas exactamente qué estás afectando antes de empezar a mover controles.",
+            "bullets": {
+              "kinds": "Hay seis tipos de máscara: Degradado lineal para un cielo o un suelo, Radial para un foco alrededor de un punto, Pincel para pintar a mano con tamaño ajustable y un interruptor de borrado, Rango de luminosidad solo para las partes claras u oscuras, Rango de color para los píxeles de un color elegido, y Seleccionar sujeto.",
+              "combine": "Una máscara puede contener varios componentes, y cada uno se configura en Agregar, Restar o Intersecar. Una receta habitual es un Degradado lineal sobre el cielo con un Pincel en modo Restar que protege un edificio que se adentra en él. Suavizado de bordes de la máscara suaviza el borde, Intensidad de la máscara escala el conjunto e Invertir le da la vuelta.",
+              "colorRange": "Rango de color usa la misma idea de cuentagotas que el panel HSL: elige un color, haz clic con Shift para agregar hasta ocho más y sube la Tolerancia para incluir tonos cercanos. Es una forma rápida de oscurecer solo un cielo azul o de calentar solo los tonos de piel sin pintar nada.",
+              "subject": "Seleccionar sujeto pide a nuestra GPU que encuentre a la persona u objeto principal y devuelve una máscara de borde suave en unos segundos. Es el único tipo de máscara que sube la foto y cuenta como una operación estándar de tu plan; una repetición idéntica es un acierto de caché gratuito. Todos los demás tipos de máscara se calculan en tu navegador y no cuestan nada."
+            }
+          },
+          "heal": {
+            "title": "5. Repara manchas e imperfecciones",
+            "body": "El polvo en un sensor, un grano, un cable suelto o un poco de basura pueden pasar por el panel Reparar. A diferencia de los controles deslizantes, la reparación es un paso generativo: nuestro servidor rellena la zona pintada con píxeles nuevos que encajan con el entorno. Aun así queda en tu pila de capas y en tu historial, así que puedes deshacerla o mantener presionada la barra invertida para comparar con el original, pero es la única herramienta de esta guía que cuesta una operación de IA.",
+            "bullets": {
+              "paint": "Elige el Pincel corrector y pinta sobre cada marca que quieras eliminar. Haz el toque un poco más grande que la propia mancha para que el relleno tenga textura limpia con la que fundirse. El panel cuenta las manchas que has marcado, y Borrar manchas empieza de nuevo si cambias de opinión antes de presionar Reparar.",
+              "press": "Presiona Reparar cuando las manchas estén marcadas. La foto y la zona pintada van a nuestra GPU, donde el modelo de relleno LaMa completa las zonas marcadas; esto puede tardar hasta un minuto en un archivo grande. Cuando vuelve, el resultado se aplica como un paso de tu historial con Deshacer disponible.",
+              "cost": "Cada presión de Reparar es una operación de IA de tu plan, sin importar cuántas manchas hayas pintado, así que marca todo primero y presiona una sola vez. El límite diario de cada plan figura en la página de precios. Pintar manchas, borrarlas y deshacer una reparación no cuestan nada.",
+              "base": "La reparación se sitúa en tu pila de capas como todo lo demás, así que las capas de color y tono que agregues después se aplican al resultado reparado, y Deshacer o el panel Historial la quitan. Para los ojos rojos de los retratos con flash hay un panel Ojos rojos aparte que no necesita IA en absoluto."
+            }
+          },
+          "export": {
+            "title": "6. Exporta a resolución completa",
+            "body": "Presiona Exportar en la barra superior cuando termines la edición. La vista previa en la que has trabajado es una copia de 1920 px dibujada en tu tarjeta gráfica; la exportación es un trabajo del servidor que genera el original a su tamaño completo con las mismas fórmulas, de modo que ambas coinciden con una diferencia de unos pocos niveles de 8 bits como máximo. El resultado se descarga como un archivo nuevo con el nombre del original más (retouched), y el archivo original queda intacto.",
+            "bullets": {
+              "format": "Elige JPG, PNG, WebP, AVIF o TIFF, fija la Calidad de 1 a 100 donde corresponda, y decide si Conservar o Quitar los metadatos. Quitarlos elimina el bloque EXIF, incluidos los ajustes de la cámara y cualquier ubicación GPS, que suele ser lo que quieres antes de publicar una foto.",
+              "size": "Tamaño máximo ofrece Original, 12, 24, 64 y 120 megapíxeles. El cuadro de diálogo estima el tamaño del archivo según tu elección: un JPG con calidad 92 pesa unos 0,45 MB por megapíxel, así que una foto de 6000 x 4000 a 24 MP sale en torno a 10,8 MB, mientras que WebP ronda los 0,3 MB y AVIF los 0,2 MB por megapíxel.",
+              "server": "Las exportaciones de hasta 12 MP están disponibles para invitados y en el plan Free, así que un original más grande se exporta a 12 MP. Premium y Pro exportan hasta 120 MP. El trabajo se ejecuta en nuestro servidor, que genera la imagen con NumPy y OpenCV, la codifica con ImageMagick y ofrece el archivo para su descarga cuando termina.",
+              "cost": "Una exportación es una operación estándar de tu plan, y después puedes volver a ejecutar Exportar con otros ajustes, por ejemplo un TIFF a tamaño completo para imprimir y un WebP de 12 MP para la web. La vista previa, cada control deslizante, cada máscara sin IA, los estilos y deshacer son gratuitos e ilimitados."
+            }
+          },
+          "presets": {
+            "title": "7. Guarda y reutiliza estilos",
+            "body": "Un estilo en {{brand}} es un grupo guardado de capas de ajuste. El panel Estilos incluye 18 estilos integrados además de Automático, y es también donde viven tus propios ajustes preestablecidos. Guardar un ajuste preestablecido captura las capas que elijas con sus valores actuales, de modo que el tratamiento cálido y algo desvaído que afinaste para una foto se puede aplicar a la siguiente con un solo clic, y sigue entrando como capas editables en lugar de como un filtro fijo.",
+            "bullets": {
+              "builtin": "Los estilos integrados se agrupan en Color, Blanco y negro, Película y Corrección, e incluyen los seis estilos de Resalte de color, Película en blanco y negro, Blanco y negro de alto contraste, Cálido, Frío, Mate, Desvanecido, Vívido, Contundente, Proceso cruzado, Vintage, Retrato suave, Paisaje y Automático. Usa el cuadro de filtro para encontrar uno por su nombre.",
+              "append": "Aplicar un estilo agrega sus ajustes como un grupo con nombre sobre lo que ya tienes, en lugar de sustituir tu trabajo. Eso significa que puedes apilar Cálido sobre tus propias correcciones de Básico, abrir el grupo en la pestaña Capas para retocar controles concretos y quitar el estilo completo con un solo Deshacer.",
+              "mine": "Elige Guardar las ediciones actuales como ajuste preestablecido, ponle un nombre y marca los ajustes que se incluirán. Aparece en Mis ajustes preestablecidos. Tus ajustes preestablecidos se guardan en este navegador, así que no te siguen a otro dispositivo por sí solos, y puedes renombrarlos o eliminarlos desde el mismo panel.",
+              "file": "Exportar ajustes preestablecidos escribe tus ajustes preestablecidos guardados en un archivo JSON; Importar ajustes preestablecidos lo vuelve a leer. Úsalo para mover ajustes preestablecidos a otro navegador u computadora, para tener una copia de seguridad o para compartir un estilo con otra persona que use {{brand}} en Media Manipulator."
+            }
+          },
+          "batch": {
+            "title": "8. Aplica las mismas ediciones a más fotos",
+            "body": "Cuando varias fotos de la misma sesión necesitan el mismo tratamiento, no tienes que repetir la edición. Termina una foto, abre el cuadro de diálogo Exportar y elige Aplicar a más fotos. Toma toda la pila de capas del proyecto actual, incluidas las máscaras y las reparaciones que ya hayas hecho en esta foto, la genera sobre los demás archivos que elijas con los ajustes de exportación que seleccionaste y te entrega todo en una sola descarga.",
+            "bullets": {
+              "limit": "Aplicar a más fotos solo está disponible con la sesión iniciada; el cuadro de diálogo pide a los invitados que inicien sesión. El plan Free aplica las ediciones a un máximo de 3 fotos a la vez, Premium a 10 y Pro a 25. Si eliges más de lo que permite tu plan, los archivos sobrantes se dejan fuera, y el cuadro de diálogo indica cuántos.",
+              "run": "Cada foto elegida se crea primero como un proyecto propio en tu cuenta, una tras otra, de modo que los originales y sus ediciones se conservan como cualquier otro proyecto. Después, un único trabajo por lotes las genera todas en el servidor, y el cuadro de diálogo muestra cada foto pasando de Preparando a Procesando con un porcentaje y a Listo.",
+              "zip": "Cuando terminan los procesamientos, presiona Descargar como ZIP. El archivo se construye en tu navegador a partir de los archivos terminados, así que no se sube nada más y obtienes un único archivo que guardar en lugar de una docena de descargas sueltas. Si no se pudo agregar un archivo, el cuadro de diálogo te dice cuántos faltan.",
+              "retry": "Si una foto falla, las demás no se detienen. El cuadro de diálogo muestra cuántas han fallado y ofrece un botón Reintentar solo para esos archivos, y el ZIP puede volver a construirse cuando terminen. Las exportaciones cuentan como operaciones estándar de tu plan, así que consulta la página de precios antes de ejecutar un lote grande."
+            }
+          },
+          "cta": {
+            "title": "Pruébalo con tu propia foto",
+            "body": "Abre {{brand}}, suelta una foto y recorre los ocho pasos anteriores. Todos los controles deslizantes, máscaras y estilos se pueden probar gratis sin cuenta, y tu foto se queda en tu navegador hasta que decidas exportarla.",
+            "button": "Abrir {{brand}}"
+          },
+          "related": {
+            "title": "Relacionado",
+            "intro": "Más páginas para trabajar con fotos en Media Manipulator.",
+            "toolDesc": "La página de la herramienta del editor, con la lista completa de paneles, formatos de exportación y lo que permite cada plan.",
+            "darkroom": "Tutorial del editor de video Darkroom",
+            "darkroomDesc": "Edita video en una línea de tiempo multipista y exporta un MP4.",
+            "licenses": "Licencias de código abierto",
+            "licensesDesc": "Las bibliotecas y los modelos de código abierto que hay detrás del editor y del resto de Media Manipulator."
+          }
+        }
       }
     },
     "newToHere": {
@@ -576,15 +684,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Fecha de entrada en vigor: 24/10/2026",
-    "lastUpdated": "Última actualización: 01/11/2026",
+    "lastUpdated": "Última actualización: 03/11/2026",
     "operator": "Media Manipulator es un producto y servicio operado por CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Que opera como Media Manipulator",
     "location": "Colorado, EE. UU.",
     "emailLabel": "Correo electrónico:",
     "websiteLabel": "Sitio web:",
-    "whatChangedTitle": "Qué cambió el 01/11/2026",
-    "whatChangedBody": "Ahora puedes iniciar sesión con Apple, además de con una dirección de correo y una contraseña o con Google. La Política de privacidad (sección 1.7) explica que, si inicias sesión con Apple, Apple nos comparte tu nombre y tu dirección de correo electrónico, o una dirección de retransmisión privada si eliges «Ocultar mi correo electrónico», y que la política de privacidad de Apple se aplica a tu cuenta de Apple; la sección 8 enumera a Apple entre las partes con las que compartimos información de inicio de sesión, y la sección 1.7 ahora indica que Firebase envía un enlace de restablecimiento a tu correo electrónico si pides restablecer tu contraseña. La sección 9 de los Términos ahora indica que puedes iniciar sesión con una dirección de correo y una contraseña, con Google o con Apple. Todo lo de la actualización del 28/10/2026 sigue vigente: Agregamos un formulario de contacto en media-manipulator.com/contact: la Política de privacidad tiene una nueva sección 1.11 sobre los mensajes que nos envías (tu nombre, dirección de correo electrónico, asunto y mensaje, entregados en nuestro buzón de soporte a través de Resend y conservados allí hasta que se cierra la conversación, nunca más de 12 meses), y la sección 16 ahora remite al formulario. Agregamos las divulgaciones sobre cookies publicitarias que exige Google y los enlaces de exclusión. La Política de Privacidad tiene una nueva sección 5.1 sobre cookies publicitarias y Google AdSense: las cookies publicitarias de Google, los anuncios no personalizados, el mensaje de consentimiento de Google en el EEE, el Reino Unido y Suiza, los enlaces para excluirte de los anuncios personalizados (Configuración de anuncios de Google, aboutads.info y youronlinechoices.eu) y para saber cómo usa Google la información de los sitios que usan sus servicios, quién ve anuncios (solo los visitantes sin cuenta y las cuentas gratuitas) y nuestro archivo público ads.txt; la sección 1.5 ahora enumera los identificadores publicitarios que puede establecer el script de anuncios de Google. La sección 8.9 de los Términos ahora indica que los anuncios se muestran solo sin cuenta o con una cuenta gratuita, y que Premium y Pro los eliminan. La sección 5 (Publicidad) de la Política de Privacidad ahora indica que el script de anuncios de Google se carga en las páginas que pueden mostrar anuncios, con todas las señales de consentimiento denegadas hasta que elijas, y que hasta entonces ofrece anuncios no personalizados. Antes, el mismo día: Agregamos las herramientas de voz: clonar tu propia voz a partir de una grabación, diseñar una voz a partir de una descripción y cambiar la voz de una grabación. La Política de Privacidad tiene una nueva sección 1.10 sobre muestras de voz y voces diseñadas: qué guardamos, que lo usamos únicamente para crear y ejecutar la voz que has pedido con tu consentimiento explícito, que se almacena en Amazon S3 según tu configuración de conservación, que nunca se comparte con un proveedor de IA externo ni se usa para entrenar ningún modelo, y que puedes eliminarla en cualquier momento y se elimina junto con tu cuenta; las secciones 3, 3.4, 3.5 y 4 ahora mencionan las voces. Los Términos tienen una nueva sección 8.11: solo puedes crear una voz a partir de tu propia voz o con el permiso explícito de la persona que habla; no se permiten la suplantación, el fraude, los deepfakes políticos ni el acoso; el habla generada y convertida lleva una marca de agua inaudible y el audio con el tono modificado no; y podemos eliminar voces y suspender cuentas. La Sección 1 de los Términos enumera las herramientas de voz. Todo lo de la actualización del 2026-10-26 sigue vigente: Agregamos Motion, nuestro editor de animación SVG (en beta). La Política de Privacidad tiene una nueva sección 1.9: los proyectos y las exportaciones de Motion se crean en tu navegador y no se suben para crearlos; los proyectos que guardas en tu cuenta se almacenan como los proyectos de Darkroom, siguen el periodo de conservación que elijas y pueden eliminarse; y de cada exportación contabilizada registramos su formato, tamaño, duración y hora para aplicar el límite diario. Las secciones 3, 3.3 y 3.4 ahora nombran los proyectos de Motion. La Sección 13 de los Términos confirma que tus exportaciones de Motion te pertenecen, explica que algunas exportaciones contienen código de anime.js con licencia MIT cuyo aviso debe conservarse, y remite a nuestra página de licencias de código abierto. Todo lo de la actualización del 25/10/2026 (el plan Pro, los cambios de plan y los reembolsos) sigue vigente. La sección 10 de los Términos ahora indica que puedes pagar en dólares estadounidenses o en euros al mismo precio, que en Europa se muestran euros por defecto y que la moneda de una suscripción no puede cambiar mientras esté activa; la sección 1.6 de la Política de Privacidad ahora enumera la moneda de facturación que guardamos y la cookie mm-currency que recuerda tu elección. La sección 8 indica ahora también que los traductores que contratamos envían su trabajo como pull requests de GitHub creadas por la GitHub App de CreaTV Ltd., y que esos envíos contienen solo texto de traducción y ningún dato personal de los visitantes. Esta versión en español de Latinoamérica es una adaptación hecha por un modelo de IA y está pendiente de revisión por un hablante nativo; en caso de discrepancia, prevalece la versión en inglés."
+    "whatChangedTitle": "Qué cambió el 03/11/2026",
+    "whatChangedBody": "Hemos agregado Aperture, nuestro editor de fotos (en beta). La Política de privacidad tiene una nueva sección 1.12: en Aperture tu foto se edita en tu navegador y solo se sube a nuestros servidores cuando guardas un proyecto en tu cuenta, exportas, seleccionas un sujeto con IA, reparas manchas o aplicas tus ediciones a más fotos; los proyectos guardados en tu cuenta se almacenan en nuestros servidores durante el período de conservación que elijas, se pueden eliminar y se eliminan junto con tu cuenta; la selección de sujeto y la reparación se ejecutan en nuestro propio servidor GPU y ninguna foto se envía a un servicio de terceros; y por cada exportación, selección de sujeto y reparación registramos el tipo de trabajo, el formato y el tamaño del resultado, la hora y tu plan para hacer cumplir el límite diario. Las secciones 3, 3.3, 3.4 y 4 ahora nombran los proyectos de Aperture y los modelos utilizados. Los Términos mencionan Aperture en la sección 1, y la sección 13 establece que tus exportaciones de Aperture te pertenecen. Todo lo de la actualización del 01/11/2026 sigue vigente: Ahora puedes iniciar sesión con Apple, además de con una dirección de correo y una contraseña o con Google. La Política de privacidad (sección 1.7) explica que, si inicias sesión con Apple, Apple nos comparte tu nombre y tu dirección de correo electrónico, o una dirección de retransmisión privada si eliges «Ocultar mi correo electrónico», y que la política de privacidad de Apple se aplica a tu cuenta de Apple; la sección 8 enumera a Apple entre las partes con las que compartimos información de inicio de sesión, y la sección 1.7 ahora indica que Firebase envía un enlace de restablecimiento a tu correo electrónico si pides restablecer tu contraseña. La sección 9 de los Términos ahora indica que puedes iniciar sesión con una dirección de correo y una contraseña, con Google o con Apple. Todo lo de la actualización del 28/10/2026 sigue vigente: Agregamos un formulario de contacto en media-manipulator.com/contact: la Política de privacidad tiene una nueva sección 1.11 sobre los mensajes que nos envías (tu nombre, dirección de correo electrónico, asunto y mensaje, entregados en nuestro buzón de soporte a través de Resend y conservados allí hasta que se cierra la conversación, nunca más de 12 meses), y la sección 16 ahora remite al formulario. Agregamos las divulgaciones sobre cookies publicitarias que exige Google y los enlaces de exclusión. La Política de Privacidad tiene una nueva sección 5.1 sobre cookies publicitarias y Google AdSense: las cookies publicitarias de Google, los anuncios no personalizados, el mensaje de consentimiento de Google en el EEE, el Reino Unido y Suiza, los enlaces para excluirte de los anuncios personalizados (Configuración de anuncios de Google, aboutads.info y youronlinechoices.eu) y para saber cómo usa Google la información de los sitios que usan sus servicios, quién ve anuncios (solo los visitantes sin cuenta y las cuentas gratuitas) y nuestro archivo público ads.txt; la sección 1.5 ahora enumera los identificadores publicitarios que puede establecer el script de anuncios de Google. La sección 8.9 de los Términos ahora indica que los anuncios se muestran solo sin cuenta o con una cuenta gratuita, y que Premium y Pro los eliminan. La sección 5 (Publicidad) de la Política de Privacidad ahora indica que el script de anuncios de Google se carga en las páginas que pueden mostrar anuncios, con todas las señales de consentimiento denegadas hasta que elijas, y que hasta entonces ofrece anuncios no personalizados. Antes, el mismo día: Agregamos las herramientas de voz: clonar tu propia voz a partir de una grabación, diseñar una voz a partir de una descripción y cambiar la voz de una grabación. La Política de Privacidad tiene una nueva sección 1.10 sobre muestras de voz y voces diseñadas: qué guardamos, que lo usamos únicamente para crear y ejecutar la voz que has pedido con tu consentimiento explícito, que se almacena en Amazon S3 según tu configuración de conservación, que nunca se comparte con un proveedor de IA externo ni se usa para entrenar ningún modelo, y que puedes eliminarla en cualquier momento y se elimina junto con tu cuenta; las secciones 3, 3.4, 3.5 y 4 ahora mencionan las voces. Los Términos tienen una nueva sección 8.11: solo puedes crear una voz a partir de tu propia voz o con el permiso explícito de la persona que habla; no se permiten la suplantación, el fraude, los deepfakes políticos ni el acoso; el habla generada y convertida lleva una marca de agua inaudible y el audio con el tono modificado no; y podemos eliminar voces y suspender cuentas. La Sección 1 de los Términos enumera las herramientas de voz. Todo lo de la actualización del 2026-10-26 sigue vigente: Agregamos Motion, nuestro editor de animación SVG (en beta). La Política de Privacidad tiene una nueva sección 1.9: los proyectos y las exportaciones de Motion se crean en tu navegador y no se suben para crearlos; los proyectos que guardas en tu cuenta se almacenan como los proyectos de Darkroom, siguen el periodo de conservación que elijas y pueden eliminarse; y de cada exportación contabilizada registramos su formato, tamaño, duración y hora para aplicar el límite diario. Las secciones 3, 3.3 y 3.4 ahora nombran los proyectos de Motion. La Sección 13 de los Términos confirma que tus exportaciones de Motion te pertenecen, explica que algunas exportaciones contienen código de anime.js con licencia MIT cuyo aviso debe conservarse, y remite a nuestra página de licencias de código abierto. Todo lo de la actualización del 25/10/2026 (el plan Pro, los cambios de plan y los reembolsos) sigue vigente. La sección 10 de los Términos ahora indica que puedes pagar en dólares estadounidenses o en euros al mismo precio, que en Europa se muestran euros por defecto y que la moneda de una suscripción no puede cambiar mientras esté activa; la sección 1.6 de la Política de Privacidad ahora enumera la moneda de facturación que guardamos y la cookie mm-currency que recuerda tu elección. La sección 8 indica ahora también que los traductores que contratamos envían su trabajo como pull requests de GitHub creadas por la GitHub App de CreaTV Ltd., y que esos envíos contienen solo texto de traducción y ningún dato personal de los visitantes. Esta versión en español de Latinoamérica es una adaptación hecha por un modelo de IA y está pendiente de revisión por un hablante nativo; en caso de discrepancia, prevalece la versión en inglés."
   },
   "privacyPolicy": {
     "title": "Política de privacidad",
@@ -743,6 +851,14 @@
               "Cuando usas el formulario de contacto de media-manipulator.com/contact, recibimos tu nombre, tu dirección de correo electrónico, el asunto que eliges y tu mensaje, junto con la hora de envío y un número de referencia corto. El formulario entrega estos datos en nuestro buzón de soporte por correo electrónico, a través de nuestro proveedor de correo Resend; los mensajes de contacto no se almacenan en la base de datos de nuestra aplicación. Cuando nos escribes directamente por correo electrónico, recibimos el mismo tipo de información de tu correo.",
               "Usamos estos mensajes solo para responderte y para gestionar lo que solicitas, como un informe de error, una pregunta de facturación o una solicitud de privacidad. Se conservan en nuestro buzón de soporte hasta que se cierra la conversación y nunca más de 12 meses. Para limitar el spam, el formulario tiene un límite de frecuencia por sesión del navegador y por dirección IP, igual que el resto del sitio, y un intento bloqueado se conserva como registro de prevención de abusos (sección 3.6)."
             ]
+          },
+          {
+            "title": "1.12 Proyectos y exportaciones de Aperture",
+            "paragraphs": [
+              "Aperture, nuestro editor de fotos, edita tu foto en tu navegador: la vista previa que ves se dibuja en tu propio dispositivo. Una foto sale de tu dispositivo únicamente cuando solicitas algo que requiere nuestros servidores: guardarla en tu cuenta como proyecto, exportar el archivo terminado, seleccionar un sujeto con IA, reparar manchas con IA o aplicar tus ediciones a más fotos.",
+              "Si has iniciado sesión y guardas un proyecto, la foto original, una copia de vista previa de hasta 1920 píxeles, una miniatura pequeña, el documento de edición (la lista de ajustes, máscaras y zonas reparadas) y las máscaras y versiones reparadas de la foto se almacenan en nuestros servidores en la carpeta del proyecto. Son tu contenido, siguen el período de conservación que elijas (sección 3), puedes eliminar un proyecto desde la página Cuenta, se eliminan junto con tu cuenta y los proyectos figuran en la exportación de tus datos. Sin cuenta, una foto se conserva únicamente en tu navegador (en IndexedDB) y no se sube hasta que exportas, seleccionas un sujeto o reparas; esa subida es un trabajo temporal normal y se conserva durante 24 horas.",
+              "Las exportaciones, la selección de sujeto con IA y la reparación son trabajos en nuestros servidores. Las exportaciones se generan a partir de tu foto original, la selección de sujeto y la reparación se ejecutan en nuestro propio servidor GPU, y ninguna de tus fotos se envía a un servicio de terceros. Cada exportación, selección de sujeto y reparación se contabiliza para hacer cumplir el límite diario de tu plan: almacenamos el tipo de trabajo, el formato y el tamaño del resultado, la hora, tu plan y un identificador de tu cuenta, de tu sesión del navegador o de una dirección IP con hash. Los archivos de resultado se conservan según las normas de conservación habituales (sección 3), y cuando eliminas tu cuenta estos registros se desvinculan de tu identidad."
+            ]
           }
         ]
       },
@@ -769,7 +885,7 @@
         "id": "retention",
         "title": "3. Almacenamiento, retención y eliminación de archivos",
         "paragraphs": [
-          "El tiempo que conservamos tus archivos depende de si tienes una cuenta. Esta sección abarca los archivos subidos, los resultados generados, los medios de Darkroom, los proyectos de Darkroom, los proyectos de Motion y las voces guardadas en tu cuenta, almacenados en nuestros servidores y en Amazon S3 (us-west-2). Los registros sobre tus conversiones y configuración (como el historial de trabajos, las opciones de conservación y los datos de la cuenta) se guardan en una base de datos PostgreSQL, y el procesamiento de IA se ejecuta en nuestro propio servidor GPU autoalojado."
+          "El tiempo que conservamos tus archivos depende de si tienes una cuenta. Esta sección abarca los archivos subidos, los resultados generados, los medios de Darkroom, los proyectos de Darkroom, los proyectos de Motion, los proyectos de Aperture y las voces guardadas en tu cuenta, almacenados en nuestros servidores y en Amazon S3 (us-west-2). Los registros sobre tus conversiones y configuración (como el historial de trabajos, las opciones de conservación y los datos de la cuenta) se guardan en una base de datos PostgreSQL, y el procesamiento de IA se ejecuta en nuestro propio servidor GPU autoalojado."
         ],
         "subsections": [
           {
@@ -794,7 +910,7 @@
           {
             "title": "3.3 Eliminar tus archivos",
             "paragraphs": [
-              "Si tienes una cuenta, puedes eliminar un resultado, un proyecto de Darkroom o un proyecto de Motion concreto, eliminar todos tus archivos a la vez o eliminar toda tu cuenta desde la página Cuenta. Los visitantes sin cuenta pueden eliminar sus propios resultados durante la sesión en la que se crearon."
+              "Si tienes una cuenta, puedes eliminar un resultado, un proyecto de Darkroom, un proyecto de Motion o un proyecto de Aperture concreto, eliminar todos tus archivos a la vez o eliminar toda tu cuenta desde la página Cuenta. Los visitantes sin cuenta pueden eliminar sus propios resultados durante la sesión en la que se crearon."
             ]
           },
           {
@@ -804,7 +920,7 @@
             ],
             "bullets": [
               "cancelamos tu suscripción Premium o Pro en Stripe, si tienes una;",
-              "eliminamos tus archivos, tus proyectos de Darkroom y de Motion y tus voces guardadas;",
+              "eliminamos tus archivos, tus proyectos de Darkroom, de Motion y de Aperture y tus voces guardadas;",
               "eliminamos el registro de tu cuenta y tu configuración, y desvinculamos de tu identidad el resto de tus registros de actividad;",
               "pedimos a nuestra analítica propia que elimine los datos analíticos vinculados a tu cuenta (consulta la Sección 6);",
               "eliminamos tu acceso de inicio de sesión."
@@ -844,7 +960,7 @@
         ],
         "afterBullets": [
           "Todo el procesamiento con IA que utiliza Media Manipulator se realiza localmente en nuestros propios servidores o en infraestructura que controlamos. No subcontratamos el procesamiento de archivos subidos, resultados generados, transcripciones, resúmenes, descripciones o análisis de seguridad de contenido a proveedores de IA externos.",
-          "Las funciones de IA usan modelos y herramientas abiertos que ejecutamos nosotros mismos, principalmente en un servidor GPU autoalojado: Whisper para la transcripción, Real-ESRGAN para el escalado de imágenes, Demucs para separar audio, Chatterbox y Qwen3-TTS para la clonación de voz, el diseño de voz y el habla, y otros modelos locales, además de modelos de lenguaje y de visión servidos mediante Ollama para tareas de texto como resúmenes, descripciones y traducción de subtítulos.",
+          "Las funciones de IA usan modelos y herramientas abiertos que ejecutamos nosotros mismos, principalmente en un servidor GPU autoalojado: Whisper para la transcripción, Real-ESRGAN para el escalado de imágenes, rembg y LaMa para seleccionar un sujeto y reparar manchas en fotos, Demucs para separar audio, Chatterbox y Qwen3-TTS para la clonación de voz, el diseño de voz y el habla, y otros modelos locales, además de modelos de lenguaje y de visión servidos mediante Ollama para tareas de texto como resúmenes, descripciones y traducción de subtítulos.",
           "Esto significa que, cuando se utilizan funciones de IA, tus archivos subidos y los resultados generados permanecen dentro del entorno de procesamiento de Media Manipulator y se administran conforme a las prácticas de almacenamiento, conservación, eliminación y seguridad descritas en esta Política de privacidad.",
           "Los archivos subidos y los resultados generados se conservan y se eliminan como se describe en la Sección 3, también cuando se usan funciones de IA. Una vez transcurrido el periodo de retención aplicable, se eliminan de nuestros sistemas activos, salvo que se produzca una eliminación anterior o que la ley exija una conservación limitada por motivos de seguridad, prevención de abusos, cumplimiento legal o aplicación de la normativa.",
           "Los resultados generados por IA pueden ser imperfectos, incompletos o inexactos. Los usuarios son responsables de revisar cualquier resultado generado por IA antes de confiar en él.",
@@ -1101,6 +1217,7 @@
           "transcripción asistida por IA, generación de subtítulos, resúmenes y descripciones;",
           "clasificación de seguridad de contenido y detección para prevención de abusos;",
           "crear, animar y exportar gráficos vectoriales y animaciones con Motion;",
+          "editar fotos con capas de ajuste, máscaras, geometría y reparación, y exportar el resultado, con Aperture;",
           "crear voces a partir de tus propias grabaciones, diseñar voces a partir de una descripción, generar habla a partir de texto y cambiar la voz de una grabación (Voces, véase la Sección 8.11);",
           "historial temporal de conversiones y resultados procesados descargables."
         ],
@@ -1414,7 +1531,8 @@
           "No puedes copiar, modificar, distribuir, vender, arrendar, aplicar ingeniería inversa ni crear obras derivadas de Media Manipulator, salvo que la ley lo permita o cuentes con nuestro permiso por escrito.",
           "Conservas la propiedad de tus propios archivos subidos y de los resultados generados, sujeta a los derechos y licencias concedidos en estos Términos.",
           "Las animaciones y los archivos que creas con Motion, incluidas las exportaciones de SVG animado, Lottie, código e imagen, te pertenecen del mismo modo que tus demás resultados generados. Algunas exportaciones incluyen código abierto de terceros que hace que la animación se reproduzca: anime.js, licenciado bajo la licencia MIT. Su aviso de copyright y de licencia se escribe al principio del archivo exportado, y debes conservar ese aviso si usas o distribuyes el archivo. Las exportaciones de código que usan un paquete en lugar de incrustarlo (el paquete anime.js para React y JavaScript, y flutter_svg o webview_flutter para Flutter) lo nombran en el archivo, y lo instalas tú mismo bajo su propia licencia (MIT, o BSD-3-Clause para webview_flutter).",
-          "Media Manipulator usa bibliotecas de código abierto en tu navegador, entre ellas mediabunny, licenciada bajo la Mozilla Public License 2.0 y usada sin modificar para empaquetar los archivos de video creados en tu navegador. Sus licencias, avisos de copyright y enlaces al código fuente figuran en nuestra página de licencias de código abierto: https://www.media-manipulator.com/licenses."
+          "Media Manipulator usa bibliotecas de código abierto en tu navegador, entre ellas mediabunny, licenciada bajo la Mozilla Public License 2.0 y usada sin modificar para empaquetar los archivos de video creados en tu navegador. Sus licencias, avisos de copyright y enlaces al código fuente figuran en nuestra página de licencias de código abierto: https://www.media-manipulator.com/licenses.",
+          "Las fotos que editas y exportas con Aperture te pertenecen del mismo modo que tus demás resultados generados. Aperture nunca modifica el archivo original que subes: una exportación es siempre un archivo nuevo. Eres responsable de contar con el derecho a editar y exportar las fotos que utilizas."
         ]
       },
       {
@@ -1607,7 +1725,10 @@
       "adsRemoved": "Anuncios",
       "exportsPerDay": "Exportaciones de Darkroom al día",
       "vectorExportsPerDay": "Exportaciones de Motion al día",
-      "vectorProjects": "Proyectos de Motion guardados"
+      "vectorProjects": "Proyectos de Motion guardados",
+      "photoProjects": "Proyectos de {{brand}} guardados",
+      "photoMaxMegapixels": "Exportación más grande de {{brand}}",
+      "photoBatch": "Fotos de {{brand}} por lote"
     },
     "values": {
       "yes": "Incluido",
@@ -1618,7 +1739,10 @@
       "gpuPriority": "Prioritaria",
       "adsShown": "Se muestran",
       "adsRemoved": "Eliminados",
-      "heightSuffix": "{{height}}p"
+      "heightSuffix": "{{height}}p",
+      "photoLocalOnly": "1, solo en este navegador",
+      "megapixels": "{{count}} MP",
+      "notAvailable": "No disponible"
     },
     "unavailableTitle": "Los detalles de los planes no están disponibles temporalmente",
     "unavailableBody": "No pudimos contactar al servicio de planes. Todas las herramientas siguen funcionando: recarga en un momento para ver la comparación.",
@@ -1631,7 +1755,9 @@
       "q3": "¿Las cuentas gratuitas ven anuncios?",
       "a3": "Sí. Los anuncios financian el nivel gratuito, así que solo Premium y Pro los eliminan. Nunca hay más de dos anuncios en una página, nunca sobre las herramientas y nunca en las páginas de inicio, de precios, de cuenta ni en las legales. No hay intersticiales, cuentas regresivas ni esperas forzadas en ningún plan.",
       "q4": "¿Puedo usarlo sin cuenta en absoluto?",
-      "a4": "Sí, y es algo deliberado. Todas las herramientas funcionan sin iniciar sesión; una cuenta solo eleva el límite y conserva tu historial. Sin cuenta, tus archivos se conservan 24 horas; con una cuenta eliges cuánto tiempo, de 24 horas a 2 años."
+      "a4": "Sí, y es algo deliberado. Todas las herramientas funcionan sin iniciar sesión; una cuenta solo eleva el límite y conserva tu historial. Sin cuenta, tus archivos se conservan 24 horas; con una cuenta eliges cuánto tiempo, de 24 horas a 2 años.",
+      "q5": "¿Cuánto cuesta {{brand}}?",
+      "a5": "Editar en {{brand}} es gratis: las vistas previas, todos los ajustes, las máscaras, los estilos y deshacer no cuestan nada. Cada exportación cuenta como un trabajo estándar, seleccionar un sujeto con IA cuenta como un trabajo estándar (repetir la misma solicitud es gratis) y cada vez que presionas Reparar cuenta como un trabajo de IA. Lo que cambia con tu plan es cuántos proyectos puedes guardar, qué tamaño puede tener una exportación y cuántas fotos puedes editar en un lote; la tabla de arriba muestra las cifras."
     },
     "retentionNote": "Tú decides: de 24 horas a 2 años. Visitantes sin cuenta: 24 horas.",
     "pendingFrom": "Premium desde el {{date}}",
@@ -1810,7 +1936,13 @@
       "deleteFailed": "No se pudo eliminar este proyecto. No se ha cambiado nada; inténtalo de nuevo.",
       "kindDarkroom": "Darkroom",
       "motionLoadFailed": "No se pudieron cargar tus proyectos de {{brand}}.",
-      "motionDeleteBody": "El proyecto de {{brand}} y su miniatura se eliminan de nuestros servidores. Esta acción no se puede deshacer."
+      "motionDeleteBody": "El proyecto de {{brand}} y su miniatura se eliminan de nuestros servidores. Esta acción no se puede deshacer.",
+      "rename": "Renombrar",
+      "renameLabel": "Nombre del proyecto",
+      "renameSave": "Guardar",
+      "renamed": "Proyecto renombrado.",
+      "renameFailed": "No se pudo renombrar este proyecto. No se ha cambiado nada; inténtalo de nuevo.",
+      "photoDeleteBody": "El proyecto de {{brand}}, su foto original, sus vistas previas y las versiones reparadas se eliminan de nuestros servidores. Esta acción no se puede deshacer."
     },
     "billing": {
       "plans": "Comparar planes"
@@ -2020,7 +2152,7 @@
       "images": "<strong>Imágenes y PDF.</strong> <removeExif>Elimina los metadatos EXIF</removeExif>, como la ubicación GPS, antes de compartir una foto, <compressImage>comprime una imagen</compressImage> para que la página cargue más rápido, <resizeImage>cambia su tamaño</resizeImage> a dimensiones exactas en píxeles y convierte <imageToPdf>imágenes a PDF</imageToPdf> o <pdfToJpg>páginas de PDF a JPG</pdfToJpg>.",
       "audio": "<strong>Audio y voz.</strong> <extractAudio>Extrae la pista de audio</extractAudio> de un video como MP3, WAV, M4A, FLAC u OGG, y <transcribe>transcribe lo que se dice</transcribe> en texto con búsqueda o en subtítulos. La transcripción ejecuta Whisper en nuestro propio servidor GPU.",
       "ai": "<strong>Herramientas de IA.</strong> <removeBg>Elimina el fondo</removeBg> de una foto, <imageRestore>restaura y amplía una imagen antigua</imageRestore>, <videoRestore>compara modelos de restauración de video</videoRestore> lado a lado en un clip corto o <docScan>convierte páginas escaneadas en un PDF con búsqueda</docScan>. Cada modelo se ejecuta en servidores que operamos nosotros.",
-      "editors": "<strong>Editores.</strong> Cuando una sola conversión no basta, <darkroom>Darkroom</darkroom> es un editor de video multipista y <motion>Motion</motion> anima arte SVG en una línea de tiempo de fotogramas clave. Ambos funcionan en tu navegador, y al iniciar sesión tus proyectos se guardan en tu cuenta."
+      "editors": "<strong>Editores.</strong> Cuando una sola conversión no basta, <darkroom>Darkroom</darkroom> es un editor de video multipista, <motion>Motion</motion> anima arte SVG en una línea de tiempo de fotogramas clave y <aperture>Aperture</aperture> edita fotos con capas de ajuste y máscaras. Los tres funcionan en tu navegador, y al iniciar sesión tus proyectos se guardan en tu cuenta."
     },
     "whatWeDont": {
       "eyebrow": "Lo que no hacemos",
@@ -2048,7 +2180,8 @@
       "ai": "Herramientas de IA",
       "metadata": "Herramientas de privacidad y metadatos",
       "contentStudio": "Darkroom",
-      "motion": "Animación SVG"
+      "motion": "Animación SVG",
+      "photo": "Edición de fotos"
     },
     "multiTrackEditor": "Editor multipista",
     "open": "Abrir",
@@ -2078,7 +2211,9 @@
       "editor": "Editores"
     },
     "moreTools": "{{category}}: {{count}} más",
-    "alsoLine": "También: {{names}}."
+    "alsoLine": "También: {{names}}.",
+    "photoEditor": "Editor de fotos",
+    "apertureTutorial": "Tutorial de {{brand}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Ruta de navegación",
@@ -2486,7 +2621,61 @@
       "motion": {
         "alt": "El editor Motion con un SVG importado en el lienzo y fotogramas clave en la línea de tiempo de la animación",
         "caption": "El editor Motion: capas, lienzo y línea de tiempo de fotogramas clave."
+      },
+      "aperture": {
+        "alt": "El editor {{brand}} con una foto en el lienzo, el panel Básico a la derecha y el histograma encima",
+        "caption": "El editor {{brand}}: lienzo, histograma y panel Básico."
       }
+    }
+  },
+  "photoPage": {
+    "guide": {
+      "summaryTitle": "Cómo funciona {{brand}}",
+      "whatItIsTitle": "Qué es",
+      "whatItIsBody": "{{brand}} es un editor de fotos que nunca modifica tu original. Cada ajuste, desde la exposición y las curvas hasta los rangos de color, las máscaras y la reparación, es una capa sobre la foto que puedes reordenar, atenuar, ocultar o eliminar. La vista previa se dibuja en tu navegador, y el archivo que exportas se genera a partir del original en nuestro servidor.",
+      "stepsTitle": "Cuatro pasos",
+      "step1": "Suelta una foto más abajo, o elige una. El editor se abre a pantalla completa con el panel de esta página al frente.",
+      "step2": "Mueve un control deslizante y observa cómo cambian la foto y el histograma. Deshacer y rehacer cubren todos los pasos, y mantener presionada la tecla de barra invertida muestra el original.",
+      "step3": "Limita una capa a una parte de la foto con una máscara, endereza o recorta la imagen, repara una mancha o empieza con uno de los estilos incluidos.",
+      "step4": "Exporta en JPG, PNG, WebP, AVIF o TIFF. El archivo se genera en nuestro servidor a resolución completa, hasta el límite de tu plan.",
+      "editorTitle": "El editor",
+      "editorBody": "{{brand}} se abre a pantalla completa, sin la encabezado del sitio ni anuncios. Sin cuenta, se conserva una foto en este navegador; los usuarios con sesión iniciada guardan sus proyectos en su cuenta."
+    },
+    "dropzone": {
+      "drop": "Suelta una foto aquí, o elige una de tu dispositivo.",
+      "choose": "Elegir una foto",
+      "hint": "JPG, PNG, WebP, GIF, AVIF, HEIC, TIFF o BMP. No se sube nada hasta que exportes, selecciones un sujeto o repares.",
+      "opening": "Abriendo el editor…",
+      "openEmpty": "Abrir el editor sin foto"
+    },
+    "launcher": {
+      "recentTitle": "Proyectos recientes",
+      "sourceAccount": "Guardado en tu cuenta",
+      "sourceBrowser": "Guardado en este navegador",
+      "loading": "Cargando tus proyectos…",
+      "empty": "Aún no hay proyectos. Tus fotos aparecerán aquí.",
+      "error": "No se pudieron cargar tus proyectos en este momento. Aun así puedes abrir una foto nueva.",
+      "edited": "Editado el {{date}}"
+    },
+    "plans": {
+      "title": "Proyectos, tamaño de exportación y lotes según el plan",
+      "intro": "La edición, todos los ajustes, las máscaras y los estilos son gratuitos en todos los planes. Lo que cambia con el plan es cuántos proyectos puedes conservar, qué tamaño puede tener una exportación y cuántas fotos puedes editar en un mismo lote. Estas cifras proceden directamente de nuestros servidores, así que siempre están al día.",
+      "caption": "Límites de {{brand}} según el plan",
+      "feature": "Función",
+      "rows": {
+        "projects": "Proyectos guardados",
+        "maxMegapixels": "Exportación más grande",
+        "batch": "Fotos por lote"
+      },
+      "values": {
+        "unlimited": "Ilimitado",
+        "localOnly": "1, solo en este navegador",
+        "megapixels": "{{count}} MP",
+        "notAvailable": "No disponible"
+      },
+      "costNote": "Cada exportación cuenta como un trabajo estándar y cada reparación como un trabajo de IA. Previsualizar, ajustar, las máscaras y los estilos no cuestan nada.",
+      "unavailable": "No se pudo cargar la tabla de planes en este momento. La página de precios muestra los límites de cada plan.",
+      "seePlans": "Comparar todos los planes"
     }
   }
 }

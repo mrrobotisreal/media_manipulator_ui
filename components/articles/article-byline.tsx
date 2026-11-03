@@ -53,7 +53,7 @@ export function TutorialByline({ path, locale }: { path: TutorialPath; locale?: 
  * supplied (ticket log), so this is a captioned slot with the final alt text;
  * when `public/tutorials/<slug>.png` lands, pass `src` and it renders the image.
  */
-export type ScreenshotKey = 'audioGettingStarted' | 'videoGettingStarted' | 'imageGettingStarted' | 'aiFrameInterpolation' | 'motion';
+export type ScreenshotKey = 'audioGettingStarted' | 'videoGettingStarted' | 'imageGettingStarted' | 'aiFrameInterpolation' | 'motion' | 'aperture';
 
 export function TutorialScreenshot({ k, locale, src }: { k: ScreenshotKey; locale?: string; src?: string }) {
   const t = getServerT('interface', locale ?? 'en-US');

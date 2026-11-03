@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Clapperboard, Shield, Sparkles, Spline, ArrowRight } from 'lucide-react';
+import { Aperture, Clapperboard, Shield, Sparkles, Spline, ArrowRight } from 'lucide-react';
 import { buildMetadata } from '@/lib/metadata';
 import { JsonLd } from '@/components/seo/json-ld';
 import type { ToolPageContent } from '@/content/toolPages';
@@ -14,6 +14,7 @@ import { resolveLangParam } from '@/lib/i18n/routeLocale';
 import { defaultLocale, localizeHref } from '@/i18n/locales';
 import { getServerMetadataT, getServerT } from '@/lib/i18n/server';
 import { SITE_NAME } from '@/lib/seo';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { getSeoOverride } from '@/lib/seoOverrides';
 
 type PageParams = { params: Promise<{ lang: string }> };
@@ -62,6 +63,8 @@ export default async function ToolsIndexPage({ params }: PageParams) {
   const contentStudio = localizedPages.find((tool) => tool.slug === 'content-studio');
   // MM48: Motion is featured beside Darkroom, never in the category grid.
   const motion = localizedPages.find((tool) => tool.slug === 'motion');
+  // MM100: Aperture is featured beside them.
+  const aperture = localizedPages.find((tool) => tool.slug === 'aperture');
   const catalogTools = buildCatalogTools(localizedPages, {
     featuredSlugs: new Set<string>(REVIEW_INDEXED_TOOL_SLUGS),
     listedSlugs: new Set<string>(REVIEW_CATALOG_SLUGS),
@@ -78,6 +81,7 @@ export default async function ToolsIndexPage({ params }: PageParams) {
   const catalogLabels: ToolCatalogLabels = {
     categories: {
       image: t('toolsIndex.categories.image'),
+      photo: t('toolsIndex.categories.photo', { values: { brand: PHOTO_BRAND } }),
       video: t('toolsIndex.categories.video'),
       audio: t('toolsIndex.categories.audio'),
       ai: t('toolsIndex.categories.ai'),
@@ -172,6 +176,36 @@ export default async function ToolsIndexPage({ params }: PageParams) {
               </Link>
             )}
 
+            {/* Featured: Aperture (MM100) */}
+            {aperture && (
+              <Link
+                href={localizeHref('/tools/aperture', locale)}
+                data-testid="tools-featured-aperture"
+                className="group mb-8 block rounded-lg border border-edge border-l-2 border-l-data bg-surface-1 p-4 shadow-[inset_0_1px_0_var(--edge-highlight)] transition-shadow duration-[var(--dur-base)] ease-[var(--ease-instrument)] hover:shadow-[var(--glow-data)] sm:p-6"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="shrink-0 rounded-lg bg-data/10 p-3">
+                    <Aperture className="w-7 h-7 text-data" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <span className="flex flex-wrap items-center gap-2">
+                      <span className="text-lg font-semibold text-card-foreground">
+                        {aperture.name}
+                      </span>
+                      <span className="inline-flex items-center gap-1 rounded-md bg-data px-2 py-0.5 text-xs font-medium text-data-foreground">
+                        <Sparkles className="w-3 h-3" />
+                        {t('toolsIndex.photoEditor')}
+                      </span>
+                    </span>
+                    <p className="mt-1 text-sm text-muted-foreground">{aperture.tagline}</p>
+                  </div>
+                  <span className="hidden shrink-0 items-center gap-1 text-sm font-medium text-data group-hover:translate-x-0.5 transition-transform sm:inline-flex">
+                    {t('toolsIndex.open')} <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </Link>
+            )}
+
             {/* The catalog: search, category tabs, every tool grouped. */}
             <ToolCatalog tools={catalogTools} labels={catalogLabels} />
 
@@ -206,6 +240,9 @@ export default async function ToolsIndexPage({ params }: PageParams) {
                 </Link>
                 <Link href={localizeHref('/tutorials/motion', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
                   {t('toolsIndex.motionTutorial')}
+                </Link>
+                <Link href={localizeHref('/tutorials/aperture', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
+                  {t('toolsIndex.apertureTutorial')}
                 </Link>
                 <Link href={localizeHref('/how-it-works', locale)} className="rounded-lg border border-border bg-card px-3 py-2 text-card-foreground transition-colors hover:bg-muted">
                   {t('toolsIndex.howItWorks')}

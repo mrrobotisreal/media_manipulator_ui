@@ -16,12 +16,14 @@ export const PAGE_DATES = {
   '/tools/content-studio': '2026-10-23',
   // MM85: "available on request" wording in the plan table.
   '/tools/motion': '2026-10-28',
+  // MM100: Aperture's landing page.
+  '/tools/aperture': '2026-11-03',
   // MM85: named founder block.
   '/about': '2026-10-28',
   // MM26 retention wording.
   '/how-it-works': '2026-10-23',
   // MM48 added the Motion tutorial card.
-  '/tutorials': '2026-10-26',
+  '/tutorials': '2026-11-03',
   // MM85: section 1.11 (contact messages).
   '/privacy-policy': '2026-11-01',
   // MM78 voices terms (section 8.11).
@@ -53,6 +55,7 @@ export const TUTORIAL_DATES = {
   '/tutorials/ai-frame-interpolation': { datePublished: '2026-05-24', dateModified: '2026-05-24' },
   '/tutorials/content-studio': { datePublished: '2026-05-30', dateModified: '2026-10-24' },
   '/tutorials/motion': { datePublished: '2026-10-26', dateModified: '2026-10-26' },
+  '/tutorials/aperture': { datePublished: '2026-11-03', dateModified: '2026-11-03' },
 } as const satisfies Record<string, { datePublished: string; dateModified: string }>;
 
 export type TutorialPath = keyof typeof TUTORIAL_DATES;
