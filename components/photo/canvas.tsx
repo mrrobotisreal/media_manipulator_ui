@@ -3,7 +3,10 @@
 import * as React from 'react';
 
 import { useLocalization } from '@/i18n/useLocalization';
-import { cpuPreviewSize, renderCpuPreview } from '@/lib/photo/gl/cpuPreview';
+import { geometryOutputSize } from '@/lib/photo/colorMath';
+import { cpuPreviewSize, renderCpuPreviewSized } from '@/lib/photo/gl/cpuPreview';
+import type { MaskView } from '@/lib/photo/gl/maskPlan';
+import { cachedMaskAssets, docAssetIds, ensureDocAssets, getCachedAlpha } from '@/lib/photo/maskAssets';
 import { PhotoRenderer, webgl2Available } from '@/lib/photo/gl/photoRenderer';
 import type { PhotoDoc } from '@/lib/photo/photoTypes';
 import { fitView, panBy, pinch, toImage, zoomAt, type View } from '@/lib/photo/view';
@@ -33,14 +36,24 @@ export interface PhotoCanvasProps {
   onSplitChange: (v: number) => void;
   /** Eyedropper armed: the next click reports the pixel (0..255). */
   picking: boolean;
-  onPick: (rgb: { r: number; g: number; b: number }) => void;
+  onPick: (rgb: { r: number; g: number; b: number }, shift?: boolean) => void;
   onReducedPreview: (reduced: boolean) => void;
   onRendered: () => void;
   handleRef?: React.Ref<CanvasHandle>;
+  /** MM98: mask view of `viewLayerId`'s mask (`M`). */
+  maskView?: MaskView;
+  viewLayerId?: string | null;
+  /** MM98: fetch a project's mask file (`masks/<id>.png`) for subject masks. */
+  fetchMaskBlob?: (ref: string) => Promise<Blob>;
+  /** MM98: canvas tools draw above the image in viewport space and own the pointer while active. */
+  overlay?: (ctx: { view: View; iw: number; ih: number; wrap: HTMLDivElement | null }) => React.ReactNode;
+  toolActive?: boolean;
+  /** Show the whole post-rotate canvas (crop ignored) while the crop tool edits it. */
+  ignoreCrop?: boolean;
 }
 
 /** Canvas viewport: WebGL2 preview (or CPU fallback), wheel/pinch zoom, drag pan, split view, eyedropper. */
-export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, picking, onPick, onReducedPreview, onRendered, handleRef }: PhotoCanvasProps) {
+export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, picking, onPick, onReducedPreview, onRendered, handleRef, maskView = 'off', viewLayerId = null, fetchMaskBlob, overlay, toolActive = false, ignoreCrop = false }: PhotoCanvasProps) {
   const { t } = useLocalization('interface');
   const wrapRef = React.useRef<HTMLDivElement>(null);
   const glRef = React.useRef<HTMLCanvasElement>(null);
@@ -59,8 +72,13 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
   const histCanvas = React.useRef<HTMLCanvasElement | null>(null);
   const cpuPixels = React.useRef<{ w: number; h: number; data: Uint8ClampedArray } | null>(null);
 
-  const iw = source?.width ?? 0;
-  const ih = source?.height ?? 0;
+  // The displayed size is the geometry-corrected size (crop/rotate change it); the source stays the texture.
+  const renderDoc = React.useMemo(() => (doc && ignoreCrop && doc.geometry.crop ? { ...doc, geometry: { ...doc.geometry, crop: null } } : doc), [doc, ignoreCrop]);
+  const out = source && renderDoc ? geometryOutputSize(renderDoc.geometry, source.width, source.height) : { width: source?.width ?? 0, height: source?.height ?? 0 };
+  const iw = showOriginal && source ? source.width : out.width;
+  const ih = showOriginal && source ? source.height : out.height;
+  const cachedMaskAssetsView = cachedMaskAssets;
+  const [assetTick, setAssetTick] = React.useState(0);
 
   const size = () => {
     const r = wrapRef.current?.getBoundingClientRect();
@@ -139,13 +157,36 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [source]);
 
+  // Brush/subject pixels: decode what the document needs, hand them to the renderer, re-render.
+  React.useEffect(() => {
+    if (!doc) return;
+    let alive = true;
+    const ids = docAssetIds(doc);
+    if (ids.length === 0) return;
+    void ensureDocAssets(doc, fetchMaskBlob).then(() => {
+      if (!alive) return;
+      let changed = false;
+      for (const a of ids) {
+        const img = getCachedAlpha(a.id);
+        if (img && renderer.current && !renderer.current.hasAlpha(a.id)) {
+          renderer.current.setAlpha(a.id, img);
+          changed = true;
+        }
+      }
+      if (changed || mode === 'cpu') setAssetTick((n) => n + 1);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [doc, fetchMaskBlob, mode, source]);
+
   // Render on change (coalesced to one frame).
   React.useEffect(() => {
     if (!source || !doc) return;
     const id = requestAnimationFrame(() => {
-      const effective = showOriginal ? { layers: [] } : doc;
+      const effective = showOriginal ? { layers: [], geometry: undefined, masks: undefined } : (renderDoc as NonNullable<typeof renderDoc>);
       if (mode === 'gl' && renderer.current) {
-        renderer.current.render(effective);
+        renderer.current.render(showOriginal ? { ...doc, layers: [], masks: undefined, geometry: { ...doc.geometry, rotate: 0, flipH: false, flipV: false, perspective: null, crop: null } } : (renderDoc as NonNullable<typeof renderDoc>), { maskView, viewLayerId });
       } else if (mode === 'cpu' && cpuRef.current && origRef.current) {
         const sz = cpuPreviewSize(source.width, source.height);
         const tmp = document.createElement('canvas');
@@ -155,16 +196,16 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
         if (!tctx) return;
         tctx.drawImage(origRef.current, 0, 0, sz.width, sz.height);
         const img = tctx.getImageData(0, 0, sz.width, sz.height);
-        const out = renderCpuPreview(effective, sz.width, sz.height, img.data);
-        cpuPixels.current = { w: sz.width, h: sz.height, data: out };
-        cpuRef.current.width = sz.width;
-        cpuRef.current.height = sz.height;
-        cpuRef.current.getContext('2d')?.putImageData(new ImageData(out as unknown as Uint8ClampedArray<ArrayBuffer>, sz.width, sz.height), 0, 0);
+        const res = renderCpuPreviewSized(effective, sz.width, sz.height, img.data, cachedMaskAssetsView);
+        cpuPixels.current = { w: res.width, h: res.height, data: res.data };
+        cpuRef.current.width = res.width;
+        cpuRef.current.height = res.height;
+        cpuRef.current.getContext('2d')?.putImageData(new ImageData(res.data as unknown as Uint8ClampedArray<ArrayBuffer>, res.width, res.height), 0, 0);
       }
       onRendered();
     });
     return () => cancelAnimationFrame(id);
-  }, [source, doc, showOriginal, mode, onRendered]);
+  }, [source, doc, renderDoc, showOriginal, mode, onRendered, maskView, viewLayerId, assetTick]);
 
   // Keep the fit when the viewport resizes.
   React.useEffect(() => {
@@ -185,7 +226,7 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
   const pickAt = (e: React.PointerEvent) => {
     const r = wrapRef.current?.getBoundingClientRect();
     if (!r || !source) return;
-    const p = toImage(viewRef.current, e.clientX - r.left, e.clientY - r.top, source.width, source.height);
+    const p = toImage(viewRef.current, e.clientX - r.left, e.clientY - r.top, iw, ih);
     if (!p.inside) return;
     const c = document.createElement('canvas');
     c.width = 1;
@@ -199,10 +240,11 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
     const sy = (p.ny * src.height) | 0;
     ctx.drawImage(src, sx, sy, 1, 1, 0, 0, 1, 1);
     const d = ctx.getImageData(0, 0, 1, 1).data;
-    onPick({ r: d[0], g: d[1], b: d[2] });
+    onPick({ r: d[0], g: d[1], b: d[2] }, e.shiftKey);
   };
 
   const onDown = (e: React.PointerEvent) => {
+    if (toolActive) return;
     if (picking) {
       pickAt(e);
       return;
@@ -213,6 +255,7 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
     lastPinch.current = null;
   };
   const onMove = (e: React.PointerEvent) => {
+    if (toolActive) return;
     const prev = pointers.current.get(e.pointerId);
     if (!prev) return;
     const r = wrapRef.current?.getBoundingClientRect();
@@ -246,7 +289,7 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
       dir="ltr"
       data-testid="photo-canvas"
       aria-label={t('photo.bar.compare')}
-      className={cn('relative h-full min-h-64 w-full touch-none overflow-hidden bg-[repeating-conic-gradient(var(--surface-2,#222)_0_25%,var(--surface-1,#1a1a1a)_0_50%)] bg-[length:20px_20px]', picking ? 'cursor-crosshair' : 'cursor-grab')}
+      className={cn('relative h-full min-h-64 w-full touch-none overflow-hidden bg-[repeating-conic-gradient(var(--surface-2,#222)_0_25%,var(--surface-1,#1a1a1a)_0_50%)] bg-[length:20px_20px]', picking || toolActive ? 'cursor-crosshair' : 'cursor-grab')}
       onWheel={onWheel}
       onPointerDown={onDown}
       onPointerMove={onMove}
@@ -262,6 +305,7 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
         style={{ ...style, visibility: split !== null ? 'visible' : 'hidden', clipPath: split !== null ? `inset(0 ${(1 - split) * 100}% 0 0)` : undefined }}
         aria-hidden="true"
       />
+      {overlay ? overlay({ view, iw, ih, wrap: wrapRef.current }) : null}
       {split !== null && source ? (
         <div
           className="absolute top-0 h-full w-0.5 cursor-ew-resize bg-primary"

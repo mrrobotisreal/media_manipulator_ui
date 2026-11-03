@@ -70,4 +70,29 @@ describe('goldens (TypeScript reference == committed PNGs)', () => {
     expect(chroma(blue)).toBeLessThanOrEqual(25); // the doc also shifts a custom 210° range
     expect(chroma(magenta)).toBeLessThanOrEqual(2);
   });
+
+  it('colour-range mask: grey except red keeps the red column coloured and greys the rest', () => {
+    const g = decode(readFileSync(goldenPath('mask-colorrange-hsl', 'chart')));
+    const chroma = (x: number, y: number) => {
+      const i = (y * g.width + x) * 4;
+      return Math.max(g.data[i], g.data[i + 1], g.data[i + 2]) - Math.min(g.data[i], g.data[i + 1], g.data[i + 2]);
+    };
+    const y = 5 * 16 + 8;
+    expect(chroma(8, y)).toBeGreaterThan(150);
+    expect(chroma(5 * 16 + 8, y)).toBeLessThanOrEqual(3);
+    expect(chroma(10 * 16 + 8, y)).toBeLessThanOrEqual(3);
+  });
+
+  it('geometry goldens change the output size and mask goldens differ from the unmasked render', () => {
+    const rc = decode(readFileSync(goldenPath('geometry-rotate-crop', 'photo')));
+    expect([rc.width, rc.height]).not.toEqual([256, 192]);
+    const rot = decode(readFileSync(goldenPath('geometry-perspective', 'chart')));
+    expect([rot.width, rot.height]).toEqual([256, 256]); // 90 degrees of a square keeps the size
+    const masked = decode(readFileSync(goldenPath('mask-gradient-tone', 'photo')));
+    const blank = decode(readFileSync(goldenPath('blank', 'photo')));
+    expect(Buffer.compare(masked.data, blank.data)).not.toBe(0);
+    // the gradient mask is 0 at the bottom rows: untouched there
+    const row = (191 * masked.width) * 4;
+    expect(Buffer.compare(masked.data.subarray(row, row + 64), blank.data.subarray(row, row + 64))).not.toBe(0);
+  });
 });

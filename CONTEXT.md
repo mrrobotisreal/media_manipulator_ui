@@ -52,6 +52,15 @@ A reference output PNG `lib/photo/fixtures/goldens/<doc>.<image>.png` made by `n
 **Grey except this**:
 The HSL panel action that sets saturation to -100 on every hue range except the chosen one (`greyExcept` in `lib/photo/layerOps.ts`): "everything grey except red".
 
+**Mask**:
+A layer's selection (`layer.mask`): folded components (gradient, radial, brush, luminosity, colour range, subject; add / subtract / intersect left to right), then feather (Gaussian, sigma = feather/100 x 0.05 x long side), invert, opacity. Computed on the geometry-corrected source once per distinct mask; a layer may carry the mask inline or reference a named one in `doc.masks` with `{ref}`. The math is in `lib/photo/colorMath.ts` (`renderMaskCPU`); the WebGL passes are `gl/shaders/maskGeoSource.ts`, cached by `gl/maskPlan.ts` keys.
+
+**Geometry space**:
+The image after `doc.geometry` (rotate -> flip -> perspective -> crop, canvas grown to the rotated box). Mask coordinates, brush PNGs and heal-stroke display coordinates are all normalised to it; changing the crop re-maps parametric masks and re-samples brush PNGs (`geometryOps.applyCropRemap`).
+
+**Heal base**:
+The latest `doc.heals[].baseRef` (`bases/<hash>.png` on the server, `local:<id>` for a guest). Renderers start from it instead of the original; the editor swaps the preview source when the doc's current base changes, so undoing a heal reverts the pixels.
+
 **Browser-local project**:
 Anonymous visitors get exactly one Aperture project, stored in the browser (original Blob + doc in IndexedDB, doc mirrored to `localStorage`); a second photo asks to replace it; export uses the stateless `POST /api/photo/export`; after sign-in the project is offered for upload as a server project.
 
