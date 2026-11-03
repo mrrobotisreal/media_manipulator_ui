@@ -13,24 +13,30 @@
  * It needs a page that exposes the renderer: open `/photo/new?parity=1`, which
  * (in dev builds only) sets `window.__photoParity = { PhotoRenderer }`.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { expect, test } from '@playwright/test';
 
 const FIX = join(__dirname, '..', 'lib', 'photo', 'fixtures');
 const IMAGES = ['photo', 'chart', 'alpha'];
 const DOCS = ['blank', 'defaults', 'curves-s', 'hsl-grey-except-red', 'levels-channels', 'rung1-all-layers'];
+// MM98: masks, geometry, red-eye. Geometry goldens are compared inside a 2 px border (golden-manifest.json),
+// and geometry-corrected output sizes must match exactly. Brush masks upload their PNG alpha as an R8 texture.
+const MM98_DOCS = ['masks-all-kinds', 'masks-named', 'geometry-rotate-crop', 'geometry-perspective', 'mask-gradient-tone', 'mask-colorrange-hsl', 'mask-brush-exposure', 'mask-luminosity-curves', 'mask-radial-subtract', 'redeye', 'geometry-straighten-edge', 'geometry-flip-fill-colour'];
+const MANIFEST = JSON.parse(readFileSync(join(FIX, 'golden-manifest.json'), 'utf8')) as Record<string, { width: number; height: number; borderPx: number }>;
+const docPath = (doc: string) => (existsSync(join(FIX, 'docs', `${doc}.json`)) ? join(FIX, 'docs', `${doc}.json`) : join(FIX, 'golden-docs', `${doc}.json`));
 
 test.describe('Aperture preview vs goldens', () => {
-  for (const doc of DOCS) {
+  for (const doc of [...DOCS, ...MM98_DOCS]) {
     for (const image of IMAGES) {
       test(`${doc} / ${image}`, async ({ page }) => {
         await page.goto('/photo/new?parity=1');
-        const docJson = JSON.parse(readFileSync(join(FIX, 'docs', `${doc}.json`), 'utf8'));
+        const docJson = JSON.parse(readFileSync(docPath(doc), 'utf8'));
         const imageB64 = readFileSync(join(FIX, 'images', `${image}.png`)).toString('base64');
         const goldenB64 = readFileSync(join(FIX, 'goldens', `${doc}.${image}.png`)).toString('base64');
+        const meta = MANIFEST[`${doc}.${image}`] ?? { width: 0, height: 0, borderPx: 0 };
         const stats = await page.evaluate(
-          async ({ docJson, imageB64, goldenB64 }) => {
+          async ({ docJson, imageB64, goldenB64, meta }) => {
             const decode = async (b64: string) => {
               const bmp = await createImageBitmap(await (await fetch(`data:image/png;base64,${b64}`)).blob(), { premultiplyAlpha: 'none', colorSpaceConversion: 'none' });
               const c = new OffscreenCanvas(bmp.width, bmp.height);
@@ -38,24 +44,41 @@ test.describe('Aperture preview vs goldens', () => {
               g.drawImage(bmp, 0, 0);
               return { bmp, data: g.getImageData(0, 0, bmp.width, bmp.height).data };
             };
-            const { PhotoRenderer } = (window as unknown as { __photoParity: { PhotoRenderer: new (c: HTMLCanvasElement) => { setSource(s: ImageBitmap, w: number, h: number): void; render(d: unknown): void; readPixels(): Uint8Array; float: boolean } } }).__photoParity;
+            const { PhotoRenderer } = (window as unknown as { __photoParity: { PhotoRenderer: new (c: HTMLCanvasElement) => { setSource(s: ImageBitmap, w: number, h: number): void; render(d: unknown): void; readPixels(): Uint8Array; float: boolean; width: number; height: number; setAlpha(id: string, img: { width: number; height: number; alpha: ArrayLike<number> }): void } } }).__photoParity;
             const src = await decode(imageB64);
             const gold = await decode(goldenB64);
             const canvas = document.createElement('canvas');
             const r = new PhotoRenderer(canvas);
             r.setSource(src.bmp, src.bmp.width, src.bmp.height);
+            // Brush components: decode each PNG's alpha and hand it to the renderer.
+            const layers = [...(docJson.layers ?? []), ...Object.values(docJson.masks ?? {}).map((m) => ({ mask: m }))] as { mask?: { components?: { kind: string; png?: string }[] } }[];
+            for (const l of layers) for (const c of l.mask?.components ?? []) {
+              if (c.kind !== 'brush' || !c.png) continue;
+              const b = await createImageBitmap(await (await fetch(c.png)).blob(), { premultiplyAlpha: 'none', colorSpaceConversion: 'none' });
+              const oc = new OffscreenCanvas(b.width, b.height);
+              const g = oc.getContext('2d') as OffscreenCanvasRenderingContext2D;
+              g.drawImage(b, 0, 0);
+              const d = g.getImageData(0, 0, b.width, b.height).data;
+              const alpha = new Uint8Array(b.width * b.height);
+              for (let i = 0; i < alpha.length; i += 1) alpha[i] = d[i * 4 + 3];
+              r.setAlpha(c.png, { width: b.width, height: b.height, alpha });
+            }
             r.render(docJson);
             const px: Uint8Array = r.readPixels();
+            if (meta.width && (r.width !== meta.width || r.height !== meta.height)) return { mean: 99, p99: 99, max: 99, float: r.float as boolean };
             const diffs: number[] = [];
             for (let i = 0; i < px.length; i += 4) {
               if (gold.data[i + 3] === 0) continue;
+              const x = (i / 4) % r.width;
+              const y = Math.floor(i / 4 / r.width);
+              if (meta.borderPx && (x < meta.borderPx || y < meta.borderPx || x >= r.width - meta.borderPx || y >= r.height - meta.borderPx)) continue;
               for (let k = 0; k < 3; k += 1) diffs.push(Math.abs(px[i + k] - gold.data[i + k]));
             }
             diffs.sort((a, b) => a - b);
             const mean = diffs.reduce((s, v) => s + v, 0) / Math.max(1, diffs.length);
             return { mean, p99: diffs[Math.floor(diffs.length * 0.99)] ?? 0, max: diffs[diffs.length - 1] ?? 0, float: r.float as boolean };
           },
-          { docJson, imageB64, goldenB64 },
+          { docJson, imageB64, goldenB64, meta },
         );
         const extra = stats.float ? 0 : 2;
         expect(stats.mean).toBeLessThanOrEqual(1.0 + (stats.float ? 0 : 0.5));
