@@ -592,7 +592,7 @@
             "bullets": {
               "builtin": "Os looks incluídos são agrupados em Cor, Preto e branco, Filme e Correção, e abrangem os seis looks de Cor em destaque, Filme preto e branco, Preto e branco de alto contraste, Quente, Frio, Fosco, Desbotado, Vívido, Impacto, Processamento cruzado, Vintage, Suavização de retrato, Paisagem e Automático. Use a caixa de filtro para encontrar um pelo nome.",
               "append": "Aplicar um look adiciona seus ajustes como um grupo nomeado por cima do que você já tem, em vez de substituir o seu trabalho. Isso significa que você pode empilhar Quente sobre as suas próprias correções do Básico, abrir o grupo na aba Camadas para mexer em controles individuais e remover o look inteiro com um único Desfazer.",
-              "mine": "Escolha Salvar as edições atuais como predefinição, dê um nome e marque os ajustes a incluir. Ela aparece em Minhas predefinições. Suas predefinições ficam guardadas neste navegador, então não acompanham você a outro dispositivo por conta própria, e você pode renomeá-las ou excluí-las no mesmo painel.",
+              "mine": "Escolha Salvar as edições atuais como predefinição, dê um nome e marque os ajustes a incluir. Ela aparece em Minhas predefinições. Com a sessão iniciada, suas predefinições ficam guardadas na sua conta e acompanham você nos seus outros dispositivos; sem conta, ficam guardadas neste navegador. Você pode renomeá-las ou excluí-las no mesmo painel.",
               "file": "Exportar predefinições grava suas predefinições salvas em um arquivo JSON; Importar predefinições lê um de volta. Use isso para levar predefinições a outro navegador ou computador, para manter um backup ou para compartilhar um look com outra pessoa que use o {{brand}} no Media Manipulator."
             }
           },
@@ -856,7 +856,7 @@
             "title": "1.12 Projetos e exportações do Aperture",
             "paragraphs": [
               "O Aperture, nosso editor de fotos, edita a sua foto no seu navegador: a pré-visualização que você vê é desenhada no seu próprio dispositivo. Uma foto só sai do seu dispositivo quando você pede algo que exige os nossos servidores: salvá-la na sua conta como projeto, exportar o arquivo final, selecionar um assunto com IA, retocar manchas com IA ou aplicar as suas edições a mais fotos.",
-              "Se você estiver conectado e salvar um projeto, a foto original, uma cópia de pré-visualização dela com até 1920 pixels, uma miniatura pequena, o documento de edição (a lista de ajustes, máscaras e áreas retocadas) e as máscaras e versões retocadas da foto são armazenados nos nossos servidores na pasta do projeto. Eles são o seu conteúdo, seguem o período de retenção que você escolher (Seção 3), você pode excluir um projeto na página Conta, são excluídos junto com a sua conta e os projetos constam na exportação dos seus dados. Sem conta, uma foto fica guardada apenas no seu navegador (em IndexedDB) e não é enviada até você exportar, selecionar um assunto ou retocar; esse envio é um trabalho temporário normal e é mantido por 24 horas.",
+              "Se você estiver conectado e salvar um projeto, a foto original, uma cópia de pré-visualização dela com até 1920 pixels, uma miniatura pequena, o documento de edição (a lista de ajustes, máscaras e áreas retocadas) e as máscaras e versões retocadas da foto são armazenados nos nossos servidores na pasta do projeto. Eles são o seu conteúdo, seguem o período de retenção que você escolher (Seção 3), você pode excluir um projeto na página Conta, são excluídos junto com a sua conta e os projetos constam na exportação dos seus dados. Sem conta, uma foto fica guardada apenas no seu navegador (em IndexedDB) e não é enviada até você exportar, selecionar um assunto ou retocar; esse envio é um trabalho temporário normal e é mantido por 24 horas. As predefinições que você salva ficam armazenadas na sua conta até você excluí-las ou excluir a conta.",
               "Exportações, seleção de assunto com IA e retoque são trabalhos nos nossos servidores. As exportações são renderizadas a partir da sua foto original, a seleção de assunto e o retoque rodam no nosso próprio servidor com GPU, e nenhuma das suas fotos é enviada a um serviço de terceiros. Cada exportação, seleção de assunto e retoque é contabilizado para fazer valer a cota diária do seu plano: armazenamos o tipo de trabalho, o formato e o tamanho do resultado, o horário, o seu plano e um identificador da sua conta, da sua sessão do navegador ou de um endereço IP com hash. Os arquivos de resultado são mantidos segundo as regras de retenção habituais (Seção 3), e quando você exclui a sua conta esses registros são desvinculados da sua identidade."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Projetos do Motion salvos",
       "photoProjects": "Projetos salvos do {{brand}}",
       "photoMaxMegapixels": "Maior exportação do {{brand}}",
-      "photoBatch": "Fotos do {{brand}} por lote"
+      "photoBatch": "Fotos do {{brand}} por lote",
+      "photoPresets": "Predefinições salvas do {{brand}}"
     },
     "values": {
       "yes": "Incluído",
@@ -1942,7 +1943,23 @@
       "renameSave": "Salvar",
       "renamed": "Projeto renomeado.",
       "renameFailed": "Não foi possível renomear este projeto. Nada foi alterado; tente de novo.",
-      "photoDeleteBody": "O projeto do {{brand}}, a foto original, as pré-visualizações e as versões retocadas são removidos dos nossos servidores. Isso não pode ser desfeito."
+      "photoDeleteBody": "O projeto do {{brand}}, a foto original, as pré-visualizações e as versões retocadas são removidos dos nossos servidores. Isso não pode ser desfeito.",
+      "presetsHeading": "Predefinições",
+      "presetsIntro": "Suas predefinições salvas do {{brand}}. Elas ficam na sua conta até você excluí-las.",
+      "presetsEmpty": "Nenhuma predefinição salva ainda. Salve uma no painel Predefinições do {{brand}}.",
+      "presetsLoadFailed": "Não foi possível carregar as suas predefinições.",
+      "presetDeleteBody": "A predefinição é removida da sua conta. Isso não pode ser desfeito.",
+      "presetDeleted": "Predefinição excluída.",
+      "presetDeleteFailed": "Não foi possível excluir esta predefinição. Nada foi alterado; tente novamente.",
+      "presetRenamed": "Predefinição renomeada.",
+      "presetRenameFailed": "Não foi possível renomear esta predefinição. Nada foi alterado; tente novamente.",
+      "presetCategory": {
+        "color": "Cor",
+        "bw": "Preto e branco",
+        "film": "Filme",
+        "fix": "Correção",
+        "custom": "Personalizada"
+      }
     },
     "billing": {
       "plans": "Comparar planos"

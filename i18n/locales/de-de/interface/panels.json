@@ -1950,6 +1950,19 @@
         "format": "Diese Datei ist kein Export von Voreinstellungen.",
         "invalid": "Diese Datei enthält Voreinstellungen, die nicht verwendet werden können.",
         "empty": "Diese Datei enthält keine Voreinstellungen."
+      },
+      "accountNote": "In Ihrem Konto gespeichert.",
+      "limitReached": "Sie haben das Limit für gespeicherte Voreinstellungen Ihres Tarifs erreicht.",
+      "signInAgain": "Melden Sie sich erneut an, um Voreinstellungen in Ihrem Konto zu speichern.",
+      "saveFailedAccount": "Die Voreinstellung konnte nicht in Ihrem Konto gespeichert werden.",
+      "migrate": {
+        "title": "Voreinstellungen behalten",
+        "prompt_one": "{{count}} Voreinstellung in Ihrem Konto behalten?",
+        "prompt_other": "{{count}} Voreinstellungen in Ihrem Konto behalten?",
+        "keepLocal": "In diesem Browser behalten",
+        "accept": "In mein Konto verschieben",
+        "done": "Ihre Voreinstellungen befinden sich jetzt in Ihrem Konto.",
+        "partial": "Einige Voreinstellungen sind in diesem Browser geblieben, weil das Limit Ihres Tarifs erreicht wurde."
       }
     },
     "history": {

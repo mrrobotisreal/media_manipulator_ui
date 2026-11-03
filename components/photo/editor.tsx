@@ -237,7 +237,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         if (def && layers && layers.length > 0) {
           const group = t('photo.presets.groupName', { name: t(def.nameKey) }).slice(0, 80);
           usePhotoStore.getState().mutate(`Preset|builtin:${def.id}`, (d) => appendPreset(d, def.id, layers, group));
-          onPresetApplied(def.id, true);
+          onPresetApplied(def.id, 'builtin');
         }
       }
       setLoading(false);

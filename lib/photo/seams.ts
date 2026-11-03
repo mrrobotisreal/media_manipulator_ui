@@ -68,8 +68,11 @@ export const onCompareUsed = (mode: string): void => mm98?.onCompareUsed?.(mode)
 // ---------------------------------------------------------------------------
 export interface Mm99Listener {
   /** A preset was applied; `builtin` is false for browser-local (and later account) presets. */
-  onPresetApplied?: (id: string, builtin: boolean) => void;
-  onPresetSaved?: (layers: number) => void;
+  onPresetApplied?: (id: string, scope: 'builtin' | 'server' | 'local') => void;
+  /** MM103: `scope` is where the preset was stored. */
+  onPresetSaved?: (layers: number, scope: 'server' | 'local') => void;
+  /** MM103: the one-time migration prompt was answered. */
+  onPresetsMigrated?: (count: number, declined: boolean) => void;
   onBatchStarted?: (n: number) => void;
   onShortcutsOpened?: () => void;
 }
@@ -81,7 +84,8 @@ export function setMm99Listener(l: Mm99Listener | null): () => void {
     if (mm99 === l) mm99 = null;
   };
 }
-export const onPresetApplied = (id: string, builtin: boolean): void => mm99?.onPresetApplied?.(id, builtin);
-export const onPresetSaved = (layers: number): void => mm99?.onPresetSaved?.(layers);
+export const onPresetApplied = (id: string, scope: 'builtin' | 'server' | 'local'): void => mm99?.onPresetApplied?.(id, scope);
+export const onPresetSaved = (layers: number, scope: 'server' | 'local'): void => mm99?.onPresetSaved?.(layers, scope);
+export const onPresetsMigrated = (count: number, declined: boolean): void => mm99?.onPresetsMigrated?.(count, declined);
 export const onBatchStarted = (n: number): void => mm99?.onBatchStarted?.(n);
 export const onShortcutsOpened = (): void => mm99?.onShortcutsOpened?.();

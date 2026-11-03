@@ -592,7 +592,7 @@
             "bullets": {
               "builtin": "Các phong cách có sẵn được xếp thành Màu, Đen trắng, Phim và Sửa lỗi, gồm sáu phong cách Nổi bật màu, Phim đen trắng, Đen trắng tương phản cao, Ấm, Lạnh, Mờ mịn, Phai màu, Sống động, Nổi bật, Xử lý chéo, Cổ điển, Làm mịn chân dung, Phong cảnh và Tự động. Dùng ô lọc để tìm theo tên.",
               "append": "Áp dụng một phong cách sẽ thêm các chỉnh sửa của nó thành một nhóm có tên lên trên những gì bạn đã có thay vì thay thế công việc của bạn. Nghĩa là bạn có thể xếp Ấm lên trên các chỉnh sửa Cơ bản của riêng mình, mở nhóm trong tab Lớp để tinh chỉnh từng thanh trượt, và gỡ cả phong cách bằng một lần Hoàn tác.",
-              "mine": "Chọn Lưu các chỉnh sửa hiện tại thành cài đặt sẵn, đặt tên và đánh dấu các chỉnh sửa cần đưa vào. Nó xuất hiện dưới Cài đặt sẵn của tôi. Cài đặt sẵn của bạn được lưu trong trình duyệt này, nên chúng không tự theo bạn sang thiết bị khác, và bạn có thể đổi tên hoặc xóa chúng từ cùng bảng.",
+              "mine": "Chọn Lưu các chỉnh sửa hiện tại thành cài đặt sẵn, đặt tên và đánh dấu các chỉnh sửa cần đưa vào. Nó xuất hiện dưới Cài đặt sẵn của tôi. Khi đã đăng nhập, cài đặt sẵn của bạn được lưu trong tài khoản và theo bạn sang các thiết bị khác; nếu không có tài khoản, chúng được lưu trong trình duyệt này. Bạn có thể đổi tên hoặc xóa chúng từ cùng bảng.",
               "file": "Xuất cài đặt sẵn ghi các cài đặt sẵn đã lưu của bạn ra một tệp JSON; Nhập cài đặt sẵn đọc một tệp trở lại. Dùng cách này để chuyển cài đặt sẵn sang trình duyệt hoặc máy tính khác, để sao lưu, hoặc để chia sẻ một phong cách với người khác cũng dùng {{brand}} trên Media Manipulator."
             }
           },
@@ -856,7 +856,7 @@
             "title": "1.12 Dự án và bản xuất Aperture",
             "paragraphs": [
               "Aperture, trình chỉnh sửa ảnh của chúng tôi, chỉnh sửa ảnh của bạn trong trình duyệt: bản xem trước bạn thấy được vẽ trên chính thiết bị của bạn. Ảnh chỉ rời khỏi thiết bị của bạn khi bạn yêu cầu một việc cần đến máy chủ của chúng tôi: lưu ảnh vào tài khoản của bạn dưới dạng dự án, xuất tệp hoàn chỉnh, chọn chủ thể bằng AI, chữa lành các đốm bằng AI, hoặc áp dụng các chỉnh sửa của bạn cho nhiều ảnh hơn.",
-              "Nếu bạn đã đăng nhập và lưu một dự án, ảnh gốc, một bản xem trước của nó có kích thước tối đa 1920 pixel, một hình thu nhỏ, tài liệu chỉnh sửa (danh sách các chỉnh sửa, mặt nạ và vùng đã chữa lành) cùng mọi mặt nạ và phiên bản đã chữa lành của ảnh được lưu trên máy chủ của chúng tôi trong thư mục của dự án. Đó là nội dung của bạn, chúng tuân theo thời gian lưu giữ bạn chọn (Mục 3), bạn có thể xóa dự án từ trang Tài khoản, chúng bị xóa cùng tài khoản của bạn, và các dự án được liệt kê trong bản xuất dữ liệu của bạn. Khi không có tài khoản, một ảnh chỉ được giữ trong trình duyệt của bạn (trong IndexedDB) và không được tải lên cho đến khi bạn xuất, chọn chủ thể hoặc chữa lành; lần tải lên đó là một tác vụ tạm thời thông thường và được lưu giữ 24 giờ.",
+              "Nếu bạn đã đăng nhập và lưu một dự án, ảnh gốc, một bản xem trước của nó có kích thước tối đa 1920 pixel, một hình thu nhỏ, tài liệu chỉnh sửa (danh sách các chỉnh sửa, mặt nạ và vùng đã chữa lành) cùng mọi mặt nạ và phiên bản đã chữa lành của ảnh được lưu trên máy chủ của chúng tôi trong thư mục của dự án. Đó là nội dung của bạn, chúng tuân theo thời gian lưu giữ bạn chọn (Mục 3), bạn có thể xóa dự án từ trang Tài khoản, chúng bị xóa cùng tài khoản của bạn, và các dự án được liệt kê trong bản xuất dữ liệu của bạn. Khi không có tài khoản, một ảnh chỉ được giữ trong trình duyệt của bạn (trong IndexedDB) và không được tải lên cho đến khi bạn xuất, chọn chủ thể hoặc chữa lành; lần tải lên đó là một tác vụ tạm thời thông thường và được lưu giữ 24 giờ. Các cài đặt sẵn bạn lưu được lưu trữ cùng tài khoản của bạn cho đến khi bạn xóa chúng hoặc xóa tài khoản.",
               "Xuất, chọn chủ thể bằng AI và chữa lành là các tác vụ trên máy chủ của chúng tôi. Bản xuất được kết xuất từ ảnh gốc của bạn, việc chọn chủ thể và chữa lành chạy trên máy chủ GPU của chính chúng tôi, và không có ảnh nào của bạn được gửi đến dịch vụ của bên thứ ba. Mỗi lần xuất, chọn chủ thể và chữa lành được đếm để thực thi hạn mức hằng ngày của gói bạn: chúng tôi lưu loại tác vụ, định dạng và kích thước của kết quả, thời gian, gói của bạn và một mã định danh cho tài khoản, phiên trình duyệt hoặc địa chỉ IP đã được băm của bạn. Các tệp kết quả được lưu giữ theo quy tắc lưu giữ thông thường (Mục 3), và khi bạn xóa tài khoản, các bản ghi này được tách khỏi danh tính của bạn."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Dự án Motion được lưu",
       "photoProjects": "Dự án {{brand}} được lưu",
       "photoMaxMegapixels": "Bản xuất {{brand}} lớn nhất",
-      "photoBatch": "Số ảnh {{brand}} mỗi lô"
+      "photoBatch": "Số ảnh {{brand}} mỗi lô",
+      "photoPresets": "Cài đặt sẵn {{brand}} được lưu"
     },
     "values": {
       "yes": "Có",
@@ -1942,7 +1943,23 @@
       "renameSave": "Lưu",
       "renamed": "Đã đổi tên dự án.",
       "renameFailed": "Không đổi được tên dự án này. Không có gì thay đổi; hãy thử lại.",
-      "photoDeleteBody": "Dự án {{brand}}, ảnh gốc, các bản xem trước và mọi phiên bản đã chữa lành của nó bị xóa khỏi máy chủ của chúng tôi. Không thể hoàn tác."
+      "photoDeleteBody": "Dự án {{brand}}, ảnh gốc, các bản xem trước và mọi phiên bản đã chữa lành của nó bị xóa khỏi máy chủ của chúng tôi. Không thể hoàn tác.",
+      "presetsHeading": "Cài đặt sẵn",
+      "presetsIntro": "Các cài đặt sẵn {{brand}} bạn đã lưu. Chúng được giữ trong tài khoản của bạn cho đến khi bạn xóa.",
+      "presetsEmpty": "Chưa có cài đặt sẵn nào được lưu. Hãy lưu một cài đặt sẵn từ bảng Cài đặt sẵn trong {{brand}}.",
+      "presetsLoadFailed": "Không thể tải các cài đặt sẵn của bạn.",
+      "presetDeleteBody": "Cài đặt sẵn sẽ bị xóa khỏi tài khoản của bạn. Không thể hoàn tác.",
+      "presetDeleted": "Đã xóa cài đặt sẵn.",
+      "presetDeleteFailed": "Không thể xóa cài đặt sẵn này. Chưa có gì thay đổi; hãy thử lại.",
+      "presetRenamed": "Đã đổi tên cài đặt sẵn.",
+      "presetRenameFailed": "Không thể đổi tên cài đặt sẵn này. Chưa có gì thay đổi; hãy thử lại.",
+      "presetCategory": {
+        "color": "Màu",
+        "bw": "Đen trắng",
+        "film": "Phim",
+        "fix": "Sửa lỗi",
+        "custom": "Tùy chỉnh"
+      }
     },
     "billing": {
       "plans": "So sánh các gói"

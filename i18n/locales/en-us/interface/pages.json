@@ -592,7 +592,7 @@
             "bullets": {
               "builtin": "The built-in looks are grouped as Color, Black & white, Film and Fix, and include the six Color pop looks, Black & white film, High-contrast black & white, Warm, Cool, Matte, Fade, Vivid, Punch, Cross-process, Vintage, Portrait soften, Landscape and Auto. Use the filter box to find one by name.",
               "append": "Applying a look adds its adjustments as a named group on top of what you already have instead of replacing your work. That means you can stack Warm over your own Basic corrections, open the group in the Layers tab to tweak individual sliders, and remove the whole look with one Undo.",
-              "mine": "Choose Save current edits as a preset, give it a name and tick the adjustments to include. It appears under My presets. Your presets are stored in this browser, so they do not follow you to another device on their own, and you can rename or delete them from the same panel.",
+              "mine": "Choose Save current edits as a preset, give it a name and tick the adjustments to include. It appears under My presets. When you are signed in your presets are stored on your account and follow you to your other devices; without an account they are stored in this browser. You can rename or delete them from the same panel.",
               "file": "Export presets writes your saved presets to a JSON file; Import presets reads one back in. Use this to move presets to another browser or computer, to keep a backup, or to share a look with someone else who uses {{brand}} on Media Manipulator."
             }
           },
@@ -856,7 +856,7 @@
             "title": "1.12 Aperture Projects and Exports",
             "paragraphs": [
               "Aperture, our photo editor, edits your photo in your browser: the preview you see is drawn on your own device. A photo leaves your device only when you ask for something that needs our servers: saving it to your account as a project, exporting the finished file, selecting a subject with AI, healing spots with AI, or applying your edits to more photos.",
-              "If you are signed in and save a project, the original photo, a preview copy of it at up to 1920 pixels, a small thumbnail, the editing document (the list of adjustments, masks and healed areas) and any masks and healed versions of the photo are stored on our servers in the project's folder. They are your content, they follow the retention period you choose (Section 3), you can delete a project from your Account page, they are deleted with your account, and the projects are listed in your data export. Without an account, one photo is kept only in your browser (in IndexedDB) and is not uploaded until you export, select a subject or heal; that upload is a normal temporary job and is kept for 24 hours.",
+              "If you are signed in and save a project, the original photo, a preview copy of it at up to 1920 pixels, a small thumbnail, the editing document (the list of adjustments, masks and healed areas) and any masks and healed versions of the photo are stored on our servers in the project's folder. They are your content, they follow the retention period you choose (Section 3), you can delete a project from your Account page, they are deleted with your account, and the projects are listed in your data export. Without an account, one photo is kept only in your browser (in IndexedDB) and is not uploaded until you export, select a subject or heal; that upload is a normal temporary job and is kept for 24 hours. Presets you save are stored with your account until you delete them or the account.",
               "Exports, AI subject selection and healing are jobs on our servers. Exports are rendered from your original photo, subject selection and healing run on our own GPU server, and none of your photos is sent to a third-party service. Each export, subject selection and healing is counted to enforce your plan's daily allowance: we store the kind of job, the format and size of the result, the time, your plan and an identifier for your account, your browser session or a hashed IP address. The result files are kept under the usual retention rules (Section 3), and when you delete your account these records are detached from your identity."
             ]
           }
@@ -1728,7 +1728,8 @@
       "vectorProjects": "Saved Motion projects",
       "photoProjects": "Saved {{brand}} projects",
       "photoMaxMegapixels": "Largest {{brand}} export",
-      "photoBatch": "{{brand}} photos per batch"
+      "photoBatch": "{{brand}} photos per batch",
+      "photoPresets": "Saved {{brand}} presets"
     },
     "values": {
       "yes": "Included",
@@ -1942,7 +1943,23 @@
       "renameSave": "Save",
       "renamed": "Project renamed.",
       "renameFailed": "Could not rename this project. Nothing was changed; try again.",
-      "photoDeleteBody": "The {{brand}} project, its original photo, its previews and any healed versions are removed from our servers. This cannot be undone."
+      "photoDeleteBody": "The {{brand}} project, its original photo, its previews and any healed versions are removed from our servers. This cannot be undone.",
+      "presetsHeading": "Presets",
+      "presetsIntro": "Your saved {{brand}} presets. They stay with your account until you delete them.",
+      "presetsEmpty": "No saved presets yet. Save one from the Presets panel in {{brand}}.",
+      "presetsLoadFailed": "Could not load your presets.",
+      "presetDeleteBody": "The preset is removed from your account. This cannot be undone.",
+      "presetDeleted": "Preset deleted.",
+      "presetDeleteFailed": "Could not delete this preset. Nothing was changed; try again.",
+      "presetRenamed": "Preset renamed.",
+      "presetRenameFailed": "Could not rename this preset. Nothing was changed; try again.",
+      "presetCategory": {
+        "color": "Color",
+        "bw": "Black & white",
+        "film": "Film",
+        "fix": "Fix",
+        "custom": "Custom"
+      }
     },
     "billing": {
       "plans": "Compare plans"

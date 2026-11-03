@@ -21,6 +21,7 @@ import {
   type StudioProjectSummary,
   type VectorProjectSummary,
 } from '@/lib/auth/accountApi';
+import { PresetsSection } from '@/components/account/tabs/presets-section';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { deletePhotoProject, getPhotoProject, listPhotoProjects, savePhotoProject, type PhotoProjectSummary } from '@/lib/photo/projectsApi';
@@ -272,6 +273,8 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
           </Link>
         </>
       )}
+
+      <PresetsSection copy={copy} uid={uid} />
 
       <ConfirmDialog
         open={toDelete !== null}
