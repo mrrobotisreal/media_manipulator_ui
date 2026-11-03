@@ -2,11 +2,10 @@
  * European Portuguese partial overrides for the data-driven tool pages
  * (see `i18n/toolPageContent.ts` — anything omitted falls back to English).
  *
- * Scope (MM65, 2026-10-27): only Motion's full page body, which
- * `i18n/motionTranslations.test.ts` requires for every `translated: true`
- * locale (coordinator decision; the ticket otherwise keeps toolPages out of
- * scope). The other tool pages render English until a later session adds
- * per-slug entries here, as de/es do.
+ * Scope: MM65 (2026-10-27) added Motion's full page body; MM92 (2026-10-31)
+ * added `name` + `tagline` for every tool; MM93 (2026-11-03) added the full
+ * body of every non-alias tool page (98), model-written by Fable 5.1 and
+ * Opus 5.5; native review pending.
  *
  * Register: European Portuguese (pt-PT, AO90), third-person polite with no
  * explicit `você`; brand names, formats and codecs stay untranslated;
@@ -18,14 +17,15 @@ const ptPtToolPages = {
     // MM48/MM65: Motion's full page body (model-written, needs native review). The brand stays "Motion".
     motion: {
       name: 'Motion',
+      h1: 'Motion',
       tagline: 'Desenhe ou importe um SVG, anime-o numa linha temporal de fotogramas-chave e exporte SVG animado, Lottie, React, JavaScript, Flutter ou GIF, tudo no seu navegador.',
       intro: 'O Motion é um editor SVG com uma linha temporal de animação, integrado no Media Manipulator. Abra um ficheiro SVG (ou uma animação Lottie) e cada forma torna-se uma camada que pode selecionar, mover, recolorir e animar, ou comece a partir de uma tela em branco e desenhe com as ferramentas de retângulo, elipse, linha, caneta e texto. Cada propriedade animada recebe a sua própria faixa de fotogramas-chave, com predefinições de suavização, um editor de curvas para suavização personalizada e chaves de manutenção para saltos instantâneos. Os animadores de um clique acrescentam traçado progressivo do contorno, movimento ao longo de uma trajetória, morph de formas, mudanças de cor de gradiente, animação de máscaras e desfocagem. Quando se mover como pretende, exporte-o como SVG animado, ficheiro Lottie, componente React, módulo JavaScript ou TypeScript, widget Flutter ou GIF. A edição e todas as exportações correm no seu navegador, pelo que a sua ilustração nunca é carregada para ser exportada.',
       whatItDoes: [
-        'Importa ficheiros SVG para uma árvore de camadas editável (grupos, traçados, formas, texto, imagens, gradientes, máscaras e traçados de recorte) e importa animações Lottie JSON com os respetivos fotogramas-chave.',
+        'Importa ficheiros SVG para uma árvore de camadas editável (grupos, traçados, formas, texto, imagens, gradientes, máscaras e traçados de recorte) e importa animações Lottie JSON com os respetivos fotogramas-chave, cada ficheiro até 4 MB.',
         'Desenha novas ilustrações com as ferramentas de retângulo, elipse, linha, caneta (Bézier) e texto, e edita os nós dos traçados diretamente na tela.',
         'Anima posição, escala, rotação, inclinação, opacidade, preenchimento, contorno e espessura do contorno numa linha temporal de fotogramas-chave, com suavização linear, de entrada, de saída, de entrada e saída, cubic-bezier personalizada e de manutenção.',
-        'Acrescenta animação avançada com um clique: traçado progressivo do contorno, movimento ao longo de uma trajetória com rotação automática opcional, morph de formas, cores dos pontos de gradiente, animação de máscaras e traçados de recorte, e desfocagem.',
-        'Exporta um SVG estático (sempre gratuito), um SVG animado que reproduz sem qualquer biblioteca, Lottie JSON, um componente React, um módulo JavaScript ou TypeScript, um widget Flutter e um GIF animado.',
+        'Acrescenta seis animadores de um clique: traçado progressivo do contorno, movimento ao longo de uma trajetória com rotação automática opcional, morph de formas, cores dos pontos de gradiente, animação de máscaras e traçados de recorte, e desfocagem.',
+        'Exporta um SVG estático (sempre gratuito e nunca contabilizado), um SVG animado que reproduz sem qualquer biblioteca, Lottie JSON, um componente React, um módulo JavaScript ou TypeScript, um widget Flutter e um GIF animado, tudo gerado no seu computador.',
       ],
       flowSteps: [
         {
@@ -46,11 +46,12 @@ const ptPtToolPages = {
         },
       ],
       advancedDetails: [
-        'A exportação de SVG animado usa fotogramas-chave CSS puros sempre que todos os efeitos puderem ser expressos em CSS no Chrome, no Firefox e no Safari. Os morphs de forma, os pontos de gradiente em movimento e a desfocagem precisam de um pequeno script, pelo que esses ficheiros incorporam uma cópia reduzida do anime.js (licença MIT, cerca de 14 KB comprimidos) com o respetivo aviso de licença no topo.',
+        'A exportação de SVG animado usa fotogramas-chave CSS puros sempre que todos os efeitos possam ser expressos em CSS no Chrome, no Firefox e no Safari. Os morphs de forma, os pontos de gradiente em movimento e a desfocagem precisam de um script, pelo que esses ficheiros incorporam uma cópia reduzida do anime.js (licença MIT, cerca de 31 KB de script, aproximadamente 13 KB após gzip) com o respetivo aviso de licença no topo.',
         'O morph de formas normaliza ambas as formas para o mesmo número de segmentos de curva e alinha os seus pontos de partida e o sentido de desenho, para que o morph não se torça. Duas formas que não possam ser emparelhadas mantêm-se em vez de sofrerem morph.',
-        'O gerador de Lottie segue a especificação Lottie 1.0.1 e o conjunto de funcionalidades «Basic» do LottieFiles. Tudo o que o Lottie não consegue transportar (como filtros, texto ou máscaras avançadas) é listado após a transferência; nada é descartado em silêncio.',
-        'A exportação de GIF usa um codificador escrito para o Media Manipulator, com uma única paleta global construída a partir de fotogramas de toda a animação, para que a arte vetorial plana mantenha as cores exatas.',
-        'Os SVG importados são limpos à entrada: scripts, gestores de eventos, referências externas e outros conteúdos não seguros são removidos, e o editor reconstrói o código não suportado a partir de uma lista permitida em vez de o inserir como HTML.',
+        'O gerador de Lottie segue a especificação Lottie 1.0.1 e o conjunto de funcionalidades «Basic» do LottieFiles. Tudo o que o Lottie não consegue transportar (como filtros, texto ou máscaras avançadas) é listado após a transferência; nada é descartado em silêncio. O importador usa a mesma lista no sentido inverso.',
+        'A exportação de GIF renderiza os fotogramas um de cada vez, transfere cada um para um Worker e codifica-os com um codificador escrito para o Media Manipulator: uma única paleta global amostrada a partir de cinco fotogramas distribuídos ao longo da duração, pontilhado desativado por predefinição (a arte vetorial plana tem poucas cores e o pontilhado acrescenta ruído), um atraso entre fotogramas de round(100 / fps) centésimos de segundo e transparência mantida apenas quando o fundo da tela é transparente. A saída está limitada a 2 GB e a caixa de diálogo mostra uma estimativa do tamanho antes de começar.',
+        'Os SVG importados são limpos à entrada: scripts, gestores de eventos, referências externas e outros conteúdos não seguros são removidos, e o editor reconstrói o código não suportado a partir de uma lista permitida em vez de o inserir como HTML. O código que não consegue modelar é mantido como uma camada opaca que é reexportada sem alterações.',
+        'O contador de exportações é uma única transação de base de dados: o bloqueio de formato e os limites são verificados e, em seguida, o contador e uma linha de exportação são escritos em conjunto. Uma exportação recusada não escreve nada e não custa nada; uma exportação que o navegador depois cancele ou que falhe já foi contabilizada.',
       ],
       whyItMatters: [
         'Os SVG animados mantêm-se nítidos em qualquer tamanho e são normalmente muito mais pequenos do que um vídeo ou GIF da mesma animação, o que os torna ideais para logótipos, ícones, indicadores de carregamento e ilustrações na web.',
@@ -75,32 +76,43 @@ const ptPtToolPages = {
           description: 'Mova partes de uma ilustração ao longo de trajetórias, transforme formas umas nas outras e exporte um GIF para chat ou e-mail.',
         },
       ],
+      workedExamples: [
+        {
+          title: 'Um traçado progressivo de logótipo de 2 segundos como SVG animado',
+          body: 'Um logótipo tipográfico com alguns traçados e o animador Traçado progressivo ao longo de 2 000 ms, exportado como SVG animado. O traçado progressivo é uma animação de stroke-dasharray e stroke-dashoffset, que o CSS consegue expressar em todos os principais navegadores, pelo que o exportador escreve um bloco <style> de @keyframes e nenhum script. O ficheiro é o seu SVG mais algumas centenas de bytes de CSS, reproduz assim que está na página e conta como uma exportação svg_animated: sem conta, é uma das 2 por dia e fica dentro do limite de 10 segundos de duração para visitantes; com uma conta gratuita, é uma das 5. A exportação é uma transformação de texto no seu navegador e termina de imediato.',
+        },
+        {
+          title: 'Um ciclo de morph de 400 x 400 como GIF',
+          body: 'Um morph de formas de 2 segundos numa tela de 400 x 400, exportado como GIF a 25 fps num plano Premium (o GIF é um formato Premium por predefinição). A caixa de diálogo limita-se às predefinições de altura e de taxa de fotogramas do plano, e 25 fps dão um atraso de round(100 / 25) = 4 centésimos de segundo por fotograma, com 50 fotogramas ao todo. A estimativa de tamanho é píxeis x fotogramas x 0,25 bytes + 1 KB: 160 000 x 50 x 0,25 dá cerca de 2 MB, deliberadamente por excesso, e arte plana de duas cores fica normalmente muito abaixo disso. Os fotogramas são renderizados no thread principal e codificados num Worker um de cada vez, pelo que a memória se mantém em um par de fotogramas mais o ficheiro em crescimento; o tempo é gasto a rasterizar 50 fotogramas de SVG, alguns segundos num portátil.',
+        },
+      ],
+      whenNotToUse: 'O Motion anima arte vetorial; não edita vídeo nem fotografias. Se o seu ponto de partida é filmagem, o Darkroom é o editor indicado e a página de vídeo para GIF transforma um clipe num GIF. Também não é um vetorizador para imagens raster complexas: uma fotografia convertida em traçados fica pesada e o resultado não se anima de forma significativa. As animações que dependem de filtros, efeitos de texto ou máscaras avançadas não sobrevivem intactas a uma exportação Lottie (a caixa de diálogo lista o que foi descartado), pelo que, para esses destinos, fique pelas exportações de SVG animado, React ou JavaScript. Por fim, a saída MP4 ou WebM depende do suporte de WebCodecs do seu navegador e do seu plano, por isso consulte a tabela de planos antes de planear uma entrega em vídeo.',
       whyMediaManipulator: [
         'Um verdadeiro editor de camadas e fotogramas-chave, com pausas, curvas personalizadas e animadores avançados, e não uma galeria de modelos.',
         'Exportações tanto para designers como para programadores: SVG animado, Lottie, React, JavaScript ou TypeScript, Flutter e GIF a partir de um único projeto.',
         'As exportações são feitas no seu navegador, e o único código de terceiros que uma exportação usa tem licença permissiva (anime.js sob MIT; flutter_svg e webview_flutter para Flutter), com o respetivo aviso de licença mantido no ficheiro.',
       ],
-      privacyNote: 'A edição e a exportação acontecem no seu navegador; a sua ilustração não é carregada para ser exportada. Sem conta, os projetos são conservados apenas neste navegador. Se iniciar sessão e guardar um projeto na sua conta, este é armazenado nos nossos servidores como um projeto do Darkroom, segue o período de retenção que escolher e pode ser eliminado a partir da sua página Conta. Para cada exportação, registamos apenas o formato, o tamanho, a duração e a hora, para aplicar a quota diária.',
+      privacyNote: 'A edição e a exportação acontecem no seu navegador; a sua ilustração não é carregada para ser exportada. Sem conta, os projetos são conservados apenas neste navegador. Se iniciar sessão e guardar um projeto na sua conta, o documento limpo (até 4 MB) e uma miniatura são armazenados nos nossos servidores como um projeto do Darkroom, seguem o período de retenção que escolher e podem ser eliminados a partir da sua página Conta. Para cada exportação contabilizada, registamos apenas o formato, a altura, a taxa de fotogramas, a duração e a hora, com a sua conta ou sessão como titular, para aplicar a quota diária; a linha da exportação nunca contém a ilustração.',
       faq: [
         {
           question: 'O Motion é gratuito?',
-          answer: 'Sim. Abrir o Motion, desenhar, animar, guardar e exportar um SVG estático é gratuito e ilimitado, sem conta. As exportações animadas contam para uma quota diária que depende do seu plano; a tabela de planos nesta página mostra a quota e os formatos de cada plano.',
+          answer: 'Sim. Abrir o Motion, desenhar, animar, guardar neste navegador e exportar um SVG estático é gratuito, ilimitado e não exige conta. As exportações animadas contam para uma quota diária que depende do seu plano: por predefinição, 2 por dia sem conta (apenas SVG animado), 5 com uma conta gratuita, 30 com Premium e 150 com Pro. A tabela de planos nesta página mostra a quota atual e os formatos de cada plano.',
         },
         {
           question: 'Que formatos posso exportar?',
-          answer: 'SVG estático, SVG animado (CSS, ou um pequeno script incorporado quando necessário), Lottie JSON, um componente React (.tsx), um módulo JavaScript ou TypeScript, um widget Flutter (.dart) e um GIF animado. Quais destes o seu plano inclui, e o número diário de exportações, são indicados na tabela de planos nesta página.',
+          answer: 'SVG estático, SVG animado (CSS, ou um pequeno script incorporado quando necessário), Lottie JSON, um componente React (.tsx), um módulo JavaScript ou TypeScript, um widget Flutter (.dart) e um GIF animado. Por predefinição, o SVG animado está disponível em todos os planos, o Lottie a partir da conta gratuita, e React, JS/TS, Flutter e GIF a partir do Premium. Quais destes o seu plano inclui, e o número diário de exportações, são indicados na tabela de planos nesta página.',
         },
         {
           question: 'Quais são os limites?',
-          answer: 'As exportações animadas são contadas por dia e repostas à meia-noite UTC. Os visitantes sem conta só podem guardar projetos no seu navegador; os planos com sessão iniciada guardam um determinado número de projetos na conta. Os visitantes têm também uma duração máxima de animação para exportação, e a exportação de GIF tem um limite de tamanho e de duração. Todos os números atuais estão na tabela de planos nesta página e na página de preços.',
+          answer: 'As exportações animadas são contadas por dia e repostas à meia-noite UTC; uma exportação recusada não é contabilizada, mas uma exportação que cancele depois de a contagem ter sido feita é. Os visitantes sem conta só guardam projetos no seu navegador e podem exportar animações com até 10 segundos de duração; uma conta gratuita guarda 3 projetos na conta, o Premium 25 e o Pro sem limite. As importações SVG e Lottie estão limitadas a 4 MB cada, e a exportação de GIF a 50 fps e 2 GB de saída. Todos os números atuais estão na tabela de planos nesta página e na página de preços.',
         },
         {
           question: 'Posso animar um SVG que já tenho?',
-          answer: 'Sim. Importe qualquer SVG e os seus grupos, traçados, formas, texto, gradientes, máscaras e traçados de recorte tornam-se camadas editáveis. As partes que o editor não consegue editar, como padrões ou filtros complexos, são mantidas e exportadas sem alterações, e tudo o que for inseguro (scripts ou ligações externas) é removido e listado após a importação.',
+          answer: 'Sim. Importe qualquer SVG e os seus grupos, traçados, formas, texto, gradientes, máscaras e traçados de recorte tornam-se camadas editáveis. As partes que o editor não consegue editar, como padrões ou filtros complexos, são mantidas e exportadas sem alterações, e tudo o que for inseguro (scripts, gestores de eventos ou ligações externas) é removido e listado após a importação.',
         },
         {
           question: 'Suporta Lottie?',
-          answer: 'Sim, em ambos os sentidos. Pode importar um ficheiro Lottie JSON para o editar, e exportar a sua animação como Lottie JSON para o lottie-web e os leitores Lottie de iOS, Android e Flutter. As funcionalidades que um dos lados não consegue representar são listadas na caixa de diálogo em vez de serem descartadas em silêncio.',
+          answer: 'Sim, em ambos os sentidos. Pode importar um ficheiro Lottie JSON para o editar (a importação conta como uma unidade no plano gratuito e nos superiores), e exportar a sua animação como Lottie JSON para o lottie-web e os leitores Lottie de iOS, Android e Flutter. As funcionalidades que um dos lados não consegue representar são listadas na caixa de diálogo em vez de serem descartadas em silêncio.',
         },
         {
           question: 'Que navegadores suportam a exportação de vídeo?',
@@ -168,131 +180,3894 @@ const ptPtToolPages = {
       metaDescription: 'Anime SVG no seu navegador: fotogramas-chave, suavização, pausas, traçado progressivo, trajetórias e morph. Exporte SVG animado, Lottie JSON, React, JS, Flutter ou GIF.',
       ogTitle: 'Motion: anime SVG no seu navegador',
       ogDescription: 'Importe um SVG ou desenhe um, anime-o numa linha temporal de fotogramas-chave e exporte SVG animado, Lottie JSON, React, JavaScript, Flutter ou GIF. As exportações são feitas no seu navegador.',
+      featureList: [
+        'Importação de SVG para camadas editáveis',
+        'Importação de Lottie JSON',
+        'Ferramentas de retângulo, elipse, linha, caneta e texto',
+        'Linha temporal de fotogramas-chave com predefinições de suavização, curvas cubic-bezier personalizadas e chaves de manutenção',
+        'Animadores de traçado progressivo do contorno, trajetória de movimento, morph de formas, gradiente, máscara e desfocagem',
+        'Exportação de SVG estático',
+        'Exportação de SVG animado (CSS ou runtime anime.js incorporado)',
+        'Exportação de Lottie JSON',
+        'Exportação de código React, JavaScript, TypeScript e Flutter',
+        'Exportação de GIF animado',
+        'Projetos guardados no navegador ou na sua conta',
+      ],
     },
     // 2026-10-28 catalog expansion: name + tagline for the /tools catalog cards (model-written, needs native review).
     'inspect-metadata': {
       name: 'Inspetor de metadados',
+      h1: 'Inspecionar metadados de ficheiros online',
       tagline: 'Veja todas as etiquetas escondidas numa fotografia, vídeo, ficheiro de áudio ou PDF: EXIF, localização GPS, câmara, codecs, ID3, XMP e muito mais, antes de o partilhar.',
+      metaTitle: 'Inspecionar metadados online: EXIF, GPS, codecs, ID3 | Media Manipulator',
+      metaDescription: 'Inspetor de metadados online gratuito para imagens, vídeo, áudio e PDF. Veja EXIF, coordenadas GPS num mapa, câmara e objetiva, codecs e débitos binários, etiquetas ID3, XMP e IPTC. Sem registo.',
+      ogTitle: 'Inspecionar metadados de ficheiros online',
+      ogDescription: 'Todas as etiquetas EXIF, GPS, codec, ID3 e XMP do seu ficheiro, agrupadas e pesquisáveis, com as privadas assinaladas.',
+      intro: 'Os ficheiros transportam mais do que os seus píxeis e amostras. Uma fotografia de telemóvel regista onde e quando foi tirada e em que dispositivo; um vídeo indica o seu codificador e os seus débitos binários; um MP3 transporta etiquetas ID3 e a capa do álbum; um PDF guarda o seu autor e o software que o criou. O inspetor de metadados do Media Manipulator lê tudo isso nos nossos servidores com o ExifTool e o ffprobe, agrupa-o em secções de câmara, localização, dispositivo, tempos, codec e documento, e destaca as entradas que o podem identificar, para que possa decidir o que remover antes de um ficheiro sair das suas mãos.',
+      whatItDoes: [
+        'Lê dados EXIF, GPS, IPTC, XMP e ICC de imagens JPG, PNG, WebP, HEIC, AVIF, TIFF e derivadas de RAW.',
+        'Lê dados de contentor, fluxos, codecs, débito binário, taxa de fotogramas e capítulos de MP4, MOV, MKV, WebM e outros ficheiros de vídeo.',
+        'Lê etiquetas ID3, Vorbis e MP4, capas e definições do codificador de MP3, M4A, FLAC, OGG e WAV.',
+        'Lê autor, produtor, datas de criação e número de páginas de PDF.',
+        'Mostra as coordenadas GPS num contorno de mapa e assinala todas as entradas sensíveis para a privacidade.',
+        'Disponibiliza a saída em bruto do ExifTool e do ffprobe e a cópia de qualquer bloco com um clique.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um ficheiro',
+          description: 'Imagem, vídeo, áudio ou PDF.',
+        },
+        {
+          title: 'Nós lemo-lo',
+          description: 'O ExifTool e o ffprobe correm nos nossos servidores.',
+        },
+        {
+          title: 'Percorra o relatório',
+          description: 'Agrupado, pesquisável, com as entradas privadas assinaladas.',
+        },
+        {
+          title: 'Decida',
+          description: 'Remova os metadados com a ferramenta EXIF, se necessário.',
+        },
+      ],
+      advancedDetails: [
+        'As imagens e os PDF são inspecionados automaticamente; o vídeo e o áudio com mais de 100 MB esperam por um clique, para que um ficheiro grande não seja carregado por acidente.',
+        'A capa incorporada em ficheiros de áudio é indicada como uma entrada de imagem, não como um fluxo de vídeo.',
+        'O relatório usa o mesmo catálogo de metadados que alimenta a ferramenta de remoção de EXIF e o inspetor de resultados em todas as conversões.',
+      ],
+      whyItMatters: [
+        'Uma fotografia partilhada a partir de um telemóvel pode revelar a morada da sua casa através das etiquetas GPS.',
+        'Conhecer o codec, o débito binário e a taxa de fotogramas reais de um vídeo explica porque é que ele reproduz ou não num determinado lugar.',
+        'Os metadados de documentos indicam autores e software de edição, o que é importante para tudo o que publica anonimamente.',
+      ],
+      useCases: [
+        {
+          title: 'Antes de publicar uma fotografia',
+          description: 'Verifique se há coordenadas GPS e o número de série do dispositivo.',
+        },
+        {
+          title: 'Depurar um vídeo',
+          description: 'Veja o codec, o perfil, a taxa de fotogramas e a disposição do áudio reais.',
+        },
+        {
+          title: 'Verificar um ficheiro de música',
+          description: 'Confirme as etiquetas, o débito binário e se foi transcodificado a partir de um débito binário mais baixo.',
+        },
+        {
+          title: 'Rever um PDF',
+          description: 'Veja quem o campo de autor indica e que software o produziu.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Um só inspetor para imagens, vídeo, áudio e PDF, e não quatro ferramentas separadas.',
+        'As entradas sensíveis para a privacidade são assinaladas, com um caminho direto para as remover.',
+        'Sem conversão, sem conta. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O seu ficheiro é lido pelo ExifTool e pelo ffprobe no nosso servidor, o relatório volta para o seu navegador e a cópia temporária é eliminada assim que o relatório é criado. Nenhum terceiro vê o ficheiro ou as suas etiquetas. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Inspecionar um ficheiro altera-o?',
+          answer: 'Não. O ficheiro é lido, descrito num relatório e eliminado após a análise. Nada é escrito de volta.',
+        },
+        {
+          question: 'Posso remover o que o inspetor encontra?',
+          answer: 'Sim. Use a ferramenta Remover metadados EXIF para imagens; remove tudo e mostra uma comparação do antes e do depois.',
+        },
+        {
+          question: 'Porque é que um vídeo grande precisa de um clique?',
+          answer: 'O vídeo e o áudio com mais de 100 MB só são carregados quando o pedir, para que nunca envie um ficheiro grande por acidente.',
+        },
+        {
+          question: 'Isto conta para as minhas conversões diárias?',
+          answer: 'Não. A inspeção é gratuita e não gasta uma operação.',
+        },
+        {
+          question: 'Os dados são enviados para terceiros?',
+          answer: 'Não. O ExifTool e o ffprobe correm nos nossos próprios servidores, e o ficheiro é eliminado em seguida.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A inspeção é só de leitura e não conta como uma conversão.',
+        ],
+      },
+      related: [
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Remova tudo o que o inspetor encontrou.',
+        },
+        {
+          label: 'Editar metadados de imagem',
+          to: '/tools/edit-image-metadata',
+          description: 'Reescreva o título, o autor, os direitos de autor e o GPS.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta com ou sem metadados.',
+        },
+      ],
+      embed: {
+        title: 'Inspecionar um ficheiro',
+        description: 'Largue uma imagem, um vídeo, um ficheiro de áudio ou um PDF. O relatório agrupa todas as etiquetas por categoria, assinala as que o identificam a si ou à sua localização e oferece uma vista em bruto do ExifTool e do ffprobe.',
+      },
     },
     'edit-image-metadata': {
       name: 'Editar metadados de imagem',
+      h1: 'Editar metadados de imagem online',
       tagline: 'Defina o título, o autor, os direitos de autor, as palavras-chave e a descrição de uma fotografia, corrija ou remova a sua localização GPS e reescreva as etiquetas EXIF e IPTC.',
+      metaTitle: 'Editar metadados de imagem: EXIF, IPTC, direitos de autor, GPS | Media Manipulator',
+      metaDescription: 'Editor de metadados de imagem online gratuito. Defina título, autor, direitos de autor, descrição e palavras-chave, substitua ou remova a localização GPS e edite etiquetas EXIF e IPTC em JPG, PNG, WebP e muito mais.',
+      ogTitle: 'Editar metadados de imagem online',
+      ogDescription: 'Escreva um aviso de direitos de autor, corrija a localização, defina palavras-chave. Gratuito, sem registo.',
+      intro: 'Os fotógrafos precisam de um aviso de direitos de autor e de dados de contacto em cada ficheiro que entregam. As agências querem palavras-chave e legendas IPTC. Quem partilha uma fotografia pode querer a localização removida, ou definida para uma cidade em vez de uma porta de casa. O Media Manipulator reescreve os campos EXIF, IPTC e XMP no próprio ficheiro, nos nossos servidores, com o ExifTool, mantém os dados da imagem intactos e mostra-lhe a comparação do antes e do depois.',
+      whatItDoes: [
+        'Define título, autor/artista, descrição, direitos de autor, comentário e palavras-chave.',
+        'Remove a localização GPS ou substitui-a por coordenadas à sua escolha.',
+        'Edita etiquetas EXIF/TIFF, IPTC e avançadas individualmente, pelo nome.',
+        'Mantém os píxeis intactos; opcionalmente, converte o formato na mesma passagem.',
+        'Mostra uma comparação do que mudou depois da tarefa.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'JPG, PNG, WebP, HEIC, TIFF.',
+        },
+        {
+          title: 'Preencha os campos',
+          description: 'Título, autor, direitos de autor, palavras-chave, localização.',
+        },
+        {
+          title: 'Aplique',
+          description: 'O ExifTool reescreve as etiquetas nos nossos servidores.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Compare o antes e o depois e depois guarde.',
+        },
+      ],
+      advancedDetails: [
+        'O modo de metadados personalizados escreve em conjunto os equivalentes EXIF (Artist, Copyright, ImageDescription), IPTC (Keywords, Caption) e XMP (dc:title, dc:creator) padrão, para que todos os visualizadores concordem.',
+        'Substituir a localização GPS escreve GPSLatitude/GPSLongitude com os hemisférios de referência corretos; removê-la limpa todas as etiquetas GPS.',
+        'PNG e WebP transportam metadados em blocos de texto e XMP; os mesmos campos são escritos aí.',
+      ],
+      whyItMatters: [
+        'Um aviso de direitos de autor incorporado no ficheiro viaja com ele quando é republicado.',
+        'As palavras-chave e as legendas em IPTC são o que as agências de stock e os sistemas DAM indexam.',
+        'Uma localização definida para uma cidade protege a sua casa, mantendo a fotografia geolocalizada.',
+      ],
+      useCases: [
+        {
+          title: 'Entregar fotografias a clientes',
+          description: 'Incorpore o seu nome, os direitos de autor e o contacto em cada ficheiro.',
+        },
+        {
+          title: 'Envios para bancos de imagens',
+          description: 'Adicione palavras-chave IPTC e uma legenda.',
+        },
+        {
+          title: 'Geolocalização aproximada',
+          description: 'Substitua uma posição GPS precisa pelo centro da cidade.',
+        },
+        {
+          title: 'Corrigir uma etiqueta errada',
+          description: 'Corrija o autor ou a data que um scanner escreveu.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Escreve EXIF, IPTC e XMP em conjunto, e não apenas um deles.',
+        'Comparação do antes e do depois, para que veja exatamente o que mudou.',
+      ],
+      privacyNote: 'As etiquetas da sua imagem são reescritas pelo ExifTool no nosso servidor com os valores que introduziu; os píxeis ficam como estão. Nenhum terceiro vê o ficheiro ou as suas etiquetas. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Editar os metadados recodifica o meu JPG?',
+          answer: 'Só se alterar o formato de saída ou redimensionar. Com o mesmo formato e sem edições aos píxeis, os dados da imagem são copiados e só as etiquetas são reescritas.',
+        },
+        {
+          question: 'Posso remover a localização mas manter tudo o resto?',
+          answer: 'Sim. Marque «remover dados de localização» e deixe os outros campos intactos.',
+        },
+        {
+          question: 'Posso editar uma etiqueta que não está listada?',
+          answer: 'Sim. Expanda a secção avançada e defina qualquer etiqueta EXIF ou IPTC pelo nome.',
+        },
+        {
+          question: 'Como removo tudo, em vez disso?',
+          answer: 'Use a ferramenta Remover metadados EXIF, que remove todas as etiquetas com um clique.',
+        },
+      ],
+      related: [
+        {
+          label: 'Inspecionar metadados',
+          to: '/tools/inspect-metadata',
+          description: 'Veja primeiro o que está no ficheiro.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Remova tudo.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Recortar imagem',
+          to: '/tools/crop-image',
+          description: 'Corte para uma região.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Adicionar texto a imagem',
+          to: '/tools/add-text-to-image',
+          description: 'Legenda ou marca de água.',
+        },
+        {
+          label: 'Filtros de imagem',
+          to: '/tools/image-filters',
+          description: 'Sépia, esboço, relevo e muito mais.',
+        },
+      ],
+      embed: {
+        title: 'Editar os metadados de uma imagem',
+        description: 'Carregue uma imagem. A secção de metadados abre no modo personalizado: preencha título, autor, direitos de autor e palavras-chave, substitua ou remova a localização GPS e expanda as etiquetas avançadas se precisar. Os píxeis da imagem ficam como estão, a menos que também altere o formato.',
+      },
     },
     'change-video-speed': {
       name: 'Alterar a velocidade do vídeo',
+      h1: 'Alterar a velocidade de um vídeo online: acelerar ou abrandar',
       tagline: 'Crie um time-lapse a 2x, 4x ou mais, ou abrande um clipe para 0,5x ou 0,25x, com o áudio sincronizado.',
+      metaTitle: 'Alterar a velocidade do vídeo online: acelerar ou câmara lenta | Media Manipulator',
+      metaDescription: 'Alterador de velocidade de vídeo online gratuito. Acelere um vídeo para 1,5x, 2x ou 4x para um time-lapse, ou abrande-o para 0,5x ou 0,25x. O áudio mantém-se sincronizado. Saída em MP4, sem marca de água.',
+      ogTitle: 'Alterar a velocidade do vídeo online grátis',
+      ogDescription: 'Acelere ou abrande qualquer vídeo de 0,25x a 4x. O áudio mantém-se sincronizado. Grátis, sem registo.',
+      intro: 'Uma gravação de ecrã que se arrasta, um pôr do sol que precisa de ser um time-lapse de dez segundos, um truque de skate que merece câmara lenta: alterar a velocidade de reprodução é uma das edições de vídeo mais comuns, e não devia exigir um editor de computador. O Media Manipulator ajusta o tempo tanto da imagem como do som nos nossos servidores com o FFmpeg, de um quarto da velocidade até quatro vezes a velocidade, e exporta um MP4 que reproduz ao novo ritmo em qualquer lado.',
+      whatItDoes: [
+        'Acelera (1,25x a 4x) ou abranda (0,25x a 0,9x) qualquer vídeo.',
+        'Ajusta o tempo do áudio com uma alteração de andamento que preserva o tom, para que as vozes continuem naturais.',
+        'Mantém a resolução e a qualidade; exporta MP4 por predefinição ou qualquer contentor suportado.',
+        'Combine com corte, redimensionamento ou ajustes de cor na mesma passagem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu vídeo',
+          description: 'Qualquer formato de vídeo comum.',
+        },
+        {
+          title: 'Defina a velocidade',
+          description: '0,25x a 4x; 2x está pré-selecionado.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg ajusta o tempo do vídeo e do áudio.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o novo MP4.',
+        },
+      ],
+      advancedDetails: [
+        'O vídeo usa setpts para escalar as marcas temporais de apresentação; o áudio usa atempo, encadeado para fatores fora do intervalo de 0,5 a 2,0.',
+        'Abrandar não inventa fotogramas; para uma câmara lenta suave, use a interpolação de fotogramas com IA depois de abrandar o clipe.',
+        'A taxa de fotogramas é preservada, por isso um time-lapse a 4x tem um quarto dos fotogramas originais.',
+      ],
+      whyItMatters: [
+        'Os time-lapses e os resumos são muito mais fáceis de ver a 2x a 4x.',
+        'A câmara lenta torna legíveis os clipes de desporto e de ação.',
+        'Os tutoriais e as gravações de ecrã ficam muitas vezes melhor a 1,25x a 1,5x.',
+      ],
+      useCases: [
+        {
+          title: 'Time-lapse',
+          description: 'Comprima uma hora de construção, cozinha ou pintura em minutos.',
+        },
+        {
+          title: 'Câmara lenta',
+          description: 'Abrande um clipe de desporto ou de um animal de estimação para metade da velocidade.',
+        },
+        {
+          title: 'Tutorial mais rápido',
+          description: 'Acelere uma gravação de ecrã sem áudio com voz de esquilo.',
+        },
+        {
+          title: 'Acertar com uma faixa musical',
+          description: 'Ajuste um clipe para 1,1x para encaixar num compasso.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O tempo do áudio é ajustado com o tom preservado, sem ficar para trás nem com voz de esquilo.',
+        'Combine com inversão, corte e cor no mesmo formulário.',
+      ],
+      privacyNote: 'O seu vídeo é acelerado ou abrandado pelo FFmpeg no nosso servidor, com o andamento do áudio alterado para corresponder. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro original fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'O áudio mantém-se sincronizado?',
+          answer: 'Sim. O andamento do áudio é escalado pelo mesmo fator, com o tom preservado.',
+        },
+        {
+          question: 'Qual é a velocidade máxima?',
+          answer: '4x mais rápido e 0,25x mais lento numa só passagem. Para mais, volte a passar o resultado pela ferramenta.',
+        },
+        {
+          question: 'A câmara lenta vai parecer suave?',
+          answer: 'Abrandar repete fotogramas. Para uma câmara lenta verdadeiramente suave, abrande o clipe aqui e depois use a interpolação de fotogramas com IA.',
+        },
+        {
+          question: 'Posso silenciar o áudio em vez disso?',
+          answer: 'Sim, use primeiro a ferramenta Remover áudio de vídeo, ou exporte como GIF, que não tem áudio.',
+        },
+      ],
+      related: [
+        {
+          label: 'Interpolação de fotogramas com IA',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Câmara lenta suave com fotogramas gerados.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Inverter vídeo',
+          to: '/tools/reverse-video',
+          description: 'Reproduza um clipe ao contrário.',
+        },
+        {
+          label: 'Virar vídeo',
+          to: '/tools/flip-video',
+          description: 'Espelhe na horizontal ou na vertical.',
+        },
+        {
+          label: 'Estabilizar vídeo',
+          to: '/tools/stabilize-video',
+          description: 'Suavize filmagens tremidas.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o ficheiro.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte para um intervalo.',
+        },
+      ],
+      embed: {
+        title: 'Alterar a velocidade de um vídeo',
+        description: 'Carregue um vídeo e defina um multiplicador de velocidade: acima de 1 é mais rápido, abaixo de 1 é mais lento. 2x está pré-selecionado. O tempo do áudio é ajustado para corresponder, para que uma voz acelerada continue inteligível.',
+      },
     },
     'reverse-video': {
       name: 'Inverter vídeo',
+      h1: 'Inverter um vídeo online grátis',
       tagline: 'Reproduza qualquer clipe ao contrário, com ou sem o áudio invertido, e, se quiser, em vaivém: para a frente e depois para trás.',
+      metaTitle: 'Inverter vídeo online grátis: ao contrário, ping-pong | Media Manipulator',
+      metaDescription: 'Inversor de vídeo online gratuito. Reproduza um vídeo ao contrário, inverta também o áudio, ou crie um ciclo ping-pong que avança e depois recua. Saída em MP4 ou GIF, sem marca de água, sem registo.',
+      ogTitle: 'Inverter um vídeo online grátis',
+      ogDescription: 'Reproduza um clipe ao contrário ou crie um ciclo que avança e depois recua. Grátis, sem registo.',
+      intro: 'O efeito de vídeo invertido é mais antigo do que a internet e continua a funcionar: vidro partido a recompor-se, um mergulhador a saltar para fora da piscina, uma multidão a voltar a juntar-se. O Media Manipulator inverte os fotogramas e, opcionalmente, o áudio de qualquer clipe nos nossos servidores com o FFmpeg, e a opção ping-pong acrescenta a cópia no sentido normal para que o resultado se repita sem cortes, que é o que a maioria das utilizações em redes sociais e GIF pretende.',
+      whatItDoes: [
+        'Inverte os fotogramas de vídeo de qualquer clipe.',
+        'Inverte o áudio em conjunto, ou remove o áudio para um resultado silencioso.',
+        'O modo ping-pong reproduz para a frente e depois para trás, num ciclo sem cortes.',
+        'Exporta MP4, WebM ou um GIF animado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um clipe',
+          description: 'Os clipes curtos funcionam melhor; a inversão carrega o clipe inteiro em memória.',
+        },
+        {
+          title: 'Escolha inverter ou ping-pong',
+          description: 'Inverter está pré-selecionado.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg inverte os fotogramas e o áudio.',
+        },
+        {
+          title: 'Transferir',
+          description: 'MP4 para vídeo, GIF para um ciclo.',
+        },
+      ],
+      advancedDetails: [
+        'A inversão guarda em memória todos os fotogramas do clipe, por isso clipes muito longos ou em 4K demoram mais e consomem mais memória; corte primeiro para obter melhores resultados.',
+        'O áudio usa o filtro areverse; para um clipe invertido silencioso, remova primeiro o áudio.',
+        'O ping-pong concatena os fluxos normal e invertido, duplicando a duração.',
+      ],
+      whyItMatters: [
+        'Os clipes invertidos e em boomerang são um clássico do vídeo curto para redes sociais.',
+        'Um ciclo ping-pong esconde o corte que um ciclo simples mostraria.',
+        'Inverter é também uma forma barata de criar uma transição de «rebobinar».',
+      ],
+      useCases: [
+        {
+          title: 'Ciclo ao estilo boomerang',
+          description: 'Transforme um clipe de dois segundos num vaivém sem cortes.',
+        },
+        {
+          title: 'Revelação invertida',
+          description: 'Reproduza um unboxing ou uma montagem ao contrário.',
+        },
+        {
+          title: 'Transição de rebobinar',
+          description: 'Inverta alguns segundos para cortar entre cenas.',
+        },
+        {
+          title: 'GIF invertido',
+          description: 'Exporte diretamente para GIF para chats e fóruns.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Inversão e ping-pong num só interruptor, com o áudio tratado corretamente.',
+        'Corte primeiro e exporte GIF no mesmo formulário.',
+      ],
+      privacyNote: 'O seu clipe é descodificado e reproduzido ao contrário para um novo ficheiro pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro original fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'O áudio também é invertido?',
+          answer: 'Sim, por predefinição. Remova primeiro o áudio se quiser um clipe silencioso.',
+        },
+        {
+          question: 'O que é o ping-pong?',
+          answer: 'O clipe reproduz para a frente e depois para trás, de modo a repetir-se sem um salto visível.',
+        },
+        {
+          question: 'Há um limite de duração?',
+          answer: 'A inversão mantém o clipe inteiro em memória. Clipes de um ou dois minutos não são problema; corte primeiro os vídeos mais longos.',
+        },
+        {
+          question: 'Posso obter um GIF?',
+          answer: 'Sim. Escolha GIF como formato de saída; é ideal para um ciclo ping-pong.',
+        },
+      ],
+      related: [
+        {
+          label: 'Vídeo para GIF',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Crie um GIF em ciclo.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Alterar a velocidade do vídeo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou câmara lenta.',
+        },
+        {
+          label: 'Virar vídeo',
+          to: '/tools/flip-video',
+          description: 'Espelhe na horizontal ou na vertical.',
+        },
+        {
+          label: 'Estabilizar vídeo',
+          to: '/tools/stabilize-video',
+          description: 'Suavize filmagens tremidas.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o ficheiro.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte para um intervalo.',
+        },
+      ],
+      embed: {
+        title: 'Inverter um vídeo',
+        description: 'Carregue um clipe. A inversão já está ativada na secção Efeitos temporais; ative antes o ping-pong para um ciclo que avança e depois recua. Exporte MP4 ou GIF.',
+      },
     },
     'flip-video': {
       name: 'Virar e espelhar vídeo',
+      h1: 'Virar ou espelhar um vídeo online grátis',
       tagline: 'Espelhe um vídeo na horizontal para corrigir uma webcam ou selfie invertida, ou vire-o na vertical, com um só clique.',
+      metaTitle: 'Virar ou espelhar vídeo online grátis | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para virar vídeos. Espelhe um vídeo na horizontal (corrija filmagens de selfie e webcam espelhadas) ou vire-o na vertical. Saída em MP4, sem marca de água, sem registo.',
+      ogTitle: 'Virar ou espelhar um vídeo online grátis',
+      ogDescription: 'Desespelhe um vídeo de selfie ou vire um clipe ao contrário. Grátis, sem registo.',
+      intro: 'As câmaras frontais e as webcams gravam muitas vezes uma imagem em espelho: o texto lê-se ao contrário e o seu risco do cabelo fica do lado errado. Espelhar o clipe uma vez põe tudo no sítio. O Media Manipulator vira o vídeo na horizontal ou na vertical nos nossos servidores com o FFmpeg, recodifica para que a viragem fique gravada nos fotogramas, e exporta um MP4 que reproduz corretamente em qualquer leitor.',
+      whatItDoes: [
+        'Espelha um vídeo na horizontal (esquerda-direita) ou vira-o na vertical (cima-baixo).',
+        'Combine com uma rotação de 90°, 180° ou 270° na mesma passagem.',
+        'Grava a transformação nos fotogramas; não depende de um indicador de rotação.',
+        'Exporta MP4 por predefinição, ou qualquer contentor suportado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um vídeo',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Escolha a viragem',
+          description: 'A horizontal está pré-selecionada; acrescente a vertical ou uma rotação.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg aplica hflip/vflip e recodifica.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o MP4 corrigido.',
+        },
+      ],
+      advancedDetails: [
+        'A viragem horizontal usa o filtro hflip, a vertical usa vflip; ambas são sem perdas na geometria e recodificam os fotogramas.',
+        'Espelhar mais uma rotação de 180° equivale a uma viragem vertical; o painel permite combiná-las livremente.',
+        'A saída MP4 usa H.264 + AAC + yuv420p + faststart.',
+      ],
+      whyItMatters: [
+        'Um vídeo de selfie espelhado torna ilegível o texto no ecrã.',
+        'Algumas câmaras de ação montadas ao contrário precisam de uma viragem vertical em vez de uma rotação.',
+        'Uma cópia espelhada é uma forma rápida de tornar um tutorial de dança ou de exercício mais fácil de seguir.',
+      ],
+      useCases: [
+        {
+          title: 'Desespelhar uma selfie',
+          description: 'Faça com que o texto e os logótipos se leiam corretamente.',
+        },
+        {
+          title: 'Montagem ao contrário',
+          description: 'Vire filmagens de uma câmara invertida.',
+        },
+        {
+          title: 'Espelhar para um tutorial',
+          description: 'Espelhe uma demonstração para que os espectadores a possam copiar diretamente.',
+        },
+        {
+          title: 'Acertar um plano',
+          description: 'Espelhe um clipe para que o sujeito fique virado para o outro lado.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Virar e rodar numa só secção de transformação, gravado nos fotogramas.',
+        'Corte, redimensionamento e cor no mesmo carregamento.',
+      ],
+      privacyNote: 'O seu vídeo é espelhado na horizontal ou na vertical pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro original fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Espelhar ou virar, qual é a diferença?',
+          answer: 'Espelhar (viragem horizontal) troca a esquerda com a direita. A viragem vertical troca a parte de cima com a de baixo.',
+        },
+        {
+          question: 'A viragem é permanente?',
+          answer: 'Sim. Os fotogramas são recodificados com a viragem aplicada, por isso todos os leitores a mostram.',
+        },
+        {
+          question: 'Também posso rodar?',
+          answer: 'Sim. A rotação está na mesma secção Transformação geométrica, ou use a ferramenta dedicada Rodar vídeo.',
+        },
+        {
+          question: 'Virar reduz a qualidade?',
+          answer: 'A recodificação tem um custo pequeno; escolha alta qualidade para o manter insignificante.',
+        },
+      ],
+      related: [
+        {
+          label: 'Rodar vídeo',
+          to: '/tools/rotate-video',
+          description: '90°, 180°, 270°.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Alterar a velocidade do vídeo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou câmara lenta.',
+        },
+        {
+          label: 'Inverter vídeo',
+          to: '/tools/reverse-video',
+          description: 'Reproduza um clipe ao contrário.',
+        },
+        {
+          label: 'Estabilizar vídeo',
+          to: '/tools/stabilize-video',
+          description: 'Suavize filmagens tremidas.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o ficheiro.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte para um intervalo.',
+        },
+      ],
+      embed: {
+        title: 'Virar ou espelhar um vídeo',
+        description: 'Carregue um vídeo. A viragem horizontal (espelho) está pré-selecionada na secção Transformação geométrica; ative a viragem vertical em vez dela ou em conjunto. A rotação está disponível na mesma secção.',
+      },
     },
     'stabilize-video': {
       name: 'Estabilizar vídeo',
+      h1: 'Estabilizar vídeo tremido online grátis',
       tagline: 'Suavize a tremedeira das mãos e os saltos de quem anda com um estabilizador de duas passagens, sem tripé nem editor de computador.',
+      metaTitle: 'Estabilizar vídeo tremido online grátis | Media Manipulator',
+      metaDescription: 'Estabilizador de vídeo online gratuito. Reduza a tremedeira das mãos e os saltos de quem anda com a suavização de movimento do FFmpeg. Intensidade ajustável, saída em MP4, sem marca de água, sem registo.',
+      ogTitle: 'Estabilizar vídeo tremido online grátis',
+      ogDescription: 'Suavize o tremor da câmara em qualquer clipe. Grátis, sem registo.',
+      intro: 'As filmagens à mão tremem, e um pouco de tremor torna-se muito num ecrã grande. A estabilização por software segue o movimento entre fotogramas, suaviza a trajetória da câmara e recorta um pouco das margens para esconder a correção. O Media Manipulator corre o estabilizador por compensação de movimento do FFmpeg nos nossos servidores com intensidade ajustável, para que um vlog a andar ou um clipe de telemóvel com zoom saia visivelmente mais estável.',
+      whatItDoes: [
+        'Analisa o movimento entre fotogramas e suaviza a trajetória da câmara.',
+        'Tremor (quanto tremor esperar) e precisão (quão a fundo procurar) ajustáveis.',
+        'Recorta ligeiramente para esconder a correção; o zoom é aplicado automaticamente.',
+        'Exporta MP4 por predefinição; combine com corte e cor na mesma passagem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um clipe tremido',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Mantenha ou afine a intensidade',
+          description: 'As predefinições servem para filmagens de telemóvel à mão.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg estima e compensa o movimento.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Compare o resultado mais estável.',
+        },
+      ],
+      advancedDetails: [
+        'Usa o filtro de compensação de movimento deshake do FFmpeg; o valor de tremor define o alcance da procura e a precisão define a profundidade da procura.',
+        'A estabilização não consegue corrigir o desfoque de movimento já presente nos fotogramas; apenas remove a vibração entre eles.',
+        'Conte com um pequeno recorte nas margens, proporcional a quanto a câmara se moveu.',
+      ],
+      whyItMatters: [
+        'Filmagens estáveis parecem mais profissionais e são mais fáceis de ver.',
+        'Os clipes de telemóvel filmados a andar são o caso mais comum e respondem bem.',
+        'Um clipe estabilizado comprime melhor, porque menos partes da imagem mudam entre fotogramas.',
+      ],
+      useCases: [
+        {
+          title: 'Vlog a andar',
+          description: 'Tire os saltos de uma caminhada falada filmada à mão.',
+        },
+        {
+          title: 'Vídeo de telemóvel com zoom',
+          description: 'Estabilize um clipe de um concerto ou de vida selvagem filmado com o zoom no máximo.',
+        },
+        {
+          title: 'Suporte de carro ou bicicleta',
+          description: 'Reduza a vibração de um suporte no tablier ou no guiador.',
+        },
+        {
+          title: 'Antes de um GIF',
+          description: 'Estabilize primeiro para que o ciclo não vibre.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Compensação de movimento real, com a intensidade exposta em vez de escondida.',
+        'Corte, velocidade e cor no mesmo formulário.',
+      ],
+      privacyNote: 'As suas filmagens são analisadas quanto ao tremor e suavizadas pelo filtro deshake do FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro original fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Vai recortar o meu vídeo?',
+          answer: 'Ligeiramente. O estabilizador desloca os fotogramas para anular o tremor e aplica um pouco de zoom para esconder as margens em movimento.',
+        },
+        {
+          question: 'Consegue corrigir o desfoque?',
+          answer: 'Não. O desfoque dentro de um fotograma não pode ser anulado; a estabilização apenas acalma o movimento entre fotogramas.',
+        },
+        {
+          question: 'Que definições devo usar?',
+          answer: 'Comece com as predefinições. Aumente o tremor para filmagens muito irregulares; aumente a precisão se o resultado ainda derivar.',
+        },
+        {
+          question: 'Funciona em 4K?',
+          answer: 'Sim, mas o processamento demora mais. Considere redimensionar para 1080p na mesma passagem.',
+        },
+      ],
+      related: [
+        {
+          label: 'Restauro de vídeo com IA',
+          to: '/tools/ai-video-restoration',
+          description: 'Reduza o ruído, o desfoque e amplie com IA.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Alterar a velocidade do vídeo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou câmara lenta.',
+        },
+        {
+          label: 'Inverter vídeo',
+          to: '/tools/reverse-video',
+          description: 'Reproduza um clipe ao contrário.',
+        },
+        {
+          label: 'Virar vídeo',
+          to: '/tools/flip-video',
+          description: 'Espelhe na horizontal ou na vertical.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o ficheiro.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte para um intervalo.',
+        },
+      ],
+      embed: {
+        title: 'Estabilizar um vídeo',
+        description: 'Carregue um clipe tremido. A estabilização já está ativada na secção Efeitos temporais; ajuste o tremor e a precisão se a predefinição for demasiado suave ou recortar demais.',
+      },
     },
     'change-video-frame-rate': {
       name: 'Alterar a taxa de fotogramas do vídeo',
+      h1: 'Alterar a taxa de fotogramas de um vídeo online',
       tagline: 'Converta um vídeo para 24, 25, 30 ou 60 fps, reduza um clipe de 60 fps para 30 para obter um ficheiro mais pequeno, ou ajuste-o à taxa de fotogramas do projeto.',
+      metaTitle: 'Alterar a taxa de fotogramas do vídeo (24, 30, 60 fps) | Media Manipulator',
+      metaDescription: 'Conversor de taxa de fotogramas online gratuito. Converta um vídeo para 24, 25, 30, 50 ou 60 fps, reduza 60 fps para 30 para um ficheiro mais pequeno, ou ajuste-o a uma linha temporal de edição. Saída em MP4, sem registo.',
+      ogTitle: 'Alterar a taxa de fotogramas do vídeo online',
+      ogDescription: 'Converta qualquer vídeo para 24, 25, 30 ou 60 fps. Grátis, sem registo.',
+      intro: 'A taxa de fotogramas decide como um vídeo se sente e quão grande é. O cinema usa 24 fps, a emissão europeia 25, a maioria dos telemóveis 30 ou 60, e misturá-los numa só linha temporal provoca solavancos. O Media Manipulator reamostra qualquer vídeo para a taxa de fotogramas de que precisa nos nossos servidores com o FFmpeg, descartando ou repetindo fotogramas com exatidão, e exporta MP4. Quando quer mais fotogramas em vez de menos, a ferramenta de interpolação de fotogramas com IA gera os intermédios.',
+      whatItDoes: [
+        'Reamostra um vídeo para qualquer taxa de fotogramas de 1 a 120 fps.',
+        'Reduz 60 fps para metade, 30, para um ficheiro muito mais pequeno sem alteração visível na maioria dos conteúdos.',
+        'Ajusta à taxa de fotogramas de um projeto (24, 25, 29,97, 30, 50, 60) antes de importar para um editor.',
+        'Mantém a resolução, o áudio e a duração inalterados.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um vídeo',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Defina os fps pretendidos',
+          description: '30 está pré-selecionado.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg descarta ou duplica fotogramas para corresponder.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o MP4 reamostrado.',
+        },
+      ],
+      advancedDetails: [
+        'Usa o filtro fps: os fotogramas são descartados ou duplicados por marca temporal, por isso a duração e a sincronização do áudio são preservadas com exatidão.',
+        'Subir (de 30 para 60) duplica fotogramas e não fica mais suave; use a interpolação de fotogramas com IA para fotogramas verdadeiramente novos.',
+        'Descer remove dados e não é reversível; guarde o original.',
+      ],
+      whyItMatters: [
+        'Um clipe de telemóvel a 60 fps tem o dobro do tamanho de um a 30 fps, com a mesma qualidade visível na maioria dos conteúdos.',
+        'Taxas de fotogramas misturadas numa linha temporal de edição provocam engasgos; uniformizar primeiro evita-o.',
+        'Algumas plataformas e dispositivos limitam ou exigem uma taxa de fotogramas específica.',
+      ],
+      useCases: [
+        {
+          title: 'Reduzir um clipe a 60 fps',
+          description: 'Baixe para 30 fps para e-mail, chat ou um envio mais pequeno.',
+        },
+        {
+          title: 'Uniformizar para edição',
+          description: 'Ajuste todos os clipes à taxa do projeto.',
+        },
+        {
+          title: 'Visual de cinema',
+          description: 'Converta para 24 fps para uma cadência cinematográfica.',
+        },
+        {
+          title: 'Entrega para emissão',
+          description: 'Converta para 25 ou 50 fps para regiões PAL.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Reamostragem exata baseada em marcas temporais, com a duração e o áudio intactos.',
+        'Interpolação com IA disponível quando precisa de mais fotogramas em vez de menos.',
+      ],
+      privacyNote: 'O tempo do seu vídeo é ajustado para a taxa de fotogramas que escolher pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro original fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'O vídeo fica mais curto ou mais longo?',
+          answer: 'Não. A duração é preservada; os fotogramas são descartados ou repetidos para atingir a nova taxa.',
+        },
+        {
+          question: 'De 30 para 60 fps vai ficar mais suave?',
+          answer: 'Não com esta ferramenta, que duplica fotogramas. Use a interpolação de fotogramas com IA para gerar fotogramas intermédios reais.',
+        },
+        {
+          question: 'Que taxa de fotogramas devo escolher?',
+          answer: '30 fps para a maioria dos conteúdos web e de telemóvel, 24 para um visual de cinema, 25 ou 50 para emissão PAL, 60 para jogos e desporto.',
+        },
+        {
+          question: 'O áudio é afetado?',
+          answer: 'Não. O fluxo de áudio é copiado ou recodificado com a mesma temporização.',
+        },
+      ],
+      related: [
+        {
+          label: 'Interpolação de fotogramas com IA',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Gere fotogramas até 120 fps.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Alterar a velocidade do vídeo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou câmara lenta.',
+        },
+        {
+          label: 'Inverter vídeo',
+          to: '/tools/reverse-video',
+          description: 'Reproduza um clipe ao contrário.',
+        },
+        {
+          label: 'Virar vídeo',
+          to: '/tools/flip-video',
+          description: 'Espelhe na horizontal ou na vertical.',
+        },
+        {
+          label: 'Estabilizar vídeo',
+          to: '/tools/stabilize-video',
+          description: 'Suavize filmagens tremidas.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o ficheiro.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte para um intervalo.',
+        },
+      ],
+      embed: {
+        title: 'Alterar a taxa de fotogramas de um vídeo',
+        description: 'Carregue um vídeo e defina a taxa de fotogramas pretendida na secção Efeitos temporais; 30 fps está pré-selecionado. Os fotogramas são descartados ou duplicados para atingir o valor pretendido. Para uma taxa mais alta com fotogramas intermédios gerados, use antes a interpolação de fotogramas com IA.',
+      },
     },
     'adjust-video-color': {
       name: 'Ajustar brilho e cor do vídeo',
+      h1: 'Ajustar o brilho, o contraste e a cor de um vídeo online',
       tagline: 'Ilumine um clipe escuro, aumente o contraste e a saturação, mude o tom, ou aplique um desfoque ou um visual artístico, com controlos deslizantes e pré-visualização em direto.',
+      metaTitle: 'Ajustar brilho, contraste e saturação do vídeo online | Media Manipulator',
+      metaDescription: 'Ajustador de cor de vídeo online gratuito. Corrija brilho, contraste, saturação, matiz, gama e exposição, acrescente desfocagem ou nitidez, ou aplique um visual artístico. Saída em MP4, sem marca de água, sem registo.',
+      ogTitle: 'Ajustar o brilho e a cor do vídeo online',
+      ogDescription: 'Ilumine, acrescente contraste, reforce a cor ou aplique um visual a qualquer clipe. Grátis, sem registo.',
+      intro: 'Um clipe filmado em interiores sai escuro e alaranjado; um vídeo de telemóvel sem contraste pede mais contraste e cor; um clipe para uma miniatura precisa de um visual estilizado. O Media Manipulator aplica correções de brilho, contraste, saturação, matiz, gama e exposição nos nossos servidores com o FFmpeg, juntamente com desfocagem, nitidez, grão e um conjunto de filtros artísticos, e exporta MP4. É uma passagem de correção de cor sem abrir um editor.',
+      whatItDoes: [
+        'Controlos deslizantes de brilho, contraste, saturação e matiz de -100 a +100.',
+        'Gama, exposição, sombras e realces para um controlo tonal mais fino.',
+        'Desfocagem gaussiana e de movimento, nitidez por máscara de desfocagem, grão de película e ruído.',
+        'Visuais artísticos como pintura a óleo, esboço e vintage.',
+        'Combine com corte, redimensionamento, velocidade ou viragem na mesma passagem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um clipe',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Mova os controlos deslizantes',
+          description: 'Brilho, contraste, saturação, matiz e mais.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg aplica os filtros eq e de efeitos.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o MP4 com a correção de cor.',
+        },
+      ],
+      advancedDetails: [
+        'Brilho, contraste, saturação e gama correspondem ao filtro eq do FFmpeg; o matiz usa o filtro hue em graus.',
+        'A nitidez é unsharp com raio, intensidade e limiar; a desfocagem é gblur ou uma desfocagem de movimento direcional.',
+        'Para uma LUT 3D, chroma key ou correção de cor clipe a clipe numa linha temporal, use o Darkroom.',
+      ],
+      whyItMatters: [
+        'A maioria das filmagens de telemóvel beneficia de um pequeno aumento de contraste e saturação.',
+        'Corrigir a exposição antes de carregar evita que a recodificação da plataforma a piore.',
+        'Um visual coerente entre clipes faz uma montagem parecer acabada.',
+      ],
+      useCases: [
+        {
+          title: 'Iluminar um clipe escuro',
+          description: 'Aumente a exposição e as sombras em filmagens de interiores.',
+        },
+        {
+          title: 'Dar vida a um clipe sem contraste',
+          description: 'Acrescente contraste e saturação a um vídeo de telemóvel com aspeto de log.',
+        },
+        {
+          title: 'Corrigir uma dominante de cor',
+          description: 'Desloque o matiz para retirar um tom alaranjado ou esverdeado.',
+        },
+        {
+          title: 'Estilizar para as redes sociais',
+          description: 'Aplique visuais vintage, de esboço ou de pintura a óleo.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Controlos tonais, de cor e de efeitos numa só secção, e não um único botão «melhorar».',
+        'Use o Darkroom para correção de cor na linha temporal com LUT quando precisar de mais.',
+      ],
+      privacyNote: 'O brilho, o contraste, a saturação e a gama do seu vídeo são alterados pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro original fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Posso pré-visualizar o resultado?',
+          answer: 'Os controlos deslizantes mostram os seus valores; a correção completa é aplicada na conversão. Corte para alguns segundos para testar rapidamente e depois processe o clipe inteiro.',
+        },
+        {
+          question: 'Posso aplicar uma LUT?',
+          answer: 'Aqui não. O Darkroom, o nosso editor multipista, suporta LUT 3D e correção de cor clipe a clipe.',
+        },
+        {
+          question: 'Isto corrige filmagens sobre-expostas?',
+          answer: 'Consegue baixar os realces, mas o detalhe que foi cortado para branco não pode ser recuperado.',
+        },
+        {
+          question: 'Posso dar nitidez a um clipe pouco nítido?',
+          answer: 'Sim. Use os controlos de máscara de desfocagem; para uma recuperação real de detalhe, experimente o restauro de vídeo com IA.',
+        },
+      ],
+      related: [
+        {
+          label: 'Editor de vídeo Darkroom',
+          to: '/tools/content-studio',
+          description: 'Corrija a cor com LUT numa linha temporal.',
+        },
+        {
+          label: 'Restauro de vídeo com IA',
+          to: '/tools/ai-video-restoration',
+          description: 'Reduza o ruído e amplie com IA.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Alterar a velocidade do vídeo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou câmara lenta.',
+        },
+        {
+          label: 'Inverter vídeo',
+          to: '/tools/reverse-video',
+          description: 'Reproduza um clipe ao contrário.',
+        },
+        {
+          label: 'Virar vídeo',
+          to: '/tools/flip-video',
+          description: 'Espelhe na horizontal ou na vertical.',
+        },
+        {
+          label: 'Estabilizar vídeo',
+          to: '/tools/stabilize-video',
+          description: 'Suavize filmagens tremidas.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o ficheiro.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte para um intervalo.',
+        },
+      ],
+      embed: {
+        title: 'Ajustar a cor de um vídeo',
+        description: 'Carregue um clipe. A secção Efeitos visuais abre com controlos deslizantes de brilho, contraste, saturação, matiz, gama e exposição, além de desfocagem, nitidez, ruído e visuais artísticos. Exporte MP4.',
+      },
     },
     'convert-video-to-hevc': {
       name: 'Converter vídeo para HEVC (H.265)',
+      h1: 'Converter vídeo para HEVC / H.265 online',
       tagline: 'Recodifique qualquer vídeo em H.265 para obter cerca de metade do tamanho do H.264 com a mesma qualidade, para armazenamento, 4K e dispositivos modernos.',
+      metaTitle: 'Converter vídeo para HEVC (H.265) online grátis | Media Manipulator',
+      metaDescription: 'Conversor H.265 / HEVC online gratuito. Recodifique MP4, MOV, MKV ou WebM para HEVC e obtenha cerca de metade do tamanho com a mesma qualidade. Escolha uma predefinição de qualidade. Sem marca de água, sem registo.',
+      ogTitle: 'Converter vídeo para HEVC / H.265 online',
+      ogDescription: 'Reduza o tamanho de um vídeo para metade com H.265. Grátis, sem registo.',
+      intro: 'O HEVC, também chamado H.265, é o sucessor do H.264. Com a mesma qualidade visual precisa de cerca de 40 a 50 por cento menos bits, razão pela qual os telemóveis gravam 4K nele e pela qual é o formato de eleição para arquivar filmagens. O Media Manipulator recodifica qualquer vídeo para HEVC nos nossos servidores com o codificador x265 do FFmpeg, ao nível de qualidade que escolher, num contentor MP4 que iPhones, Macs, Windows 10+, Android e televisores modernos reproduzem todos.',
+      whatItDoes: [
+        'Recodifica qualquer vídeo de entrada como H.265 num contentor MP4.',
+        'Três predefinições de qualidade correspondentes a valores de CRF; o tamanho do ficheiro reduz-se para cerca de metade em relação ao H.264.',
+        'Mantém a resolução e a taxa de fotogramas; opcionalmente reduz 4K para 1080p para um ficheiro muito mais pequeno.',
+        'O áudio é recodificado como AAC.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um vídeo',
+          description: 'Qualquer formato comum, incluindo MP4 H.264.',
+        },
+        {
+          title: 'Escolha uma qualidade',
+          description: 'Mais pequeno, equilibrado ou alta qualidade.',
+        },
+        {
+          title: 'Converter',
+          description: 'O x265 codifica nos nossos servidores; mais lento do que o H.264.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o .mp4 com HEVC no interior.',
+        },
+      ],
+      advancedDetails: [
+        'Codificado com libx265 a CRF 28 (equilibrado), 32 (mais pequeno) ou 24 (alta qualidade), predefinição medium, etiqueta hvc1 para compatibilidade com a Apple.',
+        'A codificação HEVC é várias vezes mais lenta do que a H.264; ficheiros 4K longos demoram minutos.',
+        'Navegadores: o Safari e o Edge reproduzem HEVC; o Chrome e o Firefox geralmente não. Mantenha o H.264 para incorporações na web.',
+      ],
+      whyItMatters: [
+        'Metade do armazenamento com a mesma qualidade faz diferença numa biblioteca inteira.',
+        'A entrega em 4K e HDR está normalizada em HEVC para a maioria dos dispositivos.',
+        'Ficheiros mais pequenos carregam e sincronizam mais depressa.',
+      ],
+      useCases: [
+        {
+          title: 'Arquivar filmagens',
+          description: 'Reduza para metade o tamanho de um rolo de câmara sem perda visível.',
+        },
+        {
+          title: 'Partilhar 4K',
+          description: 'Torne um clipe 4K suficientemente pequeno para enviar.',
+        },
+        {
+          title: 'Ecossistema Apple',
+          description: 'Iguale os ficheiros HEVC que os iPhones já gravam.',
+        },
+        {
+          title: 'Libertar espaço num disco',
+          description: 'Converta gravações antigas em H.264 para HEVC.',
+        },
+      ],
+      whyMediaManipulator: [
+        'x265 com predefinições de CRF sensatas e etiquetagem compatível com a Apple.',
+        'O mesmo painel comprime para H.264, VP9 ou AV1 se precisar desses em vez disso.',
+      ],
+      privacyNote: 'O seu vídeo é recodificado para H.265 (HEVC) pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro original fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'O HEVC reproduz em todo o lado?',
+          answer: 'iPhone, Mac, Windows 10+, Android 5+, televisores modernos e Safari/Edge reproduzem-no. O Chrome, o Firefox e os dispositivos antigos normalmente não; mantenha o H.264 para esses.',
+        },
+        {
+          question: 'Quanto mais pequeno ficará o ficheiro?',
+          answer: 'Normalmente 40 a 50 por cento mais pequeno do que o H.264 com a mesma qualidade; mais em conteúdos simples.',
+        },
+        {
+          question: 'A qualidade é pior?',
+          answer: 'Na predefinição equilibrada, a diferença não é visível na maioria dos conteúdos. Escolha alta qualidade para filmagens que vai voltar a editar.',
+        },
+        {
+          question: 'Porque é lento?',
+          answer: 'O x265 faz muito mais trabalho por fotograma do que o x264. É o preço do ficheiro mais pequeno.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A codificação HEVC é exigente para o processador; conte com vários minutos para origens longas ou em 4K.',
+        ],
+      },
+      related: [
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Compressão H.264, VP9 ou AV1.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'MP4 H.264 padrão.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Alterar a velocidade do vídeo',
+          to: '/tools/change-video-speed',
+          description: 'Time-lapse ou câmara lenta.',
+        },
+        {
+          label: 'Inverter vídeo',
+          to: '/tools/reverse-video',
+          description: 'Reproduza um clipe ao contrário.',
+        },
+        {
+          label: 'Virar vídeo',
+          to: '/tools/flip-video',
+          description: 'Espelhe na horizontal ou na vertical.',
+        },
+        {
+          label: 'Estabilizar vídeo',
+          to: '/tools/stabilize-video',
+          description: 'Suavize filmagens tremidas.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte para um intervalo.',
+        },
+      ],
+      embed: {
+        title: 'Converter um vídeo para HEVC',
+        description: 'Carregue um vídeo. O codec está definido como H.265 num contentor MP4 com a predefinição equilibrada; escolha antes mais pequeno ou alta qualidade. Os dispositivos mais antigos e alguns navegadores não reproduzem HEVC; mantenha uma cópia em H.264 para esses.',
+      },
     },
     'convert-audio-to-wav': {
       name: 'Converter áudio para WAV',
+      h1: 'Converter áudio para WAV online grátis',
       tagline: 'Converta MP3, M4A, WAV, OGG, FLAC e qualquer outro ficheiro de áudio para WAV sem perder nada.',
+      metaTitle: 'Converter áudio para WAV online grátis | Media Manipulator',
+      metaDescription: 'Conversor de áudio para WAV online gratuito. Carregue MP3, WAV, M4A, OGG, FLAC ou AAC e transfira WAV. Saída sem perdas. Sem marca de água, sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter áudio para WAV online grátis',
+      ogDescription: 'Carregue qualquer ficheiro de áudio e transfira WAV. Sem perdas. Grátis, sem registo.',
+      intro: 'O WAV é áudio PCM sem compressão: cada amostra é guardada tal como está, por isso nada se perde e qualquer editor, DAW e sampler o abre de imediato. O Media Manipulator converte qualquer formato de áudio comum para WAV num só carregamento, mantendo a taxa de amostragem e a disposição dos canais a menos que os altere, e oferece corte, normalização, equalização e as ferramentas de limpeza com IA no mesmo formulário.',
+      whatItDoes: [
+        'Converte MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 e WMA para WAV.',
+        'Mantém todas as amostras: a saída descodifica exatamente para o que entrou.',
+        'Corte, volume, normalização, equalização e efeitos podem ser aplicados antes de o PCM ser escrito.',
+        'A limpeza com IA está no mesmo formulário: remova ruído de fundo, limpe uma voz, ou isole ou remova vozes antes de guardar como WAV.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'Qualquer ficheiro de áudio comum, comprimido ou não.',
+        },
+        {
+          title: 'Ajuste se necessário',
+          description: 'Corte, normalize ou aplique efeitos.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg codifica o WAV nos nossos servidores.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro WAV.',
+        },
+      ],
+      advancedDetails: [
+        'A saída WAV é codificada com o codificador nativo pcm_s16le do FFmpeg à taxa de amostragem da origem.',
+        'Converter um MP3 com perdas para WAV não recupera o detalhe que o codificador MP3 descartou; apenas impede mais perdas.',
+        'A capa do álbum numa origem MP3 ou M4A é reconhecida como uma imagem fixa, para que a validação não confunda o ficheiro com um vídeo.',
+      ],
+      whyItMatters: [
+        'Edição ou masterização: o WAV é o formato que os editores de áudio querem, sem etapa de descodificação nem perda entre gerações.',
+        'Arquivo de uma master ou de uma gravação de campo.',
+        'Samplers, motores de jogo e sistemas de emissão que exigem PCM.',
+      ],
+      useCases: [
+        {
+          title: 'Mudar de formato para um dispositivo',
+          description: 'Crie uma cópia WAV para um leitor que precise dela.',
+        },
+        {
+          title: 'Preparar para edição',
+          description: 'Entregue um ficheiro sem perdas a uma DAW ou a um editor de vídeo.',
+        },
+        {
+          title: 'Um ficheiro de cada vez',
+          description: 'Transforme uma pasta de notas de voz em WAV uma de cada vez, cortando cada uma à medida que avança.',
+        },
+        {
+          title: 'Limpar pelo caminho',
+          description: 'Retire o chiado de uma gravação de campo a caminho de uma master sem compressão.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A taxa de amostragem e a disposição dos canais são mantidas a menos que escolha o contrário.',
+        'Normalize e corte um take no mesmo carregamento que cria o WAV.',
+      ],
+      privacyNote: 'O seu áudio é descodificado pelo FFmpeg no nosso servidor e escrito como WAV PCM sem compressão. Nenhum serviço de áudio externo está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um novo ficheiro; o próprio ficheiro carregado não é alterado.',
+      faq: [
+        {
+          question: 'O que é o WAV?',
+          answer: 'O WAV é áudio PCM sem compressão: cada amostra é guardada tal como está, por isso nada se perde e qualquer editor, DAW e sampler o abre de imediato.',
+        },
+        {
+          question: 'Converter para WAV melhora o som?',
+          answer: 'Não. Converter um MP3 com perdas para WAV não recupera o detalhe que o codificador MP3 descartou; apenas impede mais perdas.',
+        },
+        {
+          question: 'Posso cortar o áudio enquanto converto para WAV?',
+          answer: 'Sim. Defina o início e o fim na secção de corte e apenas esse intervalo é escrito no WAV.',
+        },
+        {
+          question: 'O meu MP3 tem capa de álbum. Ainda pode tornar-se um WAV?',
+          answer: 'Sim. A capa é reconhecida como uma imagem e não como uma faixa de vídeo, por isso o carregamento é aceite e o áudio é descodificado para PCM como de costume.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Saída sem perdas; o tamanho do ficheiro depende da duração e da taxa de amostragem.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Suba ou baixe a tonalidade.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Converter áudio para WAV',
+        description: 'Carregue qualquer ficheiro de áudio. A saída está fixada em WAV; a taxa de amostragem e os canais são mantidos a menos que os altere; depois prima Converter.',
+      },
     },
     'convert-audio-to-flac': {
       name: 'Converter áudio para FLAC',
+      h1: 'Converter áudio para FLAC online grátis',
       tagline: 'Converta MP3, M4A, WAV, OGG, FLAC e qualquer outro ficheiro de áudio para FLAC sem perder nada.',
+      metaTitle: 'Converter áudio para FLAC online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de áudio para FLAC. Carregue MP3, WAV, M4A, OGG, FLAC ou AAC e transfira FLAC. Saída sem perdas. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter áudio para FLAC online grátis',
+      ogDescription: 'Carregue qualquer ficheiro de áudio e transfira FLAC. Sem perdas. Grátis, sem registo.',
+      intro: 'O FLAC comprime áudio sem perder nada, normalmente para 50 a 70 por cento do tamanho do WAV, e descodifica para uma cópia idêntica bit a bit. O Media Manipulator converte qualquer formato de áudio comum para FLAC num só carregamento, mantendo a taxa de amostragem e a disposição dos canais a menos que as altere, e oferece corte, normalização, equalizador e as ferramentas de limpeza com IA no mesmo formulário.',
+      whatItDoes: [
+        'Converte MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 e WMA para FLAC.',
+        'Mantém todas as amostras: a saída descodifica exatamente para o que entrou.',
+        'O volume, o corte, a normalização e o equalizador podem ser aplicados antes de o FLAC comprimir o resultado.',
+        'A remoção de ruído, a limpeza de voz e o isolamento vocal correm no mesmo carregamento, se quiser uma cópia sem perdas já limpa.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'WAV, PCM do tipo AIFF, MP3, M4A e os restantes.',
+        },
+        {
+          title: 'Ajustar se necessário',
+          description: 'Corte, normalize ou aplique efeitos.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg codifica FLAC nos nossos servidores.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro FLAC.',
+        },
+      ],
+      advancedDetails: [
+        'A saída FLAC é codificada com o codificador flac nativo do FFmpeg, à taxa de amostragem de origem.',
+        'Um FLAC feito a partir de um MP3 não é melhor do que o MP3; o FLAC só preserva o que já lá está.',
+        'Um MP3 ou M4A com capa incorporada passa a validação: a capa é tratada como imagem, não como fluxo de vídeo.',
+      ],
+      whyItMatters: [
+        'Bibliotecas de música sem perdas que ocupam metade do espaço do WAV.',
+        'Enviar uma master a um colaborador sem um anexo de 100 MB.',
+        'Arquivo de longo prazo com somas de verificação integradas no formato.',
+      ],
+      useCases: [
+        {
+          title: 'Mudar de formato para um dispositivo',
+          description: 'Faça uma cópia FLAC para um leitor que precise dela.',
+        },
+        {
+          title: 'Preparar para edição',
+          description: 'Entregue um ficheiro sem perdas a uma DAW ou a um editor de vídeo.',
+        },
+        {
+          title: 'Um ficheiro de cada vez',
+          description: 'Arquive um conjunto de gravações sem perdas, um carregamento de cada vez.',
+        },
+        {
+          title: 'Limpar pelo caminho',
+          description: 'Remova primeiro o ruído de fundo e guarde o resultado limpo como FLAC.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Escolha uma taxa de amostragem ou uma disposição de canais, ou deixe ambas como estão na origem.',
+        'Nivele uma master baixa e arquive-a como FLAC num só passo.',
+      ],
+      privacyNote: 'O seu áudio é comprimido sem perdas para FLAC pelo FFmpeg no nosso servidor. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'O que é o FLAC?',
+          answer: 'O FLAC comprime áudio sem perder nada, normalmente para 50 a 70 por cento do tamanho do WAV, e descodifica para uma cópia idêntica bit a bit.',
+        },
+        {
+          question: 'Converter para FLAC melhora o som?',
+          answer: 'Não. Um FLAC feito a partir de um MP3 não é melhor do que o MP3; o FLAC só preserva o que já lá está.',
+        },
+        {
+          question: 'Posso cortar o áudio ao converter para FLAC?',
+          answer: 'Sim. A secção de corte define um início e um fim, e o FLAC codifica apenas esse intervalo.',
+        },
+        {
+          question: 'Um MP3 com capa converte-se para FLAC?',
+          answer: 'Sim. A capa incorporada é lida como imagem, não como vídeo, pelo que a validação passa e o áudio é codificado normalmente.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Saída sem perdas; o tamanho do ficheiro depende da duração e da taxa de amostragem.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Desloque a tonalidade para cima ou para baixo.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Converter áudio para FLAC',
+        description: 'Carregue qualquer ficheiro de áudio. A saída está fixa em FLAC; a taxa de amostragem e os canais são mantidos a menos que os altere; depois prima Converter.',
+      },
     },
     'convert-audio-to-ogg': {
       name: 'Converter áudio para OGG',
+      h1: 'Converter áudio para OGG online grátis',
       tagline: 'Converta MP3, M4A, WAV, OGG, FLAC e qualquer outro ficheiro de áudio para OGG com o débito binário que escolher.',
+      metaTitle: 'Converter áudio para OGG online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de áudio para OGG. Carregue MP3, WAV, M4A, OGG, FLAC ou AAC e transfira OGG. Escolha o débito binário. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter áudio para OGG online grátis',
+      ogDescription: 'Carregue qualquer ficheiro de áudio e transfira OGG. Escolha o débito binário. Grátis, sem registo.',
+      intro: 'O OGG Vorbis é um formato com perdas, livre e isento de patentes, que soa melhor do que o MP3 ao mesmo débito binário e é nativo nos navegadores, no Android e nos motores de jogos. O Media Manipulator converte qualquer formato de áudio comum para OGG num só carregamento, mantendo a taxa de amostragem e a disposição dos canais a menos que as altere, e oferece corte, normalização, equalizador e as ferramentas de limpeza com IA no mesmo formulário.',
+      whatItDoes: [
+        'Converte MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 e WMA para OGG.',
+        'Permite escolher o débito binário, a taxa de amostragem e a disposição dos canais.',
+        'O corte, o volume, a normalização do volume sonoro e o equalizador acontecem na mesma passagem do FFmpeg que a codificação Vorbis.',
+        'Limpe uma voz ou remova o ruído de fundo com IA antes de o codificador Vorbis correr.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'Um MP3, WAV, FLAC ou outro ficheiro de áudio para o seu jogo ou site.',
+        },
+        {
+          title: 'Ajustar se necessário',
+          description: 'Escolha o débito binário; corte ou aplique efeitos.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg codifica OGG nos nossos servidores.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro OGG.',
+        },
+      ],
+      advancedDetails: [
+        'A saída OGG usa o codificador libvorbis do FFmpeg; 192 kbps é a predefinição e uma escolha segura para música.',
+        'Os dispositivos Apple e alguns autorrádios não reproduzem OGG; para esses, use M4A ou MP3.',
+        'A capa existente na origem é reconhecida como imagem anexa e não dispara a verificação de faixa de vídeo.',
+      ],
+      whyItMatters: [
+        'Recursos de som para jogos e aplicações, onde ficheiros pequenos e descodificação isenta de royalties contam.',
+        'Áudio web que tem de tocar no Firefox e no Chrome sem licença.',
+        'Ficheiros de podcast ou música para leitores Linux e Android.',
+      ],
+      useCases: [
+        {
+          title: 'Mudar de formato para um dispositivo',
+          description: 'Faça uma cópia OGG para um leitor que precise dela.',
+        },
+        {
+          title: 'Preparar para edição',
+          description: 'Faça um ficheiro pequeno e compatível para um projeto.',
+        },
+        {
+          title: 'Um ficheiro de cada vez',
+          description: 'Prepare efeitos sonoros para um motor de jogos, um ficheiro de cada vez.',
+        },
+        {
+          title: 'Limpar pelo caminho',
+          description: 'Retire o zumbido de uma gravação antes de a entregar como recurso OGG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O débito binário, a taxa de amostragem e os canais são definidos por si para cada OGG.',
+        'Corte o silêncio de um efeito sonoro enquanto este se torna OGG.',
+      ],
+      privacyNote: 'O seu áudio é codificado para OGG Vorbis pelo FFmpeg no nosso servidor. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'O que é o OGG?',
+          answer: 'O OGG Vorbis é um formato com perdas, livre e isento de patentes, que soa melhor do que o MP3 ao mesmo débito binário e é nativo nos navegadores, no Android e nos motores de jogos.',
+        },
+        {
+          question: 'Converter para OGG melhora o som?',
+          answer: 'Não. Os dispositivos Apple e alguns autorrádios não reproduzem OGG; para esses, use M4A ou MP3.',
+        },
+        {
+          question: 'Posso cortar o áudio ao converter para OGG?',
+          answer: 'Sim. Marque o início e o fim, e o OGG contém apenas essa parte.',
+        },
+        {
+          question: 'Posso converter para OGG um M4A que tem capa de álbum?',
+          answer: 'Sim. A capa é vista como imagem anexa e não como faixa de vídeo, pelo que a tarefa prossegue e produz Vorbis só com áudio.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Saída com perdas; o débito binário que escolher define o tamanho.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Desloque a tonalidade para cima ou para baixo.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Converter áudio para OGG',
+        description: 'Carregue qualquer ficheiro de áudio. A saída está fixa em OGG; escolha o débito binário, a taxa de amostragem e os canais e depois prima Converter.',
+      },
     },
     'convert-audio-to-m4a': {
       name: 'Converter áudio para M4A / AAC',
+      h1: 'Converter áudio para M4A / AAC online grátis',
       tagline: 'Converta MP3, M4A, WAV, OGG, FLAC e qualquer outro ficheiro de áudio para M4A / AAC com o débito binário que escolher.',
+      metaTitle: 'Converter áudio para M4A / AAC online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de áudio para M4A / AAC. Carregue MP3, WAV, M4A, OGG, FLAC ou AAC e transfira M4A / AAC. Escolha o débito binário. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter áudio para M4A / AAC online grátis',
+      ogDescription: 'Carregue qualquer ficheiro de áudio e transfira M4A / AAC. Escolha o débito binário. Grátis, sem registo.',
+      intro: 'O M4A é áudio AAC num contentor MP4, o formato que a Apple Music, os iPhones, o YouTube e a maioria dos serviços de streaming usam. Supera o MP3 em qualidade por kilobyte. O Media Manipulator converte qualquer formato de áudio comum para M4A / AAC num só carregamento, mantendo a taxa de amostragem e a disposição dos canais a menos que as altere, e oferece corte, normalização, equalizador e as ferramentas de limpeza com IA no mesmo formulário.',
+      whatItDoes: [
+        'Converte MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 e WMA para M4A / AAC.',
+        'Permite escolher o débito binário, a taxa de amostragem e a disposição dos canais.',
+        'O corte, o ganho, a normalização, o equalizador e os efeitos entram na mesma codificação que o AAC.',
+        'As ferramentas de IA do formulário podem limpar uma nota de voz ou remover a voz antes de o AAC ser escrito.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'Uma master WAV, um MP3 ou uma nota de voz.',
+        },
+        {
+          title: 'Ajustar se necessário',
+          description: 'Escolha o débito binário; corte ou aplique efeitos.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg codifica M4A / AAC nos nossos servidores.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro M4A / AAC.',
+        },
+      ],
+      advancedDetails: [
+        'A saída M4A / AAC usa o codificador aac do FFmpeg; 192 kbps é a predefinição e uma escolha segura para música.',
+        'Alguns leitores mais antigos só de MP3 e alguns autorrádios não leem AAC.',
+        'Uma capa de álbum incorporada é reconhecida como imagem e nunca confundida com uma faixa de vídeo.',
+      ],
+      whyItMatters: [
+        'Música e notas de voz para iPhone, iPad e Mac.',
+        'Faixas de áudio que mais tarde vai multiplexar num vídeo MP4.',
+        'Podcasts e audiolivros: marcadores de capítulos e ficheiros mais pequenos do que MP3.',
+      ],
+      useCases: [
+        {
+          title: 'Mudar de formato para um dispositivo',
+          description: 'Faça uma cópia M4A / AAC para um leitor que precise dela.',
+        },
+        {
+          title: 'Preparar para edição',
+          description: 'Faça um ficheiro pequeno e compatível para um projeto.',
+        },
+        {
+          title: 'Um ficheiro de cada vez',
+          description: 'Converta notas de voz para uma biblioteca do iPhone, cortando os silêncios pelo caminho.',
+        },
+        {
+          title: 'Limpar pelo caminho',
+          description: 'Passe a limpeza de voz numa gravação de podcast e guarde-a diretamente em M4A.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O débito binário, a taxa de amostragem e o número de canais são ajustáveis na saída AAC.',
+        'Normalize um episódio e transforme-o em M4A sem um segundo carregamento.',
+      ],
+      privacyNote: 'O seu áudio é codificado para AAC num ficheiro M4A pelo FFmpeg no nosso servidor. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'O que é o M4A / AAC?',
+          answer: 'O M4A é áudio AAC num contentor MP4, o formato que a Apple Music, os iPhones, o YouTube e a maioria dos serviços de streaming usam. Supera o MP3 em qualidade por kilobyte.',
+        },
+        {
+          question: 'Converter para M4A / AAC melhora o som?',
+          answer: 'Não. Alguns leitores mais antigos só de MP3 e alguns autorrádios não leem AAC.',
+        },
+        {
+          question: 'Posso cortar o áudio ao converter para M4A / AAC?',
+          answer: 'Sim. Defina o intervalo na secção de corte; o M4A começa e acaba onde indicou.',
+        },
+        {
+          question: 'A capa de álbum do meu MP3 estraga a conversão para M4A?',
+          answer: 'Não. O fluxo da capa é identificado como imagem, não como vídeo, e a codificação AAC corre normalmente.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Saída com perdas; o débito binário que escolher define o tamanho.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Desloque a tonalidade para cima ou para baixo.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Converter áudio para M4A / AAC',
+        description: 'Carregue qualquer ficheiro de áudio. A saída está fixa em M4A / AAC; escolha o débito binário, a taxa de amostragem e os canais e depois prima Converter.',
+      },
     },
     'convert-audio-to-opus': {
       name: 'Converter áudio para Opus',
+      h1: 'Converter áudio para Opus online grátis',
       tagline: 'Converta MP3, M4A, WAV, OGG, FLAC e qualquer outro ficheiro de áudio para Opus com o débito binário que escolher.',
+      metaTitle: 'Converter áudio para Opus online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de áudio para Opus. Carregue MP3, WAV, M4A, OGG, FLAC ou AAC e transfira Opus. Escolha o débito binário. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter áudio para Opus online grátis',
+      ogDescription: 'Carregue qualquer ficheiro de áudio e transfira Opus. Escolha o débito binário. Grátis, sem registo.',
+      intro: 'O Opus é o codec aberto mais recente e a melhor opção com perdas para voz e música a débitos binários baixos: 64 kbps em Opus soam como 128 kbps em MP3. É o que o WhatsApp, o Discord e o WebRTC usam. O Media Manipulator converte qualquer formato de áudio comum para Opus num só carregamento, mantendo a taxa de amostragem e a disposição dos canais a menos que as altere, e oferece corte, normalização, equalizador e as ferramentas de limpeza com IA no mesmo formulário.',
+      whatItDoes: [
+        'Converte MP3, WAV, M4A/AAC, OGG, Opus, FLAC, ALAC, AC3 e WMA para Opus.',
+        'Permite escolher o débito binário, a taxa de amostragem e a disposição dos canais.',
+        'O corte, o volume, a normalização e o equalizador aplicam-se na mesma passagem que a codificação Opus.',
+        'Antes de codificar, o formulário pode remover o ruído de fundo ou limpar a fala com IA na nossa GPU.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'Notas de voz, podcasts, música ou qualquer áudio comum.',
+        },
+        {
+          title: 'Ajustar se necessário',
+          description: 'Escolha o débito binário; corte ou aplique efeitos.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg codifica Opus nos nossos servidores.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro Opus.',
+        },
+      ],
+      advancedDetails: [
+        'A saída Opus usa o codificador libopus do FFmpeg; 192 kbps é a predefinição e uma escolha segura para música.',
+        'O iTunes, os dispositivos Apple mais antigos e muitos leitores de hardware não suportam Opus; para esses, escolha M4A.',
+        'A capa de álbum num ficheiro de origem é detetada como imagem e não impede a conversão.',
+      ],
+      whyItMatters: [
+        'Notas de voz, podcasts e audiolivros a uma fração do tamanho.',
+        'Streaming ou incorporação de áudio onde a largura de banda conta.',
+        'Discord, Matrix e bots de mensagens que aceitam Opus nativamente.',
+      ],
+      useCases: [
+        {
+          title: 'Mudar de formato para um dispositivo',
+          description: 'Faça uma cópia Opus para um leitor que precise dela.',
+        },
+        {
+          title: 'Preparar para edição',
+          description: 'Faça um ficheiro pequeno e compatível para um projeto.',
+        },
+        {
+          title: 'Um ficheiro de cada vez',
+          description: 'Reduza uma série de aulas para Opus, uma de cada vez.',
+        },
+        {
+          title: 'Limpar pelo caminho',
+          description: 'Limpe a gravação de uma chamada ruidosa e guarde-a como um ficheiro Opus pequeno.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Escolha o débito binário, a taxa de amostragem e os canais do Opus, ou mantenha as predefinições.',
+        'Corte e normalize uma nota de voz a caminho do Opus.',
+      ],
+      privacyNote: 'O seu áudio é codificado para Opus pelo FFmpeg no nosso servidor. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'O que é o Opus?',
+          answer: 'O Opus é o codec aberto mais recente e a melhor opção com perdas para voz e música a débitos binários baixos: 64 kbps em Opus soam como 128 kbps em MP3. É o que o WhatsApp, o Discord e o WebRTC usam.',
+        },
+        {
+          question: 'Converter para Opus melhora o som?',
+          answer: 'Não. O iTunes, os dispositivos Apple mais antigos e muitos leitores de hardware não suportam Opus; para esses, escolha M4A.',
+        },
+        {
+          question: 'Posso cortar o áudio ao converter para Opus?',
+          answer: 'Sim. Só o trecho entre o início e o fim que definir é codificado para Opus.',
+        },
+        {
+          question: 'Um ficheiro de áudio com capa converte-se para Opus?',
+          answer: 'Sim. A capa é detetada como imagem, não como fluxo de vídeo, pelo que o ficheiro é aceite e só o áudio é codificado.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Saída com perdas; o débito binário que escolher define o tamanho.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Desloque a tonalidade para cima ou para baixo.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Converter áudio para Opus',
+        description: 'Carregue qualquer ficheiro de áudio. A saída está fixa em Opus; escolha o débito binário, a taxa de amostragem e os canais e depois prima Converter.',
+      },
     },
     'convert-mp3-to-wav': {
       name: 'Converter MP3 para WAV',
+      h1: 'Converter MP3 para WAV online grátis',
       tagline: 'Transforme um MP3 num WAV sem compressão para edição, sampling ou gravação em CD.',
+      metaTitle: 'Converter MP3 para WAV online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de MP3 para WAV. Carregue um MP3 e transfira um WAV PCM de 16 bits sem compressão, à taxa de amostragem original. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter MP3 para WAV online grátis',
+      ogDescription: 'Entra MP3, sai WAV sem compressão. Grátis, sem registo.',
+      intro: 'Os editores de áudio, os samplers e os gravadores de CD querem PCM sem compressão, e algumas ferramentas mais antigas recusam MP3 por completo. Converter para WAV descodifica o MP3 uma só vez, para que não se perca mais qualidade na edição. O Media Manipulator faz isso nos nossos servidores com o FFmpeg, mantém a taxa de amostragem e os canais originais e ignora a capa de álbum incorporada em vez de a confundir com uma faixa de vídeo.',
+      whatItDoes: [
+        'Descodifica MP3 para WAV PCM de 16 bits, à taxa de amostragem e disposição de canais de origem.',
+        'Corte, normalização, fade e equalizador opcionais na mesma passagem.',
+        'Lida com MP3 com capa incorporada e etiquetas ID3.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar um MP3',
+          description: 'Qualquer débito binário, com ou sem capa.',
+        },
+        {
+          title: 'Ajustar se necessário',
+          description: 'Corte, normalize, equalize.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg descodifica para PCM.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o WAV.',
+        },
+      ],
+      advancedDetails: [
+        'A saída WAV é pcm_s16le; o ficheiro tem cerca de 10 MB por minuto de áudio estéreo a 44,1 kHz.',
+        'A descodificação não recupera nada do que o codificador MP3 descartou; apenas evita mais perdas.',
+      ],
+      whyItMatters: [
+        'Editar um MP3 e voltar a guardá-lo como MP3 perde qualidade de cada vez; o WAV acaba com isso.',
+        'Os samplers, as DAW e os gravadores de CD esperam PCM.',
+      ],
+      useCases: [
+        {
+          title: 'Editar numa DAW',
+          description: 'Importe sem passo de descodificação nem perda de geração.',
+        },
+        {
+          title: 'Gravar um CD de áudio',
+          description: 'Os gravadores de CD querem WAV a 44,1 kHz.',
+        },
+        {
+          title: 'Fazer um sample de um som',
+          description: 'Carregue-o num sampler ou motor de jogos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Mantém a taxa de amostragem e os canais originais.',
+        'A capa existente no MP3 é tratada corretamente.',
+      ],
+      privacyNote: 'O seu MP3 é descodificado uma só vez pelo FFmpeg no nosso servidor para um WAV PCM de 16 bits. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'O WAV vai soar melhor do que o MP3?',
+          answer: 'Não. Soa idêntico; a questão é que a edição posterior não o vai degradar.',
+        },
+        {
+          question: 'Porque é que o WAV é tão maior?',
+          answer: 'O WAV não tem compressão: cerca de 10 MB por minuto de áudio estéreo com qualidade de CD.',
+        },
+        {
+          question: 'O meu MP3 tem capa de álbum. Isso é um problema?',
+          answer: 'Não. A capa incorporada é reconhecida como imagem e ignorada.',
+        },
+      ],
+      related: [
+        {
+          label: 'Converter áudio para WAV',
+          to: '/tools/convert-audio-to-wav',
+          description: 'Qualquer formato para WAV.',
+        },
+        {
+          label: 'Converter WAV para MP3',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'O sentido inverso.',
+        },
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Desloque a tonalidade para cima ou para baixo.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Converter MP3 para WAV',
+        description: 'Carregue um MP3. A saída está fixa em WAV; corte ou normalize se quiser e depois prima Converter.',
+      },
     },
     'change-audio-speed': {
       name: 'Alterar a velocidade do áudio',
+      h1: 'Alterar a velocidade do áudio online: acelerar ou abrandar',
       tagline: 'Acelere uma aula ou um podcast para 1,5x, ou abrande uma canção ou gravação para 0,75x para praticar, sem alterar o tom.',
+      metaTitle: 'Alterar a velocidade do áudio grátis (sem mudar o tom) | Media Manipulator',
+      metaDescription: 'Alterador de velocidade de áudio online gratuito. Acelere ou abrande MP3, WAV, M4A e mais, de 0,25x a 4x, com o tom preservado. Ideal para aulas, podcasts e faixas de treino. Sem registo.',
+      ogTitle: 'Alterar a velocidade do áudio online grátis',
+      ogDescription: 'Mais rápido ou mais lento sem o efeito de esquilo. Grátis, sem registo.',
+      intro: 'Uma aula de duas horas a 1,5x são 80 minutos. Um solo de guitarra a 0,75x torna-se possível de aprender. Alterar a velocidade do áudio é útil todos os dias, e o problema é o tom: acelerar sem cuidado transforma as vozes em vozes de esquilo. O Media Manipulator alonga o áudio no tempo nos nossos servidores com o filtro de andamento do FFmpeg, que mantém o tom exatamente onde estava, de um quarto da velocidade até quatro vezes.',
+      whatItDoes: [
+        'Acelera (1,1x a 4x) ou abranda (0,25x a 0,9x) qualquer ficheiro de áudio.',
+        'Preserva o tom, para que a fala e a música se mantenham na tonalidade.',
+        'Exporta MP3 por predefinição, ou WAV, FLAC, M4A, OGG, Opus.',
+        'Corte, normalização e equalizador opcionais na mesma passagem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'MP3, WAV, M4A, OGG, FLAC e mais.',
+        },
+        {
+          title: 'Definir a velocidade',
+          description: '1,5x vem pré-selecionado; de 0,25x a 4x.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg alonga o tempo com o tom preservado.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro com o novo tempo.',
+        },
+      ],
+      advancedDetails: [
+        'Usa o filtro atempo, encadeado automaticamente para fatores fora do intervalo de 0,5 a 2,0.',
+        'O alongamento temporal introduz ligeiros artefactos em fatores extremos; de 0,5x a 2x é transparente para a fala.',
+        'Para alterar a velocidade E o tom em conjunto (o efeito de fita), use a opção de alongamento temporal da ferramenta de tom.',
+      ],
+      whyItMatters: [
+        'Aulas, audiolivros e podcasts são muitas vezes confortáveis entre 1,25x e 2x.',
+        'Os músicos praticam passagens difíceis a 50 a 75 por cento da velocidade.',
+        'Quem transcreve abranda as gravações para apanhar todas as palavras.',
+      ],
+      useCases: [
+        {
+          title: 'Aula mais rápida',
+          description: 'Ouça uma aula gravada a 1,5x.',
+        },
+        {
+          title: 'Faixa de treino',
+          description: 'Abrande um solo para 0,75x na mesma tonalidade.',
+        },
+        {
+          title: 'Transcrição',
+          description: 'Abrande uma entrevista para 0,8x.',
+        },
+        {
+          title: 'Caber num tempo definido',
+          description: 'Ajuste uma locução em 5 por cento para caber.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O tom é preservado por predefinição; sem som de esquilo nem de fita abrandada.',
+        'Qualquer formato de saída, mais corte e normalização no mesmo carregamento.',
+      ],
+      privacyNote: 'A sua gravação é acelerada ou abrandada pelo FFmpeg no nosso servidor, com rubberband ou atempo consoante o modo que escolher. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'O tom muda?',
+          answer: 'Não. O filtro de andamento mantém o tom exatamente como estava.',
+        },
+        {
+          question: 'Até que velocidade posso ir?',
+          answer: '4x numa só passagem. Volte a processar o resultado para ir mais além.',
+        },
+        {
+          question: 'O áudio abrandado vai soar robótico?',
+          answer: 'Até 0,5x é limpo; abaixo disso ouve-se algum phasing.',
+        },
+        {
+          question: 'Posso alterar a velocidade e o tom em conjunto?',
+          answer: 'Sim. Use a ferramenta Alterar o tom do áudio, que tem um controlo de alongamento temporal.',
+        },
+      ],
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Desloque a tonalidade para cima ou para baixo.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Alterar a velocidade de um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio e defina um multiplicador de velocidade; 1,5x vem pré-selecionado. O tom é preservado, para que as vozes se mantenham naturais. Para alterar também a tonalidade, use a ferramenta de tom.',
+      },
     },
     'change-audio-pitch': {
       name: 'Alterar o tom do áudio',
+      h1: 'Alterar o tom do áudio online: transpor para cima ou para baixo',
       tagline: 'Desloque uma canção ou gravação em meios-tons para mudar a tonalidade, baixar uma voz ou afinar um sample, mantendo o andamento.',
+      metaTitle: 'Alterar o tom do áudio online grátis: transpor meios-tons | Media Manipulator',
+      metaDescription: 'Alterador de tom online gratuito. Transponha MP3, WAV ou qualquer áudio para cima ou para baixo em meios-tons para mudar a tonalidade, sem alterar a velocidade. Alongamento temporal opcional. Sem marca de água nem registo.',
+      ogTitle: 'Alterar o tom do áudio online grátis',
+      ogDescription: 'Transponha qualquer áudio em meios-tons. Grátis, sem registo.',
+      intro: 'Uma faixa de acompanhamento na tonalidade errada para a sua voz, um sample que precisa de encaixar numa canção, uma voz que pede para ficar um tom abaixo: a alteração de tom resolve tudo isso. O Media Manipulator transpõe áudio em meios-tons nos nossos servidores com o FFmpeg, mantendo a duração inalterada, e permite combiná-la com um alongamento temporal quando, em vez disso, quer o velho efeito de velocidade de fita.',
+      whatItDoes: [
+        'Transpõe áudio para cima ou para baixo até 12 meios-tons (uma oitava).',
+        'Mantém a duração igual, para que a faixa continue a encaixar.',
+        'Alongamento temporal opcional para alterar o comprimento de forma independente.',
+        'Escreve o áudio transposto como MP3, WAV, FLAC, M4A, OGG ou Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'Qualquer formato de áudio comum.',
+        },
+        {
+          title: 'Definir os meios-tons',
+          description: '+2 vem pré-selecionado; de -12 a +12.',
+        },
+        {
+          title: 'Converter',
+          description: 'O FFmpeg reamostra e reajusta o tempo.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro transposto.',
+        },
+      ],
+      advancedDetails: [
+        'A deslocação reamostra por 2^(meios-tons/12) e compensa o andamento para que o comprimento não se altere.',
+        'Deslocações grandes (mais de 5 meios-tons) em misturas completas podem soar artificiais; as vozes e os instrumentos isolados saem-se melhor.',
+        'A preservação de formantes está ativa, pelo que uma voz baixada não se transforma noutra pessoa.',
+      ],
+      whyItMatters: [
+        'Os cantores transpõem faixas de acompanhamento para uma tonalidade confortável.',
+        'Os produtores afinam samples e vozes para uma canção.',
+        'Um ou dois meios-tons abaixo tornam uma voz de demo mais descontraída.',
+      ],
+      useCases: [
+        {
+          title: 'Mudar a tonalidade de uma faixa de acompanhamento',
+          description: 'Baixe uma faixa de karaoke dois meios-tons.',
+        },
+        {
+          title: 'Afinar um sample',
+          description: 'Faça um golpe de bateria ou de voz encaixar na canção.',
+        },
+        {
+          title: 'Baixar uma locução',
+          description: 'Baixe uma leitura um meio-tom.',
+        },
+        {
+          title: 'Efeito de oitava',
+          description: 'Desloque +12 ou -12 para uma camada de efeito.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Controlo em meios-tons com a duração preservada, e alongamento temporal quando o quiser.',
+        'Qualquer formato de saída, mais corte e normalização no mesmo carregamento.',
+      ],
+      privacyNote: 'O seu áudio é deslocado para cima ou para baixo no número de meios-tons que escolher, pelo FFmpeg no nosso servidor. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'A velocidade muda?',
+          answer: 'Não. A duração é preservada. Use o controlo de alongamento temporal se quiser que mude.',
+        },
+        {
+          question: 'Até onde posso deslocar?',
+          answer: 'Até 12 meios-tons (uma oitava) para cima ou para baixo.',
+        },
+        {
+          question: 'Uma voz transposta vai soar natural?',
+          answer: 'Para um a três meios-tons, sim. Deslocações maiores tornam-se audíveis; a preservação de formantes evita que soe a desenho animado.',
+        },
+        {
+          question: 'Posso deslocar em cents?',
+          answer: 'Ainda não; o controlo é em meios-tons inteiros.',
+        },
+      ],
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Alterar o tom de um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio. A secção Avançado abre com o controlo deslizante de tom; +2 meios-tons vem pré-selecionado. Os valores negativos baixam a tonalidade. O alongamento temporal fica ao lado, se também quiser alterar o comprimento.',
+      },
     },
     'normalize-audio': {
       name: 'Normalizar áudio',
+      h1: 'Normalizar o volume sonoro do áudio online',
       tagline: 'Leve uma gravação baixa a um volume consistente, para que podcasts, notas de voz e listas de reprodução variadas soem ao mesmo nível.',
+      metaTitle: 'Normalizar áudio online grátis (volume sonoro) | Media Manipulator',
+      metaDescription: 'Normalizador de áudio online gratuito. Uniformize o volume sonoro de MP3, WAV, M4A e outros ficheiros com normalização de volume sonoro EBU R128. Ideal para podcasts e notas de voz. Sem marca de água nem registo.',
+      ogTitle: 'Normalizar áudio online grátis',
+      ogDescription: 'Volume sonoro consistente para qualquer gravação. Grátis, sem registo.',
+      intro: 'Uma nota de voz gravada com o braço esticado é baixa; uma canção extraída de um CD é alta; tocadas uma a seguir à outra, obrigam o ouvinte a ir ao volume. A normalização de volume sonoro mede o volume percebido de um ficheiro inteiro e leva-o a um alvo padrão, a mesma medição EBU R128 que as emissoras e os serviços de streaming usam. O Media Manipulator executa-a nos nossos servidores com o filtro loudnorm do FFmpeg, que também mantém os picos reais abaixo do teto para que nada sature.',
+      whatItDoes: [
+        'Mede o volume sonoro integrado e normaliza para um alvo com padrão de difusão.',
+        'Limita os picos reais para que a saída nunca sature.',
+        'Ganho, fade in/out e compressão de gama dinâmica opcionais na mesma secção.',
+        'Guarda o ficheiro nivelado em MP3, WAV, FLAC, M4A, OGG ou Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Manter a normalização ativa',
+          description: 'Adicione fades ou compressão se necessário.',
+        },
+        {
+          title: 'Converter',
+          description: 'O loudnorm do FFmpeg mede e corrige.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o ficheiro nivelado.',
+        },
+      ],
+      advancedDetails: [
+        'Usa o loudnorm (EBU R128) com o alvo integrado predefinido de -24 LUFS e o teto de pico real de -2 dBTP.',
+        'Isto é normalização de volume sonoro, não normalização de picos: dois ficheiros que atingem ambos picos de 0 dB podem ainda assim diferir muito no volume percebido.',
+        'Para uma alteração rápida de ganho fixo sem análise, use o controlo deslizante de amplificação ou a ferramenta Ajustar o volume.',
+      ],
+      whyItMatters: [
+        'Os ouvintes abandonam podcasts que exigem ajustes constantes de volume.',
+        'As listas de reprodução e os sets de DJ precisam de faixas a um nível consistente.',
+        'As plataformas normalizam no carregamento; fazê-lo antes evita surpresas.',
+      ],
+      useCases: [
+        {
+          title: 'Episódio de podcast',
+          description: 'Nivele uma conversa gravada antes de a publicar.',
+        },
+        {
+          title: 'Nota de voz',
+          description: 'Suba uma gravação baixa feita no telemóvel.',
+        },
+        {
+          title: 'Gravação de aula',
+          description: 'Uniformize um orador que se afasta do microfone.',
+        },
+        {
+          title: 'Preparar uma lista de reprodução',
+          description: 'Normalize faixas extraídas de fontes diferentes.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Medição real de volume sonoro EBU R128, não apenas uma análise de picos.',
+        'Fades, ganho e compressão na mesma secção.',
+      ],
+      privacyNote: 'O volume sonoro do seu áudio é medido e uniformizado pelo FFmpeg no nosso servidor. Não é envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'Que volume sonoro alvo é usado?',
+          answer: '-24 LUFS integrados com um teto de pico real de -2 dBTP, a predefinição EBU R128. As plataformas de podcast visam normalmente -16 a -19 LUFS; acrescente alguns dB de amplificação se o quiser mais alto.',
+        },
+        {
+          question: 'Vai pôr tudo ao mesmo volume dentro do ficheiro?',
+          answer: 'Não. Nivela o ficheiro como um todo. Ative também o compressor para reduzir a variação no seu interior.',
+        },
+        {
+          question: 'Pode saturar?',
+          answer: 'Não. O limitador de pico real mantém os picos abaixo do teto.',
+        },
+        {
+          question: 'Posso simplesmente torná-lo mais alto?',
+          answer: 'Sim. Use a ferramenta Ajustar o volume para uma alteração de ganho fixo.',
+        },
+      ],
+      related: [
+        {
+          label: 'Ajustar o volume',
+          to: '/tools/adjust-audio-volume',
+          description: 'Ganho fixo para cima ou para baixo.',
+        },
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Desloque a tonalidade para cima ou para baixo.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Normalizar um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio. A normalização de volume sonoro já está ativada na secção Processamento básico; acrescente amplificação, fades ou compressão se quiser. Prima Converter.',
+      },
     },
     'adjust-audio-volume': {
       name: 'Ajustar o volume do áudio',
+      h1: 'Aumentar ou diminuir o volume do áudio online',
       tagline: 'Aumente ou diminua o volume de um ficheiro de áudio numa quantidade fixa, de 10 por cento ao dobro, ou em decibéis com o controlo de amplificação.',
+      metaTitle: 'Aumentar o volume do áudio online grátis (MP3 mais alto) | Media Manipulator',
+      metaDescription: 'Alterador de volume online gratuito. Torne um MP3, WAV ou qualquer ficheiro de áudio mais alto ou mais baixo com um multiplicador fixo ou em decibéis, com fades. Sem marca de água, sem registo.',
+      ogTitle: 'Aumentar ou diminuir o volume do áudio online',
+      ogDescription: 'Torne qualquer áudio mais alto ou mais baixo. Grátis, sem registo.',
+      intro: 'Às vezes um ficheiro é simplesmente demasiado baixo, ou demasiado alto para o resto de uma lista de reprodução, e uma alteração fixa de ganho é tudo o que precisa. O Media Manipulator ajusta o volume do áudio nos nossos servidores com o FFmpeg, por um multiplicador ou em decibéis, acrescenta fades se os quiser e pode combinar a alteração com a normalização de volume sonoro para que o resultado não sature.',
+      whatItDoes: [
+        'Multiplica o volume de 0.1x (muito baixo) a 2x (o dobro).',
+        'Ou define um ganho preciso em decibéis, de -60 a +60 dB, com o controlo de amplificação.',
+        'Fade in e fade out em segundos.',
+        'Normalização e compressão opcionais para evitar a saturação em aumentos grandes.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Defina o volume',
+          description: '1.5x está pré-selecionado; ou use decibéis.',
+        },
+        {
+          title: 'Converta',
+          description: 'O FFmpeg aplica o ganho.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o ficheiro ajustado.',
+        },
+      ],
+      advancedDetails: [
+        'O volume usa o filtro volume; um multiplicador de 2 equivale a +6 dB, 0.5 a -6 dB.',
+        'Aumentar um ficheiro que já tem picos perto de 0 dBFS vai saturar; ative a normalização, que inclui um limitador de picos reais.',
+        'Para um volume sonoro percebido consistente, em vez de um ganho fixo, use Normalizar áudio.',
+      ],
+      whyItMatters: [
+        'As gravações baixas ouvem-se mal nos altifalantes do telemóvel.',
+        'Um toque ou efeito sonoro demasiado alto é desagradável e satura.',
+        'O ganho fixo é a ferramenta certa quando sabe exatamente quanto quer alterar.',
+      ],
+      useCases: [
+        {
+          title: 'Aumentar uma nota de voz baixa',
+          description: 'Torne audível uma gravação feita com o telemóvel.',
+        },
+        {
+          title: 'Domar um efeito alto',
+          description: 'Baixe um efeito sonoro em 10 dB.',
+        },
+        {
+          title: 'Toque de telemóvel',
+          description: 'Aumente e acrescente um fade out.',
+        },
+        {
+          title: 'Música de fundo',
+          description: 'Baixe uma faixa para ficar por baixo de uma voz.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Multiplicador ou decibéis, mais fades, num só lugar.',
+        'Normalize e comprima na mesma passagem para evitar a saturação.',
+      ],
+      privacyNote: 'O seu áudio é tornado mais alto ou mais baixo na quantidade que definir, pelo FFmpeg no nosso servidor. Nenhum serviço de áudio externo está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o ficheiro carregado não é alterado.',
+      faq: [
+        {
+          question: 'Qual é o aumento máximo?',
+          answer: '2x com o multiplicador, ou até +60 dB com o controlo de amplificação. Os aumentos grandes saturam, a menos que a normalização esteja ativa.',
+        },
+        {
+          question: 'Vai distorcer?',
+          answer: 'Só se o sinal amplificado ultrapassar a escala completa. Ative a normalização, que limita os picos reais.',
+        },
+        {
+          question: 'Multiplicador ou decibéis?',
+          answer: 'Fazem o mesmo trabalho. 2x equivale a +6 dB; 0.5x equivale a -6 dB.',
+        },
+        {
+          question: 'Posso antes uniformizar o volume?',
+          answer: 'Sim. Use Normalizar áudio para um volume sonoro percebido consistente.',
+        },
+      ],
+      related: [
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Volume sonoro consistente.',
+        },
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Suba ou desça a tonalidade.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Ajustar o volume de um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio e defina o multiplicador de volume; 1.5x está pré-selecionado. Para uma alteração em decibéis, use o controlo Amplificar em Processamento de áudio básico. Os aumentos fortes podem saturar; ative a normalização para um resultado seguro.',
+      },
     },
     'audio-equalizer': {
       name: 'Equalizador de áudio',
+      h1: 'Equalizar áudio online: reforço de graves, agudos, predefinições',
       tagline: 'Aplique reforço de graves, realce de agudos, presença vocal ou uma predefinição de género, ou defina filtros passa-baixo e passa-alto, e transfira o resultado.',
+      metaTitle: 'Equalizador de áudio online: graves, agudos, vocal | Media Manipulator',
+      metaDescription: 'Equalizador de áudio online gratuito. Aplique predefinições de reforço de graves, reforço de agudos, vocal, rock, jazz ou clássica, ou defina filtros passa-alto e passa-baixo, a MP3, WAV e mais. Sem registo.',
+      ogTitle: 'Equalizar áudio online',
+      ogDescription: 'Reforço de graves, agudos, presença vocal e mais. Grátis, sem registo.',
+      intro: 'O equalizador molda o timbre de uma gravação: mais graves para uma faixa fina, menos para uma sala retumbante, um realce de presença para que uma voz sobressaia, um passa-alto para eliminar o rumor. O Media Manipulator aplica a equalização nos nossos servidores com o FFmpeg, desde predefinições de um clique até frequências de corte explícitas, e exporta em qualquer formato de áudio.',
+      whatItDoes: [
+        'Predefinições: reforço de graves, reforço de agudos, vocal, rock, jazz, clássica.',
+        'Filtros passa-alto e passa-baixo com frequências de corte ajustáveis.',
+        'Combine com volume, normalização, compressão e reverberação.',
+        'O resultado equalizado pode ser MP3, WAV, FLAC, M4A, OGG ou Opus.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Escolha uma predefinição ou filtros',
+          description: 'O reforço de graves está pré-selecionado.',
+        },
+        {
+          title: 'Converta',
+          description: 'O FFmpeg aplica a cadeia de equalização.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o ficheiro moldado.',
+        },
+      ],
+      advancedDetails: [
+        'As predefinições correspondem aos filtros equalizer, bass e treble do FFmpeg, com ganhos e valores Q fixos.',
+        'Um passa-alto a 80 a 120 Hz remove o ruído de manuseamento e o rumor das gravações de voz; um passa-baixo a 8 a 10 kHz doma o chiado.',
+        'A equalização não consegue acrescentar frequências que nunca foram gravadas; uma gravação de telemóvel tem pouco abaixo de 100 Hz para reforçar.',
+      ],
+      whyItMatters: [
+        'Um pequeno realce de presença torna a fala muito mais inteligível em altifalantes pequenos.',
+        'O rumor e o chiado são as duas correções mais comuns, e ambas são filtros simples.',
+        'As predefinições de género dão um carácter rápido e consistente a uma lista de reprodução.',
+      ],
+      useCases: [
+        {
+          title: 'Clareza da voz',
+          description: 'Predefinição vocal mais um passa-alto para um podcast.',
+        },
+        {
+          title: 'Reforço de graves',
+          description: 'Dê corpo a uma gravação fina.',
+        },
+        {
+          title: 'Remover rumor',
+          description: 'Passa-alto a 100 Hz.',
+        },
+        {
+          title: 'Domar o chiado',
+          description: 'Passa-baixo a 10 kHz numa transferência de cassete antiga.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Predefinições e frequências de corte explícitas numa só secção.',
+        'Encadeie com normalização, compressão e reverberação no mesmo carregamento.',
+      ],
+      privacyNote: 'Os graves, os médios e os agudos do seu áudio são remodelados pelo equalizador do FFmpeg no nosso servidor. Nenhum serviço de áudio externo está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o ficheiro carregado não é alterado.',
+      faq: [
+        {
+          question: 'Posso definir as minhas próprias bandas?',
+          answer: 'Estão disponíveis as predefinições e as frequências de corte passa-alto e passa-baixo; o ganho por banda está no plano de desenvolvimento.',
+        },
+        {
+          question: 'O que faz um filtro passa-alto?',
+          answer: 'Remove tudo abaixo da frequência de corte: rumor, ruído de manuseamento, pancadas de plosivas.',
+        },
+        {
+          question: 'A equalização pode corrigir uma gravação abafada?',
+          answer: 'Um reforço de agudos ajuda se os agudos estiverem apenas baixos. Se nunca foram captados, a equalização não os consegue inventar; experimente a limpeza de voz com IA.',
+        },
+        {
+          question: 'A equalização vai saturar?',
+          answer: 'Os reforços podem saturar. Ative a normalização, que inclui um limitador de picos reais.',
+        },
+      ],
+      related: [
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'Melhoria de voz com IA.',
+        },
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Suba ou desça a tonalidade.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Equalizar um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio. O equalizador em Processamento de áudio básico já está ativo com a predefinição de reforço de graves; escolha outra predefinição ou defina as frequências de corte passa-alto e passa-baixo. Prima Converter.',
+      },
     },
     'add-reverb-to-audio': {
       name: 'Adicionar reverberação ao áudio',
+      h1: 'Adicionar reverberação ou eco ao áudio online',
       tagline: 'Coloque uma voz seca ou uma gravação numa sala, salão, placa ou mola de reverberação, ou adicione um atraso ou eco, e transfira o resultado.',
+      metaTitle: 'Adicionar reverberação ou eco ao áudio online grátis | Media Manipulator',
+      metaDescription: 'Reverberação e eco online gratuitos. Adicione reverberação de sala, auditório, placa ou mola, ou um atraso, a MP3, WAV e qualquer ficheiro de áudio, com controlos de nível wet e tamanho da sala. Sem registo.',
+      ogTitle: 'Adicionar reverberação ou eco ao áudio online',
+      ogDescription: 'Sala, auditório, placa, mola e atraso. Grátis, sem registo.',
+      intro: 'Uma voz gravada numa sala tratada soa morta até ser colocada em algum lugar. A reverberação acrescenta esse espaço; o atraso acrescenta ritmo. O Media Manipulator aplica reverberações de sala, auditório, placa e mola e atrasos ao estilo de eco nos nossos servidores com o FFmpeg, com controlos de nível wet e tamanho da sala, e exporta em qualquer formato de áudio.',
+      whatItDoes: [
+        'Tipos de reverberação de sala, auditório, placa e mola, com tamanho da sala, amortecimento e mistura wet/dry.',
+        'Atraso de eco, multi-tap e ping-pong, com tempo e feedback.',
+        'Modulação de chorus, flanger, phaser e tremolo na mesma secção.',
+        'Escolha MP3, WAV, FLAC, M4A, OGG ou Opus para a versão wet.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'Uma voz ou um instrumento secos funcionam melhor.',
+        },
+        {
+          title: 'Escolha uma reverberação',
+          description: 'Auditório está pré-selecionado; defina o tamanho e a mistura.',
+        },
+        {
+          title: 'Converta',
+          description: 'O FFmpeg renderiza o efeito.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o resultado.',
+        },
+      ],
+      advancedDetails: [
+        'As reverberações são construídas a partir do aecho do FFmpeg, com conjuntos de atraso e decaimento por tipo; o nível wet mistura o efeito com o sinal seco.',
+        'O tempo de atraso é em milissegundos; um feedback acima de 70 por cento acumula-se rapidamente.',
+        'Os efeitos são renderizados no ficheiro; guarde o original seco se puder vir a querer alterá-los.',
+      ],
+      whyItMatters: [
+        'Vozes e locuções secas soam pouco naturais sem alguma sala.',
+        'Uma reverberação de placa curta é o acabamento habitual na palavra falada e na canção.',
+        'O atraso e a modulação são a forma mais rápida de criar um elemento de design sonoro.',
+      ],
+      useCases: [
+        {
+          title: 'Acabamento vocal',
+          description: 'Placa curta numa tomada cantada ou falada.',
+        },
+        {
+          title: 'Grande auditório',
+          description: 'Coloque um coro ou um pad numa catedral.',
+        },
+        {
+          title: 'Slapback',
+          description: 'Um eco rápido numa guitarra ou numa voz.',
+        },
+        {
+          title: 'Design sonoro',
+          description: 'Atraso ping-pong e flanger num efeito.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Quatro tipos de reverberação, três tipos de atraso e quatro efeitos de modulação numa só secção.',
+        'Combine com equalização, normalização e tom no mesmo carregamento.',
+      ],
+      privacyNote: 'A reverberação é adicionada ao seu áudio pelo FFmpeg no nosso servidor. Nenhum serviço de áudio externo está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o ficheiro carregado não é alterado.',
+      faq: [
+        {
+          question: 'Que reverberação devo usar para voz?',
+          answer: 'Placa ou uma sala pequena a 20 a 30 por cento wet. O auditório é para música e efeitos.',
+        },
+        {
+          question: 'Posso remover a reverberação?',
+          answer: 'Aqui não. A ferramenta de limpeza de voz com IA reduz o som da sala na fala.',
+        },
+        {
+          question: 'Posso adicionar reverberação e atraso ao mesmo tempo?',
+          answer: 'Sim. Ambos estão na mesma secção e podem ser ativados em conjunto.',
+        },
+        {
+          question: 'O efeito é reversível?',
+          answer: 'Não. É renderizado no ficheiro; guarde o seu original seco.',
+        },
+      ],
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Suba ou desça a tonalidade.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Adicionar reverberação a um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio. A secção Efeitos temporais abre com a reverberação de auditório selecionada; ajuste o tamanho da sala e o nível wet, ou escolha sala, placa ou mola, ou adicione um atraso. Prima Converter.',
+      },
     },
     'trim-audio': {
       name: 'Cortar áudio',
+      h1: 'Cortar áudio online grátis',
       tagline: 'Corte um MP3, WAV ou qualquer gravação entre um tempo inicial e final, com uma forma de onda para escolher os pontos, e transfira só essa parte.',
+      metaTitle: 'Cortar áudio online grátis: MP3, WAV | Media Manipulator',
+      metaDescription: 'Cortador de áudio online gratuito. Corte qualquer ficheiro de áudio a um intervalo usando uma forma de onda, adicione fades e transfira MP3, WAV, M4A ou mais. Crie um toque ou um clipe. Sem marca de água, sem registo.',
+      ogTitle: 'Cortar áudio online grátis',
+      ogDescription: 'Escolha um início e um fim na forma de onda e transfira o clipe. Grátis, sem registo.',
+      intro: 'O refrão para um toque de telemóvel, o único minuto bom de uma gravação de duas horas, a frase sonora sem a introdução: cortar é a edição de áudio de que toda a gente precisa. O Media Manipulator mostra uma forma de onda, deixa-o arrastar os pontos de início e de fim, corta nos nossos servidores com o FFmpeg e exporta em qualquer formato com fades opcionais.',
+      whatItDoes: [
+        'Corta qualquer ficheiro de áudio a um tempo de início e de fim escolhido numa forma de onda.',
+        'Fade in e fade out para que o corte não produza cliques.',
+        'O corte é devolvido como MP3, WAV, FLAC, M4A, OGG ou Opus.',
+        'Combine com volume, normalização e equalização na mesma passagem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Defina o intervalo',
+          description: 'Arraste os marcadores na forma de onda.',
+        },
+        {
+          title: 'Converta',
+          description: 'O FFmpeg corta e codifica.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o clipe.',
+        },
+      ],
+      advancedDetails: [
+        'O corte é preciso à amostra; a saída é recodificada no formato que escolher.',
+        'Um fade de 0.05 a 0.2 segundos remove os cliques nos pontos de corte.',
+        'Para um vídeo, use o Cortar vídeo; para um vídeo de forma de onda do resultado, o Gerador de forma de onda de áudio.',
+      ],
+      whyItMatters: [
+        'Os toques e os sons de notificação precisam de um corte de 20 a 30 segundos.',
+        'Partilhar uma frase sonora é mais fácil do que partilhar a gravação inteira.',
+        'Remover silêncios e introduções antes da transcrição poupa tempo.',
+      ],
+      useCases: [
+        {
+          title: 'Toque de telemóvel',
+          description: 'Corte o refrão e acrescente um fade.',
+        },
+        {
+          title: 'Frase sonora',
+          description: 'Retire uma frase de uma entrevista.',
+        },
+        {
+          title: 'Remover um início mau',
+          description: 'Elimine os primeiros 10 segundos de uma nota de voz.',
+        },
+        {
+          title: 'Sample',
+          description: 'Isole uma batida ou uma frase.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Edição na forma de onda com marcadores arrastáveis, e não marcas temporais escritas à mão.',
+        'Fades, normalização e qualquer formato de saída no mesmo carregamento.',
+      ],
+      privacyNote: 'O seu áudio é cortado ao início e ao fim que definir pelo FFmpeg no nosso servidor. Nenhum serviço de áudio externo está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o ficheiro carregado não é alterado.',
+      faq: [
+        {
+          question: 'Posso escrever tempos exatos?',
+          answer: 'Sim. A caixa de diálogo de corte tem campos de início e de fim, além dos marcadores arrastáveis.',
+        },
+        {
+          question: 'O corte vai produzir um clique?',
+          answer: 'Acrescente um fade in e fade out curtos em Processamento de áudio básico para o evitar.',
+        },
+        {
+          question: 'Posso manter a qualidade original?',
+          answer: 'Escolha a saída WAV ou FLAC para evitar uma recodificação com perdas.',
+        },
+        {
+          question: 'Posso cortar o meio?',
+          answer: 'Um intervalo por passagem; execute a ferramenta duas vezes e junte as partes no Darkroom.',
+        },
+      ],
+      related: [
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'O mesmo para vídeo.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Obtenha primeiro o áudio.',
+        },
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre todos os formatos de áudio comuns.',
+        },
+        {
+          label: 'Alterar a velocidade do áudio',
+          to: '/tools/change-audio-speed',
+          description: 'Acelere ou abrande uma gravação.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Suba ou desça a tonalidade.',
+        },
+        {
+          label: 'Normalizar áudio',
+          to: '/tools/normalize-audio',
+          description: 'Uniformize o volume sonoro.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Remoção de ruído com IA.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Crie um instrumental.',
+        },
+      ],
+      embed: {
+        title: 'Cortar um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio, prima Cortar áudio e arraste os marcadores de início e de fim na forma de onda. Se quiser, acrescente um fade in ou fade out em Processamento de áudio básico. Prima Converter.',
+      },
     },
     'transcribe-audio': {
       name: 'Transcrever áudio',
+      h1: 'Transcrever áudio em texto online',
       tagline: 'Converta um MP3, WAV, M4A ou qualquer gravação em texto, legendas ou JSON com reconhecimento de voz por IA nos nossos próprios servidores GPU.',
+      metaTitle: 'Transcrever áudio em texto online (IA grátis) | Media Manipulator',
+      metaDescription: 'Transcrição de áudio online gratuita. Converta gravações MP3, WAV, M4A, OGG ou FLAC em texto simples, legendas VTT ou SRT, ou JSON com marcas temporais. Corre na nossa própria GPU, sem IA de terceiros.',
+      ogTitle: 'Transcrever áudio em texto online',
+      ogDescription: 'Gravações, entrevistas e notas de voz em texto. Grátis, sem registo.',
+      intro: 'Entrevistas, aulas, notas de voz e gravações de reuniões são muito mais úteis como texto: pesquisáveis, citáveis, traduzíveis. O Media Manipulator transcreve áudio com um modelo Whisper num servidor GPU que nós operamos, pelo que a sua gravação nunca sai da nossa infraestrutura, e devolve texto simples, legendas VTT ou SRT, ou uma transcrição JSON com marcas temporais por palavra.',
+      whatItDoes: [
+        'Transcreve MP3, WAV, M4A, OGG, FLAC e outro áudio com o Whisper.',
+        'Produz texto simples, VTT, SRT ou JSON com marcas temporais.',
+        'Deteta o idioma automaticamente entre dezenas de idiomas.',
+        'Corre na nossa própria GPU; sem fornecedor de IA de terceiros.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Escolha uma saída',
+          description: 'Texto, VTT, SRT ou JSON.',
+        },
+        {
+          title: 'Transcreva',
+          description: 'O Whisper corre no nosso servidor GPU.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Abra o visualizador de transcrições ou guarde o ficheiro.',
+        },
+      ],
+      advancedDetails: [
+        'Usa o whisper-ctranslate2 com um modelo multilingue grande; a precisão é melhor em fala clara com pouco ruído de fundo.',
+        'Execute primeiro a ferramenta Remover ruído de fundo em gravações ruidosas para obter uma transcrição melhor.',
+        'A transcrição conta como uma tarefa de IA, descontada do limite diário de IA e não do limite normal; uma tarefa falhada não é contabilizada.',
+      ],
+      whyItMatters: [
+        'O texto é pesquisável e lê-se na diagonal; o áudio, não.',
+        'As legendas tornam o conteúdo de áudio acessível e indexável.',
+        'Uma transcrição é o ponto de partida para notas, artigos e traduções.',
+      ],
+      useCases: [
+        {
+          title: 'Notas de entrevista',
+          description: 'Obtenha um texto do qual pode citar.',
+        },
+        {
+          title: 'Transcrição de aula',
+          description: 'Estude a partir do texto, pesquise termos.',
+        },
+        {
+          title: 'Legendas de podcast',
+          description: 'SRT ou VTT para a versão em vídeo.',
+        },
+        {
+          title: 'Nota de voz para texto',
+          description: 'Transforme ideias num documento.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper em hardware que nós operamos; o seu áudio nunca é enviado para uma IA de terceiros.',
+        'Quatro formatos de saída e um visualizador de transcrições integrado.',
+      ],
+      privacyNote: 'A sua gravação é transcrita pelo Whisper no nosso próprio servidor GPU, e o texto é guardado com a tarefa. O trabalho de IA corre em hardware que nós operamos, nunca num fornecedor de IA de terceiros, e nada do que carrega é usado para treinar um modelo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Que idiomas são suportados?',
+          answer: 'O Whisper lida com dezenas de idiomas e deteta o idioma automaticamente.',
+        },
+        {
+          question: 'Qual é a precisão?',
+          answer: 'Muito boa em fala clara. O ruído de fundo, as vozes sobrepostas e os sotaques carregados reduzem a precisão; remova o ruído primeiro, se puder.',
+        },
+        {
+          question: 'A minha gravação é enviada para a OpenAI?',
+          answer: 'Não. O modelo corre no nosso próprio servidor GPU.',
+        },
+        {
+          question: 'Posso obter identificação dos oradores?',
+          answer: 'Ainda não. A saída JSON tem marcas temporais por palavra pelas quais pode segmentar.',
+        },
+        {
+          question: 'Conta para o meu limite?',
+          answer: 'Sim, como uma tarefa de IA no limite de IA, que é separado do limite normal. As tarefas falhadas não são contabilizadas.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Conta como uma tarefa de IA; as tarefas falhadas não são contabilizadas.',
+        ],
+      },
+      related: [
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'O mesmo para ficheiros de vídeo.',
+        },
+        {
+          label: 'Gerador de legendas SRT',
+          to: '/tools/srt-generator',
+          description: 'Diretamente para legendas.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Limpe primeiro o áudio.',
+        },
+        {
+          label: 'Tradutor de legendas',
+          to: '/tools/caption-translator',
+          description: 'Traduza as legendas.',
+        },
+      ],
+      embed: {
+        title: 'Transcrever um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio e escolha uma saída: texto simples para um documento, VTT ou SRT para legendas, JSON para marcas temporais. O Whisper corre no nosso servidor GPU; nada vai para uma IA de terceiros.',
+      },
     },
     'add-text-to-image': {
       name: 'Adicionar texto a imagem',
+      h1: 'Adicionar texto a uma imagem online grátis',
       tagline: 'Coloque uma legenda, um título ou uma marca de água numa fotografia: escolha o tipo de letra, o tamanho, a cor, o contorno e a posição, e transfira.',
+      metaTitle: 'Adicionar texto a imagem grátis: legenda, marca de água | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para adicionar texto a uma fotografia. Escolha o tipo de letra, o tamanho, a cor, o contorno e a posição para uma legenda, um meme ou uma marca de água em JPG, PNG, WebP e mais. Sem registo.',
+      ogTitle: 'Adicionar texto a uma imagem online grátis',
+      ogDescription: 'Legenda, título ou marca de água em qualquer fotografia. Grátis, sem registo.',
+      intro: 'Uma legenda numa captura de ecrã, um título numa miniatura, uma linha de direitos de autor no canto de uma fotografia: adicionar texto é a edição de imagem mais comum depois do recorte. O Media Manipulator desenha texto numa imagem nos nossos servidores com o ImageMagick, com tipo de letra, tamanho, cor de preenchimento e de contorno, e uma posição escolhida entre nove âncoras ou coordenadas exatas em píxeis, e exporta no mesmo formato ou noutro.',
+      whatItDoes: [
+        'Desenha um bloco de texto em qualquer tamanho, com cores de preenchimento e de contorno.',
+        'Seis tipos de letra incluídos (sem serifa, com serifa e monoespaçado, em duas famílias).',
+        'Nove posições de âncora ou colocação exata em x/y.',
+        'Combine com redimensionamento, recorte, filtros e opções de metadados na mesma passagem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'JPG, PNG, WebP, HEIC e mais.',
+        },
+        {
+          title: 'Escreva e estilize o texto',
+          description: 'Tamanho, cores, contorno, tipo de letra, posição.',
+        },
+        {
+          title: 'Converta',
+          description: 'O ImageMagick desenha o texto.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde a imagem legendada.',
+        },
+      ],
+      advancedDetails: [
+        'O texto é rasterizado no tamanho de saída; defina o tamanho em píxeis em relação à largura da imagem.',
+        'Um contorno de 2 a 4 px numa cor contrastante mantém o texto legível em fotografias carregadas.',
+        'Escolha a saída PNG para manter um fundo transparente num modelo de marca de água.',
+      ],
+      whyItMatters: [
+        'As legendas tornam as capturas de ecrã autoexplicativas.',
+        'Uma linha de direitos de autor visível desencoraja a republicação sem crédito.',
+        'As miniaturas com título recebem mais cliques.',
+      ],
+      useCases: [
+        {
+          title: 'Legendar uma captura de ecrã',
+          description: 'Identifique o que o espectador está a ver.',
+        },
+        {
+          title: 'Marca de água numa fotografia',
+          description: 'O seu nome no canto inferior.',
+        },
+        {
+          title: 'Título de miniatura',
+          description: 'Texto grande e a negrito para a miniatura de um vídeo.',
+        },
+        {
+          title: 'Meme',
+          description: 'Texto em cima, texto em baixo.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Preenchimento, contorno, tipo de letra e posicionamento em nove pontos, e não apenas uma caixa de texto.',
+        'Redimensione, recorte e converta no mesmo carregamento.',
+      ],
+      privacyNote: 'O texto que escreveu é desenhado na sua imagem pelo ImageMagick no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Posso adicionar mais do que uma linha?',
+          answer: 'Um bloco de texto por passagem; uma quebra de linha no texto é desenhada numa linha nova. Execute a ferramenta outra vez para um segundo bloco.',
+        },
+        {
+          question: 'Posso usar o meu próprio tipo de letra?',
+          answer: 'Estão disponíveis seis tipos de letra incluídos; o carregamento de tipos de letra personalizados não é suportado.',
+        },
+        {
+          question: 'Como posiciono o texto com exatidão?',
+          answer: 'Escolha uma âncora e acrescente desvios x/y em píxeis.',
+        },
+        {
+          question: 'Vai reduzir a qualidade?',
+          answer: 'A imagem é recodificada; escolha PNG ou uma qualidade JPG alta para a manter nítida.',
+        },
+      ],
+      related: [
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Recortar imagem',
+          to: '/tools/crop-image',
+          description: 'Corte a uma região.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Filtros de imagem',
+          to: '/tools/image-filters',
+          description: 'Sépia, esboço, relevo e mais.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados de localização e do dispositivo.',
+        },
+      ],
+      embed: {
+        title: 'Adicionar texto a uma imagem',
+        description: 'Carregue uma imagem. A secção Sobreposição de texto fica em destaque: escreva o texto, defina o tamanho, a cor, o contorno, o tipo de letra e a posição (nove pontos de âncora ou coordenadas exatas). Prima Converter.',
+      },
     },
     'crop-image': {
       name: 'Recortar imagem',
+      h1: 'Recortar uma imagem online grátis',
       tagline: 'Arraste uma caixa sobre a parte da fotografia que quer, endireite o enquadramento e transfira só essa região em qualquer formato.',
+      metaTitle: 'Recortar imagem online grátis | Media Manipulator',
+      metaDescription: 'Recortador de imagens online gratuito. Arraste para selecionar uma região de uma fotografia JPG, PNG, WebP ou HEIC e transfira-a. Combine com redimensionamento, filtros e conversão de formato. Sem registo.',
+      ogTitle: 'Recortar uma imagem online grátis',
+      ogDescription: 'Arraste uma caixa, transfira a região. Grátis, sem registo.',
+      intro: 'Recortar corrige o enquadramento, remove a confusão nas margens e transforma uma fotografia numa mais fechada. O Media Manipulator abre um recortador visual sobre a imagem carregada, aplica o recorte nos nossos servidores com o ImageMagick e deixa-o redimensionar, filtrar e converter o resultado na mesma passagem.',
+      whatItDoes: [
+        'Caixa de recorte visual com pegas de arrasto sobre a própria imagem.',
+        'Coordenadas exatas do recorte, visíveis e editáveis.',
+        'Combine com o redimensionamento para uma largura e altura pretendidas depois do recorte.',
+        'Guarde a área recortada como JPG, PNG, WebP, AVIF ou GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Desenhe o recorte',
+          description: 'Arraste a caixa e as pegas.',
+        },
+        {
+          title: 'Converta',
+          description: 'O ImageMagick recorta e codifica.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde a imagem recortada.',
+        },
+      ],
+      advancedDetails: [
+        'O recorte é aplicado antes do redimensionamento, pelo que uma fotografia de 4000 px recortada para 1000 px e redimensionada para 500 px é reduzida uma só vez.',
+        'O recorte remove píxeis e não é reversível; guarde o original.',
+        'A orientação EXIF é respeitada, pelo que uma fotografia de telemóvel rodada é recortada tal como a vê.',
+      ],
+      whyItMatters: [
+        'Um enquadramento mais fechado é a melhoria mais rápida para a maioria das fotografias.',
+        'As fotografias de perfil e as miniaturas precisam de regiões e proporções específicas.',
+        'Recortar um transeunte ou uma matrícula é uma correção de privacidade.',
+      ],
+      useCases: [
+        {
+          title: 'Fotografia de perfil',
+          description: 'Recorte ao rosto.',
+        },
+        {
+          title: 'Remover confusão',
+          description: 'Elimine as margens de uma fotografia.',
+        },
+        {
+          title: 'Detalhe de captura de ecrã',
+          description: 'Mantenha só a parte relevante.',
+        },
+        {
+          title: 'Fotografia de produto',
+          description: 'Recorte apertado e depois redimensione para um anúncio.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Recortador visual com coordenadas exatas, mais redimensionamento e conversão na mesma passagem.',
+        'Metadados mantidos ou removidos, conforme escolher.',
+      ],
+      privacyNote: 'A sua imagem é cortada à área que selecionou pelo ImageMagick no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Posso recortar com uma proporção fixa?',
+          answer: 'Arraste a caixa até à proporção de que precisa; a largura e a altura são mostradas à medida que avança.',
+        },
+        {
+          question: 'Recortar perde qualidade?',
+          answer: 'Os píxeis que ficam não são tocados. Escolha PNG ou uma qualidade JPG alta para a recodificação.',
+        },
+        {
+          question: 'Posso recortar um vídeo?',
+          answer: 'Sim, com a ferramenta Recortar vídeo.',
+        },
+        {
+          question: 'Posso rodar primeiro?',
+          answer: 'Use a ferramenta Rodar imagem e depois recorte.',
+        },
+      ],
+      related: [
+        {
+          label: 'Recortar vídeo',
+          to: '/tools/crop-video',
+          description: 'O mesmo para vídeo.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Adicionar texto a imagem',
+          to: '/tools/add-text-to-image',
+          description: 'Legenda ou marca de água.',
+        },
+        {
+          label: 'Filtros de imagem',
+          to: '/tools/image-filters',
+          description: 'Sépia, esboço, relevo e mais.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados de localização e do dispositivo.',
+        },
+      ],
+      embed: {
+        title: 'Recortar uma imagem',
+        description: 'Carregue uma imagem e prima Recortar imagem para abrir o recortador visual. Arraste a caixa até à região que pretende e guarde; o recorte é aplicado quando prime Converter.',
+      },
     },
     'grayscale-image': {
       name: 'Converter imagem para preto e branco',
+      h1: 'Converter uma imagem para preto e branco online',
       tagline: 'Converta uma fotografia a cores em tons de cinzento, ou em sépia para um tom vintage, e transfira-a em qualquer formato.',
+      metaTitle: 'Converter imagem para preto e branco online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de fotografias para preto e branco. Transforme qualquer imagem JPG, PNG, WebP ou HEIC em escala de cinzentos ou sépia e transfira-a. Combine com recorte, redimensionamento e mudança de formato. Sem registo.',
+      ogTitle: 'Converter uma imagem para preto e branco online',
+      ogDescription: 'Escala de cinzentos ou sépia num clique. Grátis, sem registo.',
+      intro: 'O preto e branco reduz uma fotografia à luz, à forma e à textura, esconde dominantes de cor e iluminação mista, e dá a um conjunto de fotografias um aspeto consistente. O Media Manipulator converte para escala de cinzentos nos nossos servidores com o ImageMagick, usando uma conversão ponderada pela luminância, oferece tons sépia e vintage e exporta em qualquer formato de imagem.',
+      whatItDoes: [
+        'Converte uma imagem a cores em escala de cinzentos com a ponderação de luminância correta.',
+        'Alternativas sépia e vintage para um tom quente ou envelhecido.',
+        'Combine com recorte, redimensionamento, texto e conversão de formato.',
+        'A cópia monocromática pode ser JPG, PNG, WebP, AVIF ou GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Mantenha a escala de cinzentos ou escolha sépia',
+          description: 'O filtro está pré-selecionado.',
+        },
+        {
+          title: 'Converta',
+          description: 'O ImageMagick aplica a conversão.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o resultado.',
+        },
+      ],
+      advancedDetails: [
+        'A escala de cinzentos usa os pesos de luminância Rec. 709, pelo que os verdes ficam mais claros do que os azuis, como o olho espera.',
+        'O sépia aplica um tom depois da escala de cinzentos; o vintage acrescenta um ligeiro desbotamento e uma vinheta.',
+        'A saída mantém três canais, a menos que escolha um formato que armazene a escala de cinzentos de forma nativa.',
+      ],
+      whyItMatters: [
+        'O monocromático esconde cores fracas e iluminação mista.',
+        'Um conjunto a preto e branco consistente parece curado.',
+        'As imagens em escala de cinzentos comprimem para tamanhos mais pequenos.',
+      ],
+      useCases: [
+        {
+          title: 'Retrato',
+          description: 'Retrato clássico a preto e branco.',
+        },
+        {
+          title: 'Digitalização de documento',
+          description: 'Passe para escala de cinzentos uma página fotografada.',
+        },
+        {
+          title: 'Aspeto vintage',
+          description: 'Sépia numa fotografia de família.',
+        },
+        {
+          title: 'Impressão',
+          description: 'Prepare para uma impressora a preto e branco.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Escala de cinzentos correta na luminância, mais sépia e vintage.',
+        'Recorte, redimensione e converta no mesmo carregamento.',
+      ],
+      privacyNote: 'A cor da sua imagem é removida pelo ImageMagick no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Escala de cinzentos ou dessaturar?',
+          answer: 'Esta é uma escala de cinzentos ponderada pela luminância, que parece mais natural do que simplesmente remover a saturação.',
+        },
+        {
+          question: 'Posso obter um tom sépia?',
+          answer: 'Sim. Escolha sépia ou vintage na lista de filtros.',
+        },
+        {
+          question: 'Posso fazer isto a um vídeo?',
+          answer: 'Sim. Use Ajustar brilho e cor do vídeo e defina a saturação para -100.',
+        },
+        {
+          question: 'A cor original é recuperável?',
+          answer: 'Não. Guarde o ficheiro original.',
+        },
+      ],
+      related: [
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Recortar imagem',
+          to: '/tools/crop-image',
+          description: 'Corte a uma região.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Adicionar texto a imagem',
+          to: '/tools/add-text-to-image',
+          description: 'Legenda ou marca de água.',
+        },
+        {
+          label: 'Filtros de imagem',
+          to: '/tools/image-filters',
+          description: 'Sépia, esboço, relevo e mais.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados de localização e do dispositivo.',
+        },
+      ],
+      embed: {
+        title: 'Converter uma imagem para preto e branco',
+        description: 'Carregue uma imagem. O filtro está predefinido para escala de cinzentos; mude para sépia ou vintage para um tom mais quente. Prima Converter.',
+      },
     },
     'image-filters': {
       name: 'Filtros e efeitos de imagem',
+      h1: 'Aplique filtros e efeitos a uma imagem online',
       tagline: 'Pintura a óleo, esboço, carvão, relevo, vintage, redemoinho, desfoque, nitidez e mais, aplicados a qualquer fotografia com um clique.',
+      metaTitle: 'Filtros de imagem online grátis: esboço, óleo, relevo | Media Manipulator',
+      metaDescription: 'Filtros de fotografia online gratuitos. Aplique pintura a óleo, esboço a lápis, carvão, relevo, vintage, sépia, redemoinho, desfocagem ou nitidez a JPG, PNG, WebP e mais, e depois transfira. Sem registo.',
+      ogTitle: 'Aplique filtros e efeitos a uma imagem online',
+      ogDescription: 'Esboço, pintura a óleo, relevo, vintage e mais. Grátis, sem registo.',
+      intro: 'Às vezes, uma fotografia quer ser outra coisa: um esboço para um convite, uma pintura a óleo para uma impressão, um logótipo em relevo, uma abstração em redemoinho. O Media Manipulator aplica os filtros artísticos e corretivos do ImageMagick nos nossos servidores, do esboço a lápis à nitidez, e exporta em qualquer formato de imagem, opcionalmente recortada, redimensionada e legendada na mesma passagem.',
+      whatItDoes: [
+        'Artísticos: pintura a óleo, esboço, carvão, relevo, vintage, sépia, redemoinho, distorção de barril.',
+        'Corretivos: desfocagem, nitidez, escala de cinzentos.',
+        'Rotações de 45, 90, 180 e 270 graus no mesmo seletor.',
+        'Combine com recorte, redimensionamento, sobreposição de texto e conversão de formato.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Escolha um filtro',
+          description: 'A pintura a óleo vem pré-selecionada.',
+        },
+        {
+          title: 'Converta',
+          description: 'O ImageMagick renderiza o efeito.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o resultado.',
+        },
+      ],
+      advancedDetails: [
+        'A pintura a óleo e o carvão baseiam-se num raio e variam com o tamanho da imagem; redimensione para 1500 a 2500 px para obter o efeito mais forte.',
+        'O esboço e o relevo funcionam melhor em imagens com contornos nítidos e bom contraste.',
+        'Os efeitos são renderizados nos píxeis; guarde o original.',
+      ],
+      whyItMatters: [
+        'Uma imagem estilizada destaca-se num feed de fotografias.',
+        'Os visuais de esboço e de pintura são comuns em cartões, cartazes e impressões.',
+        'A nitidez e a desfocagem são correções do dia a dia.',
+      ],
+      useCases: [
+        {
+          title: 'Retrato a lápis',
+          description: 'Filtro de esboço numa fotografia para um cartão.',
+        },
+        {
+          title: 'Impressão pintada',
+          description: 'Pintura a óleo para uma impressão em tela.',
+        },
+        {
+          title: 'Logótipo em relevo',
+          description: 'Dê relevo a um logótipo plano.',
+        },
+        {
+          title: 'Aumentar a nitidez de uma digitalização',
+          description: 'Realce os contornos de uma digitalização pouco nítida.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Doze filtros artísticos e corretivos num só seletor.',
+        'Recorte, redimensione, legende e converta no mesmo carregamento.',
+      ],
+      privacyNote: 'O filtro que escolher é aplicado à sua imagem pelo ImageMagick no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Posso ajustar a intensidade?',
+          answer: 'Os filtros usam intensidades fixas e afinadas. Redimensione a imagem para maior ou para menor para alterar a força aparente de um efeito baseado em raio.',
+        },
+        {
+          question: 'Posso acumular filtros?',
+          answer: 'Um filtro por passagem; volte a passar o resultado pela ferramenta para aplicar um segundo.',
+        },
+        {
+          question: 'Existe transferência de estilo com IA?',
+          answer: 'Não. Estes são efeitos clássicos do ImageMagick, que são executados instantaneamente.',
+        },
+        {
+          question: 'Que filtro funciona para um logótipo?',
+          answer: 'Relevo ou carvão num logótipo de alto contraste.',
+        },
+      ],
+      related: [
+        {
+          label: 'Preto e branco',
+          to: '/tools/grayscale-image',
+          description: 'Escala de cinzentos e sépia.',
+        },
+        {
+          label: 'Desfocar imagem',
+          to: '/tools/blur-image',
+          description: 'Suavize ou oculte.',
+        },
+        {
+          label: 'Aumentar a nitidez da imagem',
+          to: '/tools/sharpen-image',
+          description: 'Realce os detalhes.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Recortar imagem',
+          to: '/tools/crop-image',
+          description: 'Corte uma região.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Adicionar texto a imagem',
+          to: '/tools/add-text-to-image',
+          description: 'Legenda ou marca de água.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados de localização e do dispositivo.',
+        },
+      ],
+      embed: {
+        title: 'Aplicar um filtro a uma imagem',
+        description: 'Carregue uma imagem e escolha um filtro; a pintura a óleo vem pré-selecionada. Estão disponíveis esboço, carvão, relevo, vintage, sépia, redemoinho, distorção de barril, desfocagem e nitidez. Prima Converter.',
+      },
     },
     'rotate-image': {
       name: 'Rodar imagem',
+      h1: 'Rode uma imagem online grátis',
       tagline: 'Rode uma fotografia 90°, 180° ou 270°, corrija uma digitalização ou foto de telemóvel deitada, e transfira-a em qualquer formato.',
+      metaTitle: 'Rodar imagem online grátis (90°, 180°, 270°) | Media Manipulator',
+      metaDescription: 'Rotador de imagens online gratuito. Rode uma fotografia JPG, PNG, WebP ou HEIC 90, 180 ou 270 graus, ou 45 para uma inclinação, e transfira. A rotação fica gravada nos píxeis. Sem registo.',
+      ogTitle: 'Rode uma imagem online grátis',
+      ogDescription: 'Corrija uma fotografia deitada com um clique. Grátis, sem registo.',
+      intro: 'Os telemóveis registam a orientação numa etiqueta que alguns visualizadores ignoram, e os scanners e as câmaras antigas erram-na por completo. Rodar os próprios píxeis resolve o problema de uma vez por todas. O Media Manipulator roda imagens nos nossos servidores com o ImageMagick 90, 180, 270 ou 45 graus, respeita primeiro a etiqueta de orientação existente e exporta em qualquer formato.',
+      whatItDoes: [
+        'Roda 90° (sentido horário), 180°, 270° (sentido anti-horário) ou 45°.',
+        'Grava a rotação nos píxeis e limpa a etiqueta de orientação EXIF.',
+        'Combine com recorte, redimensionamento e conversão de formato.',
+        'Grave a imagem rodada como JPG, PNG, WebP, AVIF ou GIF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Escolha o ângulo',
+          description: '90° vem pré-selecionado.',
+        },
+        {
+          title: 'Converta',
+          description: 'O ImageMagick roda e codifica.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde a imagem direita.',
+        },
+      ],
+      advancedDetails: [
+        'A orientação EXIF existente é aplicada primeiro, pelo que o que vê é o que é rodado.',
+        'Uma rotação de 45° acrescenta um preenchimento de fundo nos cantos; recorte depois, se necessário.',
+        'Para espelhar na horizontal ou na vertical, use antes as ferramentas Inverter e espelhar.',
+      ],
+      whyItMatters: [
+        'As fotografias deitadas são a queixa mais comum nos carregamentos em fóruns e formulários.',
+        'Algumas aplicações ignoram a etiqueta de orientação, pelo que a rotação gravada nos píxeis é a única correção fiável.',
+        'As digitalizações e os ficheiros de câmaras antigas muitas vezes não têm etiqueta nenhuma.',
+      ],
+      useCases: [
+        {
+          title: 'Foto de telemóvel deitada',
+          description: 'Rode 90° para ficar direita em todo o lado.',
+        },
+        {
+          title: 'Digitalização ao contrário',
+          description: 'Rode 180°.',
+        },
+        {
+          title: 'Corrigir um envio num formulário',
+          description: 'Rode antes de submeter a fotografia de um documento.',
+        },
+        {
+          title: 'Efeito inclinado',
+          description: 'Rode 45° para um elemento de design.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Rotação aplicada aos píxeis, com a etiqueta de orientação tratada corretamente.',
+        'Recorte, redimensione e converta no mesmo carregamento.',
+      ],
+      privacyNote: 'A sua imagem é rodada pelo ImageMagick, no nosso servidor, segundo o ângulo que escolher. Nada é enviado para um serviço externo. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Porque é que a minha fotografia aparece direita no telemóvel mas deitada noutros sítios?',
+          answer: 'O seu telemóvel gravou uma etiqueta de orientação que a outra aplicação ignora. Rodar aqui grava a orientação nos píxeis.',
+        },
+        {
+          question: 'Rodar perde qualidade?',
+          answer: 'A rotação em múltiplos de 90° não tem perdas na geometria; a recodificação é o único custo. Use PNG ou uma qualidade JPG alta.',
+        },
+        {
+          question: 'Posso rodar por um ângulo arbitrário?',
+          answer: 'Só são oferecidos os 45° e os múltiplos de 90°.',
+        },
+        {
+          question: 'Posso espelhar em vez de rodar?',
+          answer: 'Aqui não; o espelhamento não está atualmente disponível para imagens.',
+        },
+      ],
+      related: [
+        {
+          label: 'Rodar vídeo',
+          to: '/tools/rotate-video',
+          description: 'O mesmo para vídeo.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Recortar imagem',
+          to: '/tools/crop-image',
+          description: 'Corte uma região.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Adicionar texto a imagem',
+          to: '/tools/add-text-to-image',
+          description: 'Legenda ou marca de água.',
+        },
+        {
+          label: 'Filtros de imagem',
+          to: '/tools/image-filters',
+          description: 'Sépia, esboço, relevo e mais.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados de localização e do dispositivo.',
+        },
+      ],
+      embed: {
+        title: 'Rodar uma imagem',
+        description: 'Carregue uma imagem. O seletor de filtro vem predefinido para rodar 90°; escolha antes 180°, 270° ou 45°. A rotação é aplicada aos píxeis, pelo que todos os visualizadores concordam. Prima Converter.',
+      },
     },
     'sharpen-image': {
       name: 'Aumentar a nitidez da imagem',
+      h1: 'Aumente a nitidez de uma imagem online grátis',
       tagline: 'Realce os contornos de uma fotografia ou digitalização ligeiramente desfocada com um só clique e transfira em qualquer formato.',
+      metaTitle: 'Aumentar a nitidez da imagem online grátis | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para aumentar a nitidez de imagens. Realce uma fotografia ou digitalização JPG, PNG, WebP ou HEIC pouco nítida e transfira-a. Para recuperar detalhes reais, experimente o restauro de imagem com IA. Sem registo.',
+      ogTitle: 'Aumente a nitidez de uma imagem online grátis',
+      ogDescription: 'Realce uma fotografia pouco nítida com um clique. Grátis, sem registo.',
+      intro: 'Uma fotografia um pouco desfocada por uma objetiva lenta, um redimensionamento ou um scanner beneficia de uma passagem de nitidez que aumenta o contraste ao longo dos contornos. O Media Manipulator aplica uma nitidez por máscara de desfocagem nos nossos servidores com o ImageMagick e exporta em qualquer formato. Para uma desfocagem que vá além da simples falta de nitidez, a ferramenta de restauro de imagem com IA recupera detalhes que a nitidez não consegue.',
+      whatItDoes: [
+        'Aplica a qualquer imagem uma nitidez por máscara de desfocagem afinada.',
+        'Combine com redimensionamento: aumente a nitidez depois de reduzir para miniaturas bem definidas.',
+        'Transfira o resultado mais nítido como JPG, PNG, WebP, AVIF ou GIF.',
+        'Compare o original e o resultado lado a lado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Mantenha a nitidez selecionada',
+          description: 'Adicione um redimensionamento, se quiser.',
+        },
+        {
+          title: 'Converta',
+          description: 'O ImageMagick aplica a máscara de desfocagem.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde a imagem mais nítida.',
+        },
+      ],
+      advancedDetails: [
+        'A nitidez aumenta o contraste local nos contornos; não acrescenta detalhe. O excesso de nitidez nota-se como halos.',
+        'Reduzir o tamanho e depois aumentar a nitidez é a receita clássica para imagens web bem definidas.',
+        'Para desfocagem de movimento, falta de foco ou fontes de baixa resolução, use o restauro de imagem com IA.',
+      ],
+      whyItMatters: [
+        'As imagens reduzidas perdem contraste nos contornos e parecem pouco nítidas sem este passo.',
+        'As digitalizações de documentos e de impressões são muitas vezes ligeiramente desfocadas.',
+        'Uma imagem nítida transmite mais qualidade.',
+      ],
+      useCases: [
+        {
+          title: 'Miniatura',
+          description: 'Redimensione e aumente a nitidez para a web.',
+        },
+        {
+          title: 'Digitalização pouco nítida',
+          description: 'Realce uma impressão digitalizada.',
+        },
+        {
+          title: 'Fotografia de produto',
+          description: 'Acrescente definição aos contornos antes de publicar o anúncio.',
+        },
+        {
+          title: 'Foco ligeiramente falhado',
+          description: 'Recupere um pouco de nitidez aparente.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Máscara de desfocagem afinada, com redimensionamento na mesma passagem.',
+        'Restauro com IA disponível quando a nitidez não chega.',
+      ],
+      privacyNote: 'A nitidez da sua imagem é aumentada pelo ImageMagick no nosso servidor, com a intensidade que definir. Nada é enviado para um serviço externo. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Vai corrigir uma fotografia desfocada?',
+          answer: 'Ajuda em casos de ligeira falta de nitidez. Para uma desfocagem real, use o restauro de imagem com IA, que reconstrói o detalhe.',
+        },
+        {
+          question: 'Posso controlar a intensidade?',
+          answer: 'A intensidade é fixa e afinada; execute duas vezes para obter mais, ou use um tamanho de saída menor para um efeito relativo mais forte.',
+        },
+        {
+          question: 'Acrescenta ruído?',
+          answer: 'A nitidez pode realçar o grão existente. Use uma qualidade JPG alta para não o agravar.',
+        },
+      ],
+      related: [
+        {
+          label: 'Restauro de imagem com IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Recupere detalhes reais com IA.',
+        },
+        {
+          label: 'Ampliador de imagens com IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Amplie sem desfocagem.',
+        },
+        {
+          label: 'Desfocar imagem',
+          to: '/tools/blur-image',
+          description: 'O oposto.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Recortar imagem',
+          to: '/tools/crop-image',
+          description: 'Corte uma região.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Adicionar texto a imagem',
+          to: '/tools/add-text-to-image',
+          description: 'Legenda ou marca de água.',
+        },
+        {
+          label: 'Filtros de imagem',
+          to: '/tools/image-filters',
+          description: 'Sépia, esboço, relevo e mais.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados de localização e do dispositivo.',
+        },
+      ],
+      embed: {
+        title: 'Aumentar a nitidez de uma imagem',
+        description: 'Carregue uma imagem. O filtro vem predefinido para nitidez. Prima Converter e compare o resultado com o original no visualizador.',
+      },
     },
     'blur-image': {
       name: 'Desfocar imagem',
+      h1: 'Desfoque uma imagem online grátis',
       tagline: 'Suavize uma fotografia inteira para um fundo, um marcador de posição ou um ecrã de privacidade, e transfira-a em qualquer formato.',
+      metaTitle: 'Desfocar imagem online grátis | Media Manipulator',
+      metaDescription: 'Desfocagem de imagens online gratuita. Suavize uma fotografia JPG, PNG, WebP ou HEIC inteira para um fundo, um marcador de posição ou um ecrã de privacidade. Para desfocar apenas rostos, use a ferramenta de desfocagem de rostos. Sem registo.',
+      ogTitle: 'Desfoque uma imagem online grátis',
+      ogDescription: 'Suavize uma fotografia com um clique. Grátis, sem registo.',
+      intro: 'Uma fotografia desfocada cria um fundo calmo por trás do texto, um marcador de posição com pouco detalhe enquanto a imagem real carrega, ou um ecrã de privacidade para uma captura de ecrã. O Media Manipulator aplica uma desfocagem gaussiana a toda a imagem nos nossos servidores com o ImageMagick e exporta em qualquer formato. Para desfocar apenas os rostos ou uma matrícula, as ferramentas de desfocagem de rostos com IA e de ocultação de texto visam essas regiões.',
+      whatItDoes: [
+        'Aplica uma desfocagem gaussiana a toda a imagem.',
+        'Combine com redimensionamento para um marcador de posição desfocado minúsculo.',
+        'A imagem suavizada é devolvida como JPG, PNG, WebP, AVIF ou GIF.',
+        'Ferramentas relacionadas desfocam rostos ou ocultam texto de forma seletiva.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Mantenha a desfocagem selecionada',
+          description: 'Redimensione, se quiser.',
+        },
+        {
+          title: 'Converta',
+          description: 'O ImageMagick desfoca e codifica.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde a imagem suavizada.',
+        },
+      ],
+      advancedDetails: [
+        'O raio de desfocagem é fixo; para um efeito mais forte, reduza primeiro o tamanho, desfoque e depois volte a aumentar.',
+        'As imagens desfocadas comprimem-se para tamanhos muito pequenos, e é por isso que são bons marcadores de posição.',
+        'Uma captura de ecrã desfocada não é uma ocultação: por vezes o texto pode ser recuperado. Use a ocultação de texto para conteúdo sensível.',
+      ],
+      whyItMatters: [
+        'Os fundos desfocados mantêm legível o texto sobreposto.',
+        'Os marcadores de posição de baixa qualidade melhoram a velocidade percebida da página.',
+        'Uma versão suavizada de uma fotografia é um elemento de design comum.',
+      ],
+      useCases: [
+        {
+          title: 'Fundo para texto',
+          description: 'Desfoque uma fotografia para colocar um título por cima.',
+        },
+        {
+          title: 'Marcador de posição',
+          description: 'Pré-visualização desfocada minúscula para carregamento diferido.',
+        },
+        {
+          title: 'Ecrã de privacidade',
+          description: 'Suavize uma captura de ecrã antes de a partilhar e depois oculte como deve ser.',
+        },
+        {
+          title: 'Efeito onírico',
+          description: 'Sobreposição suave para um design.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Desfocagem de toda a imagem aqui; desfocagem de rostos e ocultação de texto como ferramentas de IA dedicadas.',
+        'Redimensione e converta no mesmo carregamento.',
+      ],
+      privacyNote: 'A sua imagem é desfocada pelo ImageMagick no nosso servidor, com o raio que definir. Nada é enviado para um serviço externo. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Posso desfocar apenas parte da imagem?',
+          answer: 'Use Desfocar rostos numa fotografia para rostos ou Ocultar texto numa imagem para texto e matrículas.',
+        },
+        {
+          question: 'A desfocagem chega para esconder texto?',
+          answer: 'Não de forma fiável. Use a ferramenta de ocultação, que pinta por cima da região.',
+        },
+        {
+          question: 'Posso controlar a quantidade de desfocagem?',
+          answer: 'O raio é fixo; reduza o tamanho antes de desfocar para um efeito mais forte.',
+        },
+      ],
+      related: [
+        {
+          label: 'Desfocar rostos numa fotografia',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Desfocagem de rostos com IA.',
+        },
+        {
+          label: 'Ocultar texto numa imagem',
+          to: '/tools/redact-text-in-image',
+          description: 'Esconda texto e matrículas.',
+        },
+        {
+          label: 'Aumentar a nitidez da imagem',
+          to: '/tools/sharpen-image',
+          description: 'O oposto.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+        {
+          label: 'Recortar imagem',
+          to: '/tools/crop-image',
+          description: 'Corte uma região.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Altere as dimensões.',
+        },
+        {
+          label: 'Adicionar texto a imagem',
+          to: '/tools/add-text-to-image',
+          description: 'Legenda ou marca de água.',
+        },
+        {
+          label: 'Filtros de imagem',
+          to: '/tools/image-filters',
+          description: 'Sépia, esboço, relevo e mais.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados de localização e do dispositivo.',
+        },
+      ],
+      embed: {
+        title: 'Desfocar uma imagem',
+        description: 'Carregue uma imagem. O filtro vem predefinido para desfocagem, que suaviza toda a imagem. Para desfocar apenas rostos, use a ferramenta Desfocar rostos numa fotografia. Prima Converter.',
+      },
     },
     'generate-vtt-captions': {
       name: 'Gerador de legendas VTT',
+      h1: 'Gere legendas WebVTT a partir de vídeo ou áudio',
       tagline: 'Crie um ficheiro de legendas .vtt para vídeo HTML5, YouTube ou um leitor com transcrição por IA nos nossos próprios servidores GPU.',
+      metaTitle: 'Gerador de legendas VTT online (IA grátis) | Media Manipulator',
+      metaDescription: 'Gerador de legendas WebVTT online gratuito. Carregue um ficheiro de vídeo ou áudio e transfira um ficheiro .vtt com legendas sincronizadas para vídeo HTML5, YouTube, Vimeo ou qualquer leitor. Corre na nossa própria GPU.',
+      ogTitle: 'Gere legendas WebVTT online',
+      ogDescription: 'Legendas .vtt sincronizadas por IA para qualquer vídeo. Grátis, sem registo.',
+      intro: 'O WebVTT é o formato de legendas da web: o elemento track do HTML5, o YouTube, o Vimeo e os leitores HLS e DASH leem-no todos. O Media Manipulator gera legendas VTT sincronizadas a partir de qualquer vídeo ou áudio com um modelo Whisper num servidor GPU que nós operamos, pelo que os seus ficheiros nunca vão para uma IA de terceiros, e abre o resultado num visualizador de legendas onde pode verificar a sincronização antes de transferir.',
+      whatItDoes: [
+        'Transcreve a fala e segmenta-a em entradas sincronizadas.',
+        'Produz um ficheiro .vtt conforme a norma.',
+        'Deteta o idioma automaticamente.',
+        'Corre na nossa própria GPU; sem fornecedor de IA de terceiros.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue vídeo ou áudio',
+          description: 'Qualquer formato comum.',
+        },
+        {
+          title: 'Mantenha VTT selecionado',
+          description: 'Ou mude para SRT, texto ou JSON.',
+        },
+        {
+          title: 'Transcreva',
+          description: 'O Whisper sincroniza cada entrada.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Associe o .vtt ao seu leitor.',
+        },
+      ],
+      advancedDetails: [
+        'As entradas seguem a segmentação do Whisper, normalmente uma frase ou oração por entrada de 2 a 7 segundos.',
+        'Traduza o resultado para outros idiomas com o Tradutor de legendas.',
+        'Para uma faixa de legendas gravada no vídeo, use a pista de legendas do Darkroom.',
+      ],
+      whyItMatters: [
+        'As legendas são obrigatórias para a acessibilidade e a maioria dos espectadores vê os vídeos sem som.',
+        'O VTT é o único formato que o vídeo HTML5 lê nativamente.',
+        'As legendas sincronizadas são indexáveis pelos motores de busca.',
+      ],
+      useCases: [
+        {
+          title: 'Vídeo HTML5',
+          description: 'Associe o ficheiro com um elemento track.',
+        },
+        {
+          title: 'Carregamento para o YouTube',
+          description: 'Carregue o .vtt como faixa de legendas.',
+        },
+        {
+          title: 'Vídeo de curso',
+          description: 'Legendas para um leitor de LMS.',
+        },
+        {
+          title: 'Traduzir mais tarde',
+          description: 'Entra VTT, sai VTT traduzido.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Whisper no nosso próprio hardware; nada é enviado para uma IA de terceiros.',
+        'Visualizador de legendas para verificar a sincronização antes de transferir.',
+      ],
+      privacyNote: 'A fala do seu ficheiro é transcrita pelo Whisper no nosso próprio servidor GPU e sincronizada em legendas WebVTT. O trabalho de IA corre em hardware que nós operamos, nunca num fornecedor de IA de terceiros, e nada do que carrega é usado para treinar um modelo. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'VTT ou SRT?',
+          answer: 'VTT para leitores web e YouTube; SRT para editores de vídeo e algumas plataformas mais antigas. Ambos estão disponíveis.',
+        },
+        {
+          question: 'Posso editar as legendas?',
+          answer: 'Transfira o .vtt e edite-o em qualquer editor de texto; o formato é texto simples.',
+        },
+        {
+          question: 'Posso traduzi-las?',
+          answer: 'Sim, com a ferramenta Tradutor de legendas.',
+        },
+        {
+          question: 'O meu vídeo é enviado para terceiros?',
+          answer: 'Não. A transcrição corre no nosso próprio servidor GPU.',
+        },
+        {
+          question: 'Conta para o meu limite?',
+          answer: 'Cada ficheiro VTT é uma tarefa de IA, descontada do limite de IA e nunca do limite normal. As tarefas falhadas não são contabilizadas.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Cada ficheiro de legendas conta como uma tarefa de IA; as tarefas falhadas não são contabilizadas.',
+        ],
+      },
+      related: [
+        {
+          label: 'Gerador de SRT',
+          to: '/tools/srt-generator',
+          description: 'Formato SubRip.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Texto simples ou JSON.',
+        },
+        {
+          label: 'Tradutor de legendas',
+          to: '/tools/caption-translator',
+          description: 'Traduza as legendas.',
+        },
+        {
+          label: 'Editor de vídeo Darkroom',
+          to: '/tools/content-studio',
+          description: 'Grave as legendas no vídeo.',
+        },
+      ],
+      embed: {
+        title: 'Gerar legendas VTT',
+        description: 'Carregue um ficheiro de vídeo ou áudio. A saída vem predefinida para WebVTT; a transcrição é sincronizada pelo Whisper no nosso servidor GPU e devolvida como um ficheiro .vtt que pode associar com um elemento track ou carregar numa plataforma.',
+      },
     },
     // MM75: summarize-video / summarize-audio full page bodies (model-written, needs native review).
     'summarize-video': {
@@ -365,7 +4140,6 @@ const ptPtToolPages = {
       whyMediaManipulator: [
         'O Whisper e os modelos de visão e de linguagem são executados em hardware que nós operamos; o seu vídeo nunca é enviado para uma IA de terceiros.',
         'Capítulos que navegam no seu próprio vídeo, diretamente no visualizador de resultados.',
-        'Transferências em Markdown e JSON. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
       ],
       privacyNote: 'Os resumos requerem uma conta gratuita, pelo que a tarefa fica associada a ela. O seu ficheiro é processado nos nossos próprios servidores e os modelos de IA são executados num servidor GPU que nós operamos; nada é enviado para um fornecedor de IA de terceiros. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
       faq: [
@@ -492,7 +4266,6 @@ const ptPtToolPages = {
       whyMediaManipulator: [
         'O Whisper e o modelo de linguagem são executados em hardware que nós operamos; a sua gravação nunca é enviada para uma IA de terceiros.',
         'Capítulos que navegam na sua própria gravação, diretamente no visualizador de resultados.',
-        'Transferências em Markdown e JSON. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
       ],
       privacyNote: 'Os resumos requerem uma conta gratuita, pelo que a tarefa fica associada a ela. O seu ficheiro é processado nos nossos próprios servidores e os modelos de IA são executados num servidor GPU que nós operamos; nada é enviado para um fornecedor de IA de terceiros. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
       faq: [
@@ -543,188 +4316,4729 @@ const ptPtToolPages = {
     // MM78 voices: name + tagline (model-written, needs native review).
     'voice-cloning': {
       name: 'Clonagem de voz',
-      tagline:
-        'Grave ou carregue 5 a 60 segundos da sua própria fala, crie uma voz e peça-lhe que leia qualquer texto em mais de vinte idiomas.',
+      h1: 'Clone a sua voz a partir de uma gravação curta',
+      tagline: 'Grave ou carregue 5 a 60 segundos da sua própria fala, crie uma voz e peça-lhe que leia qualquer texto em mais de vinte idiomas.',
+      metaTitle: 'Clone a sua própria voz a partir de uma gravação | Media Manipulator',
+      metaDescription: 'Crie uma voz a partir de 5 a 60 segundos da sua própria fala e converta texto em fala com ela em mais de 20 idiomas. Corre nos nossos próprios servidores; os resultados têm marca de água.',
+      ogTitle: 'Clone a sua própria voz a partir de uma gravação curta',
+      ogDescription: 'Grave algumas frases, confirme que a voz é sua e gere fala com ela em mais de 20 idiomas. Modelos alojados por nós, resultados com marca de água.',
+      intro: 'A clonagem de voz cria uma voz reutilizável a partir de uma gravação curta da sua própria fala. Leia algumas frases naturais para o microfone, ou carregue um clip de 5 a 60 segundos, confirme que a voz é sua (ou que tem a autorização explícita da pessoa que fala) e crie a voz. Ela aparece em As minhas vozes com uma pré-visualização curta. A partir daí, pode escrever qualquer texto, escolher um de mais de vinte idiomas e um nível de emoção, e obter um MP3 e um WAV dessa voz a lê-lo. O modelo corre num servidor GPU que nós operamos, cada ficheiro gerado tem uma marca de água inaudível e nada do que grava é usado para treinar o que quer que seja.',
+      whatItDoes: [
+        'Cria uma voz guardada a partir de 5 a 60 segundos de fala gravada no navegador ou carregada como ficheiro de áudio.',
+        'Verifica que a gravação é suficientemente longa e contém de facto fala antes de contabilizar o que quer que seja.',
+        'Lê qualquer texto com a voz guardada em mais de 20 idiomas, com um controlo de emoção de calmo a expressivo.',
+        'Devolve a fala como MP3, com uma transferência em WAV criada no seu navegador.',
+        'Marca cada ficheiro gerado com uma marca de água inaudível, para que a fala sintética possa ser identificada.',
+      ],
+      flowSteps: [
+        {
+          title: 'Grave ou carregue',
+          description: '5 a 60 segundos de fala clara numa sala silenciosa.',
+        },
+        {
+          title: 'Confirme o consentimento',
+          description: 'Assinale que a voz é sua ou que tem a autorização de quem fala.',
+        },
+        {
+          title: 'Crie a voz',
+          description: 'É renderizada uma pré-visualização curta e a voz é guardada na sua conta.',
+        },
+        {
+          title: 'Gere fala',
+          description: 'Escreva o texto, escolha um idioma e uma emoção, e transfira o áudio.',
+        },
+      ],
+      advancedDetails: [
+        'O motor de voz é o Chatterbox Multilingual (licença MIT), executado no nosso próprio servidor GPU. Clona a partir do clip de referência no momento em que gera; nenhum modelo é treinado com a sua voz.',
+        'Criar uma voz conta como uma tarefa de IA (a pré-visualização). Cada geração conta como uma tarefa de IA. Um pedido que falha ou é recusado não é contabilizado.',
+        'O comprimento do texto por pedido depende do seu plano, a cerca de 18 caracteres por segundo de fala; o contador por baixo da caixa de texto mostra o seu limite.',
+        'Cada ficheiro gerado tem a marca de água PerTh da Resemble AI, que é inaudível e resiste às edições e compressões comuns.',
+        'O primeiro pedido após um período de inatividade pode demorar até 20 segundos enquanto o motor carrega.',
+      ],
+      whyItMatters: [
+        'Narração com a sua própria voz, sem marcar uma sessão de estúdio a cada alteração do guião.',
+        'A mesma voz noutro idioma, para um vídeo ou um curso que chegue a mais pessoas.',
+        'Um motor alojado por nós significa que as suas gravações ficam connosco, e não com um fornecedor de IA de terceiros.',
+      ],
+      useCases: [
+        {
+          title: 'Narração de vídeo',
+          description: 'Volte a ler uma frase alterada de um guião sem a regravar.',
+        },
+        {
+          title: 'Cursos e tutoriais',
+          description: 'Dê voz à mesma aula em vários idiomas.',
+        },
+        {
+          title: 'Acessibilidade',
+          description: 'Faça ler em voz alta textos longos com uma voz familiar.',
+        },
+        {
+          title: 'Prototipagem',
+          description: 'Ouça um guião lido antes de gravar a versão final.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Modelos abertos em hardware que nós operamos; as gravações nunca vão para um serviço de IA externo.',
+        'Consentimento explícito antes de qualquer voz ser criada, registado juntamente com a voz.',
+        'Resultados com marca de água e o seu próprio botão de eliminar para cada voz guardada.',
+      ],
+      privacyNote: 'Os 5 a 60 segundos de fala que grava ou carrega tornam-se uma voz guardada na sua conta; essa gravação de referência é o que o modelo lê sempre que a voz fala. As gravações de voz e as vozes guardadas são processadas nos nossos próprios servidores; nada é enviado para um fornecedor de IA de terceiros e nada é usado para treinar qualquer modelo. Uma voz guardada (a sua gravação de referência e a pré-visualização) fica armazenada na sua conta, segue o período de retenção que escolher e pode ser eliminada em Conta, Vozes a qualquer momento; é eliminada juntamente com a sua conta. O áudio gerado é mantido como qualquer outro resultado: os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Posso clonar a voz de outra pessoa?',
+          answer: 'Só com a autorização explícita dessa pessoa. Tem de confirmar que a voz é sua ou que tem autorização antes de uma voz ser criada, e guardamos essa confirmação juntamente com a voz. Fazer-se passar por alguém sem autorização, a fraude e os deepfakes políticos são proibidos pelos nossos Termos.',
+        },
+        {
+          question: 'Vai soar exatamente como eu?',
+          answer: 'Normalmente soa reconhecivelmente como quem fala, mas não é uma cópia perfeita: sotaques, vozes pouco comuns e gravações com ruído são mais difíceis. Grave algumas frases naturais numa sala silenciosa para obter o melhor resultado.',
+        },
+        {
+          question: 'A minha gravação é usada para treinar um modelo de IA?',
+          answer: 'Não. Nada do que carrega ou gera é usado para treinar qualquer modelo. A voz é clonada a partir do seu clip de referência sempre que gera fala.',
+        },
+        {
+          question: 'As pessoas conseguem perceber que o áudio é gerado?',
+          answer: 'Cada ficheiro gerado com uma voz guardada tem uma marca de água inaudível que as ferramentas de deteção conseguem ler. Não altera o som do áudio.',
+        },
+        {
+          question: 'Como elimino uma voz?',
+          answer: 'Abra Conta, Vozes e elimine-a. A sua gravação de referência e a pré-visualização são removidas; o áudio que já gerou fica no seu histórico até terminar o respetivo período de retenção.',
+        },
+        {
+          question: 'Quantas vozes posso manter?',
+          answer: 'Depende do seu plano; a página mostra quantas tem guardadas e o seu limite.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A referência tem de ter entre 5 e 60 segundos e conter fala.',
+          'Guardar uma voz requer uma conta; as vozes predefinidas funcionam sem conta.',
+        ],
+      },
+      related: [
+        {
+          label: 'Criador de vozes',
+          to: '/tools/voice-designer',
+          description: 'Descreva uma voz nova e guarde-a.',
+        },
+        {
+          label: 'Alterador de voz',
+          to: '/tools/voice-changer',
+          description: 'Altere o tom de uma gravação ou converta-a para uma voz.',
+        },
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'Limpe uma gravação antes de a usar.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Mude a tonalidade de música ou fala.',
+        },
+      ],
+      embed: {
+        title: 'Criar uma voz',
+        description: 'Grave ou carregue uma gravação limpa de 5 a 60 segundos, confirme que a voz é sua ou que tem a autorização de quem fala, e crie a voz. Depois escreva um texto e gere fala. As vozes predefinidas funcionam sem conta.',
+      },
     },
     'voice-designer': {
       name: 'Criador de vozes',
-      tagline:
-        'Descreva uma voz por palavras, pré-visualize-a e mantenha a que preferir para ler qualquer texto em mais de vinte idiomas.',
+      h1: 'Crie uma voz nova a partir de uma descrição',
+      tagline: 'Descreva uma voz por palavras, pré-visualize-a e mantenha a que preferir para ler qualquer texto em mais de vinte idiomas.',
+      metaTitle: 'Criar uma voz nova a partir de uma descrição | Media Manipulator',
+      metaDescription: 'Descreva a voz que pretende, por exemplo calorosa, grave e calma, pré-visualize-a gratuitamente, mantenha-a e gere fala com ela. Modelos alojados por nós; resultado com marca de água.',
+      ogTitle: 'Crie uma voz nova a partir de uma descrição',
+      ogDescription: 'Descreva uma voz, ouça pré-visualizações gratuitas, mantenha a que preferir e gere fala com ela. Alojado por nós, com marca de água.',
+      intro: 'O criador de vozes cria uma voz que não pertence a ninguém. Descreva-a em poucas palavras, como género, idade, sotaque, tom e ritmo, ou componha a descrição a partir das etiquetas, e pré-visualize uma frase de exemplo. As pré-visualizações são gratuitas, três por descrição a cada hora. Quando ouvir a que pretende, dê-lhe um nome e mantenha-a: a voz exata que pré-visualizou é guardada na sua conta e pode depois ler qualquer texto, em qualquer idioma da ferramenta de fala. A criação corre no Qwen3-TTS e a fala no Chatterbox, ambos no nosso próprio servidor GPU, e cada ficheiro gerado contém uma marca de água inaudível.',
+      whatItDoes: [
+        'Transforma a descrição textual de uma voz numa pré-visualização falada.',
+        'Mantém a voz exata que pré-visualizou (a mesma semente) quando a guarda.',
+        'Fala qualquer texto com a voz mantida em mais de 20 idiomas.',
+        'Devolve um MP3 da fala, com uma transferência em WAV criada no seu navegador.',
+      ],
+      flowSteps: [
+        {
+          title: 'Descreva',
+          description: 'Escreva ou clique nas caraterísticas que pretende.',
+        },
+        {
+          title: 'Pré-visualize',
+          description: 'Três pré-visualizações gratuitas por descrição a cada hora.',
+        },
+        {
+          title: 'Mantenha-a',
+          description: 'Dê um nome à voz e guarde-a na sua conta.',
+        },
+        {
+          title: 'Gere fala',
+          description: 'Escreva qualquer texto e transfira o áudio.',
+        },
+      ],
+      advancedDetails: [
+        'A criação usa o Qwen3-TTS VoiceDesign (Apache 2.0). A frase de pré-visualização pode ser produzida em dez idiomas: chinês, inglês, japonês, coreano, alemão, francês, russo, português, espanhol e italiano.',
+        'Uma voz mantida é guardada como a sua descrição, a semente e um clipe de referência de 10 segundos; a partir daí é o Chatterbox que a fala, pelo que soa igual em todo o lado e em todos os idiomas suportados.',
+        'As pré-visualizações não são contabilizadas. Manter uma voz conta como uma tarefa de IA, e cada geração conta como uma tarefa de IA.',
+        'As descrições funcionam melhor em inglês; as etiquetas acrescentam caraterísticas em inglês.',
+      ],
+      whyItMatters: [
+        'Uma voz de narrador ou de personagem distinta sem contratar um ator de voz para um rascunho.',
+        'Não está envolvida a voz de nenhuma pessoa real, pelo que não se toma emprestada a imagem de ninguém.',
+        'A voz mantida permanece coerente em todos os guiões e idiomas.',
+      ],
+      useCases: [
+        {
+          title: 'Personagens',
+          description: 'Dê a cada personagem de uma história ou de um protótipo de jogo a sua própria voz.',
+        },
+        {
+          title: 'Vídeos explicativos',
+          description: 'Um narrador calmo e claro para vídeos de produto e de formação.',
+        },
+        {
+          title: 'Áudio provisório',
+          description: 'Locução temporária enquanto um guião ainda está a mudar.',
+        },
+        {
+          title: 'Acessibilidade',
+          description: 'Uma voz de leitura agradável para documentos longos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Modelos abertos no nosso próprio servidor GPU; sem fornecedor de IA de terceiros.',
+        'Pré-visualizações gratuitas antes de algo ser contabilizado.',
+        'Resultado com marca de água e um botão de eliminar para cada voz mantida.',
+      ],
+      privacyNote: 'Apenas a descrição textual que escreve é enviada ao modelo de voz; as pré-visualizações que ele produz são áudio gerado por nós, e a que mantém é guardada pela sua semente. As gravações de voz e as vozes guardadas são processadas nos nossos próprios servidores; nada é enviado para um fornecedor de IA de terceiros e nada é usado para treinar qualquer modelo. Uma voz guardada (a sua gravação de referência e a pré-visualização) é armazenada na sua conta, segue o período de retenção que escolher e pode ser eliminada em qualquer momento a partir de Conta, Vozes; é eliminada com a sua conta. O áudio gerado é mantido como qualquer outro resultado: Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Uma voz criada é a voz real de alguém?',
+          answer: 'Não. É gerada a partir da sua descrição e de uma semente aleatória; não é modelada a partir de nenhuma pessoa em particular.',
+        },
+        {
+          question: 'Porque é que as pré-visualizações se esgotam?',
+          answer: 'Cada descrição pode ser pré-visualizada três vezes por hora, para que as pré-visualizações gratuitas continuem disponíveis para todos. Altere a descrição para pré-visualizar de novo, ou mantenha a voz de que gosta.',
+        },
+        {
+          question: 'A voz mantida vai soar como a pré-visualização?',
+          answer: 'Sim. Ao manter, são enviadas a mesma descrição e a mesma semente da pré-visualização que ouviu, e a voz é guardada a partir dessa produção.',
+        },
+        {
+          question: 'Que idiomas consegue falar?',
+          answer: 'Uma voz é criada num de dez idiomas e, depois de mantida, pode falar todos os idiomas da ferramenta de fala, mais de vinte no total.',
+        },
+        {
+          question: 'O resultado é assinalado como gerado?',
+          answer: 'Sim. Cada ficheiro gerado contém uma marca de água inaudível que as ferramentas de deteção conseguem ler.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Pré-visualizações: 3 por descrição por hora, não contabilizadas.',
+          'Manter uma voz exige uma conta.',
+        ],
+      },
+      related: [
+        {
+          label: 'Clonagem de voz',
+          to: '/tools/voice-cloning',
+          description: 'Crie uma voz a partir da sua própria gravação.',
+        },
+        {
+          label: 'Alterador de voz',
+          to: '/tools/voice-changer',
+          description: 'Altere o tom de uma gravação ou converta-a para uma voz.',
+        },
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'Limpe uma gravação antes de a usar.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Altere a tonalidade de música ou de fala.',
+        },
+      ],
+      embed: {
+        title: 'Descreva uma voz',
+        description: 'Escreva uma descrição curta ou clique nas etiquetas de caraterísticas, pré-visualize a voz (três pré-visualizações gratuitas por descrição a cada hora) e depois mantenha-a para gerar fala. Manter uma voz exige uma conta.',
+      },
     },
     'voice-changer': {
       name: 'Alterador de voz',
-      tagline:
-        'Altere de imediato o tom e o caráter de uma gravação, ou converta a fala para uma voz guardada ou predefinida com IA.',
+      h1: 'Altere a voz numa gravação',
+      tagline: 'Altere de imediato o tom e o caráter de uma gravação, ou converta a fala para uma voz guardada ou predefinida com IA.',
+      metaTitle: 'Alterador de voz: alterar ou converter uma gravação | Media Manipulator',
+      metaDescription: 'Altere a voz numa gravação: mude o tom e o formante de imediato, ou converta a fala para uma voz guardada ou predefinida com IA. Compare o antes e o depois.',
+      ogTitle: 'Altere a voz numa gravação',
+      ogDescription: 'Mude o tom e o formante de imediato, ou converta a fala para outra voz com IA, e depois compare o antes e o depois.',
+      intro: 'O alterador de voz tem duas formas de alterar uma gravação. Alterar tom é uma alteração clássica de tom e formante: mova o tom até doze semitons para cima ou para baixo, mantenha o caráter de quem fala ou altere-o com o tom, ou parta de uma predefinição como Mais grave, Mais agudo, Infantil, Mais velho ou Telefone. É instantâneo, não precisa de conta e não usa IA. Converter usa conversão de voz com IA para fazer a fala soar como uma das suas vozes guardadas ou uma voz predefinida, mantendo as palavras, o ritmo e a entoação. Em qualquer dos casos, pode comparar o original e o resultado com um leitor A/B sem interrupções antes de transferir.',
+      whatItDoes: [
+        'Altera o tom até 12 semitons para cima ou para baixo, com o formante mantido ou alterado.',
+        'Oferece predefinições de alteração: mais grave, mais agudo, infantil, mais velho e telefone.',
+        'Converte a fala para uma voz guardada ou uma voz predefinida com conversão de voz com IA.',
+        'Reproduz o original e o resultado numa comparação A/B sincronizada.',
+        'Devolve um MP3, com uma transferência em WAV criada no seu navegador.',
+      ],
+      flowSteps: [
+        {
+          title: 'Grave ou carregue',
+          description: 'Fala do seu microfone ou de um ficheiro de áudio ou de vídeo.',
+        },
+        {
+          title: 'Escolha Alterar tom ou Converter',
+          description: 'Alteração de tom instantânea, ou conversão com IA para outra voz.',
+        },
+        {
+          title: 'Compare',
+          description: 'Alterne entre o original e o resultado sem interrupções.',
+        },
+        {
+          title: 'Transfira',
+          description: 'MP3, ou um WAV criado no seu navegador.',
+        },
+      ],
+      advancedDetails: [
+        'Alterar tom usa o alterador de tom rubberband através do ffmpeg no nosso servidor. «Manter o caráter da voz» preserva o formante; «Alterar com o tom» move-o, o que soa como uma pessoa mais pequena ou maior a falar. Telefone aplica ainda um filtro passa-banda de 300 a 3400 Hz.',
+        'Alterar tom conta como uma operação e o seu resultado não tem marca de água. Converter conta como uma tarefa de IA e o seu resultado contém uma marca de água inaudível.',
+        'Converter usa a conversão de voz do Chatterbox no nosso próprio servidor GPU. A duração da gravação que pode converter depende do seu plano.',
+        'Converter exige uma conta. Converter para a voz de outra pessoa exige a autorização dessa pessoa, tal como na clonagem.',
+      ],
+      whyItMatters: [
+        'Disfarce uma voz para uma entrevista anónima ou um clipe que respeite a privacidade com uma simples alteração de tom.',
+        'Corrija um take gravado com a voz errada sem o voltar a gravar.',
+        'Ouça a diferença de imediato com o leitor A/B em vez de adivinhar.',
+      ],
+      useCases: [
+        {
+          title: 'Áudio anónimo',
+          description: 'Altere o tom de uma voz para que quem fala seja mais difícil de reconhecer.',
+        },
+        {
+          title: 'Vozes de personagens',
+          description: 'Transforme a sua própria leitura numa voz diferente para uma história.',
+        },
+        {
+          title: 'Narração coerente',
+          description: 'Converta a frase de um convidado para a voz guardada do narrador.',
+        },
+        {
+          title: 'Efeitos',
+          description: 'Um efeito de telefone ou infantil para uma cena de vídeo.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O alterador de tom é gratuito e não precisa de conta.',
+        'A conversão com IA corre no nosso próprio servidor GPU, não num serviço de terceiros.',
+        'Comparação A/B integrada entre o original e o resultado.',
+      ],
+      privacyNote: 'A gravação que carrega é alterada no tom com o rubberband ou convertida para outra voz por um modelo de IA, consoante o modo que escolher. As gravações de voz e as vozes guardadas são processadas nos nossos próprios servidores; nada é enviado para um fornecedor de IA de terceiros e nada é usado para treinar qualquer modelo. Uma voz guardada (a sua gravação de referência e a pré-visualização) é armazenada na sua conta, segue o período de retenção que escolher e pode ser eliminada em qualquer momento a partir de Conta, Vozes; é eliminada com a sua conta. O áudio gerado é mantido como qualquer outro resultado: Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Qual é a diferença entre Alterar tom e Converter?',
+          answer: 'Alterar tom muda o tom e o caráter da mesma voz com processamento de sinal; é instantâneo e gratuito. Converter usa IA para fazer a fala soar como uma voz diferente, uma das suas vozes guardadas ou uma predefinida.',
+        },
+        {
+          question: 'Alterar o tom acrescenta uma marca de água?',
+          answer: 'Não. O áudio com o tom alterado é processamento de sinal comum e não tem marca de água. O áudio convertido contém uma marca de água inaudível.',
+        },
+        {
+          question: 'Posso converter a minha voz na de uma celebridade?',
+          answer: 'Não. Só pode converter para as suas próprias vozes guardadas ou para as nossas vozes predefinidas, e usar a voz de uma pessoa real exige a sua autorização explícita. A usurpação de identidade sem autorização é proibida pelos nossos Termos.',
+        },
+        {
+          question: 'Qual pode ser a duração da gravação?',
+          answer: 'Alterar tom aceita gravações até ao limite de duração do seu plano. A conversão tem o seu próprio limite por plano, indicado quando carrega o ficheiro.',
+        },
+        {
+          question: 'Posso usar um ficheiro de vídeo?',
+          answer: 'Sim. A faixa de áudio é usada e a imagem é descartada.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Alterar tom: uma operação, sem necessidade de conta.',
+          'Converter: uma tarefa de IA, exige conta e plano.',
+        ],
+      },
+      related: [
+        {
+          label: 'Clonagem de voz',
+          to: '/tools/voice-cloning',
+          description: 'Crie uma voz a partir da sua própria gravação.',
+        },
+        {
+          label: 'Criador de vozes',
+          to: '/tools/voice-designer',
+          description: 'Descreva uma voz nova e mantenha-a.',
+        },
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'Limpe uma gravação antes de a usar.',
+        },
+        {
+          label: 'Alterar o tom do áudio',
+          to: '/tools/change-audio-pitch',
+          description: 'Altere a tonalidade de música ou de fala.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Limpe primeiro a gravação.',
+        },
+      ],
+      embed: {
+        title: 'Altere uma voz',
+        description: 'Grave ou carregue fala. Alterar tom muda o tom e o formante de imediato, para todos. Converter faz a gravação soar como uma das suas vozes guardadas ou uma voz predefinida, e exige uma conta com um plano que o inclua.',
+      },
     },
     // MM84: name / tagline / metaTitle / metaDescription for the copy-bar tool pages (model-written, needs native review).
     'content-studio': {
       name: 'Darkroom',
+      h1: 'Darkroom',
       tagline: 'Edite, sobreponha e misture vídeo e áudio numa linha temporal multipista e exporte em MP4. Um editor ao estilo do Premiere Pro, diretamente no navegador.',
       metaTitle: 'Darkroom: editor de vídeo multipista online e gratuito | Media Manipulator',
       metaDescription: 'Edite, sobreponha e misture vídeo e áudio numa linha temporal multipista e exporte em MP4: um editor de vídeo gratuito ao estilo do Premiere Pro, que corre no navegador. Sem registo nem instalação.',
+      ogTitle: '🎬 Darkroom: editor de vídeo multipista gratuito no seu navegador',
+      ogDescription: 'Edite, sobreponha e misture vídeo e áudio numa linha temporal multipista, acrescente títulos, transições e cor, e exporte em MP4. Um editor ao estilo do Premiere Pro, diretamente no seu navegador, sem registo e totalmente gratuito. Venha experimentar! 🎬',
+      intro: 'O Darkroom é um editor de vídeo multipista que corre num separador do navegador. Começa por criar um projeto com uma tela e uma taxa de fotogramas, larga ficheiros de vídeo, imagem e áudio num painel de multimédia, dispõe-nos em pistas sobrepostas, corta-os e divide-os nos limites dos fotogramas, aplica-lhes correção de cor e chroma key, acrescenta títulos, transições e legendas, mistura o áudio com uma mesa de mistura por pista e, por fim, entrega a linha temporal terminada ao nosso servidor de renderização, onde o ffmpeg constrói toda a edição como um único grafo de filtros e a codifica em H.264 ou HEVC dentro de MP4, ou em MP3 ou WAV quando o projeto é só de áudio. A pré-visualização sobre a qual edita é composta em tempo real na sua GPU em WebGL2; a exportação é verificada em relação a essa pré-visualização, para que obtenha exatamente o que viu.',
+      whatItDoes: [
+        'Disponibiliza uma linha temporal multipista com precisão ao fotograma: cortar, dividir, eliminar com ajuste, lâmina, edições de deslizar conteúdo, deslocar clipe, rolar e em cadeia, marcadores, grupos, bloqueio, solo e ocultação de pistas, e separação do áudio do vídeo.',
+        'Compõe as pistas pela ordem de sobreposição com recorte, ajuste ao enquadramento, transformação, uma correção de cor ao estilo Lumetri (exposição, contraste, saturação, temperatura, matiz, vibração), LUT 3D, chroma key com conta-gotas, opacidade e oito modos de mistura.',
+        'Anima posição, escala, rotação, opacidade, volume, panorâmica e parâmetros de efeitos com fotogramas-chave e cinco curvas de suavização; acrescenta quinze transições e clipes de título construídos a partir de camadas de texto e de forma.',
+        'Mistura o áudio através de fader, panorâmica, equalizador de três bandas e compressor por pista, com medidores em tempo real, além de atenuação automática e predefinições de volume sonoro para streaming, podcast e difusão no barramento master.',
+        'Gera legendas com Whisper na nossa GPU, permite editá-las numa faixa de legendas e exporta-as gravadas na imagem ou como ficheiro separado SRT ou VTT.',
+        'Exporta MP4 em H.264 ou HEVC com áudio AAC, ou MP3 ou WAV, ao tamanho da tela ou redimensionado para 720, 1080, 1440 ou 2160 linhas, e mantém um painel de exportações com o progresso e a opção de renderizar novamente.',
+      ],
+      flowSteps: [
+        {
+          title: 'Criar um projeto',
+          description: 'Escolha uma tela (16:9 a 1920 x 1080, 9:16 a 1080 x 1920, 1:1, 4:5 ou um tamanho personalizado) e uma taxa de fotogramas de 24, 30 ou 60.',
+        },
+        {
+          title: 'Importar multimédia',
+          description: 'Carregue vídeo, imagens e áudio para o painel de multimédia. O servidor renderiza um proxy de pré-visualização com um fotograma-chave a cada segundo, para que percorrer a linha temporal continue leve.',
+        },
+        {
+          title: 'Cortar e sobrepor',
+          description: 'Coloque clipes nas pistas, corte e divida na posição do cursor de reprodução, empilhe sobreposições e títulos por cima da filmagem de base e mantenha imagens fixas durante o tempo que quiser.',
+        },
+        {
+          title: 'Corrigir a cor, recortar o fundo e misturar',
+          description: 'Ajuste a cor, aplique um LUT, remova um fundo com chroma key, defina fotogramas-chave para o que se deve mover e equilibre as pistas de áudio na mesa de mistura.',
+        },
+        {
+          title: 'Exportar',
+          description: 'Escolha o formato, a qualidade, a altura de saída, o modo das legendas e a predefinição de volume sonoro. O ffmpeg renderiza a linha temporal no nosso servidor e o ficheiro aparece no painel de exportações.',
+        },
+      ],
+      advancedDetails: [
+        'A exportação é uma única invocação do ffmpeg: cada fonte é uma entrada, a linha temporal torna-se um grafo filter_complex (trim, scale, overlay, drawtext para os títulos, eq e filtros de cor, amix com normalize=0 para o áudio) e a saída é codificada numa única passagem. Os parâmetros com fotogramas-chave seguem num ficheiro auxiliar sendcmd ligado ao grafo, o que exige o ffmpeg 4.4 ou mais recente no anfitrião de renderização.',
+        'O H.264 usa o codificador por hardware h264_nvenc quando uma codificação de teste é bem-sucedida na GPU de renderização; caso contrário, usa o libx264. As predefinições de qualidade correspondem, no NVENC, ao preset p4 com qualidade constante 23 (Média), p5 com CQ 19 (Alta) e p4 com CQ 28 (Baixa); no libx264, são o preset medium com CRF 23, slow com CRF 18 e veryfast com CRF 28. Ambos fixam yuv420p.',
+        'O HEVC usa o hevc_nvenc ou o libx265 com valores de CQ ou CRF cinco pontos acima (28, 24, 33 no NVENC; 28, 24, 32 no libx265), que é a diferença habitual para uma qualidade percebida igual, e marca o fluxo como hvc1 para que o MP4 reproduza no Safari e no QuickTime. Se nenhum dos codificadores estiver disponível, a exportação falha de forma explícita em vez de devolver H.264 com o nome de HEVC.',
+        'O áudio é reamostrado para 48 kHz estéreo dentro do grafo e codificado em AAC a 192 kb/s nas exportações de vídeo; as exportações MP3 usam o libmp3lame a 192 kb/s e as exportações WAV são PCM de 16 bits. As predefinições de volume sonoro usam o loudnorm do ffmpeg: streaming I=-14 LUFS TP=-1.5 LRA=11, podcast I=-16 TP=-1.5 LRA=11, difusão I=-23 TP=-2 LRA=7.',
+        'Escolher uma altura de saída redimensiona o fotograma composto como último filtro (lanczos, píxeis quadrados, largura arredondada para um número par), depois de as legendas serem gravadas na imagem, pelo que o texto é redimensionado com a imagem em vez de ser redesenhado. Uma altura que o seu plano não permite renderizar é recusada com um erro, nunca reduzida em silêncio.',
+        'Os ficheiros MP4 são escritos com -movflags +faststart, para que o índice fique no início e o ficheiro comece a reproduzir antes de estar totalmente transferido. As imagens fixas na linha temporal tornam-se entradas com -loop 1 -framerate <project fps> -t <hold>, pelo que uma fotografia mantida no ecrã não custa mais a descodificar do que os seus fotogramas.',
+      ],
+      whyItMatters: [
+        'Uma ferramenta de conversão altera um ficheiro. Uma edição combina vários: as imagens de cobertura por baixo da entrevista, o título sobre a abertura, o fundo musical por baixo de ambos, cada um cortado ao fotograma.',
+        'Nos editores de navegador, a pré-visualização e a exportação costumam divergir. O Darkroom renderiza a pré-visualização na sua GPU e a exportação na nossa, e mantém as duas dentro de uma tolerância documentada com um sistema de testes de imagens de referência.',
+        'O trabalho pesado não fica no seu portátil. Uma exportação em 4K, uma transcrição com Whisper ou uma composição de várias camadas com LUT é executada num servidor de renderização com GPU, pelo que um portátil modesto consegue concluir o trabalho.',
+      ],
+      useCases: [
+        {
+          title: 'Clipes verticais para plataformas de vídeo curto',
+          description: 'Uma tela de 1080 x 1920, um zoom sobre quem fala, um cartão de título, música atenuada por baixo da voz e legendas gravadas na imagem.',
+        },
+        {
+          title: 'Tutoriais e gravações de ecrã',
+          description: 'Corte os tempos mortos, junte tomadas, sobreponha a imagem da webcam em picture-in-picture, acrescente destaques e exporte em 1080p com um ficheiro de legendas separado.',
+        },
+        {
+          title: 'Episódios de entrevistas e podcasts',
+          description: 'Dois ângulos de câmara cortados para quem fala, uma mistura com volume sonoro normalizado e uma exportação em MP3 da mesma linha temporal para o feed de áudio.',
+        },
+        {
+          title: 'Promoções e vídeos de produto',
+          description: 'Filmagem com chroma key sobre um fundo, um LUT para o visual, movimentos do logótipo com fotogramas-chave e uma versão de 15 segundos em 4K para o ecrã de parede.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma montagem de 90 segundos em 1080p30 com a predefinição Média',
+          body: 'Dois clipes em 1080p, uma faixa de música e um cartão de título numa tela de 1920 x 1080 a 30 fps, exportados em H.264 com a predefinição Média. No servidor de renderização com um NVENC funcional, isto corresponde ao h264_nvenc com preset p4 e qualidade constante 23 com yuv420p; sem ele, ao libx264 com preset medium e CRF 23. A mistura de áudio é codificada em AAC a 192 kb/s, o que, para 90 segundos, dá 192 000 x 90 / 8, cerca de 2,2 MB de áudio, independentemente do conteúdo. A parte de vídeo visa uma qualidade e não uma taxa de bits, pelo que o tamanho acompanha a filmagem: material estático de uma pessoa a falar com CQ 23 fica pequeno, enquanto movimento de câmara à mão fica grande. O tempo de renderização aumenta com a duração da linha temporal e com o número de clipes visíveis em simultâneo, porque cada fotograma de cada clipe visível é descodificado e composto antes de chegar ao codificador.',
+        },
+        {
+          title: 'Um podcast de 20 minutos exportado em MP3 e em WAV',
+          body: 'Um projeto só de áudio (duas pistas de voz, um jingle de abertura, predefinição de volume sonoro de podcast) ignora por completo o grafo de vídeo. Exportado em MP3, o ficheiro é libmp3lame a 192 kb/s constantes: 192 000 x 1 200 / 8 = 28,8 MB, ou seja, cerca de 29 MB. Exportado em WAV, é PCM de 16 bits aos 48 kHz estéreo do grafo: 48 000 x 2 canais x 2 bytes = 192 000 bytes por segundo, 230 MB para 20 minutos. A fase loudnorm visa -16 LUFS integrados com um teto de -1,5 dBTP e 11 LU de amplitude de volume sonoro. Sem fotogramas para compor, a tarefa fica limitada pela descodificação das fontes e pelos filtros de áudio, pelo que termina bem antes de decorrida a duração do episódio.',
+        },
+      ],
+      whenNotToUse: 'O Darkroom é a ferramenta errada para um trabalho de um só passo. Se só precisa de cortar o início e o fim de um clipe, mudar o formato ou reduzir o tamanho, as páginas dedicadas de corte e de compressão de vídeo fazem-no com um único carregamento e sem projeto. Também não é o lugar para filmagens que não pode carregar: cada fonte é enviada para o nosso servidor para proxies e renderização, pelo que material que nunca pode sair do seu computador pertence a um editor de secretária. Os projetos numa sessão de visitante estão limitados a um e duram 24 horas; inicie sessão antes de começar algo a que queira voltar na próxima semana.',
+      whyMediaManipulator: [
+        'Verdadeiras ferramentas de edição: lâmina, deslizar conteúdo, deslocar clipe, rolar, edição em cadeia, marcadores, grupos, fotogramas-chave com suavização e uma mesa de mistura com equalização e compressão, e não um simples cortador com um campo de título.',
+        'Exportações honestas: a codificação por hardware ou por software é escolhida por um teste em tempo real, o HEVC recusa em vez de mentir, e uma resolução que o seu plano não permite renderizar é um erro, não uma redução silenciosa.',
+        'Uma conta, um só lugar: transcreva, comprima ou remova metadados dos mesmos ficheiros que edita, e gere locução ou legendas no mesmo servidor GPU.',
+      ],
+      privacyNote: 'O Darkroom mantém a sua multimédia nos nossos servidores enquanto o projeto existir: os carregamentos vão para o painel de multimédia como recursos, o servidor renderiza a partir deles proxies de pré-visualização, tiras de miniaturas e picos de forma de onda, e as exportações são construídas pelo ffmpeg em outputs/<jobId>/ no anfitrião de renderização. Quando pede legendas, o áudio é enviado para o Whisper na nossa própria GPU e as legendas resultantes são guardadas com o projeto. O documento do projeto, os seus recursos, versões e exportações podem ser eliminados a partir do editor ou da sua página Conta. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O vídeo e o áudio carregados passam também por uma fase de análise automática no nosso próprio servidor. Nada é enviado para um fornecedor de IA de terceiros e nenhum ficheiro é usado para treinar o que quer que seja.',
+      faq: [
+        {
+          question: 'O Darkroom é gratuito?',
+          answer: 'Sim. Sem conta, pode manter um projeto e renderizar 5 exportações por dia, com carregamentos até 200 MB por ficheiro e saída até 1080 linhas. Uma conta gratuita aumenta isso para 5 projetos, 30 exportações por dia, ficheiros de 1 GB e 1440 linhas; o Premium oferece projetos ilimitados, 300 exportações por dia, ficheiros de 5 GB e saída de 2160 linhas; o Pro aumenta as exportações para 700 por dia. As exportações têm o seu próprio contador diário e não consomem a quota geral de operações. Estes são os valores predefinidos; a página de preços mostra os números atuais.',
+        },
+        {
+          question: 'O que posso exportar?',
+          answer: 'MP4 com vídeo H.264 ou HEVC e áudio AAC, ou MP3 ou WAV para projetos só de áudio. O vídeo pode sair ao tamanho da tela ou redimensionado para 720, 1080, 1440 ou 2160 linhas, com legendas gravadas na imagem, como ficheiro separado SRT ou VTT, ou sem legendas, e com uma predefinição de volume sonoro para streaming, podcast ou difusão aplicada à mistura.',
+        },
+        {
+          question: 'Que predefinição de qualidade devo escolher?',
+          answer: 'A Média corresponde a CRF 23 no libx264 ou a qualidade constante 23 no NVENC e é a escolha sensata para carregar numa plataforma que volta a codificar de qualquer forma. A Alta (CRF 18 ou CQ 19, preset slow ou p5) destina-se a uma versão master que vai voltar a editar ou mostrar num ecrã grande. A Baixa (CRF 28 ou CQ 28, veryfast ou p4) serve para uma pré-visualização rápida a enviar a um colega.',
+        },
+        {
+          question: 'Porque falhou a minha exportação HEVC?',
+          answer: 'O HEVC precisa do hevc_nvenc na GPU de renderização ou do libx265 na compilação do ffmpeg. Se o servidor não tiver nenhum dos dois, a exportação falha com uma mensagem de codificador não suportado em vez de devolver um ficheiro H.264 com a etiqueta HEVC. Mude o formato para H.264 e a mesma linha temporal será renderizada.',
+        },
+        {
+          question: 'Como são criadas as legendas?',
+          answer: '«Gerar legendas» envia o áudio da linha temporal para o Whisper no nosso servidor GPU. Os segmentos regressam como legendas que pode editar na faixa de legendas e depois exportar gravadas na imagem (uma faixa de legendas ASS renderizada nos fotogramas) ou como ficheiro SRT ou VTT junto ao vídeo. Gerar legendas conta como uma tarefa de IA, descontada da quota de IA.',
+        },
+        {
+          question: 'A exportação corresponde à pré-visualização?',
+          answer: 'É esse o objetivo do design. A pré-visualização é composta em WebGL2 pela mesma ordem que o grafo de filtros do servidor usa (recorte, ajuste, transformação, correção de cor, LUT, chroma key, opacidade, mistura), e um sistema de testes de imagens de referência compara fotogramas de ambos dentro de uma tolerância documentada. O solo e a ocultação aplicam-se à exportação exatamente como à pré-visualização.',
+        },
+        {
+          question: 'Posso voltar a um projeto mais tarde?',
+          answer: 'Sim. Os projetos são guardados com números de revisão, para que um separador desatualizado não possa substituir trabalho mais recente, e o histórico de versões mantém pontos de controlo aos quais pode regressar. Também é mantido um rascunho no seu navegador para recuperação em caso de falha. Os utilizadores com sessão iniciada podem abrir projetos recentes a partir de qualquer dispositivo; os projetos de visitantes ficam ligados à sessão do navegador e ao período de retenção de 24 horas.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Os ficheiros de origem e os exportados são processados nos nossos servidores. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+        ],
+        processingNotes: [
+          'A pré-visualização é composta no navegador; a exportação final é codificada no servidor em MP4 H.264 ou HEVC, ou em áudio MP3 ou WAV.',
+        ],
+      },
+      related: [
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza ainda mais uma exportação para enviar por e-mail ou para uma ligação lenta.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenha uma transcrição completa de uma edição terminada, e não apenas legendas.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire a banda sonora de um clipe antes de o levar para a linha temporal.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Quando só precisa de um corte.',
+        },
+        {
+          label: 'Motion',
+          to: '/tools/motion',
+          description: 'Anime um logótipo ou um oráculo como SVG e depois exporte um GIF para a linha temporal.',
+        },
+        {
+          label: 'Tutorial do Darkroom',
+          to: '/tutorials/content-studio',
+          description: 'Construa uma edição, de um projeto vazio a um MP4 exportado, passo a passo.',
+        },
+      ],
+      embed: {
+        title: 'Editar vídeo',
+        description: 'Crie um novo projeto (ou reabra um recente), arraste ficheiros de vídeo, imagem e áudio para o painel de multimédia e largue-os na linha temporal multipista. Corte, divida e organize clipes, sobreponha camadas e títulos, misture o áudio e exporte um MP4 terminado, tudo no seu navegador.',
+      },
     },
     'remove-exif-metadata': {
       name: 'Remover metadados EXIF de imagens',
+      h1: 'Remover metadados EXIF de imagens online',
       tagline: 'Elimine a localização GPS e os dados do dispositivo, da câmara e da data das fotografias antes de as partilhar.',
       metaTitle: 'Remover metadados EXIF de imagens online (grátis) | Media Manipulator',
       metaDescription: 'Ferramenta online gratuita para remover metadados EXIF, GPS, IPTC e da câmara de imagens JPG, PNG, WebP e HEIC. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Remover metadados EXIF de imagens online',
+      ogDescription: 'Elimine a localização GPS e os metadados da câmara e da data e hora das imagens antes de as partilhar publicamente.',
+      intro: 'Uma fotografia transporta um segundo documento dentro de si. A par dos píxeis, um telemóvel ou uma câmara escreve a marca e o modelo do dispositivo, muitas vezes o seu número de série, a objetiva, a exposição, o segundo exato em que o obturador disparou, o software que guardou o ficheiro pela última vez, uma pequena miniatura de pré-visualização e, quando os serviços de localização estavam ativos, a latitude, a longitude e a altitude do sítio onde estava. Esta ferramenta lê tudo isso de um JPG, PNG, WebP ou HEIC, mostra-lhe cada etiqueta agrupada pelo que revela e depois remove tudo com uma única passagem do ExifTool, para que a cópia que partilha transporte apenas a imagem.',
+      whatItDoes: [
+        'Inspeciona o ficheiro carregado com o ExifTool e lista todas as etiquetas que encontra, agrupadas em categorias (câmara, objetiva, GPS, data e hora, XMP, IPTC, miniatura, cor, notas do fabricante e outras), com as etiquetas de localização, identidade, dispositivo e histórico assinaladas.',
+        'Remove os blocos EXIF (IFD0 e ExifIFD: marca, modelo, número de série do corpo, modelo da objetiva, exposição, ISO, distância focal, datas de captura e de modificação) e o IFD de GPS (latitude, longitude, altitude, as respetivas etiquetas de referência e as marcas temporais GPS).',
+        'Remove a miniatura de pré-visualização incorporada no IFD1, que é uma pequena cópia separada da imagem e que sobrevive ao recorte em muitos editores.',
+        'Remove os pacotes XMP (ferramenta de criação, histórico de edição, palavras-chave, classificações), os registos IPTC (autor, direitos de autor, legenda), os blocos de recursos do Photoshop, as notas do fabricante e o perfil de cor ICC.',
+        'Aplica primeiro a orientação EXIF aos píxeis, para que uma fotografia de telemóvel que dependia da etiqueta de rotação não fique de lado depois de a etiqueta desaparecer.',
+        'Conta o que foi removido comparando os relatórios de antes e de depois e mostra o número, com uma nota quando havia etiquetas de localização entre elas.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar a fotografia',
+          description: 'Largue um JPG, PNG, WebP ou HEIC. O servidor executa o ExifTool duas vezes (uma passagem legível e uma numérica para os valores de GPS e de exposição) e devolve o relatório.',
+        },
+        {
+          title: 'Ler o relatório',
+          description: 'As etiquetas estão agrupadas por categoria; as coordenadas GPS são marcadas num mapa de localização para que veja exatamente o que o ficheiro revela.',
+        },
+        {
+          title: 'Remover tudo',
+          description: 'Um clique volta a guardar a imagem com o ImageMagick e executa exiftool -all= sobre o resultado.',
+        },
+        {
+          title: 'Comparar e transferir',
+          description: 'O ecrã de resultado indica quantas etiquetas foram removidas, oferece uma comparação lado a lado dos dois relatórios e entrega-lhe o ficheiro limpo.',
+        },
+      ],
+      advancedDetails: [
+        'A passagem sobre os píxeis é feita com o ImageMagick: convert <input> -auto-orient -quality 85 <output>, com o contentor de saída igual ao de entrada para JPG, PNG, WebP, GIF e AVIF. HEIC, TIFF e BMP não têm um caminho no mesmo contentor nesta página e são devolvidos como JPG.',
+        'A passagem sobre os metadados é exiftool -overwrite_original -all= sobre o ficheiro convertido. -all= remove de uma só vez todos os grupos graváveis: EXIF (IFD0, ExifIFD, GPS, InteropIFD), a miniatura IFD1, XMP, IPTC, Photoshop IRB, ICC_Profile, notas do fabricante e quaisquer segmentos APP que o ExifTool saiba escrever. Os segmentos JFIF e Adobe APP14 de que um descodificador JPEG precisa ficam no lugar; descrevem a disposição dos píxeis, não a si.',
+        'Como a imagem é recodificada, um JPG é escrito de novo com qualidade 85 e um PNG é escrito de novo sem perdas. A remoção não é uma cópia byte a byte com os metadados cortados.',
+        'Os relatórios de antes e de depois são o mesmo MetadataDocument que o inspetor constrói: entradas indexadas por grupo, como GPS:GPSLatitude ou XMP-xmpMM:History, cada uma classificada por um catálogo de cerca de 1 800 etiquetas em 22 categorias e quatro classes de privacidade (localização, identidade, dispositivo, histórico).',
+        'A contagem de removidos exclui as linhas que mudam em cada conversão (nome do ficheiro, tamanho, data de modificação, tipo MIME, tamanho da imagem), pelo que reflete os metadados efetivamente eliminados e não meros dados de registo.',
+        'Os contentores de vídeo e de áudio também podem ser limpos, a partir dos conversores de vídeo e de áudio: o ffmpeg é executado com -map_metadata -1 -map_chapters -1 e, para MP4, MOV, M4A e M4V, segue-se uma passagem exiftool -all=, porque o ffmpeg deixa para trás as chaves QuickTime e o XMP.',
+      ],
+      whyItMatters: [
+        'As etiquetas GPS traduzem-se numa morada. Uma fotografia de um sofá à venda, publicada a partir de casa, pode dizer a um desconhecido onde está o sofá.',
+        'As etiquetas de dispositivo e de número de série ligam as fotografias umas às outras e a si. Duas imagens com o mesmo BodySerialNumber foram tiradas com a mesma câmara, seja qual for a conta que as publicou.',
+        'A miniatura IFD1 é uma cópia do fotograma original. Recorte um rosto ou um documento da imagem e a pré-visualização pode continuar a mostrá-lo.',
+        'Muitos sites removem o EXIF ao carregar e muitos não o fazem. As aplicações de mensagens, os anexos de e-mail, as partilhas na nuvem e os sites de vendas passam frequentemente o ficheiro intacto.',
+      ],
+      useCases: [
+        {
+          title: 'Anúncios em sites de vendas e classificados',
+          description: 'Remova a localização e a hora de captura das fotografias de produtos tiradas em casa antes de os compradores as verem.',
+        },
+        {
+          title: 'Fotografias de documentos',
+          description: 'Uma fotografia de um formulário ou de uma carta também regista quando e onde foi tirada; remova esses dados antes de a reencaminhar.',
+        },
+        {
+          title: 'Publicar a partir de um local sensível',
+          description: 'Elimine identificadores do dispositivo e coordenadas de uma imagem antes de ela sair do seu controlo, e confirme com a comparação que desapareceram.',
+        },
+        {
+          title: 'Limpar uma imagem editada',
+          description: 'Os editores acrescentam histórico XMP e mantêm a miniatura original; remova ambos para que o ficheiro mostre apenas o que pretendia.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um JPEG de 12 megapíxeis de iPhone com GPS',
+          body: 'Um JPEG de 4032 x 3024 saído diretamente de um iPhone 15 Pro transporta, num caso típico, 5 etiquetas IFD0 (marca, modelo, orientação, software, data de modificação), 7 etiquetas ExifIFD, incluindo o número de série do corpo e o modelo da objetiva, 5 etiquetas GPS, 4 entradas XMP, incluindo o histórico de edição, 2 entradas do perfil ICC, as 3 entradas da miniatura IFD1 (cerca de 5 KB de JPEG de pré-visualização) e um GPSPosition derivado. O ecrã de resultado indica 27 etiquetas removidas, incluindo localização: essas 27 são todas as entradas exceto as linhas de nome, tamanho, data e tipo do ficheiro e o tamanho da imagem, que existem em qualquer ficheiro. A saída é um JPG recodificado com qualidade 85, com a orientação aplicada aos píxeis; é a recodificação que determina o tamanho final. A tarefa é uma única descodificação e codificação no ImageMagick mais uma reescrita no ExifTool, pelo que termina em poucos segundos e o tempo é gasto nos píxeis, não nas etiquetas.',
+        },
+        {
+          title: 'Um HEIC de um telemóvel recente',
+          body: 'O HEIC não tem um caminho no mesmo contentor nesta página, pelo que um HEIC de 12 megapíxeis é descodificado pelo ImageMagick e escrito como JPG com qualidade 85, sendo depois limpo com exiftool -all=. Perde o contentor HEIC e o respetivo perfil de cor e ganha um ficheiro que qualquer navegador e site de vendas aceita. Conte com um ficheiro maior do que o HEIC que carregou, porque a recodificação JPEG com qualidade 85 é a única compressão aplicada e é ela que determina o tamanho. O relatório lista as notas do fabricante da Apple e o bloco GPS antes, e nada além das linhas de ficheiro e de tamanho da imagem depois. A descodificação do HEIC é a parte lenta; mesmo assim, é uma questão de segundos para uma fotografia.',
+        },
+      ],
+      whenNotToUse: 'Não limpe uma fotografia que ainda precise de editar ou cuja proveniência tenha de provar. Os ficheiros RAW de câmara não são aceites aqui e, de qualquer forma, não devem ser limpos com -all=, porque as suas notas do fabricante contêm dados de que o conversor RAW precisa. Se quiser manter um aviso de direitos de autor ou um título enquanto elimina as etiquetas de GPS e de dispositivo, use antes o modo «Metadados personalizados» do conversor de imagens, que remove tudo e volta a escrever apenas os campos que preencher. E lembre-se de que remover metadados não remove o que é visível na imagem: uma placa de rua, um reflexo ou um rosto continuam a dizer onde estava; as ferramentas de desfocagem de rostos e de ocultação de texto tratam disso.',
+      whyMediaManipulator: [
+        'Vê as provas. O inspetor lista todas as etiquetas antes da remoção e uma comparação prova o que desapareceu depois, em vez de um visto verde e uma promessa.',
+        'Uma passagem, todos os grupos. O ExifTool -all= remove EXIF, GPS, XMP, IPTC, Photoshop, ICC, notas do fabricante e a miniatura de pré-visualização de uma só vez; não é preciso assinalar um bloco de cada vez.',
+        'A orientação é tratada. A etiqueta de rotação é aplicada aos píxeis antes de ser removida, para que uma fotografia de telemóvel limpa não acabe de lado noutro sítio, que é o que costuma acontecer quando a etiqueta é eliminada sem rodar os píxeis.',
+      ],
+      privacyNote: 'Esta ferramenta remove, da cópia que devolve, os blocos EXIF (marca e modelo da câmara, número de série, objetiva, exposição, datas), o bloco GPS, a miniatura de pré-visualização IFD1, os registos XMP e IPTC, os recursos do Photoshop, as notas do fabricante e o perfil ICC. Para isso, o servidor tem primeiro de os ler: o ficheiro carregado é inspecionado com o ExifTool e o relatório é escrito na pasta da tarefa como metadata.json e, após a remoção, um segundo relatório do resultado é guardado ao lado, para que a vista Comparar possa mostrar a diferença. Ambos os relatórios e ambos os ficheiros ficam em uploads/<jobId>/ e outputs/<jobId>/ e são eliminados em conjunto quando termina o período de retenção. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O inspetor autónomo (que lê um ficheiro sem o converter) remove a sua cópia temporária assim que o relatório é produzido. As imagens passam também por uma fase de análise automática no nosso próprio servidor; nada é enviado a terceiros.',
+      faq: [
+        {
+          question: 'Que grupos de metadados são removidos, exatamente?',
+          answer: 'Tudo o que o ExifTool consegue escrever: EXIF (IFD0, ExifIFD, InteropIFD), o IFD de GPS, a miniatura IFD1, o XMP em todos os seus espaços de nomes (xmp, dc, xmpMM, photoshop, etc.), os registos IPTC IIM, os blocos de recursos do Photoshop, as notas do fabricante da Apple, Canon, Nikon, Sony e de outros fabricantes, e o perfil de cor ICC. No PNG, isso inclui os blocos tEXt, iTXt, zTXt, eXIf e iCCP; no WebP, os blocos EXIF, XMP e ICCP.',
+        },
+        {
+          question: 'A imagem é recodificada?',
+          answer: 'Sim. O ficheiro passa pelo ImageMagick (que também aplica a etiqueta de orientação aos píxeis) antes de o ExifTool remover as etiquetas. Um JPG é reescrito com qualidade 85, um PNG é reescrito sem perdas e um WebP com qualidade 85. Visualmente, a recodificação do JPG é difícil de distinguir do original em tamanhos de visualização normais, mas não é o mesmo fluxo de bits.',
+        },
+        {
+          question: 'Porque é que o meu HEIC voltou como JPG?',
+          answer: 'A remoção com um clique mantém o contentor para JPG, PNG, WebP, GIF e AVIF. HEIC, TIFF e BMP são descodificados e escritos como JPG, para que o resultado abra em qualquer lado. Se precisar de um HEIC de volta, converta-o no conversor de imagens com os metadados definidos como «Remover».',
+        },
+        {
+          question: 'O perfil de cor vai ser removido, e isso tem importância?',
+          answer: 'Sim, exiftool -all= remove o perfil ICC. Numa fotografia sRGB normal nada muda, porque os visualizadores assumem sRGB quando não existe perfil. Numa fotografia Display P3 de gama ampla de um telemóvel recente, as cores podem parecer ligeiramente menos saturadas em software que respeita os perfis. Se isso for importante para si, use o modo «Metadados personalizados» do conversor de imagens e mantenha lá o perfil.',
+        },
+        {
+          question: 'Posso manter uma linha de direitos de autor ou um título?',
+          answer: 'Não com a remoção de um clique, que remove tudo. A secção de metadados do conversor de imagens tem um modo «Personalizado» que limpa o ficheiro e depois grava apenas o que introduzir: título, autor, descrição, direitos de autor, comentário, palavras-chave e campos EXIF ou GPS escolhidos. Use-o quando quiser um ficheiro limpo que continue a identificá-lo.',
+        },
+        {
+          question: 'Como sei que funcionou?',
+          answer: 'O ecrã de resultado indica o número de etiquetas removidas e assinala quando havia dados de localização entre elas. Abra «Comparar» para ver o antes e o depois completos: é o mesmo relatório do ExifTool executado sobre o ficheiro de saída, pelo que uma linha de GPS ou de número de série que tivesse sobrevivido apareceria lá.',
+        },
+        {
+          question: 'É gratuito, e quantas fotografias posso limpar?',
+          answer: 'Sim. Cada remoção é um carregamento através do conversor normal, pelo que conta para a quota diária de operações: por predefinição, 5 por dia sem conta e até 200 MB por ficheiro, 30 por dia com uma conta gratuita e ficheiros até 1 GB, 300 com o Premium e 700 com o Pro. Uma tarefa que falhe devolve a sua unidade. Os números atuais estão na página de preços.',
+        },
+      ],
+      related: [
+        {
+          label: 'Desfocar rostos numa fotografia',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Os metadados são só metade da história; esconda os rostos que a própria imagem mostra.',
+        },
+        {
+          label: 'Ocultar texto numa imagem',
+          to: '/tools/redact-text-in-image',
+          description: 'Tape nomes, moradas e números impressos na imagem.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza a fotografia limpa antes de a publicar.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Junte fotografias limpas de documentos num único PDF.',
+        },
+        {
+          label: 'Política de Privacidade',
+          to: '/privacy-policy',
+          description: 'Como os carregamentos, os relatórios e os resultados são guardados e eliminados.',
+        },
+      ],
+      embed: {
+        title: 'Remover metadados de uma imagem',
+        description: 'Carregue uma fotografia JPG, PNG, WebP ou HEIC. Mostramos todas as etiquetas que transporta; depois, prima «Remover tudo» para as eliminar todas e ver exatamente o que foi removido.',
+      },
     },
     'compress-image': {
       name: 'Comprimir imagem',
+      h1: 'Comprimir imagem online grátis',
       tagline: 'Reduza o tamanho de ficheiros JPG, PNG e WebP para sites mais rápidos, envios mais leves e partilha mais fácil.',
       metaTitle: 'Comprimir imagem online grátis | Media Manipulator',
       metaDescription: 'Compressor de imagens online gratuito. Reduza o tamanho de ficheiros JPG, PNG e WebP mantendo boa qualidade. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Comprimir imagem online grátis',
+      ogDescription: 'Reduza o tamanho de ficheiros JPG, PNG e WebP mantendo boa qualidade. Grátis, rápido, sem registo.',
+      intro: 'Comprimir uma imagem significa recodificá-la para que a mesma imagem ocupe menos bytes. Esta página abre o conversor de imagens com o campo de qualidade já definido em 80 e o formato de saída igual ao do seu carregamento, por isso um JPG continua JPG e um WebP continua WebP. No nosso servidor, a tarefa é um único comando do ImageMagick: o ficheiro é orientado automaticamente a partir da sua marca de rotação EXIF e depois escrito com -quality 80, ou com o número entre 1 e 100 que escrever. Para JPG e WebP, esse número é o que decide o tamanho do ficheiro. Para PNG é ignorado, porque o PNG é sem perdas, por isso a verdadeira alavanca para uma fotografia PNG é mudar a saída para JPG ou WebP.',
+      whatItDoes: [
+        'Recodifica a saída JPG e WebP com a qualidade que escolher; o formulário começa em 80.',
+        'Mantém o formato de entrada, a menos que o altere; passar uma fotografia PNG para WebP ou JPG é de onde vêm as grandes poupanças para PNG.',
+        'Pode reduzir as dimensões em píxeis na mesma passagem: uma largura ou altura escrita nos campos de redimensionamento é aplicada antes da definição de qualidade, por isso as duas poupanças acumulam-se.',
+        'Copia as etiquetas EXIF, IPTC e XMP originais de volta para o ficheiro comprimido, a menos que defina o modo de metadados para remover.',
+        'Escreve o resultado como converted.jpg, converted.webp ou converted.png dentro da pasta de saída da tarefa, que é o que a ligação de transferência serve.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um JPG, PNG ou WebP',
+          description: 'Qualquer ficheiro até ao limite por ficheiro do seu plano, que é de 200 MB para visitantes por predefinição.',
+        },
+        {
+          title: 'Escolha um número de qualidade',
+          description: '80 está predefinido. 60 a 75 reduz mais; 90 ou mais mantém quase tudo.',
+        },
+        {
+          title: 'O ImageMagick recodifica',
+          description: 'convert input -auto-orient -quality N output, seguido de uma passagem do exiftool que copia as etiquetas.',
+        },
+        {
+          title: 'Transfira o ficheiro mais pequeno',
+          description: 'A saída é servida a partir da pasta da tarefa até a sua janela de retenção terminar.',
+        },
+      ],
+      advancedDetails: [
+        'O comando exato é o convert do ImageMagick com o caminho de entrada primeiro, depois -auto-orient, um -crop e um -resize opcionais, depois -quality N e por fim o caminho de saída. O argumento -quality só é acrescentado quando o formato de saída é jpg, jpeg ou webp (convertImage em converter.go).',
+        'A qualidade é validada no servidor no intervalo de 1 a 100; um valor fora dele é rejeitado antes de qualquer trabalho começar, e a unidade da tarefa é devolvida.',
+        'A saída PNG nunca recebe um argumento -quality, por isso baixar o número numa tarefa de PNG para PNG não muda nada. O conversor não executa o pngquant nem qualquer redução de paleta; para tornar um PNG mais pequeno, muda-se o formato.',
+        'No modo de metadados predefinido, o servidor executa exiftool -TagsFromFile <original> -all:all -unsafe no resultado, por isso as etiquetas de câmara, objetiva, data e GPS sobrevivem à compressão. Escolher remover executa, em vez disso, exiftool -all= na saída.',
+        'Um redimensionamento, se o definir, acontece antes de a qualidade ser aplicada. Uma largura sozinha mantém a proporção; largura mais altura força essa caixa exata, mesmo quando a proporção difere.',
+        'Filtros, um matiz e uma sobreposição de texto estão disponíveis no mesmo formulário: um filtro é aplicado logo após o redimensionamento, e o matiz e a sobreposição de texto são acrescentados no fim, depois da definição de qualidade.',
+      ],
+      whyItMatters: [
+        'Os bytes de imagem são normalmente a maior parte de uma página web ou de um e-mail, por isso reduzi-los a metade é a vitória de velocidade mais barata que existe.',
+        'Os formulários de carregamento, os campos de CMS e as aplicações de mensagens impõem limites medidos em megabytes, não em píxeis.',
+        'Recodificar uma vez com uma qualidade que escolheu é melhor do que deixar uma plataforma recodificar nos seus próprios termos.',
+      ],
+      useCases: [
+        {
+          title: 'Fotografias de blogue e de produto',
+          description: 'Leve um JPEG de câmara de 4 a 6 MB para bem abaixo de 1 MB antes de publicar.',
+        },
+        {
+          title: 'Anexos de e-mail',
+          description: 'Ponha um conjunto de fotografias abaixo de um limite de caixa de correio de 20 ou 25 MB.',
+        },
+        {
+          title: 'Portais de candidatura',
+          description: 'Cumpra um limite de 2 MB para uma fotografia de rosto ou de documento sem perda visível.',
+        },
+        {
+          title: 'Cópias de trabalho',
+          description: 'Guarde cópias mais pequenas para o uso do dia a dia, enquanto os originais ficam no seu arquivo.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um JPEG de telemóvel de 4000 x 3000 com qualidade 80 e 1600 px de largura',
+          body: 'Entrada: um JPEG de 4,8 MB, 4000 x 3000 píxeis, diretamente da câmara de um telemóvel. Definições: largura 1600, altura em branco, qualidade 80, formato inalterado. O ImageMagick executa -resize 1600x, que mantém a proporção e produz 1600 x 1200 píxeis: 1,92 megapíxeis contra os 12 originais, cerca de um sexto dos píxeis. O resultado é escrito com -quality 80 e recebe o seu EXIF copiado de volta, por isso a saída é um JPG de 1600 x 1200 cujo tamanho acompanha essa redução de píxeis, aproximadamente um sexto do original, por isso espere cerca de 1 MB ou menos a partir de 4,8 MB. A conversão é uma única passagem do ImageMagick por uma imagem de 12 megapíxeis e demora alguns segundos; carregar o ficheiro de 4,8 MB demora normalmente mais do que convertê-lo.',
+        },
+        {
+          title: 'Uma captura de ecrã PNG de 2,6 MB mudada para WebP',
+          body: 'Entrada: uma captura de ecrã PNG de 1920 x 1080 com 2,6 MB e sem transparência. Deixar o formato em PNG e baixar a qualidade para 60 não mudaria nada, porque -quality não é passado para a saída PNG. Mudar a saída para WebP com os 80 predefinidos executa convert input -auto-orient -quality 80 converted.webp. Sem compressão, esses 2 073 600 píxeis são 6,2 MB de RGB; o WebP com perdas na qualidade 80 guarda apenas uma fração disso, por isso o resultado é uma fração do PNG de 2,6 MB, com o valor exato a depender de quanta cor plana e texto a captura de ecrã contém. As dimensões mantêm-se 1920 x 1080 e a tarefa termina em alguns segundos.',
+        },
+      ],
+      whenNotToUse: 'Não use compressão com perdas numa imagem que ainda pretende editar bastante, num PNG cuja transparência precisa de manter como PNG (mudar para JPG achata o canal alfa), nem em capturas de ecrã de texto pequeno, em que uma qualidade muito abaixo de 85 faz as letras borrar. Se o ficheiro é grande apenas pelas suas dimensões em píxeis, o redimensionador de imagens é o melhor primeiro passo; se o seu objetivo é a privacidade e não o tamanho, o removedor de EXIF elimina as etiquetas sem tocar nos píxeis. E um JPG que já foi guardado com qualidade 70 não fica muito mais pequeno a 80; cada nova gravação acrescenta perda sem um ganho correspondente.',
+      whyMediaManipulator: [
+        'O comando que corre está escrito nesta página, incluindo o facto de o PNG ignorar o número de qualidade, por isso não fica a adivinhar porque é que um ficheiro não encolheu.',
+        'Os controlos de qualidade, redimensionamento, formato e metadados vivem num só formulário e num só carregamento, e não é acrescentada nenhuma marca de água.',
+        'Nada para instalar e sem necessidade de conta para a ferramenta padrão. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A sua imagem é guardada em uploads/<jobId>/ no nosso próprio servidor, o ImageMagick escreve a cópia comprimida em outputs/<jobId>/, e um relatório de metadados do original é escrito ao lado. No modo predefinido, o exiftool copia as etiquetas EXIF, IPTC e XMP originais para o ficheiro comprimido, por isso os dados de localização e de câmara voltam com o resultado, a menos que escolha a opção remover. Cada imagem carregada é também passada por uma análise automática executada por um modelo de visão no mesmo servidor, e o seu resumo JSON é guardado com a tarefa. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Nada é enviado para um serviço de terceiros.',
+      faq: [
+        {
+          question: 'Comprimir uma imagem aqui é grátis?',
+          answer: 'Sim, na ferramenta padrão. Uma tarefa de compressão gasta uma das operações do dia: os visitantes têm 5 por dia com um limite de 200 MB por ficheiro por predefinição, uma conta gratuita sobe para 30 por dia e 1 GB por ficheiro, e o Premium e o Pro vão até 300 e 700. Os números atuais estão em /pricing, porque os limites podem mudar.',
+        },
+        {
+          question: 'Que número de qualidade devo usar?',
+          answer: '80 é o valor predefinido e uma escolha sensata para fotografias. Baixe apenas quando um limite de tamanho rígido o obrigar, e suba para 90 ou mais em imagens que vão ser impressas ou recortadas mais tarde. O número é passado diretamente à opção -quality do ImageMagick, por isso significa o mesmo que em outras ferramentas construídas sobre o ImageMagick.',
+        },
+        {
+          question: 'Porque é que o meu PNG não ficou mais pequeno?',
+          answer: 'Porque o campo de qualidade não faz nada na saída PNG: o servidor só acrescenta -quality para jpg, jpeg e webp. Mude o formato de saída para WebP ou JPG. Se precisar de manter a transparência, o WebP mantém um canal alfa, enquanto o JPG não.',
+        },
+        {
+          question: 'A compressão mantém os meus dados EXIF e GPS?',
+          answer: 'Por predefinição, sim. Depois de o ImageMagick escrever o ficheiro, o exiftool copia todos os grupos de etiquetas do original para o resultado. Escolha remover na secção de metadados para as eliminar todas, ou use o removedor de EXIF dedicado.',
+        },
+        {
+          question: 'A imagem também vai ser redimensionada?',
+          answer: 'Não, a menos que escreva uma largura ou uma altura. Com ambos os campos vazios, as dimensões em píxeis não mudam e só a codificação muda.',
+        },
+        {
+          question: 'Posso comprimir várias imagens de uma vez?',
+          answer: 'Cada carregamento é uma tarefa com um ficheiro de saída. Execute a ferramenta uma vez por imagem; cada tarefa conta como uma operação da quota diária.',
+        },
+        {
+          question: 'O WebP é sempre mais pequeno do que o JPG com a mesma qualidade?',
+          answer: 'Normalmente, para fotografias, mas as escalas de qualidade dos dois codificadores não são idênticas, por isso compare as duas saídas em vez de presumir. Mantenha o JPG quando o ficheiro tiver de abrir em software anterior ao suporte de WebP.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Baixar a qualidade afeta a saída JPG e WebP. Para reduzir muito uma fotografia PNG, converta-a para JPG ou WebP.',
+        ],
+      },
+      related: [
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Corte primeiro as dimensões em píxeis para as maiores poupanças.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine as etiquetas de localização e de câmara sem recodificar.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Envolva o JPG comprimido num PDF de uma página.',
+        },
+        {
+          label: 'Ampliador de imagens com IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Faça o caminho inverso e amplie uma imagem pequena.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra as definições de qualidade, redimensionamento e formato.',
+        },
+      ],
+      embed: {
+        title: 'Comprimir uma imagem',
+        description: 'Carregue uma imagem e baixe o controlo de qualidade para reduzir o ficheiro. O formato de saída mantém-se igual por predefinição, ou mude para WebP para o tamanho mais pequeno. Uma qualidade à volta de 75–85 é um bom equilíbrio.',
+      },
     },
     'image-resizer': {
       name: 'Redimensionar imagem',
+      h1: 'Redimensionar imagem online grátis',
       tagline: 'Redimensione imagens JPG, PNG, WebP e GIF para dimensões exatas em píxeis, mantendo a proporção.',
       metaTitle: 'Redimensionar imagem online grátis | Media Manipulator',
       metaDescription: 'Redimensionador de imagens online gratuito. Redimensione imagens JPG, PNG, WebP e GIF para dimensões exatas em píxeis, mantendo a proporção. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Redimensionar imagem online grátis',
+      ogDescription: 'Redimensione imagens JPG, PNG, WebP e GIF para dimensões exatas em píxeis. Grátis, rápido, sem registo.',
+      intro: 'Esta página abre o conversor de imagens com os campos de redimensionamento em primeiro plano. Escreva uma largura, uma altura ou ambas, e o servidor executa o ImageMagick com um argumento -resize construído exatamente a partir do que escreveu: 1600x para uma largura sozinha, x900 para uma altura sozinha e 1600x900! quando preenche ambas. Esse ponto de exclamação final é importante: diz ao ImageMagick para produzir exatamente essa caixa mesmo que a proporção seja diferente da original, o que estica a imagem. Portanto, a regra é simples. Um campo mantém as proporções; dois campos dão-lhe o tamanho exato e confiam que escolheu uma proporção correspondente ou que recortou primeiro.',
+      whatItDoes: [
+        'Redimensiona imagens JPG, PNG, WebP e GIF para a largura e a altura em píxeis que escrever, depois de as orientar automaticamente a partir da marca de rotação EXIF.',
+        'Mantém a proporção quando só uma dimensão está preenchida; força a caixa exata quando ambas estão.',
+        'Oferece uma caixa de recorte no mesmo formulário, aplicada antes do redimensionamento, que é como se obtém um quadrado ou um banner exato sem distorção.',
+        'Escreve a saída no formato original por predefinição, com qualidade 85 para JPG e WebP, e copia para ela as etiquetas de metadados originais.',
+        'Limita a altura pedida ao limite de saída do seu plano e as dimensões ao que o ImageMagick está autorizado a produzir.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue a imagem',
+          description: 'JPG, PNG, WebP ou GIF, até ao limite por ficheiro do seu plano.',
+        },
+        {
+          title: 'Escreva a largura, a altura ou ambas',
+          description: 'Um valor mantém a proporção. Dois valores forçam a caixa. Recorte primeiro se a proporção tiver de mudar.',
+        },
+        {
+          title: 'O ImageMagick redimensiona',
+          description: 'convert input -auto-orient [-crop WxH+X+Y] -resize <arg> [-quality 85] output.',
+        },
+        {
+          title: 'Transfira',
+          description: 'O ficheiro redimensionado é servido a partir da pasta de saída da tarefa como converted.<format>.',
+        },
+      ],
+      advancedDetails: [
+        'O argumento de redimensionamento é construído em convertImage (converter.go): ambos os valores dão WxH! (forçar exato), a largura sozinha dá Wx, a altura sozinha dá xH. É usado o filtro de reamostragem predefinido do ImageMagick; não há opção para escolher outro.',
+        'Um recorte, quando definido, é passado como -crop WxH+X+Y e corre antes de -resize, por isso as coordenadas do recorte referem-se ao original orientado automaticamente, e não ao resultado redimensionado.',
+        'O servidor rejeita uma largura ou altura acima de 10000 ou abaixo de 1, e o formulário limita ambos os campos a 4096.',
+        'Uma altura explícita é também verificada contra o limite de altura de saída do seu plano antes de o carregamento ser aceite: 1080 px para visitantes por predefinição, 1440 com uma conta gratuita, 2160 no Premium e no Pro. Um pedido acima do limite é recusado com uma mensagem que indica ambos os números, e não é gasta nenhuma unidade. A largura sozinha não é verificada.',
+        'A saída JPG e WebP recebe -quality 85, a menos que altere o número; PNG e GIF ignoram-no. Ampliar com esta ferramenta apenas interpola os píxeis existentes, por isso uma ampliação de 2x ou 4x fica pouco nítida; o ampliador com IA existe para esse caso.',
+        'Depois de o ImageMagick terminar, o exiftool copia as etiquetas originais para o resultado no modo de metadados predefinido, por isso o ficheiro redimensionado continua a transportar a data de captura, o modelo da câmara e qualquer posição GPS.',
+      ],
+      whyItMatters: [
+        'Os espaços para avatar, capa e miniatura querem tamanhos específicos em píxeis, e um redimensionamento feito pela plataforma é normalmente de qualidade inferior e sem controlo.',
+        'A contagem de píxeis é o maior fator individual no tamanho do ficheiro; uma fotografia de 24 megapíxeis mostrada com 1920 px de largura transporta dez vezes os dados que o ecrã consegue mostrar.',
+        'Redimensionar nos seus próprios termos também lhe permite escolher o recorte, em vez de deixar que um espaço quadrado corte uma cabeça.',
+      ],
+      useCases: [
+        {
+          title: 'Fotografias de perfil e avatares',
+          description: 'Recorte para um quadrado e depois redimensione para os 400 ou 512 px que o serviço pede.',
+        },
+        {
+          title: 'Imagens para web e blogues',
+          description: 'Redimensione fotografias de câmara para a largura de coluna em que vão realmente ser mostradas.',
+        },
+        {
+          title: 'Banners e cabeçalhos',
+          description: 'Corte a proporção exata e depois acerte a largura exigida ao píxel.',
+        },
+        {
+          title: 'Limites de carregamento em formulários',
+          description: 'Baixe as dimensões para ficar abaixo de um limite de megapíxeis ou de megabytes.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um JPEG de câmara de 6000 x 4000 redimensionado para 1920 px de largura',
+          body: 'Entrada: um JPEG de 8,5 MB e 24 megapíxeis de uma câmara mirrorless. Definições: largura 1920, altura vazia, formato inalterado, qualidade 85. O servidor executa convert input -auto-orient -resize 1920x -quality 85 converted.jpg. A proporção é 3:2, por isso a saída tem 1920 x 1280 píxeis, cerca de 2,46 megapíxeis, aproximadamente um décimo da contagem de píxeis original. O tamanho do ficheiro cai numa proporção semelhante, por isso espere algo abaixo de 1 MB. Uma passagem do ImageMagick por 24 megapíxeis demora alguns segundos no servidor, e a cópia do exiftool a seguir mantém as etiquetas da objetiva e da exposição.',
+        },
+        {
+          title: 'Um avatar de 400 x 400 a partir de uma fotografia de telemóvel ao alto de 3024 x 4032',
+          body: 'Entrada: um JPEG ao alto de 3,1 MB, 3024 de largura por 4032 de altura. Escrever apenas 400 e 400 executaria -resize 400x400! e esmagaria a imagem 3:4 num quadrado. Em vez disso, defina o recorte para 3024 x 3024 com desvio 0,504 (um quadrado a partir do meio), depois largura 400 e altura 400. O comando torna-se convert input -auto-orient -crop 3024x3024+0+504 -resize 400x400! -quality 85 converted.jpg, e o resultado é um JPG de 400 x 400 sem distorção, com 160 000 píxeis, algumas dezenas de kilobytes. O recorte e o redimensionamento são uma única passagem e terminam em alguns segundos.',
+        },
+      ],
+      whenNotToUse: 'Não use o redimensionador para tornar uma imagem pequena maior: o ImageMagick apenas interpola os píxeis que existem, por isso uma fotografia de 640 px levada a 2560 px sai desfocada, e esse caso pertence ao ampliador com IA. Não escreva uma largura e uma altura cuja proporção seja diferente da imagem sem ter recortado primeiro, porque o modo de caixa exata estica em vez de acrescentar barras. Se o ficheiro é grande mas as dimensões já estão certas, use o compressor e deixe os píxeis em paz. E os GIF animados são mais bem tratados por uma ferramenta de GIF dedicada do que por um simples redimensionamento.',
+      whyMediaManipulator: [
+        'O comportamento de caixa exata versus manter a proporção está explicado aqui com os argumentos reais do ImageMagick, por isso não há surpresas quando uma fotografia volta esticada.',
+        'Recorte, redimensionamento, formato e qualidade são um único carregamento, e a saída não traz marca de água.',
+        'Sem registo para a ferramenta padrão. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A imagem carregada é guardada em uploads/<jobId>/ no nosso servidor e a cópia redimensionada em outputs/<jobId>/; ambos os diretórios estão no registo de retenção e são removidos em conjunto. Como o modo de metadados predefinido copia as etiquetas originais para o ficheiro redimensionado com o exiftool, as coordenadas GPS e o número de série da câmara viajam com o resultado, a menos que escolha remover na secção de metadados do formulário. As imagens carregadas para redimensionar passam também pela análise automática que corre em todas as imagens no nosso servidor, com um modelo de visão local, e o resumo é guardado na pasta da tarefa. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Nenhum terceiro recebe o ficheiro.',
+      faq: [
+        {
+          question: 'Redimensionar custa alguma coisa?',
+          answer: 'Nem conta nem pagamento para a ferramenta padrão. Cada redimensionamento é uma operação diária: 5 por dia para visitantes e 30 para uma conta gratuita por predefinição, com um limite por ficheiro de 200 MB e 1 GB, respetivamente. O Premium e o Pro elevam as contagens para 300 e 700. Consulte /pricing para os números em vigor hoje.',
+        },
+        {
+          question: 'Como mantenho a proporção?',
+          answer: 'Preencha apenas um dos dois campos. Uma largura sozinha torna-se -resize 1600x e a altura é calculada a partir da proporção original; uma altura sozinha torna-se x900 e a largura segue-a.',
+        },
+        {
+          question: 'Porque é que a minha imagem saiu esticada?',
+          answer: 'Preencheu a largura e a altura com uma proporção que não corresponde à imagem. Dois valores são enviados como WxH!, o que força essa caixa exata. Recorte primeiro para a proporção pretendida, no mesmo formulário, e depois defina ambos os valores.',
+        },
+        {
+          question: 'Qual é o maior tamanho que posso pedir?',
+          answer: 'O formulário aceita até 4096 em qualquer dos campos e o servidor até 10000. Uma altura explícita acima do limite de saída do seu plano (1080 px para visitantes por predefinição) é recusada antes de o carregamento começar e não custa nada.',
+        },
+        {
+          question: 'Posso tornar uma fotografia pequena maior com esta ferramenta?',
+          answer: 'Pode escrever um número maior, mas o ImageMagick apenas interpola, por isso o resultado fica pouco nítido. Para uma ampliação de 2x ou 4x que reconstrua o detalhe, use o ampliador com IA, que executa o Real-ESRGAN.',
+        },
+        {
+          question: 'A saída mantém os meus dados EXIF e a orientação?',
+          answer: 'Os píxeis são orientados automaticamente primeiro, por isso o resultado aparece direito em todo o lado, e no modo predefinido o exiftool copia as etiquetas originais de volta para ele. Escolha remover se quiser ficar sem as etiquetas.',
+        },
+        {
+          question: 'Posso redimensionar um GIF?',
+          answer: 'O GIF é aceite como entrada e saída e passa pelo mesmo comando do ImageMagick. A ferramenta foi feita para imagens estáticas; para GIF animados, uma ferramenta de GIF dedicada dá mais controlo sobre os fotogramas e a paleta.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Deixe uma dimensão em branco para redimensionar proporcionalmente e manter a proporção.',
+        ],
+      },
+      related: [
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Baixe a qualidade sem alterar as dimensões.',
+        },
+        {
+          label: 'Ampliador de imagens com IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Amplie 2x ou 4x com um modelo em vez de interpolação.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine as etiquetas que o redimensionamento mantém por predefinição.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Envolva a imagem redimensionada numa página PDF.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra as definições de redimensionamento, recorte e qualidade.',
+        },
+      ],
+      embed: {
+        title: 'Redimensionar uma imagem',
+        description: 'Carregue uma imagem e defina abaixo uma largura e/ou uma altura de destino. Deixe uma em branco para redimensionar proporcionalmente e manter a proporção original. O formato de saída mantém-se igual, a menos que o altere.',
+      },
     },
     'remove-background-from-image': {
       name: 'Remover fundo de imagem',
+      h1: 'Remover fundo de imagem online grátis',
       tagline: 'Apague automaticamente o fundo de qualquer fotografia e descarregue um recorte PNG limpo e transparente.',
       metaTitle: 'Remover fundo de imagem online grátis | Media Manipulator',
       metaDescription: 'Removedor de fundo online gratuito. Apague automaticamente o fundo de qualquer fotografia e descarregue um PNG transparente. Corre na nossa própria GPU, sem IA de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Remover fundo de imagem online grátis',
+      ogDescription: 'Apague automaticamente o fundo de qualquer fotografia e descarregue um recorte PNG transparente. Grátis, sem registo.',
+      intro: 'Esta página abre o conversor de imagens com a operação de IA fixada em Remover fundo e a saída fixada em PNG. Quando converte, o servidor entrega o seu ficheiro ao rembg, uma ferramenta de segmentação de código aberto, a correr numa GPU que é nossa: por predefinição carrega o modelo BiRefNet General, prevê quais os píxeis que pertencem ao motivo e escreve um PNG cujo canal alfa é transparente em todo o resto. No formulário pode selecionar outros seis modelos (um BiRefNet mais leve, uma variante para retratos, o ISNet e três versões do U2Net) para os casos em que o modelo geral avalia mal cabelo, vidro ou uma pessoa diante de um fundo muito carregado.',
+      whatItDoes: [
+        'Executa o rembg com o modelo que escolher (BiRefNet General, salvo se o alterar) e devolve o motivo sobre um fundo transparente.',
+        'Escreve sempre PNG, porque a transparência precisa de um canal alfa e a API força a extensão .png nesta operação.',
+        'Mantém as dimensões completas em píxeis do seu carregamento; o recorte não é redimensionado nem cortado.',
+        'Corre na nossa própria GPU através do ONNX Runtime com CUDA; nenhuma imagem é enviada para um serviço de IA externo.',
+        'Conta como uma tarefa normal, a mesma unidade que uma simples conversão de formato, e não como uma tarefa de IA.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um JPG, PNG ou WebP',
+          description: 'Um único motivo bem definido dá a máscara mais limpa.',
+        },
+        {
+          title: 'Escolha um modelo ou mantenha o predefinido',
+          description: 'O BiRefNet General vem pré-selecionado; os modelos de retrato e de segmentação de pessoas existem para pessoas.',
+        },
+        {
+          title: 'O rembg segmenta na GPU',
+          description: 'rembg i -m <model> input output.png corre com o ambiente CUDA do ONNX Runtime carregado.',
+        },
+        {
+          title: 'Descarregue o PNG transparente',
+          description: 'O resultado é o ficheiro converted.png na pasta de resultados da tarefa.',
+        },
+      ],
+      advancedDetails: [
+        'A chamada é RemoveBackground em ai_tools.go: uma shell bash carrega o script de ambiente CUDA do ONNX Runtime, define U2NET_HOME para o diretório de modelos do servidor e executa rembg i -m <model> <input> <output>. Os pesos dos modelos ficam em cache no servidor, por isso a primeira tarefa após um reinício pode demorar um pouco mais enquanto são carregados.',
+        'Os nomes de modelo aceites são birefnet-general, birefnet-general-lite, isnet-general-use, u2net, u2netp, u2net_human_seg e birefnet-portrait; qualquer outro valor é rejeitado antes de a tarefa começar. Um valor vazio passa a birefnet-general.',
+        'O percurso de IA substitui por completo a cadeia do ImageMagick, por isso o valor de qualidade, os filtros, a tonalidade, a sobreposição de texto e as opções de metadados do formulário não têm efeito nesta operação; a saída é exatamente o que o rembg escreve.',
+        'Como o passo habitual de cópia com exiftool não corre nas operações de IA, o PNG não traz nenhum EXIF do original. Se precisar das etiquetas no recorte, o editor de metadados pode adicioná-las numa segunda tarefa.',
+        'O tamanho da saída depende do motivo: as regiões totalmente transparentes comprimem-se até quase nada em PNG, por isso um produto pequeno numa tela grande dá um ficheiro pequeno, enquanto um motivo que ocupa todo o enquadramento dá um ficheiro próximo de um PNG sem perdas do original.',
+      ],
+      whyItMatters: [
+        'Anúncios de produtos, miniaturas e composições começam todos por um recorte, e mascarar um à mão leva minutos por imagem.',
+        'Os marketplaces exigem cada vez mais um fundo liso ou branco, que é um recorte transparente colocado sobre uma camada branca.',
+        'Um modelo treinado com milhões de máscaras lida melhor com pelo, cabelo e contornos semitransparentes do que uma seleção com varinha mágica.',
+      ],
+      useCases: [
+        {
+          title: 'Produtos de comércio eletrónico',
+          description: 'Isole o artigo e coloque-o sobre branco ou sobre qualquer cor da marca.',
+        },
+        {
+          title: 'Retratos e páginas de equipa',
+          description: 'Use o modelo de retrato para recortar pessoas com precisão de fundos de escritório.',
+        },
+        {
+          title: 'Logótipos retirados de fotografias',
+          description: 'Obtenha uma versão transparente de um logótipo que só existe numa placa ou página colorida.',
+        },
+        {
+          title: 'Miniaturas e autocolantes',
+          description: 'Monte composições em camadas a partir de vários recortes no seu editor.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um JPEG de produto de 3000 x 2000 com o modelo predefinido',
+          body: 'Entrada: um JPEG de 2.1 MB, 3000 x 2000, de um sapato sobre um fundo cinzento. Modelo deixado em BiRefNet General. O servidor executa o rembg na GPU e escreve converted.png com os mesmos 3000 x 2000 píxeis, em quatro canais. Sem compressão, são 24 MB de RGBA, mas o fundo transparente comprime-se até quase nada, por isso o tamanho do PNG é determinado pelo próprio sapato, normalmente alguns megabytes, porque o PNG é sem perdas. O tempo corresponde a uma passagem do modelo pela imagem mais a codificação do PNG, alguns segundos quando o modelo já está carregado; a primeira execução após um período de inatividade acrescenta o tempo de carregamento dos pesos.',
+        },
+        {
+          title: 'Um retrato de 1080 x 1080 com o modelo de retrato',
+          body: 'Entrada: uma selfie WebP de 640 KB, 1080 x 1080, em frente a uma estante. Mude o modelo para BiRefNet Portrait, que está afinado para pessoas e cabelo. A saída é um PNG de 1080 x 1080 com a pessoa opaca e as prateleiras totalmente transparentes. Com 1.17 megapíxeis, a passagem do modelo é rápida; a maior parte do tempo total vai para o carregamento e para a escrita do PNG. Como o percurso de IA salta a cópia de metadados, o PNG não tem EXIF, o que normalmente é o que se pretende numa imagem de perfil.',
+        },
+      ],
+      whenNotToUse: 'Evite esta ferramenta quando o motivo não é uma única coisa bem distinta: uma multidão, uma paisagem, um padrão ou um interior sem um primeiro plano evidente não dão ao modelo nada para separar, e a máscara será arbitrária. Também é a ferramenta errada quando quer um desfoque suave atrás do motivo em vez de transparência, quando precisa do resultado em JPG (o JPG não suporta canal alfa, por isso teria de o achatar depois) e quando a entrada é uma captura de ecrã ou um desenho de linhas, onde o ISNet ou uma seleção manual num editor funcionam melhor do que um modelo treinado com fotografias.',
+      whyMediaManipulator: [
+        'Sete modelos de segmentação reais estão disponíveis pelo nome, por isso pode passar do modelo geral para uma versão de retrato ou U2Net quando um contorno sai mal.',
+        'A saída é um simples PNG transparente em resolução completa, sem marca de água e sem redução forçada.',
+        'O modelo corre em hardware que nós operamos e a ferramenta padrão não exige conta. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A sua fotografia é escrita em uploads/<jobId>/ no nosso servidor e lida pelo rembg a correr numa GPU na mesma máquina; o recorte vai para outputs/<jobId>/converted.png. Não é chamada nenhuma API externa para a segmentação e nada da sua imagem é usado para treinar o que quer que seja. Como todos os carregamentos de imagens, o ficheiro é também examinado uma vez por um passo de análise automática que usa um modelo de visão alojado no nosso servidor, e esse resumo é guardado com a tarefa. O PNG não traz nenhum EXIF do original porque o passo de cópia de metadados não corre nas operações de IA. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'A remoção de fundo é gratuita?',
+          answer: 'Sim, dentro do limite diário. A remoção de fundo conta deliberadamente como uma tarefa normal, e não como uma do limite separado de IA: 5 por dia para visitantes e 30 com uma conta gratuita, por predefinição, com limites por ficheiro de 200 MB e 1 GB. Os planos Premium e Pro têm 300 e 700. Os valores atuais estão em /pricing.',
+        },
+        {
+          question: 'Que modelo devo escolher?',
+          answer: 'Mantenha o BiRefNet General para objetos, produtos e a maioria das fotografias. Escolha o BiRefNet Portrait ou o U2Net Human Segmentation para pessoas, e o BiRefNet General Lite ou o U2Net Lite quando quiser uma passagem mais rápida numa imagem grande.',
+        },
+        {
+          question: 'Porque é que a saída é sempre PNG?',
+          answer: 'A API força a extensão .png nesta operação porque o recorte precisa de um canal alfa; o JPG não tem nenhum e mostraria o fundo a preto ou a branco. Converta para outro formato depois, se já o tiver achatado sobre uma cor.',
+        },
+        {
+          question: 'Posso obter um fundo branco em vez de transparência?',
+          answer: 'Não diretamente com esta ferramenta. Coloque o PNG sobre uma camada branca em qualquer editor ou no Darkroom; os píxeis transparentes assumem a cor que está por baixo.',
+        },
+        {
+          question: 'Funciona com cabelo, pelo e vidro?',
+          answer: 'Muitas vezes sim, e os modelos de retrato e BiRefNet foram treinados a pensar nesses contornos, mas as regiões semitransparentes são o caso mais difícil. Experimente um segundo modelo se o primeiro deixar uma franja.',
+        },
+        {
+          question: 'A minha fotografia é enviada para uma empresa de IA externa?',
+          answer: 'Não. O rembg e os seus modelos correm no nosso próprio servidor GPU, e a tarefa nunca chama uma API de terceiros.',
+        },
+        {
+          question: 'O recorte mantém os meus dados EXIF?',
+          answer: 'Não. As operações de IA saltam a cópia com exiftool que o conversor normal faz, por isso o PNG não tem etiquetas de câmara, data nem GPS.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída é sempre um PNG transparente. A remoção de fundo corre no nosso servidor GPU local, não numa API de terceiros.',
+        ],
+      },
+      related: [
+        {
+          label: 'Remover objeto de fotografia',
+          to: '/tools/remove-object-from-photo',
+          description: 'Apague uma coisa e mantenha o resto da cena.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Ajuste o recorte ao tamanho de que o seu layout precisa.',
+        },
+        {
+          label: 'Ampliador de imagens com IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Amplie um recorte pequeno antes de o colocar.',
+        },
+        {
+          label: 'Desfocar rostos em fotografia',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Anonimize as pessoas em vez de as isolar.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra todas as opções de IA e de imagem.',
+        },
+      ],
+      embed: {
+        title: 'Remover o fundo de uma imagem',
+        description: 'Carregue uma fotografia. Esta ferramenta está predefinida para o removedor de fundo com IA e produz um PNG transparente. Basta carregar e converter: o motivo é mantido e o fundo é apagado.',
+      },
     },
     'image-to-pdf': {
       name: 'Imagem para PDF',
+      h1: 'Converter imagem em PDF online grátis',
       tagline: 'Transforme imagens JPG, PNG e outras num documento PDF limpo e fácil de partilhar com um clique.',
       metaTitle: 'Converter imagem em PDF online grátis | Media Manipulator',
       metaDescription: 'Conversor gratuito de imagem para PDF online. Transforme imagens JPG, PNG e outras num documento PDF limpo. Sem registo nem marcas de água. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter imagem em PDF online grátis',
+      ogDescription: 'Transforme imagens JPG, PNG e outras num PDF limpo e fácil de partilhar. Grátis, rápido, sem registo.',
+      intro: 'Esta página fixa o formato de saída em PDF, o que envia a sua imagem por um percurso dedicado da nossa API que constrói o documento em Go puro, em vez de passar pelo ImageMagick ou pelo Ghostscript. Um JPEG é incorporado byte a byte com o filtro /DCTDecode, por isso a fotografia dentro do PDF é exatamente o mesmo fluxo comprimido que carregou. Um PNG, GIF ou WebP é descodificado, composto sobre branco e guardado como RGB de 8 bits comprimido com zlib. A página única é dimensionada para que a imagem fique a 96 píxeis por polegada: cada píxel passa a 0.75 pontos, o que mantém a imagem na resolução nativa sem reamostragem.',
+      whatItDoes: [
+        'Envolve uma imagem num documento PDF 1.4 de uma página, dimensionado para a imagem a 96 DPI.',
+        'Incorpora os dados JPEG intactos, por isso não há uma segunda geração de compressão nas fotografias.',
+        'Achata os píxeis transparentes de PNG e GIF sobre branco e guarda-os sem perdas com zlib.',
+        'Rasteriza primeiro com o ImageMagick o WebP e outros contentores que o Go não consegue descodificar, e depois incorpora o resultado sem perdas.',
+        'Ignora as definições de qualidade, redimensionamento, recorte, filtros e IA; o percurso PDF recebe apenas a imagem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue qualquer imagem',
+          description: 'JPG, PNG, GIF e WebP são as entradas habituais; o campo aceita qualquer tipo de imagem.',
+        },
+        {
+          title: 'O servidor lê os píxeis',
+          description: 'As dimensões do JPEG vêm do cabeçalho; os outros formatos são descodificados e achatados para RGB.',
+        },
+        {
+          title: 'É montado um PDF de uma página',
+          description: 'Catálogo, página, XObject de imagem e um fluxo de conteúdo que desenha a imagem a preencher a página.',
+        },
+        {
+          title: 'Descarregue o converted.pdf',
+          description: 'Servido a partir da pasta de resultados da tarefa até a retenção expirar.',
+        },
+      ],
+      advancedDetails: [
+        'O construtor é imageToPDFBytes em pdf_tools.go. Um ficheiro que começa pelo marcador JPEG FF D8 FF é incorporado como /DCTDecode com /DeviceRGB ou /DeviceGray; um JPEG CMYK recorre ao percurso de descodificação e achatamento, para que o PDF nunca transporte um fluxo CMYK.',
+        'As entradas que não são JPEG são descodificadas com os codecs de imagem do Go (PNG e GIF estão registados). Cada píxel é composto com alfa sobre branco e escrito como três bytes; depois, todo o buffer é comprimido com zlib e guardado com /FlateDecode a 8 bits por componente.',
+        'O WebP e tudo o mais que o Go não consegue descodificar é primeiro rasterizado pelo ImageMagick com -auto-orient para um fluxo PNG em memória, e esse PNG é depois achatado e incorporado.',
+        'O tamanho da página em pontos é largura x 72 / 96 e altura x 72 / 96, por isso uma imagem de 1200 x 1600 dá uma página de 900 x 1200 pontos (12.5 por 16.7 polegadas). Os visualizadores de PDF ajustam a página à janela e as impressoras ajustam ao papel, por isso uma página grande não é problema para visualizar, mas escolha «ajustar à página» ao imprimir.',
+        'Os JPEG no percurso rápido mantêm o seu EXIF, incluindo a etiqueta de orientação, mas os visualizadores de PDF não aplicam a orientação EXIF. Uma fotografia de telemóvel guardada de lado com uma etiqueta de rotação aparecerá de lado no PDF; converta-a primeiro uma vez para JPG (o que aplica a orientação automática) e só depois para PDF.',
+        'O valor de qualidade enviado pelo formulário é aceite mas não é usado neste percurso, e não existe modo de várias imagens: um carregamento gera um PDF de uma só página.',
+      ],
+      whyItMatters: [
+        'Os portais de vistos, universidades e sistemas de recursos humanos aceitam frequentemente apenas PDF, mesmo para a fotografia de um recibo.',
+        'Um PDF imprime-se e pré-visualiza-se da mesma forma em qualquer dispositivo, enquanto uma imagem solta pode ser rodada ou redimensionada pelo visualizador.',
+        'Incorporar o JPEG intacto significa que o PDF tem qualidade de prova: nada foi recodificado pelo caminho.',
+      ],
+      useCases: [
+        {
+          title: 'Recibos e formulários',
+          description: 'Transforme a fotografia de uma página assinada, tirada com o telemóvel, num PDF que um portal aceita.',
+        },
+        {
+          title: 'Envio de documentos de identificação',
+          description: 'Submeta um cartão ou certificado digitalizado como o PDF que o formulário exige.',
+        },
+        {
+          title: 'Provas de ilustração',
+          description: 'Envie a um cliente um PDF de um design PNG com a transparência achatada sobre branco.',
+        },
+        {
+          title: 'Arquivo',
+          description: 'Guarde uma fotografia ao lado de outros documentos num só formato.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um JPEG de telemóvel de 3024 x 4032 (2.9 MB)',
+          body: 'Entrada: um JPEG de 2.9 MB, 3024 de largura por 4032 de altura, RGB. O cabeçalho é lido para obter as dimensões e o fluxo JPEG é incorporado tal como está com /DCTDecode. A página tem 3024 x 0.75 = 2268 pontos de largura e 4032 x 0.75 = 3024 pontos de altura, ou seja, 31.5 por 42 polegadas. O PDF sai com cerca de 2.9 MB mais menos de um kilobyte de estrutura PDF, porque nada é recodificado. O trabalho é ler o ficheiro e voltar a escrevê-lo, por isso a tarefa depende do disco e da velocidade de carregamento, e não do CPU, e termina em poucos segundos.',
+        },
+        {
+          title: 'Um PNG de 1920 x 1080 com fundo transparente',
+          body: 'Entrada: um PNG de 1.4 MB de um logótipo sobre transparência. O PNG é descodificado, cada píxel é composto sobre branco, e os 1920 x 1080 x 3 = 6 220 800 bytes de RGB são comprimidos com zlib e guardados com /FlateDecode. A página tem 1440 x 810 pontos (20 por 11.25 polegadas). Como o branco liso e as cores sólidas comprimem bem com zlib, o PDF fica normalmente na mesma ordem de grandeza do PNG, por vezes maior, porque o zlib simples não tem os filtros de linha que o PNG usa. Descodificar, compor dois milhões de píxeis e comprimi-los é trabalho de CPU que leva alguns segundos; a transparência desaparece no resultado, por desenho.',
+        },
+      ],
+      whenNotToUse: 'Esta não é a ferramenta para um documento de várias páginas: cria exatamente uma página a partir de uma imagem, por isso um conjunto de digitalizações precisa de converter cada página e depois juntá-las num editor de PDF. Não a use quando a transparência tem de sobreviver, porque cada píxel é achatado sobre branco. Não espere um ficheiro mais pequeno: um JPEG é incorporado sem alterações e um PNG passa a RGB comprimido com zlib, por isso comprima ou redimensione a imagem primeiro, se o tamanho importar. E uma fotografia cuja orientação correta existe apenas numa etiqueta EXIF deve ser convertida primeiro uma vez para JPG; caso contrário, o PDF mostra-a tal como está guardada.',
+      whyMediaManipulator: [
+        'A passagem direta do JPEG é uma decisão de design: a sua fotografia é incorporada sem recodificação, algo que muitos conversores não prometem.',
+        'Sem Ghostscript e sem a política de PDF do ImageMagick no percurso, por isso a conversão não depende de uma definição de segurança do servidor que possa recusar PDF.',
+        'Grátis na ferramenta padrão, sem necessidade de conta. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A imagem é guardada em uploads/<jobId>/ e o PDF em outputs/<jobId>/converted.pdf no nosso próprio servidor; ambos são eliminados em conjunto quando a janela de retenção termina. Um JPEG mantém todos os seus metadados incorporados dentro do PDF, porque o fluxo é copiado na íntegra, por isso as etiquetas EXIF de localização e de câmara continuam legíveis para quem extrair a imagem; remova-as primeiro com o removedor de EXIF, se isso for importante. O PNG e as outras entradas são descodificados para píxeis em bruto, por isso nenhuma etiqueta passa para o PDF. O próprio carregamento é uma imagem e, por isso, passa também pela análise automática com modelo de visão executada no nosso servidor, cujo resumo fica com a tarefa. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'A conversão de imagem em PDF é gratuita?',
+          answer: 'Sim, na ferramenta padrão. Cada conversão gasta uma operação diária: 5 por dia como visitante, com um limite de 200 MB por ficheiro, 30 por dia e 1 GB com uma conta gratuita, e 300 ou 700 nos planos Premium ou Pro, tudo por predefinição e indicado em /pricing.',
+        },
+        {
+          question: 'A fotografia é recomprimida dentro do PDF?',
+          answer: 'Não, se for um JPEG: os bytes originais são incorporados com /DCTDecode. PNG, GIF e WebP são guardados sem perdas como RGB comprimido com zlib depois do achatamento, por isso também aí não se perde qualidade.',
+        },
+        {
+          question: 'Que tamanho de página tem o PDF?',
+          answer: 'A página corresponde à imagem a 96 píxeis por polegada, por isso a largura e a altura em pontos são 0.75 vezes as dimensões em píxeis. Uma imagem de 1200 x 1600 dá uma página de 12.5 por 16.7 polegadas; os visualizadores e as impressoras ajustam-na.',
+        },
+        {
+          question: 'Posso juntar várias imagens num só PDF?',
+          answer: 'Não nesta página. Cada carregamento produz um PDF de uma página. Converta cada imagem e junte os PDF resultantes num editor de PDF.',
+        },
+        {
+          question: 'O que acontece à transparência?',
+          answer: 'É achatada sobre branco. Os XObjects de imagem do PDF neste percurso não têm alfa, por isso os píxeis transparentes passam a píxeis brancos.',
+        },
+        {
+          question: 'Porque é que a fotografia do meu telemóvel aparece de lado no PDF?',
+          answer: 'Os telemóveis guardam muitas vezes os píxeis na horizontal e definem uma etiqueta EXIF de orientação. O JPEG é incorporado intacto e os visualizadores de PDF ignoram essa etiqueta. Passe primeiro a fotografia pelo conversor de imagens como JPG, que aplica a orientação automática, e depois converta o resultado para PDF.',
+        },
+        {
+          question: 'O PDF mantém os meus dados EXIF?',
+          answer: 'Num JPEG, sim, porque todo o fluxo JPEG, incluindo o EXIF, está dentro do PDF. Use primeiro o removedor de EXIF se não quiser isso. Em PNG e outras entradas, só os píxeis são mantidos.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída é um PDF de uma página. A transparência é achatada sobre branco porque as páginas PDF são opacas.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF para JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Renderize páginas PDF de volta para imagens.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Remova as etiquetas antes de serem incorporadas no PDF.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza primeiro o JPEG, já que o PDF o incorpora tal como está.',
+        },
+        {
+          label: 'Digitalização de documentos com IA',
+          to: '/tools/ai-document-scan',
+          description: 'Limpe e aplique OCR a uma página fotografada, em vez de apenas a envolver.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Defina primeiro o tamanho em píxeis e, com ele, o tamanho da página.',
+        },
+      ],
+      embed: {
+        title: 'Converter uma imagem em PDF',
+        description: 'Carregue qualquer imagem: JPG, PNG e mais. Nesta ferramenta a saída está fixada em PDF, por isso obtém um PDF de uma página que envolve a sua imagem na resolução nativa.',
+      },
     },
     'pdf-to-jpg': {
       name: 'PDF para JPG',
+      h1: 'Converter PDF em JPG online grátis',
       tagline: 'Converta todas as páginas de um PDF em imagens JPG de alta qualidade que pode partilhar, editar ou publicar.',
       metaTitle: 'Converter PDF em JPG online grátis | Media Manipulator',
       metaDescription: 'Conversor gratuito de PDF para JPG online. Converta todas as páginas de um PDF em imagens JPG de alta qualidade, descarregadas num ZIP. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter PDF em JPG online grátis',
+      ogDescription: 'Renderize todas as páginas de um PDF em imagens JPG de alta qualidade. Grátis, rápido, sem registo.',
+      intro: 'Carregue um PDF e o nosso servidor renderiza cada página com o pdftoppm do conjunto de ferramentas Poppler, o mesmo rasterizador usado por muitos visualizadores de PDF de secretária. O formulário desta página está predefinido para JPG, todas as páginas e 150 DPI; pode alterar os DPI para 100, 200 ou 300, limitar a tarefa à primeira página e definir a qualidade JPEG, que por predefinição é 90. Com todas as páginas selecionadas, recebe um ZIP com page-001.jpg, page-002.jpg e assim sucessivamente; com apenas a primeira página, recebe um único JPG. Antes de renderizar, o pdfinfo conta as páginas e a tarefa é recusada se houver mais de 500.',
+      whatItDoes: [
+        'Rasteriza todas as páginas, ou apenas a primeira, para JPG na resolução que escolher.',
+        'Empacota a saída de várias páginas num só ZIP, com nomes de ficheiro ordenáveis e preenchidos com zeros.',
+        'Usa a qualidade JPEG que definir (90 por predefinição) em todas as páginas.',
+        'Lê primeiro o número de páginas, para que um documento demasiado grande falhe antes de qualquer renderização.',
+        'Mantém os PDF fora da análise automática de imagens, que só corre em carregamentos de imagem, vídeo e áudio.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um PDF',
+          description: 'Qualquer .pdf até ao seu limite por ficheiro; o número de páginas tem de ser 500 ou menos.',
+        },
+        {
+          title: 'Escolha as páginas, os DPI e a qualidade',
+          description: 'Todas as páginas ou apenas a primeira; 100, 150, 200 ou 300 DPI; qualidade JPEG de 1 a 100.',
+        },
+        {
+          title: 'O pdftoppm renderiza',
+          description: 'pdftoppm -r <dpi> -jpeg -jpegopt quality=<q> [-f 1 -l 1] input page',
+        },
+        {
+          title: 'Descarregue',
+          description: 'converted.jpg para uma única página, converted.zip para todas as páginas.',
+        },
+      ],
+      advancedDetails: [
+        'O renderizador é convertPDFToImages em pdf_tools.go. Chama o pdfinfo para obter o número de páginas, recusa mais de 500 páginas e depois executa o pdftoppm com -r para os DPI, -jpeg e -jpegopt quality=N para a saída JPG, e -f 1 -l 1 quando só se quer a primeira página.',
+        'O servidor limita os DPI ao intervalo de 50 a 400 e a qualidade a 1 a 100, independentemente do que o formulário envie; o próprio formulário oferece 100, 150, 200 e 300.',
+        'O pdftoppm escreve um ficheiro por página; o servidor renomeia-os para page-001.jpg, page-002.jpg e assim sucessivamente (três dígitos, preenchidos com zeros) e comprime-os num ZIP, para que os ficheiros fiquem ordenados por página em qualquer gestor de ficheiros.',
+        'As dimensões em píxeis decorrem diretamente dos DPI: uma página US Letter (8.5 x 11 pol.) tem 1275 x 1650 píxeis a 150 DPI e 2550 x 3300 a 300; uma página A4 (8.27 x 11.69 pol.) tem 1240 x 1754 a 150 e 2480 x 3508 a 300.',
+        'Um PDF que é ele próprio uma digitalização é rasterizado de novo: se a digitalização incorporada tinha 300 DPI e renderizar a 150, cada página sai com metade da resolução linear da digitalização. Escolha 300 para manter o que a digitalização tinha.',
+        'A variante PNG desta ferramenta usa o mesmo renderizador com -png e sem opção de qualidade; o JPG é a escolha certa para páginas fotográficas ou digitalizadas, e o PNG para páginas com texto nítido e cores lisas, onde o ruído do JPEG se notaria.',
+      ],
+      whyItMatters: [
+        'Muitas ferramentas e plataformas aceitam imagens mas não PDF: apresentações, publicações nas redes sociais, aplicações de chat e editores de imagem.',
+        'Uma página renderizada é uma imagem fiel do layout, dos tipos de letra e dos gráficos vetoriais, sem nada para incorporar ou reorganizar.',
+        'Escolher os DPI por si mesmo significa decidir entre uma pré-visualização rápida e uma exportação com resolução de impressão.',
+      ],
+      useCases: [
+        {
+          title: 'Apresentações e redes sociais',
+          description: 'Renderize uma página de relatório ou um cartaz para uma imagem que pode publicar ou inserir numa apresentação.',
+        },
+        {
+          title: 'Miniaturas e pré-visualizações',
+          description: 'Renderize apenas a primeira página a 100 DPI para uma imagem de capa.',
+        },
+        {
+          title: 'Anotações num editor',
+          description: 'Abra uma página num editor de imagem para anotar, censurar ou recortar.',
+        },
+        {
+          title: 'Extração de digitalizações',
+          description: 'Recupere cada página digitalizada de um PDF como um JPG separado, na resolução original.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um relatório A4 de 12 páginas, todas as páginas a 150 DPI',
+          body: 'Entrada: um PDF A4 de 12 páginas com 1.8 MB, com texto e alguns gráficos. Definições deixadas na predefinição: JPG, todas as páginas, 150 DPI, qualidade 90. O pdfinfo indica 12 páginas, abaixo do limite de 500, e o pdftoppm corre com -r 150 -jpeg -jpegopt quality=90. Cada página renderiza a 8.27 x 150 por 11.69 x 150, ou seja, 1240 x 1754 píxeis (2.2 megapíxeis). Os doze ficheiros são renomeados de page-001.jpg a page-012.jpg e comprimidos em converted.zip. A renderização é feita página a página e depende sobretudo da quantidade de conteúdo vetorial e de texto de cada página; uma dúzia de páginas de texto leva alguns segundos no total. O tamanho JPEG de cada página depende do conteúdo: páginas de texto maioritariamente brancas comprimem-se muito melhor do que um gráfico a ocupar toda a página.',
+        },
+        {
+          title: 'Apenas a primeira página de uma digitalização US Letter a 300 DPI',
+          body: 'Entrada: um contrato digitalizado de 40 páginas, tamanho Letter, 28 MB. Escolha apenas a primeira página e 300 DPI, mantendo a qualidade 90. O servidor executa pdftoppm -r 300 -jpeg -jpegopt quality=90 -f 1 -l 1, por isso só uma página é rasterizada, a 8.5 x 300 por 11 x 300 = 2550 x 3300 píxeis (8.4 megapíxeis). A saída é um único converted.jpg, não um ZIP. Renderizar uma página digitalizada é rápido porque a página é uma única imagem incorporada; o carregamento de 28 MB demora mais do que a renderização. A 150 DPI a mesma página teria 1275 x 1650, um quarto dos píxeis, o que basta para ler no ecrã mas não para reimprimir a digitalização.',
+        },
+      ],
+      whenNotToUse: 'Não renderize um PDF para JPG quando precisa de que o texto continue selecionável ou pesquisável: o resultado são píxeis, e um leitor de ecrã ou um índice de pesquisa não obtêm nada. Não use JPG para páginas que são sobretudo texto nítido e desenhos de linha se for ampliar, porque a compressão JPEG deixa um ligeiro ruído à volta dos contornos; a variante PNG é mais limpa nesses casos. Os documentos com mais de 500 páginas são recusados à partida, e DPI muito elevados num documento longo produzem um ZIP grande, por isso renderize apenas as páginas de que realmente precisa. E se o objetivo é editar o conteúdo do PDF, e não obter uma imagem dele, a ferramenta certa é um editor de PDF.',
+      whyMediaManipulator: [
+        'Renderização com Poppler, com os verdadeiros controlos de DPI e qualidade expostos, e não um tamanho de pré-visualização fixo.',
+        'Um único ZIP com nomes de ficheiro numerados por página, em vez de uma pilha de transferências.',
+        'Sem registo na ferramenta padrão. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O seu PDF é guardado em uploads/<jobId>/ no nosso servidor e os JPG renderizados, ou o respetivo ZIP, em outputs/<jobId>/; as páginas são renderizadas para um diretório temporário dentro da pasta de resultados, que é removido assim que o ZIP é escrito. Os carregamentos de PDF são detetados como documentos e não passam pela análise automática de visão que os carregamentos de imagem, vídeo e áudio recebem. O Poppler corre inteiramente na nossa máquina e nenhuma página é enviada para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'A conversão de PDF em JPG é gratuita?',
+          answer: 'Sim, na ferramenta padrão. Um PDF, independentemente do número de páginas, é uma operação diária: 5 por dia como visitante, com um limite de 200 MB por ficheiro, 30 por dia e 1 GB com uma conta gratuita, 300 no Premium e 700 no Pro, tudo por predefinição e indicado em /pricing.',
+        },
+        {
+          question: 'Quantas imagens vou receber?',
+          answer: 'Uma por página quando todas as páginas estão selecionadas, entregues como converted.zip com ficheiros chamados page-001.jpg em diante. Com apenas a primeira página, recebe um único converted.jpg e nenhum ZIP.',
+        },
+        {
+          question: 'Que DPI devo escolher?',
+          answer: '150 para ler no ecrã e partilhar (1240 x 1754 em A4). 300 para impressão ou para digitalizações feitas a 300 (2480 x 3508 em A4). 100 para pré-visualizações pequenas. O servidor aceita de 50 a 400.',
+        },
+        {
+          question: 'O que faz a definição de qualidade?',
+          answer: 'É passada ao pdftoppm como -jpegopt quality=N, a escala de qualidade JPEG padrão. 90 é a predefinição; baixe-a para obter ficheiros mais pequenos em páginas com muitas fotografias.',
+        },
+        {
+          question: 'Existe um limite de páginas?',
+          answer: 'Sim, 500 páginas. O pdfinfo conta-as antes de a renderização começar, e um documento mais longo é recusado com uma mensagem que indica a contagem e o limite, e a operação é devolvida.',
+        },
+        {
+          question: 'O texto na imagem vai ser pesquisável?',
+          answer: 'Não. A saída é uma imagem rasterizada de cada página. Se precisar do texto, mantenha o PDF ou use a ferramenta de digitalização de documentos com IA, que aplica OCR a uma página fotografada.',
+        },
+        {
+          question: 'Posso obter PNG em vez de JPG?',
+          answer: 'Esta página fixa o formato em JPG. O mesmo renderizador produz PNG através da página PDF para PNG, que usa -png e não tem definição de qualidade.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída de todas as páginas é entregue como .zip; a saída da primeira página é um único .jpg.',
+          'A resolução de renderização predefinida é 150 DPI; aumente-a para uma saída com qualidade de impressão.',
+        ],
+      },
+      related: [
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Faça o caminho inverso: envolva uma imagem numa página PDF.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza os JPG renderizados para a web.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Ajuste uma página renderizada ao tamanho de uma miniatura ou de um banner.',
+        },
+        {
+          label: 'Digitalização de documentos com IA',
+          to: '/tools/ai-document-scan',
+          description: 'Aplique OCR e limpe uma página fotografada.',
+        },
+        {
+          label: 'Censurar texto em imagem',
+          to: '/tools/redact-text-in-image',
+          description: 'Tape nomes ou números numa página renderizada.',
+        },
+      ],
+      embed: {
+        title: 'Converter PDF em JPG',
+        description: 'Carregue um PDF. Cada página é renderizada para uma imagem JPG. Escolha «todas as páginas» para obter um ZIP de imagens, ou «apenas a primeira página» para um único JPG. Escolha os DPI de renderização para uma saída mais nítida.',
+      },
     },
     'compress-video': {
       name: 'Comprimir vídeo',
+      h1: 'Comprimir vídeo online sem estragar a qualidade',
       tagline: 'Reduza o tamanho de ficheiros MP4, WebM, MOV, MKV e AVI para a web, o e-mail, as redes sociais e envios para a nuvem.',
       metaTitle: 'Comprimir vídeo online (grátis) | Media Manipulator',
       metaDescription: 'Compressor de vídeo online gratuito. Reduza o tamanho de ficheiros MP4, WebM, MOV, MKV e AVI mantendo boa qualidade. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Comprimir vídeo online sem estragar a qualidade',
+      ogDescription: 'Reduza ficheiros de vídeo MP4, WebM, MOV e AVI para a web sem perder uma qualidade agradável de ver.',
+      intro: 'Um ficheiro de vídeo é grande por causa da sua taxa de bits: quantos bits o codificador gastou por cada segundo de filmagem. Os telemóveis e os gravadores de ecrã gastam com generosidade, e é por isso que um clipe curto em 1080p pode chegar a dezenas ou centenas de megabytes. Esta página abre um compressor de três controlos em vez do conversor completo: um nível de compressão, um contentor de saída e, opcionalmente, uma resolução e um codec. No nosso servidor, a tarefa é um único comando FFmpeg que recodifica a imagem com uma definição de qualidade constante (CRF) escolhida pelo nível, recodifica o áudio em AAC ou Opus e escreve o resultado com o índice no início do ficheiro, para que comece a reproduzir antes de estar totalmente transferido.',
+      whatItDoes: [
+        'Recodifica o vídeo com um nível de qualidade fixo em vez de uma taxa de bits fixa: «Ficheiro mais pequeno» corresponde a CRF 31, «Equilibrado» a CRF 26 e «Alta qualidade» a CRF 22.',
+        'Produz MP4 (H.264 por predefinição, ou H.265/HEVC quando o escolher) ou WebM (VP9 com áudio Opus).',
+        'Opcionalmente, reduz a imagem para 1080p, 720p ou 480p na mesma passagem, mantendo a proporção.',
+        'Opcionalmente, elimina por completo a faixa de áudio para obter o ficheiro mais pequeno possível.',
+        'Aceita carregamentos MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG e MPG; a página do conversor completo trata ProRes e outros formatos de edição.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar o vídeo',
+          description: 'O navegador coloca o ficheiro diretamente no nosso bucket de armazenamento e depois pede à API que inicie a tarefa.',
+        },
+        {
+          title: 'Escolher um nível',
+          description: '«Equilibrado» vem pré-selecionado. «Ficheiro mais pequeno» troca detalhe visível por tamanho; «Alta qualidade» conserva mais detalhe.',
+        },
+        {
+          title: 'Alterar, se quiser, o formato, a resolução ou o codec',
+          description: 'MP4 com H.264 reproduz em qualquer lado; H.265 e WebM são mais pequenos nos dispositivos que os descodificam.',
+        },
+        {
+          title: 'O FFmpeg recodifica',
+          description: 'libx264, libx265 ou libvpx-vp9 com o CRF do seu nível, mais áudio AAC ou Opus e faststart para MP4.',
+        },
+        {
+          title: 'Transferir o ficheiro mais pequeno',
+          description: 'O resultado fica na pasta da tarefa até terminar o período de retenção.',
+        },
+      ],
+      advancedDetails: [
+        'O comando exato para MP4 é ffmpeg -i input [-vf scale=-1:H] -c:v libx264 -crf N -pix_fmt yuv420p -movflags +faststart -c:a aac output.mp4, em que N é 31, 26 ou 22 para os três níveis (buildVideoCodecArgs e videoCRF em converter.go). Não é passado nenhum preset de velocidade do codificador, pelo que o libx264 funciona com o seu valor predefinido, medium.',
+        'Escolher H.265 troca o codificador pelo libx265 e acrescenta -tag:v hvc1, a etiqueta de que o QuickTime e o Safari precisam para reconhecer HEVC dentro de MP4. Telemóveis Android mais antigos, smart TVs e muitos leitores web não conseguem descodificar H.265 de todo.',
+        'A saída WebM usa o libvpx-vp9 com -b:v 0 -crf N e áudio Opus; se a compilação do FFmpeg no servidor não tivesse VP9 ou Opus, recorreria a VP8 e Vorbis. É passado o mesmo N, mas o VP9 interpreta o CRF numa escala de 0 a 63, pelo que 26 é aí uma definição de qualidade relativamente alta.',
+        'Uma escolha de resolução torna-se scale=-1:1080, scale=-1:720 ou scale=-1:480: a altura é fixa e a largura é calculada a partir da proporção da origem. A altura é aplicada tal como indicada, pelo que escolher 1080p para uma origem em 720p aumenta-a e torna o ficheiro maior, não mais pequeno; escolha uma altura igual ou inferior à da origem.',
+        '«Remover a faixa de áudio» acrescenta -an. Caso contrário, o áudio é recodificado pelo codificador AAC nativo do FFmpeg com a taxa de bits predefinida (não é passado nenhum -b:a; em estéreo, isso dá normalmente cerca de 128 kbps), que é uma pequena fração do ficheiro em qualquer nível.',
+        'A compressão é orientada por CRF, pelo que o tamanho de saída acompanha o conteúdo: diapositivos estáticos comprimem muito mais do que confetes ou água. O servidor valida o CRF entre 0 e 51 e o nível de compressão como um dos três nomes antes de qualquer codificação começar.',
+        'O ficheiro carregado é também colocado na fila da análise automática de conteúdo que todas as conversões normais recebem: são amostrados fotogramas e descritos por um modelo de visão local, e o áudio é transcrito no nosso próprio hardware. O resultado da análise é guardado com a tarefa e não é partilhado.',
+      ],
+      whyItMatters: [
+        'As aplicações de chat, os servidores de e-mail e as plataformas de aprendizagem impõem limites em megabytes, e um clipe de telemóvel com a sua taxa de bits nativa ultrapassa-os facilmente.',
+        'Uma página que reproduz automaticamente um vídeo de fundo de 60 MB bloqueia em ligações móveis; o mesmo clipe com CRF 26 tem uma fração desse tamanho.',
+        'As faturas de armazenamento e de largura de banda crescem com os bytes, pelo que guardar cópias comprimidas dos originais que raramente abre gera poupanças que depressa se acumulam.',
+      ],
+      useCases: [
+        {
+          title: 'E-mail e chat',
+          description: 'Faça uma gravação de telemóvel de 1 minuto caber num limite de 25 MB ou 100 MB sem uma ligação de partilha à parte.',
+        },
+        {
+          title: 'Vídeos de destaque e ciclos de fundo de sites',
+          description: 'Codifique um WebM ou um MP4 H.264 que uma página possa reproduzir automaticamente sem uma longa espera de carregamento.',
+        },
+        {
+          title: 'Gravações de cursos e de reuniões',
+          description: 'Reduza gravações de ecrã cujos diapositivos estáticos comprimem extremamente bem com qualquer CRF.',
+        },
+        {
+          title: 'Cópias de arquivo',
+          description: 'Mantenha uma cópia em 720p no nível «Equilibrado» de originais longos e mova a versão master para armazenamento a frio.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um clipe de telemóvel de 48 MB, 30 segundos e 1080p em «Equilibrado»',
+          body: 'Entrada: um MP4 de 30 segundos de um telemóvel, 1920 x 1080, 48 MB, o que dá cerca de 12,8 Mbps. Definições: «Equilibrado», MP4, H.264, resolução mantida, áudio mantido. O servidor executa o libx264 com CRF 26, yuv420p e faststart, e recodifica o áudio em AAC a 128 kbps, pelo que a faixa de som sozinha representa cerca de 0,5 MB do resultado (128 kbps x 30 s). Tudo o resto é decidido pela imagem: o CRF 26 sacrifica primeiro o grão fino e o ruído, pelo que uma filmagem estável feita à mão sai com uma pequena fração dos 12,8 Mbps da origem, enquanto ação rápida ou muito ruído da câmara reduzem menos. A codificação é uma única passagem sobre 900 fotogramas em 1080p com o preset predefinido medium; no nosso servidor, é uma tarefa curta, e o carregamento de 48 MB costuma dominar a espera.',
+        },
+        {
+          title: 'Um clipe 4K de 160 MB e 60 segundos para 720p H.265 em «Ficheiro mais pequeno»',
+          body: 'Entrada: um MP4 de 60 segundos em 3840 x 2160 com 160 MB, cerca de 21 Mbps, dentro do limite de 200 MB para visitantes. Definições: «Ficheiro mais pequeno», MP4, codec H.265, resolução 720p, áudio removido. O FFmpeg aplica scale=-1:720, que produz 1280 x 720: 0,92 megapíxeis por fotograma contra 8,3 da origem, aproximadamente um nono dos píxeis antes de o codec fazer o que quer que seja. Depois, o libx265 é executado com CRF 31 e -tag:v hvc1, e -an elimina o áudio. A combinação de nove vezes menos píxeis, um codec mais eficiente e um CRF alto é de onde vêm as maiores reduções, pelo que pode contar com um resultado medido em poucos megabytes e não em dezenas. O tempo é dominado pela descodificação dos fotogramas 4K e pelo libx265, que é visivelmente mais lento do que o libx264 com o mesmo preset, pelo que esta tarefa demora mais do que o exemplo em 1080p, apesar de a saída ser mais pequena.',
+        },
+      ],
+      whenNotToUse: 'Não comprima um ficheiro que ainda tencione editar ou cuja cor ainda vá corrigir; cada recodificação perde detalhe, e um editor quer o original ou um intermédio ProRes do conversor completo. Não o use para pôr um clipe a reproduzir num dispositivo específico se o problema for o contentor e não o tamanho; o conversor de vídeo muda o formato sem baixar a qualidade. Se o seu único objetivo é cortar uma secção, o cortador copia os fluxos sem recodificar e é mais rápido e sem perdas. E, se o ficheiro é grande por ser longo, a compressão ajuda menos do que espera; uma gravação de 20 minutos com CRF 26 continua a ser uma gravação de 20 minutos.',
+      whyMediaManipulator: [
+        'O CRF por trás de cada nível está escrito nesta página, para que possa prever o que «Ficheiro mais pequeno» fará a uma filmagem detalhada antes de esperar pelo resultado.',
+        'O H.265 em MP4 recebe a etiqueta hvc1 que os leitores da Apple exigem, algo de que muitos compressores online se esquecem.',
+        'A codificação é feita nos nossos próprios servidores com o FFmpeg; nada é entregue a um serviço de processamento externo e não é acrescentada nenhuma marca de água.',
+        'Uma compressão conta como uma operação da sua quota diária: 5 por dia sem conta por predefinição, 30 com uma conta gratuita. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O compressor recodifica o seu vídeo nos nossos próprios servidores com o FFmpeg. O ficheiro carregado é guardado em uploads/<jobId>/ e o ficheiro comprimido em outputs/<jobId>/; ambos constam do registo de retenção e são eliminados quando termina o período. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Como se trata de uma conversão normal, o ficheiro carregado passa também pela nossa análise automática de conteúdo no mesmo hardware (fotogramas amostrados descritos por um modelo de visão local, áudio transcrito localmente); esse relatório é guardado com a tarefa e não é partilhado com terceiros. Os metadados do contentor são mantidos, a menos que opte por removê-los; nada é enviado a um fornecedor externo de IA ou de processamento.',
+      faq: [
+        {
+          question: 'A compressão vai piorar o aspeto do meu vídeo?',
+          answer: 'Numa recodificação perde-se sempre algum detalhe. Em «Alta qualidade» (CRF 22) e «Equilibrado» (CRF 26), a perda incide sobretudo no grão fino e no ruído, que a maioria dos espectadores não nota; em «Ficheiro mais pequeno» (CRF 31), nota-se suavização em filmagens detalhadas. Manter a resolução evita a desfocagem que a redução de escala acrescenta.',
+        },
+        {
+          question: 'Devo escolher H.264, H.265 ou WebM?',
+          answer: 'O MP4 H.264 reproduz em tudo, incluindo televisores antigos e portáteis empresariais. O H.265 dá um ficheiro mais pequeno com o mesmo CRF, mas precisa de um dispositivo que descodifique HEVC; marcamo-lo com hvc1 para que os leitores da Apple o aceitem. O WebM (VP9 e Opus) é a escolha para páginas web em que controla o leitor.',
+        },
+        {
+          question: 'Quanto mais pequeno fica o ficheiro?',
+          answer: 'Depende da taxa de bits da origem e do conteúdo. Um clipe de telemóvel a 12 Mbps tem muita margem e encolhe drasticamente com CRF 26; um ficheiro que já foi codificado com uma taxa de bits modesta encolhe pouco, porque o CRF gasta o que a imagem precisa. Baixar para 720p e remover o áudio ajudam sempre.',
+        },
+        {
+          question: 'O compressor acrescenta uma marca de água ou altera a taxa de fotogramas?',
+          answer: 'Não. A taxa de fotogramas, a duração e a proporção são preservadas e nada é desenhado sobre a imagem. Só mudam o codec, o CRF, a altura opcional e a remoção opcional do áudio.',
+        },
+        {
+          question: 'Comprimir um vídeo é gratuito, e quais são os limites?',
+          answer: 'Por predefinição, um visitante tem 5 operações por dia, com ficheiros até 200 MB e 5 minutos de vídeo, e saída até 1080p; uma conta gratuita aumenta isso para 30 por dia, 1 GB e 20 minutos. Uma compressão que falhe é reembolsada. Os números atuais estão na página de preços.',
+        },
+        {
+          question: 'Porque é que a saída não é mais pequena do que o original?',
+          answer: 'A origem provavelmente já estava comprimida de forma eficiente, ou tem uma taxa de bits baixa para a sua resolução. O CRF não consegue descer abaixo do que a imagem exige sem um nível mais baixo. Experimente «Ficheiro mais pequeno», reduza a resolução ou mude para H.265.',
+        },
+        {
+          question: 'Posso comprimir um vídeo sem áudio ou manter o áudio original intacto?',
+          answer: 'Uma origem sem som continua sem som. Nesta página, o áudio de uma faixa mantida é sempre recodificado em AAC (MP4) ou Opus (WebM); é no conversor de vídeo completo que define uma taxa de bits de áudio explícita.',
+        },
+      ],
+      related: [
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte primeiro o clipe; assim, o compressor tem menos para codificar.',
+        },
+        {
+          label: 'Converter vídeo em GIF animado',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Para clipes de poucos segundos, o GIF é o formato que reproduz diretamente onde é publicado.',
+        },
+        {
+          label: 'Transcodificar para HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Empacote um vídeo como fluxo adaptativo em vez de um único ficheiro.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Mantenha apenas a banda sonora em MP3, WAV ou FLAC.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenha a fala em texto antes ou depois de comprimir.',
+        },
+        {
+          label: 'Tutorial do conversor de vídeo',
+          to: '/tutorials/video/getting-started',
+          description: 'Guia passo a passo de todas as opções de vídeo.',
+        },
+      ],
+      embed: {
+        title: 'Comprimir um vídeo',
+        description: 'Carregue um vídeo e escolha uma predefinição de qualidade inferior ou uma taxa de bits mais baixa. Mantenha o mesmo codec para obter o resultado mais rápido, ou mude para WebM/H.265 para obter ficheiros mais pequenos em dispositivos modernos. Manter a mesma resolução dá o resultado com o aspeto mais natural.',
+      },
     },
     'video-trimmer': {
       name: 'Cortar vídeo',
+      h1: 'Cortar vídeo online grátis',
       tagline: 'Corte um clip na parte que pretende com um corte rápido que preserva a qualidade, sem recodificar sempre que possível.',
       metaTitle: 'Cortar vídeo online grátis | Media Manipulator',
       metaDescription: 'Cortador de vídeo online gratuito. Defina o tempo de início e de fim e corte o clip com um corte rápido e sem perdas. Saída em MP4, sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Cortar vídeo online grátis',
+      ogDescription: 'Corte vídeos na parte que pretende com um corte rápido que preserva a qualidade. Grátis, sem marca de água.',
+      intro: 'Cortar mantém um trecho de um vídeo e descarta o resto. A maioria dos cortadores online recodifica o clipe inteiro para o fazer, o que é lento e custa qualidade. Esta página faz algo mais simples por predefinição: pede ao FFmpeg que avance até ao seu tempo de início e copie os pacotes de vídeo e de áudio comprimidos para um ficheiro novo durante a duração pedida, sem os descodificar. Isso é uma cópia de fluxo, é sem perdas e corre quase tão depressa quanto o ficheiro pode ser lido. Se a cópia não puder funcionar, porque o codec de origem não é permitido no contentor que escolheu ou porque assinalou a opção de corte exato ao fotograma, o servidor recodifica apenas o trecho selecionado.',
+      whatItDoes: [
+        'Corta um único intervalo de um vídeo, de um tempo de início a um tempo de fim, escrito em segundos ou escolhido numa linha temporal visual.',
+        'Copia os fluxos sem recodificar sempre que o contentor de saída aceita os codecs de origem, pelo que a parte mantida é o original, bit a bit.',
+        'Recorre automaticamente a uma recodificação quando a cópia é recusada, e permite-lhe forçar uma recodificação para um corte no fotograma exato.',
+        'Escreve MP4 por predefinição, ou MOV ou WebM; o MP4 e o MOV recebem o sinalizador faststart para que a reprodução comece antes de a transferência terminar.',
+        'Verifica com o ffprobe que o ficheiro tem realmente um fluxo de vídeo e recusa envios só com áudio com uma mensagem clara.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o vídeo',
+          description: 'MP4, MOV, M4V, WebM, MKV, AVI, FLV, WMV, MPEG ou MPG, carregado diretamente para o nosso repositório de armazenamento.',
+        },
+        {
+          title: 'Defina o início e o fim',
+          description: 'Escreva os segundos ou arraste os dois manípulos; o painel mostra a duração resultante do clipe.',
+        },
+        {
+          title: 'Escolha um contentor e, se necessário, a precisão ao fotograma',
+          description: 'O MP4 está predefinido. Assinale «Recodificar para um corte exato ao fotograma» apenas quando o fotograma exato for importante.',
+        },
+        {
+          title: 'O FFmpeg corta',
+          description: 'Uma cópia de fluxo com -ss, -t e -c copy; ou uma recodificação libx264 CRF 18 quando copiar é impossível ou quando o pediu.',
+        },
+        {
+          title: 'Transfira o clipe',
+          description: 'A saída leva o sufixo _trimmed e fica na pasta da tarefa até o seu período de retenção terminar.',
+        },
+      ],
+      advancedDetails: [
+        'O comando de cópia de fluxo é ffmpeg -ss START -i input -t DURATION -map 0 -c copy -avoid_negative_ts make_zero [-movflags +faststart] output (runTrimVideo em specialized_tools.go). -map 0 mantém todos os fluxos, incluindo faixas de áudio adicionais e legendas, e os tempos são escritos com precisão de milissegundos.',
+        'Com -ss colocado antes de -i e sem descodificação, o FFmpeg só pode começar num fotograma-chave, pelo que a cópia começa no fotograma-chave mais próximo, no seu tempo de início ou antes dele. Numa gravação de telemóvel, os fotogramas-chave estão normalmente separados por 1 a 2 segundos, que é o máximo que o início pode desviar-se; -avoid_negative_ts make_zero rebaseia então as marcas temporais para que os leitores comecem sem problemas.',
+        'O caminho de recodificação usa buildVideoCodecArgs na definição de qualidade alta: libx264 -crf 18 -pix_fmt yuv420p com AAC para MP4 e MOV, ou libvpx-vp9 -b:v 0 -crf 18 com Opus para WebM. Só o primeiro fluxo de vídeo e o primeiro fluxo de áudio (se existir) são mapeados, pelo que as faixas adicionais são descartadas neste caminho.',
+        'O modo de cópia é enviado como auto, que tenta a cópia e recodifica em caso de falha. Escolher WebM para uma origem H.264 acaba sempre no caminho de recodificação, porque o WebM só aceita vídeo VP8, VP9 e AV1.',
+        'Validação no servidor: o início tem de ser 0 ou posterior, o clipe tem de ter pelo menos 0,1 segundos e no máximo 6 horas, e o fim tem de ser posterior ao início. Tudo o resto é rejeitado antes de o FFmpeg arrancar e a operação é devolvida.',
+        'Como o corte é um modo especializado, o envio salta a análise de conteúdo automatizada que as conversões normais recebem; o servidor só corre o ffprobe e o corte.',
+      ],
+      whyItMatters: [
+        'Silêncio no início e uma paragem atabalhoada no fim estão em quase todas as gravações, e removê-los é a edição mais comum de todas.',
+        'Um corte sem perdas significa que pode cortar um ficheiro mestre sem criar uma cópia de segunda geração.',
+        'Cortar primeiro torna cada passo seguinte mais barato: comprimir, legendar ou transformar o clipe num GIF só tem de tocar na parte que manteve.',
+      ],
+      useCases: [
+        {
+          title: 'Gravações de reuniões e aulas',
+          description: 'Elimine os minutos de pessoas a entrar antes de o conteúdo começar.',
+        },
+        {
+          title: 'Destaques para publicações nas redes sociais',
+          description: 'Mantenha os 20 segundos que importam e envie só esses.',
+        },
+        {
+          title: 'Provas e relatórios de erros',
+          description: 'Partilhe exatamente o momento em que um problema aconteceu, com a qualidade original intacta.',
+        },
+        {
+          title: 'Preparar um GIF ou um excerto para restauro',
+          description: 'Corte para alguns segundos antes de entregar o clipe a uma ferramenta que funciona melhor com entradas curtas.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um corte por cópia de fluxo de 30 segundos de um MP4 1080p de 180 MB e 4,5 minutos',
+          body: 'Entrada: um MP4 H.264 de 1920 x 1080 com 4 minutos e 30 segundos e 180 MB, cerca de 5,3 Mbps, que cabe nos limites predefinidos de 200 MB e 5 minutos para visitantes. Definições: início 45.000, fim 75.000, saída MP4, recodificação não assinalada. O servidor corre o comando de cópia com -ss 45.000 e -t 30.000. Como os pacotes são copiados, a saída contém aproximadamente 30 dos 270 segundos de dados, cerca de 20 MB, exatamente com a qualidade, o codec e a taxa de fotogramas originais. O corte começa no último fotograma-chave antes dos 45 s, pelo que o clipe pode abrir até um ou dois segundos mais cedo. A tarefa é limitada pela leitura do ficheiro, não pelo cálculo, e termina em poucos segundos.',
+        },
+        {
+          title: 'Um corte exato ao fotograma de 12 segundos de um MP4 1080p de 60 MB',
+          body: 'Entrada: um MP4 de 1920 x 1080 com 2 minutos e 60 MB. Definições: início 30.250, fim 42.250, saída MP4, «Recodificar para um corte exato ao fotograma» assinalado. O FFmpeg descodifica agora exatamente a partir de 30.250, codifica 12 segundos (360 fotogramas a 30 fps) com libx264 a CRF 18, yuv420p e faststart, e recodifica o áudio em AAC. O CRF 18 mantém a imagem visualmente muito próxima da origem, pelo que o resultado tem a mesma ordem de tamanho por segundo que a origem, alguns megabytes para 12 segundos. Só os 12 segundos mantidos são codificados, nunca os 2 minutos completos, por isso trata-se de uma codificação curta e não de uma cópia de poucos segundos.',
+        },
+      ],
+      whenNotToUse: 'Não use o cortador para remover várias secções separadas de um vídeo; ele mantém exatamente um intervalo, pelo que um corte a meio precisa de dois cortes e de uma junção no Darkroom. Não espere que uma cópia de fluxo caia no fotograma exato; se um corte um segundo mais cedo for importante, assinale a opção de recodificação e aceite uma codificação curta. Se o seu verdadeiro objetivo é um ficheiro mais pequeno, cortar só ajuda na medida do que cortar; o compressor altera o débito binário. E se o envio não tiver fluxo de vídeo, por exemplo um M4A renomeado para MP4, o cortador recusa-o; as ferramentas de áudio tratam de ficheiros só com áudio.',
+      whyMediaManipulator: [
+        'A cópia de fluxo sem perdas é a predefinição, com a alternativa de recodificação explicada por escrito, em vez de escondida atrás de uma recodificação lenta mas segura de tudo.',
+        'Os sinalizadores exatos do FFmpeg estão nesta página, incluindo porque um corte pode começar no fotograma-chave anterior e como evitá-lo.',
+        'Um corte gasta uma operação da sua quota diária (5 por dia como visitante por predefinição, 30 com uma conta gratuita), e uma tarefa falhada é devolvida. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O cortador corre o ffprobe e um comando FFmpeg nos nossos próprios servidores. No caminho predefinido, os pacotes de vídeo e de áudio são copiados, nunca descodificados, pelo que o servidor não reconstrói uma única imagem do seu ficheiro; no caminho de recodificação, o FFmpeg descodifica apenas os segundos que manteve. O envio fica em uploads/<jobId>/ e o clipe em outputs/<jobId>/, ambos registados no livro de retenção e eliminados quando o período termina. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O corte é um modo especializado, por isso a análise de conteúdo automatizada que as conversões normais recebem não é executada neste envio, e nada é enviado para um serviço de terceiros.',
+      faq: [
+        {
+          question: 'O corte recodifica o meu vídeo?',
+          answer: 'Por predefinição, não. O servidor copia os fluxos comprimidos com -c copy, pelo que a parte mantida é idêntica ao original. Só recodifica quando assinala a opção de corte exato ao fotograma ou quando o contentor que escolheu não consegue conter o codec de origem, como no caso do WebM para um ficheiro H.264.',
+        },
+        {
+          question: 'Porque é que o meu clipe começa um pouco antes do tempo que escrevi?',
+          answer: 'Uma cópia de fluxo só pode começar num fotograma-chave, e o FFmpeg escolhe o mais próximo no seu tempo de início ou antes dele. Em filmagens de câmara, os fotogramas-chave estão normalmente separados por 1 a 2 segundos. Assinale «Recodificar para um corte exato ao fotograma» para começar no fotograma exato.',
+        },
+        {
+          question: 'Que contentores de saída posso escolher, e quais mantêm a qualidade original?',
+          answer: 'MP4, MOV e WebM. O MP4 e o MOV aceitam o vídeo H.264 ou HEVC e o áudio AAC que a maioria das câmaras produz, pelo que se mantêm sem perdas. O WebM só aceita VP8, VP9 e AV1, por isso uma origem H.264 é recodificada em VP9 a CRF 18 para essa escolha.',
+        },
+        {
+          question: 'Qual pode ser a duração mínima e máxima do clipe cortado?',
+          answer: 'Pelo menos 0,1 segundos e no máximo 6 horas, com o fim depois do início. Na prática, os limites de envio aplicam-se primeiro: por predefinição, 5 minutos de vídeo para um visitante, 20 minutos com uma conta gratuita, 2 horas no Premium.',
+        },
+        {
+          question: 'Mantém todas as faixas de áudio e as legendas?',
+          answer: 'No caminho de cópia de fluxo, sim: -map 0 copia todos os fluxos do ficheiro. No caminho de recodificação, só o primeiro fluxo de vídeo e o primeiro fluxo de áudio são mantidos.',
+        },
+        {
+          question: 'Posso cortar um vídeo em várias partes de uma só vez?',
+          answer: 'Não. Um envio produz um clipe de um intervalo. Para várias partes, corra o cortador uma vez por intervalo, ou monte as partes numa linha temporal no Darkroom.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Cópia de fluxo sempre que possível (sem perda de qualidade); a alternativa de recodificação usa H.264 + AAC para MP4.',
+        ],
+      },
+      related: [
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o clipe depois de o cortar.',
+        },
+        {
+          label: 'Converter vídeo em GIF animado',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Transforme os segundos cortados num GIF.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Guarde só o som do clipe.',
+        },
+        {
+          label: 'Restauro de vídeo com IA',
+          to: '/tools/ai-video-restoration',
+          description: 'O restauro funciona com excertos de 15 segundos ou menos; corte primeiro.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Junte várias partes cortadas numa só edição.',
+        },
+      ],
+      embed: {
+        title: 'Cortar um vídeo',
+        description: 'Carregue um vídeo e defina um tempo de início e de fim (ou escolha o intervalo visualmente). Mantemos a qualidade original com um corte rápido e sem perdas sempre que possível.',
+      },
     },
     'extract-audio-from-video': {
       name: 'Extrair áudio de vídeo',
+      h1: 'Extrair áudio de vídeo',
       tagline: 'Guarde a faixa de áudio de qualquer vídeo como um ficheiro MP3, WAV, M4A, AAC, FLAC ou OGG limpo.',
       metaTitle: 'Extrair áudio de vídeo: MP3, WAV, M4A e mais | Media Manipulator',
       metaDescription: 'Ferramenta online gratuita para extrair o áudio de qualquer ficheiro de vídeo (MP4, MOV, MKV, WebM, AVI). Saída em MP3, WAV, M4A, AAC, FLAC ou OGG. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Extrair áudio de vídeo',
+      ogDescription: 'Guarde as faixas de áudio de MP4/MOV/MKV/WebM/AVI como MP3, WAV, M4A, AAC, FLAC ou OGG. Grátis, sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      intro: 'Todos os contentores de vídeo transportam o áudio como um fluxo separado, por isso retirar o som não envolve a imagem de todo. Esta página pede ao FFmpeg que selecione o primeiro fluxo de áudio, ignore o vídeo e codifique esse fluxo no formato que escolher: MP3 para tudo o que reproduz música, WAV ou FLAC quando quer as amostras intactas, M4A ou AAC para um ficheiro pequeno que os telemóveis tratam nativamente, ou OGG Vorbis. Antes de começar, o servidor confirma com o ffprobe que existe um fluxo de áudio, porque, caso contrário, o FFmpeg escreveria um ficheiro vazio sem se queixar.',
+      whatItDoes: [
+        'Seleciona o primeiro fluxo de áudio (-map 0:a:0) de MP4, MOV, M4V, WebM, MKV, AVI e dos outros contentores de vídeo comuns e descarta o vídeo (-vn).',
+        'Codifica MP3 com libmp3lame a qualidade 2 (débito binário variável com média de cerca de 190 kbps), WAV como PCM de 16 bits, M4A ou AAC a 192 kbps, FLAC sem perdas, ou OGG com libvorbis a qualidade 5.',
+        'Mantém a taxa de amostragem e o número de canais originais; nada é reamostrado nem misturado para menos canais.',
+        'Recusa à partida um vídeo sem fluxo de áudio, com a mensagem de que não há nada para extrair.',
+        'Devolve um único ficheiro de áudio com o nome do original e a extensão escolhida.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o vídeo',
+          description: 'Qualquer contentor comum; o ficheiro vai diretamente para o nosso bucket de armazenamento e a API recolhe-o.',
+        },
+        {
+          title: 'Escolha o formato de áudio',
+          description: 'O MP3 está predefinido. O WAV e o FLAC são sem perdas; o M4A e o AAC são compactos; o OGG é a opção aberta com perdas.',
+        },
+        {
+          title: 'O ffprobe confirma que existe um fluxo de áudio',
+          description: 'Um vídeo mudo para aqui com um erro claro em vez de produzir um ficheiro vazio.',
+        },
+        {
+          title: 'O FFmpeg codifica o fluxo',
+          description: 'Um único comando com -map 0:a:0 -vn e o codificador do seu formato.',
+        },
+        {
+          title: 'Transfira o áudio',
+          description: 'O ficheiro fica na pasta da tarefa até terminar a sua janela de retenção.',
+        },
+      ],
+      advancedDetails: [
+        'O comando é ffmpeg -y -i input -map 0:a:0 -vn <encoder args> output (runExtractAudio em specialized_tools.go). -vn significa que o fluxo de vídeo nunca é descodificado, e é por isso que a extração é rápida mesmo em origens 4K.',
+        'O MP3 usa -c:a libmp3lame -q:a 2, a definição de débito binário variável LAME V2, que ronda em média os 190 kbps em música e menos em fala. O WAV usa -c:a pcm_s16le, por isso uma origem estéreo a 44,1 kHz custa cerca de 10,1 MB por minuto e uma origem a 48 kHz cerca de 11 MB por minuto.',
+        'O M4A e o AAC usam ambos o codificador AAC nativo do FFmpeg com -b:a 192k. O FLAC é sem perdas e fica normalmente entre 50 e 70 por cento do tamanho do WAV. O OGG usa -c:a libvorbis -q:a 5, cerca de 160 kbps.',
+        'Não é passado nenhum parâmetro -ar nem -ac, por isso a saída mantém a taxa de amostragem e a disposição de canais da origem; o surround 5.1 continua 5.1 em WAV e FLAC, enquanto o MP3 transporta no máximo dois canais.',
+        'Só o fluxo 0:a:0 é mapeado. Um ficheiro com uma faixa de comentários ou um segundo idioma fica com a faixa que estiver listada primeiro no contentor.',
+        'A extração é um modo especializado: o carregamento não entra na fila da análise automática de conteúdo que as conversões normais recebem, e os controlos de qualidade, redimensionamento e efeitos do conversor de vídeo não se aplicam.',
+      ],
+      whyItMatters: [
+        'Podcasters, transcritores e editores precisam normalmente do som sem os píxeis, e o vídeo é muitas vezes 20 a 50 vezes maior do que o áudio que contém.',
+        'Um MP3 ou M4A corretamente etiquetado é reproduzido em todos os telemóveis e em todos os leitores sem a descodificação de vídeo que esgota as baterias.',
+        'Uma saída WAV ou FLAC sem perdas é a entrada certa para limpeza de ruído, separação de voz ou uma transcrição cuidadosa.',
+      ],
+      useCases: [
+        {
+          title: 'Episódios só em áudio',
+          description: 'Publique o som de uma entrevista gravada em vídeo como um MP3 de podcast.',
+        },
+        {
+          title: 'Preparação para transcrição',
+          description: 'Entregue uma gravação de 18 minutos a um transcritor como um MP3 de 25 MB em vez de um MP4 de 540 MB.',
+        },
+        {
+          title: 'Design de som e sampling',
+          description: 'Retire um WAV de um clip para reutilizar o ambiente ou a música noutra edição.',
+        },
+        {
+          title: 'Apontamentos de aulas',
+          description: 'Guarde o áudio da gravação de uma aula para ouvir em movimento.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma gravação 720p de 18 minutos e 540 MB para MP3',
+          body: 'Entrada: um MP4 de 18 minutos a 1280 x 720 com 540 MB (cerca de 4 Mbps), carregado com uma conta gratuita porque excede as predefinições de visitante de 200 MB e 5 minutos. Definições: MP3. O servidor confirma a faixa AAC estéreo a 48 kHz com o ffprobe e executa libmp3lame -q:a 2. A cerca de 190 kbps, isso são cerca de 1,4 MB por minuto, por isso o resultado sai com cerca de 25 MB, cerca de um vigésimo do carregamento. Como -vn ignora por completo o vídeo, a tarefa é uma simples descodificação e codificação de áudio e é rápida; carregar 540 MB demora muito mais do que extrair deles.',
+        },
+        {
+          title: 'Um videoclipe 1080p de 4 minutos e 95 MB para WAV',
+          body: 'Entrada: um MP4 de 4 minutos a 1920 x 1080 com 95 MB e uma faixa AAC estéreo a 44,1 kHz, dentro dos limites de visitante. Definições: WAV. O FFmpeg descodifica o AAC uma vez e escreve PCM de 16 bits com pcm_s16le, mantendo 44,1 kHz e dois canais. O PCM a essa taxa são 44.100 x 16 x 2 bits por segundo, cerca de 10,1 MB por minuto, por isso o ficheiro sai com cerca de 40 MB, independentemente de quão alta ou densa a música seja. Escolher FLAC em vez disso comprimiria essas mesmas amostras sem perdas para algo entre 20 e 28 MB, consoante o material. O tempo é de alguns segundos de descodificação de áudio; o vídeo nunca é tocado.',
+        },
+      ],
+      whenNotToUse: 'Não use esta página para melhorar o som; ela copia o que lá está, e uma gravação ruidosa ou distante continua ruidosa. As ferramentas Limpar áudio de voz e Remover ruído de fundo foram criadas para isso. Não espere que um WAV recupere a qualidade que o vídeo perdeu; a faixa de origem é quase sempre AAC com perdas, por isso um WAV é uma cópia fiel de um sinal comprimido, e não um master de estúdio. Se o vídeo tiver duas faixas de idioma e precisar da segunda, esta ferramenta só retira a primeira. E se o que realmente quer são as palavras, o transcritor lê o áudio e dá-lhe diretamente texto e legendas.',
+      whyMediaManipulator: [
+        'As definições do codificador são explícitas: LAME V2 para MP3, 192 kbps para AAC, PCM de 16 bits para WAV e a taxa de amostragem original em todos os casos.',
+        'Um vídeo mudo é apanhado pelo ffprobe antes de qualquer coisa correr, por isso nunca transfere um ficheiro de tamanho zero.',
+        'Uma extração é uma operação da sua quota diária: 5 por dia sem conta por predefinição, 30 com uma conta gratuita; uma tarefa recusada ou falhada é reembolsada. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A extração corre nos nossos próprios servidores como um único comando FFmpeg que lê apenas o primeiro fluxo de áudio do seu carregamento; os fotogramas de vídeo nunca são descodificados. O ficheiro carregado fica em uploads/<jobId>/ e o áudio em outputs/<jobId>/, ambos registados no livro de retenção e removidos quando a janela termina. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Como a extração é um modo especializado, o carregamento não passa pela análise automática de conteúdo que as conversões normais recebem; não é transcrito nem descrito, e nada sai do nosso hardware.',
+      faq: [
+        {
+          question: 'Para que formatos de áudio posso extrair, e quais são sem perdas?',
+          answer: 'MP3, WAV, M4A, AAC, FLAC e OGG. O WAV e o FLAC são cópias sem perdas da faixa descodificada. O MP3 (cerca de 190 kbps VBR), o M4A e o AAC (192 kbps) e o OGG (qualidade 5) são com perdas, mas acima do débito binário da maioria das faixas de som de vídeo.',
+        },
+        {
+          question: 'Que tamanho terá o áudio extraído?',
+          answer: 'O WAV tem cerca de 10,1 MB por minuto a 44,1 kHz estéreo, ou 11 MB a 48 kHz. O MP3 com a definição desta página tem cerca de 1,4 MB por minuto, o M4A e o AAC cerca de 1,4 MB por minuto a 192 kbps, o OGG cerca de 1,2 MB por minuto. O FLAC fica normalmente entre metade e dois terços do tamanho do WAV.',
+        },
+        {
+          question: 'A extração altera a taxa de amostragem ou a imagem estéreo?',
+          answer: 'Não. O FFmpeg é executado sem -ar nem -ac, por isso a saída mantém a taxa de amostragem e a disposição de canais da origem. Uma faixa estéreo a 48 kHz continua estéreo a 48 kHz.',
+        },
+        {
+          question: 'O que acontece se o meu vídeo não tiver áudio?',
+          answer: 'O servidor analisa primeiro o ficheiro e para com a mensagem de que não há nada para extrair. A operação é reembolsada e não é produzido nenhum ficheiro vazio.',
+        },
+        {
+          question: 'O meu vídeo tem duas faixas de áudio; qual é que recebo?',
+          answer: 'A primeira do contentor, o fluxo 0:a:0. Ainda não há um seletor de faixas. Se a que precisa for a segunda, faça primeiro um remux ou volte a exportar o vídeo com essa faixa.',
+        },
+        {
+          question: 'Extrair áudio é grátis, e que duração de vídeo posso carregar?',
+          answer: 'Sim. Por predefinição, um visitante pode executar 5 operações por dia em ficheiros até 200 MB e 5 minutos; uma conta gratuita permite 30 por dia, 1 GB e 20 minutos; o Premium aceita 5 GB e 2 horas. Os limites atuais estão listados na página de preços.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Extraímos o primeiro fluxo de áudio. Os vídeos sem nenhum fluxo de áudio devolvem um erro claro em vez de um ficheiro vazio.',
+        ],
+      },
+      related: [
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Salte o ficheiro de áudio e obtenha diretamente as palavras.',
+        },
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'Reduza o ruído e nivele a fala extraída.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Retire o zumbido e o chiado da faixa extraída.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Transforme a música extraída num instrumental.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte o vídeo na parte que pretende antes de extrair.',
+        },
+      ],
+      embed: {
+        title: 'Extrair a faixa de áudio de um vídeo',
+        description: 'Carregue qualquer contentor de vídeo comum. Escolha MP3 para ampla compatibilidade, WAV para sem perdas, ou M4A/AAC para um ficheiro comprimido compacto. Os vídeos sem faixa de áudio devolvem um erro claro.',
+      },
     },
     'convert-video-to-animated-gif': {
       name: 'Converter vídeo em GIF animado',
+      h1: 'Converter vídeo em GIF animado online',
       tagline: 'Transforme clips curtos MP4, WebM, MOV ou MKV em GIFs animados fáceis de partilhar em segundos.',
       metaTitle: 'Converter vídeo em GIF animado online (grátis) | Media Manipulator',
       metaDescription: 'Conversor gratuito de vídeo para GIF online. Transforme clips curtos MP4, WebM, MOV e MKV em GIFs animados, com controlo do tamanho e da taxa de fotogramas.',
+      ogTitle: 'Converter vídeo em GIF animado online',
+      ogDescription: 'Transforme clipes de vídeo curtos em GIFs animados fáceis de partilhar. Controle a taxa de fotogramas, as dimensões e o ciclo.',
+      intro: 'Um GIF animado é uma pilha de fotogramas de cor indexada, com no máximo 256 cores por paleta, sem compressão entre fotogramas além de uma simples codificação por comprimento de sequência. É por isso que um GIF de poucos segundos pode pesar mais do que um MP4 de um minuto, e é por isso que fazer um bom GIF depende sobretudo de escolher a largura, a taxa de fotogramas e o tamanho da paleta. Esta página executa um processo em duas fases: o FFmpeg redimensiona o vídeo para a largura que definir e amostra-o à sua taxa de fotogramas, escrevendo um GIF em bruto; depois, o gifsicle volta a quantizar a paleta para o seu número de cores, define o atraso entre fotogramas e otimiza os fotogramas para que só sejam guardados os píxeis alterados. Os valores predefinidos estão ajustados para gravações de ecrã: 900 píxeis de largura, 12 fotogramas por segundo, 128 cores.',
+      whatItDoes: [
+        'Redimensiona o clipe para uma largura escolhida (16 a 2000 px), com a altura calculada a partir da proporção e arredondada para um múltiplo de 4.',
+        'Amostra a origem com o FFmpeg a uma taxa de fotogramas escolhida (1 a 50 fps; 12 por predefinição).',
+        'Quantiza cada fotograma para uma paleta de 2 a 256 cores (128 por predefinição) e otimiza o armazenamento entre fotogramas com o gifsicle no nível 1 a 3.',
+        'Define o atraso entre fotogramas em centésimos de segundo, o que determina a velocidade de reprodução independentemente da taxa de amostragem.',
+        'Respeita um intervalo de corte definido no formulário do conversor, para que só os segundos selecionados se tornem fotogramas.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar um vídeo e escolher GIF',
+          description: 'O GIF já vem selecionado como saída nesta página; o controlo «Qualidade» está desativado porque não se aplica.',
+        },
+        {
+          title: 'Cortar para poucos segundos',
+          description: 'Use o controlo de corte para manter o momento que pretende; cada segundo a mais são mais 12 fotogramas à taxa predefinida.',
+        },
+        {
+          title: 'Definir largura, taxa de fotogramas, cores e atraso',
+          description: 'O painel «Definições de GIF animado» começa em 900 px, 12 fps, 128 cores, atraso 3, otimização 3.',
+        },
+        {
+          title: 'O FFmpeg amostra, o gifsicle otimiza',
+          description: 'ffmpeg scale=W:-4 -pix_fmt rgb8 -r FPS e depois gifsicle --optimize --delay --colors --interlace.',
+        },
+        {
+          title: 'Transferir o GIF',
+          description: 'Um GIF normal em ciclo que as aplicações de chat e os navegadores reproduzem diretamente.',
+        },
+      ],
+      advancedDetails: [
+        'A primeira fase é ffmpeg -i input [-ss START -t DURATION] -vf scale=W:-4 -pix_fmt rgb8 -r FPS -f gif raw.gif (convertVideoToGIF em converter.go). O -4 pede uma altura que mantenha a proporção e seja divisível por 4; o rgb8 é um formato intermédio indexado de 8 bits que a segunda fase volta a quantizar.',
+        'A segunda fase é gifsicle --optimize=L --delay=D --colors C --interlace raw.gif -o output.gif. O nível de otimização 3 é o mais lento e o que gera o ficheiro mais pequeno: guarda apenas o retângulo de píxeis que mudou entre fotogramas, e é por isso que uma gravação de ecrã com uma barra de ferramentas estática comprime muito melhor do que uma filmagem com a câmara em movimento panorâmico.',
+        'O atraso é aplicado a cada fotograma após a amostragem e é independente da taxa de amostragem. Com os 12 fps predefinidos e atraso 3 (30 ms por fotograma), um clipe reproduz cerca de 2,8 vezes mais depressa do que em tempo real; defina o atraso como 8 (80 ms, 12,5 fps) para uma reprodução aproximadamente em tempo real a 12 fps, ou 10 a 10 fps.',
+        'Uma largura introduzida no campo principal «Largura» do conversor substitui a largura do painel de GIF, para que os utilizadores avançados possam usar um só controlo. As cores são limitadas de 2 a 256 pelo formulário; uma paleta GIF nunca pode exceder 256.',
+        'Aqui não há uma passagem palettegen no FFmpeg; a qualidade da paleta vem do gifsicle --colors, que constrói uma única paleta otimizada para toda a animação. Os clipes fotográficos com gradientes suaves beneficiam de 256 cores; filmagens de interfaces planas ficam idênticas com 64.',
+        'A fase do gifsicle tem um tempo limite de 6 horas, e o ficheiro carregado recebe também a análise automática de conteúdo que as conversões normais têm, já que o GIF é um formato do conversor de vídeo normal.',
+      ],
+      whyItMatters: [
+        'Os GIF reproduzem automaticamente e diretamente em gestores de tickets, aplicações de chat, sites de documentação e clientes de e-mail, onde um anexo de vídeo mostraria um botão de reprodução ou nada.',
+        'Um GIF de 5 segundos de um erro mostra como reproduzi-lo mais depressa do que um parágrafo e não precisa de um leitor de vídeo.',
+        'As escolhas de paleta e de taxa de fotogramas mudam o tamanho numa ordem de grandeza, pelo que disponibilizá-las é melhor do que uma predefinição única.',
+      ],
+      useCases: [
+        {
+          title: 'Reprodução de erros',
+          description: 'Grave o ecrã, corte até à falha e largue o GIF no ticket.',
+        },
+        {
+          title: 'Demonstrações em README e documentação',
+          description: 'Mostre uma funcionalidade em movimento onde não é permitido incorporar vídeo.',
+        },
+        {
+          title: 'Clipes de reação',
+          description: 'Corte 3 segundos de um vídeo e partilhe-os em qualquer sítio que aceite imagens.',
+        },
+        {
+          title: 'Pré-visualizações de e-mail',
+          description: 'Um pequeno GIF em ciclo com ligação para o vídeo completo, onde o próprio vídeo não reproduz.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma gravação de ecrã de 8 segundos em 1080p com os valores predefinidos',
+          body: 'Entrada: uma gravação de ecrã MP4 de 8 segundos em 1920 x 1080, com cerca de 15 MB. Definições: GIF, largura 900, 12 fps, 128 cores, atraso 3, otimização 3. O FFmpeg redimensiona para 900 píxeis de largura por cerca de 506 de altura (ajustada para um múltiplo de 4) e amostra 96 fotogramas. Sem compressão, esses 96 fotogramas indexados ocupariam cerca de 43 MB (900 x 504 x 96 bytes), que é o teto a partir do qual o gifsicle trabalha; com uma barra de ferramentas estática e um cursor em movimento, a otimização de nível 3 guarda apenas os retângulos que mudam, pelo que uma gravação de ecrã fica muito abaixo desse limite, normalmente em poucos megabytes. Com atraso 3, os 96 fotogramas reproduzem em cerca de 2,9 segundos, aproximadamente 2,8 vezes mais depressa do que a origem de 8 segundos; defina o atraso como 8 para reproduzir em cerca de 7,7 segundos. A tarefa é uma codificação curta mais uma passagem do gifsicle sobre 96 fotogramas.',
+        },
+        {
+          title: 'Um clipe de reação de 5 segundos a 480 px, 10 fps e 64 cores',
+          body: 'Entrada: um MP4 de 20 segundos em 1080p com 40 MB, cortado no formulário para um intervalo de 5 segundos. Definições: GIF, largura 480, 10 fps, 64 cores, atraso 10, otimização 3. O FFmpeg corta os 5 segundos, redimensiona para 480 píxeis de largura por cerca de 270 de altura (arredondada para um múltiplo de 4) e amostra 50 fotogramas. Os dados em bruto dos fotogramas ocupam cerca de 6,5 MB (480 x 268 x 50 bytes) antes da otimização, e uma paleta de 64 cores precisa apenas de 6 bits por píxel, pelo que uma filmagem de câmara com movimento em todo o enquadramento ficará mesmo assim bem abaixo disso, enquanto uma pessoa a falar com a câmara fixa comprime para uma fração desse valor. O atraso 10 corresponde a 100 ms por fotograma, pelo que 50 fotogramas reproduzem em exatamente 5 segundos, igual ao tempo real a 10 fps.',
+        },
+      ],
+      whenNotToUse: 'Não faça um GIF de nada com mais de cerca de 10 segundos ou com movimento fotográfico em todo o enquadramento; o formato não tem verdadeira compressão entre fotogramas, pelo que esses clipes chegam a dezenas de megabytes, enquanto um MP4 ou WebM do mesmo conteúdo tem um décimo do tamanho. Não use GIF quando a fidelidade de cor é importante, uma vez que cada fotograma está limitado a uma paleta de 256 cores e os gradientes ficam com bandas. Se o destino reproduzir vídeo diretamente, um MP4 comprimido é melhor em todos os aspetos. E, se precisar de áudio, um GIF não o consegue transportar de todo.',
+      whyMediaManipulator: [
+        'As duas fases do processo e os respetivos valores predefinidos estão documentados aqui, incluindo o comportamento do atraso que faz os GIF predefinidos reproduzirem depressa.',
+        'A largura, a taxa de fotogramas, o número de cores, o atraso e o nível de otimização estão todos disponíveis, e não apenas um controlo de tamanho.',
+        'Uma conversão em GIF conta como uma operação (5 por dia para visitantes por predefinição, 30 com uma conta gratuita), e uma tarefa falhada é reembolsada. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A conversão em GIF é feita nos nossos próprios servidores: o FFmpeg amostra e redimensiona os fotogramas e depois o gifsicle quantiza-os e otimiza-os; um GIF temporário em bruto é eliminado assim que o gifsicle termina. O ficheiro carregado é guardado em uploads/<jobId>/ e o GIF em outputs/<jobId>/, ambos no registo de retenção e eliminados quando termina o período. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Como formato do conversor de vídeo normal, o ficheiro carregado passa também pela nossa análise automática de conteúdo no mesmo hardware (fotogramas amostrados descritos por um modelo de visão local, áudio eventualmente presente transcrito localmente); esse relatório fica com a tarefa e não é partilhado com terceiros.',
+      faq: [
+        {
+          question: 'Porque é que o meu GIF reproduz mais depressa do que o vídeo original?',
+          answer: 'O atraso entre fotogramas é definido após a amostragem e, por predefinição, é de 3 centésimos de segundo, o que corresponde a cerca de 33 fotogramas por segundo de reprodução para fotogramas amostrados a 12 por segundo. Defina o atraso como 8 a 12 fps, ou 10 a 10 fps, para uma reprodução em tempo real.',
+        },
+        {
+          question: 'Como posso tornar o GIF mais pequeno?',
+          answer: 'Por ordem de efeito: corte para menos segundos, baixe a largura (480 é suficiente para chat), baixe a taxa de fotogramas para 8 ou 10 e reduza as cores para 64 em filmagens de interfaces planas. Mantenha a otimização em 3; os níveis 1 e 2 apenas trocam tamanho por velocidade.',
+        },
+        {
+          question: 'Quantas cores devo usar?',
+          answer: '128, o valor predefinido, é adequado para a maioria das gravações de ecrã. As interfaces planas ficam idênticas com 64 e poupam bytes. As filmagens fotográficas com gradientes pedem 256, que é o máximo do GIF.',
+        },
+        {
+          question: 'Posso escolher que parte do vídeo se torna o GIF?',
+          answer: 'Sim. Use o controlo de corte do conversor para definir um início e um fim; só esse intervalo é amostrado. Quanto mais curto, melhor, já que cada segundo acrescenta fotogramas à taxa escolhida.',
+        },
+        {
+          question: 'O GIF fica em ciclo, e mantém o som?',
+          answer: 'Fica em ciclo, como os GIF fazem por predefinição em todos os leitores. Não consegue transportar áudio; o formato não tem faixa de som. Extraia o áudio em separado se precisar dele.',
+        },
+        {
+          question: 'Qual é o maior GIF que posso criar?',
+          answer: 'O formulário permite até 2000 px de largura, 50 fps e 256 cores, mas um GIF com essas definições cresce enormemente e depressa. O próprio carregamento está limitado pelo seu plano: 200 MB e 5 minutos de vídeo para um visitante, por predefinição.',
+        },
+      ],
+      related: [
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte primeiro os segundos exatos, sem perdas.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Para algo com mais de alguns segundos, um MP4 pequeno é melhor do que um GIF.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Acrescente legendas ou recorte antes de exportar o clipe.',
+        },
+        {
+          label: 'Tutorial do conversor de vídeo',
+          to: '/tutorials/video/getting-started',
+          description: 'Percorra as definições de corte, redimensionamento e filtros.',
+        },
+      ],
+      embed: {
+        title: 'Converter um clipe de vídeo em GIF',
+        description: 'Carregue um vídeo curto e escolha GIF como formato de saída. Corte para menos de ~10 segundos e baixe a taxa de fotogramas para obter um ficheiro mais pequeno.',
+      },
     },
     'transcribe-video': {
       name: 'Transcrever vídeo',
+      h1: 'Transcrever vídeo em texto online',
       tagline: 'Extraia as palavras faladas de um ficheiro de vídeo ou áudio como legendas WebVTT ou SRT, texto simples ou JSON com marcas temporais.',
       metaTitle: 'Transcrever vídeo em texto online (grátis) | Media Manipulator',
       metaDescription: 'Transcrição de vídeo online gratuita. Converta ficheiros MP4, MOV, WebM, MKV e de áudio em texto pesquisável, legendas VTT ou transcrições JSON.',
+      ogTitle: 'Transcrever vídeo em texto online',
+      ogDescription: 'Extraia a fala de vídeos para texto, legendas ou transcrições JSON. É executado num servidor GPU local.',
+      intro: 'A ferramenta Transcrever vídeo recebe um MP4, MOV, WebM, MKV ou um simples ficheiro de áudio, separa a faixa de áudio e processa-a com o Whisper num servidor GPU que nós operamos. Escolhe o formato do resultado antes de carregar: um ficheiro de legendas WebVTT ou SRT com os tempos de cada legenda, um ficheiro de texto simples apenas com as palavras, ou um documento JSON com todos os segmentos e o respetivo início e fim ao milissegundo. O idioma é detetado automaticamente, ou pode escrever um código de duas letras para o fixar.',
+      whatItDoes: [
+        'Descodifica a faixa de áudio com o ffmpeg num WAV mono de 16 kHz, a taxa de amostragem que o Whisper espera, e elimina esse ficheiro intermédio quando a tarefa termina.',
+        'Executa o whisper-ctranslate2 com o modelo Whisper medium em float16 na nossa GPU, com a filtragem de atividade de voz ativada para que o silêncio e longos trechos de música sejam ignorados.',
+        'Escreve um ficheiro chamado transcript.vtt, transcript.srt, transcript.txt ou transcript.json, consoante o formato que escolheu.',
+        'Deteta o idioma falado a partir do próprio áudio; um código de idioma que escreva no formulário substitui a deteção para clipes curtos ou mistos.',
+        'Informa com honestidade quando não há nada para transcrever: um vídeo sem fluxo de áudio, ou áudio sem fala reconhecível, é concluído na mesma com uma mensagem curta em vez de um ficheiro vazio.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar vídeo ou áudio',
+          description: 'MP4, MOV, WebM, MKV, AVI ou um ficheiro de áudio como MP3, WAV, M4A ou FLAC.',
+        },
+        {
+          title: 'Escolher um formato',
+          description: 'VTT ou SRT para legendas, TXT para uma transcrição legível, JSON para marcas temporais que pode processar.',
+        },
+        {
+          title: 'O ffmpeg extrai o áudio',
+          description: 'A faixa é convertida em PCM mono de 16 kHz; os fotogramas do vídeo nunca são descodificados.',
+        },
+        {
+          title: 'O Whisper transcreve na nossa GPU',
+          description: 'A tarefa espera por uma vaga livre na GPU e depois o modelo medium processa todo o ficheiro numa única passagem.',
+        },
+        {
+          title: 'Transferir a transcrição',
+          description: 'O ficheiro aparece com a tarefa e pode ser transferido enquanto a tarefa for conservada.',
+        },
+      ],
+      advancedDetails: [
+        'O comando de extração exato é ffmpeg -vn -acodec pcm_s16le -ar 16000 -ac 1, pelo que uma faixa estéreo de 48 kHz é convertida em mono e reamostrada antes de chegar ao Whisper. Esse ficheiro intermédio ocupa 32 KB por segundo (cerca de 1,9 MB por minuto) de disco enquanto a tarefa decorre e é removido no fim.',
+        'O whisper-ctranslate2 é lançado com --model medium --device cuda --compute_type float16 --vad_filter True e --output_format json; a API interpreta esse JSON e gera ela própria o formato escolhido. O modelo é uma definição do servidor (WHISPER_CT2_MODEL), pelo que medium é a predefinição, não uma promessa.',
+        'A saída VTT começa com o cabeçalho WEBVTT e numera cada legenda; as marcas temporais têm o formato HH:MM:SS.mmm. O SRT é a mesma lista de legendas com vírgula como separador dos milissegundos. Um segmento cujo fim é igual ao início recebe meio segundo para que os leitores o mostrem na mesma.',
+        'A saída JSON contém language, hasAudio, hasSpeech, transcript, durationSeconds e uma matriz segments de {id, start, end, text}, com os tempos arredondados ao milissegundo. Esta saída não tem tempos por palavra nem pontuações de confiança.',
+        'Por predefinição, só é executado um processo Whisper de cada vez (WHISPER_GPU_CONCURRENCY=1), e o agendador da GPU verifica a VRAM livre antes de começar; o modelo medium em float16 precisa de cerca de 3,5 GB mais uma margem de 512 MB. Se a placa estiver ocupada, a sua tarefa aguarda na fila em vez de falhar.',
+        'Com o filtro VAD ativado, um ficheiro que seja só música ou fala muito fraca pode devolver «Audio was detected but no recognizable speech was found.» (foi detetado áudio, mas não foi encontrada fala reconhecível). Essa mensagem é escrita no ficheiro de transcrição, para que a transferência nunca fique vazia.',
+      ],
+      whyItMatters: [
+        'Um ficheiro de legendas é a diferença entre um vídeo que pode ser visto sem som, pesquisado ou citado e um que não pode.',
+        'Os segmentos com marcas temporais permitem saltar para o momento em que uma frase foi dita, e é isso que transforma uma gravação de duas horas em algo que pode realmente usar.',
+        'Manter a transcrição em hardware que nós operamos significa que o áudio não é entregue a uma API de fala externa.',
+      ],
+      useCases: [
+        {
+          title: 'Legendas para um vídeo publicado',
+          description: 'Exporte VTT para vídeo HTML e a maioria dos leitores web, ou SRT para programas de edição e fluxos de legendagem ao estilo da televisão.',
+        },
+        {
+          title: 'Notas de reuniões e entrevistas',
+          description: 'Leve a saída TXT para um documento e edite a partir daí, em vez de escrever do zero.',
+        },
+        {
+          title: 'Indexar um arquivo de gravações',
+          description: 'Use os segmentos JSON para construir um índice de pesquisa que aponta para o segundo exato em que uma palavra foi dita.',
+        },
+        {
+          title: 'Um primeiro rascunho de um artigo',
+          description: 'Transcreva uma palestra ou uma gravação de ecrã e depois reescreva o texto simples em prosa.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um MP4 de 9 minutos em 1080p com 120 MB, como legendas VTT',
+          body: 'Os 120 MB estão abaixo do limite de 200 MB para visitantes, mas 9 minutos ultrapassam o limite de 5 minutos para visitantes, pelo que este ficheiro precisa de uma conta gratuita, que permite 20 minutos por predefinição. O ffmpeg escreve um WAV mono de 16 kHz com cerca de 17 MB (32 000 bytes por segundo durante 540 segundos), que é eliminado após a execução. O Whisper medium produz depois legendas numeradas com tempos HH:MM:SS.mmm, e o transcript.vtt resultante tem poucos kilobytes, porque contém apenas texto e marcas temporais. Carregar 120 MB numa ligação doméstica costuma demorar mais do que a extração, que leva poucos segundos; a passagem do Whisper é o resto e aumenta com a duração da fala, não com o tamanho do vídeo.',
+        },
+        {
+          title: 'Um podcast MP3 de 18 minutos com cerca de 26 MB, como JSON',
+          body: 'Um MP3 a 192 kbps ocupa 24 KB por segundo, pelo que 1 080 segundos dão cerca de 26 MB. Os ficheiros só de áudio estão sujeitos ao mesmo limite de duração que o vídeo, pelo que 18 minutos exigem uma conta gratuita (limite de 20 minutos) e não uma sessão de visitante (5 minutos). Não há vídeo para ignorar, mas o ficheiro é na mesma convertido primeiro em PCM mono de 16 kHz (cerca de 35 MB em disco, removidos no fim). O idioma é detetado a partir do áudio e escrito no JSON como um código de duas letras, e cada segmento tem o seu próprio início e fim. O JSON é maior do que o TXT da mesma gravação porque cada segmento está envolvido no seu próprio objeto, mas fica mesmo assim bem abaixo de um megabyte.',
+        },
+      ],
+      whenNotToUse: 'Não use esta ferramenta quando precisar de tempos por palavra, identificação de oradores ou pontuações de confiança: a saída não tem nada disso, apenas marcas temporais por segmento. Também é a ferramenta errada para um ficheiro cujo áudio é música sem fala, uma vez que o filtro de atividade de voz o ignora e recebe uma mensagem curta em vez da letra. Se só precisa de ouvir o ficheiro, ou se quer legendas traduzidas para outro idioma, o passo de que precisa é outro. E, se a gravação for mais longa do que o seu plano permite (5 minutos como visitante, 20 minutos com uma conta gratuita por predefinição), corte-a primeiro ou inicie sessão.',
+      whyMediaManipulator: [
+        'Escolhe VTT, SRT, TXT ou JSON antes de carregar, pelo que não há um segundo passo de conversão depois de a transcrição existir.',
+        'O Whisper é executado na nossa própria GPU com a cache do modelo em modo offline; nenhum serviço de fala externo recebe o áudio.',
+        'A transcrição conta como uma tarefa de IA, retirada da quota de IA, que é separada da quota normal: por predefinição, 3 por dia para um visitante e 10 com uma conta gratuita, e as suas tarefas normais ficam intactas (consulte /pricing).',
+      ],
+      privacyNote: 'O seu ficheiro de vídeo ou de áudio é guardado na pasta da respetiva tarefa no nosso servidor. O ffmpeg escreve um WAV mono temporário de 16 kHz que o Whisper lê na nossa GPU, e esse WAV é eliminado quando a tarefa termina. O ficheiro de transcrição e uma cópia transcribe_result.json dos segmentos ficam com a tarefa, e o texto da transcrição é também passado a um modelo de linguagem executado no nosso próprio hardware para um resumo automático e uma verificação de segurança, cujo resultado é guardado com a tarefa. Nada é enviado para um fornecedor de IA de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Que formato de legendas devo escolher, VTT ou SRT?',
+          answer: 'VTT se as legendas forem para a web (vídeo HTML, a maioria dos leitores) e SRT se forem para um editor de vídeo ou um fluxo de trabalho ao estilo da difusão televisiva. Ambos contêm as mesmas legendas; só diferem o cabeçalho e o separador dos milissegundos: um ponto no VTT e uma vírgula no SRT.',
+        },
+        {
+          question: 'A transcrição JSON inclui pontuações de confiança ou tempos por palavra?',
+          answer: 'Não. Cada segmento tem um id, um tempo de início e de fim em segundos (arredondado ao milissegundo) e o respetivo texto. O ficheiro regista também o idioma detetado, a duração e se foi encontrada fala, mas não há tempos por palavra nem probabilidades.',
+        },
+        {
+          question: 'Que duração pode ter o ficheiro a transcrever?',
+          answer: 'Os carregamentos só de áudio estão sujeitos ao mesmo limite de duração que o vídeo: 5 minutos para um visitante, 20 minutos com uma conta gratuita, 2 horas no Premium e no Pro por predefinição, e 200 MB, 1 GB ou 5 GB por ficheiro, respetivamente. O formulário mostra os limites que se aplicam a si, e /pricing lista os números atuais.',
+        },
+        {
+          question: 'Porque recebi «no recognizable speech was found»?',
+          answer: 'O Whisper é executado com a deteção de atividade de voz ativada, pelo que um ficheiro de música, som ambiente, silêncio ou fala muito fraca pode ficar reduzido a nada. A mensagem é escrita no próprio ficheiro de transcrição, para que a transferência funcione na mesma. Volte a gravar com mais volume ou corte para a parte falada e tente novamente.',
+        },
+        {
+          question: 'Posso forçar o idioma em vez de o deixar detetar?',
+          answer: 'Sim. Escreva um código de idioma de duas letras, como en, de ou es, no campo do idioma e o Whisper transcreverá nesse idioma. Deixe-o em branco para a deteção automática, que funciona bem em clipes com mais de alguns segundos.',
+        },
+        {
+          question: 'A transcrição usa a minha quota de IA?',
+          answer: 'Sim. Cada transcrição é uma tarefa de IA: por predefinição, 3 por dia como visitante, 10 com uma conta gratuita, 100 no Premium e 200 no Pro. A quota de IA tem o seu próprio contador, pelo que transcrever nunca consome a quota normal das conversões. Uma tarefa que falhe devolve a unidade.',
+        },
+        {
+          question: 'Que modelo é usado, e posso escolher um maior?',
+          answer: 'O serviço executa o whisper-ctranslate2 com o modelo medium em float16 numa GPU CUDA por predefinição. Não há seletor de modelo no formulário; o modelo é definido no servidor, pelo que variantes muito rápidas ou muito grandes não são algo que possa pedir por tarefa.',
+        },
+      ],
+      related: [
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza uma gravação grande antes de a carregar para obter uma transcrição.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire a faixa de áudio se também quiser guardar uma cópia dela.',
+        },
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'Melhore uma gravação com ruído antes de a transcrever.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte primeiro o ficheiro até à parte falada.',
+        },
+        {
+          label: 'Tutorial do conversor de vídeo',
+          to: '/tutorials/video/getting-started',
+          description: 'Prepare e converta o vídeo antes de o transcrever.',
+        },
+      ],
+      embed: {
+        title: 'Transcrever um vídeo',
+        description: 'Carregue um vídeo. O modelo de transcrição com IA é executado no nosso servidor GPU local e exporta legendas VTT, texto simples ou JSON: VTT para legendas, texto simples para um artigo, JSON para ferramentas a jusante.',
+      },
     },
     'transcode-to-hls': {
       name: 'Transcodificar vídeo para HLS',
+      h1: 'Transcodificar vídeo para HLS online',
       tagline: 'Empacote qualquer vídeo num pacote Apple HLS VOD: master.m3u8 e segmentos .ts por resolução, pronto para a web.',
-      metaTitle: 'Transcodificar vídeo para HLS online | Ferramenta gratuita de streaming adaptativo',
+      metaTitle: 'Transcodificar vídeo para HLS online | Streaming adaptativo grátis | Media Manipulator',
       metaDescription: 'Transcodificador HLS online gratuito. Converta MP4, MOV, WebM e MKV num pacote HLS VOD com resoluções de 360p/480p/720p, legendas e storyboards opcionais.',
+      ogTitle: 'Transcodificar vídeo para HLS online',
+      ogDescription: 'Gere um pacote HLS adaptativo (master.m3u8 + listas de reprodução das variantes + segmentos .ts) a partir de qualquer vídeo, grátis e no seu navegador.',
+      intro: 'O HTTP Live Streaming serve um vídeo como uma lista de reprodução de segmentos curtos em vários níveis de qualidade, para que um leitor possa arrancar depressa e mudar de nível à medida que a ligação varia. Produzir esse pacote à mão implica codificar cada rendição com fotogramas-chave alinhados, segmentá-las e escrever uma lista de reprodução principal que descreva corretamente cada variante. Esta página faz todo o trabalho: analisa o ficheiro carregado, oferece os níveis da escada que a sua origem e o seu plano permitem, codifica cada um com libx264 e AAC em segmentos MPEG-TS de 2 segundos, acrescenta opcionalmente legendas do nosso próprio transcritor Whisper, uma folha de sprites de storyboard e uma lista de reprodução de I-frames para navegação, e junta tudo num tar.gz ou zip que pode descompactar em qualquer alojamento estático.',
+      whatItDoes: [
+        'Analisa a origem com o ffprobe e lista os níveis da escada: 144p, 240p, 360p, 480p, 720p, 1080p e 2160p, cada um ativo apenas se a origem tiver altura suficiente e o seu plano o permitir.',
+        'Codifica cada nível selecionado com libx264 perfil High nível 4.1 e AAC estéreo a 48 kHz, em segmentos .ts de 2 segundos com um fotograma-chave em cada limite de segmento.',
+        'Escreve hls/master.m3u8 com BANDWIDTH, RESOLUTION, FRAME-RATE e CODECS para cada variante, mais um index.m3u8 por nível.',
+        'Opcionalmente, transcreve o áudio com Whisper numa faixa WebVTT, tradu-la para até 3 idiomas adicionais com um modelo local e liga cada uma como rendição de legendas na lista principal.',
+        'Opcionalmente, renderiza uma folha de sprites de storyboard com um índice WebVTT para as miniaturas da barra de navegação, e tenta sempre acrescentar uma lista de reprodução só de I-frames em 240p.',
+        'Empacota a pasta com README.txt e report.json num tar.gz (ou zip) e entrega-lhe uma ligação de transferência pré-assinada.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar',
+          description: 'O navegador carrega diretamente para o nosso bucket de armazenamento com um PUT pré-assinado; depois, a API transfere o ficheiro para trabalhar sobre ele.',
+        },
+        {
+          title: 'Analisar',
+          description: 'O ffprobe lê a largura, a altura, a taxa de fotogramas, a duração e se existe áudio; os níveis mais altos do que a origem ficam a cinzento.',
+        },
+        {
+          title: 'Escolher níveis e extras',
+          description: '360p, 480p e 720p vêm pré-selecionados. Assinale legendas, idiomas adicionais de legendas, storyboards e tar.gz ou zip.',
+        },
+        {
+          title: 'Codificar cada nível',
+          description: 'libx264 com o CRF e a taxa de bits do nível e um GOP de 2 segundos, AAC com a taxa de bits de áudio do nível, saída HLS VOD.',
+        },
+        {
+          title: 'Acrescentar extras e escrever a lista principal',
+          description: 'São geradas as legendas, os storyboards e a lista de reprodução de I-frames, e depois o master.m3u8 é reescrito para os referenciar.',
+        },
+        {
+          title: 'Transferir o pacote',
+          description: 'Uma ligação pré-assinada válida durante 30 minutos por predefinição; a página da tarefa permite obtê-la enquanto estiver válida.',
+        },
+      ],
+      advancedDetails: [
+        'A escada (transcode_profiles.go) é: 144p 200 kbps de vídeo e 64 kbps de áudio, CRF 26; 240p 400/64, CRF 25; 360p 800/96, CRF 23; 480p 1200/128, CRF 23; 720p 2800/128, CRF 22; 1080p 5000/192, CRF 22; 2160p 12000/256, CRF 21. Todos os níveis usam o preset veryfast, exceto 2160p, que usa slow.',
+        'Cada nível é codificado como ffmpeg -i input -map 0:v:0 -vf scale=-2:H -r FPS -c:v libx264 -profile:v high -level 4.1 -preset P -crf N -sc_threshold 0 -g GOP -keyint_min GOP -b:v B -maxrate 1.2B -bufsize 2B -force_key_frames expr:gte(t,n_forced*2) -map 0:a:0? -c:a aac -b:a A -ac 2 -ar 48000 -hls_time 2 -hls_playlist_type vod -hls_flags independent_segments. O GOP é a taxa de fotogramas vezes 2, pelo que os segmentos começam em fotogramas-chave em todos os níveis.',
+        'Como a codificação é orientada por CRF com -maxrate como limite, um nível tem em média, no máximo, cerca da sua taxa de bits indicada (o limite é 1,2 vezes esse valor) e fica abaixo dela em conteúdo fácil. A lista principal anuncia BANDWIDTH como a soma das taxas de bits de vídeo e de áudio indicadas, e CODECS como avc1.640028, com mp4a.40.2 acrescentado quando existe áudio.',
+        'Por predefinição, um visitante pode selecionar de 360p a 720p, uma conta gratuita de 360p a 1080p, e o Premium ou o Pro toda a escada de 144p a 2160p; as origens com menos de 360p são recusadas abaixo do Premium. O servidor volta a validar os níveis no início, pelo que um cliente não pode pedir um nível que não lhe tenha sido oferecido.',
+        'As legendas usam o mesmo modelo Whisper (whisper-ctranslate2, medium) que o transcritor; a faixa principal é escrita em captions/<lang>/auto.vtt com um invólucro subs.m3u8 de um segmento e referenciada na lista principal como EXT-X-MEDIA TYPE=SUBTITLES. Até 3 idiomas adicionais, de uma lista de 37, são traduzidos segmento a segmento por um modelo Ollama local (uma compilação do translategemma 12b); uma tradução falhada é registada como aviso, nunca como tarefa falhada.',
+        'Os storyboards são uma única passagem do ffmpeg: fps=1/N, com N de 5, 10 ou 15 segundos consoante a duração (menos de 10 minutos, menos de 30, mais), mosaicos de 160 x 90 preenchidos para 16:9 numa grelha de 10 x 10 por sprite JPEG, mais storyboard.vtt com entradas #xywh. A lista de reprodução de I-frames recodifica apenas os fotogramas-chave em 240p (select=eq(pict_type,I), libx264 CRF 30, segmentos de 4 segundos) e é listada como EXT-X-I-FRAME-STREAM-INF.',
+        'A lista principal inclui EXT-X-VERSION:6, EXT-X-INDEPENDENT-SEGMENTS e três entradas EXT-X-SESSION-DATA que indicam o produtor, o site e o titular dos direitos de autor. O report.json regista a análise, as variantes com o número de segmentos e o tamanho em bytes, os avisos e as marcas temporais.',
+      ],
+      whyItMatters: [
+        'O HLS é o formato de streaming nativo do iOS, do Safari e de todas as CDN e, com o hls.js, também reproduz em qualquer outro navegador.',
+        'Os níveis adaptativos permitem que um espectador com uma ligação fraca continue a ver em 360p em vez de ficar à espera de carregar em 1080p.',
+        'Um pacote VOD pré-segmentado são ficheiros estáticos, pelo que pode ser alojado em armazenamento de objetos sem nenhum servidor de transcodificação por trás.',
+      ],
+      useCases: [
+        {
+          title: 'Plataformas de cursos',
+          description: 'Sirva aulas a partir de um bucket, com taxa de bits adaptativa e legendas em vários idiomas.',
+        },
+        {
+          title: 'Páginas de produto e de marketing',
+          description: 'Transmita uma demonstração sem um serviço de alojamento de vídeo de terceiros e sem a marca do seu leitor.',
+        },
+        {
+          title: 'Portais internos',
+          description: 'Aloje vídeos de formação na sua própria CDN, com miniaturas na barra de navegação.',
+        },
+        {
+          title: 'Arquivos',
+          description: 'Converta um catálogo antigo numa estrutura que pode transmitir, que controla e que pode replicar.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um clipe de 3 minutos em 1080p nos três níveis predefinidos',
+          body: 'Entrada: um MP4 de 3 minutos em 1920 x 1080 a 30 fps, com 140 MB e áudio estéreo, dentro dos limites para visitantes. Definições: 360p, 480p e 720p (a seleção predefinida e o máximo que um visitante pode escolher), sem legendas nem storyboards, tar.gz. Cada nível é cortado em segmentos de 2 segundos, 90 por nível, com um GOP de 60 fotogramas para que cada segmento comece num fotograma-chave. Com as taxas de bits indicadas, os níveis pesam no máximo cerca de 20 MB em 360p (800 + 96 kbps x 180 s), 30 MB em 480p (1200 + 128 kbps) e 66 MB em 720p (2800 + 128 kbps), cerca de 116 MB no total antes da pequena lista de reprodução de I-frames em 240p, e menos em conteúdo fácil, porque a codificação é orientada por CRF com a taxa de bits como limite. O pacote resultante tem 270 segmentos .ts, três ficheiros index.m3u8 e a lista principal. O tempo corresponde a três codificações libx264 veryfast de 5400 fotogramas cada, executadas uma após a outra; o nível 720p é o que demora mais.',
+        },
+        {
+          title: 'Um webinar de 12 minutos em 720p com legendas em inglês, tradução para espanhol e storyboards',
+          body: 'Entrada: um MP4 de 12 minutos em 1280 x 720 a 25 fps, com 380 MB, carregado com uma conta gratuita porque ultrapassa o limite predefinido de 5 minutos para visitantes. Definições: 360p e 720p (o 1080p fica a cinzento porque a origem é 720p), legendas ativadas com espanhol como idioma adicional, storyboards ativados, zip. O Whisper transcreve primeiro os 12 minutos e escreve captions/en/auto.vtt; a faixa em espanhol é traduzida em lotes de 30 segmentos para captions/es/auto.vtt, e ambas são listadas como rendições de legendas na lista principal. Os storyboards usam um intervalo de 10 segundos para uma origem com mais de 10 minutos: 72 miniaturas de 160 x 90 cabem num único sprite_001.jpg de 1600 x 900, com um storyboard.vtt que aponta para cada mosaico. Os dois níveis têm 360 segmentos de 2 segundos cada, com um GOP de 50 fotogramas a 25 fps, e pesam no máximo cerca de 81 MB (360p) e 264 MB (720p) com as taxas de bits indicadas. A tarefa passa mais tempo no Whisper e nas duas codificações do que em qualquer outra coisa; a tradução é um pequeno passo adicional.',
+        },
+      ],
+      whenNotToUse: 'Não transcodifique para HLS se quer simplesmente um único ficheiro mais pequeno para enviar ou incorporar; o compressor faz isso numa só passagem, sem segmentos nem listas de reprodução. Não o use para eventos em direto, porque a saída é uma lista de reprodução VOD terminada, não uma origem em direto. Se a sua origem tiver menos de 360p, a escada não pode ser construída sem o Premium. E, se o seu leitor for uma simples etiqueta de vídeo sem suporte para HLS, precisa primeiro de um MP4 ou de um leitor do tipo hls.js; um master.m3u8 sozinho só reproduz nativamente no Safari e em dispositivos Apple.',
+      whyMediaManipulator: [
+        'A taxa de bits, o CRF, o preset e as opções do FFmpeg de cada nível estão indicados nesta página, pelo que o conteúdo do pacote não é uma surpresa.',
+        'As legendas vêm do nosso próprio transcritor Whisper e as traduções de um modelo no nosso próprio hardware, ambas corretamente referenciadas na lista de reprodução principal.',
+        'O pacote são ficheiros simples com um README e um report.json; descompacte-o em qualquer alojamento estático e aponte um leitor para o master.m3u8.',
+        'Uma transcodificação gasta uma operação da sua quota diária (5 por dia como visitante por predefinição, 30 com uma conta gratuita) e está limitada a 10 inícios por hora por sessão; uma tarefa falhada é reembolsada. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O seu ficheiro vai diretamente do navegador para o nosso bucket de armazenamento e é depois transferido para o nosso próprio servidor, onde são executados o ffprobe, o FFmpeg e, se assinalar as legendas, o nosso transcritor Whisper e um modelo de tradução Ollama local; não intervém nenhum serviço de transcodificação ou de IA de terceiros. O objeto de origem, o diretório de trabalho e o pacote terminado ficam todos inscritos no registo de retenção e são eliminados quando termina o período, e a própria ligação de transferência expira ao fim de 30 minutos por predefinição. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. A transcodificação não executa a análise automática de conteúdo que as conversões normais recebem. A lista de reprodução principal gerada contém linhas de dados de sessão que indicam o Media Manipulator como produtor; não contêm nenhuma informação sobre si.',
+      faq: [
+        {
+          question: 'Que níveis posso selecionar no meu plano?',
+          answer: 'Por predefinição, um visitante tem 360p, 480p e 720p; uma conta gratuita acrescenta 1080p; o Premium e o Pro desbloqueiam também 144p, 240p e 2160p. Um nível mais alto do que a sua origem fica sempre desativado, porque nada é ampliado. Os botões mostram o motivo ao passar o rato.',
+        },
+        {
+          question: 'Qual é a duração dos segmentos, e porquê 2 segundos?',
+          answer: 'Cada nível é cortado em segmentos MPEG-TS de 2 segundos com um fotograma-chave forçado em cada limite, para que um leitor possa mudar de nível em qualquer segmento sem falhas visuais. A lista de reprodução de I-frames usa segmentos de 4 segundos porque contém apenas fotogramas-chave.',
+        },
+        {
+          question: 'As legendas ficam ligadas na lista de reprodução principal?',
+          answer: 'Sim. Cada idioma é escrito como captions/<lang>/auto.vtt com um invólucro subs.m3u8 e declarado em master.m3u8 como EXT-X-MEDIA TYPE=SUBTITLES no grupo subs, com o idioma de origem marcado como DEFAULT. Pode acrescentar até 3 idiomas traduzidos da lista de 37.',
+        },
+        {
+          question: 'E se o meu vídeo não tiver áudio?',
+          answer: 'Os níveis são codificados só com vídeo, com -an, o atributo CODECS omite mp4a.40.2 e o passo das legendas é ignorado com um aviso em report.json, uma vez que não há nada para transcrever.',
+        },
+        {
+          question: 'O que contém o pacote, e como o alojo?',
+          answer: 'hls/master.m3u8, uma pasta por nível com index.m3u8 e os segmentos, hls/iframes/, captions/ e storyboards/ opcionais, README.txt e report.json. Descompacte-o em qualquer alojamento estático ou bucket que sirva .m3u8 e .ts com os tipos MIME corretos e aponte o seu leitor para o master.m3u8.',
+        },
+        {
+          question: 'Durante quanto tempo funciona a ligação de transferência, e posso obter tar.gz ou zip?',
+          answer: 'A ligação pré-assinada dura 30 minutos por predefinição; execute novamente a tarefa se tiver expirado. Escolha tar.gz (a predefinição) ou zip no formulário antes de começar.',
+        },
+        {
+          question: 'Quanto tempo demora uma transcodificação HLS?',
+          answer: 'Cada nível selecionado é uma codificação libx264 completa com o preset veryfast, executadas uma após a outra, pelo que o tempo cresce com a duração multiplicada pelo número de níveis; o 720p domina os três níveis predefinidos. As legendas acrescentam uma passagem do Whisper sobre todo o áudio. A página da tarefa mostra cada fase à medida que é concluída.',
+        },
+      ],
+      related: [
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Um único MP4 mais pequeno em vez de um pacote de streaming.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenha as mesmas legendas do Whisper num VTT ou SRT autónomo.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Remova o início e o fim sem interesse antes de transcodificar.',
+        },
+        {
+          label: 'Restauro de vídeo com IA',
+          to: '/tools/ai-video-restoration',
+          description: 'Amplie um excerto de baixa resolução antes de construir uma escada de níveis a partir dele.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Edite e legende o vídeo e depois transcodifique a exportação.',
+        },
+      ],
+      embed: {
+        title: 'Transcodificar um vídeo para HLS',
+        description: 'Carregue um MP4/MOV/WebM/MKV. Analisamos a origem com o ffprobe, deixamo-lo escolher os níveis de qualidade gratuitos (360p/480p/720p) e depois executamos a codificação ffmpeg H.264 + AAC e juntamos o pacote HLS num tar.gz para transferir.',
+      },
     },
     'ai-video-restoration': {
       name: 'Restauro de vídeo com IA',
+      h1: 'Ferramenta de restauro de vídeo com IA',
       tagline: 'Melhore a resolução e restaure um pequeno excerto de vídeo com até seis modelos de IA (Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT e VRT) e compare todos os resultados lado a lado.',
       metaTitle: 'Restauro de vídeo com IA: compare 6 modelos de ampliação online | Media Manipulator',
       metaDescription: 'Ferramenta gratuita de restauro de vídeo com IA. Passe um clip curto pelos modelos de super-resolução Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT e VRT na nossa própria GPU e descarregue todos os resultados num só pacote.',
+      ogTitle: 'Restauro de vídeo com IA: compare Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT e VRT',
+      ogDescription: 'Escolha um excerto do seu vídeo, selecione modelos de restauro e transfira um único pacote com todas as versões melhoradas mais o original para comparação A/B.',
+      intro: 'Os modelos de restauro de vídeo discordam entre si. Um ampliador GAN como o Real-ESRGAN dá-lhe fotogramas individuais nítidos que podem tremeluzir em movimento; um transformer de vídeo como o VRT mantém a sequência estável, mas pode suavizar o detalhe. A única forma honesta de escolher é passar a mesma filmagem por todos eles e olhar. Esta página faz exatamente isso com um excerto de até 15 segundos: extrai os fotogramas, corre a sua escolha de seis modelos na nossa própria GPU, recompõe cada resultado num MP4 à taxa de fotogramas da origem com o áudio original e empacota tudo, incluindo o excerto intacto, num único arquivo para comparação lado a lado. Todos os números abaixo vêm do pipeline tal como corre hoje.',
+      whatItDoes: [
+        'Corta o excerto que selecionar (0.5 a 15 segundos, no máximo 450 fotogramas à sua taxa de fotogramas) com precisão ao fotograma e com o respetivo áudio.',
+        'Corre qualquer combinação de Real-ESRGAN, SwinIR, HAT, BasicVSR++, RVRT e VRT; os três primeiros melhoram fotograma a fotograma, os três últimos restauram a sequência como um todo.',
+        'Escolhe 4x para origens até 540p e 2x acima disso, uma vez que todos os modelos correm a sua rede nativa de 4x e o resultado de 2x é uma redução Lanczos no momento da recomposição.',
+        'Recompõe cada resultado com libx264 a CRF 16, na fração exata da taxa de fotogramas da origem, e volta a anexar o áudio.',
+        'Empacota original/clip.mp4, uma pasta por modelo, fotogramas PNG melhorados opcionais para os modelos fotograma a fotograma, manifest.json e README.txt num único tar.gz.',
+        'Continua quando um modelo falha: a sua pasta recebe FAILED.txt, o manifesto regista o motivo e todos os outros resultados são entregues mesmo assim.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um vídeo',
+          description: 'Até 1920 x 1080; origens longas não são problema, porque só o excerto é processado.',
+        },
+        {
+          title: 'Selecione um excerto',
+          description: 'Arraste as pegas para escolher até 15 segundos; recomendam-se 10 segundos ou menos, e o seletor avisa acima disso.',
+        },
+        {
+          title: 'Escolha os modelos e se quer incluir fotogramas',
+          description: 'Qualquer um dos seis; o seletor mostra uma estimativa de tempo por modelo a partir dos valores de segundos por fotograma publicados pelo servidor.',
+        },
+        {
+          title: 'Acompanhe as fases',
+          description: 'Transferência, análise, extração do clip, extração dos fotogramas, depois cada modelo do mais rápido ao mais lento e, por fim, o empacotamento.',
+        },
+        {
+          title: 'Compare e transfira',
+          description: 'Reproduza o MP4 de cada modelo ao lado do original no visualizador e depois obtenha o arquivo enquanto a sua ligação de 6 horas durar.',
+        },
+      ],
+      advancedDetails: [
+        'O clip de referência é cortado com ffmpeg -ss START -i source -t WINDOW -c:v libx264 -crf 10 -preset medium -pix_fmt yuv420p -c:a aac e, em seguida, os fotogramas são extraídos com -vsync 0 para PNG numerados; se a contagem exceder 450, os fotogramas excedentes são descartados.',
+        'O Real-ESRGAN corre o realesrgan-ncnn-vulkan com o modelo realesrgan-x4plus, escala 4 e blocos de 256 px. O SwinIR usa os pesos GAN 003_realSR_BSRGAN SwinIR-L x4 e o HAT usa Real_HAT_GAN_SRx4, ambos através de inferência por blocos (blocos de 320 px, sobreposição de 32 px), para que os fotogramas 1080p caibam em memória.',
+        'O BasicVSR++ corre o gerador REDS4 c64n7 através do mmagic em janelas de 16 fotogramas; o RVRT (001_RVRT_videosr_bi_REDS_30frames) e o VRT (001_VRT_videosr_bi_REDS_6frames) correm através dos respetivos scripts de teste KAIR, com blocos temporais de 30 e 12 fotogramas e blocos espaciais de 128 x 128.',
+        'A recomposição é uniforme: ffmpeg -framerate FPS_FRACTION -i frames/%06d.png [-i clip.mp4 -map 0:v -map 1:a -c:a aac] [-vf scale=iw/2:ih/2:flags=lanczos] -c:v libx264 -crf 16 -preset slow -pix_fmt yuv420p -movflags +faststart -shortest. A fração da taxa de fotogramas, por exemplo 30000/1001, é retirada literalmente do ffprobe, para que o áudio se mantenha sincronizado.',
+        'Os modelos correm numa ordem fixa, Real-ESRGAN, BasicVSR++, SwinIR, RVRT, HAT, VRT, sob uma reserva do agendador de GPU com orçamentos de VRAM de 3, 11, 9, 12, 10 e 14 GB respetivamente, uma tarefa de restauro de cada vez em todo o servidor e um tempo limite de 75 minutos por modelo.',
+        'As estimativas por fotograma publicadas, que o seletor multiplica pela sua contagem de fotogramas, são 0.8 s (Real-ESRGAN), 1.0 s (BasicVSR++), 3.0 s (RVRT), 3.5 s (SwinIR), 5.0 s (HAT) e 7.0 s (VRT); são predefinições do lado do servidor que podem mudar, não medições do seu clip.',
+        'O 4x explícito é recusado para origens mais altas do que 1080p, porque a saída excederia 4K; o modo automático escolhe 2x de 541p a 1080p e 4x até 540p. Os fotogramas incluídos são os PNG nativos de 4x, mesmo no percurso de 2x, por isso uma origem 1080p produz fotogramas de 7680 x 4320.',
+      ],
+      whyItMatters: [
+        'Nenhum modelo de restauro vence em todas as filmagens, e as comparações de fotogramas fixos escondem a cintilação que só a reprodução revela.',
+        'Um excerto de 10 segundos através de todos os modelos custa minutos de tempo de GPU e diz-lhe qual o modelo que merece uma execução completa noutro lado.',
+        'Cassetes digitalizadas, clips de câmaras digitais antigas e exportações comprimidas de redes sociais degradam-se de formas diferentes e respondem a famílias de modelos diferentes.',
+      ],
+      useCases: [
+        {
+          title: 'Vídeos de família antigos',
+          description: 'Veja qual o modelo que recupera rostos e tecidos numa transferência de cassete a 480p antes de restaurar a bobina inteira.',
+        },
+        {
+          title: 'Filmagens de arquivo',
+          description: 'Teste 4x em material a 360p e 480p e avalie a saída de classe 4K no seu próprio monitor.',
+        },
+        {
+          title: 'Seleção de modelo antes de uma renderização longa',
+          description: 'Escolha o modelo para uma tarefa de várias horas a partir de um teste representativo de 10 segundos.',
+        },
+        {
+          title: 'Transferências comprimidas',
+          description: 'Compare a nitidez GAN com a estabilidade dos transformers em exportações de redes sociais cheias de blocos.',
+        },
+        {
+          title: 'Verificações de estabilidade temporal',
+          description: 'Reproduza os MP4 de cada modelo lado a lado para detetar tremeluzir e cintilação que os fotogramas fixos escondem.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um vídeo caseiro de 8 segundos a 640 x 480 através dos seis modelos',
+          body: 'Entrada: um MP4 de 640 x 480 a 29.97 fps de uma cassete digitalizada, com áudio. Definições: um excerto de 8 segundos, os seis modelos, fotogramas melhorados incluídos, escala automática. O pipeline corta um clip de referência de 8 segundos e extrai 240 fotogramas (8 x 29.97, arredondado). A 480p, a regra automática escolhe 4x, por isso todos os modelos escrevem fotogramas de 2560 x 1920 e os MP4 recompostos ficam a 2560 x 1920 a 30000/1001 fps com o áudio original. A estimativa do seletor é a contagem de fotogramas vezes os segundos por fotograma publicados: cerca de 3.2 minutos para o Real-ESRGAN, 4 minutos para o BasicVSR++, 12 para o RVRT, 14 para o SwinIR, 20 para o HAT e 28 para o VRT, cerca de 81 minutos no total, porque os modelos correm um após o outro. Incluir fotogramas acrescenta 3 x 240 PNG de 2560 x 1920 ao arquivo, razão pela qual a transferência se mede em gigabytes e não em megabytes.',
+        },
+        {
+          title: 'Um clip 1080p de 10 segundos em escala automática com Real-ESRGAN e BasicVSR++',
+          body: 'Entrada: um MP4 de 1920 x 1080 a 30 fps com 90 MB, a maior resolução de origem que a ferramenta aceita. Definições: um excerto de 10 segundos, Real-ESRGAN e BasicVSR++, fotogramas excluídos, escala automática. A extração produz 300 fotogramas, dentro do limite de 450 (a 60 fps, o mesmo limite restringiria o excerto a 7.5 segundos). Acima de 540p, o modo automático escolhe 2x, por isso cada modelo continua a correr a sua rede nativa de 4x, produzindo fotogramas de 7680 x 4320, e a recomposição aplica scale=iw/2:ih/2:flags=lanczos para entregar MP4 de 3840 x 2160 a CRF 16. As estimativas publicadas dão cerca de 4 minutos para o Real-ESRGAN (0.8 s x 300) e 5 minutos para o BasicVSR++ (1.0 s x 300), por isso a tarefa termina muito abaixo do tempo limite de 75 minutos por modelo e o arquivo contém dois MP4 4K, o clip original, manifest.json e README.txt.',
+        },
+      ],
+      whenNotToUse: 'Não use esta página para restaurar um filme inteiro; é uma ferramenta de comparação limitada a 15 segundos e 450 fotogramas, e o arquivo, mesmo assim, pode ter gigabytes. Não espere que invente o que nunca foi gravado: desfocagem de movimento severa, blocos de compressão extremos e filmagens muito escuras melhoram, mas não ficam impecáveis. Origens acima de 1920 x 1080 são recusadas, porque o restauro visa material de baixa resolução e 2x de 1080p já é 4K. Se o seu clip só precisar de um ficheiro mais pequeno, de uma mudança de formato ou de um corte, o compressor, o conversor e o cortador fazem isso em segundos, sem GPU.',
+      whyMediaManipulator: [
+        'Seis modelos de nível de investigação atrás de um único carregamento, com os pesos, os tamanhos de bloco e o comando de recomposição nomeados nesta página, em vez de escondidos atrás de uma marca.',
+        'Tudo corre na nossa própria GPU; a sua filmagem nunca vai para um fornecedor de IA de terceiros e nada é usado para treino.',
+        'Um restauro gasta uma tarefa de IA da sua quota diária de IA, que é de 3 por dia sem conta por predefinição e 10 com uma conta gratuita, e está limitado a 2 inícios por hora por sessão; uma tarefa falhada é reembolsada. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O seu carregamento vai do navegador para o nosso bucket de armazenamento e é transferido para o nosso próprio servidor GPU, onde o FFmpeg corta o excerto e os seis modelos correm como processos locais; nenhum fornecedor de IA externo está envolvido e nada é usado para treino. Só o excerto selecionado é descodificado em fotogramas; o resto da origem nunca é processado. O objeto de origem, os fotogramas de trabalho, os MP4 por modelo mantidos para o visualizador de comparação e o arquivo de resultados são todos registados no livro de retenção e eliminados quando o período termina, e a ligação do arquivo expira ao fim de 6 horas. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. As tarefas de restauro não passam pela análise automática de conteúdos que as conversões normais recebem.',
+      faq: [
+        {
+          question: 'Qual é o melhor modelo de ampliação de vídeo com IA?',
+          answer: 'Depende da filmagem, e é por isso que esta ferramenta existe. Ampliadores GAN como o Real-ESRGAN e o HAT produzem fotogramas nítidos que podem tremeluzir em movimento; modelos de sequência como o BasicVSR++, o RVRT e o VRT usam os fotogramas vizinhos para estabilidade e podem parecer mais suaves. Passe o seu próprio excerto por eles e avalie em movimento.',
+        },
+        {
+          question: 'Porque é que o clip está limitado a 15 segundos e 450 fotogramas?',
+          answer: 'O restauro é caro por fotograma: a estimativa publicada só para o VRT é de 7 segundos por fotograma a 4x. O limite de fotogramas é verificado contra a sua taxa de fotogramas real, por isso uma origem a 60 fps está limitada a 7.5 segundos. Um excerto curto é suficiente para avaliar a qualidade antes de um restauro mais longo noutro lado.',
+        },
+        {
+          question: 'Como funciona a escolha entre 2x e 4x?',
+          answer: 'O modo automático escolhe 4x para origens até 540p e 2x acima disso. Todos os modelos correm a sua rede nativa de 4x independentemente disso; no percurso de 2x, a recomposição reduz os fotogramas para metade com um filtro Lanczos. O 4x explícito é recusado acima de 1080p, porque a saída excederia 4K.',
+        },
+        {
+          question: 'O vídeo restaurado mantém o meu áudio e a minha taxa de fotogramas?',
+          answer: 'Sim. O excerto é cortado com o seu áudio, e cada recomposição usa a fração exata da taxa de fotogramas do ffprobe (por exemplo, 30000/1001) e volta a anexar esse áudio como AAC, para que todos os resultados fiquem alinhados para reprodução A/B.',
+        },
+        {
+          question: 'O que contém o arquivo de resultados e qual é o seu tamanho?',
+          answer: 'original/clip.mp4, uma pasta por modelo com o respetivo MP4 (e, para Real-ESRGAN, SwinIR e HAT com fotogramas incluídos, cada PNG melhorado em 4x nativo), manifest.json com tempos e dimensões, e README.txt. Com os fotogramas ativados, um clip de 10 segundos acrescenta centenas de PNG grandes por modelo, por isso conte com gigabytes.',
+        },
+        {
+          question: 'O que acontece se um modelo falhar ou exceder o tempo limite?',
+          answer: 'A tarefa continua. A pasta desse modelo contém FAILED.txt com o motivo, o manifest.json regista-o e todos os outros modelos selecionados seguem no arquivo mesmo assim. Só quando todos os modelos selecionados falham é que a tarefa falha.',
+        },
+        {
+          question: 'Quanto tempo demora uma execução de restauro?',
+          answer: 'Fotogramas vezes a estimativa por modelo, somados para os modelos que escolheu, uma vez que correm um após o outro: 0.8, 1.0, 3.0, 3.5, 5.0 e 7.0 segundos por fotograma para Real-ESRGAN, BasicVSR++, RVRT, SwinIR, HAT e VRT. Um clip de 300 fotogramas através dos seis são cerca de 100 minutos; só através do Real-ESRGAN, cerca de 4.',
+        },
+        {
+          question: 'Quantos restauros posso executar e custa uma tarefa de IA?',
+          answer: 'Iniciar um restauro gasta uma tarefa de IA: por predefinição 3 por dia sem conta, 10 com uma conta gratuita, 100 no Premium e 200 no Pro, mais um limite de 2 inícios por hora por sessão. Uma tarefa que falhe por completo é reembolsada. Consulte a página de preços para os números atuais.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Os excertos estão limitados a 15 segundos ou 450 fotogramas (o que for menor à taxa de fotogramas do seu vídeo); recomendam-se 10 segundos ou menos.',
+          'A resolução de origem está limitada a 1920×1080: o restauro visa filmagens de baixa resolução, e a saída 4x de 1080p já é 4K+.',
+        ],
+        processingNotes: [
+          'Os modelos correm do mais rápido ao mais lento (Real-ESRGAN primeiro, VRT por último), para que existam resultados parciais desde cedo.',
+          'Um modelo falhado nunca deita a tarefa abaixo: a sua pasta contém FAILED.txt e os outros resultados continuam a poder ser transferidos.',
+          'As ligações de transferência mantêm-se válidas durante 6 horas; o arquivo pode ser grande quando os fotogramas melhorados são incluídos.',
+        ],
+      },
+      related: [
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte o excerto que quer restaurar antes de o carregar.',
+        },
+        {
+          label: 'Restauro de imagem com IA',
+          to: '/tools/ai-image-restoration',
+          description: 'As mesmas famílias de modelos para uma única fotografia ou fotograma.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza um resultado 4K restaurado para partilhar.',
+        },
+        {
+          label: 'Transcodificar para HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Empacote um clip restaurado para streaming adaptativo.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Adicione legendas à filmagem restaurada.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Edite o excerto restaurado numa peça mais longa.',
+        },
+      ],
+      embed: {
+        title: 'Restauro de vídeo com IA',
+        description: 'Carregue um vídeo, selecione arrastando um excerto curto (10 segundos ou menos funciona melhor), escolha os modelos de restauro que quer comparar e transfira um único pacote com todos os resultados melhorados.',
+      },
     },
     'ai-image-restoration': {
       name: 'Restauro e ampliação de imagem com IA',
+      h1: 'Ferramenta de restauro e ampliação de imagem com IA',
       tagline: 'Limpe, amplie e restaure uma fotografia com até oito modelos de IA (pré-limpeza que preserva a fidelidade com FBCNN, SCUNet e NAFNet; ampliadores gerais Real-ESRGAN, SwinIR e HAT; e melhoria de rostos com GFPGAN e CodeFormer) e compare cada resultado com o original.',
       metaTitle: 'Restauro e ampliação de imagem com IA: compare 8 modelos online | Media Manipulator',
       metaDescription: 'Restauro e ampliação de fotografias com IA, grátis. Remova artefactos JPEG, reduza o ruído e a falta de nitidez, amplie até 4K/8K com Real-ESRGAN, SwinIR ou HAT e melhore rostos com GFPGAN/CodeFormer, tudo na nossa própria GPU e comparado lado a lado.',
+      ogTitle: 'Restauro e ampliação de imagem com IA: pré-limpeza, ampliação e melhoria de rostos',
+      ogDescription: 'Carregue uma imagem, recorte opcionalmente, faça opcionalmente a pré-limpeza, depois corra vários modelos de ampliação e de rostos e compare cada resultado em linha com o original.',
+      intro: 'O restauro de imagem com IA passa uma fotografia por um pipeline configurável de até oito modelos e mostra cada resultado ao lado do original. Uma fase de pré-limpeza que preserva a fidelidade (FBCNN para artefactos JPEG, SCUNet para ruído, NAFNet para desfocagem de movimento) remove a degradação sem inventar detalhe; os ampliadores gerais (Real-ESRGAN, SwinIR, HAT) ampliam depois 2x ou 4x; e a melhoria de rostos opcional (GFPGAN, CodeFormer) reconstrói os rostos. A pré-limpeza não é generativa: filtra o sinal que existe. A melhoria de rostos é generativa: sintetiza detalhe plausível e não deve ser tratada como uma recuperação fiel da origem. Todos os modelos correm no nosso próprio servidor GPU.',
+      whatItDoes: [
+        'Permite-lhe selecionar um recorte arrastando, para que o orçamento de píxeis e o tempo de GPU vão para a região que lhe interessa; o recorte é aplicado no servidor sobre o original com orientação automática, pelo que não se perde qualidade no navegador.',
+        'Opcionalmente, faz primeiro a pré-limpeza, sempre pela ordem FBCNN, SCUNet, NAFNet, cada modelo a trabalhar sobre a saída do anterior; a imagem limpa torna-se a base de que todos os modelos seguintes partem.',
+        'Corre qualquer combinação de Real-ESRGAN, SwinIR e HAT a 2x ou 4x. Os três são redes nativas x4; um resultado de 2x é a saída x4 reduzida para 50 por cento com um filtro Lanczos.',
+        'Opcionalmente, corre o GFPGAN v1.4 e, quando está ativado no servidor, o CodeFormer com um peso de fidelidade, sobre a origem e, com Encadear ativado, também sobre o resultado de cada ampliador.',
+        'Empacota o original preparado, cada PNG de saída, um manifest.json e um README num único .tar.gz, e mostra uma grelha de comparação integrada enquanto o arquivo é servido a partir da tarefa.',
+        'Regista um modelo falhado como entrada falhada, com um motivo seguro para o utilizador, e empacota mesmo assim todos os resultados que tiveram sucesso.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem',
+          description: 'PNG, JPEG, WebP, TIFF ou BMP até 12 000 píxeis de cada lado; fotografias antigas, pequenas e demasiado comprimidas são o alvo.',
+        },
+        {
+          title: 'Recorte ou mantenha o enquadramento inteiro',
+          description: 'Arraste uma região (um rosto, uma placa, um letreiro) ou deixe o recorte desativado para restaurar tudo.',
+        },
+        {
+          title: 'Escolha pré-limpeza, ampliadores, rostos e escala',
+          description: 'Marque os modelos que quer; o seletor mostra quantas saídas a seleção vai produzir, das 12 permitidas.',
+        },
+        {
+          title: 'Acompanhe as fases',
+          description: 'A tarefa entra na fila para a única vaga de restauro, prepara a imagem e depois corre cada unidade com o seu próprio progresso e indicador de falha.',
+        },
+        {
+          title: 'Compare e transfira',
+          description: 'Cada resultado fica ao lado do original na grelha; transfira o arquivo quando tiver decidido qual o pipeline vencedor.',
+        },
+      ],
+      advancedDetails: [
+        'A fase de preparação corre o ImageMagick -auto-orient para um PNG normalizado, lê as suas dimensões, rejeita tudo acima de 12 000 x 12 000, converte o seu retângulo de recorte normalizado em píxeis inteiros e escreve working_source.png. Esse ficheiro é também guardado como original.png nos resultados, para que aquilo com que compara seja exatamente o que os modelos receberam.',
+        'A escala automática escolhe 4x quando o recorte tem 540 píxeis de altura ou menos e 2x caso contrário. Seja qual for a escala, a saída é verificada contra um orçamento de 67 108 864 píxeis (cerca de 64 megapíxeis): uma imagem inteira de 6 000 x 4 000 a 2x são 96 megapíxeis e é recusada com uma mensagem a indicar-lhe que escolha 2x ou um recorte mais pequeno.',
+        'O Real-ESRGAN corre a rede realesrgan-x4plus através do realesrgan-ncnn-vulkan com blocos de 256 píxeis. O SwinIR usa os pesos GAN 003_realSR_BSRGAN SwinIR-L x4 e o HAT os pesos Real_HAT_GAN_SRx4, ambos através do mesmo script por fotograma do Restauro de vídeo com IA, com blocos de 320 píxeis e uma sobreposição de 32 píxeis, para que recortes grandes nunca excedam a memória da GPU.',
+        'Os pesos de pré-limpeza são fbcnn_color.pth, scunet_color_real_psnr.pth (o modelo de ruído real treinado para PSNR, não a variante GAN que inventa textura) e NAFNet-GoPro-width64.pth (desfocagem de movimento, não de foco). Correm em blocos de 512 píxeis com uma sobreposição de 32 píxeis e nunca alteram as dimensões. O FBCNN prevê o fator de qualidade JPEG às cegas, a menos que defina um de 1 a 100; um número mais baixo assume uma compressão mais forte.',
+        'O GFPGAN usa a arquitetura limpa v1.4 com a ampliação do fundo desativada, por isso, fora dos rostos, a imagem é simplesmente redimensionada pelo fator de escala em vez de melhorada pelo modelo; isso mantém a comparação honesta. O CodeFormer recebe um peso de fidelidade w de 0 a 1 (0.7 por predefinição): mais baixo fica mais bonito, mais alto mantém-se mais próximo da entrada. O CodeFormer é distribuído sob uma licença não comercial e está atrás de um sinalizador do servidor que está desativado por predefinição.',
+        'Encadear volta a correr cada modelo de rostos a 1x sobre a saída de cada ampliador, além da origem, por isso a contagem de saídas é pré-limpeza + gerais + rostos + rostos x gerais. O servidor limita uma tarefa a 12 saídas, corre uma tarefa de restauro de cada vez e dá a cada modelo 1 800 segundos antes de o marcar como expirado.',
+        'O servidor estima o tempo de execução por modelo a partir das suas próprias predefinições de segundos por megapíxel: FBCNN 3, SCUNet 8, NAFNet 6, Real-ESRGAN 2, SwinIR 12, HAT 18, GFPGAN 6, CodeFormer 8. Estes valores alimentam os pesos do progresso e a estimativa da interface; são valores de afinação, não uma garantia.',
+        'Os resultados não são carregados para o armazenamento de objetos: o .tar.gz e os PNG de resultado ficam na pasta de saída da tarefa e são servidos a partir da tarefa durante o período de retenção.',
+      ],
+      whyItMatters: [
+        'Nenhum modelo vence em todas as fotografias: a remoção de artefactos, a redução de ruído, a ampliação e a reconstrução de rostos corrigem danos diferentes, e a ordem certa depende de como a imagem foi degradada.',
+        'Correr vários modelos num único carregamento e vê-los lado a lado responde à pergunta «qual, e a que escala?» antes de se comprometer com um lote maior.',
+        'A distinção entre não generativo e generativo é importante: uma imagem pré-limpa é uma cópia filtrada da evidência, uma imagem com rostos melhorados é uma reconstrução plausível, e a página indica qual é qual.',
+      ],
+      useCases: [
+        {
+          title: 'Restaurar fotografias antigas ou digitalizadas',
+          description: 'Pré-limpe o ruído do scanner e a compressão, depois amplie e, se quiser, reconstrua os rostos.',
+        },
+        {
+          title: 'Melhorar imagens fixas de baixa resolução',
+          description: 'Recorte a região de interesse, remova artefactos e amplie; encadeie a melhoria de rostos para clareza, nunca como prova de identificação.',
+        },
+        {
+          title: 'Corrigir transferências comprimidas',
+          description: 'Exportações de redes sociais muito recomprimidas respondem bem a FBCNN e depois SCUNet, seguidos de um ampliador GAN.',
+        },
+        {
+          title: 'Comparar ampliadores antes de um lote',
+          description: 'Passe uma imagem representativa pelo Real-ESRGAN, SwinIR e HAT para escolher o modelo para um conjunto maior.',
+        },
+        {
+          title: 'Gastar o orçamento numa só região',
+          description: 'Selecione arrastando apenas um rosto ou um letreiro, para que o orçamento de 64 megapíxeis e o tempo de GPU vão para onde conta.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um JPEG de 1 200 x 800 (cerca de 350 KB), enquadramento inteiro, escala automática, FBCNN + Real-ESRGAN + GFPGAN',
+          body: 'O recorte é o enquadramento completo de 0.96 megapíxeis e a sua altura de 800 píxeis é superior a 540, por isso a escala automática resolve para 2x. O FBCNN corre primeiro a 1x e a sua saída torna-se a origem de trabalho. O Real-ESRGAN amplia-a para 4 800 x 3 200 com o realesrgan-x4plus, e depois o ImageMagick redimensiona-a para 50 por cento com Lanczos, para um PNG de 2 400 x 1 600. O GFPGAN corre sobre a origem pré-limpa com ampliação 2, dando outro PNG de 2 400 x 1 600 com os rostos reconstruídos e o resto simplesmente redimensionado. São três saídas das 12 permitidas. Pelas próprias estimativas por megapíxel do servidor, o tempo de modelo é cerca de 0.96 x (3 + 2 + 6), à volta de 11 segundos, mais alguns segundos de preparação e empacotamento; a espera pela única vaga de restauro pode acrescentar mais. Uma tarefa gasta uma tarefa de IA.',
+        },
+        {
+          title: 'Um recorte de rosto de 300 x 400 de uma imagem fixa de 640 x 480, pré-limpeza, três ampliadores, GFPGAN com Encadear',
+          body: 'O recorte tem 0.12 megapíxeis e 400 píxeis de altura, por isso a escala automática escolhe 4x e cada resultado ampliado fica com 1 200 x 1 600 (1.92 megapíxeis), muito dentro do orçamento de 64 megapíxeis. Com a pré-limpeza FBCNN e SCUNet, Real-ESRGAN, SwinIR e HAT, e GFPGAN encadeado, a tarefa produz 2 + 3 + 1 + 1 x 3 = 9 saídas: dois passos de pré-limpeza, três ampliações, GFPGAN sobre a origem limpa e GFPGAN sobre cada resultado ampliado a 1x. As passagens de pré-limpeza e de ampliação sobre 0.12 megapíxeis demoram alguns segundos cada, pelas estimativas do servidor, enquanto as três passagens de rostos encadeadas correm sobre os resultados de 1.92 megapíxeis e demoram proporcionalmente mais. Cada saída de rostos leva uma nota generativa no manifesto, porque o que vê nesses rostos é reconstrução, não recuperação.',
+        },
+      ],
+      whenNotToUse: 'Não use a melhoria de rostos para identificação: o GFPGAN e o CodeFormer desenham rostos plausíveis a partir de um conhecimento prévio aprendido, por isso um rosto reconstruído é, no máximo, uma pista e nunca uma prova de quem estava na fotografia. Dispense a ferramenta para imagens que já são grandes e nítidas, em que uma passagem de 2x acrescenta sobretudo textura GAN, e para fotografias com mais de 12 000 píxeis de lado, que são recusadas. Se só precisar de uma cópia maior de uma imagem limpa, sem pré-limpeza, modelos de rostos ou grelha de comparação, o Ampliador de imagens com IA é mais rápido. E se o seu dano for desfocagem de foco e não de movimento, os pesos GoPro do NAFNet são o modelo errado para isso.',
+      whyMediaManipulator: [
+        'Oito modelos de investigação atrás de um único carregamento, sem notebooks, configuração CUDA ou ficheiros de pesos para gerir.',
+        'Todos os modelos correm num servidor GPU que operamos; a imagem não é enviada para um serviço de IA de terceiros.',
+        'A página mantém a distinção honesta: as saídas de pré-limpeza levam uma nota de fidelidade, as saídas de rostos uma nota generativa, e o original preparado está sempre na grelha.',
+      ],
+      privacyNote: 'A sua imagem é guardada na pasta da sua tarefa, orientada automaticamente e recortada pelo ImageMagick para um PNG de trabalho, e processada pelos modelos selecionados na nossa própria GPU. Quando a tarefa termina, a pasta de carregamento e a árvore de trabalho são eliminadas; o que fica com a tarefa é o original preparado, cada PNG de resultado, o manifesto e o .tar.gz empacotado, servidos a partir da tarefa para transferência e para a grelha de comparação. As saídas dos modelos de rostos são identificadas como reconstruções generativas nesse manifesto. Nenhum fornecedor de IA de terceiros recebe a imagem. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Qual é a diferença entre a pré-limpeza e os modelos de ampliação ou de rostos?',
+          answer: 'Os modelos de pré-limpeza (FBCNN, SCUNet, NAFNet) não são generativos: removem artefactos de compressão, ruído e desfocagem de movimento filtrando o sinal existente a 1x. Os ampliadores acrescentam resolução, e os modelos de rostos (GFPGAN, CodeFormer) são generativos, sintetizando detalhe facial plausível. Uma saída de pré-limpeza é uma imagem filtrada fiel; uma saída de rostos é uma reconstrução.',
+        },
+        {
+          question: 'Um rosto melhorado pode ser usado como prova de identificação?',
+          answer: 'Não. O GFPGAN e o CodeFormer produzem rostos plausíveis a partir de um conhecimento prévio aprendido; não recuperam o rosto verdadeiro. O manifesto marca cada saída de rostos com uma nota generativa exatamente por esta razão. Use-os apenas para clareza visual e pistas.',
+        },
+        {
+          question: 'Porque é que os modelos de pré-limpeza correm numa ordem fixa, seja o que for que eu marque?',
+          answer: 'Os artefactos de compressão têm de ser removidos antes da redução de ruído, caso contrário o redutor de ruído trata os blocos como sinal, e a remoção da desfocagem funciona melhor sobre a entrada mais limpa, por isso o servidor corre sempre FBCNN, depois SCUNet, depois NAFNet, cada um sobre o resultado anterior. Se um deles falhar, o seguinte continua a partir do último passo bem-sucedido.',
+        },
+        {
+          question: 'Como é que o modo Automático decide entre 2x e 4x, e qual é o limite de tamanho?',
+          answer: 'O modo Automático escolhe 4x quando o recorte tem no máximo 540 píxeis de altura e 2x caso contrário. A saída é depois verificada contra um orçamento de cerca de 64 megapíxeis (67 108 864 píxeis); um pedido acima disso é recusado com a contagem de megapíxeis e uma sugestão para escolher 2x ou um recorte mais pequeno. Origens com mais de 12 000 píxeis em qualquer dos lados são rejeitadas antes disso.',
+        },
+        {
+          question: 'O que faz Encadear ao número de saídas?',
+          answer: 'Com Encadear ativado, cada modelo de rostos corre também a 1x sobre o resultado de cada ampliador, por isso saídas = pré-limpeza + gerais + rostos + rostos x gerais. Dois ampliadores e dois modelos de rostos com encadeamento são 2 + 2 + 4 = 8 saídas antes de qualquer pré-limpeza; o servidor permite 12 por tarefa.',
+        },
+        {
+          question: 'O que acontece se um modelo de imagem falhar ou exceder o tempo limite?',
+          answer: 'A tarefa continua. A unidade é marcada como falhada com um motivo seguro para o utilizador (por exemplo, um tempo limite excedido após 1 800 segundos, sugerindo um recorte mais pequeno ou 2x), o manifesto regista-o e todos os outros resultados são empacotados e mostrados mesmo assim. Só quando todos os modelos selecionados falham é que a tarefa falha, e nesse caso a tarefa de IA é reembolsada.',
+        },
+        {
+          question: 'Porque é que o CodeFormer está desativado (a cinzento)?',
+          answer: 'O CodeFormer está licenciado para uso não comercial, por isso fica atrás de um sinalizador do servidor que está desativado por predefinição; as capacidades indicam-no então como atualmente desativado. O GFPGAN e os três modelos de pré-limpeza têm licenças permissivas e estão disponíveis sempre que os seus pesos estiverem instalados.',
+        },
+        {
+          question: 'Quantos restauros posso executar, e é gratuito?',
+          answer: 'Iniciar um restauro gasta uma tarefa de IA: 3 por dia como visitante, 10 com uma conta gratuita, 100 no Premium e 200 no Pro por predefinição, independentemente de quantos modelos marcar nessa tarefa. Há também um limite dedicado de 6 inícios por sessão por hora. O limite de carregamento é de 200 MB para visitantes e 1 GB com uma conta gratuita; /pricing mostra os números atuais.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'A saída está limitada por um orçamento de píxeis (~64 megapíxeis), confortavelmente além de 8K; se um recorte e uma escala o excederem, escolha 2x ou um recorte mais pequeno.',
+          'Os modelos de pré-limpeza nunca alteram as dimensões (1x); só os ampliadores gerais alteram a resolução.',
+        ],
+        processingNotes: [
+          'A pré-limpeza corre sempre primeiro, numa ordem fixa (FBCNN → SCUNet → NAFNet); a imagem limpa torna-se a base para todos os outros modelos.',
+          'Um modelo falhado nunca deita a tarefa abaixo: a sua entrada mostra o motivo e os outros resultados continuam a poder ser transferidos.',
+          'A melhoria de rostos é uma reconstrução generativa: use-a para clareza e pistas, não como prova de identificação.',
+        ],
+      },
+      related: [
+        {
+          label: 'Restauro de vídeo com IA',
+          to: '/tools/ai-video-restoration',
+          description: 'O irmão em imagem em movimento: os mesmos ampliadores num clip curto.',
+        },
+        {
+          label: 'Ampliador de imagens com IA',
+          to: '/tools/ai-image-upscaler',
+          description: 'Uma única passagem do Real-ESRGAN quando só precisa de uma imagem maior.',
+        },
+        {
+          label: 'Remover fundo',
+          to: '/tools/remove-background-from-image',
+          description: 'Recorte o sujeito depois de o restaurar.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza o PNG restaurado para partilhar.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Redimensione a imagem restaurada para dimensões exatas.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Remova os metadados do resultado antes de o publicar.',
+        },
+      ],
+      embed: {
+        title: 'Restauro e ampliação de imagem com IA',
+        description: 'Carregue uma imagem, recorte opcionalmente uma região, faça opcionalmente a pré-limpeza, escolha os modelos de ampliação e de melhoria de rostos que quer comparar e transfira um único pacote com todos os resultados.',
+      },
     },
     'ai-document-scan': {
       name: 'Digitalização de documentos com IA',
+      h1: 'Digitalização de documentos com IA: páginas digitalizadas e manuscritos para PDF/Word pesquisável',
       tagline: 'Transforme documentos digitalizados e notas manuscritas num PDF pesquisável de várias páginas e num documento Word editável. As páginas impressas recebem uma camada de texto fiel do Tesseract; a escrita manuscrita é transcrita por uma IA de visão, com a incerteza assinalada e nunca inventada.',
-      metaTitle: 'Digitalização de documentos com IA: páginas digitalizadas e manuscritos para PDF/Word | Media Manipulator',
+      metaTitle: 'Digitalizar documentos com IA: páginas e manuscritos para PDF/Word | Media Manipulator',
       metaDescription: 'Digitalização de documentos com IA, grátis: converta imagens digitalizadas num PDF pesquisável e em Word com OCR, e transcreva notas manuscritas para texto. Reordene páginas, misture impresso e manuscrito, tudo na nossa própria GPU, palavra por palavra e com a incerteza assinalada.',
+      ogTitle: 'Digitalização de documentos com IA: PDF pesquisável + Word a partir de digitalizações e manuscritos',
+      ogDescription: 'Carregue uma ou mais páginas digitalizadas, impressas ou manuscritas, reordene-as e obtenha um PDF pesquisável e um DOCX editável. As páginas impressas mantêm-se fiéis; a escrita manual é transcrita literalmente, com os marcadores [illegible]/[?] preservados.',
+      intro: 'A Digitalização de documentos com IA transforma uma ou mais páginas fotografadas ou digitalizadas num PDF pesquisável de várias páginas e, se o pedir, num documento Word editável. Trata dois tipos de página de forma diferente e diz-lhe qual é qual. As páginas impressas ou dactilografadas passam pelo OCRmyPDF e pelo Tesseract: a página de saída é a sua digitalização, intacta, com uma camada de texto invisível por baixo, para que possa pesquisar, selecionar e copiar. As páginas manuscritas são lidas por um modelo de visão e linguagem a correr na nossa própria GPU, que transcreve a escrita palavra por palavra, marca o que não consegue ler como [illegible], envolve uma palavra duvidosa como [?: melhor suposição] e tem instruções para nunca completar, corrigir ou arranjar nada. Uma única tarefa pode misturar ambos os tipos, página a página, na ordem que definir, e o resultado indica o motor e a confiança de cada página.',
+      whatItDoes: [
+        'Aceita até 50 imagens de página por tarefa (PNG, JPEG, WebP, TIFF, BMP ou HEIC, 25 MB cada por predefinição), normaliza cada uma para um PNG na vertical e permite-lhe arrastá-las primeiro para a ordem de leitura.',
+        'No modo Automático, faz ao modelo de visão uma pergunta por página (impressa ou manuscrita?) e encaminha a página em conformidade; os modos Impresso e Manuscrito forçam a resposta.',
+        'Constrói um PDF/A em que cada página impressa é a digitalização original mais uma camada de texto do Tesseract, e cada página manuscrita é a digitalização mais uma camada invisível de transcrição automática colocada linha a linha, com um rodapé visível a dizê-lo.',
+        'Opcionalmente, constrói um documento Word: páginas impressas reconstruídas como títulos, listas e tabelas pelo PaddleOCR-VL (ou Docling), páginas manuscritas como a transcrição literal sob uma nota a negrito para verificar contra a digitalização, gerado pelo Pandoc.',
+        'Indica, por página, o motor usado, uma confiança alta, média ou baixa e o número de marcadores de incerteza, para que saiba onde olhar.',
+        'Pode correr uma passagem de verificação que relê apenas os tokens assinalados, uma segunda opinião independente que assinala as discordâncias como [?: vlm | other] e um resumo por IA identificado separadamente, quando o servidor tem esses motores ativados.',
+      ],
+      flowSteps: [
+        {
+          title: 'Adicione as suas páginas',
+          description: 'Largue uma imagem de página por ficheiro, impressa, manuscrita ou uma mistura, e arraste-as para a ordem certa.',
+        },
+        {
+          title: 'Escolha o modo e as saídas',
+          description: 'Automático, Impresso ou Manuscrito; PDF sempre, Word opcionalmente; o idioma do Tesseract para as páginas impressas; endireitar e rotação automática para o OCR de páginas impressas.',
+        },
+        {
+          title: 'Preparar e ler',
+          description: 'As páginas são orientadas automaticamente e, no caso dos manuscritos, ampliadas 2x com o Real-ESRGAN antes de o modelo as ler; as páginas impressas esperam pelo Tesseract na fase do PDF.',
+        },
+        {
+          title: 'Construir os ficheiros',
+          description: 'O OCRmyPDF e o reportlab criam os PDF por página, o pikepdf junta-os; o documento Word é montado a partir de Markdown pelo Pandoc.',
+        },
+        {
+          title: 'Rever e transferir',
+          description: 'Um visualizador abre o PDF; transfira-o, bem como o ficheiro Word se o pediu, e o manifesto que regista o motor e a confiança de cada página.',
+        },
+      ],
+      advancedDetails: [
+        'Páginas impressas: o PNG normalizado é envolvido sem perdas com o img2pdf e, em seguida, o OCRmyPDF corre o Tesseract com o(s) seu(s) código(s) de idioma, deskew e rotate_pages quando marcados, output_type pdfa e force_ocr, e escreve a camada de texto por baixo da imagem. Se o OCRmyPDF falhar numa página, a página só com imagem é mantida, para que o PDF fique completo mesmo assim.',
+        'Páginas manuscritas: o modelo é o qwen3-vl (8B, instruct, quantização q8_0) servido pelo Ollama a temperatura 0.1, instruído para transcrever literalmente, manter as quebras de linha, marcar [illegible] e [?: suposição], anotar marcas como (arrow) ou (circled) e devolver JSON com o texto completo e uma caixa delimitadora por linha.',
+        'A página PDF de manuscrito é desenhada com o reportlab ao tamanho em píxeis da imagem: a digitalização é a página visível, cada linha transcrita é colocada na sua caixa delimitadora no modo de renderização de texto 3 (pesquisável, nunca desenhado) em Helvetica, com um tamanho ajustado à altura da linha entre 6 e 48 pontos, com um bloco invisível de página inteira como recurso quando não vêm caixas, e um rodapé cinzento de 8 pontos com o texto «Machine transcription, verify against original».',
+        'A confiança é calculada, não adivinhada: alta quando uma página não tem marcadores, média quando menos de 15 por cento das suas linhas têm um, baixa caso contrário. A passagem de verificação (ativada por predefinição) envia a página e o rascunho de volta ao modelo com instruções para resolver apenas os tokens marcados e não alterar mais nada; se falhar, o rascunho é mantido.',
+        'A pré-limpeza para manuscritos é o realesrgan-x4plus à escala 2 na GPU Vulkan, ativada por predefinição nos modos Automático e Manuscrito e desativada no modo Impresso; é feita na medida do possível e os originais são mantidos se falhar. O documento Word é construído a partir de Markdown no formato do GitHub pelo Pandoc; o resumo opcional usa um modelo de texto separado e é escrito no seu próprio ficheiro, com uma etiqueta de gerado por IA.',
+        'Corre uma tarefa de documento de cada vez no servidor por predefinição, cada chamada ao modelo tem um teto de 40 minutos, e os carregamentos e a pasta de trabalho são eliminados no momento em que a tarefa termina; só a pasta de resultados (PDF, DOCX, manifest.json, README.txt) fica durante o período de retenção.',
+      ],
+      whyItMatters: [
+        'Uma fotografia de uma página não é um documento enquanto não puder ser pesquisada e citada. O PDF acrescenta isso sem tocar nos píxeis, por isso a digitalização continua a ser a autoridade.',
+        'Um reconhecimento de escrita manual que adivinha com confiança é pior do que nenhum. Marcadores explícitos [illegible] e [?: suposição], uma confiança por página e uma etiqueta visível tornam a transcrição utilizável como rascunho e nunca confundível com o original.',
+        'As páginas impressas e as manuscritas precisam de motores diferentes. Encaminhar cada página para o motor certo, dentro de uma única tarefa ordenada, é o que faz com que um caderno com um formulário impresso e respostas manuscritas saia como um único ficheiro.',
+      ],
+      useCases: [
+        {
+          title: 'Documentação pesquisável',
+          description: 'Contratos, recibos e formulários digitalizados tornam-se um único PDF/A que pode pesquisar e de onde pode copiar, com as imagens das páginas intactas.',
+        },
+        {
+          title: 'Cadernos de campo e de laboratório',
+          description: 'Notas manuscritas tornam-se um PDF pesquisável e um rascunho Word com cada palavra incerta marcada para verificar.',
+        },
+        {
+          title: 'Imagem para Word',
+          description: 'Uma página impressa fotografada com um telemóvel torna-se um .docx editável com os seus títulos, listas e tabelas reconstruídos.',
+        },
+        {
+          title: 'Documentos mistos',
+          description: 'Um questionário impresso com respostas manuscritas passa por ambos os motores e volta como um único ficheiro ordenado.',
+        },
+        {
+          title: 'Arquivos',
+          description: 'Cartas e atas dactilografadas antigas ganham uma camada de texto para indexação, enquanto a digitalização fica exatamente como estava.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Três páginas A4 impressas a 300 dpi',
+          body: 'Três digitalizações JPEG de 2480 x 3508 no modo Impresso, só PDF, idioma eng, endireitar e rotação automática ativados. Nenhum modelo está envolvido: cada página é envolvida pelo img2pdf, depois o OCRmyPDF corre o Tesseract e escreve uma camada de texto invisível, produz PDF/A, e o pikepdf junta as três em document.pdf. A camada de texto acrescenta apenas kilobytes por página, por isso o PDF tem aproximadamente o tamanho das três imagens de página (uma página endireitada é renderizada de novo, uma intacta é incorporada tal como está). A tarefa gasta uma tarefa de IA (reembolsada se falhar) e o seu tempo é o do Tesseract no CPU, página após página, mais qualquer espera na fila, uma vez que corre uma tarefa de documento de cada vez por predefinição.',
+        },
+        {
+          title: 'Duas páginas manuscritas de um telemóvel, com Word',
+          body: 'Duas fotografias de telemóvel de 4032 x 3024 de páginas de um caderno, no modo Automático com PDF e DOCX. A preparação orienta automaticamente ambas para PNG e, porque o modo não é Impresso, amplia-as 2x com o realesrgan-x4plus para 8064 x 6048. A classificação faz ao qwen3-vl uma pergunta por página, o reconhecimento devolve a transcrição com uma caixa delimitadora por linha, e a verificação relê apenas os tokens assinalados. Se uma página tiver 30 linhas e 2 delas tiverem marcadores [?: ...], 2 / 30 fica abaixo de 15 por cento e a página é marcada com confiança média e illegibleCount 2. As páginas do PDF são as imagens processadas com linhas Helvetica invisíveis nessas caixas e o carimbo de rodapé; o ficheiro Word contém o texto literal sob a nota de verificação a negrito. O tempo corresponde a três passagens sequenciais do modelo de visão por página na nossa GPU; nada corre em qualquer outro lado.',
+        },
+      ],
+      whenNotToUse: 'Não use isto quando precisar que o texto seja fidedigno sem o verificar: a saída de manuscritos é uma leitura automática com lacunas marcadas, e o documento Word e o resumo são reconstruções, por isso verifique-os contra a digitalização antes de os citar. Não é uma ferramenta de OCR de PDF para PDF: as entradas são imagens de página, por isso renderize primeiro um PDF existente em imagens, e não é um tradutor. Se só precisar de encadernar as páginas num PDF sem camada de texto, a ferramenta simples de imagem para PDF faz isso como tarefa normal em vez de tarefa de IA, o que reserva a quota de visitante de três tarefas de IA por dia para trabalho que precise de um modelo.',
+      whyMediaManipulator: [
+        'O PDF de páginas impressas é fiel por construção: o OCRmyPDF coloca o texto por baixo de uma imagem de página intacta e produz PDF/A, nada é redesenhado.',
+        'A escrita manual é literal e com evidência: o prompt proíbe invenções, a incerteza é marcada no texto, a confiança é contada a partir dessas marcas e a página diz que é uma transcrição automática.',
+        'Todos os motores são nossos: Tesseract no CPU, qwen3-vl e o modelo de texto através do Ollama, PaddleOCR-VL e Real-ESRGAN nas nossas GPU. Nenhuma página vai para um serviço de IA de terceiros.',
+      ],
+      privacyNote: 'As suas imagens de página são guardadas em uploads/<jobId>/src/ e cópias normalizadas numa pasta de trabalho; as páginas manuscritas são enviadas para o modelo qwen3-vl servido pelo Ollama na nossa própria GPU, as páginas impressas são lidas pelo Tesseract no CPU, e os rascunhos de transcrição por página são mantidos como JSON nessa pasta de trabalho enquanto a tarefa corre. Quando a tarefa termina, tanto os carregamentos como a pasta de trabalho são eliminados imediatamente; o que fica é a pasta de resultados em outputs/<jobId>/ com o PDF, o ficheiro Word se o pediu, o manifesto (motor, confiança e contagem de marcadores por página) e um README, e essa pasta é removida quando o período de retenção termina. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O texto transcrito vive dentro da camada de texto do PDF e do DOCX que transfere. Nada é enviado para um fornecedor de IA de terceiros e nada é usado para treino.',
+      faq: [
+        {
+          question: 'Qual é a diferença entre o PDF e o documento Word?',
+          answer: 'O PDF é a sua digitalização com uma camada de texto pesquisável: uma camada do Tesseract sob uma página impressa, uma transcrição automática invisível sob uma página manuscrita, em ambos os casos com a imagem original como página visível. O documento Word é uma reconstrução separada: páginas impressas como títulos, listas e tabelas produzidos pelo PaddleOCR-VL ou pelo Docling, páginas manuscritas como a transcrição literal sob uma nota a negrito a indicar-lhe que a verifique. Trate a imagem do PDF como a autoridade e o DOCX como um rascunho.',
+        },
+        {
+          question: 'Quão fiável é a transcrição de manuscritos?',
+          answer: 'É uma leitura automática cuidadosa, não uma transcrição certificada. O modelo tem instruções para copiar exatamente o que está escrito, marcar tudo o que for ilegível como [illegible] e qualquer palavra duvidosa como [?: melhor suposição], e nunca inventar ou corrigir. Cada página recebe uma confiança (alta sem marcadores, média com menos de 15 por cento das linhas marcadas, baixa acima disso) e uma contagem de marcadores, e a página do PDF leva um rodapé visível de transcrição automática. Leia as palavras assinaladas contra a digitalização.',
+        },
+        {
+          question: 'Posso misturar páginas impressas e páginas manuscritas?',
+          answer: 'Sim. No modo Automático, pergunta-se ao modelo de visão, para cada página, se é predominantemente impressa ou manuscrita, e a página vai para o Tesseract ou para o modelo de escrita manual em conformidade. O manifesto regista a resposta por página, e o PDF e o ficheiro Word finais mantêm a ordem que definiu antes de começar.',
+        },
+        {
+          question: 'Que idiomas suporta o OCR de páginas impressas?',
+          answer: 'Códigos de idioma do Tesseract, unidos com um sinal de mais para páginas mistas (por exemplo, eng+fra). Os códigos que o servidor oferece estão listados no formulário; o inglês está instalado por predefinição e os outros aparecem à medida que são adicionados. A escrita manual é lida por um modelo de visão e não usa estes códigos.',
+        },
+        {
+          question: 'Quais são os limites por tarefa?',
+          answer: 'Por predefinição, até 50 imagens de página por tarefa (cada imagem é uma página, por isso 50 é também, na prática, o limite de páginas), 25 MB por imagem, uma tarefa em execução de cada vez por servidor (as outras esperam na fila) e um teto de 40 minutos por fase de modelo. Cada tarefa gasta uma tarefa de IA: 3 por dia sem conta, 10 com uma conta gratuita, 100 com o Premium e 200 com o Pro, com a unidade reembolsada quando uma tarefa falha. Os números atuais estão na página de preços.',
+        },
+        {
+          question: 'Porque é que o meu PDF de manuscrito tem um rodapé, e posso removê-lo?',
+          answer: 'Cada página manuscrita leva uma pequena linha cinzenta «Machine transcription, verify against original», e a secção do Word tem um equivalente a negrito, porque uma cópia pesquisável de escrita manual pode ser confundida com uma cópia verificada. Fazem parte da saída por desenho e não podem ser desativados. As páginas impressas, cuja camada é a saída determinística do Tesseract, não levam carimbo.',
+        },
+        {
+          question: 'As minhas páginas saem dos vossos servidores?',
+          answer: 'Não. O Tesseract corre no CPU, o modelo de escrita manual e classificação corre através do Ollama na nossa GPU, e o motor de estrutura e o ampliador correm numa segunda GPU na mesma máquina. Os carregamentos e os ficheiros de trabalho são eliminados assim que a tarefa termina.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Adicione até 50 imagens de página por tarefa por predefinição; cada imagem de página tem um limite de tamanho individual (~25 MB).',
+          'É sempre produzido um PDF pesquisável; o documento Word editável é opcional.',
+        ],
+        processingNotes: [
+          'As páginas impressas usam OCR determinístico (OCRmyPDF + Tesseract) para uma camada de texto fiel e pesquisável.',
+          'A escrita manual é transcrita literalmente por uma IA de visão, com os marcadores [illegible]/[?] preservados: é uma transcrição automática, não a página fidedigna.',
+          'O documento Word e qualquer resumo por IA são reconstruções: verifique-os contra a digitalização original.',
+        ],
+      },
+      related: [
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Encaderne imagens de página num PDF sem camada de texto, como tarefa normal.',
+        },
+        {
+          label: 'PDF para JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Renderize um PDF existente em imagens de página que pode usar na digitalização.',
+        },
+        {
+          label: 'Restauro de imagem com IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Repare uma digitalização desbotada ou desfocada antes de a transcrever.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Remova as etiquetas de localização e de dispositivo das fotografias de documentos tiradas com o telemóvel.',
+        },
+        {
+          label: 'Ocultar texto numa imagem',
+          to: '/tools/redact-text-in-image',
+          description: 'Tape nomes ou números numa página antes de partilhar a digitalização.',
+        },
+      ],
+      embed: {
+        title: 'Digitalização de documentos com IA',
+        description: 'Adicione uma ou mais imagens de páginas digitalizadas (documentos impressos ou notas manuscritas), reordene-as se necessário, escolha um modo de conteúdo e as saídas, e obtenha um PDF pesquisável mais um documento Word opcional.',
+      },
     },
     'ai-image-upscaler': {
       name: 'Ampliador de imagens com IA',
+      h1: 'Ampliador de imagens com IA: aumente fotografias 2x ou 4x online',
       tagline: 'Amplie uma fotografia pequena ou pouco nítida com um modelo Real-ESRGAN que reconstrói os detalhes finos em vez de apenas esticar píxeis.',
-      metaTitle: 'Ampliador de imagens com IA: aumente fotografias 2x ou 4x | Media Manipulator',
+      metaTitle: 'Ampliador de imagens com IA: amplie fotos 2x ou 4x | Media Manipulator',
       metaDescription: 'Amplie uma fotografia de baixa resolução 2x ou 4x com IA que recupera contornos e texturas. Corre na nossa própria GPU e devolve PNG. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Ampliador de imagens com IA: aumente fotografias 2x ou 4x',
+      ogDescription: 'Amplie fotografias pequenas ou pouco nítidas com um modelo de IA Real-ESRGAN que reconstrói o detalhe em vez de esticar píxeis.',
+      intro: 'Esta página abre o conversor de imagens com a Ampliação por IA fixada e a saída definida para PNG. O servidor executa o realesrgan-ncnn-vulkan, a versão Vulkan do Real-ESRGAN, numa GPU que é nossa: o modelo predefinido é o realesrgan-x4plus a 4x, com o realesrgan-x4plus-anime e o realesr-animevideov3 disponíveis para desenhos e fotogramas de animação, e 2x como escala alternativa. Em vez de interpolar entre os píxeis existentes, a rede prevê o aspeto que contornos, pele, tecido e folhagem têm no tamanho maior e desenha esse detalhe. O resultado é escrito como PNG sem perdas, para que não se acumulem novos artefactos de compressão sobre o detalhe sintetizado.',
+      whatItDoes: [
+        'Amplia uma imagem para 2x ou 4x da sua largura e altura com um modelo Real-ESRGAN a correr na nossa GPU.',
+        'Permite escolher no formulário entre um modelo para fotografias e dois modelos de estilo anime; 4x e o modelo para fotografias vêm pré-selecionados.',
+        'Produz sempre PNG; a API força a extensão .png nesta operação.',
+        'Divide a imagem automaticamente em mosaicos na GPU, para que as entradas grandes não esgotem a memória de vídeo.',
+        'Gasta uma tarefa de IA da quota diária de IA, um contador próprio; a quota normal para conversões não é tocada.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue uma imagem pequena ou pouco nítida',
+          description: 'JPG, PNG ou WebP. Quanto mais pequena a entrada, mais o modelo tem de inventar.',
+        },
+        {
+          title: 'Escolha 4x ou 2x e um modelo',
+          description: 'realesrgan-x4plus para fotografias, os modelos anime para desenhos de linhas e fotogramas de desenhos animados.',
+        },
+        {
+          title: 'O Real-ESRGAN corre na GPU',
+          description: 'realesrgan-ncnn-vulkan -i in -o out -n <model> -s <2|4> -t 0 -g <gpu> -f png',
+        },
+        {
+          title: 'Transfira o PNG',
+          description: 'converted.png a 2x ou 4x das dimensões originais em píxeis.',
+        },
+      ],
+      advancedDetails: [
+        'A chamada é UpscaleImage em ai_tools.go. Lança o realesrgan-ncnn-vulkan com -n para o modelo, -s para a escala, -t 0 para o tamanho automático dos mosaicos, -g para o índice da GPU e -f png; o ICD Vulkan é fixado por variáveis de ambiente para que o carregador encontre sempre o controlador NVIDIA.',
+        'Só são aceites as escalas 2 e 4 e apenas os três nomes de modelo realesrgan-x4plus, realesrgan-x4plus-anime e realesr-animevideov3; tudo o resto é rejeitado antes de a tarefa começar.',
+        'O 2x executa a mesma rede x4 a metade da escala. O formulário inclui uma nota a avisar que o 2x pode parecer ligeiramente recortado ou ampliado em algumas imagens, o que foi observado no servidor com uma fotografia de 640 x 360; a API não esconde isto deliberadamente executando 4x e reduzindo depois.',
+        'Como o percurso de IA contorna o ImageMagick e a cópia pelo exiftool, as definições de qualidade, redimensionamento, filtro e metadados do formulário não fazem nada aqui, e o PNG não traz EXIF do original.',
+        'O número de píxeis cresce com o quadrado da escala: 4x significa 16 vezes mais píxeis e 2x significa 4 vezes. O RGB não comprimido da saída é largura x altura x 3 bytes, o que limita o tamanho que o PNG pode ter.',
+        'Não existe nenhum limite no servidor para as dimensões de entrada específico desta operação, além do limite de tamanho por ficheiro do seu plano; as entradas muito grandes simplesmente demoram mais, mosaico a mosaico.',
+      ],
+      whyItMatters: [
+        'Fotografias digitais antigas, transferências de baixa resolução e imagens pequenas da web precisam muitas vezes de ser impressas ou mostradas muito maiores do que foram captadas.',
+        'A interpolação simples produz uma imagem maior, não mais nítida; um modelo de super-resolução é a diferença entre desfocado e utilizável.',
+        'Partir de um PNG sem perdas deixa-o livre para comprimir ou redimensionar o resultado depois, sem acumular artefactos.',
+      ],
+      useCases: [
+        {
+          title: 'Imprimir fotografias antigas',
+          description: 'Leve uma fotografia de 1 megapíxel de uma câmara antiga a um tamanho que imprime bem.',
+        },
+        {
+          title: 'Salvar transferências pequenas',
+          description: 'Amplie uma imagem de produto ou de referência de 400 px para algo utilizável.',
+        },
+        {
+          title: 'Anime e ilustração',
+          description: 'Amplie desenhos de linhas com o realesrgan-x4plus-anime sem contornos turvos.',
+        },
+        {
+          title: 'Fotogramas de jogos e vídeo',
+          description: 'Use o realesr-animevideov3 em fotogramas de animação capturados.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um JPEG de 640 x 360 a 4x com realesrgan-x4plus',
+          body: 'Entrada: uma miniatura JPEG de 92 KB e 640 x 360 de uma paisagem. Definições deixadas na predefinição: 4x, modelo para fotografias, saída PNG. O servidor executa realesrgan-ncnn-vulkan -n realesrgan-x4plus -s 4 -t 0 -f png e escreve converted.png com 2560 x 1440 píxeis, 16 vezes os 230 400 píxeis originais. A saída não comprimida é 2560 x 1440 x 3 = 11 MB de RGB, e o PNG fica abaixo disso consoante a quantidade de céu e de cor uniforme que contenha, por isso conte com vários megabytes a partir de uma entrada de 92 KB. A passagem da GPU pelos mosaicos escolhidos automaticamente é uma questão de segundos para uma saída deste tamanho; a codificação do PNG e a transferência de um ficheiro com vários megabytes ocupam uma parte notória do total.',
+        },
+        {
+          title: 'Uma fotografia de 1200 x 800 a 2x',
+          body: 'Entrada: um JPEG de 480 KB e 1200 x 800 de uma pessoa. Escolha 2x e mantenha o modelo para fotografias. A saída é um PNG de 2400 x 1600, 3,84 megapíxeis, quatro vezes os 0,96 originais. Sem compressão são 11,5 MB de RGB, e o PNG será uma fração disso. Como o 2x executa a rede x4 a metade da escala, inspecione os contornos à procura do ligeiro recorte ou ampliação de que o formulário avisa; se aparecer, execute 4x e reduza o resultado de 4800 x 3200 para 2400 x 1600 com o redimensionador de imagens, o que custa mais uma operação.',
+        },
+      ],
+      whenNotToUse: 'Não amplie uma imagem que já é grande e nítida: uma fotografia de 12 megapíxeis a 4x torna-se um PNG de 192 megapíxeis, lento de produzir, com centenas de megabytes sem compressão e sem nenhum ganho visível. Não conte com ela para rostos, texto, logótipos ou qualquer coisa em que o original exato tenha de ser preservado, porque o detalhe acrescentado é previsto, não recuperado, e o texto pequeno pode sair como letras plausíveis mas erradas. A desfocagem de movimento acentuada e a focagem falhada não se corrigem com resolução. Se só precisa de um tamanho específico em píxeis a partir de um original maior, o redimensionador simples é mais rápido e mais barato.',
+      whyMediaManipulator: [
+        'O binário, os modelos e as opções reais são nomeados aqui, para que saiba que se trata do Real-ESRGAN com mosaicos automáticos e não de um «melhorar» genérico.',
+        'A ressalva do 2x é declarada em vez de escondida, e a operação está fixada, por isso não há nenhum menu em que tenha de procurar.',
+        'Corre em hardware que é nosso; a ferramenta padrão não precisa de conta. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A sua imagem é armazenada em uploads/<jobId>/ no nosso servidor e lida diretamente pelo binário realesrgan-ncnn-vulkan numa GPU da mesma máquina; o PNG que produz vai para outputs/<jobId>/converted.png. Não está envolvido nenhum fornecedor de IA externo e a sua imagem não é usada para treinar nada. Como em todos os carregamentos de imagens, um passo de análise automatizada no nosso servidor executa uma vez um modelo de visão local sobre o ficheiro e guarda o respetivo resumo com a tarefa. O resultado não tem EXIF do original, porque as operações de IA saltam a cópia dos metadados. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'O ampliador por IA é gratuito?',
+          answer: 'Sim, dentro da quota diária de IA. Cada ampliação gasta uma tarefa de IA: por predefinição, 3 por dia para visitantes e 10 com uma conta gratuita, com limites por ficheiro de 200 MB e 1 GB; 100 e 200 nos planos Premium e Pro. Essa quota é separada da quota normal, por isso as suas conversões não são afetadas. Os números atuais estão em /pricing.',
+        },
+        {
+          question: 'Em que difere do redimensionador de imagens?',
+          answer: 'O redimensionador executa o ImageMagick, que interpola os píxeis existentes e produz uma imagem maior mas menos nítida. Esta ferramenta executa uma rede Real-ESRGAN treinada que sintetiza contornos e textura no tamanho maior. É uma inferência, não dados recuperados.',
+        },
+        {
+          question: 'Devo escolher 2x ou 4x?',
+          answer: 'O 4x é a predefinição e dá o resultado mais consistente. O 2x executa a mesma rede a metade da escala e pode parecer ligeiramente recortado em algumas imagens, por isso, se 4x for mais do que precisa, considere fazer 4x seguido de uma redução.',
+        },
+        {
+          question: 'Que modelo é o certo para desenhos?',
+          answer: 'O realesrgan-x4plus-anime para ilustrações e arte de cores uniformes; o realesr-animevideov3 para fotogramas retirados de animação. O modelo para fotografias acrescenta uma textura semelhante a pele que fica mal em desenhos de linhas.',
+        },
+        {
+          question: 'Porque é a saída em PNG e tão grande?',
+          answer: 'O PNG é forçado para que o detalhe sintetizado não seja imediatamente danificado pela compressão JPEG. Um resultado a 4x tem 16 vezes mais píxeis, por isso o ficheiro é grande; comprima-o depois para JPG ou WebP para partilhar.',
+        },
+        {
+          question: 'Consegue corrigir uma fotografia desfocada ou fora de foco?',
+          answer: 'Ajuda com a falta de nitidez que vem da baixa resolução. Não consegue desfazer a desfocagem de movimento nem uma focagem falhada, e pode suavizar ou alterar rostos e texto fino. Compare o resultado com o original antes de o usar.',
+        },
+        {
+          question: 'A minha fotografia é enviada para um serviço de IA de terceiros?',
+          answer: 'Não. O Real-ESRGAN corre num servidor GPU que nós operamos e a tarefa nunca chama uma API externa.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída é PNG. Os limites de tamanho e a quota diária de IA dependem do seu plano e são mostrados no formulário, não fixados nesta página.',
+        ],
+      },
+      related: [
+        {
+          label: 'Restauro de imagem com IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Limpe a compressão e o ruído antes ou depois de ampliar.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Reduza um resultado a 4x para o tamanho exato de que precisa.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Transforme o PNG grande num JPG ou WebP fácil de partilhar.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Recorte o motivo ampliado sobre transparência.',
+        },
+        {
+          label: 'Restauro de vídeo com IA',
+          to: '/tools/ai-video-restoration',
+          description: 'O equivalente para fotogramas de vídeo.',
+        },
+      ],
+      embed: {
+        title: 'Ampliar uma imagem com IA',
+        description: 'Carregue uma fotografia. A Ampliação por IA já está selecionada e fixada, com a saída definida para PNG. Escolha 2x ou 4x e um modelo (fotografia ou anime) e depois converta.',
+      },
     },
     'blur-faces-in-photo': {
       name: 'Desfocar rostos numa fotografia',
+      h1: 'Desfocar rostos numa fotografia online',
       tagline: 'Detete rostos automaticamente e depois desfoque, pixelize ou tape a preto todos ou apenas os que escolher.',
       metaTitle: 'Desfocar rostos numa fotografia online | Media Manipulator',
       metaDescription: 'Desfoque, pixelize ou tape a preto rostos numa fotografia. Detete todos os rostos e escolha quais ocultar. A IA corre na nossa própria GPU. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Desfocar rostos numa fotografia online',
+      ogDescription: 'Encontre automaticamente rostos numa fotografia e desfoque, pixelize ou tape a preto todos ou apenas os que escolher.',
+      intro: 'Publicar uma fotografia de uma multidão, de uma turma ou de rua implica normalmente ocultar pessoas que nunca aceitaram aparecer nela. Esta página encontra rostos com o detetor YuNet, executado no OpenCV no nosso próprio servidor, e cobre cada um com uma desfocagem gaussiana, um mosaico de píxeis ou um retângulo preto opaco. Pode cobrir todos os rostos detetados num só passo, ou executar primeiro a deteção, ver as caixas desenhadas na sua fotografia e escolher apenas os rostos a ocultar ou apenas os rostos a manter. O detetor, o seu limiar de confiança e o tamanho exato de cada efeito são descritos abaixo, para que saiba o que o resultado protege e o que não protege.',
+      whatItDoes: [
+        'Deteta rostos com o OpenCV FaceDetectorYN e o modelo YuNet 2023 com um limiar de confiança de 0,85 e depois alarga cada caixa 18 por cento em todos os lados, para cobrir também o cabelo e o maxilar.',
+        'Oculta cada rosto escolhido com uma desfocagem gaussiana cujo kernel tem um terço do tamanho da caixa, um mosaico de 14 blocos na largura da caixa ou um preenchimento a preto.',
+        'Oferece três modos de seleção: todos os rostos detetados, apenas os rostos que assinalou, ou todos exceto os rostos que assinalou.',
+        'Guarda os resultados da deteção numa sessão de 30 minutos associada ao SHA-256 do seu ficheiro, para que as caixas aplicadas sejam exatamente as caixas que viu.',
+        'Escreve um novo JPG, PNG ou WebP com as mesmas dimensões em píxeis; o ficheiro original carregado não é alterado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar a fotografia',
+          description: 'JPG, PNG ou WebP. Desfocar / pixelizar rostos vem pré-selecionado e bloqueado nesta página.',
+        },
+        {
+          title: 'Escolher desfocar, pixelizar ou caixa preta',
+          description: 'Desfocar é a predefinição; uma caixa preta remove os píxeis por completo.',
+        },
+        {
+          title: 'Detetar e selecionar, se quiser',
+          description: 'Prima Detetar rostos para ver caixas numeradas e depois assinale as que quer ocultar ou manter.',
+        },
+        {
+          title: 'Executar a tarefa',
+          description: 'O servidor aplica o efeito dentro de cada caixa escolhida e guarda uma nova imagem.',
+        },
+        {
+          title: 'Verificar e transferir',
+          description: 'Amplie para o tamanho real e procure rostos que tenham escapado antes de a publicar.',
+        },
+      ],
+      advancedDetails: [
+        'A deteção executa face_privacy.py com o OpenCV FaceDetectorYN sobre face_detection_yunet_2023mar.onnx na resolução completa da imagem, com limiar de pontuação de 0,85, limiar de NMS de 0,3 e até 5000 candidatos. As caixas são alargadas em 0,18 da sua largura e altura de cada lado e limitadas aos contornos da imagem.',
+        'A desfocagem aplica cv2.GaussianBlur com um kernel ímpar de max(3, lado maior da caixa / 3) píxeis, pelo que um rosto de 300 px recebe um kernel de 101 px; quanto maior o rosto, mais forte a desfocagem. A pixelização reduz a caixa a 14 blocos na largura com filtragem linear e volta a ampliá-la com vizinho mais próximo, o que dá mosaicos quadrados visíveis. A caixa preta escreve (0, 0, 0) na região.',
+        'Quando deteta primeiro, o servidor calcula o SHA-256 do ficheiro carregado, guarda as caixas normalizadas numa sessão que expira ao fim de 30 minutos e recusa aplicar uma sessão cujo hash não corresponda ao ficheiro que submeter depois, para que as caixas não possam ser transplantadas para outra imagem.',
+        'Sem sessão de deteção, o script volta a detetar no momento da execução e cobre todos os rostos que encontrar; o resultado é idêntico a executar Detetar rostos e deixar o modo em todos.',
+        'O resultado é escrito pelo OpenCV, e o passo de cópia de metadados com exiftool do conversor não corre em resultados de IA, pelo que o resultado não leva nenhuma das etiquetas EXIF, GPS ou de câmara originais. Ainda assim, não substitui a ferramenta EXIF, que lhe permite ver e escolher o que é removido.',
+        'Uma desfocagem ligeira num rosto grande e nítido pode ser parcialmente revertida com ferramentas de desconvolução; a caixa preta é a única opção que destrói a informação, e um mosaico grosseiro fica a meio caminho.',
+      ],
+      whyItMatters: [
+        'As fotografias de outras pessoas, e sobretudo de crianças, implicam consentimento e por vezes obrigações legais que uma legenda não resolve.',
+        'Editar à mão uma fotografia com 20 rostos é lento e pouco consistente; a deteção encontra os rostos pequenos na última fila.',
+        'Detetar e depois selecionar permite manter o seu próprio grupo visível enquanto anonimiza quem passa.',
+      ],
+      useCases: [
+        {
+          title: 'Fotografias de eventos e multidões',
+          description: 'Oculte quem estava por perto antes de publicar fotografias de um evento público.',
+        },
+        {
+          title: 'Publicações de escolas e clubes',
+          description: 'Cubra crianças específicas cujas famílias não deram consentimento.',
+        },
+        {
+          title: 'Jornalismo e reportagem',
+          description: 'Proteja fontes ou participantes numa imagem de documentário.',
+        },
+        {
+          title: 'Capturas de ecrã de videochamadas',
+          description: 'Anonimize colegas numa captura de uma reunião antes de a partilhar fora da equipa.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma fotografia de grupo de 4000 x 3000 com 14 rostos, todos desfocados',
+          body: 'Entrada: um JPEG de 3,5 MB com 4000 x 3000 píxeis, tirado com um telemóvel, com 14 pessoas. Definições: desfocar, modo de seleção todos, sem deteção prévia. O script executa o YuNet sobre o fotograma completo de 12 megapíxeis; um rosto cuja caixa mede 300 x 360 píxeis é alargado 18 por cento até cerca de 408 x 490 e desfocado com um kernel gaussiano de 163 px (490 / 3, arredondado para ímpar), o que o transforma numa mancha sem feições. Um rosto de 60 px na última fila recebe um kernel de 27 px, suficiente para remover as feições a esse tamanho. O resultado é um JPG de 4000 x 3000 escrito pelo OpenCV, normalmente a poucas centenas de kilobytes do tamanho original. A deteção e a desfocagem demoram alguns segundos; o carregamento dos 3,5 MB costuma demorar mais.',
+        },
+        {
+          title: 'Uma captura de ecrã de videochamada de 1920 x 1080, com dois de seis rostos pixelizados',
+          body: 'Entrada: uma captura de ecrã PNG de 1,1 MB com 1920 x 1080 que mostra seis participantes. Definições: Detetar rostos primeiro, modo de seleção apenas os selecionados, dois rostos assinalados, pixelizar. A deteção devolve seis caixas e guarda-as numa sessão de 30 minutos associada ao hash do ficheiro. Ao submeter, o servidor verifica o hash, passa ao script os ids das duas caixas selecionadas, e cada caixa selecionada, com cerca de 140 x 180 píxeis após o alargamento, é reduzida a 14 blocos na largura, de modo que cada mosaico tem cerca de 10 x 13 píxeis, sendo depois reescrita como quadrados nítidos. Os outros quatro rostos ficam intactos. O resultado é um PNG de 1920 x 1080, e a tarefa corre em poucos segundos porque não é preciso voltar a detetar.',
+        },
+      ],
+      whenNotToUse: 'Não confie nesta ferramenta para nada em que um único rosto falhado seja inaceitável, como uma ocultação exigida por lei; o YuNet com um limiar de 0,85 ignora rostos minúsculos, virados para o lado, tapados por máscaras ou em sombra profunda, e tem de verificar o resultado pessoalmente. Não use uma desfocagem ligeira num rosto grande se a pessoa tiver de continuar impossível de identificar; use a caixa preta. Crachás com nomes, matrículas e ecrãs não são rostos, por isso a ferramenta de ocultação de texto ou o removedor de objetos são a escolha certa nesses casos. E se o seu objetivo for retirar uma pessoa da cena por completo, em vez de ocultar o rosto, é isso que o removedor de objetos faz.',
+      whyMediaManipulator: [
+        'O detetor, o seu limiar, o alargamento e a aritmética do kernel estão indicados, para que possa avaliar quanta proteção cada estilo oferece.',
+        'As caixas de deteção estão associadas ao hash do ficheiro e expiram ao fim de 30 minutos, pelo que seleciona sobre a imagem exata que é processada.',
+        'A desfocagem de rostos gasta uma tarefa de IA do limite diário de IA (3 por dia sem conta, por predefinição, e 10 com uma conta gratuita), que é separado do limite normal, e a pré-visualização Detetar rostos não conta de todo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A deteção e a desfocagem de rostos correm como um processo OpenCV local no nosso próprio hardware; nenhum serviço de IA externo recebe a sua fotografia, e nada é usado para treino. A pré-visualização Detetar rostos guarda uma cópia temporária, calcula o hash, deteta e elimina a cópia antes de responder; apenas as coordenadas das caixas são conservadas, durante 30 minutos. A fotografia carregada fica em uploads/<jobId>/ e o resultado em outputs/<jobId>/, ambos inscritos no registo de retenção e eliminados quando o período termina. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Como carregamento de imagem normal, a fotografia passa também pela nossa análise automática de conteúdo no mesmo servidor, onde um modelo de visão local escreve uma breve descrição que fica com a tarefa e não é partilhada com terceiros.',
+      faq: [
+        {
+          question: 'Que rostos é que o detetor pode falhar?',
+          answer: 'O YuNet é executado com um limiar de confiança de 0,85, pelo que ignora candidatos com pouca confiança: rostos muito pequenos, perfis virados para longe da câmara, rostos tapados por máscaras ou mãos, e rostos em sombra profunda. Verifique o resultado no tamanho real antes de o partilhar.',
+        },
+        {
+          question: 'Como desfoco apenas alguns dos rostos?',
+          answer: 'Prima Detetar rostos, assinale as caixas numeradas e defina o modo de seleção como apenas os rostos selecionados ou todos exceto os rostos selecionados. As caixas ficam guardadas durante 30 minutos, associadas ao hash do ficheiro, por isso volte a detetar se trocar de imagem.',
+        },
+        {
+          question: 'Qual é a força da desfocagem, e pode ser desfeita?',
+          answer: 'O kernel gaussiano tem um terço do tamanho da caixa, pelo que um rosto de 300 px recebe um kernel de 101 px. Uma desfocagem forte é difícil de reverter, mas um atacante determinado com um rosto grande e nítido tem alguma hipótese; a caixa preta remove os píxeis e não pode ser desfeita.',
+        },
+        {
+          question: 'O resultado mantém os dados EXIF e GPS da minha fotografia?',
+          answer: 'Não. O resultado é escrito de raiz pelo OpenCV e o passo de cópia de metadados é ignorado nos resultados de IA, pelo que as etiquetas de câmara e de localização não são transferidas. Use a ferramenta EXIF se quiser inspecionar ou remover etiquetas de forma seletiva.',
+        },
+        {
+          question: 'A minha fotografia é enviada para uma empresa de IA externa?',
+          answer: 'Não. A deteção e o efeito correm num processo OpenCV local no nosso próprio servidor, e o ficheiro não é partilhado com fornecedores de IA terceiros.',
+        },
+        {
+          question: 'A desfocagem de rostos usa o meu limite diário de IA?',
+          answer: 'Sim. Cada fotografia desfocada é uma tarefa de IA: 3 por dia como visitante, por predefinição, e 10 com uma conta gratuita. Nunca gasta do limite normal. A pré-visualização Detetar rostos tem um limite de pedidos, mas não é contabilizada. Uma tarefa falhada é reembolsada.',
+        },
+        {
+          question: 'E as matrículas, os crachás com nomes ou o texto em ecrãs?',
+          answer: 'Não são rostos e não são detetados aqui. Use a ferramenta de ocultação de texto para tudo o que seja legível, ou o removedor de objetos para apagar uma matrícula ou uma placa da imagem.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Cada tarefa gasta uma tarefa de IA do seu limite diário de IA; o limite de tamanho por ficheiro do seu plano é indicado no formulário.',
+        ],
+      },
+      related: [
+        {
+          label: 'Ocultar texto numa imagem',
+          to: '/tools/redact-text-in-image',
+          description: 'Oculte e-mails, números de telefone e outro texto legível.',
+        },
+        {
+          label: 'Remover objeto de uma fotografia',
+          to: '/tools/remove-object-from-photo',
+          description: 'Apague por completo uma pessoa, uma matrícula ou uma placa.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retire os dados GPS e da câmara da mesma fotografia.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza a fotografia anonimizada antes de a publicar.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Ajuste o resultado ao tamanho que uma plataforma exige.',
+        },
+      ],
+      embed: {
+        title: 'Desfocar rostos numa fotografia',
+        description: 'Carregue uma fotografia. Desfocar / pixelizar rostos já está selecionado e bloqueado. Escolha o estilo, detete rostos e selecione quais ocultar, se quiser, e depois converta.',
+      },
     },
     'redact-text-in-image': {
       name: 'Ocultar texto numa imagem',
+      h1: 'Ocultar texto e dados pessoais numa imagem',
       tagline: 'Encontre texto legível numa captura de ecrã ou fotografia e cubra os dados pessoais, ou todo o texto, com desfoque ou uma caixa preta.',
       metaTitle: 'Ocultar texto numa imagem online | Media Manipulator',
       metaDescription: 'Encontre automaticamente texto numa imagem e tape a preto ou desfoque nomes, e-mails, números e outros dados pessoais. IA na nossa própria GPU. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Ocultar texto e dados pessoais numa imagem',
+      ogDescription: 'Encontre texto em capturas de ecrã e fotografias e cubra os dados pessoais ou todo o texto com uma desfocagem ou uma caixa preta.',
+      intro: 'As capturas de ecrã revelam aquilo que os seus donos já deixaram de ver: um endereço de e-mail num cabeçalho, um número de conta numa tabela, um número de telefone num balão de conversa. Esta página lê todo o texto de uma imagem com o EasyOCR no nosso próprio servidor e cobre as correspondências com um retângulo preto, uma desfocagem ou um mosaico de píxeis. No modo predefinido, cobre apenas o texto que corresponde a padrões de dados pessoais: endereços de e-mail, números de telefone, números do tipo segurança social, longas sequências de dígitos semelhantes a cartões e moradas. No modo de todo o texto, cobre todas as palavras que consegue ler, o que é a opção mais segura quando não consegue prever o que está na página.',
+      whatItDoes: [
+        'Executa o EasyOCR sobre a imagem inteira para encontrar caixas de texto e o texto dentro delas, usando a GPU do nosso servidor.',
+        'No modo de dados pessoais, cobre as caixas cujo texto corresponde a um de cinco padrões: e-mail, número de telefone, identificador de dígitos 3-2-4, sequência de 13 a 19 dígitos semelhante a um cartão, ou uma morada terminada em Street, Avenue, Road, Drive, Lane, Boulevard, Way, Court, Circle ou Place.',
+        'No modo de todo o texto, cobre todas as caixas de texto reconhecidas, independentemente do conteúdo.',
+        'Alarga cada caixa em 8 por cento do seu lado maior (no mínimo 3 píxeis) e preenche-a a preto, desfoca-a com um kernel de um terço do seu tamanho ou pixeliza-a em 12 blocos.',
+        'Escreve um novo JPG, PNG ou WebP com as mesmas dimensões e indica quantas ocultações foram feitas.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar a imagem',
+          description: 'Uma captura de ecrã, um formulário digitalizado ou uma fotografia com texto legível, em JPG, PNG ou WebP.',
+        },
+        {
+          title: 'Escolher apenas dados pessoais ou todo o texto',
+          description: 'Censurar texto / dados pessoais vem pré-selecionado e bloqueado nesta página; Apenas dados pessoais é o modo de deteção predefinido.',
+        },
+        {
+          title: 'Escolher caixa preta, desfocagem ou pixelização',
+          description: 'A caixa preta é a predefinição e a única irreversível.',
+        },
+        {
+          title: 'O OCR e a ocultação são executados',
+          description: 'O EasyOCR lê a imagem, cada caixa correspondente é alargada e coberta, e o resultado é guardado.',
+        },
+        {
+          title: 'Ler com atenção e transferir',
+          description: 'Procure texto que o OCR não leu, sobretudo texto pequeno, rodado ou manuscrito.',
+        },
+      ],
+      advancedDetails: [
+        'O servidor executa redact_text_pii.py com --detect pii ou all-text, --redaction blackbox, blur ou pixelate e --gpu. O script cria um Reader do EasyOCR para inglês (o único idioma passado atualmente) e chama readtext sobre o ficheiro, que devolve uma caixa, o texto e uma confiança para cada linha.',
+        'Os padrões de dados pessoais são expressões regulares: um e-mail (parte local, @, domínio com um ponto e um TLD de 2 ou mais letras); um número de telefone norte-americano de 10 dígitos com +1 opcional, parênteses, pontos, espaços ou hífenes; três, dois e quatro dígitos separados por um hífen ou espaço; 13 a 19 dígitos opcionalmente separados por espaços ou hífenes (números de cartão); e um número de porta seguido de um nome e de uma palavra de tipo de rua. Não há padrão para nomes de pessoas, datas de nascimento ou identificadores de fora dos EUA.',
+        'Cada caixa correspondente é alargada em max(3, 0,08 x o maior valor entre a sua largura e altura) píxeis de cada lado e limitada aos contornos da imagem. A caixa preta usa cv2.rectangle com interior preenchido a preto; a pixelização reduz a região a 12 blocos na largura e volta a ampliá-la com vizinho mais próximo; a desfocagem usa um kernel gaussiano de max(11, lado maior / 3), tornado ímpar.',
+        'O OCR lê melhor texto impresso limpo e horizontal. A escrita manuscrita, os tipos de letra decorativos, o texto muito pequeno, uma forte inclinação e o baixo contraste reduzem a confiança e podem fazer com que o texto escape por completo. O modo de todo o texto não resolve uma linha que o OCR nunca viu.',
+        'O resultado é escrito pelo OpenCV e a cópia de metadados com exiftool do conversor é ignorada nos resultados de IA, pelo que as etiquetas EXIF, GPS e de câmara originais não passam para o resultado; esta ferramenta trata dos píxeis, não dos metadados.',
+        'O script imprime redactions=N quando termina; um resultado de zero significa que o OCR não encontrou texto correspondente, e não que a imagem estava limpa.',
+      ],
+      whyItMatters: [
+        'Pedidos de suporte, relatórios de erros e publicações nas redes sociais levam habitualmente capturas de ecrã com dados reais de clientes ou de contas.',
+        'Cobrir texto à mão com uma ferramenta de desenho deixa escapar linhas e dá resultados irregulares; uma pesquisa por padrões encontra o terceiro e-mail em que já não reparava.',
+        'Um retângulo opaco é a única ocultação que resiste ao aumento de nitidez, ao alongamento do contraste e ao zoom.',
+      ],
+      useCases: [
+        {
+          title: 'Relatórios de erros e suporte',
+          description: 'Partilhe uma captura de ecrã sem expor e-mails, números de telefone ou dígitos de cartões.',
+        },
+        {
+          title: 'Formulários digitalizados',
+          description: 'Oculte identificadores e moradas numa página antes de a reencaminhar.',
+        },
+        {
+          title: 'Capturas de conversas',
+          description: 'Remova números de telefone e e-mails de uma conversa antes de a publicar.',
+        },
+        {
+          title: 'Material de formação',
+          description: 'Transforme uma captura de ecrã real num exemplo seguro, com todo o texto coberto.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma captura de ecrã de um pedido de suporte de 1440 x 900 no modo de dados pessoais',
+          body: 'Entrada: um PNG de 400 KB com 1440 x 900 que mostra a ficha de um cliente com dois endereços de e-mail, um número de telefone escrito como (555) 123-4567 e o nome de um cliente. Definições: apenas dados pessoais, caixa preta. O EasyOCR devolve cerca de 40 linhas de texto; três delas correspondem aos padrões de e-mail e de telefone, e o nome não corresponde a nada. Cada uma das três caixas, por exemplo 260 x 22 píxeis para um e-mail, é alargada em 8 por cento de 260, cerca de 21 píxeis, de cada lado e preenchida a preto, o que produz um retângulo de 302 x 64. O nome continua visível, porque não há padrão para nomes; mude para todo o texto se também tiver de desaparecer. O resultado é um PNG de 1440 x 900, e a tarefa demora alguns segundos, a maior parte a carregar o modelo de OCR e a ler a página.',
+        },
+        {
+          title: 'Uma fotografia de telemóvel de 3024 x 4032 de um formulário preenchido, no modo de todo o texto com desfocagem',
+          body: 'Entrada: uma fotografia JPEG de 2,1 MB de um formulário impresso, com 3024 x 4032 píxeis e ligeiramente inclinada. Definições: todo o texto, desfocagem. Todas as linhas que o EasyOCR lê são cobertas: o valor de um campo dactilografado com 600 x 40 píxeis é alargado em 48 píxeis de cada lado e desfocado com um kernel de 201 px (600 / 3, tornado ímpar), o que apaga completamente as letras a essa escala; um rótulo de 120 x 30 recebe o kernel mínimo de 11 px, que a esse tamanho ainda deixa adivinhar a forma das letras, por isso escolha a caixa preta para tudo o que seja sensível. As entradas manuscritas que o OCR não consegue ler ficam como estavam e têm de ser verificadas a olho. O resultado é um JPG de 3024 x 4032; o OCR sobre uma fotografia de 12 megapíxeis é o passo mais lento e demora mais do que numa captura de ecrã.',
+        },
+      ],
+      whenNotToUse: 'Não use esta ferramenta como única salvaguarda num documento que tenha de ser totalmente ocultado; o OCR é feito da melhor forma possível, atualmente só lê texto impresso em inglês, e os padrões de dados pessoais não sabem nada de nomes, datas de nascimento ou identificadores de fora da América do Norte. Não use a desfocagem em texto que vai publicar, já que a desfocagem de texto é a ocultação mais fácil de reverter; use a caixa preta. Rostos, logótipos e fotografias não são texto e ficam intactos; a ferramenta de desfocagem de rostos e o removedor de objetos tratam desses casos. E se os dados sensíveis estiverem nos metadados do ficheiro e não nos píxeis, a ferramenta EXIF é o sítio certo.',
+      whyMediaManipulator: [
+        'Os cinco padrões de dados pessoais, o alargamento e os tamanhos de kernel estão descritos, para que saiba exatamente que texto será apanhado e como será coberto.',
+        'O OCR e a ocultação correm num processo local na nossa própria GPU; capturas de ecrã cheias de dados de clientes nunca saem do nosso hardware.',
+        'A ocultação de texto gasta uma tarefa de IA (3 por dia sem conta, por predefinição, e 10 com uma conta gratuita), contabilizada no limite de IA e não no normal, e uma tarefa falhada é reembolsada. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O reconhecimento de texto e a ocultação correm como um processo local de EasyOCR e OpenCV no nosso próprio servidor com GPU; nenhum serviço externo de OCR ou de IA recebe a imagem, e o texto reconhecido serve apenas para decidir que caixas cobrir e não é guardado. O ficheiro carregado fica em uploads/<jobId>/ e a imagem ocultada em outputs/<jobId>/, ambos inscritos no registo de retenção e eliminados quando o período termina. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Como todos os carregamentos de imagem normais, o ficheiro passa também pela nossa análise automática de conteúdo no mesmo servidor, onde um modelo de visão local escreve uma breve descrição que é guardada com a tarefa e não é partilhada com terceiros.',
+      faq: [
+        {
+          question: 'Que dados pessoais deteta o modo de dados pessoais?',
+          answer: 'Texto que corresponda a cinco padrões: endereços de e-mail, números de telefone norte-americanos, identificadores de dígitos 3-2-4, sequências de 13 a 19 dígitos semelhantes a cartões e moradas terminadas numa palavra como Street, Avenue ou Road. Nomes, datas e identificadores de fora dos EUA não são detetados; para esses, use todo o texto.',
+        },
+        {
+          question: 'Quando devo usar todo o texto em vez de apenas dados pessoais?',
+          answer: 'Sempre que não consiga enumerar de antemão o que é sensível: formulários, tabelas, registos de conversas com nomes. Todo o texto cobre todas as linhas que o OCR lê, pelo que o único risco que resta é o texto que o OCR não conseguiu ler.',
+        },
+        {
+          question: 'A ferramenta lê outros idiomas além do inglês?',
+          answer: 'Atualmente, não. O leitor de OCR é iniciado apenas para inglês, pelo que o texto em alfabeto latino é lido razoavelmente, mas outros alfabetos podem escapar ou ser mal lidos. Reveja o resultado quando a página não estiver em inglês.',
+        },
+        {
+          question: 'Aqui, uma caixa preta é mais segura do que desfocar ou pixelizar?',
+          answer: 'Sim. A caixa é preenchida a preto opaco, pelo que nada resta. A desfocagem usa um kernel de um terço do tamanho da caixa com um mínimo de 11 px, e a pixelização deixa 12 blocos na largura; ambas podem deixar texto curto adivinhável. Escolha a caixa preta para tudo o que vá publicar.',
+        },
+        {
+          question: 'A ocultação remove os metadados escondidos da minha fotografia?',
+          answer: 'O resultado é escrito de raiz pelo OpenCV sem copiar as etiquetas originais, pelo que os dados EXIF e GPS não são transferidos. Para uma remoção deliberada e verificável num ficheiro que não vai editar de outra forma, use a ferramenta de metadados EXIF.',
+        },
+        {
+          question: 'Porque é que algum texto continuou visível?',
+          answer: 'Ou o OCR não o leu (escrita manuscrita, letra minúscula, inclinação, baixo contraste) ou, no modo de dados pessoais, não correspondeu a nenhum padrão. O servidor indica quantas caixas cobriu; zero significa que nada correspondeu, e não que não havia nada.',
+        },
+        {
+          question: 'Ocultar texto é gratuito, e o que conta para o meu limite?',
+          answer: 'Sim. É uma tarefa de IA, 3 por dia sem conta, por predefinição, e 10 com uma conta gratuita, em imagens até 200 MB e 1 GB, respetivamente. Usa apenas o limite de IA, nunca o normal. A página de preços tem os valores atuais.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Cada tarefa gasta uma tarefa de IA do seu limite diário de IA; o limite de tamanho por ficheiro do seu plano é indicado no formulário.',
+        ],
+      },
+      related: [
+        {
+          label: 'Desfocar rostos numa fotografia',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Oculte as pessoas na mesma imagem.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retire os dados ocultos de localização e do dispositivo.',
+        },
+        {
+          label: 'Digitalização de documentos com IA',
+          to: '/tools/ai-document-scan',
+          description: 'Transforme uma página fotografada num PDF limpo e pesquisável.',
+        },
+        {
+          label: 'Remover objeto de uma fotografia',
+          to: '/tools/remove-object-from-photo',
+          description: 'Apague um logótipo, uma matrícula ou um crachá que não seja texto.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza a captura de ecrã ocultada antes de a anexar.',
+        },
+      ],
+      embed: {
+        title: 'Ocultar texto numa imagem',
+        description: 'Carregue uma captura de ecrã ou uma fotografia. Censurar texto / dados pessoais já está selecionado e bloqueado. Escolha se quer cobrir os dados pessoais ou todo o texto, e o estilo de ocultação, e depois converta.',
+      },
     },
     'remove-object-from-photo': {
       name: 'Remover objeto de uma fotografia',
+      h1: 'Remover um objeto de uma fotografia online',
       tagline: 'Desenhe uma caixa à volta do que não quer na imagem e um modelo de inpainting preenche o espaço com um fundo coerente.',
       metaTitle: 'Remover um objeto de uma fotografia online | Media Manipulator',
       metaDescription: 'Apague objetos indesejados de uma fotografia. Desenhe um retângulo e o inpainting com IA preenche o espaço de acordo com o fundo. Corre na nossa própria GPU. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Remover um objeto de uma fotografia online',
+      ogDescription: 'Desenhe uma caixa sobre um objeto indesejado e o inpainting com IA preenche o espaço com um fundo coerente.',
+      intro: 'Carregue uma fotografia, arraste um ou mais retângulos sobre aquilo que quer fazer desaparecer e converta. O formulário envia cada retângulo como frações da imagem (esquerda, topo, largura e altura entre 0 e 1), e a nossa API transforma-os numa máscara: um PNG em tons de cinzento com o mesmo tamanho da sua fotografia, branco dentro dos retângulos e preto em todo o resto. Um script Python abre então a imagem e a máscara e executa o modelo de inpainting LaMa do pacote simple_lama_inpainting na nossa GPU, que volta a pintar as regiões brancas com base na cena à volta. Recebe a fotografia de volta em tamanho real, no formato que escolheu, com as áreas marcadas preenchidas.',
+      whatItDoes: [
+        'Aceita um ou mais retângulos desenhados na pré-visualização e remove o que estiver dentro deles.',
+        'Cria no servidor uma máscara exata ao píxel a partir das coordenadas normalizadas dos retângulos, pelo que a máscara não depende do tamanho do seu ecrã.',
+        'Executa o inpainting LaMa numa GPU operada por nós e preenche as áreas mascaradas com conteúdo que dá continuidade ao fundo.',
+        'Devolve a imagem em resolução completa em JPG, PNG, WebP ou GIF, conforme selecionado no formulário.',
+        'Conta como uma tarefa de IA no limite diário de IA; as conversões simples usam um limite diferente e separado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar a fotografia',
+          description: 'JPG, PNG ou WebP. A pré-visualização aparece com uma camada de desenho.',
+        },
+        {
+          title: 'Desenhar retângulos',
+          description: 'Uma caixa por objeto, um pouco maior do que o próprio objeto. É necessária pelo menos uma caixa.',
+        },
+        {
+          title: 'Máscara e inpainting',
+          description: 'O servidor escreve um PNG de máscara do mesmo tamanho e depois executa remove_object_lama.py com a imagem e a máscara.',
+        },
+        {
+          title: 'Transferir e inspecionar',
+          description: 'Amplie as regiões preenchidas para verificar as junções antes de usar a imagem.',
+        },
+      ],
+      advancedDetails: [
+        'O handler é RemoveObject em ai_tools.go. Lê as dimensões da imagem com o identify do ImageMagick, rasteriza os retângulos numa máscara PNG em tons de cinzento no diretório temporário do servidor (branco dentro, preto fora, coordenadas arredondadas a píxeis inteiros e limitadas à imagem), executa o script e elimina a máscara a seguir.',
+        'remove_object_lama.py abre a imagem com o Pillow e converte-a para RGB, carrega a máscara em tons de cinzento, redimensiona a máscara para a imagem se os tamanhos forem diferentes, chama SimpleLama(image, mask) e guarda o resultado no caminho de saída. Devido à conversão para RGB, uma entrada PNG transparente perde o canal alfa.',
+        'Cada retângulo é validado no servidor: a largura e a altura têm de ser positivas e a caixa tem de ficar entre 0 e 1 em ambos os eixos; caso contrário, a tarefa é rejeitada antes de começar e a operação é reembolsada.',
+        'O caminho de IA salta a fase do ImageMagick, pelo que os filtros, a tonalidade, a sobreposição de texto e as definições de qualidade e de redimensionamento não se aplicam, e a cópia de metadados com exiftool não corre; o resultado não leva EXIF do original. O Pillow guarda o ficheiro com as suas próprias definições de codificação predefinidas para o formato escolhido.',
+        'O LaMa preenche a partir do contexto, por isso a qualidade do preenchimento depende do que rodeia a caixa. Céu, relva, areia, água, paredes e pavimentos dão resultados convincentes; uma caixa que atravesse um rosto, texto ou um padrão regular obriga o modelo a inventar uma estrutura que não pode conhecer.',
+      ],
+      whyItMatters: [
+        'Um retoque com carimbo de clonagem sobre um fundo texturado exige prática e tempo; um retângulo demora dois segundos.',
+        'Uma pessoa a mais, um cabo ou uma placa pode ser a única coisa entre uma fotografia aproveitável e ter de a repetir.',
+        'Serve também como ferramenta de privacidade para números de porta, matrículas e ecrãs que não deviam aparecer numa fotografia partilhada.',
+      ],
+      useCases: [
+        {
+          title: 'Viagens e paisagens',
+          description: 'Remova um turista, um fio ou um caixote do lixo de uma vista que, de resto, está limpa.',
+        },
+        {
+          title: 'Fotografias de produto',
+          description: 'Apague uma etiqueta de preço, um suporte ou um grão de pó de uma imagem de anúncio.',
+        },
+        {
+          title: 'Imobiliário',
+          description: 'Retire um carro, um caixote do lixo ou objetos acumulados da margem do enquadramento.',
+        },
+        {
+          title: 'Privacidade',
+          description: 'Apague um número de porta, uma matrícula ou um monitor visível.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um retângulo numa fotografia de praia de 4000 x 3000',
+          body: 'Entrada: um JPEG de 5,2 MB e 4000 x 3000 com uma pessoa à beira da água. Desenhe uma caixa que comece a 60% da largura e a 40% da altura, com 10% de largura e 15% de altura, e mantenha JPG como saída. A API multiplica essas frações pelo tamanho da imagem e escreve uma máscara de 4000 x 3000 com um bloco branco de 400 x 450 píxeis em (2400, 1200). O LaMa corre uma vez sobre a imagem e a máscara na GPU e o script guarda um JPG de 4000 x 3000 com os 180 000 píxeis mascarados preenchidos a partir da areia e da água à volta. A passagem do modelo numa imagem de 12 megapíxeis demora segundos na GPU; escrever e transferir um JPG de vários megabytes representa uma parte comparável do tempo total.',
+        },
+        {
+          title: 'Dois retângulos numa fotografia de produto PNG de 1920 x 1080',
+          body: 'Entrada: um PNG de 2,3 MB e 1920 x 1080 de um candeeiro sobre uma mesa, com um cabo e um autocolante de preço. Desenhe duas caixas: uma sobre o cabo (cerca de 5% por 30%) e outra sobre o autocolante (cerca de 8% por 6%). Ambas são rasterizadas na mesma máscara de 1920 x 1080, pelo que uma única passagem de inpainting trata as duas regiões. Escolha PNG como saída para evitar artefactos JPEG nas áreas preenchidas; o resultado é um PNG de 1920 x 1080, RGB opaco, porque o Pillow converte a entrada para RGB antes do inpainting. Com 2 megapíxeis, a passagem na GPU é rápida, e a maior parte do tempo real é o carregamento e a escrita do PNG.',
+        },
+      ],
+      whenNotToUse: 'Não use o inpainting num objeto que ocupe uma grande parte do enquadramento, que esteja à frente de um rosto, que se sobreponha a texto legível ou que interrompa um padrão regular como tijolo, azulejos ou um teclado: o modelo tem de fabricar estrutura e o resultado vai parecer borrado ou repetitivo. Também é a ferramenta errada quando quer manter intacto um PNG transparente, já que o script aplana a entrada para RGB, e quando a edição tem de ser forensicamente honesta, porque a região preenchida é conteúdo gerado. Para substituir o fundo inteiro, use o removedor de fundo; para rostos que só precisam de ser ocultados, a ferramenta de desfocagem de rostos é mais adequada.',
+      whyMediaManipulator: [
+        'A máscara é criada no servidor a partir de frações exatas, pelo que o que desenha na pré-visualização de um telemóvel corresponde aos mesmos píxeis que num computador.',
+        'O modelo é identificado (LaMa através de simple_lama_inpainting) e o comportamento do formato e do canal alfa está documentado, em vez de ficar entregue a suposições.',
+        'Corre na nossa própria GPU; a ferramenta normal não precisa de conta. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'A sua fotografia é guardada em uploads/<jobId>/ no nosso servidor; a máscara dos retângulos é escrita como um PNG temporário no diretório temporário do servidor e eliminada assim que o script de inpainting termina; a imagem preenchida vai para outputs/<jobId>/. As coordenadas dos retângulos são conservadas nas opções da tarefa, para que seja possível gerar relatórios sobre a tarefa. O LaMa corre numa GPU na mesma máquina e nenhuma parte da imagem vai para um fornecedor externo. Cada carregamento de imagem, incluindo este, é também resumido uma vez por um passo de análise automática no nosso servidor com um modelo de visão local, e esse resumo fica com a tarefa. O resultado não leva EXIF porque as operações de IA saltam a cópia de metadados. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'A remoção de objetos é gratuita?',
+          answer: 'Sim, dentro do limite diário de IA. Cada remoção gasta uma tarefa de IA: por predefinição, 3 por dia para visitantes e 10 com uma conta gratuita, com limites por ficheiro de 200 MB e 1 GB; 100 e 200 no Premium e no Pro. O seu limite normal para conversões é separado e mantém-se como estava. Os valores em vigor estão em /pricing.',
+        },
+        {
+          question: 'Com que precisão tem de ser desenhado o retângulo?',
+          answer: 'Não muita. A máscara é o retângulo que desenhou, arredondado a píxeis inteiros, por isso inclua um pouco de fundo à volta do objeto e da sua sombra. O modelo funde a margem extra.',
+        },
+        {
+          question: 'Posso remover vários objetos de uma vez?',
+          answer: 'Sim. Cada retângulo que desenha é pintado na mesma máscara e todos são preenchidos numa só passagem. É necessário pelo menos um retângulo; caso contrário, a tarefa é rejeitada.',
+        },
+        {
+          question: 'Porque é que a área preenchida parece desfocada ou repetida?',
+          answer: 'O LaMa preenche a partir dos píxeis à volta da caixa. Uma caixa sobre detalhe fino ou um padrão regular deixa-o a adivinhar. Experimente uma caixa mais justa, remova um objeto de cada vez ou escolha uma fotografia em que o fundo por trás do objeto seja mais simples.',
+        },
+        {
+          question: 'Em que formato vem o resultado?',
+          answer: 'No que escolheu no formulário: JPG, PNG, WebP ou GIF. A entrada é convertida para RGB antes do inpainting, pelo que a transparência não é preservada. O PNG evita artefactos JPEG nas regiões preenchidas.',
+        },
+        {
+          question: 'O resultado mantém os meus dados EXIF?',
+          answer: 'Não. O caminho de IA salta a cópia com exiftool que o conversor normal faz, e o Pillow escreve um ficheiro novo, pelo que não passam etiquetas de câmara, data ou GPS.',
+        },
+        {
+          question: 'A máscara ou a minha fotografia são enviadas para outro sítio?',
+          answer: 'Não. A máscara é um ficheiro temporário no nosso servidor que é eliminado após a execução, e o modelo de inpainting corre na nossa própria GPU.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Cada tarefa gasta uma tarefa de IA do seu limite diário de IA; o limite de tamanho por ficheiro do seu plano é indicado no formulário.',
+        ],
+      },
+      related: [
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Recorte o motivo por completo em vez de remendar uma área.',
+        },
+        {
+          label: 'Desfocar rostos numa fotografia',
+          to: '/tools/blur-faces-in-photo',
+          description: 'Oculte pessoas sem inventar fundo.',
+        },
+        {
+          label: 'Ocultar texto numa imagem',
+          to: '/tools/redact-text-in-image',
+          description: 'Tape a preto o texto que o OCR consegue encontrar, em vez de o preencher com inpainting.',
+        },
+        {
+          label: 'Restauro de imagem com IA',
+          to: '/tools/ai-image-restoration',
+          description: 'Limpe o ruído e a compressão à volta da reparação.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza a fotografia final para a partilhar.',
+        },
+      ],
+      embed: {
+        title: 'Remover um objeto de uma fotografia',
+        description: 'Carregue uma fotografia. Remover objeto já está selecionado e bloqueado. Desenhe um ou mais retângulos sobre aquilo que quer fazer desaparecer e depois converta.',
+      },
     },
     'clean-voice-audio': {
       name: 'Limpar áudio de voz',
+      h1: 'Limpar gravações de voz com IA',
       tagline: 'Torne a fala mais clara reduzindo o chiado, o som da sala e os rumores em podcasts, entrevistas e notas de voz.',
       metaTitle: 'Limpar gravações de voz com IA | Media Manipulator',
       metaDescription: 'Limpe uma gravação de voz com IA. Reduza o chiado, o zumbido e o ruído da sala para que a fala se ouça melhor. Corre na nossa própria GPU. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Limpar gravações de voz com IA',
+      ogDescription: 'Reduza o chiado, o zumbido e o ruído da sala para que a fala se ouça com mais clareza em podcasts, entrevistas e notas de voz.',
+      intro: 'Uma nota de voz de telemóvel numa cozinha com eco, um convidado de podcast no microfone de um portátil, uma aula gravada do fundo da sala: as palavras estão lá, mas ficam por baixo do chiado e do som da sala. Limpar voz passa a gravação pelo DeepFilterNet na nossa GPU e depois por uma cadeia fixa de acabamento ao estilo de radiodifusão que corta os rumores, limita os agudos, leva o nível a uma intensidade sonora consistente e impede que os picos saturem. Foi feita para fala, não para música.',
+      whatItDoes: [
+        'Converte o seu ficheiro para mono a 48 kHz com o ffmpeg, que é a entrada que o DeepFilterNet espera, e entrega esse WAV ao modelo na nossa GPU.',
+        'Suprime o som de fundo constante (chiado, ventoinhas, zumbido, ambiente da sala) mantendo a fala, através da rede de melhoria DeepFilterNet.',
+        'Aplica uma cadeia de acabamento após a redução de ruído: um filtro passa-alto a 80 Hz, um passa-baixo a 14 kHz, normalização da intensidade sonora para -16 LUFS com um teto de pico real de -1,5 dBTP, e um limitador a 0,95.',
+        'Codifica o resultado no formato que escolher: MP3, AAC ou OGG a 192 kbps, Opus a 128 kbps, FLAC ou WAV de 16 bits.',
+        'Ignora os controlos normais de taxa de bits, equalização, efeitos e corte, já que o caminho de IA substitui o pipeline normal de filtros do ffmpeg.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar uma gravação',
+          description: 'Notas de voz, áudio de entrevistas, takes de podcast ou gravações de aulas em MP3, WAV, FLAC, M4A, AAC, OGG ou Opus.',
+        },
+        {
+          title: 'Limpar voz está predefinido',
+          description: 'A operação está fixa nesta página; a única escolha que resta é o formato de saída.',
+        },
+        {
+          title: 'Normalizar, reduzir o ruído, dar acabamento',
+          description: 'O ffmpeg cria um WAV mono a 48 kHz, o DeepFilterNet reduz o ruído e os filtros de acabamento definem o timbre e a intensidade sonora.',
+        },
+        {
+          title: 'Transferir e ouvir',
+          description: 'Compare com o original com auscultadores antes de publicar.',
+        },
+      ],
+      advancedDetails: [
+        'A cadeia de acabamento é exatamente highpass=f=80,lowpass=f=14000,loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.95, aplicada uma vez ao WAV sem ruído. O passa-alto remove os rumores de manuseamento e os golpes das plosivas, o passa-baixo atenua o chiado acima de 14 kHz, e o loudnorm leva a intensidade sonora integrada a -16 LUFS, o alvo habitual para podcasts falados.',
+        'A saída é sempre mono a 48 kHz porque o modelo trabalha com um único canal. Uma entrevista em estéreo continua inteligível, mas perde a colocação esquerda-direita; se precisar de estéreo, esta é a ferramenta errada.',
+        'As definições do codificador dependem da extensão de saída: libmp3lame a 192 kbps para MP3, aac a 192 kbps para AAC ou M4A, libvorbis a 192 kbps para OGG, libopus a 128 kbps para Opus, flac para FLAC e pcm_s16le para WAV. Não há seletor de taxa de bits no caminho de IA.',
+        'Os intervalos de corte e os efeitos habituais são ignorados quando uma operação de IA está selecionada; o conversor encaminha o ficheiro diretamente para o modelo e devolve o resultado. Corte primeiro a gravação se só quiser limpar parte dela.',
+        'Uma segunda passagem por Limpar voz volta a normalizar áudio que já está a -16 LUFS e pode dar às consoantes um som aguado. Execute-a uma só vez.',
+        'O modelo tem dificuldade com vozes concorrentes, fundos musicais e ruídos súbitos e fortes; esses não são «fundo constante» e ficam em grande parte no sítio.',
+      ],
+      whyItMatters: [
+        'Os ouvintes desistem de uma gravação cansativa de ouvir, mesmo quando o que se diz vale a pena.',
+        'Um nível consistente de -16 LUFS significa que um episódio toca ao mesmo volume que os que o rodeiam, sem um ajuste manual de ganho.',
+        'A fala destacada do ruído também é transcrita com mais precisão, por isso limpar primeiro melhora também as legendas.',
+      ],
+      useCases: [
+        {
+          title: 'Podcasts e entrevistas',
+          description: 'Arrume a gravação de um convidado remoto feita com um microfone básico e leve-a à mesma intensidade sonora do apresentador.',
+        },
+        {
+          title: 'Notas de voz e ditados',
+          description: 'Torne uma gravação de telemóvel compreensível mais tarde, e alta o suficiente para se ouvir sem auscultadores.',
+        },
+        {
+          title: 'Aulas e reuniões',
+          description: 'Baixe o zumbido do ar condicionado e a ventoinha do projetor numa gravação feita do fundo de uma sala.',
+        },
+        {
+          title: 'Narração para um vídeo',
+          description: 'Dê acabamento a uma locução antes de a colocar no editor Darkroom.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma nota de voz de 12 minutos (M4A, 128 kbps, cerca de 11 MB) para MP3',
+          body: 'Um ficheiro AAC a 128 kbps ocupa 16 KB por segundo, pelo que 720 segundos são cerca de 11,5 MB. Doze minutos ultrapassam o limite de 5 minutos para visitantes, por isso é necessária uma conta gratuita (20 minutos). O ffmpeg escreve primeiro um WAV mono a 48 kHz com cerca de 69 MB (96 000 bytes por segundo) numa pasta temporária que é removida quando a tarefa termina. O DeepFilterNet e a cadeia de acabamento correm sobre esse ficheiro, e o codificador MP3 escreve o resultado a 192 kbps: cerca de 17 MB, mais do que a entrada, porque 192 kbps é uma taxa superior àquela com que a nota foi gravada. Os dois passos do ffmpeg demoram segundos; a passagem do DeepFilterNet domina e aumenta com a duração da gravação.',
+        },
+        {
+          title: 'Uma entrevista WAV estéreo de 4 minutos (44,1 kHz, 16 bits, cerca de 42 MB) para WAV',
+          body: 'O PCM estéreo de 16 bits a 44,1 kHz ocupa 176 400 bytes por segundo, pelo que 240 segundos são cerca de 42 MB, dentro dos limites para visitantes de 200 MB e 5 minutos. O ficheiro é convertido para mono e reamostrado para 48 kHz antes de o modelo correr, e o WAV limpo volta como mono de 16 bits a 48 kHz: 96 000 bytes por segundo, cerca de 23 MB. É mais pequeno do que a entrada apenas porque tem um canal em vez de dois. Escolher FLAC mantém as mesmas amostras sem perdas em menos espaço; escolher MP3 dá cerca de 5,8 MB a 192 kbps.',
+        },
+      ],
+      whenNotToUse: 'Evite esta ferramenta para música, canto ou qualquer gravação em que o fundo faça parte do som que quer manter: o modelo trata tudo o que não é fala como ruído, e a cadeia de acabamento corta abaixo de 80 Hz e acima de 14 kHz, o que esvazia os instrumentos. Também é a escolha errada quando precisa de manter o estéreo, quando a gravação está saturada ou distorcida (esse dano não é ruído e não pode ser filtrado), ou quando só quer baixar o ruído sem qualquer alteração ao nível ou ao timbre, que é o que a página Remover ruído de fundo faz.',
+      whyMediaManipulator: [
+        'O DeepFilterNet e a cadeia de acabamento correm numa GPU operada por nós; a gravação não é enviada para um serviço externo de melhoria de voz.',
+        'A página abre com Limpar voz já selecionado e o menu de operações oculto, pelo que a única decisão é o formato de saída.',
+        'Uma tarefa de limpeza é uma tarefa normal do seu limite diário (5 como visitante, 30 com uma conta gratuita, por predefinição), não uma tarefa de IA, e uma tarefa falhada é reembolsada.',
+      ],
+      privacyNote: 'A sua gravação é guardada na pasta da tarefa, convertida pelo ffmpeg num WAV mono temporário a 48 kHz num diretório de trabalho, e passada ao DeepFilterNet na nossa própria GPU; esse diretório de trabalho é eliminado assim que o ficheiro limpo é codificado. O resultado limpo fica com a tarefa para transferência. Os carregamentos de áudio passam também por uma análise automática no nosso servidor, que transcreve a gravação com o Whisper para uma revisão interna de conteúdo e guarda esse resultado com a tarefa. Nenhum fornecedor de IA terceiro recebe o ficheiro. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Porque é que o ficheiro limpo sai em mono?',
+          answer: 'O pipeline converte todas as entradas para um canal a 48 kHz antes de o DeepFilterNet correr, e codifica a saída do modelo tal como está. Por isso, uma gravação estéreo volta em mono. Numa entrevista com dois microfones, separe primeiro os canais e limpe cada um separadamente se precisar de manter a separação.',
+        },
+        {
+          question: 'Para que intensidade sonora normaliza Limpar voz?',
+          answer: 'A cadeia de acabamento usa o loudnorm do ffmpeg com um alvo integrado de -16 LUFS, um teto de pico real de -1,5 dBTP e uma gama de intensidade de 11 LU, seguido de um limitador a 0,95. Isto corresponde aos alvos habituais de distribuição de conteúdos falados, pelo que um episódio limpo aqui fica a um nível semelhante ao de podcasts masterizados profissionalmente.',
+        },
+        {
+          question: 'Posso definir a taxa de bits ou cortar o ficheiro nesta página?',
+          answer: 'Não. Quando uma operação de IA está ativa, o conversor encaminha diretamente para o modelo e ignora as definições de taxa de bits, equalização, efeitos e corte. A taxa de saída é fixada pelo formato: 192 kbps para MP3, AAC e OGG, 128 kbps para Opus. Corte primeiro a gravação noutra ferramenta se só quiser parte dela.',
+        },
+        {
+          question: 'Em que é que isto difere de Remover ruído de fundo?',
+          answer: 'Ambos executam o mesmo modelo DeepFilterNet. Limpar voz acrescenta depois o passa-alto, o passa-baixo, a normalização da intensidade sonora e o limitador; Remover ruído de fundo fica pelo sinal sem ruído e não mexe nos seus níveis nem no timbre. Escolha Limpar voz para um ficheiro de fala pronto e a outra página quando pretender misturar ou masterizar o áudio por conta própria.',
+        },
+        {
+          question: 'Consegue corrigir uma gravação saturada ou distorcida?',
+          answer: 'Não. A saturação é forma de onda em falta, não ruído acrescentado, e o modelo não tem nada para subtrair. Ainda assim, pode baixar o chiado à volta de uma take distorcida, mas a aspereza nas sílabas mais fortes mantém-se.',
+        },
+        {
+          question: 'Quantas gravações posso limpar por dia, e é gratuito?',
+          answer: 'Limpar voz conta deliberadamente como uma tarefa normal, pelo que gasta uma do limite normal: 5 por dia como visitante, 30 com uma conta gratuita, 300 no Premium e 700 no Pro, por predefinição, com limites de ficheiro de 200 MB, 1 GB e 5 GB e limites de duração de 5 minutos, 20 minutos e 2 horas. A tabela atual está em /pricing.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Limpar voz usa o limite normal; os limites de duração dependem do seu plano e são indicados em tempo real no formulário.',
+        ],
+      },
+      related: [
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'O mesmo redutor de ruído, sem o acabamento de intensidade sonora e de timbre.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Transforme a fala limpa em legendas ou texto.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire a faixa de voz de um vídeo antes de a limpar.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Coloque a narração com acabamento numa linha temporal de vídeo.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Para música em vez de fala, separe antes a voz do cantor.',
+        },
+      ],
+      embed: {
+        title: 'Limpar uma gravação de voz',
+        description: 'Carregue uma gravação. Limpar voz já está aplicado, por isso não há menu de operações para definir. Escolha um formato de saída se precisar de algo diferente da predefinição e depois converta.',
+      },
     },
     'remove-background-noise': {
       name: 'Remover ruído de fundo',
+      h1: 'Remover ruído de fundo de áudio online',
       tagline: 'Reduza o chiado, o zumbido, o trânsito e o ruído ambiente de uma gravação com um removedor de ruído com IA, mantendo o som principal em destaque.',
       metaTitle: 'Remover ruído de fundo de áudio online | Media Manipulator',
       metaDescription: 'Remova o ruído de fundo do áudio. Um removedor de ruído com IA reduz o chiado, o zumbido e o som ambiente em gravações. Corre na nossa própria GPU. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Remover ruído de fundo de áudio online',
+      ogDescription: 'Um redutor de ruído com IA que baixa o chiado, o zumbido, o trânsito e o ruído da sala em gravações de áudio.',
+      intro: 'Aparelhos de ar condicionado, ventoinhas de computador, trânsito na rua e zumbido elétrico são sons constantes que ficam por baixo daquilo que realmente queria gravar. Esta página passa o ficheiro pelo DeepFilterNet, um redutor de ruído de aprendizagem profunda, na nossa GPU, e devolve o sinal sem ruído sem mais nenhuma alteração: sem normalização da intensidade sonora, sem equalização, sem limitador. Isso torna-a a escolha certa quando pretende misturar ou masterizar o resultado por conta própria, ou quando quer manter intacto o carácter do original.',
+      whatItDoes: [
+        'Reamostra o ficheiro para mono a 48 kHz com o ffmpeg e passa esse WAV ao binário do DeepFilterNet na nossa GPU.',
+        'Estima o ruído de fundo estacionário e subtrai-o, baixando o chiado, o zumbido, as ventoinhas, a ventilação e o trânsito constante.',
+        'Devolve a saída bruta do modelo, codificada no formato que escolher, com o mesmo nível de pico e equilíbrio tonal que o modelo produziu; não há fase de pós-processamento nesta página.',
+        'Mantém o menu de operações visível, para que possa mudar para Limpar voz ou para as ferramentas de voz a partir do mesmo formulário.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar áudio',
+          description: 'Qualquer ficheiro de áudio comum, incluindo uma faixa extraída de um vídeo.',
+        },
+        {
+          title: 'A redução de ruído vem pré-selecionada',
+          description: 'Remover ruído de fundo já está escolhido; mude o formato de saída se quiser algo diferente de MP3.',
+        },
+        {
+          title: 'O DeepFilterNet corre na nossa GPU',
+          description: 'O modelo separa o ruído constante do primeiro plano e escreve um WAV melhorado.',
+        },
+        {
+          title: 'Codificar e transferir',
+          description: 'O ffmpeg escreve o WAV melhorado no formato escolhido; ouça-o ao lado do original.',
+        },
+      ],
+      advancedDetails: [
+        'Na API, a única diferença entre esta página e Limpar voz é uma única flag: polish=false. O passo de codificação do ffmpeg não recebe nenhum filtro -af, pelo que o WAV melhorado é codificado tal como o DeepFilterNet o escreveu.',
+        'A normalização da entrada é ffmpeg -ac 1 -ar 48000: o modelo trabalha com um canal a 48 kHz, pelo que a saída é mono a 48 kHz, seja qual for a disposição de canais ou a frequência de amostragem da entrada.',
+        'Os codificadores seguem a extensão: MP3 através de libmp3lame a 192 kbps, AAC a 192 kbps, OGG através de libvorbis a 192 kbps, Opus através de libopus a 128 kbps, FLAC sem perdas, WAV como pcm_s16le. Escolha WAV ou FLAC se vai continuar a editar, para só sofrer uma codificação com perdas uma vez.',
+        'Como não há normalização da intensidade sonora, uma gravação baixa continua baixa. A redução de ruído remove energia, por isso o resultado pode ficar com um nível um pouco inferior ao da entrada; aumente depois o ganho no seu editor, se necessário.',
+        'O DeepFilterNet é treinado com ruído estacionário e de variação lenta. Cliques de teclado, portas a bater, um segundo orador ou um fundo musical são em grande parte preservados, já que parecem sinal para o modelo.',
+        'O diretório de trabalho com os WAV normalizado e melhorado é eliminado quando a tarefa termina; só a saída codificada fica com a tarefa.',
+      ],
+      whyItMatters: [
+        'O ruído constante mascara as consoantes suaves e cansa os ouvintes muito antes de perceberem porquê.',
+        'Muitas gravações não podem ser repetidas: um discurso de casamento, uma aula, uma entrevista com alguém que já não está disponível.',
+        'Uma faixa sem ruído que não foi normalizada nem limitada dá-lhe um ponto de partida limpo para a sua própria mistura, em vez de um ficheiro com som de acabado que depois tem de desfazer.',
+      ],
+      useCases: [
+        {
+          title: 'Áudio retirado de um vídeo',
+          description: 'Extraia a faixa, remova a ventoinha da câmara ou o vento e volte a colocá-la por baixo da imagem no Darkroom.',
+        },
+        {
+          title: 'Gravações de campo',
+          description: 'Baixe o zumbido de uma estrada ou de um gerador por baixo de uma entrevista no exterior.',
+        },
+        {
+          title: 'Exportações de chamadas e reuniões',
+          description: 'Reduza o chiado da linha numa chamada gravada antes de a partilhar ou transcrever.',
+        },
+        {
+          title: 'Cassetes digitalizadas',
+          description: 'Baixe o chiado da fita numa gravação convertida sem alterar os níveis.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma gravação de chamada MP3 de 18 minutos a 128 kbps (cerca de 17 MB) para FLAC',
+          body: 'A 128 kbps, um MP3 ocupa 16 KB por segundo, pelo que 1 080 segundos são cerca de 17 MB. Dezoito minutos estão dentro do limite de 20 minutos da conta gratuita, mas acima do limite de 5 minutos para visitantes, por isso inicie sessão primeiro. O ffmpeg escreve para o modelo um WAV mono a 48 kHz com cerca de 104 MB (96 000 bytes por segundo), e esse WAV é descartado após a codificação. Escolher FLAC devolve as amostras melhoradas em mono a 48 kHz sem perdas; o FLAC é mais pequeno do que o WAV de 104 MB numa proporção que depende de quanto silêncio e chiado foi removido, e a própria redução de ruído costuma fazer com que o FLAC comprima melhor. Escolher MP3 daria cerca de 26 MB a 192 kbps.',
+        },
+        {
+          title: 'Uma gravação de campo FLAC estéreo de 4 minutos e 30 segundos (cerca de 30 MB) para WAV',
+          body: 'Quatro minutos e meio e 30 MB estão dentro dos limites para visitantes de 5 minutos e 200 MB, por isso não é necessária conta. O ficheiro estéreo é convertido para mono e reamostrado para 48 kHz, o DeepFilterNet baixa o fundo de trânsito e a saída WAV é mono de 16 bits a 48 kHz: 96 000 bytes por segundo durante 270 segundos, cerca de 26 MB. O nível é o que o modelo deixou, sem normalização aplicada, por isso aumente-o no seu editor se o original era baixo. As duas conversões do ffmpeg demoram alguns segundos cada; a passagem na GPU aumenta com a duração.',
+        },
+      ],
+      whenNotToUse: 'Esta não é a ferramenta para gravações em que o ruído é intermitente ou é ele próprio uma voz: oradores sobrepostos, uma televisão na divisão ao lado, cadeiras a arrastar e o barulho de um teclado ficam em grande parte intactos, porque o modelo foi feito para ruído constante. Não a use em música finalizada, onde o «ruído» que remove pode ser reverberação e ambiente de sala pelos quais pagou. Se precisar de saída em estéreo, é a escolha errada, porque o pipeline é mono. E se quer um ficheiro de fala pronto a publicar com uma intensidade sonora padrão, Limpar voz acrescenta esse acabamento; esta página, deliberadamente, não o faz.',
+      whyMediaManipulator: [
+        'O redutor de ruído corre numa GPU operada por nós; o seu áudio não é carregado para um serviço de remoção de ruído de terceiros.',
+        'Nada é acrescentado depois do modelo: nenhuma alteração da intensidade sonora, nenhuma equalização, por isso o que ouve é a redução de ruído e apenas a redução de ruído.',
+        'Uma tarefa de redução de ruído é uma tarefa normal do seu limite diário, não uma tarefa de IA, e é reembolsada se a tarefa falhar.',
+      ],
+      privacyNote: 'O ficheiro que carrega é escrito na pasta da tarefa, reamostrado pelo ffmpeg para um WAV mono temporário a 48 kHz num diretório de trabalho, e limpo de ruído pelo DeepFilterNet na nossa própria GPU; o diretório de trabalho é removido assim que a saída é codificada. O resultado codificado fica com a tarefa para transferência. Como todos os carregamentos de áudio, passa também por um passo de análise automática no nosso servidor, que o transcreve com o Whisper para uma revisão interna que fica com a tarefa. Nada vai para um fornecedor de IA externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Que ruídos é que o DeepFilterNet trata bem, e quais não trata?',
+          answer: 'Som constante e de variação lenta: chiado, zumbido da rede elétrica, ventoinhas, ar condicionado, ambiente da sala, uma estrada constante. Eventos curtos e tudo o que se pareça com fala (uma segunda pessoa, uma televisão, cliques, pancadas) parecem primeiro plano para o modelo e são em grande parte mantidos.',
+        },
+        {
+          question: 'O nível ou o timbre da minha gravação vão mudar?',
+          answer: 'Apenas como efeito secundário da remoção da energia do ruído; nesta página não é aplicada nenhuma normalização, equalização ou limitação. Se quiser um nível consistente de -16 LUFS para fala e também uma passagem de passa-alto e passa-baixo, use Limpar voz, que executa o mesmo modelo com essa cadeia de acabamento acrescentada.',
+        },
+        {
+          question: 'Porque é que o ficheiro sem ruído é mono?',
+          answer: 'O modelo recebe um único canal a 48 kHz, por isso o ffmpeg converte primeiro qualquer entrada estéreo para mono e a saída é escrita assim. Uma gravação estéreo com ruído diferente em cada canal deve ser separada e limpa um canal de cada vez, se precisar de a manter em estéreo.',
+        },
+        {
+          question: 'Posso reduzir diretamente o ruído do áudio de um vídeo?',
+          answer: 'Carregue a faixa de áudio em vez do vídeo: extraia-a com a ferramenta Extrair áudio, reduza o ruído aqui e depois combine a faixa limpa e o vídeo no Darkroom.',
+        },
+        {
+          question: 'Que formato de saída é melhor para continuar a editar?',
+          answer: 'WAV (mono de 16 bits a 48 kHz, 96 KB por segundo) ou FLAC, que guarda as mesmas amostras em menos espaço. MP3, AAC e OGG são escritos a 192 kbps e Opus a 128 kbps; escolha esses apenas para a partilha final, para que a codificação com perdas aconteça uma única vez.',
+        },
+        {
+          question: 'A redução de ruído conta para o limite de IA?',
+          answer: 'Não. A remoção de ruído de fundo conta deliberadamente como uma tarefa normal, tal como Limpar voz: 5 por dia para um visitante, 30 com uma conta gratuita, 300 no Premium e 700 no Pro, por predefinição. (Isolar ou remover vocais é diferente: cada uma dessas operações é uma tarefa de IA.) A duração está limitada a 5 minutos para visitantes e a 20 minutos para contas gratuitas; os limites atuais estão em /pricing.',
+        },
+        {
+          question: 'E se a gravação já estiver bastante limpa?',
+          answer: 'O modelo corre na mesma e remove o ruído residual que encontrar, mas a diferença audível será pequena e pode preferir o original intacto. Compare os dois antes de substituir o que quer que seja.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A redução de ruído usa o limite normal; os limites de duração dependem do seu plano e são indicados em tempo real no formulário.',
+        ],
+      },
+      related: [
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'O mesmo redutor de ruído, mais o acabamento de intensidade sonora e de timbre para fala.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire primeiro a faixa de áudio de um vídeo.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Volte a colocar a faixa sem ruído por baixo do vídeo.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Transcreva o áudio mais limpo para legendas.',
+        },
+        {
+          label: 'Remover voz de uma música',
+          to: '/tools/remove-vocals-from-song',
+          description: 'Separe o canto da música com outro modelo.',
+        },
+      ],
+      embed: {
+        title: 'Remover ruído de fundo',
+        description: 'Carregue uma gravação. Remover ruído de fundo já está selecionado. Pode ainda mudar o formato de saída e depois converter.',
+      },
     },
     'remove-vocals-from-song': {
       name: 'Remover voz de uma música',
+      h1: 'Remover a voz de uma música para um instrumental ou faixa de karaoke',
       tagline: 'Retire o canto de uma faixa e mantenha a música, para karaoke, treino e faixas de acompanhamento. Utilize apenas em música sobre a qual tenha direitos.',
       metaTitle: 'Remover voz de uma música: criador de karaoke | Media Manipulator',
       metaDescription: 'Remova a voz de uma música com IA e descarregue o instrumental no mesmo formato do seu ficheiro, ou em FLAC ou WAV. Karaoke e faixas de treino, na nossa própria GPU. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Remover a voz de uma música para karaoke',
+      ogDescription: 'Retire o canto de uma música com IA e transfira o instrumental em MP3, FLAC ou WAV.',
+      intro: 'Noites de karaoke, treino de canto e gravações de versões precisam todas da banda sem o cantor. Esta página passa a música pelo Demucs (o modelo htdemucs) na nossa GPU em modo de duas faixas, que divide a mistura em «voz» e «todo o resto», e devolve a faixa com todo o resto. Por predefinição, o instrumental volta no mesmo formato do seu ficheiro, pelo que um MP3 a 320 kbps continua a ser um MP3 a 320 kbps em vez de inchar até se tornar um WAV; FLAC e WAV estão disponíveis quando quer um ficheiro sem perdas para editar.',
+      whatItDoes: [
+        'Executa o Demucs htdemucs com --two-stems=vocals, pelo que o modelo estima apenas duas partes: a voz principal e o acompanhamento.',
+        'Mantém a faixa no_vocals e descarta a faixa vocal; o resultado é um único ficheiro estéreo sem o canto.',
+        'Converte «Igual ao original» num formato concreto no carregamento: MP3 continua MP3, AAC/M4A continua AAC/M4A, OGG e Opus ficam como estão, e entradas WAV, FLAC, AIFF ou ALAC voltam como FLAC.',
+        'Escreve faixas MP3 e AAC a 320 kbps em vez dos 192 kbps que as outras ferramentas de áudio usam, para que a codificação não acrescente perdas audíveis à separação.',
+        'Mostra um tamanho de saída estimado para cada escolha de formato antes de começar, com base na duração do seu ficheiro.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar uma música',
+          description: 'Uma faixa que seja sua ou que tenha licença para usar, em MP3, WAV, FLAC, M4A, AAC, OGG ou Opus.',
+        },
+        {
+          title: 'Remover vocais está predefinido',
+          description: 'A operação está fixa; «Formato de saída» é, por predefinição, Igual ao original, com MP3, FLAC e WAV como alternativas.',
+        },
+        {
+          title: 'O Demucs separa a mistura',
+          description: 'O modelo percorre a música em segmentos de 7 segundos na nossa GPU e escreve vocals.wav e no_vocals.wav.',
+        },
+        {
+          title: 'Codificar e transferir',
+          description: 'A faixa no_vocals é codificada no formato resolvido e disponibilizada para transferência.',
+        },
+      ],
+      advancedDetails: [
+        'A invocação exata é demucs -n htdemucs --two-stems=vocals --segment 7; a duração do segmento limita a memória da GPU e permite que faixas longas corram numa única placa. O Demucs escreve faixas estéreo a 44,1 kHz seja qual for a frequência ou o número de canais da entrada, pelo que uma fonte mono ou a 48 kHz volta como estéreo a 44,1 kHz.',
+        'A codificação das faixas é libmp3lame -b:a 320k para MP3 e aac -b:a 320k para AAC ou M4A; OGG fica a 192 kbps, Opus a 128 kbps, e FLAC e WAV são sem perdas. Todas as outras operações de áudio com IA usam 192 kbps; a taxa de 320 kbps é específica das faixas separadas.',
+        'A regra de «Igual ao original» é: uma entrada com perdas devolve o mesmo contentor, uma entrada sem perdas devolve FLAC, e um ficheiro de vídeo ou qualquer coisa que o servidor não consiga classificar devolve MP3 a 320 kbps. Um .m4a é analisado com o ffprobe antes da decisão, porque pode conter ALAC sem perdas em vez de AAC.',
+        'A regra existe por causa de uma tarefa real: um MP3 de 87 minutos e 68 MB voltou uma vez como um WAV de 880 MB. O PCM não acrescenta uma fidelidade que uma fonte com perdas nunca teve, por isso a predefinição nunca aumenta áudio com perdas para WAV; escolher WAV explicitamente continua a ser respeitado.',
+        'A separação nunca é perfeita. As caudas de reverberação da voz, as harmonias de apoio e tudo o que o modelo ouve como «semelhante a voz» (alguns sintetizadores solistas, assobios) podem passar para o instrumental, e misturas densas separam-se pior do que produções modernas e bem espaçadas.',
+        'O formulário avisa quando uma escolha de WAV ultrapassaria os 500 MB, já que o WAV estéreo de 16 bits a 44,1 kHz ocupa 176 400 bytes por segundo, cerca de 10,6 MB por minuto.',
+      ],
+      whyItMatters: [
+        'Não existem versões instrumentais oficiais da maioria das músicas, e as faixas de acompanhamento licenciadas são muitas vezes regravadas em vez de usarem o arranjo original.',
+        'Os cantores ensaiam com mais proveito sobre o arranjo verdadeiro do que sobre uma aproximação em MIDI.',
+        'Devolver a faixa no formato de entrada mantém pequeno um ficheiro pensado para o telemóvel; um MP3 de 10 MB não deve tornar-se, por acidente, uma transferência de 50 MB.',
+      ],
+      useCases: [
+        {
+          title: 'Karaoke em casa',
+          description: 'Crie uma versão para cantar de uma música que já é sua.',
+        },
+        {
+          title: 'Treino vocal',
+          description: 'Ensaie a sua parte sobre a banda original sem o cantor principal no ouvido.',
+        },
+        {
+          title: 'Versões e remisturas',
+          description: 'Use o instrumental como base para a sua própria gravação de voz.',
+        },
+        {
+          title: 'Música de fundo para vídeo',
+          description: 'Obtenha uma base sem voz a partir de música que tem licença para usar num projeto do Darkroom.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um MP3 de 4 minutos a 320 kbps (cerca de 9,6 MB) com Igual ao original',
+          body: 'A 320 kbps, um MP3 ocupa 40 KB por segundo, pelo que 240 segundos são cerca de 9,6 MB, bem dentro dos limites para visitantes de 5 minutos e 200 MB. O formato resolve-se para MP3 porque a entrada é MP3. O Demucs percorre a música em janelas de 7 segundos na nossa GPU e escreve um no_vocals.wav estéreo a 44,1 kHz com cerca de 42 MB numa pasta de trabalho, que o ffmpeg depois codifica com libmp3lame a 320 kbps: o instrumental volta a ter cerca de 9,6 MB. O WAV de trabalho é eliminado. A passagem de separação domina o tempo de execução e aumenta com a duração da faixa.',
+        },
+        {
+          title: 'Um WAV com qualidade de CD de 4 minutos e 50 segundos (cerca de 51 MB), FLAC por predefinição ou WAV explícito',
+          body: 'Um WAV estéreo de 16 bits a 44,1 kHz ocupa 176 400 bytes por segundo, pelo que 290 segundos são cerca de 51 MB, ainda dentro do limite de 5 minutos para visitantes. Como a entrada é sem perdas, Igual ao original resolve-se para FLAC: o formulário estima o FLAC em cerca de 55 por cento do tamanho do PCM, cerca de 28 MB, e o valor real depende da música. Escolher WAV devolve a faixa como PCM de 16 bits com cerca de 51 MB, o mesmo tamanho da entrada; escolher MP3 dá cerca de 11,6 MB a 320 kbps. Os três vêm da mesma faixa no_vocals; só o codificador muda.',
+        },
+      ],
+      whenNotToUse: 'Não use isto em música que não seja sua ou para a qual não tenha licença; é responsável pela forma como o resultado é usado. Também é a ferramenta errada quando quer o cantor e não a banda (essa é a operação de isolar vocais no mesmo formulário), quando precisa de uma divisão em quatro partes com bateria, baixo e outros instrumentos (esta página só produz voz e acompanhamento), ou quando a gravação é fala e não canto, que as páginas Limpar voz e de ruído de fundo tratam melhor. Gravações mono muito antigas e gravações piratas ao vivo com a voz a passar para todos os microfones separam-se mal, por isso conte com fantasmas audíveis nesses casos.',
+      whyMediaManipulator: [
+        'A separação corre numa GPU operada por nós com o modelo Demucs htdemucs; a sua música não é enviada para um serviço externo de separação de faixas.',
+        'Por predefinição, a saída segue o seu ficheiro, com a faixa MP3 ou AAC codificada a 320 kbps, e FLAC ou WAV a um clique de distância.',
+        'A estimativa de tamanho de cada formato é mostrada antes de começar, por isso um WAV enorme é uma escolha, não uma surpresa.',
+      ],
+      privacyNote: 'A sua música é guardada na pasta da tarefa e passada ao Demucs na nossa própria GPU, que escreve as faixas de voz e de acompanhamento num diretório de trabalho; só o acompanhamento é codificado para a sua transferência, e o diretório de trabalho (incluindo a faixa de voz descartada) é eliminado quando a tarefa termina. O instrumental codificado fica com a tarefa. Os carregamentos de áudio passam também por um passo de análise automática no nosso servidor que transcreve o ficheiro com o Whisper para uma revisão interna guardada com a tarefa. Nenhum fornecedor de IA terceiro está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Todos os vestígios do cantor vão desaparecer?',
+          answer: 'A maior parte da voz principal, mas raramente toda. As caudas de reverberação, as vozes dobradas e de harmonia e os sons que o modelo ouve como semelhantes a voz podem ficar a um nível baixo. As produções estéreo modernas separam-se melhor; as gravações mono ou ao vivo com muita fuga de som, pior.',
+        },
+        {
+          question: 'Em que formato e frequência de amostragem vem o instrumental?',
+          answer: 'O Demucs escreve faixas estéreo a 44,1 kHz, por isso essa é a frequência de todas as saídas. Por predefinição, o contentor segue o seu ficheiro: entra MP3, sai MP3 a 320 kbps; entra AAC ou M4A, sai o mesmo a 320 kbps; entra WAV, FLAC, AIFF ou ALAC, sai FLAC. Em alternativa, pode escolher explicitamente MP3, FLAC ou WAV.',
+        },
+        {
+          question: 'Porque é que a predefinição deixou de ser WAV?',
+          answer: 'Porque um MP3 de 87 minutos e 68 MB voltava como um WAV de 880 MB, e o PCM não consegue recuperar detalhe que uma fonte com perdas nunca teve. A faixa fica agora no formato de entrada, com as faixas com perdas escritas a 320 kbps para que a codificação extra não seja audível. O WAV continua disponível se o pedir.',
+        },
+        {
+          question: 'Posso obter só a voz em vez do acompanhamento?',
+          answer: 'Sim, escolha Isolar vocais no menu de operações do conversor de áudio; mantém a faixa vocals.wav da mesma execução do Demucs em duas faixas e descarta o acompanhamento.',
+        },
+        {
+          question: 'Posso carregar um videoclipe em vez de um ficheiro de áudio?',
+          answer: 'Carregue o áudio: extraia primeiro a faixa do vídeo. Se um ficheiro de vídeo chegar a esta operação, o servidor resolve Igual ao original para MP3 a 320 kbps, já que o contentor de vídeo não é um formato de áudio.',
+        },
+        {
+          question: 'Quantas músicas por dia posso separar gratuitamente?',
+          answer: 'Cada música é uma tarefa de IA: por predefinição, 3 por dia sem conta, 10 com uma conta gratuita, 100 no Premium e 200 no Pro. O limite de IA é contabilizado à parte, por isso separar músicas deixa o seu limite normal intacto. As músicas estão limitadas a 5 minutos para visitantes e a 20 minutos para contas gratuitas, e a 2 horas nos planos pagos; /pricing tem a tabela atual.',
+        },
+        {
+          question: 'É legal criar uma faixa de karaoke desta forma?',
+          answer: 'Apenas a partir de música que seja sua, que tenha licença para usar ou que possa usar ao abrigo de uma exceção no sítio onde vive. A ferramenta não verifica direitos; é responsável pelo resultado e pela forma como o distribui.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A remoção de voz usa o limite de IA; esse limite e os limites de duração dependem do seu plano e são indicados em tempo real no formulário.',
+        ],
+      },
+      related: [
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire o áudio de um videoclipe antes de o separar.',
+        },
+        {
+          label: 'Limpar áudio de voz',
+          to: '/tools/clean-voice-audio',
+          description: 'Para gravações de fala, use antes o modelo de melhoria de voz.',
+        },
+        {
+          label: 'Remover ruído de fundo',
+          to: '/tools/remove-background-noise',
+          description: 'Baixe o ruído constante numa gravação sem a separar.',
+        },
+        {
+          label: 'Darkroom',
+          to: '/tools/content-studio',
+          description: 'Use o instrumental como base musical numa edição de vídeo.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Obtenha a letra em texto a partir da mistura original.',
+        },
+      ],
+      embed: {
+        title: 'Remover a voz de uma música',
+        description: 'Carregue uma música. Remover vocais já está selecionado, e o instrumental volta no mesmo formato do seu ficheiro (MP3 continua MP3); escolha FLAC ou WAV em Formato de saída para obter um ficheiro sem perdas. Prima converter.',
+      },
     },
 
     // 2026-10-31 (MM92): name + tagline for every remaining tool, so the /tools catalog
     // and the home grid never show an English card in this locale. Model-written; native review pending.
     'transcode-to-dash': {
       name: 'Transcodificar vídeo para DASH (AV1 / VP9)',
+      h1: 'Transcodificar vídeo para DASH AV1 ou VP9 online',
       tagline: 'Empacote qualquer vídeo num pacote MPEG-DASH com manifest.mpd e segmentos de inicialização e de média por resolução.',
+      metaTitle: 'Transcodificar vídeo para DASH AV1/VP9 online | Ferramenta MPEG-DASH grátis',
+      metaDescription: 'Transcodificador MPEG-DASH online gratuito. Converta MP4, MOV, WebM e MKV num pacote DASH com vídeo AV1 ou VP9, legendas e storyboards opcionais.',
+      ogTitle: 'Transcodificar vídeo para DASH AV1/VP9 online',
+      ogDescription: 'Gere um pacote DASH adaptativo (manifest.mpd + segmentos de inicialização e de média por rendição) a partir de qualquer vídeo, grátis e no seu navegador.',
+      intro: 'O MPEG-DASH é a norma aberta de streaming adaptativo suportada por todos os navegadores modernos. O Media Manipulator transcodifica o seu vídeo de origem num pacote DASH VOD (manifest.mpd mais init.mp4 e segmentos .m4s por rendição) usando AV1 (ficheiros mais pequenos, ideal para leitores web recentes) ou VP9 (suporte de reprodução mais amplo). Coloque a pasta descompactada em qualquer CDN ou servidor de origem e sirva o manifest.mpd aos clientes. O plano gratuito abrange 360p, 480p e 720p.',
+      whatItDoes: [
+        'Analisa a sua origem com o ffprobe e mostra a resolução, os FPS, a duração, o codec e o estado do áudio.',
+        'Permite escolher que níveis de qualidade codificar e se pretende AV1 ou VP9.',
+        'Deteta automaticamente o melhor codificador AV1 disponível (av1_nvenc → libsvtav1 → libaom-av1).',
+        'Gera um manifest.mpd MPEG-DASH que referencia cada Representation de vídeo, mais uma Representation de áudio AAC quando existe áudio.',
+        'Gera opcionalmente legendas WebVTT e miniaturas de storyboard para a barra de navegação.',
+        'Junta o resultado em media-manipulator-dash-<codec>-<jobID>.tar.gz com um report.json e um README.',
+        'Carrega o arquivo tar para o S3 e devolve-lhe um URL GET pré-assinado de curta duração.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar',
+          description: 'PUT pré-assinado direto para o S3: o seu ficheiro nunca passa pelo servidor da API.',
+        },
+        {
+          title: 'Analisar',
+          description: 'O ffprobe lê a resolução, os FPS, a presença de áudio e os metadados do codec.',
+        },
+        {
+          title: 'Escolher níveis e codec',
+          description: 'Escolha AV1 ou VP9 e qualquer combinação de 360p/480p/720p.',
+        },
+        {
+          title: 'Codificar',
+          description: 'AV1 (svtav1/libaom/nvenc) ou libvpx-vp9 em segmentos de 2 segundos.',
+        },
+        {
+          title: 'Empacotar',
+          description: 'manifest.mpd + segmentos de inicialização e de média por rendição num tar.gz com report.json e README.',
+        },
+        {
+          title: 'Transferir',
+          description: 'URL GET pré-assinado do S3, válido durante 30 minutos.',
+        },
+      ],
+      advancedDetails: [
+        'A seleção do codificador AV1 dá preferência ao av1_nvenc (GPU) quando disponível, recorrendo depois ao libsvtav1 e, em seguida, ao libaom-av1.',
+        'O VP9 usa o libvpx-vp9 com row-mt, descodificação frame-parallel e orientação por CRF + taxa de bits.',
+        'As variantes DASH são geradas com -seg_duration 2 -use_template 1 -use_timeline 0 -single_file 0.',
+        'O manifest.mpd declara um AdaptationSet por tipo de conteúdo (vídeo + áudio quando existe) com os atributos codecs «av01.0.08M.08» / «vp09.00.51.08» / «mp4a.40.2».',
+        'Sem ampliação: os níveis mais altos do que a resolução de origem ficam desativados, com uma dica explicativa.',
+      ],
+      whyItMatters: [
+        'O AV1 reduz normalmente para metade a taxa de bits com qualidade equivalente, face ao H.264.',
+        'O DASH é o formato de streaming adaptativo dominante fora do ecossistema Apple.',
+        'Um VOD pré-empacotado evita faturas de transcodificação por pedido nas plataformas de streaming.',
+      ],
+      useCases: [
+        {
+          title: 'Leitores web modernos',
+          description: 'O Shaka Player e o dash.js consomem o manifest.mpd nativamente.',
+        },
+        {
+          title: 'Distribuição com largura de banda limitada',
+          description: 'O AV1 gera quase metade dos bytes de um pacote HLS H.264.',
+        },
+        {
+          title: 'Biblioteca multimédia interna',
+          description: 'Aloje vídeo adaptativo por conta própria sem pagar a uma plataforma de streaming SaaS.',
+        },
+        {
+          title: 'Testes de qualidade',
+          description: 'Compare lado a lado codificações AV1 e VP9 da mesma origem.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Corre nos nossos próprios servidores: nenhum fornecedor de transcodificação de terceiros vê o seu vídeo.',
+        'O AV1 vem selecionado por predefinição, porque o AV1 é o futuro do streaming adaptativo de alta qualidade.',
+        'Formato de pacote aberto: basta descompactar o .tar.gz e alojar o manifest.mpd.',
+      ],
+      privacyNote: 'O seu vídeo é lido uma vez pelo FFmpeg, codificado em rendições AV1 ou VP9 e dividido em segmentos DASH com um manifesto, tudo nos nossos servidores. O trabalho é feito nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'AV1 ou VP9: qual devo escolher?',
+          answer: 'O AV1 produz ficheiros mais pequenos com qualidade equivalente, mas a codificação é mais lenta em servidores só com CPU. O VP9 tem suporte de reprodução mais amplo e codificação mais rápida. O AV1 é a predefinição.',
+        },
+        {
+          question: 'O meu servidor diz que o AV1 não está disponível?',
+          answer: 'O AV1 precisa de um dos codificadores av1_nvenc (GPU NVIDIA), libsvtav1 ou libaom-av1 no FFmpeg. Consulte /api/video-transcode/capabilities para ver o que a sua instalação tem.',
+        },
+        {
+          question: 'O áudio é sempre AAC?',
+          answer: 'Sim. O AdaptationSet de áudio DASH gera atualmente AAC LC a 128 kbps para máxima compatibilidade, seja qual for o codec de origem.',
+        },
+        {
+          question: 'Posso servir este manifesto a partir de outra origem (cross-origin)?',
+          answer: 'Sim, mas a sua CDN ou servidor de origem precisa dos cabeçalhos CORS corretos nos ficheiros .mpd, init.mp4 e .m4s. O arquivo tar não inclui esses cabeçalhos.',
+        },
+        {
+          question: 'Durante quanto tempo é válido o URL de transferência?',
+          answer: 'Os URL GET pré-assinados são válidos durante 30 minutos por predefinição. Execute novamente a transcodificação se precisar de uma ligação nova.',
+        },
+      ],
+      related: [
+        {
+          label: 'Transcodificar vídeo para HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'O mesmo carregamento, mas gera um pacote Apple HLS com H.264 + AAC.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza um MP4 com o processo FFmpeg normal.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Extraia a fala de um vídeo para texto pesquisável.',
+        },
+      ],
+      embed: {
+        title: 'Transcodificar um vídeo para DASH (AV1 / VP9)',
+        description: 'Carregue um MP4/MOV/WebM/MKV. Analisamos a origem com o ffprobe, deixamo-lo escolher os níveis de qualidade gratuitos (360p/480p/720p) e depois executamos uma codificação ffmpeg AV1 (predefinição) ou VP9 e juntamos tudo num tar.gz para transferir, com o manifest.mpd.',
+      },
     },
     'convert-webp-to-jpg': {
       name: 'Converter WebP para JPG',
+      h1: 'Converter WebP para JPG online',
       tagline: 'Transforme imagens WebP em ficheiros JPG amplamente compatíveis, que abrem em qualquer visualizador ou editor de imagens.',
+      metaTitle: 'Converter WebP para JPG online (grátis) | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de WebP para JPG. Transforme rapidamente imagens .webp em ficheiros JPG universalmente compatíveis, com a qualidade que escolher.',
+      ogTitle: 'Converter WebP para JPG online',
+      ogDescription: 'Transforme imagens WebP em ficheiros JPG universalmente compatíveis com um par de cliques.',
+      intro: 'O WebP é ótimo para a web, mas software mais antigo, ferramentas de apresentação e impressoras muitas vezes não o conseguem ler. O Media Manipulator converte WebP de volta para JPG, para que possa usar a imagem em qualquer lado. Escolha a qualidade que pretende e nós tratamos do resto.',
+      whatItDoes: [
+        'Converte qualquer imagem .webp (estática ou fotograma de uma animada) para .jpg padrão.',
+        'Permite escolher a qualidade do JPG: qualidade mais alta = ficheiro maior.',
+        'Achata a transparência sobre uma cor de fundo à sua escolha (o JPG não tem canal alfa).',
+        'Preserva o perfil de cor sempre que possível.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar WebP',
+          description: 'Largue um ficheiro .webp do seu computador.',
+        },
+        {
+          title: 'Escolher a qualidade do JPG',
+          description: '85 é uma boa predefinição; baixe-a para ficheiros mais pequenos.',
+        },
+        {
+          title: 'Codificar JPG',
+          description: 'O ImageMagick recodifica com a qualidade escolhida.',
+        },
+        {
+          title: 'Transferir JPG',
+          description: 'Guarde um ficheiro .jpg universalmente compatível.',
+        },
+      ],
+      advancedDetails: [
+        'A qualidade 85 é um ponto de equilíbrio consagrado: acima de ~92, na maior parte dos casos só aumenta o tamanho do ficheiro, com pouca melhoria visual.',
+        'O JPG não tem transparência, por isso os WebP transparentes são achatados. Se precisar de transparência, converta para PNG.',
+        'Para conversão de imagem sem perdas ou WebP animados, prefira PNG (estático) ou GIF animado.',
+      ],
+      whyItMatters: [
+        'Alguns navegadores, editores de imagem e software incorporado mais antigos ainda não suportam WebP.',
+        'Muitas impressoras, quiosques de fotografia e ferramentas de apresentação exigem JPG ou PNG.',
+        'O JPG é o formato de troca de facto para fotografias.',
+      ],
+      useCases: [
+        {
+          title: 'Enviar fotografias a clientes',
+          description: 'Garanta que o destinatário consegue abrir o ficheiro em qualquer dispositivo.',
+        },
+        {
+          title: 'Incorporar em apresentações',
+          description: 'Os diapositivos do PowerPoint/Keynote aceitam JPG em todo o lado; com WebP é uma incerteza.',
+        },
+        {
+          title: 'Impressão e laboratórios fotográficos',
+          description: 'A maioria dos laboratórios só aceita JPG.',
+        },
+        {
+          title: 'Envios para bancos de imagens',
+          description: 'Muitos sites de stock exigem carregamentos em JPG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Sem marcas de água, sem registo, grátis para uso ocasional.',
+        'Ajuste a qualidade e a compressão com precisão, em vez de uma predefinição igual para tudo.',
+        'O mesmo modelo de privacidade e de retenção do resto das ferramentas.',
+      ],
+      privacyNote: 'O seu WebP é descodificado e recodificado como JPG no nosso servidor; uma área transparente é achatada, porque o JPG não a consegue guardar. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'E a transparência?',
+          answer: 'O JPG não suporta transparência. Os WebP transparentes são achatados sobre a cor de fundo escolhida. Se precisar de transparência, converta para PNG.',
+        },
+        {
+          question: 'Que qualidade devo usar?',
+          answer: '85 é uma predefinição equilibrada. Use 90 ou mais para fotografias em que a qualidade é o mais importante, e 70 para miniaturas ou pré-visualizações.',
+        },
+        {
+          question: 'Funciona com WebP animado?',
+          answer: 'Só o primeiro fotograma se torna um JPG. Para WebP animado, converta para um GIF animado.',
+        },
+        {
+          question: 'Posso converter vários ficheiros em lote?',
+          answer: 'A ferramenta gratuita processa um ficheiro de cada vez. Por agora, converta cada WebP individualmente.',
+        },
+      ],
+      related: [
+        {
+          label: 'Converter WebP para PNG',
+          to: '/tools/convert-webp-to-png',
+          description: 'Mantenha a transparência com um PNG sem perdas.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e GIF.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza ainda mais o tamanho do ficheiro JPG.',
+        },
+        {
+          label: 'Remover metadados EXIF',
+          to: '/tools/remove-exif-metadata',
+          description: 'Remova os metadados privados antes de partilhar o JPG.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percurso passo a passo por todas as opções de imagem.',
+        },
+      ],
+      embed: {
+        title: 'Converter WebP para JPG',
+        description: 'Carregue uma imagem WebP e escolha JPG como formato de saída. Ajuste o controlo de qualidade para equilibrar o tamanho do ficheiro e a qualidade da imagem. O JPG descarta a transparência, por isso use PNG se a sua imagem tiver um fundo transparente.',
+      },
     },
     'convert-png-to-jpg': {
       name: 'Converter PNG para JPG',
+      h1: 'Converter PNG para JPG online grátis',
       tagline: 'Transforme capturas de ecrã e gráficos PNG pesados em fotografias JPG pequenas e compatíveis com tudo, em segundos.',
+      metaTitle: 'Converter PNG para JPG online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de PNG para JPG. Transforme ficheiros .png em imagens JPG mais pequenas e universalmente compatíveis, com a qualidade que escolher. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter PNG para JPG online grátis',
+      ogDescription: 'Transforme imagens PNG em ficheiros JPG mais pequenos e universalmente compatíveis. Grátis, rápido, sem registo.',
+      intro: 'O PNG é um formato sem perdas, o que o torna perfeito para capturas de ecrã e gráficos, mas muitas vezes bastante maior do que o necessário para fotografias. Converter PNG para JPG pode reduzir um ficheiro 5–10×, sem diferença visível em conteúdo fotográfico. O Media Manipulator converte o seu PNG num JPG limpo, com a qualidade que escolher: grátis, online e sem registo.',
+      whatItDoes: [
+        'Converte qualquer imagem .png num ficheiro .jpg (JPEG) padrão.',
+        'Permite escolher a qualidade do JPG, para equilibrar o tamanho do ficheiro e a fidelidade.',
+        'Achata a transparência sobre um fundo sólido, já que o JPG não tem canal alfa.',
+        'Os píxeis que vê mantêm-se iguais; só o ficheiro é recodificado de PNG para JPG.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar PNG',
+          description: 'Largue uma captura de ecrã, um gráfico ou uma fotografia .png.',
+        },
+        {
+          title: 'Escolher a qualidade do JPG',
+          description: '85 é uma predefinição equilibrada; baixe-a para ficheiros mais pequenos.',
+        },
+        {
+          title: 'Codificar JPG',
+          description: 'O ImageMagick recodifica a sua imagem como JPEG.',
+        },
+        {
+          title: 'Transferir JPG',
+          description: 'Guarde um ficheiro .jpg mais pequeno e universalmente compatível.',
+        },
+      ],
+      advancedDetails: [
+        'A qualidade 85 é o ponto ideal consagrado: acima de ~92, na maior parte dos casos só acrescenta tamanho ao ficheiro, com pouco ganho visível.',
+        'Um PNG fotográfico passa muitas vezes de vários megabytes para algumas centenas de kilobytes como JPG.',
+        'Para gráficos com contornos nítidos ou texto, PNG ou WebP ficam normalmente mais limpos do que JPG com o mesmo tamanho.',
+        'Se o seu PNG tiver transparência que queira manter, converta para WebP: o JPG não consegue guardar um canal alfa.',
+      ],
+      whyItMatters: [
+        'O JPG é o formato de fotografia mais universalmente aceite: todos os dispositivos, editores e formulários de carregamento o aceitam.',
+        'JPG mais pequenos carregam mais depressa na web e ficam abaixo dos limites de e-mail e de formulários de carregamento.',
+        'Muitos laboratórios de impressão, marketplaces e sites de stock só aceitam JPG.',
+      ],
+      useCases: [
+        {
+          title: 'Reduzir capturas de ecrã',
+          description: 'Transforme uma captura de ecrã PNG pesada num JPG leve para e-mail ou chat.',
+        },
+        {
+          title: 'Carregar fotografias',
+          description: 'Converta um PNG fotográfico para JPG para cumprir o requisito de formato de um site.',
+        },
+        {
+          title: 'Impressão e laboratórios fotográficos',
+          description: 'A maioria dos laboratórios exige JPG: converta antes de encomendar.',
+        },
+        {
+          title: 'Páginas web mais rápidas',
+          description: 'Substitua fotografias PNG grandes por JPG compactos para reduzir o peso da página.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A saída está mesmo fixada em JPG, por isso não há nada para configurar mal.',
+        'Controlo preciso da qualidade, em vez de uma predefinição igual para tudo.',
+      ],
+      privacyNote: 'O seu PNG é recodificado como JPG com a qualidade que definir, no nosso servidor, e qualquer transparência é achatada sobre um fundo sólido. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto um PNG para JPG gratuitamente?',
+          answer: 'Carregue o seu .png acima, escolha uma qualidade de JPG e clique em converter. A transferência é um ficheiro .jpg padrão.',
+        },
+        {
+          question: 'Converter PNG para JPG reduz a qualidade?',
+          answer: 'O JPG é um formato com perdas, por isso há um pequeno compromisso de qualidade. Com qualidade 85–90, a diferença é invisível em fotografias. Para gráficos com texto nítido, mantenha o PNG ou use WebP.',
+        },
+        {
+          question: 'O que acontece à transparência quando converto PNG para JPG?',
+          answer: 'O JPG não suporta transparência, por isso as áreas transparentes são achatadas sobre um fundo sólido. Se precisar de manter a transparência, converta o PNG para WebP.',
+        },
+        {
+          question: 'Porque é que o meu PNG é tão maior do que o JPG?',
+          answer: 'O PNG é sem perdas e guarda cada píxel exatamente, o que resulta em ficheiros grandes para fotografias. O JPG usa compressão percetual, por isso as imagens fotográficas encolhem drasticamente com pouca alteração visível.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'As áreas transparentes do PNG são achatadas sobre um fundo sólido, porque o JPG não tem transparência.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter JPG para PNG',
+          to: '/tools/convert-jpg-to-png',
+          description: 'Faça o caminho inverso e obtenha um PNG com suporte de transparência.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza ainda mais o JPG sem mudar o formato.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra todas as opções de imagem em detalhe.',
+        },
+      ],
+      embed: {
+        title: 'Converter PNG para JPG',
+        description: 'Carregue uma imagem PNG. Nesta ferramenta a saída está fixada em JPG: basta escolher uma qualidade e converter. As áreas transparentes são achatadas sobre um fundo sólido, porque o JPG não tem canal alfa.',
+      },
     },
     'convert-jpg-to-png': {
       name: 'Converter JPG para PNG',
+      h1: 'Converter JPG para PNG online grátis',
       tagline: 'Transforme fotografias JPG em ficheiros PNG sem perdas, prontos para edição, transparência e trabalho gráfico de alta qualidade.',
+      metaTitle: 'Converter JPG para PNG online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de JPG para PNG. Transforme fotografias .jpg em ficheiros PNG sem perdas para edição, transparência e gráficos. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter JPG para PNG online grátis',
+      ogDescription: 'Transforme fotografias JPG em ficheiros PNG sem perdas para edição e gráficos. Grátis, rápido, sem registo.',
+      intro: 'O PNG é um formato sem perdas que nunca acrescenta artefactos de compressão, o que o torna ideal a partir do momento em que começa a editar uma imagem, a acrescentar transparência ou a sobrepor gráficos. Converter um JPG para PNG fixa os píxeis atuais, para que as edições seguintes não degradem a qualidade. O Media Manipulator converte o seu JPG num PNG limpo, online, grátis e sem registo.',
+      whatItDoes: [
+        'Converte qualquer imagem .jpg/.jpeg num ficheiro .png sem perdas.',
+        'Preserva exatamente os píxeis atuais, para que edições repetidas não acrescentem artefactos.',
+        'Produz um PNG que pode depois sobrepor, mascarar ou tornar transparente num editor.',
+        'Cada píxel do JPG é mantido exatamente; o PNG guarda-os sem mais perdas.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar JPG',
+          description: 'Largue uma fotografia .jpg ou .jpeg.',
+        },
+        {
+          title: 'Converter para PNG',
+          description: 'Recodificamos a imagem sem perdas como PNG.',
+        },
+        {
+          title: 'Codificar PNG',
+          description: 'O ImageMagick escreve um PNG padrão de 24/32 bits.',
+        },
+        {
+          title: 'Transferir PNG',
+          description: 'Guarde um .png sem perdas, pronto para edição.',
+        },
+      ],
+      advancedDetails: [
+        'O PNG é sem perdas, por isso o ficheiro convertido será normalmente maior do que o JPG de origem; é o esperado.',
+        'Converter JPG para PNG não recupera o detalhe que o JPG já descartou; congela os píxeis atuais sem perdas.',
+        'O PNG suporta um canal alfa, por isso o resultado fica pronto para lhe acrescentar transparência num editor.',
+        'Para os ficheiros web sem perdas mais pequenos, o WebP (sem perdas) é muitas vezes mais pequeno do que o PNG.',
+      ],
+      whyItMatters: [
+        'O PNG sem perdas é o formato de trabalho certo a partir do momento em que uma imagem vai ser editada repetidamente.',
+        'As ferramentas de design, os recursos de aplicações e o trabalho de interface esperam PNG, pelos contornos nítidos e pelo suporte de transparência.',
+        'O PNG evita a perda geracional que acontece quando se volta a guardar um JPG vezes sem conta.',
+      ],
+      useCases: [
+        {
+          title: 'Preparação para edição',
+          description: 'Converta um JPG para PNG antes de retocar, para que as edições se mantenham sem perdas.',
+        },
+        {
+          title: 'Acrescentar transparência',
+          description: 'Obtenha uma tela PNG pronta para recortar um fundo.',
+        },
+        {
+          title: 'Recursos de interface e de aplicações',
+          description: 'A maioria dos sistemas de design espera PNG para ícones e gráficos.',
+        },
+        {
+          title: 'Incorporação em documentos',
+          description: 'Use PNG onde texto e linhas nítidos importam mais do que o tamanho do ficheiro.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A saída está mesmo fixada em PNG, por isso o resultado é sempre sem perdas.',
+        'Corre nos nossos próprios servidores: nenhum processamento da sua imagem por terceiros.',
+      ],
+      privacyNote: 'O seu JPG é descodificado no nosso servidor e escrito como um PNG sem perdas com exatamente os mesmos píxeis. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto um JPG para PNG gratuitamente?',
+          answer: 'Carregue o seu .jpg acima e clique em converter: a saída é um .png sem perdas. É grátis, não requer registo e funciona no seu navegador.',
+        },
+        {
+          question: 'Converter JPG para PNG melhora a qualidade?',
+          answer: 'Não. A conversão é sem perdas, mas não consegue recuperar o detalhe que o JPG já descartou. Congela os píxeis atuais para que as edições futuras fiquem livres de artefactos.',
+        },
+        {
+          question: 'O PNG vai ser maior do que o meu JPG?',
+          answer: 'Normalmente, sim. O PNG guarda cada píxel exatamente, sem compressão com perdas, por isso um PNG fotográfico é tipicamente maior do que o JPG equivalente.',
+        },
+        {
+          question: 'Posso acrescentar transparência depois de converter para PNG?',
+          answer: 'Sim. O PNG suporta um canal alfa, por isso, assim que tiver o PNG, pode apagar ou recortar um fundo em qualquer editor de imagem.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O PNG é sem perdas, por isso a saída é normalmente maior do que o JPG de origem.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter PNG para JPG',
+          to: '/tools/convert-png-to-jpg',
+          description: 'Faça o caminho inverso e reduza um PNG a um JPG.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Crie automaticamente um recorte PNG transparente.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra todas as opções de imagem em detalhe.',
+        },
+      ],
+      embed: {
+        title: 'Converter JPG para PNG',
+        description: 'Carregue uma imagem JPG. Nesta ferramenta a saída está fixada em PNG, por isso obtém um ficheiro sem perdas, pronto para editar ou sobrepor numa tela transparente.',
+      },
     },
     'convert-webp-to-png': {
       name: 'Converter WebP para PNG',
+      h1: 'Converter WebP para PNG online grátis',
       tagline: 'Transforme imagens WebP em ficheiros PNG sem perdas, que abrem em qualquer lado e mantêm toda a transparência.',
+      metaTitle: 'Converter WebP para PNG online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de WebP para PNG. Transforme imagens .webp em ficheiros PNG sem perdas, que mantêm a transparência e abrem em qualquer editor. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter WebP para PNG online grátis',
+      ogDescription: 'Transforme imagens WebP em ficheiros PNG sem perdas que preservam a transparência. Grátis, rápido, sem registo.',
+      intro: 'O WebP é ótimo para a web, mas muitos editores, software mais antigo e ferramentas de design ainda esperam PNG; e, ao contrário do JPG, o PNG mantém toda a transparência. O Media Manipulator converte o seu WebP num PNG limpo e sem perdas, para que abra em todo o lado e o seu canal alfa sobreviva.',
+      whatItDoes: [
+        'Converte qualquer imagem .webp num ficheiro .png sem perdas.',
+        'Preserva o canal alfa, para que os WebP transparentes continuem transparentes.',
+        'Produz um PNG que abre em qualquer editor, visualizador ou ferramenta de design.',
+        'A imagem não muda; a compressão WebP é trocada por armazenamento PNG sem perdas.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar WebP',
+          description: 'Largue um ficheiro .webp, transparente ou opaco.',
+        },
+        {
+          title: 'Converter para PNG',
+          description: 'Descodificamos o WebP e recodificamo-lo como PNG.',
+        },
+        {
+          title: 'Codificar PNG',
+          description: 'O ImageMagick escreve um PNG sem perdas de 24/32 bits.',
+        },
+        {
+          title: 'Transferir PNG',
+          description: 'Guarde um ficheiro .png que preserva a transparência.',
+        },
+      ],
+      advancedDetails: [
+        'A transparência do WebP de origem é preservada como canal alfa do PNG.',
+        'Só o primeiro fotograma de um WebP animado se torna um PNG estático; para animação, converta para GIF.',
+        'O PNG é sem perdas, por isso a saída é normalmente maior do que o WebP de origem; é o custo da compatibilidade universal e do armazenamento sem perdas.',
+      ],
+      whyItMatters: [
+        'Alguns editores, ferramentas de apresentação e software mais antigo ainda não conseguem abrir WebP.',
+        'O PNG mantém a transparência, o que o JPG não consegue: importante para logótipos e recortes.',
+        'O PNG é um formato de intercâmbio seguro e sem perdas para trabalho gráfico.',
+      ],
+      useCases: [
+        {
+          title: 'Abrir WebP em editores',
+          description: 'Converta para PNG para que um editor sem suporte de WebP o consiga abrir.',
+        },
+        {
+          title: 'Manter a transparência',
+          description: 'Preserve um logótipo WebP transparente como PNG transparente.',
+        },
+        {
+          title: 'Entregas de design',
+          description: 'Entregue um PNG a ferramentas ou colegas que esperam recursos PNG.',
+        },
+        {
+          title: 'Apresentações',
+          description: 'Coloque um PNG num software de diapositivos que não aceita WebP.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A saída está fixada em PNG, com a transparência preservada automaticamente.',
+        'Corre nos nossos próprios servidores: nenhum processamento da sua imagem por terceiros.',
+      ],
+      privacyNote: 'O seu WebP é descodificado no nosso servidor e guardado como PNG sem perdas, mantendo a sua transparência. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto WebP para PNG gratuitamente?',
+          answer: 'Carregue o seu .webp acima e clique em converter. A transferência é um .png sem perdas, com a transparência preservada. É grátis e não precisa de registo.',
+        },
+        {
+          question: 'A conversão de WebP para PNG mantém a transparência?',
+          answer: 'Sim. Se o seu WebP tiver um fundo transparente, o PNG resultante mantém esse canal alfa intacto.',
+        },
+        {
+          question: 'Porquê converter WebP para PNG em vez de JPG?',
+          answer: 'O PNG é sem perdas e preserva a transparência, enquanto o JPG achata a transparência e acrescenta compressão. Escolha PNG quando precisar de transparência ou de gráficos sem perdas; escolha JPG para os ficheiros de fotografia mais pequenos.',
+        },
+        {
+          question: 'Posso converter um WebP animado?',
+          answer: 'Só o primeiro fotograma se torna um PNG. Para animação, converta o WebP para um GIF animado.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A transparência é preservada. Só o primeiro fotograma de um WebP animado é convertido.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter PNG para WebP',
+          to: '/tools/convert-png-to-webp',
+          description: 'Faça o caminho inverso e reduza um PNG a um WebP.',
+        },
+        {
+          label: 'Converter WebP para JPG',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Converta o WebP num JPG compacto.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza uma imagem sem a complicação de mudar de formato.',
+        },
+      ],
+      embed: {
+        title: 'Converter WebP para PNG',
+        description: 'Carregue uma imagem WebP. Nesta ferramenta a saída está fixada em PNG, por isso a transparência é preservada e o ficheiro abre em qualquer editor ou visualizador de imagens.',
+      },
     },
     'convert-png-to-webp': {
       name: 'Converter PNG para WebP',
+      h1: 'Converter PNG para WebP online grátis',
       tagline: 'Reduza gráficos PNG a ficheiros WebP modernos, que carregam mais depressa na web e mantêm toda a transparência.',
+      metaTitle: 'Converter PNG para WebP online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de PNG para WebP. Reduza ficheiros .png a imagens WebP mais pequenas para sites mais rápidos, mantendo a transparência. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter PNG para WebP online grátis',
+      ogDescription: 'Reduza gráficos PNG a ficheiros WebP mais pequenos, que preservam a transparência, para sites mais rápidos. Grátis, sem registo.',
+      intro: 'O WebP é o formato de imagem moderno da web: produz ficheiros drasticamente mais pequenos do que o PNG, preservando a transparência, o que significa páginas mais rápidas e melhores Core Web Vitals. O Media Manipulator converte o seu PNG para WebP com a qualidade que escolher: grátis, online, com a transparência intacta e sem necessidade de registo.',
+      whatItDoes: [
+        'Converte qualquer imagem .png num ficheiro .webp moderno.',
+        'Preserva o canal alfa, para que os PNG transparentes continuem transparentes.',
+        'Permite escolher a qualidade, para equilibrar o tamanho do ficheiro e a fidelidade.',
+        'Produz tipicamente ficheiros 25–80% mais pequenos do que o PNG de origem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar PNG',
+          description: 'Largue um gráfico, um ícone ou uma captura de ecrã .png.',
+        },
+        {
+          title: 'Escolher a qualidade do WebP',
+          description: '80–85 é uma excelente predefinição para uso na web.',
+        },
+        {
+          title: 'Codificar WebP',
+          description: 'O ImageMagick recodifica a sua imagem como WebP.',
+        },
+        {
+          title: 'Transferir WebP',
+          description: 'Guarde um ficheiro .webp mais pequeno, que preserva a transparência.',
+        },
+      ],
+      advancedDetails: [
+        'O WebP suporta os modos com perdas e sem perdas; com qualidade ~80, bate normalmente o tamanho do PNG por uma larga margem, mantendo-se visualmente limpo.',
+        'A transparência é preservada, por isso os logótipos e os recursos de interface mantêm o seu canal alfa.',
+        'O WebP é suportado por todos os navegadores modernos: sirva-o diretamente para páginas que carregam mais depressa.',
+        'Para máxima compatibilidade com software muito antigo, mantenha uma alternativa em PNG.',
+      ],
+      whyItMatters: [
+        'Imagens mais pequenas são a maior alavanca individual para páginas que carregam mais depressa e para um melhor SEO.',
+        'O WebP mantém a transparência, por isso não tem de trocar o canal alfa por tamanho, como aconteceria com o JPG.',
+        'Os Core Web Vitals da Google recompensam páginas mais leves: o WebP ajuda diretamente.',
+      ],
+      useCases: [
+        {
+          title: 'Sites mais rápidos',
+          description: 'Substitua recursos PNG pesados por WebP para reduzir o peso da página.',
+        },
+        {
+          title: 'Logótipos transparentes',
+          description: 'Reduza um logótipo PNG transparente mantendo o seu canal alfa.',
+        },
+        {
+          title: 'Recursos de aplicações e de interface',
+          description: 'Entregue gráficos mais leves sem perder nitidez.',
+        },
+        {
+          title: 'Galerias cheias de imagens',
+          description: 'Converta um conjunto de PNG para WebP para uma galeria mais ágil.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A saída está fixada em WebP, com a transparência preservada.',
+        'Controlo preciso da qualidade, para que decida o compromisso entre tamanho e fidelidade.',
+      ],
+      privacyNote: 'O seu PNG é recodificado como WebP no nosso servidor, com a qualidade que escolher e com a transparência mantida. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto PNG para WebP gratuitamente?',
+          answer: 'Carregue o seu .png acima, escolha uma qualidade e clique em converter. A transferência é um ficheiro .webp. É grátis e não requer registo.',
+        },
+        {
+          question: 'A conversão de PNG para WebP mantém a transparência?',
+          answer: 'Sim. O WebP suporta um canal alfa, por isso os PNG transparentes continuam transparentes depois da conversão.',
+        },
+        {
+          question: 'Quanto mais pequeno vai ficar o WebP?',
+          answer: 'Depende da imagem, mas o WebP é habitualmente 25–80% mais pequeno do que o PNG de origem, com uma qualidade visualmente semelhante.',
+        },
+        {
+          question: 'O WebP é suportado em todo o lado?',
+          answer: 'Todos os navegadores modernos suportam WebP. Alguns programas mais antigos ou de nicho não; mantenha uma alternativa em PNG se precisar de os suportar.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A transparência é preservada na saída WebP.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter WebP para PNG',
+          to: '/tools/convert-webp-to-png',
+          description: 'Faça o caminho inverso, de volta a um PNG sem perdas.',
+        },
+        {
+          label: 'Converter JPG para WebP',
+          to: '/tools/convert-jpg-to-webp',
+          description: 'Reduza fotografias JPG a WebP para a web.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza ainda mais as imagens sem mudar o formato.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e GIF.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra todas as opções de imagem em detalhe.',
+        },
+      ],
+      embed: {
+        title: 'Converter PNG para WebP',
+        description: 'Carregue uma imagem PNG. Nesta ferramenta a saída está fixada em WebP: escolha uma qualidade e converta. A transparência é preservada, e os ficheiros WebP são tipicamente muito mais pequenos do que os PNG.',
+      },
     },
     'convert-jpg-to-webp': {
       name: 'Converter JPG para WebP',
+      h1: 'Converter JPG para WebP online grátis',
       tagline: 'Reduza fotografias JPG a ficheiros WebP modernos, que carregam mais depressa na web com a mesma qualidade visual.',
+      metaTitle: 'Converter JPG para WebP online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de JPG para WebP. Reduza fotografias .jpg a imagens WebP mais pequenas para sites mais rápidos, com a qualidade que escolher. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter JPG para WebP online grátis',
+      ogDescription: 'Reduza fotografias JPG a ficheiros WebP mais pequenos para sites mais rápidos, com a mesma qualidade visual. Grátis, sem registo.',
+      intro: 'O WebP oferece a mesma qualidade visual do JPG num ficheiro visivelmente mais pequeno, razão pela qual se tornou o formato de imagem padrão dos sites rápidos. O Media Manipulator converte o seu JPG para WebP com a qualidade que escolher, para que as suas fotografias tenham o mesmo aspeto, mas carreguem mais depressa.',
+      whatItDoes: [
+        'Converte qualquer fotografia .jpg/.jpeg num ficheiro .webp moderno.',
+        'Permite escolher a qualidade do WebP, para equilibrar o tamanho do ficheiro e a fidelidade.',
+        'Produz tipicamente ficheiros 25–35% mais pequenos do que o JPG de origem, com qualidade igual.',
+        'A fotografia tem o mesmo aspeto; os seus bytes são recodificados com WebP para tornar o ficheiro mais pequeno.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar JPG',
+          description: 'Largue uma fotografia .jpg ou .jpeg.',
+        },
+        {
+          title: 'Escolher a qualidade do WebP',
+          description: '80–85 corresponde de perto à qualidade típica de um JPG.',
+        },
+        {
+          title: 'Codificar WebP',
+          description: 'O ImageMagick recodifica a sua fotografia como WebP.',
+        },
+        {
+          title: 'Transferir WebP',
+          description: 'Guarde um .webp mais pequeno, pronto para a web.',
+        },
+      ],
+      advancedDetails: [
+        'Com qualidade visual equivalente, o WebP é habitualmente 25–35% mais pequeno do que o JPG, graças a uma compressão mais moderna.',
+        'Evite acumular compressão pesada: recodificar um JPG já com perdas com uma qualidade WebP muito baixa pode agravar os artefactos.',
+        'O WebP é suportado por todos os navegadores modernos: sirva-o diretamente para acelerar o carregamento das páginas.',
+        'Para máxima compatibilidade com software muito antigo, mantenha uma alternativa em JPG.',
+      ],
+      whyItMatters: [
+        'Imagens mais leves melhoram diretamente o tempo de carregamento da página, a taxa de rejeição e o SEO.',
+        'O WebP dá-lhe qualidade semelhante à do JPG num tamanho mais pequeno, com uma única conversão.',
+        'Os Core Web Vitals recompensam imagens mais pequenas: o WebP é uma vitória rápida.',
+      ],
+      useCases: [
+        {
+          title: 'Sites mais rápidos',
+          description: 'Converta os JPG de destaque e de galeria para WebP para reduzir o peso da página.',
+        },
+        {
+          title: 'Catálogos de comércio eletrónico',
+          description: 'Reduza as fotografias de produto para que as listagens carreguem instantaneamente.',
+        },
+        {
+          title: 'Blogues e artigos',
+          description: 'Sirva imagens incorporadas mais leves, sem perda de qualidade visível.',
+        },
+        {
+          title: 'Fotografias para e-mail',
+          description: 'Obtenha ficheiros mais pequenos que ficam abaixo dos limites de anexos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A saída está fixada em WebP, por isso não há nada para configurar mal.',
+        'Controlo preciso da qualidade, em vez de uma predefinição fixa.',
+      ],
+      privacyNote: 'O seu JPG é recodificado como um WebP mais pequeno no nosso servidor, com a qualidade que escolher. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto JPG para WebP gratuitamente?',
+          answer: 'Carregue o seu .jpg acima, escolha uma qualidade e clique em converter. A transferência é um ficheiro .webp. É grátis e não requer registo.',
+        },
+        {
+          question: 'O WebP é melhor do que o JPG?',
+          answer: 'Para a web, normalmente sim: o WebP oferece qualidade semelhante num tamanho mais pequeno. O JPG continua a ganhar na compatibilidade universal com software muito antigo.',
+        },
+        {
+          question: 'Quanto mais pequeno é o WebP do que o JPG?',
+          answer: 'Com qualidade visual equivalente, o WebP é habitualmente 25–35% mais pequeno do que o JPG, embora a poupança exata dependa da imagem.',
+        },
+        {
+          question: 'Converter JPG para WebP perde qualidade?',
+          answer: 'Ambos os formatos são com perdas. Com qualidade 80–85, o resultado tem o mesmo aspeto do JPG. Evite definir uma qualidade WebP muito baixa, para não agravar os artefactos.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O JPG não tem transparência, por isso a saída WebP é totalmente opaca.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter WebP para JPG',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Faça o caminho inverso, de volta a um JPG universal.',
+        },
+        {
+          label: 'Converter PNG para WebP',
+          to: '/tools/convert-png-to-webp',
+          description: 'Reduza gráficos PNG a WebP para a web.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza ainda mais as imagens sem mudar o formato.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e GIF.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra todas as opções de imagem em detalhe.',
+        },
+      ],
+      embed: {
+        title: 'Converter JPG para WebP',
+        description: 'Carregue uma imagem JPG. Nesta ferramenta a saída está fixada em WebP: escolha uma qualidade e converta. O WebP produz normalmente um ficheiro mais pequeno do que o JPG com a mesma qualidade visual.',
+      },
     },
     'jpg-converter': {
       name: 'Conversor JPG',
@@ -736,43 +9050,1174 @@ const ptPtToolPages = {
     },
     'convert-jpg-to-pdf': {
       name: 'Converter JPG para PDF',
+      h1: 'Converter JPG em PDF online grátis',
       tagline: 'Transforme fotografias e digitalizações JPG em documentos PDF limpos, prontos a partilhar, imprimir ou enviar.',
+      metaTitle: 'Converter JPG em PDF online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de JPG para PDF online. Transforme fotografias e digitalizações .jpg em documentos PDF limpos, sem perda de qualidade. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter JPG em PDF online grátis',
+      ogDescription: 'Transforme fotografias e digitalizações JPG em documentos PDF limpos. Sem perdas, grátis, sem registo.',
+      intro: 'O JPG é o formato em que o seu telemóvel e a sua câmara fotografam, mas um PDF é o que a maioria dos formulários, candidaturas e escritórios pede. O Media Manipulator incorpora o seu JPG diretamente num PDF sem recompressão, por isso o documento fica exatamente igual à sua fotografia e continua pequeno.',
+      whatItDoes: [
+        'Envolve uma fotografia JPG/JPEG num documento PDF de uma página.',
+        'Incorpora os bytes originais do JPG sem perdas, sem qualquer compressão adicional.',
+        'Dimensiona a página à fotografia, para que nada seja cortado nem esticado.',
+        'Produz um PDF padrão que abre e se imprime em qualquer lado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o JPG',
+          description: 'Largue uma fotografia ou digitalização .jpg ou .jpeg.',
+        },
+        {
+          title: 'Nós incorporamo-lo',
+          description: 'O JPG é colocado numa página com o mesmo tamanho, sem recompressão.',
+        },
+        {
+          title: 'Gerar o PDF',
+          description: 'É montado um PDF padrão de uma página.',
+        },
+        {
+          title: 'Descarregue o PDF',
+          description: 'Guarde um .pdf limpo, pronto a partilhar ou a enviar.',
+        },
+      ],
+      advancedDetails: [
+        'O fluxo JPG é incorporado com o filtro PDF /DCTDecode, o que significa que a fotografia é guardada tal como está, sem uma segunda ronda de compressão com perdas.',
+        'Como não há recodificação, um documento JPG para PDF tem normalmente um tamanho muito próximo do da fotografia original.',
+        'A página é dimensionada a partir da imagem a 96 DPI, por isso uma fotografia de telemóvel típica produz uma página de tamanho confortável.',
+      ],
+      whyItMatters: [
+        'Formulários, portais e candidaturas exigem frequentemente PDF, e não JPG.',
+        'Um PDF imprime-se de forma previsível, enquanto um JPG solto pode ser dividido em mosaicos ou redimensionado.',
+        'A incorporação sem perdas mantém legível o texto de um documento digitalizado.',
+      ],
+      useCases: [
+        {
+          title: 'Candidaturas de emprego',
+          description: 'Transforme a fotografia de um formulário assinado num PDF que um portal aceita.',
+        },
+        {
+          title: 'Recibos e despesas',
+          description: 'Converta fotografias de recibos em PDF para relatórios de despesas.',
+        },
+        {
+          title: 'Documentos digitalizados',
+          description: 'Envolva uma digitalização de página feita com o telemóvel num PDF arrumado.',
+        },
+        {
+          title: 'Impressão',
+          description: 'Obtenha uma impressão previsível a partir de um JPG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Verdadeiramente sem perdas: o JPG dentro do PDF é idêntico ao seu original.',
+        'A saída está fixada em PDF, por isso não há nada para configurar mal.',
+      ],
+      privacyNote: 'O seu JPG é colocado, sem ser recomprimido, numa única página PDF que o nosso servidor constrói. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: descarrega um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto um JPG em PDF gratuitamente?',
+          answer: 'Carregue o seu .jpg acima e clique em converter: a saída é um PDF de uma página. É grátis e não exige registo.',
+        },
+        {
+          question: 'Converter JPG em PDF reduz a qualidade?',
+          answer: 'Não. O JPG é incorporado diretamente no PDF sem recompressão, por isso a qualidade da imagem é idêntica à do seu ficheiro original.',
+        },
+        {
+          question: 'O PDF vai ser muito maior do que o meu JPG?',
+          answer: 'Não. Como não há recodificação, o PDF tem aproximadamente o mesmo tamanho do JPG de origem, mais um invólucro de documento minúsculo.',
+        },
+        {
+          question: 'Posso juntar vários JPG num só PDF?',
+          answer: 'Esta ferramenta cria um PDF por imagem. Converta cada JPG e junte os PDF numa ferramenta de junção, se precisar de várias páginas.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O JPG é incorporado sem perdas (sem recompressão) num PDF de uma página.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter PNG para PDF',
+          to: '/tools/convert-png-to-pdf',
+          description: 'Conversor dedicado de PNG → PDF.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Converta qualquer formato de imagem em PDF.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'PDF para JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Faça o caminho inverso: renderize um PDF em JPG.',
+        },
+        {
+          label: 'Conversor PDF',
+          to: '/tools/pdf-converter',
+          description: 'O centro completo de conversão de PDF.',
+        },
+      ],
+      embed: {
+        title: 'Converter JPG em PDF',
+        description: 'Carregue uma imagem JPG. A saída está fixada em PDF e o seu JPG é incorporado sem perdas: a fotografia dentro do PDF é idêntica, bit a bit, ao seu original.',
+      },
     },
     'convert-png-to-pdf': {
       name: 'Converter PNG para PDF',
+      h1: 'Converter PNG em PDF online grátis',
       tagline: 'Transforme capturas de ecrã, gráficos e digitalizações PNG em documentos PDF limpos e nítidos.',
+      metaTitle: 'Converter PNG em PDF online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de PNG para PDF online. Transforme capturas de ecrã e gráficos .png em documentos PDF nítidos e sem perdas. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter PNG em PDF online grátis',
+      ogDescription: 'Transforme capturas de ecrã e gráficos PNG em documentos PDF nítidos e sem perdas. Grátis, sem registo.',
+      intro: 'O PNG é o formato das capturas de ecrã, dos diagramas e dos gráficos com texto nítido e contornos definidos. Quando precisa de enviar ou imprimir um como documento, o PDF é o invólucro certo. O Media Manipulator incorpora o seu PNG sem perdas num PDF, para que cada contorno continue nítido.',
+      whatItDoes: [
+        'Envolve uma imagem PNG num documento PDF de uma página.',
+        'Incorpora a imagem sem perdas, para que o texto e os desenhos de linha continuem nítidos.',
+        'Achata a transparência sobre branco, já que as páginas PDF são opacas.',
+        'Produz um PDF padrão que abre e se imprime em qualquer lado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o PNG',
+          description: 'Largue uma captura de ecrã, um diagrama ou um gráfico .png.',
+        },
+        {
+          title: 'Nós incorporamo-lo',
+          description: 'O PNG é composto sobre uma página branca e incorporado sem perdas.',
+        },
+        {
+          title: 'Gerar o PDF',
+          description: 'É montado um PDF padrão de uma página.',
+        },
+        {
+          title: 'Descarregue o PDF',
+          description: 'Guarde um .pdf nítido, pronto a partilhar ou a imprimir.',
+        },
+      ],
+      advancedDetails: [
+        'Os PNG são descodificados e incorporados com compressão zlib (Flate) sem perdas, por isso o texto e os contornos nítidos são preservados exatamente, sem artefactos JPEG.',
+        'As áreas transparentes passam a branco porque as páginas PDF não têm canal alfa.',
+        'A página é dimensionada a partir da imagem a 96 DPI, para um tamanho físico predefinido razoável.',
+      ],
+      whyItMatters: [
+        'As capturas de ecrã e os diagramas são muitas vezes submetidos como PDF em tickets e relatórios.',
+        'A incorporação sem perdas mantém legíveis o texto pequeno e as linhas finas.',
+        'O PDF imprime-se de forma previsível, enquanto um PNG solto pode ser redimensionado de forma inesperada.',
+      ],
+      useCases: [
+        {
+          title: 'Relatórios de erros',
+          description: 'Transforme uma captura de ecrã num PDF para anexar a um ticket.',
+        },
+        {
+          title: 'Diagramas e gráficos',
+          description: 'Envolva um gráfico exportado num PDF fácil de partilhar.',
+        },
+        {
+          title: 'Formulários digitalizados',
+          description: 'Converta uma digitalização PNG num documento PDF arrumado.',
+        },
+        {
+          title: 'Impressão',
+          description: 'Obtenha impressões nítidas e previsíveis a partir de um PNG.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A incorporação sem perdas mantém o texto e os contornos perfeitamente nítidos.',
+        'A saída está fixada em PDF, por isso não há nada para configurar mal.',
+      ],
+      privacyNote: 'O seu PNG é incorporado sem perdas num PDF de uma página no nosso servidor, com a transparência achatada sobre branco. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: descarrega um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto um PNG em PDF gratuitamente?',
+          answer: 'Carregue o seu .png acima e clique em converter: a saída é um PDF de uma página. É grátis e não exige registo.',
+        },
+        {
+          question: 'A conversão de PNG em PDF mantém o texto nítido?',
+          answer: 'Sim. O PNG é incorporado sem perdas, por isso o texto e os desenhos de linha continuam nítidos, sem artefactos do tipo JPEG.',
+        },
+        {
+          question: 'O que acontece a um PNG transparente?',
+          answer: 'As áreas transparentes são achatadas sobre um fundo branco, porque as páginas PDF são opacas. O conteúdo visível não é alterado.',
+        },
+        {
+          question: 'Posso juntar vários PNG num só PDF?',
+          answer: 'Esta ferramenta cria um PDF por imagem. Converta cada PNG e junte os PDF numa ferramenta de junção para obter documentos de várias páginas.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O PNG é incorporado sem perdas. A transparência é achatada sobre branco porque as páginas PDF são opacas.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter JPG para PDF',
+          to: '/tools/convert-jpg-to-pdf',
+          description: 'Conversor dedicado de JPG → PDF.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Converta qualquer formato de imagem em PDF.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'PDF para PNG',
+          to: '/tools/pdf-to-png',
+          description: 'Faça o caminho inverso: renderize um PDF em PNG.',
+        },
+        {
+          label: 'Conversor PDF',
+          to: '/tools/pdf-converter',
+          description: 'O centro completo de conversão de PDF.',
+        },
+      ],
+      embed: {
+        title: 'Converter PNG em PDF',
+        description: 'Carregue uma imagem PNG. A saída está fixada em PDF e o seu PNG é incorporado sem perdas, para que o texto e os contornos definidos continuem nítidos na página.',
+      },
     },
     'pdf-to-png': {
       name: 'PDF para PNG',
+      h1: 'Converter PDF em PNG online grátis',
       tagline: 'Converta cada página de um PDF em imagens PNG nítidas e sem perdas, ideais para texto, diagramas e edição.',
+      metaTitle: 'Converter PDF em PNG online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de PDF para PNG online. Renderize todas as páginas de um PDF em imagens PNG nítidas e sem perdas, descarregadas num ZIP. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter PDF em PNG online grátis',
+      ogDescription: 'Renderize todas as páginas de um PDF em imagens PNG nítidas e sem perdas. Grátis, rápido, sem registo.',
+      intro: 'O PNG é a melhor escolha quando uma página PDF tem texto nítido, linhas finas ou diagramas que quer manter perfeitamente definidos. O Media Manipulator renderiza cada página para um PNG sem perdas com o Poppler, por isso não há artefactos JPEG à volta do texto. Escolha todas as páginas ou apenas a primeira, e escolha a resolução.',
+      whatItDoes: [
+        'Renderiza cada página do PDF para uma imagem PNG sem perdas, nos DPI que escolher.',
+        'Converte todas as páginas (descarregadas num ZIP) ou apenas a primeira (um único PNG).',
+        'Dá nomes claros à saída de várias páginas: page-001.png, page-002.png e assim sucessivamente.',
+        'Mantém o texto e os desenhos de linha nítidos com codificação PNG sem perdas.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o PDF',
+          description: 'Largue qualquer documento .pdf.',
+        },
+        {
+          title: 'Escolha as páginas e os DPI',
+          description: 'Todas as páginas ou apenas a primeira; 150 DPI é uma boa predefinição.',
+        },
+        {
+          title: 'Renderizar para PNG',
+          description: 'O Poppler rasteriza cada página para um PNG sem perdas.',
+        },
+        {
+          title: 'Descarregue',
+          description: 'Receba um único PNG ou um ZIP com um PNG por página.',
+        },
+      ],
+      advancedDetails: [
+        'A renderização usa o Poppler (pdftoppm) para uma saída de página precisa e fiel.',
+        'O PNG é sem perdas, por isso é a melhor escolha em relação ao JPG quando a página é sobretudo texto, diagramas ou gráficos nítidos.',
+        'DPI mais altos produzem imagens mais nítidas e maiores: 150 DPI servem para ecrãs, 300 DPI para impressão.',
+        'Os PNG renderizados têm fundo branco; as páginas PDF são opacas, por isso não há transparência a preservar.',
+      ],
+      whyItMatters: [
+        'O PNG sem perdas mantém legíveis o texto pequeno e as linhas finas, sem artefactos.',
+        'As páginas PNG encaixam sem problemas em editores, documentos e ferramentas de design.',
+        'Uma página renderizada capta o layout visual exato do documento.',
+      ],
+      useCases: [
+        {
+          title: 'Diagramas e esquemas',
+          description: 'Renderize páginas técnicas sem artefactos.',
+        },
+        {
+          title: 'Anotações e revisão',
+          description: 'Abra uma página nítida num editor para anotar.',
+        },
+        {
+          title: 'Recursos de design',
+          description: 'Leve um gráfico de página limpo para uma ferramenta de design.',
+        },
+        {
+          title: 'Miniaturas',
+          description: 'Gere uma pré-visualização PNG nítida da primeira página.',
+        },
+      ],
+      whyMediaManipulator: [
+        'A renderização PNG sem perdas mantém o texto e os contornos nítidos.',
+        'Empacotamento ZIP claro e arrumado, com nomes de ficheiro numerados por página e ordenáveis.',
+      ],
+      privacyNote: 'As páginas do seu PDF são renderizadas para imagens PNG com o Poppler no nosso servidor e, quando há mais de uma página, empacotadas num ZIP. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: descarrega um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto um PDF em PNG gratuitamente?',
+          answer: 'Carregue o seu .pdf acima, escolha todas as páginas ou apenas a primeira, escolha os DPI e clique em converter.',
+        },
+        {
+          question: 'Porquê escolher PNG em vez de JPG para um PDF?',
+          answer: 'O PNG é sem perdas, por isso mantém o texto, as linhas finas e os diagramas nítidos, sem artefactos de compressão. O JPG é melhor quando quer ficheiros mais pequenos para páginas com muitas fotografias.',
+        },
+        {
+          question: 'Vou receber uma imagem ou várias?',
+          answer: 'Escolha «todas as páginas» para receber um ZIP com um PNG por página (page-001.png, …), ou «apenas a primeira página» para um único PNG.',
+        },
+        {
+          question: 'Os PNG têm fundo transparente?',
+          answer: 'Não. As páginas PDF são opacas, por isso as páginas renderizadas têm fundo branco. Não há transparência a preservar.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída de todas as páginas é entregue como .zip; a saída da primeira página é um único .png.',
+          'As páginas renderizadas têm fundo branco: as páginas PDF são opacas, por isso não há transparência.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF para JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Renderize as páginas PDF em JPG compacto, em alternativa.',
+        },
+        {
+          label: 'Conversor PDF',
+          to: '/tools/pdf-converter',
+          description: 'Converta PDF em imagens e imagens em PDF.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta as imagens renderizadas entre formatos.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Faça o caminho inverso: transforme imagens num PDF.',
+        },
+      ],
+      embed: {
+        title: 'Converter PDF em PNG',
+        description: 'Carregue um PDF. Cada página é renderizada para uma imagem PNG sem perdas. Escolha «todas as páginas» para obter um ZIP, ou «apenas a primeira página» para um único PNG. Escolha os DPI de renderização para uma saída mais nítida.',
+      },
     },
     'pdf-converter': {
       name: 'Conversor PDF',
+      h1: 'Conversor PDF online grátis',
       tagline: 'Converta PDF em imagens JPG ou PNG e transforme imagens em PDF, tudo num só lugar.',
+      metaTitle: 'Conversor PDF online grátis | Media Manipulator',
+      metaDescription: 'Conversor PDF online gratuito. Converta PDF em imagens JPG ou PNG e converta imagens em PDF. Sem registo, sem marcas de água. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Conversor PDF online grátis',
+      ogDescription: 'Converta PDF em imagens JPG/PNG e imagens em PDF, tudo numa só ferramenta gratuita. Sem registo.',
+      intro: 'O conversor PDF trata das duas direções num só lugar: renderize as páginas de um PDF em imagens JPG ou PNG, ou envolva uma imagem num documento PDF. Carregue um PDF e recebe os controlos de exportação de imagens; carregue uma imagem e recebe a conversão de imagem em PDF. Tudo corre nos nossos próprios servidores.',
+      whatItDoes: [
+        'Converte páginas PDF em JPG ou PNG na resolução que escolher.',
+        'Converte JPG, PNG e outras imagens em PDF de uma página.',
+        'Empacota as exportações de PDF com várias páginas num ZIP arrumado de imagens numeradas.',
+        'Adapta automaticamente o formulário ao ficheiro que carregar.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um ficheiro',
+          description: 'Largue um PDF ou uma imagem, como JPG ou PNG.',
+        },
+        {
+          title: 'Escolha a saída',
+          description: 'Para um PDF, escolha JPG/PNG, as páginas e os DPI; para uma imagem, a saída é PDF.',
+        },
+        {
+          title: 'Converter',
+          description: 'Renderizamos ou envolvemos o seu ficheiro no nosso servidor.',
+        },
+        {
+          title: 'Descarregue',
+          description: 'Guarde um PDF, uma única imagem ou um ZIP com as imagens das páginas.',
+        },
+      ],
+      advancedDetails: [
+        'A renderização PDF → imagem usa o Poppler (pdftoppm); a conversão imagem → PDF incorpora os JPG sem perdas e os outros formatos com compressão Flate sem perdas.',
+        'As exportações de PDF com várias páginas são entregues como .zip, com nomes de ficheiro ordenáveis page-001/page-002.',
+        'A conversão de imagem em PDF dimensiona a página à imagem a 96 DPI; a conversão de PDF em imagem usa 150 DPI por predefinição e suporta até 300 ou mais para impressão.',
+        'Um limite de número de páginas protege contra PDF demasiado grandes.',
+      ],
+      whyItMatters: [
+        'Uma só ferramenta cobre as duas direções mais comuns de conversão de PDF.',
+        'Não precisa de procurar uma ferramenta diferente consoante o sentido em que está a converter.',
+        'Qualidade consistente, do lado do servidor, independentemente do seu navegador ou dispositivo.',
+      ],
+      useCases: [
+        {
+          title: 'Fluxos de trabalho mistos',
+          description: 'Alterne entre PDF→imagem e imagem→PDF sem mudar de ferramenta.',
+        },
+        {
+          title: 'Preparação de documentos',
+          description: 'Transforme imagens em PDF para formulários de envio.',
+        },
+        {
+          title: 'Reutilização',
+          description: 'Renderize páginas PDF em imagens para apresentações ou redes sociais.',
+        },
+        {
+          title: 'Pré-visualizações rápidas',
+          description: 'Gere uma imagem da primeira página de qualquer PDF.',
+        },
+      ],
+      whyMediaManipulator: [
+        'As duas direções de conversão numa única ferramenta adaptável.',
+        'Conversão imagem→PDF sem perdas e renderização PDF→imagem precisa com o Poppler.',
+      ],
+      privacyNote: 'O seu PDF é renderizado página a página em imagens, ou a sua imagem é envolvida num PDF, pelo Poppler e pelo ImageMagick no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: descarrega um ficheiro novo.',
+      faq: [
+        {
+          question: 'O que consegue fazer o conversor PDF?',
+          answer: 'Converte páginas PDF em imagens JPG ou PNG, e converte imagens (JPG, PNG e mais) em documentos PDF, tudo numa só ferramenta gratuita.',
+        },
+        {
+          question: 'Como sabe em que direção converter?',
+          answer: 'Adapta-se ao seu carregamento: um PDF mostra os controlos de exportação de imagens (formato, páginas, DPI), enquanto uma imagem é convertida em PDF.',
+        },
+        {
+          question: 'Posso converter um PDF de várias páginas em imagens?',
+          answer: 'Sim. Escolha «todas as páginas» e recebe um ZIP com uma imagem por página, com os nomes page-001, page-002 e assim sucessivamente.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Carregue um PDF para PDF→imagem; carregue uma imagem para imagem→PDF. O formulário adapta-se automaticamente.',
+          'A exportação de PDF com todas as páginas é entregue como .zip de imagens numeradas.',
+        ],
+      },
+      related: [
+        {
+          label: 'PDF para JPG',
+          to: '/tools/pdf-to-jpg',
+          description: 'Renderize páginas PDF em imagens JPG.',
+        },
+        {
+          label: 'PDF para PNG',
+          to: '/tools/pdf-to-png',
+          description: 'Renderize páginas PDF em imagens PNG sem perdas.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Transforme qualquer imagem num PDF.',
+        },
+        {
+          label: 'Converter JPG para PDF',
+          to: '/tools/convert-jpg-to-pdf',
+          description: 'Conversor dedicado de JPG → PDF.',
+        },
+        {
+          label: 'Converter PNG para PDF',
+          to: '/tools/convert-png-to-pdf',
+          description: 'Conversor dedicado de PNG → PDF.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre formatos de imagem.',
+        },
+      ],
+      embed: {
+        title: 'Converter um PDF ou uma imagem',
+        description: 'Carregue um PDF para renderizar as suas páginas em imagens JPG ou PNG, ou carregue uma imagem para a transformar num PDF. O formulário adapta-se ao ficheiro que escolher.',
+      },
     },
     'convert-heic-to-jpg': {
       name: 'Converter HEIC para JPG',
+      h1: 'Converter HEIC em JPG online grátis',
       tagline: 'Transforme fotografias HEIC do iPhone em ficheiros JPG compatíveis com tudo, que abrem e se enviam em qualquer lado.',
+      metaTitle: 'Converter HEIC em JPG online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de HEIC para JPG online. Transforme fotografias .heic/.heif do iPhone em ficheiros JPG compatíveis com tudo. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter HEIC em JPG online grátis',
+      ogDescription: 'Transforme fotografias HEIC do iPhone em ficheiros JPG compatíveis com tudo. Grátis, rápido, sem registo.',
+      intro: 'O HEIC é o formato de alta eficiência que os iPhones usam para poupar espaço, mas não abre em muitos PCs com Windows, sites ou aplicações mais antigas. O Media Manipulator converte as suas fotografias HEIC em JPG, o formato que funciona em todo o lado, com a orientação correta e a qualidade que escolher.',
+      whatItDoes: [
+        'Converte fotografias HEIC/HEIF da Apple em JPG padrão.',
+        'Orienta automaticamente a imagem com base no EXIF, para que os retratos não fiquem de lado.',
+        'Permite escolher a qualidade do JPG para equilibrar o tamanho do ficheiro e a fidelidade.',
+        'Produz um JPG que abre em qualquer dispositivo, site ou aplicação.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o HEIC',
+          description: 'Largue uma fotografia .heic ou .heif do seu iPhone.',
+        },
+        {
+          title: 'Orientação automática',
+          description: 'Lemos a orientação EXIF para que a fotografia fique na posição correta.',
+        },
+        {
+          title: 'Codificar JPG',
+          description: 'O ImageMagick descodifica o HEIC (libheif) e escreve um JPG.',
+        },
+        {
+          title: 'Descarregue o JPG',
+          description: 'Guarde um ficheiro .jpg compatível com tudo.',
+        },
+      ],
+      advancedDetails: [
+        'A descodificação de HEIC depende de o ImageMagick estar compilado com o delegado libheif. Se o servidor não tiver suporte para HEIC, a ferramenta devolve um erro claro em vez de um ficheiro danificado.',
+        'Uma qualidade de 85–90 é uma excelente predefinição: o HEIC já é eficiente, por isso um JPG de alta qualidade mantém a fotografia com aspeto idêntico.',
+        'A orientação EXIF é aplicada antes da codificação, o que corrige o problema habitual da «rotação de 90°» quando o HEIC é convertido de forma ingénua.',
+      ],
+      whyItMatters: [
+        'O Windows, muitos formulários de envio na web e o software mais antigo continuam a não conseguir abrir HEIC.',
+        'Partilhar um JPG garante que o destinatário o consegue ver em qualquer dispositivo.',
+        'A maioria dos laboratórios de impressão e dos marketplaces exige JPG.',
+      ],
+      useCases: [
+        {
+          title: 'Partilhar fotografias do iPhone',
+          description: 'Envie fotografias que abrem em qualquer telemóvel ou PC.',
+        },
+        {
+          title: 'Envios na web',
+          description: 'Cumpra os requisitos de formulários e sites que rejeitam HEIC.',
+        },
+        {
+          title: 'Impressão',
+          description: 'Converta para JPG antes de encomendar impressões.',
+        },
+        {
+          title: 'Edição em aplicações mais antigas',
+          description: 'Abra a sua fotografia em software sem suporte para HEIC.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Orientação automática correta: nada de fotografias de lado.',
+        'Controlo da qualidade em vez de uma predefinição fixa.',
+      ],
+      privacyNote: 'A sua fotografia HEIC é descodificada no nosso servidor, colocada na orientação correta e guardada como JPG. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: descarrega um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto HEIC em JPG gratuitamente?',
+          answer: 'Carregue a sua fotografia .heic acima, escolha uma qualidade e clique em converter. Recebe de volta um .jpg padrão.',
+        },
+        {
+          question: 'Porque é que a minha fotografia HEIC não abre no Windows?',
+          answer: 'O HEIC é um formato privilegiado pela Apple que as versões mais antigas do Windows e muitas aplicações não conseguem ler. Converter para JPG faz com que a fotografia abra em todo o lado.',
+        },
+        {
+          question: 'A fotografia vai perder qualidade?',
+          answer: 'O JPG tem perdas, mas com qualidade 85–90 o resultado fica idêntico ao HEIC original em praticamente todas as fotografias.',
+        },
+        {
+          question: 'Porque é que a minha fotografia convertida ficava rodada antes?',
+          answer: 'Os conversores ingénuos ignoram a orientação EXIF. Nós orientamos a imagem automaticamente, por isso a sua fotografia sai na posição correta.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A descodificação de HEIC exige o ImageMagick com o delegado libheif no servidor.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'Converter AVIF para JPG',
+          to: '/tools/convert-avif-to-jpg',
+          description: 'Converta fotografias AVIF modernas em JPG.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza o JPG para a web.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Percorra todas as opções de imagem.',
+        },
+      ],
+      embed: {
+        title: 'Converter HEIC em JPG',
+        description: 'Carregue uma fotografia HEIC ou HEIF do seu iPhone. A saída está fixada em JPG, com orientação automática para aparecer na posição correta, na qualidade que escolher.',
+      },
     },
     'convert-avif-to-jpg': {
       name: 'Converter AVIF para JPG',
+      h1: 'Converter AVIF para JPG online grátis',
       tagline: 'Transforme imagens AVIF modernas em ficheiros JPG compatíveis com tudo, para aplicações e sites que não aceitam AVIF.',
+      metaTitle: 'Converter AVIF para JPG online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de AVIF para JPG online. Transforme imagens .avif em ficheiros JPG compatíveis com tudo, na qualidade que escolher. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter AVIF para JPG online grátis',
+      ogDescription: 'Transforme imagens AVIF modernas em ficheiros JPG compatíveis com tudo. Grátis, rápido, sem registo.',
+      intro: 'O AVIF é um formato de imagem de última geração que produz ficheiros minúsculos, mas muitas aplicações, editores e formulários de envio continuam a não conseguir abri-lo. O Media Manipulator converte AVIF para JPG para que a sua imagem funcione em qualquer lado. Escolha uma qualidade e transfira.',
+      whatItDoes: [
+        'Converte imagens AVIF para JPG padrão.',
+        'Aplana qualquer transparência sobre um fundo, já que o JPG não tem canal alfa.',
+        'Permite escolher a qualidade do JPG para o equilíbrio entre tamanho e fidelidade que pretende.',
+        'Produz um JPG que abre em qualquer dispositivo ou aplicação.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar AVIF',
+          description: 'Largue uma imagem .avif.',
+        },
+        {
+          title: 'Escolher a qualidade JPG',
+          description: '85 é uma predefinição equilibrada.',
+        },
+        {
+          title: 'Codificar JPG',
+          description: 'O ImageMagick descodifica o AVIF (libaom/libheif) e escreve um JPG.',
+        },
+        {
+          title: 'Transferir JPG',
+          description: 'Guarde um .jpg compatível com tudo.',
+        },
+      ],
+      advancedDetails: [
+        'A descodificação de AVIF depende de um ImageMagick compilado com um delegado AVIF (libaom ou libheif). Se o servidor não tiver suporte para AVIF, a ferramenta devolve um erro claro.',
+        'O AVIF suporta transparência; ao converter para JPG, as áreas transparentes são aplanadas porque o JPG não tem canal alfa. Use AVIF → PNG para manter a transparência.',
+        'Uma qualidade de 85–90 mantém o JPG visualmente idêntico ao AVIF na maioria das imagens.',
+      ],
+      whyItMatters: [
+        'Muitas aplicações e formulários de envio continuam a não suportar AVIF.',
+        'O JPG garante que o destinatário consegue abrir a imagem.',
+        'A conversão permite usar uma transferência em AVIF em qualquer lado onde precise de um JPG.',
+      ],
+      useCases: [
+        {
+          title: 'Guardar imagens da web',
+          description: 'Converta um AVIF que transferiu num JPG utilizável.',
+        },
+        {
+          title: 'Compatibilidade com aplicações',
+          description: 'Abra um AVIF em software sem suporte para AVIF.',
+        },
+        {
+          title: 'Envios',
+          description: 'Cumpra um formulário que só aceita JPG.',
+        },
+        {
+          title: 'Impressão',
+          description: 'Produza um JPG para um laboratório fotográfico.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Controlo da qualidade em vez de uma predefinição igual para tudo.',
+        'Corre nos nossos próprios servidores; sem processamento por terceiros.',
+      ],
+      privacyNote: 'O seu AVIF é descodificado no nosso servidor e recodificado como JPG na qualidade que definir. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto AVIF para JPG gratuitamente?',
+          answer: 'Carregue a sua imagem .avif acima, escolha uma qualidade e clique em converter. Recebe de volta um .jpg padrão.',
+        },
+        {
+          question: 'Porque não consigo abrir ficheiros AVIF?',
+          answer: 'O AVIF é um formato mais recente; muitas aplicações, editores e sites ainda não lhe adicionaram suporte. Converter para JPG faz com que a imagem abra em qualquer lado.',
+        },
+        {
+          question: 'E a transparência?',
+          answer: 'O JPG não tem transparência, por isso as áreas transparentes do AVIF são aplanadas sobre um fundo. Se precisar de manter a transparência, use a ferramenta AVIF → PNG.',
+        },
+        {
+          question: 'Vou perder qualidade?',
+          answer: 'Com qualidade 85–90, o JPG fica essencialmente idêntico ao AVIF na maioria das imagens.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A descodificação de AVIF requer um ImageMagick com delegado AVIF no servidor. A transparência é aplanada na saída JPG.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter AVIF para PNG',
+          to: '/tools/convert-avif-to-png',
+          description: 'Em vez disso, mantenha a transparência com um PNG.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'Converter HEIC para JPG',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Converta fotografias HEIC do iPhone para JPG.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza o JPG para a web.',
+        },
+      ],
+      embed: {
+        title: 'Converter AVIF para JPG',
+        description: 'Carregue uma imagem AVIF. A saída está fixada em JPG, por isso obtém um ficheiro que todas as aplicações, editores e formulários de envio aceitam, na qualidade que escolher.',
+      },
     },
     'convert-avif-to-png': {
       name: 'Converter AVIF para PNG',
+      h1: 'Converter AVIF para PNG online grátis',
       tagline: 'Transforme imagens AVIF em ficheiros PNG sem perdas, que abrem em qualquer lado e mantêm toda a transparência.',
+      metaTitle: 'Converter AVIF para PNG online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de AVIF para PNG online. Transforme imagens .avif em ficheiros PNG sem perdas que preservam a transparência e abrem em qualquer editor. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter AVIF para PNG online grátis',
+      ogDescription: 'Transforme imagens AVIF em ficheiros PNG sem perdas que preservam a transparência. Grátis, rápido, sem registo.',
+      intro: 'Quando uma imagem AVIF tem transparência, como um logótipo ou um recorte, converter para JPG aplaná-la-ia. O PNG mantém o canal alfa e é sem perdas, por isso é o destino certo para gráficos. O Media Manipulator converte AVIF para PNG com a transparência intacta.',
+      whatItDoes: [
+        'Converte imagens AVIF para PNG sem perdas.',
+        'Preserva o canal alfa para que os AVIF transparentes continuem transparentes.',
+        'Produz um PNG que abre em qualquer editor, visualizador ou ferramenta de design.',
+        'A imagem é preservada píxel a píxel quando o AVIF se torna um PNG.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar AVIF',
+          description: 'Largue uma imagem .avif, transparente ou opaca.',
+        },
+        {
+          title: 'Descodificar AVIF',
+          description: 'O ImageMagick descodifica o AVIF com o seu delegado AVIF.',
+        },
+        {
+          title: 'Codificar PNG',
+          description: 'É escrito um PNG sem perdas com a transparência preservada.',
+        },
+        {
+          title: 'Transferir PNG',
+          description: 'Guarde um ficheiro .png que preserva a transparência.',
+        },
+      ],
+      advancedDetails: [
+        'A descodificação de AVIF depende de um ImageMagick compilado com um delegado AVIF (libaom ou libheif). Se o servidor não tiver suporte para AVIF, a ferramenta devolve um erro claro.',
+        'A transparência do AVIF é preservada como canal alfa do PNG.',
+        'O PNG é sem perdas, por isso a saída é normalmente maior do que o AVIF de origem; é o preço da compatibilidade universal e da transparência.',
+      ],
+      whyItMatters: [
+        'O PNG mantém a transparência que o JPG destruiria, essencial para logótipos e recortes.',
+        'Alguns editores e aplicações não conseguem abrir AVIF; o PNG abre em qualquer lado.',
+        'O PNG é um formato de intercâmbio seguro e sem perdas para gráficos.',
+      ],
+      useCases: [
+        {
+          title: 'Logótipos transparentes',
+          description: 'Converta um logótipo AVIF transparente num PNG utilizável.',
+        },
+        {
+          title: 'Entregas de design',
+          description: 'Forneça um PNG a ferramentas que não leem AVIF.',
+        },
+        {
+          title: 'Edição',
+          description: 'Abra a imagem sem perdas no seu editor.',
+        },
+        {
+          title: 'Recursos para a web',
+          description: 'Mantenha um PNG de recurso para navegadores mais antigos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Transparência preservada automaticamente.',
+        'Saída PNG sem perdas para trabalho gráfico.',
+      ],
+      privacyNote: 'O seu AVIF é descodificado no nosso servidor e guardado como PNG sem perdas, com a transparência intacta. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto AVIF para PNG gratuitamente?',
+          answer: 'Carregue a sua imagem .avif acima e clique em converter: a saída é um .png sem perdas com a transparência preservada.',
+        },
+        {
+          question: 'A conversão de AVIF para PNG mantém a transparência?',
+          answer: 'Sim. O PNG suporta um canal alfa, por isso um AVIF transparente continua transparente após a conversão.',
+        },
+        {
+          question: 'Devo escolher PNG ou JPG para o meu AVIF?',
+          answer: 'Escolha PNG quando precisar de transparência ou de qualidade sem perdas (logótipos, gráficos). Escolha JPG para o ficheiro mais pequeno quando a imagem é uma fotografia sem transparência.',
+        },
+        {
+          question: 'Porque é o PNG maior do que o AVIF?',
+          answer: 'O AVIF é um formato comprimido altamente eficiente, enquanto o PNG é sem perdas, por isso o PNG é normalmente maior. É o esperado.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A descodificação de AVIF requer um ImageMagick com delegado AVIF. A transparência é preservada na saída PNG.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter AVIF para JPG',
+          to: '/tools/convert-avif-to-jpg',
+          description: 'Em vez disso, converta o AVIF num JPG compacto.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'Converter HEIC para JPG',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Converta fotografias HEIC do iPhone para JPG.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Crie automaticamente um recorte PNG transparente.',
+        },
+      ],
+      embed: {
+        title: 'Converter AVIF para PNG',
+        description: 'Carregue uma imagem AVIF. A saída está fixada em PNG, por isso a transparência é preservada e o ficheiro abre sem perdas em qualquer editor ou visualizador.',
+      },
     },
     'convert-svg-to-png': {
       name: 'Converter SVG para PNG',
+      h1: 'Converter SVG para PNG online grátis',
       tagline: 'Rasterize ícones e logótipos SVG em imagens PNG de qualquer tamanho, para envios, apresentações e aplicações.',
+      metaTitle: 'Converter SVG para PNG online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de SVG para PNG online. Rasterize ícones e logótipos SVG em imagens PNG no tamanho que escolher. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter SVG para PNG online grátis',
+      ogDescription: 'Rasterize ícones e logótipos SVG em imagens PNG de qualquer tamanho. Grátis, rápido, sem registo.',
+      intro: 'Os SVG são vetores perfeitos, mas muitas plataformas (redes sociais, marketplaces, ferramentas de apresentações e aplicações) só aceitam imagens raster como PNG. O Media Manipulator rasteriza o seu SVG num PNG nítido, que preserva a transparência, no tamanho que escolher. Os SVG são processados como entrada não fidedigna com um renderizador seguro.',
+      whatItDoes: [
+        'Rasteriza ficheiros vetoriais SVG em imagens PNG.',
+        'Permite definir uma largura e/ou altura de destino para a resolução de saída.',
+        'Preserva a transparência do SVG no PNG.',
+        'Renderiza com um rasterizador seguro que não vai buscar recursos externos à rede.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar SVG',
+          description: 'Largue um ícone, logótipo ou ilustração .svg.',
+        },
+        {
+          title: 'Definir o tamanho (opcional)',
+          description: 'Escolha uma largura/altura ou use o tamanho natural do SVG.',
+        },
+        {
+          title: 'Rasterizar',
+          description: 'O SVG é renderizado numa imagem de píxeis no nosso servidor.',
+        },
+        {
+          title: 'Transferir PNG',
+          description: 'Guarde um .png nítido que preserva a transparência.',
+        },
+      ],
+      advancedDetails: [
+        'A renderização usa o rsvg-convert (librsvg) quando disponível, que por predefinição não carrega recursos remotos, com o ImageMagick como alternativa reforçada.',
+        'Como o SVG é vetorial, pode renderizar em qualquer resolução sem perda de qualidade; escolha uma largura maior para uma saída mais nítida.',
+        'Os SVG carregados são tratados como entrada não fidedigna e processados com o acesso à rede desativado, para evitar riscos de SSRF e de obtenção de recursos externos.',
+      ],
+      whyItMatters: [
+        'A maioria dos formulários de envio e das plataformas sociais rejeita SVG mas aceita PNG.',
+        'Rasterizar num tamanho escolhido garante uma saída nítida para essa utilização.',
+        'O PNG mantém a transparência de que os ícones e os logótipos dependem.',
+      ],
+      useCases: [
+        {
+          title: 'Redes sociais e envios',
+          description: 'Transforme um logótipo SVG num PNG que a plataforma aceita.',
+        },
+        {
+          title: 'Apresentações',
+          description: 'Coloque um PNG nítido de um ícone num diapositivo.',
+        },
+        {
+          title: 'Recursos para aplicações',
+          description: 'Exporte um PNG no tamanho exato de que a sua aplicação precisa.',
+        },
+        {
+          title: 'E-mail',
+          description: 'Use um PNG onde o SVG não é suportado.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Renderize em qualquer tamanho sem perda de qualidade: os vetores escalam na perfeição.',
+        'Tratamento seguro de SVG, com a obtenção de recursos externos desativada.',
+      ],
+      privacyNote: 'O seu SVG é renderizado num PNG pelo librsvg no nosso servidor, sem ir buscar as imagens e os tipos de letra externos que referencia. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto SVG para PNG gratuitamente?',
+          answer: 'Carregue o seu .svg acima, defina opcionalmente uma largura ou altura e clique em converter. Recebe de volta um .png nítido.',
+        },
+        {
+          question: 'Que tamanho terá o PNG?',
+          answer: 'Por predefinição, usa o tamanho natural do SVG. Defina uma largura e/ou altura para renderizar maior ou mais pequeno: os vetores escalam sem perda de qualidade.',
+        },
+        {
+          question: 'O PNG mantém a transparência?',
+          answer: 'Sim. As áreas transparentes do SVG são preservadas como transparência no PNG.',
+        },
+        {
+          question: 'É seguro carregar um SVG?',
+          answer: 'Sim. Tratamos os SVG como entrada não fidedigna e renderizamo-los com a obtenção de recursos externos pela rede desativada, pelo que as referências remotas incorporadas não podem ser carregadas.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Renderizado com rsvg-convert (preferido) ou com uma alternativa reforçada em ImageMagick. A obtenção de recursos externos pela rede a partir do SVG está desativada.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter PNG para SVG',
+          to: '/tools/convert-png-to-svg',
+          description: 'Faça o caminho inverso: vetorize um PNG em SVG.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'PNG para ICO',
+          to: '/tools/png-to-ico',
+          description: 'Transforme o PNG num favicon.',
+        },
+      ],
+      embed: {
+        title: 'Converter SVG para PNG',
+        description: 'Carregue um SVG. A saída está fixada em PNG. Defina opcionalmente uma largura ou altura para controlar a resolução renderizada; deixe-as em branco para usar o tamanho natural do SVG.',
+      },
     },
     'convert-png-to-svg': {
       name: 'Converter PNG para SVG',
+      h1: 'Converter PNG para SVG online grátis',
       tagline: 'Vetorize logótipos, ícones e desenhos de linhas de PNG em verdadeiros caminhos SVG escaláveis com o potrace.',
+      metaTitle: 'Converter PNG para SVG online grátis | Media Manipulator',
+      metaDescription: 'Vetorizador gratuito de PNG para SVG online. Trace logótipos, ícones e desenhos de linhas em verdadeiros caminhos SVG escaláveis. Ideal para gráficos simples, não para fotografias. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter PNG para SVG online grátis',
+      ogDescription: 'Vetorize logótipos, ícones e desenhos de linhas de PNG em verdadeiros caminhos SVG escaláveis. Grátis, sem registo.',
+      intro: 'Uma verdadeira conversão de PNG para SVG significa traçar a sua imagem em caminhos vetoriais reais, que escalam para qualquer tamanho sem pixelização. O Media Manipulator usa o potrace para vetorizar o seu PNG: ideal para logótipos, ícones, assinaturas e desenhos de linhas a preto e branco. Trata-se de vetorização genuína, não de um PNG escondido dentro de um SVG. Não foi concebido para transformar fotografias em arte vetorial limpa.',
+      whatItDoes: [
+        'Traça um PNG em caminhos vetoriais SVG reais e escaláveis com o potrace.',
+        'Reduz a imagem a um bitmap limpo a preto e branco e depois vetoriza as formas.',
+        'Permite ajustar o limiar preto/branco para captar mais ou menos detalhe.',
+        'Produz um verdadeiro .svg, não uma imagem raster embrulhada numa etiqueta <image>.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar PNG',
+          description: 'Largue um PNG de um logótipo, ícone, assinatura ou desenho de linhas.',
+        },
+        {
+          title: 'Definir o limiar',
+          description: 'Escolha o ponto de corte preto/branco para controlar o detalhe.',
+        },
+        {
+          title: 'Traçar em vetores',
+          description: 'O ImageMagick prepara um bitmap; o potrace traça os caminhos.',
+        },
+        {
+          title: 'Transferir SVG',
+          description: 'Guarde um ficheiro .svg real e escalável.',
+        },
+      ],
+      advancedDetails: [
+        'O processo aplana o PNG num bitmap de dois níveis (limiar do ImageMagick) e depois executa o potrace para produzir caminhos vetoriais Bézier suaves.',
+        'A vetorização funciona melhor em gráficos simples e de alto contraste: logótipos, ícones, monogramas, assinaturas e desenhos de linhas a preto e branco.',
+        'Não reproduz fielmente fotografias nem gradientes complexos: traçar uma fotografia produz caminhos grandes e confusos, não arte vetorial limpa.',
+        'Aumente o limiar para captar detalhes mais finos e mais claros; baixe-o para manter apenas as formas mais marcadas.',
+      ],
+      whyItMatters: [
+        'Os logótipos vetoriais escalam para qualquer tamanho, de um favicon a um outdoor, sem pixelização.',
+        'Os SVG são minúsculos para gráficos simples e editáveis em ferramentas vetoriais como o Illustrator ou o Inkscape.',
+        'Recuperar um vetor a partir de um logótipo PNG evita ter de o recriar do zero.',
+      ],
+      useCases: [
+        {
+          title: 'Recuperação de logótipos',
+          description: 'Vetorize um logótipo PNG de que já não tem o ficheiro de origem.',
+        },
+        {
+          title: 'Ícones e monogramas',
+          description: 'Transforme um ícone simples num SVG escalável.',
+        },
+        {
+          title: 'Assinaturas',
+          description: 'Vetorize uma assinatura digitalizada para a reutilizar com limpeza.',
+        },
+        {
+          title: 'Desenhos de linhas',
+          description: 'Trace ilustrações a preto e branco em caminhos editáveis.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Vetorização real com o potrace, honesta quanto àquilo em que é boa (e em que não é).',
+        'Controlo do limiar para afinar o traçado.',
+      ],
+      privacyNote: 'A sua imagem é reduzida a preto e branco e traçada em caminhos vetoriais pelo potrace no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto um PNG para SVG gratuitamente?',
+          answer: 'Carregue o seu .png acima, ajuste o limiar se necessário e clique em converter. Recebe de volta um .svg vetorial real.',
+        },
+        {
+          question: 'Isto é vetorização real ou apenas um PNG embrulhado?',
+          answer: 'É vetorização real. Traçamos a imagem em caminhos SVG verdadeiros com o potrace; não incorporamos o PNG dentro de um SVG e damos o assunto por encerrado.',
+        },
+        {
+          question: 'Vai vetorizar a minha fotografia?',
+          answer: 'Não muito bem. A vetorização foi concebida para logótipos, ícones, assinaturas e desenhos de linhas. As fotografias e os gradientes complexos produzem caminhos grandes e confusos, em vez de vetores limpos.',
+        },
+        {
+          question: 'O que controla o limiar?',
+          answer: 'Define o ponto de corte preto/branco antes do traçado. Aumente-o para captar mais detalhe (mais claro); baixe-o para manter apenas as formas mais marcadas.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A vetorização requer o potrace no servidor. Ideal para logótipos, ícones e desenhos de linhas, não para fotografias.',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter SVG para PNG',
+          to: '/tools/convert-svg-to-png',
+          description: 'Faça o caminho inverso: rasterize um SVG em PNG.',
+        },
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'PNG para ICO',
+          to: '/tools/png-to-ico',
+          description: 'Transforme um PNG num favicon.',
+        },
+      ],
+      embed: {
+        title: 'Vetorizar PNG para SVG',
+        description: 'Carregue um PNG. A saída está fixada em SVG e é produzida por vetorização real (potrace), não por um raster embrulhado em SVG. Ajuste o limiar preto/branco para captar mais ou menos detalhe. Ideal para logótipos, ícones, assinaturas e desenhos de linhas.',
+      },
     },
     'png-to-ico': {
       name: 'PNG para ICO',
+      h1: 'Converter PNG para ICO online grátis',
       tagline: 'Transforme um PNG num verdadeiro favicon .ico com vários tamanhos, para sites e ícones de aplicações Windows.',
+      metaTitle: 'Converter PNG para ICO online grátis | Media Manipulator',
+      metaDescription: 'Conversor gratuito de PNG para ICO online. Gere um verdadeiro favicon .ico com vários tamanhos (16–256 px) para sites e ícones do Windows. Sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter PNG para ICO online grátis',
+      ogDescription: 'Gere um verdadeiro favicon .ico com vários tamanhos a partir de um PNG. Grátis, rápido, sem registo.',
+      intro: 'Um favicon tem de ser um verdadeiro ficheiro .ico com vários tamanhos, para que os navegadores e o Windows possam escolher o certo. O Media Manipulator gera um ICO genuíno com vários tamanhos a partir do seu PNG, não um ficheiro renomeado, com a escala padrão de ícones de 16–256 px.',
+      whatItDoes: [
+        'Gera um verdadeiro contentor .ico a partir de uma imagem PNG.',
+        'Reúne vários tamanhos (16, 32, 48, 64, 128, 256 px) num só ficheiro.',
+        'Preserva a transparência para que o ícone assente com limpeza sobre qualquer fundo.',
+        'Produz um ficheiro que os navegadores e o Windows aceitam como favicon ou ícone de aplicação.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar PNG',
+          description: 'Largue um PNG; uma imagem quadrada dá o melhor ícone.',
+        },
+        {
+          title: 'Gerar os tamanhos',
+          description: 'Renderizamos cada tamanho de ícone padrão a partir da sua imagem.',
+        },
+        {
+          title: 'Empacotar o ICO',
+          description: 'Os tamanhos são reunidos num só contentor .ico verdadeiro.',
+        },
+        {
+          title: 'Transferir ICO',
+          description: 'Guarde o favicon.ico para o seu site ou aplicação.',
+        },
+      ],
+      advancedDetails: [
+        'O ICO é construído com o redimensionamento automático de ícones do ImageMagick, produzindo um verdadeiro contentor com várias imagens, não um PNG renomeado.',
+        'Incluir vários tamanhos permite aos navegadores e ao Windows escolher o ícone mais nítido para cada contexto (separador, barra de tarefas, ambiente de trabalho).',
+        'Para o resultado mais limpo, comece com um PNG quadrado de 256×256 ou maior, para que todos os tamanhos sejam reduzidos com nitidez.',
+      ],
+      whyItMatters: [
+        'Os navegadores esperam um verdadeiro favicon .ico; um PNG renomeado pode falhar ou ficar desfocado.',
+        'Um ícone com vários tamanhos mantém-se nítido desde um separador de 16 px até um atalho de 256 px no ambiente de trabalho.',
+        'Os ícones de aplicações Windows exigem o formato .ico.',
+      ],
+      useCases: [
+        {
+          title: 'Favicons de sites',
+          description: 'Gere o favicon.ico para o ícone do separador do seu site.',
+        },
+        {
+          title: 'Ícones de aplicações Windows',
+          description: 'Crie um .ico para uma aplicação de ambiente de trabalho.',
+        },
+        {
+          title: 'Atalhos',
+          description: 'Crie um ícone nítido para um atalho no ambiente de trabalho.',
+        },
+        {
+          title: 'Imagem de marca',
+          description: 'Transforme o PNG de um logótipo num ficheiro de ícone a sério.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Um ICO genuíno com vários tamanhos, não um PNG renomeado.',
+        'Transparência preservada para ícones limpos.',
+      ],
+      privacyNote: 'A sua imagem é redimensionada para cada tamanho de ícone padrão e reunida num só ficheiro .ico pelo ImageMagick no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto um PNG para ICO gratuitamente?',
+          answer: 'Carregue o seu .png acima e clique em converter: recebe de volta um verdadeiro .ico com vários tamanhos.',
+        },
+        {
+          question: 'Isto é um ICO real ou um PNG renomeado?',
+          answer: 'Um ICO real. Geramos vários tamanhos de ícone e reunimo-los num verdadeiro contentor .ico, que é o que os navegadores e o Windows esperam.',
+        },
+        {
+          question: 'Que tamanhos estão incluídos?',
+          answer: 'A escala padrão de favicons: 16, 32, 48, 64, 128 e 256 px. Os navegadores e o Windows escolhem o melhor tamanho para cada contexto.',
+        },
+        {
+          question: 'Que imagem funciona melhor?',
+          answer: 'Um PNG quadrado de 256×256 ou maior dá o resultado mais nítido, já que todos os tamanhos mais pequenos são reduzidos com limpeza a partir dele.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'É gerado um ICO com vários tamanhos (16/32/48/64/128/256 px). Comece com uma imagem quadrada para o melhor resultado.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de imagens',
+          to: '/tools/image-converter',
+          description: 'Converta entre JPG, PNG, WebP, AVIF e mais.',
+        },
+        {
+          label: 'Converter SVG para PNG',
+          to: '/tools/convert-svg-to-png',
+          description: 'Rasterize um logótipo SVG antes de criar um ícone.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Crie uma imagem quadrada antes de gerar o ícone.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Crie uma origem transparente para o ícone.',
+        },
+      ],
+      embed: {
+        title: 'Converter PNG para ICO',
+        description: 'Carregue um PNG (uma imagem quadrada funciona melhor). A saída está fixada em ICO e é gerado um verdadeiro ícone com vários tamanhos, contendo versões de 16, 32, 48, 64, 128 e 256 px.',
+      },
     },
     'svg-converter': {
       name: 'Conversor SVG',
@@ -780,19 +10225,511 @@ const ptPtToolPages = {
     },
     'convert-wav-to-mp3': {
       name: 'Converter WAV para MP3',
+      h1: 'Converter WAV para MP3 online',
       tagline: 'Reduza gravações WAV grandes e sem perdas a ficheiros MP3 amplamente compatíveis, para podcasts, partilha e armazenamento.',
+      metaTitle: 'Converter WAV para MP3 online (grátis) | Media Manipulator',
+      metaDescription: 'Conversor gratuito de WAV para MP3 online. Comprima gravações .wav sem perdas em ficheiros MP3 mais pequenos, na taxa de bits que escolher.',
+      ogTitle: 'Converter WAV para MP3 online',
+      ogDescription: 'Comprima gravações WAV em ficheiros MP3 amplamente compatíveis, na taxa de bits que escolher.',
+      intro: 'Os ficheiros WAV são sem perdas e grandes. O MP3 é o formato de áudio comprimido compatível com tudo: todos os telemóveis, portáteis e aplicações de música o reproduzem. O Media Manipulator recodifica o seu WAV para MP3 na taxa de bits que escolher, para que troque apenas uma pequena fração de qualidade por um ficheiro 5–10× mais pequeno.',
+      whatItDoes: [
+        'Recodifica gravações WAV para MP3 na taxa de bits que escolher.',
+        'Suporta taxas de amostragem, canais e taxa de bits personalizados (128 a 320 kbps).',
+        'Preserva o volume e evita reamostragens desnecessárias.',
+        'Produz um ficheiro .mp3 padrão com etiquetas ID3.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar WAV',
+          description: 'Largue qualquer ficheiro .wav do seu computador.',
+        },
+        {
+          title: 'Escolher a taxa de bits',
+          description: '192 kbps para voz, 256–320 kbps para música.',
+        },
+        {
+          title: 'Codificar MP3',
+          description: 'O FFmpeg codifica um MP3 limpo com as definições escolhidas.',
+        },
+        {
+          title: 'Transferir MP3',
+          description: 'Guarde um .mp3 amplamente compatível.',
+        },
+      ],
+      advancedDetails: [
+        'Por baixo, usa codificação ao estilo LAME através do FFmpeg.',
+        'O MP3 é um codec com perdas: a qualidade estabiliza por volta dos 256 kbps para música. Os conteúdos de voz soam muito bem a 128–192 kbps.',
+        'Se precisar de ficheiros mais pequenos sem perdas, use FLAC ou ALAC. Use Opus (em OGG) para os ficheiros com perdas modernos mais pequenos, quando controla o leitor.',
+      ],
+      whyItMatters: [
+        'Os ficheiros WAV são 5–10× maiores do que o MP3 equivalente em taxas de bits sensatas.',
+        'O MP3 reproduz em todos os dispositivos, sem problemas de compatibilidade de codecs.',
+        'As plataformas de podcasts, audiolivros e música normalmente exigem ou preferem envios em MP3.',
+      ],
+      useCases: [
+        {
+          title: 'Episódios de podcast',
+          description: 'Masterize em WAV, publique em MP3 a 96–128 kbps em mono.',
+        },
+        {
+          title: 'Notas de voz',
+          description: 'Reduza gravações do telemóvel antes de as partilhar ou arquivar.',
+        },
+        {
+          title: 'Demos musicais',
+          description: 'Envie misturas a 256–320 kbps sem anexos enormes.',
+        },
+        {
+          title: 'Incorporar num site',
+          description: 'Use MP3 pela compatibilidade: todos os navegadores o reproduzem nativamente.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Escolha a taxa de bits, a taxa de amostragem e a disposição de canais exatas.',
+        'Grátis, sem registo, sem marcas de água; a saída é inteiramente sua.',
+        'O mesmo modelo de privacidade e retenção do resto das ferramentas.',
+      ],
+      privacyNote: 'O seu WAV é codificado em MP3 pelo FFmpeg no nosso servidor, na taxa de bits que escolher. Não está envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o ficheiro carregado em si não é alterado.',
+      faq: [
+        {
+          question: 'Que taxa de bits devo escolher?',
+          answer: '192 kbps é uma predefinição equilibrada. Use 128 kbps para voz e podcasts, 256–320 kbps para música.',
+        },
+        {
+          question: 'A qualidade do áudio vai baixar?',
+          answer: 'Ligeiramente: o MP3 tem perdas. A 256 kbps ou mais, a maioria dos ouvintes não distingue a diferença em relação ao WAV original.',
+        },
+        {
+          question: 'Posso converter outros formatos para MP3?',
+          answer: 'Sim: o conversor de áudio aceita FLAC, M4A/AAC, OGG, OPUS e mais. Use a ferramenta geral de conversão de áudio.',
+        },
+        {
+          question: 'Há um limite de tamanho de ficheiro?',
+          answer: 'São aceites tamanhos de ficheiro razoáveis. Para gravações muito longas, considere cortá-las primeiro.',
+        },
+      ],
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta entre qualquer par de formatos de áudio.',
+        },
+        {
+          label: 'Isolar a voz de uma música',
+          to: '/tools/isolate-vocals-from-song',
+          description: 'Extraia a voz de faixas musicais.',
+        },
+        {
+          label: 'Tutorial do conversor de áudio',
+          to: '/tutorials/audio/getting-started',
+          description: 'Percorra todas as opções de áudio, incluindo as ferramentas de IA.',
+        },
+      ],
+      embed: {
+        title: 'Converter WAV para MP3',
+        description: 'Carregue um ficheiro WAV e escolha MP3 como formato de saída. 192 kbps é uma boa predefinição para voz; use 256–320 kbps para música.',
+      },
     },
     'isolate-vocals-from-song': {
       name: 'Isolar a voz de uma música',
+      h1: 'Isolar a voz de uma música online',
       tagline: 'Extraia a voz de faixas musicais para remisturas, covers, transcrição e análise. Utilize apenas em música sobre a qual tenha direitos.',
+      metaTitle: 'Isolar a voz de uma música online (grátis) | Media Manipulator',
+      metaDescription: 'Isolamento de voz online gratuito. Extraia a voz de uma música para uma faixa limpa, para remisturas, covers, transcrição ou análise.',
+      ogTitle: 'Isolar a voz de uma música online',
+      ogDescription: 'Extraia a voz de uma música para uma faixa isolada e limpa, para remisturas, covers, transcrição ou análise.',
+      intro: 'A separação de fontes com IA consegue extrair a pista vocal de uma mistura finalizada: ótimo para remisturas, covers, preparação de karaoke ou transcrição de letras. O Media Manipulator executa a separação no nosso próprio servidor GPU. O resultado é uma única faixa vocal que pode transferir e usar em qualquer lado, desde que tenha o direito de o fazer com o material de origem.',
+      whatItDoes: [
+        'Executa a separação de fontes com IA para extrair a pista vocal de uma gravação musical.',
+        'Produz uma única faixa vocal isolada no mesmo formato do seu ficheiro (MP3 continua MP3), ou em FLAC, WAV ou MP3 se preferir.',
+        'Combina bem com ferramentas de limpeza de áudio, como a redução de ruído e o equalizador, para um resultado polido.',
+        'Aceita entradas em WAV, MP3, FLAC, M4A, OGG, OPUS e mais.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar a música',
+          description: 'Largue qualquer ficheiro de áudio comum com voz e música misturadas.',
+        },
+        {
+          title: 'Executar a separação por IA',
+          description: 'Um modelo na nossa GPU local separa a voz do resto da mistura.',
+        },
+        {
+          title: 'Limpar (opcional)',
+          description: 'Aplique redução de ruído, equalizador ou ganho para polir a faixa.',
+        },
+        {
+          title: 'Transferir a faixa vocal',
+          description: 'Guarde a voz isolada: no mesmo formato do seu ficheiro por predefinição, ou em FLAC, WAV ou MP3.',
+        },
+      ],
+      advancedDetails: [
+        'A separação de fontes é inerentemente imperfeita: a reverberação, as harmonias e os efeitos pesados infiltram-se no resultado.',
+        'Um MP3 ou outro ficheiro comprimido volta no seu próprio formato (MP3 a 320 kbps). Os ficheiros sem perdas (WAV, FLAC, AIFF) voltam como FLAC. O FLAC e o WAV mantêm mais detalhe para edição posterior numa DAW; o WAV é o maior.',
+        'Para karaoke (apenas instrumental), use o modo dedicado «Remover vocais» no conversor de áudio.',
+      ],
+      whyItMatters: [
+        'Produtores e remisturadores podem construir novas faixas em torno de uma voz existente.',
+        'Os cantores conseguem transcrever letras ou melodias com mais precisão.',
+        'Educadores e engenheiros de áudio usam faixas isoladas para estudar técnicas de mistura.',
+      ],
+      useCases: [
+        {
+          title: 'Remisturas e covers',
+          description: 'Construa um novo instrumental em torno de uma voz isolada.',
+        },
+        {
+          title: 'Transcrição de letras e melodias',
+          description: 'Obtenha um sinal mais limpo para transcrição manual ou por IA.',
+        },
+        {
+          title: 'Preparação de karaoke',
+          description: 'Combine a voz isolada com uma versão instrumental separada.',
+        },
+        {
+          title: 'Prática de engenharia de áudio',
+          description: 'Estude técnicas de mistura em gravações comerciais.',
+        },
+      ],
+      whyMediaManipulator: [
+        'IA na nossa GPU local: nenhum fornecedor de IA externo vê o seu áudio.',
+        'Combine equalizador, redução de ruído e corte num único carregamento.',
+        'Grátis, sem registo, sem marcas de água no resultado.',
+      ],
+      privacyNote: 'A sua música é separada em faixas pelo Demucs no nosso próprio servidor GPU e só a faixa vocal lhe é devolvida. Não está envolvido nenhum serviço de áudio externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um ficheiro novo; o ficheiro carregado em si não é alterado.',
+      faq: [
+        {
+          question: 'A separação é totalmente limpa?',
+          answer: 'Nenhuma ferramenta de separação de fontes é perfeita. Conte com alguns artefactos, sobretudo em torno de reverberação pesada e harmonias. Escolha a saída em FLAC ou WAV se tencionar limpar a faixa depois numa DAW.',
+        },
+        {
+          question: 'Que formatos de áudio são suportados?',
+          answer: 'WAV, MP3, FLAC, M4A/AAC, OGG, OPUS e a maioria dos outros formatos de áudio comuns.',
+        },
+        {
+          question: 'Posso usar isto em música protegida por direitos de autor?',
+          answer: 'Apenas se for titular dos direitos, tiver uma licença ou estiver abrangido pela utilização justa na sua jurisdição. É responsável pela forma como usa o resultado.',
+        },
+        {
+          question: 'Onde posso obter apenas o instrumental?',
+          answer: 'Use o modo de IA «Remover vocais» no conversor de áudio: o mesmo carregamento, um resultado diferente.',
+        },
+      ],
+      related: [
+        {
+          label: 'Conversor de áudio',
+          to: '/tools/audio-converter',
+          description: 'Converta e limpe a faixa depois do isolamento.',
+        },
+        {
+          label: 'Converter WAV para MP3',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Comprima a faixa WAV em MP3 para partilhar.',
+        },
+        {
+          label: 'Tutorial do conversor de áudio',
+          to: '/tutorials/audio/getting-started',
+          description: 'Percorra todas as opções de áudio, incluindo as ferramentas de IA.',
+        },
+      ],
+      embed: {
+        title: 'Isolar a voz',
+        description: 'Carregue uma música e prima o botão: a opção Isolar vocais já está selecionada. O resultado volta no mesmo formato do seu ficheiro (MP3 continua MP3); escolha FLAC ou WAV em Formato de saída para uma versão sem perdas.',
+      },
     },
     'image-converter': {
       name: 'Conversor de imagens',
+      h1: 'Conversor de imagens online grátis',
       tagline: 'Converta entre JPG, PNG, WebP, AVIF, GIF e mais, com controlo da qualidade, do redimensionamento, do recorte e dos metadados.',
+      metaTitle: 'Conversor de imagens online grátis | Media Manipulator',
+      metaDescription: 'Conversor de imagens online gratuito para JPG, PNG, WebP, AVIF, GIF e HEIC. Redimensione, comprima, recorte e remova metadados num só carregamento.',
+      ogTitle: 'Conversor de imagens online grátis',
+      ogDescription: 'Converta JPG, PNG, WebP, AVIF, GIF e HEIC. Redimensione, comprima e remova metadados num só carregamento.',
+      intro: 'Uma única imagem precisa muitas vezes de viver em vários sítios: o seu site, uma apresentação, uma peça impressa, um anúncio num marketplace. Cada um prefere um formato diferente. O Media Manipulator trata todos os formatos de imagem comuns num só lugar, com controlo fino da qualidade, do redimensionamento e dos metadados.',
+      whatItDoes: [
+        'Converte entre JPG, PNG, WebP, AVIF, GIF, HEIC e mais.',
+        'Redimensione, recorte, rode e aplique filtros visuais numa só passagem.',
+        'Remova ou mantenha os metadados EXIF/IPTC/XMP, conforme necessário.',
+        'Ferramentas de IA: desfocagem de rostos, remoção de fundo, ampliação e ocultação de texto/dados pessoais.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar imagem',
+          description: 'Largue qualquer ficheiro de imagem comum.',
+        },
+        {
+          title: 'Escolher o formato de saída',
+          description: 'JPG, PNG, WebP, AVIF, GIF.',
+        },
+        {
+          title: 'Ajustar qualidade e metadados',
+          description: 'Redimensione, recorte ou remova o EXIF.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde a imagem convertida.',
+        },
+      ],
+      advancedDetails: [
+        'WebP e AVIF dão os ficheiros mais pequenos para a web; o AVIF supera muitas vezes o WebP com a mesma qualidade visual.',
+        'O PNG é sem perdas e suporta transparência; é ótimo para recursos de interface e capturas de ecrã.',
+        'O JPG é o formato de troca mais seguro para fotografias.',
+      ],
+      whyItMatters: [
+        'Diferentes plataformas e ferramentas aceitam diferentes formatos de imagem.',
+        'Ficheiros de imagem mais pequenos carregam as páginas mais depressa, e a Google classifica melhor as páginas mais rápidas.',
+        'Remover os metadados antes de partilhar protege a sua privacidade.',
+      ],
+      useCases: [
+        {
+          title: 'Otimização para a web',
+          description: 'Converta fotografias PNG para WebP/AVIF para reduzir o peso da página.',
+        },
+        {
+          title: 'Partilha entre plataformas',
+          description: 'Converta fotografias HEIC do iPhone para JPG.',
+        },
+        {
+          title: 'Anúncios em marketplaces',
+          description: 'Remova os metadados e redimensione antes de publicar.',
+        },
+        {
+          title: 'Impressão e apresentações',
+          description: 'Produza um JPG com uma predefinição de alta qualidade.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Um só carregamento cobre conversão, redimensionamento, recorte, filtros, IA e metadados.',
+        'Gratuito, sem registo, sem marcas de água.',
+        'As ferramentas de IA correm no nosso próprio servidor com GPU.',
+      ],
+      privacyNote: 'A sua imagem é convertida, e redimensionada ou recortada se o pediu, pelo ImageMagick no nosso servidor. Nada é enviado para um serviço externo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O original nunca é alterado: transfere um ficheiro novo.',
+      faq: [
+        {
+          question: 'Qual é o melhor formato de imagem?',
+          answer: 'Depende: WebP/AVIF para a web, PNG para transparência, JPG para compatibilidade.',
+        },
+        {
+          question: 'Posso converter em lote?',
+          answer: 'A ferramenta gratuita converte uma imagem de cada vez. Faça várias conversões em sequência.',
+        },
+        {
+          question: 'Remove os metadados?',
+          answer: 'Só se definir o Modo de metadados como «Remover». A predefinição é manter os metadados.',
+        },
+        {
+          question: 'Funciona com HEIC?',
+          answer: 'Sim. As fotografias HEIC do iPhone convertem-se sem problemas para JPG, PNG ou WebP.',
+        },
+      ],
+      related: [
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Redimensione para dimensões exatas em píxeis.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza o tamanho dos ficheiros de imagem para a web.',
+        },
+        {
+          label: 'Imagem para PDF',
+          to: '/tools/image-to-pdf',
+          description: 'Coloque uma imagem num documento PDF.',
+        },
+        {
+          label: 'Conversor PDF',
+          to: '/tools/pdf-converter',
+          description: 'Converta PDF em imagens e vice-versa.',
+        },
+        {
+          label: 'Converter HEIC para JPG',
+          to: '/tools/convert-heic-to-jpg',
+          description: 'Converta fotografias HEIC do iPhone para JPG.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Apague automaticamente o fundo e obtenha um PNG transparente.',
+        },
+        {
+          label: 'Converter WebP para JPG',
+          to: '/tools/convert-webp-to-jpg',
+          description: 'Conversor dedicado de WebP → JPG.',
+        },
+        {
+          label: 'Tutorial do conversor de imagens',
+          to: '/tutorials/image/getting-started',
+          description: 'Guia completo de todas as opções.',
+        },
+      ],
+      embed: {
+        title: 'Converter uma imagem',
+        description: 'Carregue qualquer imagem e escolha o formato de saída, a qualidade e as definições de redimensionamento/recorte. O JPG é adequado para fotografias, o PNG mantém a transparência e o WebP/AVIF dão os ficheiros mais pequenos para a web.',
+      },
     },
     'video-converter': {
       name: 'Conversor de vídeo',
+      h1: 'Conversor de vídeo online grátis',
       tagline: 'Converta entre MP4, WebM, MOV, AVI, MKV e mais, com controlo total dos codecs, da resolução e do áudio.',
+      metaTitle: 'Conversor de vídeo online grátis | Media Manipulator',
+      metaDescription: 'Conversor de vídeo online gratuito para MP4, WebM, MOV, AVI, MKV e mais. Escolha os codecs, a taxa de bits, a resolução e as definições de áudio.',
+      ogTitle: 'Conversor de vídeo online grátis',
+      ogDescription: 'Converta MP4, WebM, MOV, AVI, MKV, FLV, WMV e mais. Escolha o codec, a taxa de bits e as definições de áudio.',
+      intro: 'Diferentes plataformas pedem diferentes formatos de vídeo. Edite num Mac em MOV, publique na web em MP4 ou WebM, arquive em MKV. O Media Manipulator trata todos os contentores e codecs de vídeo comuns num só lugar, com controlo total da taxa de bits, da resolução e do áudio.',
+      whatItDoes: [
+        'Converte entre MP4, WebM, MOV, AVI, MKV, FLV, WMV e ProRes.',
+        'Escolha o codec (H.264, H.265, VP9, ProRes, DNxHD).',
+        'Redimensione, altere a taxa de fotogramas, corte e recodifique o áudio.',
+        'Aplique filtros e correção de cor, se quiser.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregar vídeo',
+          description: 'Largue qualquer contentor de vídeo comum.',
+        },
+        {
+          title: 'Escolher o formato de destino',
+          description: 'MP4, WebM, MOV, AVI, MKV.',
+        },
+        {
+          title: 'Ajustar codec e qualidade',
+          description: 'Taxa de bits, resolução, áudio.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o vídeo convertido.',
+        },
+      ],
+      advancedDetails: [
+        'H.264 em MP4 é a predefinição segura em qualquer lado.',
+        'H.265 (HEVC) e VP9 dão ficheiros ~25–50% mais pequenos com a mesma qualidade visual, mas precisam de um leitor moderno.',
+        'Para entregas de edição, ProRes (em MOV) ou DNxHD (em MOV/MXF) preservam a máxima qualidade.',
+      ],
+      whyItMatters: [
+        'As aplicações de edição, os navegadores e as redes sociais preferem, cada um, formatos diferentes.',
+        'Ficheiros de vídeo mais pequenos melhoram o tempo de carregamento das páginas e os custos de largura de banda.',
+        'A recodificação permite corrigir codecs errados ou ficheiros que não reproduzem.',
+      ],
+      useCases: [
+        {
+          title: 'MOV → MP4',
+          description: 'Torne reproduzíveis em qualquer lado as filmagens feitas com equipamentos Apple.',
+        },
+        {
+          title: 'AVI → MP4',
+          description: 'Modernize um vídeo de arquivo antigo.',
+        },
+        {
+          title: 'MP4 → WebM',
+          description: 'Reduza vídeo para a web para navegadores modernos.',
+        },
+        {
+          title: 'Entregas para edição',
+          description: 'Exporte ProRes ou DNxHD para edição de alta qualidade.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Controlo total do codec, da taxa de bits e do áudio num só carregamento.',
+        'Transcrição com IA disponível no mesmo ficheiro.',
+        'Gratuito, sem registo, sem marcas de água.',
+      ],
+      privacyNote: 'O seu vídeo é recodificado pelo FFmpeg no nosso servidor para o contentor e o codec que escolher. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem não é tocado e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Qual é o melhor formato de saída?',
+          answer: 'MP4 com H.264 para compatibilidade, WebM com VP9 para os ficheiros mais pequenos na web.',
+        },
+        {
+          question: 'Posso cortar antes de converter?',
+          answer: 'Sim. A secção de corte do formulário permite encurtar o clipe antes da recodificação.',
+        },
+        {
+          question: 'O meu áudio vai manter-se sincronizado?',
+          answer: 'Sim. O FFmpeg mantém a sincronização entre áudio e vídeo. Se alterar a taxa de fotogramas ou a velocidade, o áudio é reamostrado em conformidade.',
+        },
+        {
+          question: 'Há limite de tamanho de ficheiro?',
+          answer: 'Ficheiros muito grandes podem ser rejeitados no plano gratuito. Experimente primeiro baixar a resolução.',
+        },
+      ],
+      related: [
+        {
+          label: 'Converter MOV para MP4',
+          to: '/tools/convert-mov-to-mp4',
+          description: 'Torne reproduzíveis em qualquer lado as filmagens QuickTime/iPhone.',
+        },
+        {
+          label: 'Converter WebM para MP4',
+          to: '/tools/convert-webm-to-mp4',
+          description: 'Transforme vídeo da web num MP4 editável.',
+        },
+        {
+          label: 'Converter MP4 para WebM',
+          to: '/tools/convert-mp4-to-webm',
+          description: 'Reduza um MP4 para WebM VP9 para a web.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Compressor dedicado para reduzir ficheiros de vídeo.',
+        },
+        {
+          label: 'Converter vídeo em GIF',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Transforme clipes curtos em GIF animados.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Guarde a banda sonora em MP3, WAV ou M4A.',
+        },
+        {
+          label: 'Cortar vídeo',
+          to: '/tools/video-trimmer',
+          description: 'Corte um clipe na parte que pretende, sem perdas.',
+        },
+        {
+          label: 'Redimensionar vídeo',
+          to: '/tools/resize-video',
+          description: 'Altere a resolução para 1080p, 720p ou um valor personalizado.',
+        },
+        {
+          label: 'Rodar vídeo',
+          to: '/tools/rotate-video',
+          description: 'Corrija filmagens deitadas ou de pernas para o ar.',
+        },
+        {
+          label: 'Transcrever vídeo',
+          to: '/tools/transcribe-video',
+          description: 'Extraia a fala de um vídeo como texto ou legendas VTT.',
+        },
+        {
+          label: 'Interpolação de fotogramas com IA',
+          to: '/tools/ai-frame-interpolation',
+          description: 'Aumente a taxa de fotogramas de um vídeo para 48, 60 ou 120 fps com fotogramas gerados por IA.',
+        },
+        {
+          label: 'Transcodificar vídeo para HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Gere um pacote HLS adaptativo a partir de qualquer vídeo.',
+        },
+        {
+          label: 'Transcodificar vídeo para DASH',
+          to: '/tools/transcode-to-dash',
+          description: 'Gere um pacote MPEG-DASH AV1/VP9 a partir de qualquer vídeo.',
+        },
+        {
+          label: 'Tutorial do conversor de vídeo',
+          to: '/tutorials/video/getting-started',
+          description: 'Guia completo de todas as opções.',
+        },
+      ],
+      embed: {
+        title: 'Converter um vídeo',
+        description: 'Carregue qualquer vídeo e escolha o contentor/codec de destino. A predefinição de qualidade «média» é uma boa escolha de partida. O MP4 reproduz em qualquer lado; o WebM dá ficheiros mais pequenos nos navegadores modernos.',
+      },
     },
     'mp4-converter': {
       name: 'Conversor MP4',
@@ -800,23 +10737,567 @@ const ptPtToolPages = {
     },
     'convert-mov-to-mp4': {
       name: 'Converter MOV para MP4',
+      h1: 'Converter MOV para MP4 online grátis',
       tagline: 'Transforme ficheiros .mov do QuickTime e do iPhone num MP4 universal, que se reproduz e envia em qualquer lado.',
+      metaTitle: 'Converter MOV para MP4 online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de MOV para MP4. Converta vídeos .mov do QuickTime e do iPhone num MP4 que se reproduz em qualquer lado. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter MOV para MP4 online grátis',
+      ogDescription: 'Converta ficheiros MOV do QuickTime / iPhone num MP4 universal que se envia e reproduz em qualquer dispositivo.',
+      intro: 'MOV é o contentor QuickTime da Apple: é o que os iPhones, os Macs e muitas câmaras gravam por predefinição. Funciona muito bem dentro do ecossistema Apple, mas pode recusar-se a reproduzir no Windows, no Android ou em alguns formulários de envio. Converter MOV para MP4 mantém o mesmo vídeo H.264 e o mesmo áudio AAC num contentor que o mundo inteiro aceita, normalmente sem alteração visível da qualidade.',
+      whatItDoes: [
+        'Converte ficheiros .mov do QuickTime / iPhone para MP4.',
+        'Fixa a saída em MP4 (H.264 + AAC) para que o resultado se reproduza em qualquer lado.',
+        'Adiciona -pix_fmt yuv420p e +faststart para que o MP4 se reproduza nos navegadores e comece instantaneamente.',
+        'Corte o MOV, redimensione-o ou escolha uma predefinição de qualidade no mesmo envio.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu MOV',
+          description: 'Largue um ficheiro .mov do seu iPhone, Mac ou câmara.',
+        },
+        {
+          title: 'A saída está fixa em MP4',
+          description: 'Não é preciso escolher o formato: o MP4 está definido para esta ferramenta.',
+        },
+        {
+          title: 'Converter',
+          description: 'Reempacotamos/recodificamos o vídeo num MP4 limpo.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o seu MP4, pronto para qualquer dispositivo ou plataforma.',
+        },
+      ],
+      advancedDetails: [
+        'A maioria dos ficheiros MOV já contém vídeo H.264, por isso a conversão é rápida e quase sem perdas na qualidade Alta.',
+        'Forçamos a crominância yuv420p para que o MP4 se reproduza no Safari e nas plataformas sociais que rejeitam vídeo 4:2:2/4:4:4.',
+        'Se o seu MOV contiver ProRes, o conversor transcodifica-o para H.264: escolha a qualidade Alta para manter o máximo de detalhe.',
+      ],
+      whyItMatters: [
+        'Muitas vezes, o MOV não se reproduz no Windows nem no Android sem codecs adicionais.',
+        'Muitos formulários de envio e editores aceitam MP4, mas rejeitam MOV.',
+        'O MP4 é o formato mais seguro para partilhar um vídeo do iPhone com qualquer pessoa.',
+      ],
+      useCases: [
+        {
+          title: 'Vídeos do iPhone',
+          description: 'Converta um .mov gravado num iPhone para que se reproduza num PC com Windows.',
+        },
+        {
+          title: 'Enviar para a web',
+          description: 'Transforme uma exportação do QuickTime num MP4 que um site aceite.',
+        },
+        {
+          title: 'Enviar a utilizadores sem Apple',
+          description: 'Partilhe filmagens com utilizadores de Android e Windows sem problemas de reprodução.',
+        },
+        {
+          title: 'Compatibilidade com editores',
+          description: 'Forneça um MP4 a editores que têm dificuldade com MOV em bruto.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Saída fixa num perfil MP4 comprovado: sem adivinhar definições.',
+        'O FFmpeg no servidor também trata de fontes ProRes em MOV e HEVC em MOV.',
+      ],
+      privacyNote: 'O seu MOV é recodificado pelo FFmpeg no nosso servidor num MP4 H.264 e AAC. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto MOV para MP4?',
+          answer: 'Carregue o seu ficheiro .mov e clique em converter: a saída já está definida como MP4, por isso não há mais nada a escolher.',
+        },
+        {
+          question: 'Converter MOV para MP4 perde qualidade?',
+          answer: 'A maioria dos ficheiros MOV usa H.264, por isso, na qualidade Alta, a recodificação é visualmente quase sem perdas. As predefinições mais baixas trocam alguma qualidade por um ficheiro mais pequeno.',
+        },
+        {
+          question: 'Porque é que o MOV do meu iPhone não se reproduz no Windows?',
+          answer: 'O Windows pode não ter os codecs QuickTime/HEVC. O MP4 com H.264 + AAC reproduz-se sem software adicional.',
+        },
+        {
+          question: 'QuickTime para MP4 é a mesma coisa?',
+          answer: 'Sim: os ficheiros QuickTime usam o contentor .mov, por isso converter QuickTime para MP4 é exatamente esta ferramenta.',
+        },
+        {
+          question: 'Há marca de água ou registo?',
+          answer: 'Sem marca de água e sem necessidade de conta. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída está fixa em MP4 (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta qualquer vídeo para MP4.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o MP4 para e-mail ou para a web.',
+        },
+        {
+          label: 'Converter vídeo em GIF',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Corte um clipe e exporte um GIF animado.',
+        },
+        {
+          label: 'Tutorial do conversor de vídeo',
+          to: '/tutorials/video/getting-started',
+          description: 'Percorra as opções de corte, redimensionamento e qualidade.',
+        },
+      ],
+      embed: {
+        title: 'Converter MOV para MP4',
+        description: 'Carregue o seu ficheiro .mov. A saída está fixa em MP4 (H.264 + AAC) para esta ferramenta, por isso basta carregar e converter.',
+      },
     },
     'convert-webm-to-mp4': {
       name: 'Converter WebM para MP4',
+      h1: 'Converter WebM para MP4 online grátis',
       tagline: 'Transforme vídeo .webm otimizado para a web num MP4 que pode editar, partilhar e reproduzir em qualquer dispositivo.',
+      metaTitle: 'Converter WebM para MP4 online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de WebM para MP4. Converta vídeo .webm (VP8/VP9) em MP4 (H.264 + AAC) para editores e dispositivos que não conseguem abrir WebM. Sem marca de água nem registo.',
+      ogTitle: 'Converter WebM para MP4 online grátis',
+      ogDescription: 'Converta vídeo .webm num MP4 universal que editores, telemóveis e televisores conseguem reproduzir.',
+      intro: 'WebM é um contentor moderno e aberto, criado para a web: ficheiros pequenos, ótimos para vídeo no navegador. Mas muitos editores de vídeo, dispositivos mais antigos e aplicações de mensagens não conseguem abrir WebM. Converter WebM para MP4 recodifica o vídeo VP8/VP9 em H.264 e o áudio em AAC, dando-lhe um ficheiro que funciona no Premiere, no Resolve, em telemóveis e em televisores.',
+      whatItDoes: [
+        'Converte vídeo .webm (VP8/VP9 + Vorbis/Opus) para MP4.',
+        'Fixa a saída em MP4 (H.264 + AAC) para a máxima compatibilidade.',
+        'Adiciona yuv420p e +faststart para que o MP4 se reproduza em todos os navegadores e comece instantaneamente.',
+        'Uma captura de ecrã em WebM pode ser cortada ou redimensionada a caminho do MP4.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu WebM',
+          description: 'Largue um ficheiro .webm transferido da web ou de um gravador de ecrã.',
+        },
+        {
+          title: 'A saída está fixa em MP4',
+          description: 'O MP4 está predefinido para esta ferramenta: nada a configurar.',
+        },
+        {
+          title: 'Converter',
+          description: 'Transcodificamos VP8/VP9 para H.264 + AAC.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o seu MP4 para editar ou reproduzir em qualquer lado.',
+        },
+      ],
+      advancedDetails: [
+        'O WebM usa vídeo VP8/VP9, que a maioria dos editores não consegue importar; o MP4/H.264 importa-se sem problemas em todos os editores não lineares.',
+        'Forçamos yuv420p para que o MP4 se reproduza no Safari e nas plataformas sociais.',
+        'Se o que realmente quer é um ficheiro web mais pequeno, a ferramenta inversa, de MP4 para WebM, produz um WebM VP9.',
+      ],
+      whyItMatters: [
+        'A maioria dos editores de computador não consegue importar WebM, mas trata o MP4 nativamente.',
+        'Alguns telemóveis, televisores e aplicações de conversação recusam-se a reproduzir WebM.',
+        'O MP4 é o formato de entrega seguro para vídeo que transferiu como WebM.',
+      ],
+      useCases: [
+        {
+          title: 'Editar vídeo transferido',
+          description: 'Leve um clipe .webm para o Premiere ou o Resolve como MP4.',
+        },
+        {
+          title: 'Gravações de ecrã',
+          description: 'Converta uma captura de ecrã em WebM num MP4 fácil de partilhar.',
+        },
+        {
+          title: 'Reproduzir em dispositivos mais antigos',
+          description: 'Faça um ficheiro WebM reproduzir-se num televisor ou telemóvel que não o suporte.',
+        },
+        {
+          title: 'Aplicações de mensagens',
+          description: 'Envie vídeo para aplicações que aceitam MP4, mas não WebM.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O FFmpeg no servidor descodifica VP8 e VP9 de forma fiável.',
+        'Saída fixa num perfil MP4 comprovado.',
+      ],
+      privacyNote: 'O seu WebM é recodificado pelo FFmpeg no nosso servidor, de VP8 ou VP9 para um MP4 H.264. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto WebM para MP4?',
+          answer: 'Carregue o seu ficheiro .webm e clique em converter: a saída já está definida como MP4.',
+        },
+        {
+          question: 'Porque é que o meu editor não consegue abrir WebM?',
+          answer: 'A maioria dos editores não inclui importação de VP8/VP9. Converter para MP4 (H.264) resolve a importação.',
+        },
+        {
+          question: 'O ficheiro vai ficar maior?',
+          answer: 'O MP4/H.264 pode ser ligeiramente maior do que o WebM VP9 com a mesma qualidade. Escolha uma predefinição de qualidade mais baixa se o tamanho for importante.',
+        },
+        {
+          question: 'Mantém o áudio?',
+          answer: 'Sim: o áudio Vorbis/Opus é recodificado em AAC e mantém-se sincronizado.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída está fixa em MP4 (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta qualquer vídeo para MP4.',
+        },
+        {
+          label: 'Converter MP4 para WebM',
+          to: '/tools/convert-mp4-to-webm',
+          description: 'O inverso: crie um WebM VP9 pequeno.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o MP4 para partilhar.',
+        },
+      ],
+      embed: {
+        title: 'Converter WebM para MP4',
+        description: 'Carregue o seu ficheiro .webm. A saída está fixa em MP4 (H.264 + AAC) para esta ferramenta, por isso basta carregar e converter.',
+      },
     },
     'convert-avi-to-mp4': {
       name: 'Converter AVI para MP4',
+      h1: 'Converter AVI para MP4 online grátis',
       tagline: 'Modernize vídeos .avi antigos num MP4 compacto, que se reproduz em qualquer telemóvel, navegador e televisor.',
+      metaTitle: 'Converter AVI para MP4 online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de AVI para MP4. Converta vídeos .avi antigos (Xvid/DivX) em MP4 (H.264 + AAC) que se reproduz em qualquer lado. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter AVI para MP4 online grátis',
+      ogDescription: 'Converta vídeo .avi antigo num MP4 moderno e compacto que se reproduz em qualquer dispositivo.',
+      intro: 'AVI é um contentor clássico do Windows, da era do DivX/Xvid. Os ficheiros são muitas vezes grandes e usam codecs que os telemóveis, navegadores e televisores modernos já não reproduzem. Converter AVI para MP4 recodifica o vídeo no eficiente H.264 e o áudio em AAC, produzindo um ficheiro mais pequeno que se reproduz em qualquer coisa que tenha hoje.',
+      whatItDoes: [
+        'Converte .avi antigos (Xvid, DivX, MJPEG e mais) para MP4.',
+        'Fixa a saída em MP4 (H.264 + AAC) para reprodução moderna.',
+        'Normalmente produz um ficheiro visivelmente mais pequeno do que o AVI de origem.',
+        'Um AVI antigo pode ser cortado e redimensionado enquanto é convertido.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu AVI',
+          description: 'Largue um ficheiro .avi antigo de um arquivo ou de uma câmara.',
+        },
+        {
+          title: 'A saída está fixa em MP4',
+          description: 'O MP4 está predefinido: nada a configurar.',
+        },
+        {
+          title: 'Converter',
+          description: 'Recodificamos para H.264 + AAC.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde um MP4 moderno e mais pequeno.',
+        },
+      ],
+      advancedDetails: [
+        'O AVI usa habitualmente Xvid/DivX (MPEG-4 Parte 2); o H.264 é cerca de duas vezes mais eficiente, por isso o MP4 é normalmente muito mais pequeno.',
+        'Forçamos yuv420p para que o resultado se reproduza nos navegadores e nas plataformas sociais.',
+        'As capturas AVI entrelaçadas podem beneficiar da opção de desentrelaçamento do conversor de vídeo completo.',
+      ],
+      whyItMatters: [
+        'Os ficheiros AVI são grandes e cada vez mais impossíveis de reproduzir em dispositivos modernos.',
+        'O MP4/H.264 é mais pequeno e reproduz-se em qualquer lado.',
+        'Converter arquivos antigos para MP4 garante o seu futuro.',
+      ],
+      useCases: [
+        {
+          title: 'Arquivos de vídeo antigos',
+          description: 'Modernize AVIs de câmara de vídeo ou de cópias de DVD em MP4.',
+        },
+        {
+          title: 'Libertar espaço',
+          description: 'Reduza um AVI grande a um MP4 mais pequeno.',
+        },
+        {
+          title: 'Reprodução em telemóveis e televisores',
+          description: 'Faça um AVI reproduzir-se em dispositivos que deixaram de suportar AVI.',
+        },
+        {
+          title: 'Enviar para a web',
+          description: 'Transforme um AVI num MP4 que um site aceite.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O FFmpeg no servidor descodifica codecs AVI antigos com que outras ferramentas se engasgam.',
+        'Saída fixa num perfil MP4 comprovado.',
+      ],
+      privacyNote: 'O seu AVI é recodificado pelo FFmpeg no nosso servidor num MP4 H.264 moderno. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto AVI para MP4?',
+          answer: 'Carregue o seu ficheiro .avi e clique em converter: a saída já está definida como MP4.',
+        },
+        {
+          question: 'O MP4 será mais pequeno do que o AVI?',
+          answer: 'Normalmente sim. O H.264 é muito mais eficiente do que os codecs Xvid/DivX que a maioria dos AVIs usa.',
+        },
+        {
+          question: 'Suporta AVIs DivX/Xvid antigos?',
+          answer: 'Sim: o FFmpeg descodifica os codecs AVI comuns e recodifica-os em H.264.',
+        },
+        {
+          question: 'Vou perder qualidade?',
+          answer: 'A recodificação tem perdas, mas na qualidade Alta a diferença é mínima e o ficheiro continua a ser mais pequeno.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída está fixa em MP4 (H.264 + AAC, yuv420p, +faststart).',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta qualquer vídeo para MP4.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza ainda mais o MP4.',
+        },
+        {
+          label: 'Tutorial do conversor de vídeo',
+          to: '/tutorials/video/getting-started',
+          description: 'Percorra o corte, o redimensionamento e o desentrelaçamento.',
+        },
+      ],
+      embed: {
+        title: 'Converter AVI para MP4',
+        description: 'Carregue o seu ficheiro .avi. A saída está fixa em MP4 (H.264 + AAC) para esta ferramenta, por isso basta carregar e converter.',
+      },
     },
     'convert-mkv-to-mp4': {
       name: 'Converter MKV para MP4',
+      h1: 'Converter MKV para MP4 online grátis',
       tagline: 'Transforme ficheiros Matroska .mkv num MP4 que se transmite, envia e reproduz em dispositivos que não aceitam MKV.',
+      metaTitle: 'Converter MKV para MP4 online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de MKV para MP4. Converta vídeo Matroska .mkv em MP4 (H.264 + AAC) para dispositivos e sites que não conseguem reproduzir MKV. Sem marca de água nem registo.',
+      ogTitle: 'Converter MKV para MP4 online grátis',
+      ogDescription: 'Converta vídeo Matroska .mkv num MP4 universal que se reproduz e envia em qualquer lado.',
+      intro: 'MKV (Matroska) é um contentor flexível, popular para vídeo de alta qualidade, mas muitos telemóveis, navegadores, televisores inteligentes e formulários de envio não o reproduzem. Converter MKV para MP4 coloca o vídeo num contentor que esses dispositivos entendem. O Media Manipulator recodifica para H.264 + AAC para que o resultado se reproduza e envie sem problemas.',
+      whatItDoes: [
+        'Converte ficheiros Matroska .mkv para MP4.',
+        'Fixa a saída em MP4 (H.264 + AAC) para um amplo suporte de dispositivos.',
+        'Adiciona yuv420p e +faststart para que o MP4 se transmita e comece instantaneamente.',
+        'Corte um episódio em MKV ou altere o seu tamanho antes de o MP4 ser escrito.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu MKV',
+          description: 'Largue um ficheiro .mkv.',
+        },
+        {
+          title: 'A saída está fixa em MP4',
+          description: 'O MP4 está predefinido para esta ferramenta.',
+        },
+        {
+          title: 'Converter',
+          description: 'Movemos/transcodificamos o vídeo para um MP4.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde um MP4 que se reproduz em qualquer lado.',
+        },
+      ],
+      advancedDetails: [
+        'Se o MKV já contiver H.264 + AAC, a conversão é rápida e visualmente sem perdas.',
+        'Forçamos yuv420p para que o MP4 se reproduza no Safari e nas plataformas sociais.',
+        'O MKV pode transportar muitas faixas de legendas/áudio; o conversor mantém o vídeo principal e a primeira faixa de áudio.',
+      ],
+      whyItMatters: [
+        'Muitos dispositivos e sites simplesmente não suportam MKV.',
+        'O MP4 é o contentor seguro para partilhar e enviar.',
+        'A conversão mantém o seu vídeo de alta qualidade utilizável em qualquer lado.',
+      ],
+      useCases: [
+        {
+          title: 'Reprodução em telemóveis e televisores',
+          description: 'Faça um MKV reproduzir-se num dispositivo que o rejeita.',
+        },
+        {
+          title: 'Enviar para a web',
+          description: 'Transforme um MKV num MP4 que um site aceite.',
+        },
+        {
+          title: 'Entrega a editores',
+          description: 'Importe um MP4 em editores que têm dificuldade com MKV.',
+        },
+        {
+          title: 'Uniformizar uma biblioteca',
+          description: 'Alinhe as transferências em MKV com a sua coleção em MP4.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O FFmpeg no servidor trata de MKV com várias faixas.',
+        'Saída fixa num perfil MP4 comprovado.',
+      ],
+      privacyNote: 'O seu MKV é recodificado pelo FFmpeg no nosso servidor num MP4 que os telemóveis e os navegadores reproduzem. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto MKV para MP4?',
+          answer: 'Carregue o seu ficheiro .mkv e clique em converter: a saída já está definida como MP4.',
+        },
+        {
+          question: 'Converter MKV para MP4 perde qualidade?',
+          answer: 'Se o MKV já usar H.264, o resultado é visualmente sem perdas na qualidade Alta. Caso contrário, é uma recodificação normal com perdas.',
+        },
+        {
+          question: 'O que acontece às faixas de áudio ou de legendas adicionais?',
+          answer: 'O conversor mantém o vídeo principal e a primeira faixa de áudio. Para necessidades de várias faixas, contacte-nos e podemos analisar a seleção de faixas.',
+        },
+        {
+          question: 'Porque é que o meu MKV não se reproduz?',
+          answer: 'Muitos telemóveis, televisores, navegadores e sites não suportam o contentor MKV, mesmo quando os codecs no interior são comuns.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída está fixa em MP4 (H.264 + AAC, yuv420p, +faststart). O vídeo principal e a primeira faixa de áudio são mantidos.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta qualquer vídeo para MP4.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o MP4 para partilhar.',
+        },
+        {
+          label: 'Tutorial do conversor de vídeo',
+          to: '/tutorials/video/getting-started',
+          description: 'Percorra todas as opções.',
+        },
+      ],
+      embed: {
+        title: 'Converter MKV para MP4',
+        description: 'Carregue o seu ficheiro .mkv. A saída está fixa em MP4 (H.264 + AAC) para esta ferramenta, por isso basta carregar e converter.',
+      },
     },
     'convert-mp4-to-webm': {
       name: 'Converter MP4 para WebM',
+      h1: 'Converter MP4 para WebM online grátis',
       tagline: 'Recodifique MP4 num WebM VP9 aberto e mais pequeno, perfeito para vídeo web de carregamento rápido.',
+      metaTitle: 'Converter MP4 para WebM online grátis | Media Manipulator',
+      metaDescription: 'Conversor online gratuito de MP4 para WebM. Recodifique MP4 em WebM VP9 + Opus para vídeo web mais pequeno e mais rápido. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Converter MP4 para WebM online grátis',
+      ogDescription: 'Converta MP4 num WebM VP9 aberto e mais pequeno, ideal para incorporar na web moderna.',
+      intro: 'WebM é o formato de vídeo aberto criado para a web. Com vídeo VP9 e áudio Opus, produz ficheiros mais pequenos do que o MP4 com a mesma qualidade, o que significa páginas que carregam mais depressa com vídeo incorporado. Converter o seu MP4 para WebM é a escolha certa quando controla o leitor: todos os navegadores modernos o suportam nativamente.',
+      whatItDoes: [
+        'Converte MP4 (H.264) em WebM (VP9 + Opus).',
+        'Fixa a saída em WebM para incorporações consistentes na web aberta.',
+        'Normalmente produz um ficheiro mais pequeno do que o MP4 com a mesma qualidade visual.',
+        'Encurte ou reduza o clipe e escolha uma predefinição de qualidade antes de o WebM ser criado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu MP4',
+          description: 'Largue um ficheiro .mp4.',
+        },
+        {
+          title: 'A saída está fixa em WebM',
+          description: 'O WebM (VP9 + Opus) está predefinido para esta ferramenta.',
+        },
+        {
+          title: 'Converter',
+          description: 'Recodificamos H.264 em VP9 e AAC em Opus.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde um .webm mais pequeno para a web.',
+        },
+      ],
+      advancedDetails: [
+        'A saída WebM usa vídeo VP9 com áudio Opus sempre que disponível, recorrendo a VP8 + Vorbis em compilações do FFmpeg sem VP9/Opus.',
+        'A codificação VP9 é mais lenta do que a H.264, mas produz ficheiros ~25-50% mais pequenos com qualidade comparável.',
+        'Use a etiqueta <video> com uma fonte WebM e uma fonte MP4 para que os navegadores escolham a melhor que suportam.',
+      ],
+      whyItMatters: [
+        'Vídeo web mais pequeno significa páginas mais rápidas e faturas de largura de banda mais baixas.',
+        'O WebM é isento de royalties e suportado por todos os navegadores modernos.',
+        'Um par WebM + MP4 cobre praticamente todos os navegadores com os ficheiros mais pequenos possíveis.',
+      ],
+      useCases: [
+        {
+          title: 'Vídeo de destaque de um site',
+          description: 'Sirva um clipe de fundo ou de destaque pequeno e de carregamento rápido.',
+        },
+        {
+          title: 'Incorporações na web aberta',
+          description: 'Incorpore vídeo sem preocupações com codecs proprietários.',
+        },
+        {
+          title: 'Poupança de largura de banda',
+          description: 'Reduza o tamanho de entrega em páginas de tráfego elevado.',
+        },
+        {
+          title: '<video> em HTML5',
+          description: 'Forneça uma fonte WebM ao lado de uma alternativa MP4.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Codificação VP9 + Opus com alternativa automática a VP8 + Vorbis.',
+        'Saída fixa em WebM para que o resultado seja previsível.',
+      ],
+      privacyNote: 'O seu vídeo é recodificado pelo FFmpeg no nosso servidor num WebM VP9. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como converto MP4 para WebM?',
+          answer: 'Carregue o seu ficheiro .mp4 e clique em converter: a saída já está definida como WebM.',
+        },
+        {
+          question: 'O WebM é mais pequeno do que o MP4?',
+          answer: 'Com a mesma qualidade visual, o WebM VP9 é normalmente 25-50% mais pequeno do que o MP4 H.264.',
+        },
+        {
+          question: 'Todos os navegadores suportam WebM?',
+          answer: 'Todos os navegadores modernos sim. Para navegadores mais antigos, forneça uma alternativa MP4 na sua etiqueta <video>.',
+        },
+        {
+          question: 'Porque é que a codificação WebM é mais lenta?',
+          answer: 'O VP9 exige mais computação do que o H.264. A recompensa é um ficheiro mais pequeno.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A saída está fixa em WebM (VP9 + Opus, ou VP8 + Vorbis se VP9/Opus não estiver disponível).',
+        ],
+      },
+      related: [
+        {
+          label: 'Converter WebM para MP4',
+          to: '/tools/convert-webm-to-mp4',
+          description: 'A direção inversa.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta qualquer vídeo para MP4.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o vídeo sem mudar o contentor.',
+        },
+      ],
+      embed: {
+        title: 'Converter MP4 para WebM',
+        description: 'Carregue o seu ficheiro .mp4. A saída está fixa em WebM (VP9 + Opus) para esta ferramenta, por isso basta carregar e converter.',
+      },
     },
     'mp4-to-mp3': {
       name: 'Converter MP4 para MP3',
@@ -860,51 +11341,1472 @@ const ptPtToolPages = {
     },
     'crop-video': {
       name: 'Recortar vídeo',
+      h1: 'Recortar vídeo online grátis',
       tagline: 'Elimine as margens de um vídeo: altere o enquadramento ou a proporção sem um editor.',
+      metaTitle: 'Recortar vídeo online grátis | Media Manipulator',
+      metaDescription: 'Recortador de vídeo online gratuito. Recorte as margens de um vídeo para o reenquadrar ou alterar a proporção. Saída em MP4, sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Recortar vídeo online grátis',
+      ogDescription: 'Recorte as margens de um vídeo para o reenquadrar ou alterar a proporção. Grátis, sem marca de água.',
+      intro: 'Recortar remove as margens exteriores de um vídeo: útil para reenquadrar um plano, eliminar barras pretas ou uma marca de água, ou alterar a proporção para uma plataforma. O recortador de vídeo do Media Manipulator recebe um retângulo em píxeis (onde começar e que tamanho ter) e exporta só essa área como um MP4 limpo.',
+      whatItDoes: [
+        'Recorta um vídeo para um retângulo que especifica em píxeis.',
+        'Remove barras pretas, margens, marcas de água ou regiões indesejadas.',
+        'Ajuda a reenquadrar para quadrado ou vertical para as plataformas sociais.',
+        'Exporta MP4 (H.264 + AAC) por predefinição.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu vídeo',
+          description: 'MP4, MOV, MKV, WebM, AVI ou M4V para recortar.',
+        },
+        {
+          title: 'Introduza o retângulo de recorte',
+          description: 'Defina o deslocamento X/Y e a largura/altura a manter.',
+        },
+        {
+          title: 'Recortar',
+          description: 'O FFmpeg recorta exatamente essa região e recodifica.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o vídeo recortado.',
+        },
+      ],
+      advancedDetails: [
+        'As coordenadas de recorte estão em píxeis a partir do canto superior esquerdo: X/Y é onde a área mantida começa, largura/altura é o seu tamanho.',
+        'O recorte recodifica o vídeo; a saída MP4 usa H.264 + AAC + yuv420p + faststart.',
+        'Para um enquadramento ao píxel numa pré-visualização, o conversor completo na página inicial oferece uma sobreposição visual de recorte.',
+      ],
+      whyItMatters: [
+        'O recorte reenquadra um plano sem voltar a filmar.',
+        'Remove barras pretas (letterboxing/pillarboxing) e margens indesejadas.',
+        'Alterar a proporção (por exemplo, para 9:16) ajuda o vídeo a adaptar-se a uma plataforma.',
+      ],
+      useCases: [
+        {
+          title: 'Torne-o vertical',
+          description: 'Recorte um clipe horizontal para 9:16 para Reels/Shorts/TikTok.',
+        },
+        {
+          title: 'Remover barras pretas',
+          description: 'Recorte o letterboxing.',
+        },
+        {
+          title: 'Ocultar uma marca de água',
+          description: 'Recorte um logótipo ou uma marca temporal no canto.',
+        },
+        {
+          title: 'Reenquadrar um motivo',
+          description: 'Aperte o plano sobre o que importa.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Recorte preciso ao píxel no servidor com o FFmpeg.',
+        'Saída MP4 limpa, sem marca de água.',
+      ],
+      privacyNote: 'O seu vídeo é recortado para o retângulo que desenhou e recodificado pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como recorto um vídeo?',
+          answer: 'Carregue-o, introduza o retângulo a manter (deslocamento X/Y e largura/altura em píxeis) e transfira o vídeo recortado.',
+        },
+        {
+          question: 'Posso recortar para uma proporção quadrada ou vertical?',
+          answer: 'Sim: defina a largura e a altura para a proporção que pretende (por exemplo, valores iguais para quadrado, mais alto do que largo para 9:16).',
+        },
+        {
+          question: 'O recorte reduz a qualidade?',
+          answer: 'O recorte recodifica, mas na nossa qualidade predefinida a perda é mínima.',
+        },
+        {
+          question: 'Posso recortar uma marca de água?',
+          answer: 'Sim, se a marca de água estiver perto de uma margem: recorte a imagem para a excluir.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O recorte recodifica; a saída MP4 usa H.264 + AAC + yuv420p + faststart.',
+        ],
+      },
+      related: [
+        {
+          label: 'Redimensionar vídeo',
+          to: '/tools/resize-video',
+          description: 'Altere a resolução em vez de recortar.',
+        },
+        {
+          label: 'Rodar vídeo',
+          to: '/tools/rotate-video',
+          description: 'Corrija vídeo deitado ou de cabeça para baixo.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o vídeo recortado.',
+        },
+      ],
+      embed: {
+        title: 'Recortar um vídeo',
+        description: 'Carregue um vídeo e introduza o retângulo a manter (deslocamento + largura/altura em píxeis). Recortamos exatamente essa área e exportamos MP4.',
+      },
     },
     'resize-video': {
       name: 'Redimensionar vídeo',
+      h1: 'Redimensionar vídeo online grátis',
       tagline: 'Altere a resolução de um vídeo: ajuste para 1080p, 720p, 480p ou qualquer largura e altura personalizadas.',
+      metaTitle: 'Redimensionar vídeo online grátis | Media Manipulator',
+      metaDescription: 'Redimensionador de vídeo online gratuito. Altere a resolução de um vídeo para 1080p, 720p, 480p ou um tamanho personalizado. Saída em MP4, sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Redimensionar vídeo online grátis',
+      ogDescription: 'Altere a resolução de um vídeo para 1080p, 720p, 480p ou um tamanho personalizado. Grátis, sem marca de água.',
+      intro: 'Redimensionar altera a resolução de um vídeo: passe um clipe 4K para 1080p, reduza para 720p para a web ou acerte no tamanho exato em píxeis que uma plataforma exige. O redimensionador de vídeo do Media Manipulator escala o seu vídeo para as dimensões que escolher, preservando a proporção por predefinição, e exporta um MP4 limpo.',
+      whatItDoes: [
+        'Escala um vídeo para uma largura e/ou altura de destino.',
+        'Preserva a proporção por predefinição (deixe uma dimensão em branco para escalar automaticamente).',
+        'Reduz a escala para encolher o ficheiro ou aumenta-a para ajustar a um tamanho de destino.',
+        'Exporta MP4 (H.264 + AAC) por predefinição.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu vídeo',
+          description: 'Escolha o clipe que quer com um tamanho diferente.',
+        },
+        {
+          title: 'Defina o tamanho',
+          description: 'Introduza uma largura e/ou altura em píxeis.',
+        },
+        {
+          title: 'Redimensionar',
+          description: 'O FFmpeg escala o vídeo e recodifica-o.',
+        },
+        {
+          title: 'Transferir',
+          description: 'Guarde o vídeo redimensionado.',
+        },
+      ],
+      advancedDetails: [
+        'Deixe uma dimensão em branco para escalar proporcionalmente e manter a proporção original.',
+        'Mantenha «Preservar proporção» ativado para ajustar dentro da caixa sem esticar quando ambas as dimensões estão definidas.',
+        'O redimensionamento recodifica; a saída MP4 usa H.264 + AAC + yuv420p + faststart. Máximo de 4096 px por lado.',
+      ],
+      whyItMatters: [
+        'Uma resolução mais baixa significa ficheiros mais pequenos e envios mais rápidos.',
+        'Algumas plataformas exigem uma resolução exata.',
+        'O redimensionamento uniformiza uma biblioteca de resoluções mistas.',
+      ],
+      useCases: [
+        {
+          title: 'Reduzir para a web',
+          description: 'Passe de 4K para 1080p ou 720p para páginas mais rápidas.',
+        },
+        {
+          title: 'Acertar num tamanho de destino',
+          description: 'Cumpra exatamente a especificação de uma plataforma.',
+        },
+        {
+          title: 'Reduzir o tamanho do ficheiro',
+          description: 'Baixe a resolução para cortar nos bytes.',
+        },
+        {
+          title: 'Uniformizar filmagens',
+          description: 'Leve os clipes a uma só resolução.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Escalonamento que respeita a proporção no servidor com o FFmpeg.',
+        'Saída MP4 limpa, sem marca de água.',
+      ],
+      privacyNote: 'O seu vídeo é escalado para a largura e a altura que definiu e recodificado pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um ficheiro novo.',
+      faq: [
+        {
+          question: 'Como redimensiono um vídeo?',
+          answer: 'Carregue-o, defina uma largura e/ou altura de destino e transfira o vídeo redimensionado.',
+        },
+        {
+          question: 'Como altero a resolução para 720p?',
+          answer: 'Defina a altura para 720 e deixe a largura em branco para escalar proporcionalmente.',
+        },
+        {
+          question: 'O redimensionamento mantém a proporção?',
+          answer: 'Sim: deixe uma dimensão em branco, ou mantenha «Preservar proporção» ativado para que o vídeo não seja esticado.',
+        },
+        {
+          question: 'Posso ampliar um vídeo?',
+          answer: 'Pode escalar para um tamanho maior, mas a ampliação não consegue acrescentar detalhe que não foi captado.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O redimensionamento recodifica; a saída MP4 usa H.264 + AAC + yuv420p + faststart. Máximo de 4096 px por lado.',
+        ],
+      },
+      related: [
+        {
+          label: 'Recortar vídeo',
+          to: '/tools/crop-video',
+          description: 'Elimine as margens em vez de escalar.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o ficheiro com predefinições.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta para MP4.',
+        },
+        {
+          label: 'Rodar vídeo',
+          to: '/tools/rotate-video',
+          description: 'Corrija a orientação.',
+        },
+      ],
+      embed: {
+        title: 'Redimensionar um vídeo',
+        description: 'Carregue um vídeo e defina uma largura e/ou altura de destino. Deixe uma em branco para escalar proporcionalmente. A saída é MP4 por predefinição.',
+      },
     },
     'rotate-video': {
       name: 'Rodar vídeo',
+      h1: 'Rodar vídeo online grátis',
       tagline: 'Corrija vídeo deitado ou de cabeça para baixo: rode 90°, 180° ou 270° e vire com um só clique.',
+      metaTitle: 'Rodar vídeo online grátis | Media Manipulator',
+      metaDescription: 'Rotador de vídeo online gratuito. Rode um vídeo 90°, 180° ou 270° e corrija clips deitados ou de cabeça para baixo. Saída em MP4, sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Rodar vídeo online grátis',
+      ogDescription: 'Rode um vídeo 90°, 180° ou 270° para corrigir filmagens deitadas ou de cabeça para baixo. Grátis, sem marca de água.',
+      intro: 'Os vídeos de telemóvel gravam muitas vezes deitados, e alguns clips acabam de cabeça para baixo. O rotador de vídeo do Media Manipulator corrige a orientação de vez: escolha 90°, 180° ou 270° e nós rodamos os próprios fotogramas (trocando a largura e a altura para 90°/270°), para que o vídeo seja reproduzido na posição certa em todos os leitores, e não apenas nos que leem um indicador de rotação.',
+      whatItDoes: [
+        'Roda um vídeo 90° no sentido dos ponteiros do relógio, 180° ou 270° (90° no sentido contrário).',
+        'Opcionalmente, vira o vídeo na horizontal ou na vertical (espelho).',
+        'Recodifica para que a rotação fique gravada nos fotogramas, e não apenas num indicador de metadados.',
+        'Exporta MP4 (H.264 + AAC) por predefinição.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu vídeo',
+          description: 'Um clip de telemóvel deitado, por exemplo.',
+        },
+        {
+          title: 'Escolha uma rotação',
+          description: '90°, 180° ou 270°, e vire se for preciso.',
+        },
+        {
+          title: 'Rode',
+          description: 'O FFmpeg roda os fotogramas (transpose) e recodifica.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o vídeo com a orientação correta.',
+        },
+      ],
+      advancedDetails: [
+        'Usamos o transpose do FFmpeg para 90°/270° (que troca corretamente a largura e a altura) e um transpose duplo para 180°.',
+        'Gravar a rotação nos píxeis corrige os leitores que ignoram o indicador de rotação do contentor.',
+        'A rotação recodifica; a saída MP4 usa H.264 + AAC + yuv420p + faststart.',
+      ],
+      whyItMatters: [
+        'Os vídeos de telemóvel deitados são um dos incómodos mais comuns em vídeo.',
+        'Uma rotação gravada nos fotogramas é reproduzida corretamente em todo o lado, ao contrário de um indicador de rotação.',
+        'Virar corrige filmagens de selfie ou webcam espelhadas.',
+      ],
+      useCases: [
+        {
+          title: 'Corrigir um clip deitado',
+          description: 'Rode um vídeo de telemóvel ao alto para ser reproduzido na vertical.',
+        },
+        {
+          title: 'Virar um vídeo de selfie',
+          description: 'Desfaça o espelho de filmagens de webcam ou da câmara frontal.',
+        },
+        {
+          title: 'Rodar 180°',
+          description: 'Corrija uma gravação de cabeça para baixo.',
+        },
+        {
+          title: 'Reorientar para edição',
+          description: 'Acerte a orientação antes de importar.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Rotação real dos fotogramas (transpose), e não apenas um indicador de metadados.',
+        'Rode e vire num único painel focado.',
+      ],
+      privacyNote: 'O seu vídeo é rodado pelo ângulo que escolher e recodificado pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Como rodo um vídeo?',
+          answer: 'Carregue-o, escolha 90°, 180° ou 270° e transfira o vídeo rodado.',
+        },
+        {
+          question: 'Como corrijo um vídeo de telemóvel deitado?',
+          answer: 'Rode 90° no sentido dos ponteiros do relógio ou no sentido contrário até ser reproduzido na vertical; a rotação fica gravada nos fotogramas.',
+        },
+        {
+          question: 'Roda mesmo os fotogramas ou só define um indicador?',
+          answer: 'Roda os próprios fotogramas (transpose do FFmpeg), por isso o vídeo fica na posição certa em todos os leitores.',
+        },
+        {
+          question: 'Também posso virar ou espelhar o vídeo?',
+          answer: 'Sim, estão incluídas opções de viragem horizontal e vertical.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A rotação recodifica através do transpose do FFmpeg; a saída MP4 usa H.264 + AAC + yuv420p + faststart.',
+        ],
+      },
+      related: [
+        {
+          label: 'Recortar vídeo',
+          to: '/tools/crop-video',
+          description: 'Elimine as margens.',
+        },
+        {
+          label: 'Redimensionar vídeo',
+          to: '/tools/resize-video',
+          description: 'Altere a resolução.',
+        },
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta entre formatos de vídeo.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o tamanho do vídeo rodado.',
+        },
+      ],
+      embed: {
+        title: 'Rodar um vídeo',
+        description: 'Carregue um vídeo e escolha uma rotação (90°, 180° ou 270°). Também pode virá-lo. Rodamos os próprios fotogramas e exportamos MP4.',
+      },
     },
     'remove-audio-from-video': {
       name: 'Remover áudio de vídeo',
+      h1: 'Remover áudio de vídeo online grátis',
       tagline: 'Silencie um vídeo de vez: retire a faixa de áudio e transfira um ficheiro mudo, só com vídeo.',
+      metaTitle: 'Remover áudio de vídeo online grátis | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para remover o áudio de um vídeo. Retire o som e transfira um MP4 mudo, só com vídeo. Sem marca de água nem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ogTitle: 'Remover áudio de vídeo online grátis',
+      ogDescription: 'Retire a faixa de áudio de um vídeo e transfira um ficheiro mudo, só com vídeo. Grátis, sem marca de água.',
+      intro: 'Remover o áudio de um vídeo dá-lhe um ficheiro mudo, só com vídeo: útil para silenciar ruído de fundo, retirar música com direitos de autor antes de voltar a publicar ou preparar um clip ao qual vai acrescentar áudio novo. O Media Manipulator retira a faixa de áudio e devolve o vídeo, copiando o fluxo de imagem sem recodificar sempre que possível, para que não haja perda de qualidade.',
+      whatItDoes: [
+        'Remove (silencia) a faixa de áudio e devolve um ficheiro só com vídeo.',
+        'Copia o fluxo de vídeo sem recodificar sempre que possível: sem recodificação, sem perda de qualidade.',
+        'Recorre a uma recodificação quando o contentor ou o codec o exige.',
+        'Produz MP4 por predefinição (WebM também disponível).',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu vídeo',
+          description: 'O clip cujo som quer eliminar.',
+        },
+        {
+          title: 'Escolha o formato de saída',
+          description: 'MP4 (predefinição) ou WebM.',
+        },
+        {
+          title: 'Remova o áudio',
+          description: 'O FFmpeg descarta o áudio e mantém o vídeo.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o ficheiro mudo, só com vídeo.',
+        },
+      ],
+      advancedDetails: [
+        'Copiamos o fluxo de vídeo sem recodificar (`-c:v copy -an`) para que a imagem fique intacta; se o contentor não aceitar o codec de origem, recodificamos para H.264.',
+        'A saída não tem faixa de áudio nenhuma: é muda, e não apenas silenciada para volume zero.',
+        'O nome do ficheiro transferido recebe o sufixo `_silent` para que o distinga do original.',
+      ],
+      whyItMatters: [
+        'Silenciar elimina de vez o ruído de fundo, as conversas ou o vento.',
+        'Retirar música com direitos de autor evita remoções ao voltar a publicar.',
+        'Um clip de base mudo é o ponto de partida para acrescentar áudio novo ou uma narração.',
+      ],
+      useCases: [
+        {
+          title: 'Silenciar ruído de fundo',
+          description: 'Remova som indesejado de um clip.',
+        },
+        {
+          title: 'Retirar áudio com direitos de autor',
+          description: 'Retire a música antes de voltar a publicar.',
+        },
+        {
+          title: 'Preparar para áudio novo',
+          description: 'Obtenha uma base muda à qual acrescentar uma narração.',
+        },
+        {
+          title: 'Privacidade',
+          description: 'Remova uma conversa captada em segundo plano.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Cópia do fluxo de vídeo sem recodificar, que preserva a qualidade.',
+        'Saída verdadeiramente muda (faixa de áudio removida, e não apenas reduzida).',
+      ],
+      privacyNote: 'A faixa de áudio do seu vídeo é descartada pelo FFmpeg no nosso servidor e a imagem é mantida. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Como removo o áudio de um vídeo?',
+          answer: 'Carregue o vídeo, escolha um formato de saída e transfira o ficheiro mudo, só com vídeo.',
+        },
+        {
+          question: 'Isto silencia o vídeo ou remove a faixa?',
+          answer: 'Remove por completo a faixa de áudio, por isso o resultado é verdadeiramente mudo e não apenas silenciado para zero.',
+        },
+        {
+          question: 'A qualidade do vídeo vai mudar?',
+          answer: 'Não: copiamos o fluxo de vídeo sem recodificar sempre que possível, por isso a imagem fica intacta.',
+        },
+        {
+          question: 'Porque é que o ficheiro se chama «_silent»?',
+          answer: 'Acrescentamos o sufixo _silent para que distinga a cópia sem áudio do original.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O vídeo é copiado sem recodificar sempre que possível; a faixa de áudio é removida por completo. Sufixo da transferência: _silent.',
+        ],
+      },
+      related: [
+        {
+          label: 'Remover áudio (só vídeo)',
+          to: '/tools/extract-video-only-from-video',
+          description: 'A mesma ferramenta de vídeo mudo.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Guarde o áudio em vez de o remover.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o tamanho do vídeo mudo.',
+        },
+        {
+          label: 'Adicionar áudio a vídeo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Acrescente uma nova banda sonora ao clip mudo.',
+        },
+      ],
+      embed: {
+        title: 'Remover o áudio de um vídeo',
+        description: 'Carregue um vídeo e nós retiramos a faixa de áudio, devolvendo um ficheiro mudo, só com vídeo. A saída é MP4 por predefinição. Copiamos o vídeo sem recodificar sempre que possível (sem perda de qualidade).',
+      },
     },
     'audio-converter': {
       name: 'Conversor de áudio',
+      h1: 'Conversor de áudio online grátis',
       tagline: 'Converta entre MP3, WAV, M4A, OGG, FLAC, OPUS e mais, com controlo total do débito binário, da taxa de amostragem e dos canais.',
+      metaTitle: 'Conversor de áudio online grátis | Media Manipulator',
+      metaDescription: 'Conversor de áudio online gratuito para MP3, WAV, M4A, OGG, FLAC, OPUS e mais. Escolha o débito binário, a taxa de amostragem e os canais.',
+      ogTitle: 'Conversor de áudio online grátis',
+      ogDescription: 'Converta WAV, MP3, M4A, OGG, FLAC, OPUS e mais. Escolha o débito binário, a taxa de amostragem e os canais.',
+      intro: 'Dispositivos, plataformas de podcasts e editores de áudio diferentes querem formatos diferentes. O Media Manipulator trata de todos os formatos de áudio comuns num só lugar, com controlo fino do débito binário, da taxa de amostragem e da disposição dos canais.',
+      whatItDoes: [
+        'Converte entre MP3, WAV, M4A/AAC, OGG, FLAC, ALAC, OPUS, AC3 e DTS.',
+        'Escolha o débito binário, a taxa de amostragem e a disposição dos canais.',
+        'Corte e aplique equalização, redução de ruído ou limpeza com IA no mesmo carregamento.',
+        'Produz ficheiros válidos, com etiquetas ID3 quando aplicável.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'MP3, WAV, M4A, FLAC, OGG e mais.',
+        },
+        {
+          title: 'Escolha o formato de saída',
+          description: 'MP3, WAV, FLAC, M4A, OGG, OPUS.',
+        },
+        {
+          title: 'Afine o débito e a taxa',
+          description: 'Corte ou execute a limpeza com IA.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o áudio convertido.',
+        },
+      ],
+      advancedDetails: [
+        'O MP3 é o formato comprimido universal: todos os dispositivos o reproduzem.',
+        'O FLAC e o ALAC são sem perdas: maiores do que MP3, mais pequenos do que WAV.',
+        'O OPUS (em OGG) é o formato moderno com perdas mais pequeno para voz e música, ideal quando controla o leitor.',
+      ],
+      whyItMatters: [
+        'As plataformas de podcasts, os serviços de música e os editores de áudio preferem, cada um, formatos diferentes.',
+        'Ficheiros mais pequenos significam menos armazenamento e entrega mais rápida.',
+        'Os formatos sem perdas são essenciais quando o áudio vai voltar a ser editado.',
+      ],
+      useCases: [
+        {
+          title: 'Publicação de podcasts',
+          description: 'Master WAV → episódio MP3.',
+        },
+        {
+          title: 'Partilha de notas de voz',
+          description: 'Corte e comprima para MP3.',
+        },
+        {
+          title: 'Arquivo de música',
+          description: 'Converta MP3 → FLAC (sem ganho de qualidade) ou WAV → FLAC para armazenamento sem perdas.',
+        },
+        {
+          title: 'Recursos para jogos e aplicações',
+          description: 'Converta WAV → OPUS para recursos móveis minúsculos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Controlo total do débito binário, da taxa de amostragem e dos canais.',
+        'Ferramentas de limpeza com IA (redução de ruído, isolar a voz, remover a voz) no mesmo carregamento.',
+        'Grátis, sem registo, sem marcas de água.',
+      ],
+      privacyNote: 'O seu áudio é descodificado e recodificado pelo FFmpeg no nosso servidor para o formato e o débito binário que escolher. Nenhum serviço de áudio externo está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um novo ficheiro; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'Qual é o melhor formato para música?',
+          answer: 'FLAC para armazenamento sem perdas, MP3 a 256–320 kbps para partilhar, OPUS para o ficheiro transmissível mais pequeno.',
+        },
+        {
+          question: 'Qual é o melhor formato para voz?',
+          answer: 'MP3 a 96–128 kbps é uma excelente predefinição para podcasts.',
+        },
+        {
+          question: 'Posso cortar enquanto converto?',
+          answer: 'Sim: defina os segundos de início e de fim na secção de corte antes de submeter.',
+        },
+        {
+          question: 'O FLAC é mesmo sem perdas?',
+          answer: 'Sim: o FLAC comprime sem descartar nenhum dado. A descodificação devolve uma cópia bit a bit idêntica à entrada.',
+        },
+      ],
+      related: [
+        {
+          label: 'Converter WAV para MP3',
+          to: '/tools/convert-wav-to-mp3',
+          description: 'Conversor dedicado de WAV → MP3.',
+        },
+        {
+          label: 'Isolar a voz de uma música',
+          to: '/tools/isolate-vocals-from-song',
+          description: 'Extraia a voz de faixas musicais.',
+        },
+        {
+          label: 'Tutorial do conversor de áudio',
+          to: '/tutorials/audio/getting-started',
+          description: 'Percurso completo por todas as opções.',
+        },
+      ],
+      embed: {
+        title: 'Converter um ficheiro de áudio',
+        description: 'Carregue qualquer ficheiro de áudio e escolha o formato de destino. MP3 a 192 kbps é uma predefinição sensata. O WAV é sem perdas mas grande; o M4A/AAC é uma boa escolha comprimida para música.',
+      },
     },
     'srt-generator': {
       name: 'Gerador de legendas SRT',
+      h1: 'Gerador de SRT grátis',
       tagline: 'Carregue um ficheiro de vídeo ou áudio e gere um ficheiro de legendas .srt para transferir, pronto para o YouTube, editores e ferramentas de acessibilidade.',
+      metaTitle: 'Gerador de SRT online grátis: vídeo e áudio para SRT | Media Manipulator',
+      metaDescription: 'Gere ficheiros de legendas SRT a partir de MP4, MOV, MP3, WAV e mais. Grátis, sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Funciona com YouTube, Premiere e DaVinci Resolve.',
+      ogTitle: 'Gerador de SRT grátis: vídeo e áudio para SRT',
+      ogDescription: 'Gere ficheiros de legendas SRT precisos a partir de qualquer vídeo ou áudio. Transcrição com IA local, sem fornecedores de terceiros.',
+      intro: 'O SRT (SubRip) é o formato de legendas mais amplamente suportado na Internet: o YouTube, o Vimeo, o Premiere, o DaVinci Resolve, o Final Cut e quase todas as plataformas sociais aceitam-no. O Media Manipulator permite-lhe gerar um ficheiro SRT a partir de qualquer vídeo ou áudio num único carregamento. A transcrição corre no nosso próprio servidor GPU com whisper-ctranslate2, por isso o áudio nunca sai da nossa infraestrutura e nunca passa por um fornecedor de IA de terceiros.',
+      whatItDoes: [
+        'Transcreve qualquer ficheiro de vídeo ou áudio para um ficheiro de legendas .srt com códigos de tempo.',
+        'Usa o whisper-ctranslate2 no nosso servidor GPU local: nenhum fornecedor de IA de terceiros vê os seus ficheiros.',
+        'Produz ficheiros no formato SubRip (marcas temporais HH:MM:SS,mmm, números de legenda sequenciais) compatíveis com todos os principais editores e leitores de vídeo.',
+        'Suporta deteção automática do idioma ou uma indicação opcional de idioma BCP-47 para maior precisão em clips curtos.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu ficheiro',
+          description: 'Largue qualquer MP4, MOV, MP3, WAV ou outro ficheiro suportado.',
+        },
+        {
+          title: 'Extraímos o áudio',
+          description: 'O FFmpeg retira a faixa de áudio e converte-a para o formato que o whisper espera.',
+        },
+        {
+          title: 'O Whisper transcreve',
+          description: 'O nosso servidor GPU executa o whisper-ctranslate2 para produzir segmentos com tempos.',
+        },
+        {
+          title: 'Transfira o .srt',
+          description: 'É gerado um ficheiro SubRip limpo, com legendas sequenciais e tempos precisos.',
+        },
+      ],
+      advancedDetails: [
+        'O Whisper corre no nosso próprio servidor GPU NVIDIA com ctranslate2: não há nenhuma API externa no circuito.',
+        'A saída SRT usa marcas temporais com milissegundos separados por vírgula (00:00:01,234) e números de legenda sequenciais a começar em 1, o formato que maximiza a compatibilidade com os editores.',
+        'O processo de transcrição suporta deteção automática do idioma ou uma indicação BCP-47 opcional, ao estilo de WHISPER_CT2_LANGUAGE, através do campo de idioma.',
+        'As saídas passam pelo mesmo sistema de tarefas do resto da aplicação: também pode escolher VTT, texto simples ou JSON estruturado no formulário de transcrição.',
+      ],
+      whyItMatters: [
+        'O YouTube, o Vimeo, o Premiere, o DaVinci Resolve, o Final Cut e a maioria das plataformas sociais aceitam o SRT como formato de legendas predefinido.',
+        'As legendas tornam os vídeos acessíveis a espectadores surdos e com dificuldades auditivas e aumentam o envolvimento nas plataformas sociais, onde a maior parte dos vídeos é reproduzida sem som.',
+        'Os motores de busca conseguem indexar o conteúdo da transcrição dos seus vídeos quando publica um .srt correspondente ao lado deles.',
+      ],
+      useCases: [
+        {
+          title: 'Criadores no YouTube',
+          description: 'Gere legendas precisas e carregue-as como faixa SRT em todos os vídeos.',
+        },
+        {
+          title: 'Produtores de cursos',
+          description: 'Acrescente transcrições aos vídeos das aulas para que os alunos as possam pesquisar, rever e traduzir mais tarde.',
+        },
+        {
+          title: 'Podcasters que publicam em vídeo',
+          description: 'Transforme episódios de podcast em clips de vídeo legendados para as plataformas sociais.',
+        },
+        {
+          title: 'Equipas de marketing e redes sociais',
+          description: 'Legende todos os clips para que quem vê em reprodução automática sem som receba a mensagem.',
+        },
+      ],
+      whyMediaManipulator: [
+        'O Whisper corre na nossa própria infraestrutura GPU: os seus ficheiros nunca passam por um fornecedor de IA de terceiros.',
+        'Sem registo, sem marcas de água. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+        'O mesmo motor de transcrição que o resto da aplicação usa, por isso a precisão é consistente nas saídas SRT, VTT, texto simples e JSON.',
+      ],
+      privacyNote: 'A fala do seu ficheiro é transcrita pelo Whisper no nosso próprio servidor GPU e sincronizada num ficheiro de legendas SRT. O trabalho de IA corre em hardware que nós operamos, nunca num fornecedor de IA de terceiros, e nada do que carrega é usado para treinar um modelo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'O que é um ficheiro SRT?',
+          answer: 'O SRT (SubRip) é um ficheiro de legendas em texto simples com marcas temporais e números de legenda. É o formato de legendas predefinido aceite pelo YouTube, pela maioria dos editores de vídeo e pela maioria dos leitores de vídeo.',
+        },
+        {
+          question: 'Posso gerar legendas a partir de um MP4?',
+          answer: 'Sim. Carregue qualquer MP4 (ou MOV, MKV, WebM, AVI, M4V) e produzimos um ficheiro de legendas .srt para transferir.',
+        },
+        {
+          question: 'Posso usar o ficheiro SRT no YouTube?',
+          answer: 'Sim, o YouTube aceita SRT diretamente. Carregue o seu vídeo e depois acrescente o ficheiro de legendas em Legendas → Adicionar idioma → Carregar ficheiro.',
+        },
+        {
+          question: 'Que idiomas são suportados?',
+          answer: 'O Whisper suporta dezenas de idiomas e consegue detetar automaticamente o idioma falado. Também pode indicar um código BCP-47 (por exemplo, en, es, ja) para maior precisão em clips muito curtos.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A transcrição corre no nosso servidor GPU local: o seu ficheiro nunca é enviado para um fornecedor de IA externo.',
+          'Em vídeos longos, a tarefa corre de forma assíncrona e pode manter o separador aberto para acompanhar o progresso.',
+        ],
+      },
+      related: [
+        {
+          label: 'Tradutor de legendas',
+          to: '/tools/caption-translator',
+          description: 'Traduza o SRT gerado para outros idiomas.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire o áudio antes de transcrever manualmente.',
+        },
+        {
+          label: 'Extrair fotogramas de vídeo',
+          to: '/tools/extract-frames-from-video',
+          description: 'Capture imagens fixas para miniaturas e referência.',
+        },
+        {
+          label: 'Transcodificar vídeo para HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Prepare o seu vídeo para streaming.',
+        },
+        {
+          label: 'Transcodificar vídeo para DASH',
+          to: '/tools/transcode-to-dash',
+          description: 'Empacotamento DASH em AV1 / VP9.',
+        },
+      ],
+      embed: {
+        title: 'Gerar um ficheiro de legendas SRT',
+        description: 'Carregue um ficheiro de vídeo ou áudio. Transcrevemo-lo no nosso próprio servidor GPU com whisper-ctranslate2 e devolvemos um ficheiro de legendas .srt que pode largar em qualquer editor de vídeo.',
+      },
     },
     'caption-translator': {
       name: 'Tradutor de legendas',
+      h1: 'Tradutor de legendas grátis',
       tagline: 'Traduza ficheiros de legendas SRT e VTT preservando os tempos, a ordem e a estrutura das legendas, sem fornecedor de IA de terceiros.',
+      metaTitle: 'Tradutor de legendas grátis (SRT e VTT): preserva os tempos | Media Manipulator',
+      metaDescription: 'Traduza legendas SRT e VTT online com os tempos das legendas preservados com exatidão. Corre no nosso próprio servidor de IA local: as suas legendas nunca são enviadas para fornecedores de terceiros.',
+      ogTitle: 'Tradutor de legendas grátis: SRT e VTT',
+      ogDescription: 'Traduza legendas SRT ou VTT preservando as marcas temporais e a ordem das legendas. IA local, sem fornecedores de terceiros.',
+      intro: 'Traduza ficheiros de legendas existentes entre idiomas sem nunca tocar nos tempos das legendas. O Media Manipulator analisa as legendas do seu ficheiro .srt ou .vtt, traduz apenas o texto com o nosso modelo de tradução de legendas alojado localmente e volta a escrever as marcas temporais originais tal como estavam. Nenhuma API de tradução de terceiros vê as suas legendas: o modelo corre no nosso próprio servidor GPU.',
+      whatItDoes: [
+        'Aceita ficheiros de legendas .srt ou .vtt e produz uma cópia traduzida no mesmo formato (ou no outro, se assim escolher).',
+        'Preserva com exatidão os números, a ordem e as marcas temporais das legendas: só o texto é traduzido.',
+        'Executa a tradução no nosso servidor de modelos Ollama local com um modelo personalizado, afinado para legendas: as suas legendas nunca saem da nossa infraestrutura.',
+        'Suporta mais de 30 idiomas de destino, incluindo os principais idiomas europeus, asiáticos e do Médio Oriente.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o .srt ou .vtt',
+          description: 'Largue o seu ficheiro de legendas existente na zona de carregamento.',
+        },
+        {
+          title: 'Escolha os idiomas',
+          description: 'Detete automaticamente ou escolha um idioma de origem e, depois, escolha um idioma de destino.',
+        },
+        {
+          title: 'Traduzimos o texto das legendas',
+          description: 'A nossa IA local traduz apenas o texto das legendas: as marcas temporais e a ordem ficam congeladas.',
+        },
+        {
+          title: 'Transfira as legendas traduzidas',
+          description: 'Receba um .srt ou .vtt limpo, com tempos idênticos e uma cópia traduzida de todas as legendas.',
+        },
+      ],
+      advancedDetails: [
+        'A tradução corre no nosso próprio servidor Ollama com um derivado do Translate-Gemma afinado para legendas (mm-captions-translategemma-12b).',
+        'Enviamos ao modelo apenas o texto das legendas e um cabeçalho de esquema JSON estrito, e voltamos a fixar os tempos a partir do ficheiro original ao ler a resposta, por isso nem um modelo com comportamento errático consegue corromper os tempos das suas legendas.',
+        'Os blocos NOTE e STYLE dos ficheiros VTT são preservados e nunca enviados ao tradutor.',
+        'Em faixas de legendas longas, agrupamos as legendas em lotes para que o modelo nunca se aproxime do seu limite de contexto.',
+      ],
+      whyItMatters: [
+        'Traduzir legendas manualmente é propenso a erros: é muito fácil estragar o formato das marcas temporais ou reordenar legendas por acidente.',
+        'Um tradutor concebido especificamente para legendas preserva a estrutura do ficheiro que os editores e os leitores esperam.',
+        'Fazer a tradução internamente, num modelo local, mantém os fluxos de trabalho dos criadores independentes dos preços e das políticas de tradução de terceiros.',
+      ],
+      useCases: [
+        {
+          title: 'Canais de YouTube multilingues',
+          description: 'Traduza um SRT principal em inglês para mais de 5 idiomas para o mesmo carregamento.',
+        },
+        {
+          title: 'Cursos online',
+          description: 'Chegue a alunos internacionais com legendas no seu idioma nativo.',
+        },
+        {
+          title: 'Documentários e festivais de cinema',
+          description: 'Prepare faixas de tradução sem tocar nos tempos das legendas.',
+        },
+        {
+          title: 'Notícias e jornalismo',
+          description: 'Traduza faixas de legendas de última hora mantendo uma sincronização precisa.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Tradução com IA local: as suas legendas nunca vão para um fornecedor de IA de terceiros.',
+        'Análise segura dos tempos, que volta a fixar os tempos de início e de fim originais das legendas mesmo que o modelo se comporte de forma errática.',
+      ],
+      privacyNote: 'Só o texto do seu ficheiro SRT ou VTT é lido: cada legenda é traduzida por um modelo de linguagem que executamos no nosso próprio servidor GPU, e os tempos são copiados sem alterações. O trabalho de IA corre em hardware que nós operamos, nunca num fornecedor de IA de terceiros, e nada do que carrega é usado para treinar um modelo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Posso traduzir um ficheiro SRT sem estragar as marcas temporais?',
+          answer: 'Sim, é exatamente esse o objetivo desta ferramenta. Analisamos as legendas, traduzimos apenas o texto e, depois, voltamos a fixar com exatidão as marcas temporais originais antes de escrever o resultado.',
+        },
+        {
+          question: 'Que formatos de legendas são suportados?',
+          answer: 'Tanto o SubRip (.srt) como o WebVTT (.vtt) são suportados. Pode manter o formato de saída igual ao de entrada ou converter entre eles.',
+        },
+        {
+          question: 'Posso traduzir legendas para vídeos do YouTube?',
+          answer: 'Sim. Gere (ou exporte) um SRT a partir do seu vídeo, traduza-o aqui e carregue o novo SRT como faixa de idioma adicional no YouTube.',
+        },
+        {
+          question: 'As legendas são traduzidas com um fornecedor de IA de terceiros?',
+          answer: 'Não. A tradução corre no nosso próprio modelo alojado no Ollama: as suas legendas nunca saem da nossa infraestrutura.',
+        },
+        {
+          question: 'O que acontece aos tempos das legendas?',
+          answer: 'Os tempos de início e de fim das legendas são preservados com exatidão: voltamos a fixá-los a partir do ficheiro original depois da tradução, por isso nem um modelo com comportamento errático consegue corromper os seus tempos.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Tamanho máximo do ficheiro de legendas: 2 MB (as faixas de legendas reais ficam normalmente muito abaixo disto).',
+        ],
+        processingNotes: [
+          'A tradução corre num modelo Ollama alojado localmente: nenhuma API de tradução de terceiros é contactada.',
+          'Os blocos NOTE e STYLE dos ficheiros WebVTT são preservados tal como estão.',
+        ],
+      },
+      related: [
+        {
+          label: 'Gerador de legendas SRT',
+          to: '/tools/srt-generator',
+          description: 'Gere um SRT novo a partir de um ficheiro de vídeo ou áudio.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire o áudio para revisão ou nova transcrição.',
+        },
+        {
+          label: 'Adicionar áudio a vídeo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Acrescente uma narração traduzida depois de traduzir as legendas.',
+        },
+        {
+          label: 'Transcodificar vídeo para HLS',
+          to: '/tools/transcode-to-hls',
+          description: 'Empacote o seu vídeo para streaming.',
+        },
+        {
+          label: 'Transcodificar vídeo para DASH',
+          to: '/tools/transcode-to-dash',
+          description: 'Empacotamento DASH em AV1 / VP9.',
+        },
+      ],
+      embed: {
+        title: 'Traduzir um ficheiro de legendas SRT ou VTT',
+        description: 'Carregue um ficheiro .srt ou .vtt existente, escolha um idioma de destino e receba um ficheiro de legendas traduzido com os tempos originais das legendas preservados com exatidão.',
+      },
     },
     'audio-waveform-generator': {
       name: 'Gerador de forma de onda de áudio',
+      h1: 'Gerador de forma de onda de áudio grátis',
       tagline: 'Transforme qualquer ficheiro de áudio num vídeo de forma de onda configurável, numa imagem de forma de onda ou em ambos, perfeito para podcasts, pré-visualizações de música e clipes para redes sociais.',
+      metaTitle: 'Gerador de forma de onda de áudio grátis: vídeo e imagem | Media Manipulator',
+      metaDescription: 'Gere vídeos e imagens de forma de onda a partir de qualquer ficheiro de áudio. Faixas largas 10:1 para podcasts, pré-visualizações quadradas para redes sociais, canais estéreo separados, cores personalizadas e mais.',
+      ogTitle: 'Gerador de forma de onda de áudio grátis',
+      ogDescription: 'Gere vídeos e imagens de forma de onda a partir de MP3, WAV, M4A, FLAC e mais. Altamente configurável, sem registo.',
+      intro: 'Uma forma de onda torna o áudio visível: um recurso essencial para podcasts, pré-visualizações de música, miniaturas de clips para redes sociais e linhas temporais de edição. O Media Manipulator renderiza formas de onda com os filtros showwaves / showwavespic do FFmpeg, com predefinições sensatas (uma faixa larga 10:1 a 1600×160) e um painel avançado completo para afinar o modo de renderização, a cor, a escala e a separação do estéreo.',
+      whatItDoes: [
+        'Renderiza vídeos de forma de onda animados com o filtro showwaves do FFmpeg, nos modos point / line / p2p / cline.',
+        'Renderiza imagens fixas de forma de onda com o filtro showwavespic do FFmpeg, perfeitas para miniaturas e capas de álbuns.',
+        'Suporta predefinições de proporção recomendadas (10:1 larga, 8:1, 6:1, 16:9, 1:1), além de largura e altura personalizadas.',
+        'Renderização opcional por canais separados, para que os canais esquerdo e direito sejam desenhados em cores distintas.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o áudio',
+          description: 'Largue qualquer ficheiro MP3, WAV, M4A, AAC, FLAC ou OGG.',
+        },
+        {
+          title: 'Escolha a saída e o tamanho',
+          description: 'Escolha vídeo de forma de onda, imagem ou ambos, e uma predefinição de proporção ou um tamanho personalizado.',
+        },
+        {
+          title: 'Afine o aspeto (opcional)',
+          description: 'Ajuste o modo de renderização, a taxa de fotogramas, as cores, a escala e o modo de desenho no painel avançado.',
+        },
+        {
+          title: 'Transfira',
+          description: 'Guarde o seu vídeo de forma de onda, a imagem ou um .zip com ambos.',
+        },
+      ],
+      advancedDetails: [
+        'Os modos de renderização correspondem diretamente aos modos showwaves do FFmpeg: point, line, p2p, cline. Cada um é pré-visualizado no formulário para que possa escolher à vista.',
+        'Pode escolher a taxa de fotogramas de saída (rate=) ou as amostras por coluna (n=), nunca ambas, em conformidade com o parâmetro mutuamente exclusivo do FFmpeg.',
+        'As opções de escala (lin, log, sqrt, cbrt) permitem-lhe decidir quão visíveis devem ficar as secções silenciosas.',
+        'Quando são pedidos o vídeo e a imagem, empacotamo-los num único .zip: o mesmo sistema de tarefas de todas as outras transferências do Media Manipulator.',
+      ],
+      whyItMatters: [
+        'Os visuais de forma de onda tornam o conteúdo de áudio partilhável: um clip com uma forma de onda em movimento tem um desempenho muito melhor nos feeds sociais com reprodução automática sem som do que uma miniatura estática.',
+        'Editores e produtores usam formas de onda como recursos de referência ao organizar linhas temporais ou ao desenhar capas de álbuns.',
+        'Uma forma de onda bem afinada serve ao mesmo tempo de miniatura, de audiograma e de teaser de áudio.',
+      ],
+      useCases: [
+        {
+          title: 'Podcasts',
+          description: 'Crie audiogramas para as redes sociais: clip + forma de onda + legendas = o formato de promoção de podcasts com melhor desempenho.',
+        },
+        {
+          title: 'Pré-visualizações de música',
+          description: 'Gere um cartão de forma de onda quadrado para o Instagram ou um largo para as descrições do YouTube.',
+        },
+        {
+          title: 'Linhas temporais de edição',
+          description: 'Use a imagem fixa da forma de onda como fotograma de referência no Premiere ou no DaVinci Resolve.',
+        },
+        {
+          title: 'Entrega de narrações',
+          description: 'Envie aos clientes um cartão de forma de onda junto com o WAV para que possam pré-visualizar num ápice.',
+        },
+      ],
+      whyMediaManipulator: [
+        'As predefinições favorecem a forma mais útil (10:1 larga) em vez da predefinição 600×240 do FFmpeg.',
+        'Controlos avançados do FFmpeg expostos em segurança: todas as definições são validadas no servidor antes de serem passadas ao grafo de filtros.',
+        'Saída em MP4, PNG ou um ZIP com ambos, sem necessidade de executar uma segunda tarefa.',
+      ],
+      privacyNote: 'O seu áudio é desenhado numa imagem ou vídeo de forma de onda pelo FFmpeg no nosso servidor. Nenhum serviço de áudio externo está envolvido. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Recebe um novo ficheiro; o carregamento em si não é alterado.',
+      faq: [
+        {
+          question: 'O que é uma forma de onda de áudio?',
+          answer: 'Uma forma de onda é uma representação visual da amplitude de um sinal de áudio ao longo do tempo. É a linha em movimento que vê nos editores de vídeo e em plataformas como o SoundCloud.',
+        },
+        {
+          question: 'Posso criar um vídeo de forma de onda a partir de um MP3?',
+          answer: 'Sim. Carregue o MP3 (ou WAV/M4A/FLAC/OGG/AAC) e a ferramenta renderiza um vídeo de forma de onda com o filtro showwaves do FFmpeg.',
+        },
+        {
+          question: 'Também posso criar uma imagem de forma de onda?',
+          answer: 'Sim. Defina a saída como «Imagem» para um PNG/WebP fixo, ou «Ambos» para receber um ZIP com o vídeo e a imagem.',
+        },
+        {
+          question: 'Que tamanho devo usar para uma forma de onda?',
+          answer: 'Para a maioria dos fluxos de trabalho de podcasts e música, a predefinição larga 10:1 (1600×160) fica melhor. Use 16:9 ou 1:1 se precisar de uma forma adequada às redes sociais.',
+        },
+        {
+          question: 'O que significam os modos point, line, p2p e cline?',
+          answer: 'São os modos de renderização showwaves do FFmpeg. O point desenha um ponto por amostra, o line desenha uma barra vertical, o p2p liga cada ponto com uma linha e o cline desenha uma barra vertical centrada. O formulário pré-visualiza cada um.',
+        },
+        {
+          question: 'Posso separar os canais de áudio esquerdo e direito?',
+          answer: 'Sim: ative «Separar canais estéreo» nas definições avançadas e escolha uma cor diferente para cada canal.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Predefinição recomendada: forma de onda larga 10:1 (1600×160), ótima para podcasts, pré-visualizações de música e linhas temporais de edição.',
+          'Quando seleciona «Ambos», o resultado é empacotado num único ZIP com o vídeo e a imagem.',
+        ],
+      },
+      related: [
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire o áudio de um vídeo antes de gerar uma forma de onda.',
+        },
+        {
+          label: 'Gerador de legendas SRT',
+          to: '/tools/srt-generator',
+          description: 'Junte legendas à forma de onda para audiogramas nas redes sociais.',
+        },
+        {
+          label: 'Adicionar áudio a vídeo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Combine a sua renderização de forma de onda com outro vídeo.',
+        },
+      ],
+      embed: {
+        title: 'Gerar uma forma de onda a partir de um ficheiro de áudio',
+        description: 'Carregue um ficheiro de áudio e escolha se quer um vídeo de forma de onda, uma imagem de forma de onda ou ambos. Os controlos avançados permitem-lhe afinar o tamanho, as cores, o modo de renderização e o comportamento do estéreo. A predefinição é um vídeo de forma de onda largo 10:1, adequado a podcasts e pré-visualizações de música.',
+      },
     },
     'extract-video-only-from-video': {
       name: 'Extrair vídeo sem áudio',
+      h1: 'Extrair vídeo sem áudio (só vídeo)',
       tagline: 'Exporte uma cópia muda, só com vídeo, sem nenhuma faixa de áudio: perfeito para pré-visualizações silenciosas, B-roll, edições e nova banda sonora.',
+      metaTitle: 'Extrair vídeo sem áudio: exportação só com vídeo | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para exportar uma cópia só com vídeo (muda), com todas as faixas de áudio removidas. Copia o vídeo sem recodificar sempre que possível: sem recodificação, sem perda de qualidade.',
+      ogTitle: 'Extrair vídeo sem áudio (só vídeo)',
+      ogDescription: 'Exporte uma cópia só com vídeo (muda) do seu vídeo, com todas as faixas de áudio removidas. Grátis, sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      intro: 'Às vezes quer o vídeo sem o áudio: para uma pré-visualização muda num feed social, um recurso de B-roll para largar numa nova edição ou um fluxo de trabalho de nova banda sonora em que vai acrescentar música nova. O Media Manipulator retira todas as faixas de áudio e produz um ficheiro limpo, só com vídeo. O fluxo de vídeo é copiado sem recodificar sempre que possível, por isso não há recodificação nem perda de qualidade.',
+      whatItDoes: [
+        'Remove todos os fluxos de áudio do seu vídeo.',
+        'Copia o fluxo de vídeo sem recodificar sempre que possível: sem recodificação, sem perda de qualidade.',
+        'Recodifica para um H.264 baseline compatível apenas se o contentor de destino o exigir.',
+        'Devolve um MP4 (ou WebM) mudo que pode largar diretamente numa nova edição.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu vídeo',
+          description: 'Largue qualquer ficheiro MP4, MOV, MKV, WebM, AVI ou M4V.',
+        },
+        {
+          title: 'Escolha o contentor de saída',
+          description: 'O MP4 é a predefinição segura. O WebM é oferecido para origens VP9/AV1.',
+        },
+        {
+          title: 'Retiramos o áudio',
+          description: 'O FFmpeg descarta o fluxo de áudio e copia o fluxo de vídeo quando é possível.',
+        },
+        {
+          title: 'Transfira o vídeo mudo',
+          description: 'Guarde uma cópia limpa e sem áudio do seu vídeo.',
+        },
+      ],
+      advancedDetails: [
+        'A tentativa predefinida usa `-c:v copy`, por isso não acontece nenhuma recodificação: a qualidade do fluxo de vídeo é preservada bit a bit.',
+        'Se o contentor de destino rejeitar o codec de origem, recorremos a uma recodificação libx264 + yuv420p a CRF 20.',
+        'Sem marcas de água, sem sobreposições, sem redimensionamento: a saída visual é idêntica à origem por predefinição.',
+      ],
+      whyItMatters: [
+        'O vídeo mudo é o formato de reprodução automática de facto na maioria das plataformas sociais.',
+        'Remover o áudio é também um passo de privacidade: retira a voz e as conversas incorporadas em gravações de ecrã antes de as partilhar.',
+        'Os editores querem muitas vezes um ficheiro limpo, só com vídeo, para uma nova banda sonora ou para sincronizar com outra gravação de áudio.',
+      ],
+      useCases: [
+        {
+          title: 'Pré-visualizações mudas para redes sociais',
+          description: 'Crie um clip de reprodução automática limpo para o Instagram, o X, o LinkedIn ou o TikTok.',
+        },
+        {
+          title: 'Projetos de nova banda sonora',
+          description: 'Retire o áudio original antes de acrescentar música ou narração.',
+        },
+        {
+          title: 'Partilhas sensíveis à privacidade',
+          description: 'Remova conversas de fundo captadas durante uma gravação de ecrã.',
+        },
+        {
+          title: 'Preparação de B-roll',
+          description: 'Largue um clip sem áudio numa edição multicâmara ou baseada em B-roll.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Cópia do fluxo sem recodificar sempre que possível: preserva a qualidade original do vídeo.',
+        'Claro, rápido, sem registo, sem marcas de água.',
+        'Grátis. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O seu vídeo é copiado sem a faixa de áudio pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, e não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Como removo o áudio de um vídeo?',
+          answer: 'Carregue o seu vídeo e clique em «Remover áudio de vídeo». A ferramenta produz uma cópia só com vídeo no contentor que escolher.',
+        },
+        {
+          question: 'A qualidade do vídeo vai mudar?',
+          answer: 'Não, no caso predefinido. Copiamos o fluxo de vídeo sem recodificar, por isso a saída é idêntica bit a bit no lado do vídeo. Só recodificamos se o contentor de destino o exigir.',
+        },
+        {
+          question: 'Posso tornar um MP4 mudo?',
+          answer: 'Sim: o MP4 é o contentor de saída predefinido e o caso de utilização mais comum.',
+        },
+        {
+          question: 'O vídeo original é modificado?',
+          answer: 'Não. O carregamento original fica intacto. Produzimos um novo ficheiro e mantemos ou eliminamos o carregamento de acordo com a regra de retenção: os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+        },
+        {
+          question: 'E se o meu vídeo não tiver áudio?',
+          answer: 'Não há problema: a ferramenta conclui normalmente e devolve uma cópia limpa, reempacotada.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O fluxo de vídeo é copiado sem recodificar sempre que o contentor de destino o suporta.',
+          'Os vídeos de entrada sem fluxo de áudio concluem normalmente e devolvem uma cópia reempacotada.',
+        ],
+      },
+      related: [
+        {
+          label: 'Remover áudio de vídeo',
+          to: '/tools/remove-audio-from-video',
+          description: 'A página mais acessível para silenciar ou remover o som.',
+        },
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire a faixa de áudio como MP3, WAV, etc.',
+        },
+        {
+          label: 'Adicionar áudio a vídeo',
+          to: '/tools/stitch-audio-to-video',
+          description: 'Acrescente uma nova banda sonora ao seu vídeo mudo.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o tamanho do vídeo mudo.',
+        },
+        {
+          label: 'Extrair fotogramas de vídeo',
+          to: '/tools/extract-frames-from-video',
+          description: 'Retire imagens fixas do vídeo mudo.',
+        },
+      ],
+      embed: {
+        title: 'Remover o áudio de um vídeo',
+        description: 'Carregue o seu vídeo e produzimos uma cópia muda, só com vídeo. O fluxo de vídeo é copiado sem recodificar sempre que possível, por isso não há recodificação nem perda de qualidade.',
+      },
     },
     'extract-frames-from-video': {
       name: 'Extrair fotogramas de vídeo',
+      h1: 'Extrair fotogramas de vídeo',
       tagline: 'Retire fotogramas estáticos de qualquer vídeo, a cada N segundos, a uma taxa de fotogramas definida ou em instantes específicos, e transfira-os num ZIP.',
+      metaTitle: 'Extrair fotogramas de vídeo: extrator gratuito | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para extrair imagens fixas de qualquer vídeo. Escolha a cada N segundos, fotogramas por segundo ou instantes específicos. Saída num ZIP de fotogramas JPG, PNG ou WebP.',
+      ogTitle: 'Extrair fotogramas de vídeo',
+      ogDescription: 'Retire fotogramas de imagem fixa de MP4, MOV, MKV, WebM, AVI e M4V. Transfira num ZIP de fotogramas JPG, PNG ou WebP.',
+      intro: 'A extração de fotogramas transforma um vídeo de novo numa sequência de imagens fixas, útil para miniaturas, planos de referência, maquetes de design, conjuntos de dados de aprendizagem automática e pré-visualizações de animação ou storyboard. O Media Manipulator permite-lhe recolher fotogramas a cada N segundos, a uma taxa de fotogramas definida ou em instantes específicos, e empacota as imagens resultantes num único ZIP para transferência.',
+      whatItDoes: [
+        'Extrai fotogramas fixos como imagens JPG, PNG ou WebP.',
+        'Suporta três modos de amostragem: a cada N segundos, fotogramas por segundo definidos ou instantes específicos.',
+        'Empacota os fotogramas num único ZIP para transferir com um clique.',
+        'Aplica um limite máximo de fotogramas para que as execuções se mantenham rápidas e previsíveis.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o seu vídeo',
+          description: 'Largue qualquer ficheiro MP4, MOV, MKV, WebM, AVI ou M4V.',
+        },
+        {
+          title: 'Escolha um modo de amostragem',
+          description: 'A cada N segundos, uma taxa de FPS definida ou uma lista de instantes separados por vírgulas.',
+        },
+        {
+          title: 'Escolha o formato de imagem',
+          description: 'JPG para miniaturas compactas, PNG para imagens fixas sem perdas, WebP para ficheiros modernos mais pequenos.',
+        },
+        {
+          title: 'Transfira o ZIP',
+          description: 'Todos os fotogramas extraídos são empacotados num único .zip que pode extrair em qualquer lado.',
+        },
+      ],
+      advancedDetails: [
+        'Os modos «a cada N segundos» e FPS usam o filtro fps do FFmpeg para amostrar uniformemente ao longo da linha temporal.',
+        'O modo de instantes executa uma invocação do FFmpeg por cada instante pedido, para que as falhas por fotograma (pedidos fora dos limites, etc.) sejam claramente visíveis.',
+        'O limite máximo de fotogramas é 300 por predefinição e vai até 1000 no máximo: mantém as tarefas rápidas e evita extrações descontroladas.',
+      ],
+      whyItMatters: [
+        'A extração de fotogramas é a forma mais simples de obter miniaturas ou fotogramas de referência a partir de vídeos já existentes.',
+        'Designers e animadores usam fotogramas amostrados como referência de desenho e como B-roll para storyboards.',
+        'Os profissionais de aprendizagem automática usam-nos para construir conjuntos de dados de classificação ou deteção sem precisarem de um pipeline próprio.',
+      ],
+      useCases: [
+        {
+          title: 'Miniaturas e pré-visualizações',
+          description: 'Escolha um único fotograma para usar como miniatura no YouTube ou no Vimeo.',
+        },
+        {
+          title: 'Referências de design',
+          description: 'Recolha uma sequência de fotogramas de jogabilidade ou de animação como referência de desenho.',
+        },
+        {
+          title: 'Storyboards',
+          description: 'Gere uma sequência de fotogramas-chave para apresentar um storyboard.',
+        },
+        {
+          title: 'Conjuntos de dados de aprendizagem automática',
+          description: 'Construa rapidamente pequenos conjuntos de dados de imagens a partir de um pequeno número de vídeos.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Três modos de amostragem cobrem quase todas as necessidades reais: intervalo, FPS ou instantes específicos.',
+        'A saída em ZIP mantém a transferência num único clique, independentemente do número de fotogramas recolhidos.',
+        'O FFmpeg no servidor garante uma saída consistente, independentemente do navegador ou do suporte de codecs.',
+      ],
+      privacyNote: 'Os fotogramas são retirados do seu vídeo, à taxa que escolher, pelo FFmpeg no nosso servidor e devolvidos num ZIP de imagens. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Como extraio fotogramas de um vídeo?',
+          answer: 'Carregue o seu vídeo, escolha um modo de amostragem (a cada N segundos é a predefinição), escolha um formato de imagem e clique em «Extrair fotogramas». O resultado é um ZIP de imagens fixas.',
+        },
+        {
+          question: 'Posso exportar um fotograma a cada poucos segundos?',
+          answer: 'Sim, esse é o modo predefinido. Defina «Segundos entre fotogramas» para o intervalo que pretender.',
+        },
+        {
+          question: 'Que formatos de imagem são suportados?',
+          answer: 'JPG (compacto, ideal para miniaturas), PNG (sem perdas) e WebP (ficheiros modernos mais pequenos).',
+        },
+        {
+          question: 'Porque é que a ferramenta devolve um ficheiro ZIP?',
+          answer: 'Mesmo vídeos curtos podem produzir dezenas de fotogramas. Devolver um único ZIP mantém a transferência num só clique e evita lutar com o navegador por causa de várias transferências de ficheiros.',
+        },
+        {
+          question: 'Porque existe um limite máximo de fotogramas?',
+          answer: 'O limite evita tarefas descontroladas por acidente (por exemplo, extrair dezenas de milhares de fotogramas de um vídeo longo). A predefinição é 300 e o máximo absoluto é 1000.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O limite máximo de fotogramas predefinido é 300; aumente-o até 1000 no formulário se realmente precisar de mais.',
+          'O modo de instantes aceita uma lista de segundos separados por vírgulas (por exemplo, «1, 5.5, 12.25, 30»).',
+        ],
+      },
+      related: [
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire o áudio do mesmo vídeo.',
+        },
+        {
+          label: 'Gerador de legendas SRT',
+          to: '/tools/srt-generator',
+          description: 'Transcreva o mesmo vídeo para legendas .srt.',
+        },
+        {
+          label: 'Remover áudio de vídeo',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Remova o áudio para ficar com uma cópia silenciosa do vídeo.',
+        },
+      ],
+      embed: {
+        title: 'Extrair fotogramas de um vídeo',
+        description: 'Carregue um vídeo, escolha um modo de amostragem (a cada N segundos, a uma taxa de fotogramas ou em instantes específicos) e transfira um ZIP de fotogramas fixos.',
+      },
     },
     'stitch-audio-to-video': {
       name: 'Adicionar áudio a vídeo',
+      h1: 'Adicionar áudio a vídeo',
       tagline: 'Combine um vídeo de base com até três ficheiros de áudio adicionais, como vozes sobrepostas, música e narração, e transfira um novo MP4.',
+      metaTitle: 'Juntar áudio a vídeo: voz off, música, substituir, misturar | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita para adicionar vozes off, música ou narração a um vídeo, ou substituir por completo o áudio original. Controlos de volume e de desvio por faixa, saída em MP4.',
+      ogTitle: 'Adicionar áudio a vídeo',
+      ogDescription: 'Adicione voz off, música ou narração, ou substitua o áudio original. Controlos de volume e de desvio por faixa, saída em MP4, sem registo.',
+      intro: 'Combinar um vídeo de base com um ou mais ficheiros de áudio adicionais é uma das tarefas de edição mais comuns: adicionar uma voz off, colocar uma faixa de fundo, narrar uma gravação de ecrã ou substituir por completo o áudio original. O Media Manipulator dá-lhe controlos de volume e de desvio por faixa, um seletor entre misturar e substituir, e uma saída em MP4 que encaixa sem problemas em qualquer leitor.',
+      whatItDoes: [
+        'Combina um vídeo de base com até três faixas de áudio adicionais.',
+        'Controlos por faixa: volume (0–4×), desvio de início em segundos e repetição opcional até à duração do vídeo.',
+        'Seletor de modo geral: «misturar» mantém o áudio original, «substituir» descarta-o.',
+        'A saída é sempre MP4 com áudio AAC a 192 kbps, a predefinição segura em todo o lado.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue o vídeo de base',
+          description: 'Largue qualquer ficheiro MP4, MOV, MKV, WebM, AVI ou M4V.',
+        },
+        {
+          title: 'Adicione faixas de áudio',
+          description: 'Adicione até três ficheiros de áudio (voz off, música, narração) com definições por faixa.',
+        },
+        {
+          title: 'Escolha misturar ou substituir',
+          description: 'Mantenha o áudio original e misture as novas faixas, ou descarte o original e use apenas o novo áudio.',
+        },
+        {
+          title: 'Transfira o novo MP4',
+          description: 'Fazemos a junção no nosso servidor e devolvemos um MP4 limpo.',
+        },
+      ],
+      advancedDetails: [
+        'O grafo de filtros é construído programaticamente: nós adelay + volume por faixa e, depois, um único amix para os combinar.',
+        'O fluxo de vídeo é copiado sem recodificação sempre que possível; só o áudio é recodificado (para AAC a 192 kbps).',
+        'A repetição é implementada com `-stream_loop -1` na entrada de áudio, para que faixas de fundo curtas se estendam de forma limpa até à duração do vídeo.',
+        'A duração da saída é, por predefinição, «cortar à duração do vídeo»; desmarque a opção se quiser que a saída se estenda até à entrada mais longa.',
+      ],
+      whyItMatters: [
+        'Voz off, música e narração são as adições de áudio mais comuns em vídeos de curta duração.',
+        'Os controlos de volume e de desvio por faixa permitem-lhe criar uma verdadeira mistura em vez de uma única faixa colada.',
+        'Fazer isto no navegador seria lento e pouco fiável; o FFmpeg no servidor é rápido e correto.',
+      ],
+      useCases: [
+        {
+          title: 'Vídeos de criadores',
+          description: 'Adicione um fundo musical a um segmento falado à câmara ou substitua o som ambiente por uma voz off limpa.',
+        },
+        {
+          title: 'Tutoriais',
+          description: 'Coloque uma faixa de narração sobre uma gravação de ecrã.',
+        },
+        {
+          title: 'Clips para redes sociais',
+          description: 'Adicione uma faixa em tendência num desvio específico a um corte de 15 segundos.',
+        },
+        {
+          title: 'Vídeos familiares e pessoais',
+          description: 'Adicione música de fundo a uma montagem de férias.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Controlos de volume e de desvio por faixa, e não apenas um único ficheiro de áudio colado.',
+        'Copia o vídeo sem recodificação sempre que possível, preservando a qualidade original do vídeo.',
+        'Gratuito, sem registo, FFmpeg no servidor. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'O seu vídeo e o ficheiro de áudio que adiciona são juntos num único MP4 pelo FFmpeg no nosso servidor. O trabalho corre nos nossos próprios servidores, não num serviço de transcodificação de terceiros. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. O seu ficheiro de origem fica intacto e o resultado é um novo ficheiro.',
+      faq: [
+        {
+          question: 'Posso adicionar música a um vídeo?',
+          answer: 'Sim: adicione o ficheiro de música como faixa de áudio, defina o volume e deixe o modo em «misturar» para manter o áudio original por baixo.',
+        },
+        {
+          question: 'Posso adicionar uma voz off e manter o áudio original?',
+          answer: 'Sim: mantenha o modo em «misturar», adicione a voz off e baixe o áudio original definindo um volume baixo nas faixas adicionais, se quiser que a voz off fique por cima.',
+        },
+        {
+          question: 'Posso substituir a faixa de áudio original?',
+          answer: 'Sim: defina o modo como «substituir» e o áudio original é descartado. Só as faixas adicionadas são misturadas na saída.',
+        },
+        {
+          question: 'O que acontece se o áudio for mais longo do que o vídeo?',
+          answer: 'Por predefinição, cortamos à duração do vídeo. Desmarque «Cortar à duração do vídeo» se quiser que a saída se estenda até à entrada mais longa.',
+        },
+        {
+          question: 'Posso ajustar o volume do áudio adicionado?',
+          answer: 'Sim: cada faixa adicionada tem o seu próprio fator de volume (0–4×) e um desvio de início em segundos.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'Máximo de 3 faixas de áudio adicionadas por tarefa.',
+        ],
+        processingNotes: [
+          'O fluxo de vídeo é copiado sem recodificação sempre que possível; só o áudio é recodificado (para AAC a 192 kbps).',
+          'A caixa de repetição estende faixas de fundo curtas até à duração do vídeo.',
+        ],
+      },
+      related: [
+        {
+          label: 'Extrair áudio de vídeo',
+          to: '/tools/extract-audio-from-video',
+          description: 'Retire o áudio de um vídeo para o reutilizar noutro.',
+        },
+        {
+          label: 'Remover áudio de vídeo',
+          to: '/tools/extract-video-only-from-video',
+          description: 'Remova o áudio para preparar uma base limpa para nova sonorização.',
+        },
+        {
+          label: 'Gerador de forma de onda de áudio',
+          to: '/tools/audio-waveform-generator',
+          description: 'Crie um acompanhamento visual para a sua faixa de áudio.',
+        },
+      ],
+      embed: {
+        title: 'Adicionar ou substituir a faixa de áudio de um vídeo',
+        description: 'Carregue um vídeo de base, adicione um a três ficheiros de áudio, defina o volume e o desvio por faixa e escolha «misturar» ou «substituir». Devolvemos um MP4 com tudo combinado.',
+      },
     },
     'ai-frame-interpolation': {
       name: 'Interpolação de fotogramas com IA',
+      h1: 'Ferramenta de interpolação de fotogramas com IA',
       tagline: 'Aumente a taxa de fotogramas de um vídeo para 48, 60 ou 120 FPS com fotogramas intermédios gerados por IA, para um movimento mais fluido.',
+      metaTitle: 'Interpolação de fotogramas com IA: vídeo a 60 ou 120 FPS | Media Manipulator',
+      metaDescription: 'Ferramenta online gratuita de interpolação de fotogramas com IA. Use o RIFE para transformar vídeo a 24/30fps num MP4 mais fluido a 48, 60 ou 120 FPS. Sem API de terceiros: corre na nossa própria GPU.',
+      ogTitle: 'Interpolação de fotogramas com IA: vídeo fluido a 60 ou 120 FPS',
+      ogDescription: 'Carregue um vídeo, escolha os FPS de destino e transfira um MP4 com fotogramas intermédios gerados por IA para um movimento mais fluido.',
+      intro: 'A interpolação de fotogramas com IA aumenta a taxa de fotogramas de um vídeo gerando novos fotogramas intermédios com uma rede neuronal (RIFE), em vez de simplesmente duplicar ou fundir fotogramas existentes. O resultado é um movimento visivelmente mais fluido: filmagens a 24/30fps começam a parecer 60fps, e clips a 60fps podem ser elevados a 120fps, ideais para ecrãs de alta taxa de atualização. O processamento corre no nosso próprio servidor GPU, não numa API de terceiros, e a saída é um MP4 que pode colocar diretamente em qualquer leitor.',
+      whatItDoes: [
+        'Sintetiza novos fotogramas intermédios com o RIFE (rife-ncnn-vulkan), em vez de duplicar ou fundir fotogramas existentes.',
+        'Visa 48, 60 ou 120 FPS, com predefinições de qualidade e de altura máxima de processamento controladas por si.',
+        'Corre no nosso próprio servidor GPU: nenhum fornecedor de IA de terceiros vê o seu ficheiro.',
+        'Devolve um MP4 com H.264 + AAC (a faixa de áudio da origem é preservada por predefinição).',
+        'Limita à partida origens longas ou muito altas, para que uma única tarefa não monopolize a GPU.',
+      ],
+      flowSteps: [
+        {
+          title: 'Carregue um vídeo',
+          description: 'Largue um clip curto em MP4, MOV, WebM, MKV ou AVI.',
+        },
+        {
+          title: 'Abra as ferramentas de vídeo com IA',
+          description: 'No formulário de vídeo, desloque-se até «Ferramentas de vídeo com IA» e selecione Interpolação de fotogramas com IA.',
+        },
+        {
+          title: 'Escolha os FPS de destino e a qualidade',
+          description: 'Escolha 48, 60 ou 120 FPS e uma qualidade de codificação / altura máxima de processamento.',
+        },
+        {
+          title: 'Execute a interpolação',
+          description: 'Extraímos os fotogramas, corremos o RIFE na nossa GPU e recodificamos um MP4 com os novos FPS.',
+        },
+        {
+          title: 'Transfira o MP4',
+          description: 'Guarde o clip interpolado e pré-visualize-o ao lado do original.',
+        },
+      ],
+      advancedDetails: [
+        'A extração de fotogramas usa o ffmpeg com vsync=0, para que a contagem de fotogramas de entrada corresponda exatamente aos FPS da origem.',
+        'O RIFE corre através do rife-ncnn-vulkan com o diretório de modelo escolhido (rife-v4.6 é a predefinição recomendada; rife-v4 e rife-v2.3 também estão disponíveis por compatibilidade).',
+        'Após a interpolação, o ffmpeg recodifica para H.264 (libx264) + AAC na qualidade escolhida (CRF 26/20/17 para baixa/média/alta).',
+        'O áudio de origem é remapeado para a nova codificação e a saída usa +faststart, para que o ficheiro seja transmitido sem problemas por HTTP.',
+        'Uma altura máxima de processamento (720p por predefinição) limita a pressão sobre a memória da GPU em origens altas; a proporção original é preservada com o redimensionamento -2:min(ih,N).',
+      ],
+      whyItMatters: [
+        'A fluidez do movimento é uma das maiores diferenças percetíveis entre vídeo de consumo e vídeo com qualidade de difusão.',
+        'Os ecrãs modernos e muitas plataformas sociais favorecem conteúdos a 60fps e 120fps para uma reprodução mais fluida.',
+        'Filmagens antigas ou de baixa taxa de fotogramas podem ser elevadas um nível sem voltar a filmar o material de origem.',
+      ],
+      useCases: [
+        {
+          title: '30fps → 60fps para a web',
+          description: 'Eleve filmagens de apresentador à câmara, screencasts ou vlogs para a gama mais fluida de 60fps, típica dos sites sociais e de vídeo modernos.',
+        },
+        {
+          title: '60fps → 120fps para reprodução em alta taxa de atualização',
+          description: 'Prepare filmagens para ecrãs de 120Hz/144Hz ou para edição posterior em câmara lenta.',
+        },
+        {
+          title: 'Clips curtos mais fluidos',
+          description: 'Torne um corte de 5–10 segundos visivelmente mais fluido antes de o partilhar.',
+        },
+        {
+          title: 'Recuperar clips antigos',
+          description: 'Leve clips antigos a 24/30fps para 48 ou 60fps, para uma sensação de reprodução mais moderna.',
+        },
+        {
+          title: 'Preparação para edição',
+          description: 'Gere uma linha temporal de fotogramas mais densa antes de aplicar câmara lenta ou grafismos animados num editor posterior.',
+        },
+      ],
+      whyMediaManipulator: [
+        'Corre na nossa própria infraestrutura GPU: nenhum fornecedor de IA de terceiros recebe o ficheiro.',
+        'Usa o rife-ncnn-vulkan, um binário Vulkan portátil, em vez de uma pesada pilha PyTorch: menos dependências, arranques a frio mais rápidos.',
+        'Gratuito, sem registo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      ],
+      privacyNote: 'Os novos fotogramas intermédios são gerados para o seu vídeo pelo RIFE no nosso próprio servidor GPU. O trabalho de IA corre em hardware que operamos, nunca num fornecedor de IA de terceiros, e nada do que carrega é usado para treinar um modelo. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'A interpolação de fotogramas com IA melhora realmente a qualidade do vídeo?',
+          answer: 'Melhora a fluidez do movimento, não a resolução nem a nitidez. Se a sua origem já estiver a 60fps, parecerá mais fluida a 120fps. Se a sua origem estiver a 24/30fps, parecerá mais próxima de 60fps. Não recupera magicamente movimento real que a câmara nunca captou.',
+        },
+        {
+          question: 'A interpolação de fotogramas com IA é o mesmo que simplesmente aumentar os FPS?',
+          answer: 'Não. A conversão básica de FPS normalmente duplica, descarta ou funde fotogramas existentes. A interpolação com IA sintetiza fotogramas intermédios totalmente novos com base no movimento estimado, o que normalmente parece muito mais natural do que a duplicação.',
+        },
+        {
+          question: 'Posso converter 30fps em 60fps?',
+          answer: 'Sim: 30fps para 60fps é um dos destinos mais comuns e um bom primeiro teste.',
+        },
+        {
+          question: 'Posso converter 60fps em 120fps?',
+          answer: 'Sim. 120fps duplica o trabalho da GPU em relação a 60fps e produz um ficheiro maior, por isso experimente primeiro um clip curto.',
+        },
+        {
+          question: 'Porque é que a interpolação de fotogramas pode criar artefactos?',
+          answer: 'A estimativa de movimento tem de adivinhar o que acontece entre dois fotogramas reais. Movimento rápido, mãos, cabelo, rodas, oclusões e cortes de cena são inerentemente mais difíceis: o fotograma sintetizado pode deformar-se, criar fantasmas ou borrar nessas regiões.',
+        },
+        {
+          question: 'Que formato de saída cria a ferramenta?',
+          answer: 'MP4 com vídeo H.264 e áudio AAC. A v1 só emite MP4, porque esse contentor reproduz em todo o lado e suporta as taxas de fotogramas mais altas que esta ferramenta produz.',
+        },
+        {
+          question: '60fps é sempre melhor do que 30fps?',
+          answer: 'Para screencasts de interfaces, desporto, jogabilidade e clips com muito movimento, 60fps costuma parecer mais fluido. Para conteúdos cinematográficos, 24/30fps é muitas vezes o aspeto pretendido. Escolha os FPS que correspondem à sensação que quer para o resultado.',
+        },
+        {
+          question: 'A interpolação de fotogramas com IA é melhor do que o minterpolate do FFmpeg?',
+          answer: 'A interpolação com IA (RIFE) produz geralmente um movimento mais limpo do que o filtro minterpolate integrado do FFmpeg, sobretudo em movimento não rígido. O minterpolate é mais rápido, mais simples e continua a ser útil para conversões rápidas de recurso.',
+        },
+        {
+          question: 'Porque é que os cortes de cena às vezes parecem estranhos após a interpolação?',
+          answer: 'O modelo assume que fotogramas adjacentes pertencem à mesma sequência de movimento. Um corte de cena brusco quebra essa suposição, por isso o fotograma sintetizado na fronteira pode mostrar uma breve deformação. Cortes limpos e clips curtos ajudam.',
+        },
+      ],
+      supportedFormats: {
+        maxFileNotes: [
+          'A duração máxima da origem e a altura de processamento são limitadas por AI_FRAME_INTERPOLATION_MAX_DURATION_SECONDS e AI_FRAME_INTERPOLATION_MAX_HEIGHT no servidor.',
+        ],
+        processingNotes: [
+          'A interpolação com IA é exigente para a GPU. Baixe a altura máxima de processamento para obter resultados mais rápidos em origens altas.',
+          'A saída é MP4 (H.264 + AAC) na v1. O áudio é preservado a partir da origem por predefinição.',
+        ],
+      },
+      related: [
+        {
+          label: 'Conversor de vídeo',
+          to: '/tools/video-converter',
+          description: 'Converta MP4, WebM, MOV, AVI, MKV e muito mais.',
+        },
+        {
+          label: 'Comprimir vídeo',
+          to: '/tools/compress-video',
+          description: 'Reduza o tamanho do ficheiro de vídeo após a interpolação.',
+        },
+        {
+          label: 'Converter vídeo em GIF animado',
+          to: '/tools/convert-video-to-animated-gif',
+          description: 'Transforme clips curtos em GIFs animados fáceis de partilhar.',
+        },
+        {
+          label: 'Extrair fotogramas de vídeo',
+          to: '/tools/extract-frames-from-video',
+          description: 'Retire fotogramas individuais como PNG.',
+        },
+        {
+          label: 'Tutorial de interpolação de fotogramas com IA',
+          to: '/tutorials/ai-frame-interpolation',
+          description: 'Saiba como funciona a interpolação com IA e quando a usar.',
+        },
+      ],
+      embed: {
+        title: 'Interpolação de fotogramas com IA',
+        description: 'Carregue um vídeo curto. A Interpolação de fotogramas com IA já está selecionada: escolha os FPS de destino (48, 60 ou 120) e a ferramenta sintetiza novos fotogramas intermédios e devolve um MP4.',
+      },
     },
     // MM100: Aperture's page lines (name, tagline, SEO title and description); full bodies come with MM102-<prefix>. Model-written, needs native review.
     'aperture': {
@@ -934,7 +12836,7 @@ const ptPtToolPages = {
     'adjust-image-hue': {
       name: 'Ajustar a tonalidade da imagem',
       tagline: 'Rode todas as cores de uma fotografia até 180 graus, ou mova apenas os vermelhos, os verdes ou os azuis, com pré-visualização em direto e exportação em resolução total.',
-      metaTitle: 'Ajustar a tonalidade de uma imagem online | Aperture',
+      metaTitle: 'Ajustar a tonalidade de uma imagem online | Media Manipulator',
       metaDescription: 'Desloque a tonalidade de uma fotografia inteira de -180 a 180 graus, ou mova só os vermelhos, amarelos, verdes, ciano, azuis ou magentas. Pré-visualização GPU em direto, exportação em resolução total.',
     },
     'change-image-color': {
