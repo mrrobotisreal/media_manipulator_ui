@@ -230,7 +230,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         setLoading(false);
       }
     },
-    [beginEditing, decode, t],
+    [beginEditing, decode, loadServerBase, t],
   );
 
   const openLocal = React.useCallback(
