@@ -4,10 +4,10 @@
  * slots, and how curves are packed into the 256×1 RGBA lookup texture. The
  * layout is mirrored by `shaders/adjustSource.ts`; tests pin it.
  */
-import { buildCurveLuts, hexToRgb, LUT_SIZE } from '@/lib/photo/colorMath';
+import { buildCurveLuts, hexToRgb, isDetailType, LUT_SIZE } from '@/lib/photo/colorMath';
 import type { AdjustmentLayer, LayerType } from '@/lib/photo/photoTypes';
 
-/** Layer types the GPU rung-1 shader implements. Others (rung-4 detail ops) are skipped by the preview. */
+/** Layer types the GPU rung-1 shader implements (`FRAG_SRC`). The rung-4 detail ops run in `detailSource.ts` (MM99). */
 export const GPU_LAYER_TYPES: readonly LayerType[] = [
   'exposure', 'brightnessContrast', 'tone', 'levels', 'curves', 'whiteBalance', 'vibranceSaturation', 'hsl',
   'colorBalance', 'blackWhite', 'channelMixer', 'photoFilter', 'splitTone', 'lut', 'invert', 'posterize',
@@ -16,7 +16,7 @@ export const GPU_LAYER_TYPES: readonly LayerType[] = [
 
 /** `#define` for a layer type (one program per type, cached by this name). */
 export const defineFor = (type: LayerType): string => `T_${type.toUpperCase()}`;
-export const isGpuLayer = (type: string): boolean => (GPU_LAYER_TYPES as readonly string[]).includes(type);
+export const isGpuLayer = (type: string): boolean => (GPU_LAYER_TYPES as readonly string[]).includes(type) || isDetailType(type);
 
 export const UNIFORM_SLOTS = 40;
 /** The shader loops at most this many HSL ranges (2 slots each after the master slot). */

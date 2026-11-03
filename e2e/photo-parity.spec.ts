@@ -23,11 +23,14 @@ const DOCS = ['blank', 'defaults', 'curves-s', 'hsl-grey-except-red', 'levels-ch
 // MM98: masks, geometry, red-eye. Geometry goldens are compared inside a 2 px border (golden-manifest.json),
 // and geometry-corrected output sizes must match exactly. Brush masks upload their PNG alpha as an R8 texture.
 const MM98_DOCS = ['masks-all-kinds', 'masks-named', 'geometry-rotate-crop', 'geometry-perspective', 'mask-gradient-tone', 'mask-colorrange-hsl', 'mask-brush-exposure', 'mask-luminosity-curves', 'mask-radial-subtract', 'redeye', 'geometry-straighten-edge', 'geometry-flip-fill-colour'];
+// MM99: detail ops. Convolution mean <= 1.5 / max <= 8; noise reduction (and dehaze: the preview uses a sampled
+// 99.5th percentile) mean <= 3 / max <= 12; grain exact up to the float colour buffer.
+const MM99_DOCS = ['detail-all', 'sharpen-only', 'vignette-grain', 'grain-only', 'dehaze-negative', 'clarity-texture-blur'];
 const MANIFEST = JSON.parse(readFileSync(join(FIX, 'golden-manifest.json'), 'utf8')) as Record<string, { width: number; height: number; borderPx: number }>;
 const docPath = (doc: string) => (existsSync(join(FIX, 'docs', `${doc}.json`)) ? join(FIX, 'docs', `${doc}.json`) : join(FIX, 'golden-docs', `${doc}.json`));
 
 test.describe('Aperture preview vs goldens', () => {
-  for (const doc of [...DOCS, ...MM98_DOCS]) {
+  for (const doc of [...DOCS, ...MM98_DOCS, ...MM99_DOCS]) {
     for (const image of IMAGES) {
       test(`${doc} / ${image}`, async ({ page }) => {
         await page.goto('/photo/new?parity=1');
@@ -81,9 +84,11 @@ test.describe('Aperture preview vs goldens', () => {
           { docJson, imageB64, goldenB64, meta },
         );
         const extra = stats.float ? 0 : 2;
-        expect(stats.mean).toBeLessThanOrEqual(1.0 + (stats.float ? 0 : 0.5));
-        expect(stats.p99).toBeLessThanOrEqual(2 + extra);
-        expect(stats.max).toBeLessThanOrEqual(4 + extra);
+        const detail = MM99_DOCS.includes(doc);
+        const nr = doc === 'detail-all';
+        expect(stats.mean).toBeLessThanOrEqual((nr ? 3 : detail ? 1.5 : 1.0) + (stats.float ? 0 : 0.5));
+        if (!detail) expect(stats.p99).toBeLessThanOrEqual(2 + extra);
+        expect(stats.max).toBeLessThanOrEqual((nr ? 12 : detail ? 8 : 4) + extra);
       });
     }
   }

@@ -31,6 +31,8 @@ export const SHARED_GOLDEN_DOCS = [
   'masks-named',
   'geometry-rotate-crop',
   'geometry-perspective',
+  // MM99: detail operations
+  'detail-all',
 ];
 /** Golden docs whose output is geometry-resampled: comparisons exclude this many px at every output edge. */
 export const GEOMETRY_BORDER_PX: Record<string, number> = { 'geometry-rotate-crop': 2, 'geometry-perspective': 2, 'geometry-straighten-edge': 2 };
@@ -129,6 +131,19 @@ export const EXTRA_DOC_LAYERS: Record<string, { id: string; type: string; params
   'posterize-4': [{ id: 'l1', type: 'posterize', params: { levels: 4 } }],
   'threshold-half': [{ id: 'l1', type: 'threshold', params: { level: 0.5 } }],
   'invert-gamma': [{ id: 'l1', type: 'invert' }, { id: 'l2', type: 'gamma', params: { gamma: 1.8 } }],
+  // MM99 detail ops
+  'sharpen-only': [{ id: 'l1', type: 'sharpen', params: { amount: 200, radius: 1.2, threshold: 2 } }],
+  'vignette-grain': [
+    { id: 'l1', type: 'vignette', params: { amount: -60, midpoint: 40, roundness: -30, feather: 55, highlights: 30 } },
+    { id: 'l2', type: 'grain', params: { amount: 40, size: 1, roughness: 0, seed: 7 } },
+  ],
+  'grain-only': [{ id: 'l1', type: 'grain', params: { amount: 60, size: 2, roughness: 80, seed: 4000000000 } }],
+  'dehaze-negative': [{ id: 'l1', type: 'dehaze', params: { amount: -50 } }],
+  'clarity-texture-blur': [
+    { id: 'l1', type: 'clarity', params: { amount: 60 } },
+    { id: 'l2', type: 'texture', params: { amount: 50 } },
+    { id: 'l3', type: 'blur', params: { radius: 3 } },
+  ],
   'opacity-and-blend': [
     { id: 'l1', type: 'exposure', params: { ev: 1.5 }, blend: 'luminosity', opacity: 0.6 },
     { id: 'l2', type: 'hsl', params: { master: { hue: 90, saturation: 20 } }, blend: 'color', opacity: 0.8 },

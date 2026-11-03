@@ -21,6 +21,7 @@ import {
 } from '@/lib/photo/projectsApi';
 import { PHOTO_FORMATS, type PhotoDoc } from '@/lib/photo/photoTypes';
 import { cn } from '@/lib/utils';
+import { BatchApply } from './batch-apply';
 
 type Format = (typeof PHOTO_FORMATS)[number];
 
@@ -39,6 +40,10 @@ export interface ExportDialogProps {
   originalFile: File | null;
   /** MM101 seam: the user hit a locked size. */
   onGatedSizeClicked?: (megapixels: number) => void;
+  /** MM101 seam: the batch picker hit the sign-in / limit wall. */
+  onBatchGated?: (reason: 'sign_in' | 'limit') => void;
+  /** Test seam. */
+  batchDeps?: import('@/lib/photo/batch').BatchDeps;
   /** Test seam. */
   exporters?: { project: typeof exportProject; stateless: typeof exportStateless };
 }
@@ -48,7 +53,7 @@ const fmtBytes = (n: number) => (n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}
 
 /** Export dialog (ticket MM97 decision 13). */
 export function ExportDialog(props: ExportDialogProps) {
-  const { open, onOpenChange, doc, projectName, projectId, file, signedIn, capabilities, originalFile, onGatedSizeClicked, exporters } = props;
+  const { open, onOpenChange, doc, projectName, projectId, file, signedIn, capabilities, originalFile, onGatedSizeClicked, onBatchGated, batchDeps, exporters } = props;
   const { t } = useLocalization('interface');
   const formats = (capabilities?.formats?.length ? capabilities.formats : ['jpg', 'png', 'webp']).filter((f): f is Format => (PHOTO_FORMATS as readonly string[]).includes(f));
   const [format, setFormat] = React.useState<Format>(doc.output.format ?? 'jpg');
@@ -122,8 +127,9 @@ export function ExportDialog(props: ExportDialogProps) {
               <legend className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('photo.export.format')}</legend>
               <div className="flex flex-wrap gap-1.5">
                 {formats.map((f) => (
-                  <button key={f} type="button" aria-pressed={format === f} onClick={() => setFormat(f)} className={cn('min-h-9 rounded-md border px-3 text-sm', format === f ? 'border-primary bg-primary/15' : 'border-edge bg-surface-2')}>
+                  <button key={f} type="button" aria-pressed={format === f} onClick={() => setFormat(f)} className={cn('min-h-9 rounded-md border px-3 text-sm', format === f ? 'border-primary bg-primary/15' : 'border-edge bg-surface-2')} data-testid={`format-${f}`}>
                     {FORMAT_LABEL[f]}
+                    <span className="ms-1.5 text-xs text-muted-foreground">{fmtBytes(estimateExportBytes(f, quality, outMp))}</span>
                   </button>
                 ))}
               </div>
@@ -175,7 +181,10 @@ export function ExportDialog(props: ExportDialogProps) {
             </fieldset>
 
             <p className="text-xs text-muted-foreground" data-testid="export-estimate">
-              {t('photo.export.estimate', { size: fmtBytes(estimate) })}
+              {format === 'png'
+                ? t('photo.export.estimateRange', { min: fmtBytes(estimateExportBytes('png', quality, outMp, 'graphic')), max: fmtBytes(estimate) })
+                : t('photo.export.estimate', { size: fmtBytes(estimate) })}{' '}
+              {t('photo.export.estimateNote')}
             </p>
             {error ? (
               <p role="alert" className="text-sm text-destructive">
@@ -187,6 +196,16 @@ export function ExportDialog(props: ExportDialogProps) {
                 {t('photo.export.failed')}
               </p>
             ) : null}
+
+            <BatchApply
+              doc={doc}
+              options={{ format, quality, metadataMode: metadata }}
+              photoBatch={capabilities?.photoBatch ?? 0}
+              signedIn={signedIn}
+              renderReady={renderReady}
+              onGated={onBatchGated}
+              deps={batchDeps}
+            />
 
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>

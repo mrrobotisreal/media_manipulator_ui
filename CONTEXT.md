@@ -61,6 +61,15 @@ The image after `doc.geometry` (rotate -> flip -> perspective -> crop, canvas gr
 **Heal base**:
 The latest `doc.heals[].baseRef` (`bases/<hash>.png` on the server, `local:<id>` for a guest). Renderers start from it instead of the original; the editor swaps the preview source when the doc's current base changes, so undoing a heal reverts the pixels.
 
+**Preset** (MM99):
+A named set of adjustment layers (`lib/photo/presets/`): the 18 built-ins in `builtin/*.json` plus Auto (computed from the histogram, written as explicit params), and the user's own saved in this browser (IndexedDB `photo-presets`, columns `name, category, layers, createdAt`, JSON export/import; MM103 moves them to the account). Applying a preset APPENDS its layers, ids `preset-<id>-<n>`, all carrying `layer.group = "Preset: <name>"`, which the layers panel shows under one collapsible header. _Avoid_: "filter" (that is the Photo filter layer).
+
+**Batch apply** (MM99):
+"Apply to more photos" in the export dialog (`components/photo/batch-apply.tsx`, `lib/photo/batch.ts`): one project per file, ONE `POST /api/photo/batch`, a job per project tracked to completion, results zipped client-side. Capped by `capabilities.photoBatch`.
+
+**Snapshot** (MM99):
+A named, session-only bookmark of the document in the History panel (`useSnapshotStore`); going to one is itself an undoable step. Not part of the saved document.
+
 **Browser-local project**:
 Anonymous visitors get exactly one Aperture project, stored in the browser (original Blob + doc in IndexedDB, doc mirrored to `localStorage`); a second photo asks to replace it; export uses the stateless `POST /api/photo/export`; after sign-in the project is offered for upload as a server project.
 

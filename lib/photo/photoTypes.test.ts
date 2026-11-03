@@ -11,8 +11,8 @@ const INPUT_TO_DOC: Record<string, string> = {
 };
 
 describe('PhotoDoc fixtures (shared contract with the Go sanitizer)', () => {
-  it('has the 15 valid fixtures', () => {
-    expect(docFixtures()).toHaveLength(15);
+  it('has the 16 valid fixtures', () => {
+    expect(docFixtures()).toHaveLength(16);
     expect(invalidFixtures()).toHaveLength(4);
   });
 

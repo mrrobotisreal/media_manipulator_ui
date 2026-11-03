@@ -51,6 +51,10 @@ export interface PhotoState {
   mutate: (label: string, fn: (doc: PhotoDoc) => PhotoDoc, selection?: string | null) => void;
   undo: () => void;
   redo: () => void;
+  /** Move to timeline state `index` (0 = oldest) by stepping undo/redo; not a new step. */
+  jumpTo: (index: number) => void;
+  /** Drop the whole undo/redo history, keeping the document. */
+  clearHistory: () => void;
   beginGesture: (label: string) => void;
   endGesture: () => void;
   cancelGesture: () => void;
@@ -139,6 +143,35 @@ export const createPhotoStore = () =>
           dirty: true,
         };
       }),
+
+    jumpTo: (index) =>
+      set((s) => {
+        if (s.gestureDepth > 0 || !s.doc) return {};
+        const n = s.past.length;
+        const target = Math.max(0, Math.min(n + s.future.length, Math.floor(index)));
+        if (target === n) return {};
+        let past = s.past;
+        let future = s.future;
+        let doc: PhotoDoc = s.doc;
+        if (target < n) {
+          for (let k = n; k > target; k -= 1) {
+            const entry = past[past.length - 1];
+            future = [...future, { doc, label: entry.label }];
+            doc = entry.doc;
+            past = past.slice(0, -1);
+          }
+        } else {
+          for (let k = n; k < target; k += 1) {
+            const entry = future[future.length - 1];
+            past = pushPast(past, { doc, label: entry.label });
+            doc = entry.doc;
+            future = future.slice(0, -1);
+          }
+        }
+        return { doc, past, future, selection: pruneSelection(s.selection, doc), revision: s.revision + 1, dirty: true };
+      }),
+
+    clearHistory: () => set((s) => (s.past.length === 0 && s.future.length === 0 ? {} : { past: [], future: [] })),
 
     beginGesture: (label) =>
       set((s) =>

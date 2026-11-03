@@ -62,3 +62,26 @@ export const onHealRequested = (strokes: number): void => mm98?.onHealRequested?
 export const onHealCompleted = (): void => mm98?.onHealCompleted?.();
 export const onHealFailed = (reason: string): void => mm98?.onHealFailed?.(reason);
 export const onCompareUsed = (mode: string): void => mm98?.onCompareUsed?.(mode);
+
+// ---------------------------------------------------------------------------
+// MM99 seams: what happened, nothing else. MM101 wires them.
+// ---------------------------------------------------------------------------
+export interface Mm99Listener {
+  /** A preset was applied; `builtin` is false for browser-local (and later account) presets. */
+  onPresetApplied?: (id: string, builtin: boolean) => void;
+  onPresetSaved?: (layers: number) => void;
+  onBatchStarted?: (n: number) => void;
+  onShortcutsOpened?: () => void;
+}
+let mm99: Mm99Listener | null = null;
+/** MM101 installs its emitters here. Returns an uninstaller. */
+export function setMm99Listener(l: Mm99Listener | null): () => void {
+  mm99 = l;
+  return () => {
+    if (mm99 === l) mm99 = null;
+  };
+}
+export const onPresetApplied = (id: string, builtin: boolean): void => mm99?.onPresetApplied?.(id, builtin);
+export const onPresetSaved = (layers: number): void => mm99?.onPresetSaved?.(layers);
+export const onBatchStarted = (n: number): void => mm99?.onBatchStarted?.(n);
+export const onShortcutsOpened = (): void => mm99?.onShortcutsOpened?.();

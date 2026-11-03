@@ -18,13 +18,15 @@ export interface PhotoSession {
   /** A ≤ 64 px float thumbnail of the source (mask thumbnails, luminosity backdrop). */
   thumb: FloatImage | null;
   /** The renderer's current histogram (luminosity backdrop). */
-  histogram: { luma: Uint32Array; max: number } | null;
+  histogram: import('@/lib/photo/gl/histogram').Histogram | null;
   /** Ask the editor to arm the canvas eyedropper for the colour-range mask. */
   requestPick: () => void;
   /** Latest eyedropper result for the colour-range mask (n changes per pick). */
   picked: { r: number; g: number; b: number; n: number; shift: boolean } | null;
   /** Persist a guest subject-mask PNG with the local project. */
   keepLocalMask: (ref: string, blob: Blob) => void;
+  /** Zoom the canvas to 100 % (the detail panel's "judge at 100 %" button). */
+  zoom100?: () => void;
   /** Heal finished: swap the source to the new base (the editor owns decode + storage). */
   onHealed: (outcome: import('@/lib/photo/aiApi').HealOutcome) => Promise<void>;
 }
