@@ -355,7 +355,7 @@ describe("MM78 voices legal copy", () => {
       expect(t8[10].afterBullets).toHaveLength(2);
       expect(t8[10].paragraphs?.[1]).toContain(CONSENT_VERSION);
       expect(t8[10].afterBullets?.[0]).toContain("PerTh");
-      expect(pages.termsOfService.sections[0].bullets).toHaveLength(11);
+      expect(pages.termsOfService.sections[0].bullets).toHaveLength(12);
       expect(pages.termsOfService.sections[0].bullets?.[9]).toContain("8.11");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Chatterbox");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Qwen3-TTS");
@@ -547,7 +547,7 @@ describe("MM100 Aperture legal copy", () => {
     expect(terms).toHaveLength(7);
     expect(terms[6]).toContain("belong to you");
     expect(terms[6]).toContain("never changes the original file");
-    expect(en.legalCommon.whatChangedBody.startsWith("We added Aperture")).toBe(true);
+    expect(en.legalCommon.whatChangedBody.includes("We added Aperture")).toBe(true);
   });
 
   for (const { code } of locales) {
@@ -565,7 +565,7 @@ describe("MM100 Aperture legal copy", () => {
       expect(flatten(sub[11])).toContain("GPU");
       expect(flatten(pages.privacyPolicy.sections[2])).toContain("Aperture");
       expect(flatten(pages.privacyPolicy.sections[3])).toContain("LaMa");
-      expect(pages.termsOfService.sections[0].bullets).toHaveLength(11);
+      expect(pages.termsOfService.sections[0].bullets).toHaveLength(12);
       expect(pages.termsOfService.sections[0].bullets?.[8]).toContain("Aperture");
       expect(pages.termsOfService.sections[12].paragraphs).toHaveLength(7);
       expect(pages.termsOfService.sections[12].paragraphs?.[6]).toContain("Aperture");
@@ -606,6 +606,25 @@ describe("MM103 presets copy", () => {
       for (const k of ["presetsHeading", "presetsIntro", "presetsEmpty", "presetDeleteBody", "presetDeleted", "presetRenamed", "presetCategory"]) expect(proj[k], k).toBeTruthy();
       const rows = (pages as unknown as { pricing: { rows: Record<string, string> } }).pricing.rows;
       expect(rows.photoPresets).toContain("{{brand}}");
+    });
+  }
+});
+
+describe("MA26 mobile app legal sections", () => {
+  it("en-US no longer says Firebase is used only for account sign-in", () => {
+    expect(flatten(en.privacyPolicy)).not.toMatch(/Firebase is now used only for account sign-in/);
+    expect(flatten(en.privacyPolicy)).toContain("Firebase Crashlytics");
+  });
+  for (const { code } of locales) {
+    it(`${code}: Privacy has 17 sections (17.1-17.7), Terms 25, and the what-changed note names the app`, () => {
+      const pages = load(code);
+      expect(pages.privacyPolicy.sections).toHaveLength(17);
+      expect(pages.termsOfService.sections).toHaveLength(25);
+      expect(pages.privacyPolicy.sections[16].subsections).toHaveLength(7);
+      expect(pages.privacyPolicy.sections[16].title).toMatch(/^17\./);
+      expect(pages.termsOfService.sections[24].title).toMatch(/^25\./);
+      expect(pages.legalCommon.whatChangedBody).toMatch(/\b17\b/);
+      expect(flatten(pages.privacyPolicy.sections[16])).toContain("https://www.media-manipulator.com/delete-account");
     });
   }
 });
