@@ -31,7 +31,7 @@ import {
   type AccountSettings,
   type HistoryVisibility,
 } from '@/lib/auth/accountApi';
-import { getFreshIdToken, getSignInProviders, reauthenticate } from '@/lib/firebase';
+import { getFreshIdToken, getSignInProviders, isAppleAuthEnabled, reauthenticate } from '@/lib/firebase';
 import { requireToken } from '@/lib/account/requireToken';
 import { fmt } from '@/lib/account/retention';
 import { saveBlobToDisk } from '@/lib/results/save';
@@ -220,7 +220,7 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
     await attemptAccountDeletion(fresh);
   };
 
-  const doReauth = async (method: { kind: 'password'; password: string } | { kind: 'google' }) => {
+  const doReauth = async (method: { kind: 'password'; password: string } | { kind: 'google' } | { kind: 'apple' }) => {
     setAccountBusy(true);
     setAccountNote('');
     let token: string;
@@ -255,6 +255,8 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
   const settings = settingsQuery.data;
   const canPassword = providers.includes('password');
   const canGoogle = providers.includes('google.com');
+  // Apple re-auth is behind the same flag as the sign-in button (MA09).
+  const canApple = isAppleAuthEnabled() && providers.includes('apple.com');
 
   return (
     <div className="grid gap-6">
@@ -408,6 +410,11 @@ export const PrivacyTab: React.FC<PrivacyTabProps> = ({ copy, uid }) => {
                   {d.reauthPasswordCta}
                 </Button>
               </div>
+            ) : null}
+            {canApple ? (
+              <Button type="button" variant="outline" className="min-h-11" disabled={accountBusy} onClick={() => void doReauth({ kind: 'apple' })}>
+                {d.reauthApple}
+              </Button>
             ) : null}
             {canGoogle ? (
               <Button type="button" variant="outline" className="min-h-11" disabled={accountBusy} onClick={() => void doReauth({ kind: 'google' })}>

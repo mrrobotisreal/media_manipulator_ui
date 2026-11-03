@@ -58,7 +58,7 @@ describe('MM84 tool copy: report', () => {
         `  sentences of >=6 words shared by >4 pages = ${d.sharedSentences.length}`,
       ].join('\n'),
     );
-    expect(rows).toHaveLength(24);
+    expect(rows).toHaveLength(REVIEW_CATALOG_SLUGS.length);
   });
 });
 

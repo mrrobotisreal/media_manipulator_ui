@@ -8,11 +8,14 @@
 
 import { isSeoFullIndex } from '@/lib/seoFlags';
 import { isToolAliasSlug } from '@/content/toolAliases';
+import { PHOTO_ADJUSTMENT_SLUGS } from '@/content/photo/slugs';
 
 export const REVIEW_INDEXED_TOOL_SLUGS = [
   'content-studio',
   // MM48: Motion's landing page (long original copy, guide, plan table, FAQ; no ad slot).
   'motion',
+  // MM100: Aperture's landing page (long original copy, guide, plan table, FAQ; no ad slot).
+  'aperture',
   'remove-exif-metadata',
   'compress-image',
   'image-resizer',
@@ -68,7 +71,15 @@ export function isReviewIndexedToolSlug(slug: string): boolean {
  * MM84 decision 4: the 24 tools that get full cards on /tools in review mode
  * (the allowlist plus the pending set that meets the copy bar).
  */
-export const REVIEW_CATALOG_SLUGS: readonly string[] = [...REVIEW_INDEXED_TOOL_SLUGS, ...PENDING_ALLOWLIST];
+/**
+ * MM100: the 24 Aperture adjustment pages (content/photo). They meet the copy bar and are
+ * listed and linked like the pending set, but stay `noindex` until Mitch reads them (a follow-up
+ * moves the approved ones into REVIEW_INDEXED_TOOL_SLUGS). Kept apart from PENDING_ALLOWLIST so
+ * the MM28 operation map that test pins is unchanged.
+ */
+export const PHOTO_PENDING_SLUGS: readonly string[] = PHOTO_ADJUSTMENT_SLUGS;
+
+export const REVIEW_CATALOG_SLUGS: readonly string[] = [...REVIEW_INDEXED_TOOL_SLUGS, ...PENDING_ALLOWLIST, ...PHOTO_PENDING_SLUGS];
 
 /** Extract the tool slug from a /tools/<slug> href, or null. */
 export function getToolSlugFromHref(href: string): string | null {
@@ -115,6 +126,7 @@ export function isReviewSafeInternalHref(href: string): boolean {
   if (href === '/terms-of-service') return true;
   if (href === '/voices') return true;
   if (href === '/licenses') return true;
+  if (href === '/delete-account') return true;
 
   if (href.startsWith('/tutorials/')) return true;
   if (href.startsWith('/blog/')) return true;

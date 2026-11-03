@@ -21,7 +21,10 @@ import {
   type StudioProjectSummary,
   type VectorProjectSummary,
 } from '@/lib/auth/accountApi';
+import { PresetsSection } from '@/components/account/tabs/presets-section';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
+import { deletePhotoProject, getPhotoProject, listPhotoProjects, savePhotoProject, type PhotoProjectSummary } from '@/lib/photo/projectsApi';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 import { fmt } from '@/lib/account/retention';
 import { requireToken } from '@/lib/account/requireToken';
@@ -44,9 +47,15 @@ export function openMotionProjectHref(id: string): string {
   return `/motion/${encodeURIComponent(id)}`;
 }
 
+/** Aperture's editor route is excluded from the locale proxy too (MM97): the raw path, never localized. */
+export function openPhotoProjectHref(id: string): string {
+  return `/photo/${encodeURIComponent(id)}`;
+}
+
 type ProjectRow =
   | { kind: 'darkroom'; project: StudioProjectSummary }
-  | { kind: 'motion'; project: VectorProjectSummary };
+  | { kind: 'motion'; project: VectorProjectSummary }
+  | { kind: 'photo'; project: PhotoProjectSummary & { createdAt?: string } };
 
 function formatClock(seconds: number): string {
   const total = Math.max(0, Math.round(seconds));
@@ -77,11 +86,44 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
     queryFn: async () => fetchVectorProjects(await requireToken()),
   });
 
+  // MM100: Aperture projects (kind `photo`) beside Darkroom and Motion.
+  const photoProjects = useQuery({
+    queryKey: ['account-projects', uid, 'photo'],
+    staleTime: 30_000,
+    retry: 1,
+    queryFn: async () => listPhotoProjects(),
+  });
+
+  const [renaming, setRenaming] = React.useState<{ id: string; value: string } | null>(null);
+  const rename = useMutation({
+    mutationFn: async ({ id, name }: { id: string; name: string }) => {
+      const current = await getPhotoProject(id);
+      return savePhotoProject(id, current.revision, { name, doc: current.doc });
+    },
+    onSuccess: () => {
+      setLive(p.renamed);
+      toast.success(p.renamed);
+    },
+    onError: () => {
+      setLive(p.renameFailed);
+      toast.error(p.renameFailed);
+    },
+    onSettled: () => {
+      setRenaming(null);
+      void queryClient.invalidateQueries({ queryKey: ['account-projects', uid] });
+    },
+  });
+
   const remove = useMutation({
-    mutationFn: async (row: ProjectRow) =>
-      row.kind === 'motion'
+    mutationFn: async (row: ProjectRow) => {
+      if (row.kind === 'photo') {
+        await deletePhotoProject(row.project.id);
+        return { pending: 0 };
+      }
+      return row.kind === 'motion'
         ? deleteVectorProject(await requireToken(), row.project.id)
-        : deleteProject(await requireToken(), row.project.id),
+        : deleteProject(await requireToken(), row.project.id);
+    },
     onSuccess: (result) => {
       retentionEvents.itemDeleted('project', 1);
       const message = result.pending > 0 ? p.deletedPending : p.deleted;
@@ -99,14 +141,14 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
     },
   });
 
-  if (projects.isPending || motionProjects.isPending) {
+  if (projects.isPending || motionProjects.isPending || photoProjects.isPending) {
     return (
       <Panel title={copy.projectsTitle} titleAs="h2">
         <PanelLoading variant="inline" label={p.loading} />
       </Panel>
     );
   }
-  if (projects.isError && motionProjects.isError) {
+  if (projects.isError && motionProjects.isError && photoProjects.isError) {
     return (
       <Panel title={copy.projectsTitle} titleAs="h2">
         <p className="text-sm text-muted-foreground">{p.loadFailed}</p>
@@ -117,9 +159,16 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
   const list: ProjectRow[] = [
     ...(projects.data ?? []).map((project): ProjectRow => ({ kind: 'darkroom', project })),
     ...(motionProjects.data ?? []).map((project): ProjectRow => ({ kind: 'motion', project })),
+    ...(photoProjects.data ?? []).map((project): ProjectRow => ({ kind: 'photo', project })),
   ].sort((a, b) => Date.parse(b.project.updatedAt) - Date.parse(a.project.updatedAt));
   // A failure of one list must not blank the other; the failed side gets a muted note.
-  const partialNote = projects.isError ? p.loadFailed : motionProjects.isError ? fmt(p.motionLoadFailed, { brand: MOTION_BRAND }) : null;
+  const partialNote = projects.isError
+    ? p.loadFailed
+    : motionProjects.isError
+      ? fmt(p.motionLoadFailed, { brand: MOTION_BRAND })
+      : photoProjects.isError
+        ? fmt(p.motionLoadFailed, { brand: PHOTO_BRAND })
+        : null;
   return (
     <Panel title={copy.projectsTitle} titleAs="h2">
       <div role="status" aria-live="polite" className="sr-only">
@@ -140,6 +189,7 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
             {list.map((row) => {
               const { project } = row;
               const isMotion = row.kind === 'motion';
+              const isPhoto = row.kind === 'photo';
               const edited = fmt(p.edited, { date: formatDate(project.updatedAt, { month: 'short', day: 'numeric' }) });
               return (
                 <li
@@ -149,30 +199,64 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
                 >
                   <div className="min-w-0">
                     <p className="flex items-center gap-2">
-                      <span className="truncate text-sm text-foreground">{project.name || p.untitled}</span>
+                      {renaming && row.kind === 'photo' && renaming.id === project.id ? (
+                        <form
+                          className="flex items-center gap-2"
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            const name = renaming.value.trim();
+                            if (name) rename.mutate({ id: project.id, name });
+                            else setRenaming(null);
+                          }}
+                        >
+                          <input
+                            autoFocus
+                            aria-label={p.renameLabel}
+                            maxLength={80}
+                            value={renaming.value}
+                            onChange={(e) => setRenaming({ id: project.id, value: e.target.value })}
+                            className="h-8 rounded border border-edge bg-surface-2 px-2 text-sm text-foreground"
+                          />
+                          <button type="submit" className={LINK_CLASS} disabled={rename.isPending}>
+                            {p.renameSave}
+                          </button>
+                          <button type="button" className={LINK_CLASS} onClick={() => setRenaming(null)}>
+                            {p.cancel}
+                          </button>
+                        </form>
+                      ) : (
+                        <span className="truncate text-sm text-foreground">{project.name || p.untitled}</span>
+                      )}
                       <span
                         data-testid="project-kind"
                         className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider ${
-                          isMotion ? 'border-premium/40 text-premium' : 'border-edge text-muted-foreground'
+                          isMotion || isPhoto ? 'border-premium/40 text-premium' : 'border-edge text-muted-foreground'
                         }`}
                       >
-                        {isMotion ? MOTION_BRAND : p.kindDarkroom}
+                        {isMotion ? MOTION_BRAND : isPhoto ? PHOTO_BRAND : p.kindDarkroom}
                       </span>
                     </p>
                     <p className="num text-xs text-muted-foreground">
                       {row.kind === 'darkroom'
                         ? [fmt(p.duration, { duration: formatClock(row.project.durationSeconds) }), edited].join(' · ')
-                        : edited}
+                        : row.kind === 'photo' && row.project.width && row.project.height
+                          ? [`${row.project.width}\u00d7${row.project.height}`, edited].join(' · ')
+                          : edited}
                     </p>
                   </div>
                   <div className="flex items-center gap-4">
                     <Link
-                      href={isMotion ? openMotionProjectHref(project.id) : openProjectHref(localized, project.id)}
+                      href={isPhoto ? openPhotoProjectHref(project.id) : isMotion ? openMotionProjectHref(project.id) : openProjectHref(localized, project.id)}
                       className={LINK_CLASS}
-                      onClick={() => retentionEvents.itemReopened('project', project.createdAt)}
+                      onClick={() => retentionEvents.itemReopened('project', project.createdAt ?? project.updatedAt)}
                     >
                       {p.open}
                     </Link>
+                    {isPhoto ? (
+                      <button type="button" onClick={() => setRenaming({ id: project.id, value: project.name })} className={LINK_CLASS}>
+                        {p.rename}
+                      </button>
+                    ) : null}
                     {/* MM44: Motion server deletes are hidden on translator deployments (MM52 rule). */}
                     {isMotion && isIrreversibleActionHidden() ? null : (
                       <button type="button" onClick={() => setToDelete(row)} className={DANGER_TEXT_BUTTON_CLASS}>
@@ -190,13 +274,21 @@ export const ProjectsTab: React.FC<{ copy: AccountCopy; uid: string }> = ({ copy
         </>
       )}
 
+      <PresetsSection copy={copy} uid={uid} />
+
       <ConfirmDialog
         open={toDelete !== null}
         onOpenChange={(open) => {
           if (!open) setToDelete(null);
         }}
         title={fmt(p.deleteTitle, { name: toDelete?.project.name || p.untitled })}
-        description={toDelete?.kind === 'motion' ? fmt(p.motionDeleteBody, { brand: MOTION_BRAND }) : p.deleteBody}
+        description={
+          toDelete?.kind === 'motion'
+            ? fmt(p.motionDeleteBody, { brand: MOTION_BRAND })
+            : toDelete?.kind === 'photo'
+              ? fmt(p.photoDeleteBody, { brand: PHOTO_BRAND })
+              : p.deleteBody
+        }
         confirmLabel={p.deleteConfirm}
         cancelLabel={p.cancel}
         busy={remove.isPending}

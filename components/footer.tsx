@@ -8,12 +8,15 @@ import { Wordmark } from '@/components/darkroom/wordmark';
 import { requestConsentReview } from '@/lib/consent';
 import { showGoogleConsentMessage } from '@/lib/consent/googleConsentMessage';
 import { MOTION_BRAND } from '@/lib/vector/brand';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 
 const NAV_LINK_KEYS: { key: string; href: string; label?: string }[] = [
   { key: 'home', href: '/' },
   { key: 'tools', href: '/tools' },
   { key: 'contentStudio', href: '/tools/content-studio', label: 'Darkroom' },
   { key: 'motion', href: '/tools/motion', label: MOTION_BRAND },
+  // MM100: the photo editor's landing page.
+  { key: 'aperture', href: '/tools/aperture', label: PHOTO_BRAND },
   { key: 'voices', href: '/voices' },
   { key: 'blog', href: '/blog' },
   { key: 'tutorials', href: '/tutorials' },
@@ -35,6 +38,8 @@ const LEGAL_LINK_KEYS: { key: string; href: string; labelKey?: string }[] = [
   { key: 'termsOfService', href: '/terms-of-service' },
   // MM48: MM47's open-source licence notices.
   { key: 'licenses', href: '/licenses', labelKey: 'interface:footer.licenses' },
+  // MA26: public account-deletion page (Google Play requirement).
+  { key: 'deleteAccount', href: '/delete-account', labelKey: 'interface:footer.deleteAccount' },
 ];
 
 const Footer: React.FC = () => {

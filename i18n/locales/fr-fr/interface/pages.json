@@ -340,6 +340,10 @@
       "motion": {
         "title": "Tutoriels d'animation",
         "description": "Animez des dessins SVG sur une timeline d'images clés et exportez-les en SVG animé, Lottie, code ou GIF."
+      },
+      "photo": {
+        "title": "Tutoriels de retouche photo",
+        "description": "Corrigez la lumière et les couleurs, masquez, corrigez et exportez vos photos avec {{brand}}."
       }
     },
     "tutorials": {
@@ -513,6 +517,110 @@
             "darkroomDesc": "Montez des vidéos sur une timeline multipiste et exportez en MP4."
           }
         }
+      },
+      "aperture": {
+        "title": "Comment retoucher une photo en ligne avec {{brand}}",
+        "excerpt": "Un guide en huit étapes pour {{brand}} : ouvrir une photo, corriger la lumière et les couleurs, faire ressortir une couleur, masquer une partie de l'image, corriger les imperfections, exporter en pleine résolution, enregistrer des styles et appliquer les mêmes retouches à d'autres photos.",
+        "readTime": "8 min de lecture",
+        "page": {
+          "eyebrow": "Tutoriel de retouche photo",
+          "title": "Comment retoucher une photo avec {{brand}}",
+          "intro": "{{brand}} est l'éditeur de photos non destructif de Media Manipulator. Chaque modification que vous faites est un calque de réglage empilé sur l'original intact : vous pouvez donc réordonner, masquer, atténuer ou supprimer n'importe quelle étape plus tard, et le fichier que vous avez ouvert n'est jamais altéré. L'aperçu est dessiné par votre carte graphique à partir d'une copie de 1920 px ; l'export est généré sur notre serveur à partir de l'original en pleine résolution, avec les mêmes formules. Ce guide suit une retouche de l'ouverture de la photo jusqu'à l'application du style final à toute une série, avec les noms de panneaux et de curseurs que vous verrez dans l'éditeur.",
+          "open": {
+            "title": "1. Ouvrir une photo",
+            "body": "Ouvrez {{brand}} depuis sa page d'outil ou depuis n'importe quelle page d'outil photo de Media Manipulator. L'éditeur occupe tout l'écran, sans publicité. Déposez une photo sur l'écran d'ouverture ou appuyez sur Choisir une photo. Une fois la photo décodée, vous obtenez l'aperçu au centre, les onglets Panneaux et Calques sur un côté, et un histogramme en direct qui affiche le rouge, le vert, le bleu et la luminance. Maintenez la touche barre oblique inverse à tout moment pour voir l'original, ou activez la Vue partagée pour comparer les deux moitiés.",
+            "bullets": {
+              "formats": "Vous pouvez ouvrir des fichiers JPG, PNG, WebP, GIF, HEIC, HEIF, AVIF, TIFF et BMP. Votre navigateur décode seul les formats web courants. HEIC, HEIF, TIFF et BMP nécessitent un compte, car le serveur crée une copie d'aperçu avant que l'éditeur puisse les afficher.",
+              "local": "Sans compte, la photo et vos retouches restent dans le stockage de ce navigateur et rien n'est envoyé tant que vous n'exportez pas, ne sélectionnez pas un sujet et ne corrigez pas. Les invités conservent une seule photo à la fois ; en ouvrir une seconde remplace le projet enregistré, et l'éditeur vous demande confirmation avant de le faire.",
+              "account": "Une fois connecté, chaque photo devient un projet enregistré dans votre compte : 5 projets avec Free, 50 avec Premium et un nombre illimité avec Pro. Le projet s'ouvre sur n'importe quel appareil et s'enregistre automatiquement pendant que vous travaillez, l'état d'enregistrement étant affiché dans la barre du haut.",
+              "original": "Le fichier original n'est jamais modifié. Chaque réglage est un calque posé dessus, avec sa propre opacité de 0 à 100 pour cent, un mode de fusion normal, luminosité ou couleur, et un masque facultatif. Vous pouvez empiler jusqu'à 64 calques, et le panneau Historique liste chaque étape."
+            }
+          },
+          "basic": {
+            "title": "2. Corriger la lumière et les couleurs avec De base",
+            "body": "La plupart des photos ont d'abord besoin du panneau De base. Il regroupe les curseurs globaux en sections Exposition, Lumière, Tons, Balance des blancs et Couleur, chacune devenant son propre calque de réglage dès que vous déplacez un curseur. Travaillez de haut en bas : réglez d'abord la luminosité générale, puis récupérez les hautes lumières et les ombres, corrigez ensuite la dominante de couleur, puis décidez de la quantité de couleur voulue. Surveillez l'histogramme pendant que vous faites glisser ; l'écrêtage apparaît sous la forme d'un amas à l'une ou l'autre extrémité.",
+            "bullets": {
+              "exposure": "Exposition (EV) va de -5 à +5 diaphragmes et multiplie chaque pixel par deux à la puissance de la valeur : +1 double donc la lumière. Décalage ajoute ou retire une quantité fixe de -0,5 à 0,5, et Gamma, de 0,1 à 10, infléchit les tons moyens. Lumière contient Luminosité et Contraste, de -100 à 100.",
+              "tone": "Tons comprend Hautes lumières, Ombres, Blancs et Noirs. Baissez les Hautes lumières pour retrouver un ciel clair, augmentez les Ombres pour ouvrir un visage sombre, et utilisez Blancs et Noirs pour fixer où se situent les points les plus clairs et les plus sombres. Chaque curseur cible sa propre partie de la plage de luminance au lieu de tout déplacer.",
+              "whiteBalance": "Balance des blancs comprend Température et Teinte. Température décale la photo vers le bleu ou l'ambre ; Teinte la décale vers le vert ou le magenta. Les prises de vue en intérieur sous des ampoules chaudes demandent généralement de ramener la Température vers le bleu, et la lumière fluorescente a souvent besoin d'un peu de Teinte magenta. Jugez le résultat sur un élément qui devrait être gris neutre ou blanc.",
+              "history": "Rien ici n'est définitif. Annuler et rétablir se trouvent dans la barre du haut et au clavier, le panneau Historique permet de revenir à n'importe quel état antérieur, et vous pouvez enregistrer un instantané nommé d'une version qui vous plaît pour le reste de la session. Baissez l'opacité d'un calque pour n'appliquer que la moitié d'un réglage au lieu de le refaire."
+            }
+          },
+          "colorPop": {
+            "title": "3. Faire ressortir une couleur",
+            "body": "L'effet de couleur sélective, où une couleur reste et tout le reste passe au gris, se trouve dans le panneau Couleur (TSL). Vous pouvez l'obtenir en une seule étape avec un style intégré ou le construire à la main. La voie manuelle vous donne le contrôle exact des teintes qui survivent et de la douceur de la transition entre couleur et gris, ce qui compte pour des éléments comme la peau, située entre les rouges et les jaunes.",
+            "bullets": {
+              "look": "Dans le panneau Styles, choisissez Couleur isolée : rouge, jaune, vert, cyan, bleu ou magenta. Le style ajoute un calque Couleur (TSL) au-dessus de vos retouches, qui désature toutes les plages sauf celle que vous avez choisie. Si ce n'est pas ce que vous vouliez, un seul Annuler supprime le style en entier.",
+              "chips": "Pour le construire vous-même, ouvrez Couleur (TSL). Chacune des six plages, Rouges, Jaunes, Verts, Cyans, Bleus et Magentas, a une pastille Gris sauf celle-ci. Appuyez sur la pastille de la couleur que vous voulez garder et les cinq autres plages passent à moins 100 de saturation d'un seul coup.",
+              "ranges": "Si la couleur à conserver n'est pas l'une des six, utilisez Choisir une couleur sur la photo pour ajouter une plage personnalisée avec la pipette. Chaque plage dispose des commandes Largeur et Contour progressif : vous pouvez l'élargir pour inclure des teintes voisines ou adoucir la bordure afin que la transition ne paraisse pas découpée.",
+              "tune": "Affinez ensuite la couleur conservée avec ses propres curseurs Teinte, Saturation et Luminosité. Un peu de Saturation en plus et un soupçon de Luminosité en moins font généralement ressortir davantage la couleur conservée sur le gris. Si le rendu est trop fort dans l'ensemble, baissez l'opacité du calque dans l'onglet Calques plutôt que de recommencer."
+            }
+          },
+          "masks": {
+            "title": "4. Retoucher une partie seulement de la photo avec des masques",
+            "body": "Tout calque de réglage peut porter un masque, qui limite la zone où il s'applique. Sélectionnez le calque dans l'onglet Calques, ouvrez Masques et ajoutez un composant. Les zones blanches du masque reçoivent la totalité du réglage, les zones noires n'en reçoivent aucun, et les zones grises en reçoivent une proportion. Affichage du masque alterne entre désactivé, une incrustation colorée sur la photo et le masque seul, pour que vous voyiez exactement ce que vous affectez avant de déplacer les curseurs.",
+            "bullets": {
+              "kinds": "Il existe six types de masque : Dégradé linéaire pour un ciel ou un sol, Radial pour un projecteur autour d'un point, Pinceau pour peindre à la main avec une taille réglable et une option de gomme, Plage de luminosité pour les parties claires ou sombres uniquement, Plage de couleurs pour les pixels d'une couleur choisie, et Sélectionner le sujet.",
+              "combine": "Un masque peut contenir plusieurs composants, chacun réglé sur Ajouter, Soustraire ou Intersection. Une recette courante : un Dégradé linéaire sur le ciel avec un Pinceau en mode Soustraire qui protège un bâtiment dépassant dans le ciel. Contour progressif du masque adoucit le bord, Intensité du masque dose l'ensemble, et Inverser le retourne.",
+              "colorRange": "Plage de couleurs reprend l'idée de la pipette du panneau TSL : choisissez une couleur, cliquez en maintenant Maj pour en ajouter jusqu'à huit autres, et augmentez Tolérance pour inclure les nuances proches. C'est un moyen rapide d'assombrir uniquement un ciel bleu ou de réchauffer uniquement les tons chair sans rien peindre.",
+              "subject": "Sélectionner le sujet demande à notre GPU de trouver la personne ou l'objet principal et renvoie en quelques secondes un masque aux bords progressifs. C'est le seul type de masque qui envoie la photo et compte comme une tâche standard dans votre offre ; une répétition identique est un succès de cache gratuit. Tous les autres types de masque sont calculés dans votre navigateur et ne coûtent rien."
+            }
+          },
+          "heal": {
+            "title": "5. Corriger les taches et les imperfections",
+            "body": "De la poussière sur un capteur, un bouton, un fil qui dépasse ou un déchet peuvent tous passer par le panneau Correction. Contrairement aux curseurs, la correction est une étape générative : notre serveur remplit la zone peinte avec de nouveaux pixels qui s'accordent avec l'environnement. Elle atterrit quand même dans votre pile de calques et votre historique, vous pouvez donc l'annuler ou maintenir la touche barre oblique inverse pour comparer avec l'original, mais c'est le seul outil de ce guide qui coûte une opération IA.",
+            "bullets": {
+              "paint": "Choisissez le Pinceau de correction et peignez sur chaque marque à faire disparaître. Faites la touche un peu plus grande que la tache elle-même pour que le remplissage dispose d'une texture propre où se fondre. Le panneau compte les taches marquées, et Effacer les taches repart de zéro si vous changez d'avis avant d'appuyer sur Corriger.",
+              "press": "Appuyez sur Corriger une fois les taches marquées. La photo et la zone peinte partent vers notre GPU, où le modèle d'inpainting LaMa remplit les zones marquées ; cela peut prendre jusqu'à une minute sur un gros fichier. À son retour, le résultat est appliqué comme une étape de votre historique, avec Annuler disponible.",
+              "cost": "Chaque pression sur Corriger compte comme une opération IA dans votre offre, quel que soit le nombre de taches peintes : marquez donc tout d'abord, puis appuyez une seule fois. Le quota quotidien de chaque offre est indiqué sur la page des tarifs. Peindre des taches, les effacer et annuler une correction ne coûtent rien.",
+              "base": "La correction se place dans votre pile de calques comme le reste : les calques de couleur et de tons que vous ajoutez ensuite s'appliquent au résultat corrigé, et Annuler ou le panneau Historique la retire. Pour les yeux rouges des portraits au flash, il existe un panneau Yeux rouges distinct qui n'a pas du tout besoin d'IA."
+            }
+          },
+          "export": {
+            "title": "6. Exporter en pleine résolution",
+            "body": "Appuyez sur Exporter dans la barre du haut quand la retouche est terminée. L'aperçu sur lequel vous avez travaillé est une copie de 1920 px dessinée par votre carte graphique ; l'export est une tâche serveur qui génère l'original à sa taille réelle avec les mêmes formules, de sorte que les deux concordent à quelques niveaux 8 bits près au maximum. Le résultat est téléchargé sous la forme d'un nouveau fichier portant le nom de l'original suivi de (retouched), et le fichier original reste intact.",
+            "bullets": {
+              "format": "Choisissez JPG, PNG, WebP, AVIF ou TIFF, réglez la Qualité de 1 à 100 là où elle s'applique, et choisissez de Conserver ou de Supprimer les métadonnées. Les supprimer retire le bloc EXIF, y compris les réglages de l'appareil et toute position GPS, ce qui est généralement souhaitable avant de publier une photo.",
+              "size": "Taille max. propose Original, 12, 24, 64 et 120 mégapixels. La boîte de dialogue estime la taille du fichier selon votre choix : un JPG en qualité 92 pèse environ 0,45 Mo par mégapixel, de sorte qu'une photo de 6000 x 4000 à 24 MP donne près de 10,8 Mo, tandis que le WebP tourne autour de 0,3 Mo et l'AVIF autour de 0,2 Mo par mégapixel.",
+              "server": "Les exports jusqu'à 12 MP sont disponibles pour les invités et avec l'offre Free : un original plus grand est donc exporté à 12 MP. Premium et Pro exportent jusqu'à 120 MP. La tâche s'exécute sur notre serveur, qui génère l'image avec NumPy et OpenCV, l'encode avec ImageMagick et propose le fichier au téléchargement une fois terminé.",
+              "cost": "Un export compte comme une tâche standard dans votre offre, et vous pouvez relancer Exporter avec d'autres réglages ensuite, par exemple un TIFF pleine taille pour l'impression et un WebP de 12 MP pour le web. L'aperçu, chaque curseur, chaque masque hors IA, les styles et Annuler sont gratuits et illimités."
+            }
+          },
+          "presets": {
+            "title": "7. Enregistrer et réutiliser des styles",
+            "body": "Un style dans {{brand}} est un groupe enregistré de calques de réglage. Le panneau Styles propose 18 styles intégrés plus Auto, et c'est aussi là que vivent vos propres préréglages. Enregistrer un préréglage capture les calques que vous choisissez avec leurs valeurs actuelles : le rendu chaud et légèrement délavé que vous avez mis au point pour une photo peut donc être appliqué à la suivante en un seul clic, et arrive toujours sous forme de calques modifiables plutôt que d'un filtre figé.",
+            "bullets": {
+              "builtin": "Les styles intégrés sont regroupés en Couleur, Noir et blanc, Pellicule et Correction, et comprennent les six styles Couleur isolée, Film noir et blanc, Noir et blanc très contrasté, Chaud, Froid, Mat, Délavé, Éclatant, Percutant, Traitement croisé, Vintage, Portrait adouci, Paysage et Auto. Utilisez le champ de filtre pour en trouver un par son nom.",
+              "append": "Appliquer un style ajoute ses réglages sous forme de groupe nommé au-dessus de ce que vous avez déjà, au lieu de remplacer votre travail. Vous pouvez donc empiler Chaud sur vos propres corrections De base, ouvrir le groupe dans l'onglet Calques pour ajuster chaque curseur, et retirer le style entier d'un seul Annuler.",
+              "mine": "Choisissez Enregistrer les retouches actuelles comme préréglage, donnez-lui un nom et cochez les réglages à inclure. Il apparaît sous Mes préréglages. Si vous êtes connecté, vos préréglages sont enregistrés dans votre compte et vous suivent sur vos autres appareils ; sans compte, ils sont stockés dans ce navigateur. Vous pouvez les renommer ou les supprimer depuis le même panneau.",
+              "file": "Exporter les préréglages écrit vos préréglages enregistrés dans un fichier JSON ; Importer des préréglages en relit un. Utilisez-le pour déplacer vos préréglages vers un autre navigateur ou ordinateur, en garder une sauvegarde, ou partager un style avec une autre personne qui utilise {{brand}} sur Media Manipulator."
+            }
+          },
+          "batch": {
+            "title": "8. Appliquer les mêmes retouches à d'autres photos",
+            "body": "Quand plusieurs photos d'une même séance demandent le même traitement, inutile de répéter la retouche. Terminez une photo, ouvrez la boîte de dialogue Exporter et choisissez Appliquer à d'autres photos. Elle prend toute la pile de calques du projet en cours, y compris les masques et les corrections déjà faits sur cette photo, la génère sur les autres fichiers que vous choisissez avec les réglages d'export retenus, puis vous remet le tout en un seul téléchargement.",
+            "bullets": {
+              "limit": "Appliquer à d'autres photos n'est disponible que si vous êtes connecté ; la boîte de dialogue demande aux invités de se connecter. L'offre Free applique les retouches à 3 photos à la fois, Premium à 10 et Pro à 25. Si vous en choisissez plus que votre offre ne le permet, les fichiers en trop sont laissés de côté, et la boîte de dialogue indique combien.",
+              "run": "Chaque photo choisie est d'abord créée comme son propre projet dans votre compte, l'une après l'autre : les originaux et leurs retouches sont donc conservés comme n'importe quel autre projet. Ensuite, une seule tâche de lot les génère toutes sur le serveur, et la boîte de dialogue montre chaque photo passer de Préparation à Génération avec un pourcentage, puis à Terminé.",
+              "zip": "Quand les rendus sont terminés, appuyez sur Télécharger en ZIP. L'archive est construite dans votre navigateur à partir des fichiers terminés : rien de plus n'est envoyé, et vous obtenez un seul fichier à enregistrer au lieu d'une douzaine de téléchargements séparés. Si un fichier n'a pas pu être ajouté, la boîte de dialogue indique combien manquent.",
+              "retry": "Si une photo échoue, les autres ne sont pas retardées. La boîte de dialogue indique combien ont échoué et propose un bouton Réessayer pour ces seuls fichiers, et le ZIP peut être reconstruit une fois ceux-ci terminés. Les exports comptent comme des tâches standard dans votre offre : consultez donc la page des tarifs avant de lancer un gros lot."
+            }
+          },
+          "cta": {
+            "title": "Essayez-le sur votre propre photo",
+            "body": "Ouvrez {{brand}}, déposez une photo et suivez les huit étapes ci-dessus. Chaque curseur, masque et style peut être essayé gratuitement sans compte, et votre photo reste dans votre navigateur jusqu'à ce que vous choisissiez de l'exporter.",
+            "button": "Ouvrir {{brand}}"
+          },
+          "related": {
+            "title": "À lire aussi",
+            "intro": "D'autres pages pour travailler vos photos sur Media Manipulator.",
+            "toolDesc": "La page de l'outil de l'éditeur, avec la liste complète des panneaux, des formats d'export et des quotas de chaque offre.",
+            "darkroom": "Tutoriel de l'éditeur vidéo Darkroom",
+            "darkroomDesc": "Montez des vidéos sur une timeline multipiste et exportez en MP4.",
+            "licenses": "Licences open source",
+            "licensesDesc": "Les bibliothèques et modèles open source qui font fonctionner l'éditeur et le reste de Media Manipulator."
+          }
+        }
       }
     },
     "newToHere": {
@@ -576,15 +684,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Date d'entrée en vigueur : 24/10/2026",
-    "lastUpdated": "Dernière mise à jour : 28/10/2026",
+    "lastUpdated": "Dernière mise à jour : 03/11/2026",
     "operator": "Media Manipulator est un produit et un service exploités par CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Exerçant sous le nom de Media Manipulator",
     "location": "Colorado, États-Unis",
     "emailLabel": "E-mail :",
     "websiteLabel": "Site web :",
-    "whatChangedTitle": "Ce qui a changé le 28/10/2026",
-    "whatChangedBody": "Nous avons ajouté un formulaire de contact sur media-manipulator.com/contact : la Politique de confidentialité comporte une nouvelle section 1.11 sur les messages que vous nous envoyez (votre nom, votre adresse e-mail, l'objet et le message, transmis à notre boîte de messagerie d'assistance via Resend et conservés jusqu'à la clôture de la conversation, jamais plus de 12 mois), et la section 16 renvoie désormais vers le formulaire. Nous avons ajouté les informations sur les cookies publicitaires exigées par Google et les liens de désinscription. La Politique de confidentialité comporte une nouvelle section 5.1 sur les cookies publicitaires et Google AdSense : les cookies publicitaires de Google, les publicités non personnalisées, le message de consentement de Google dans l'EEE, au Royaume-Uni et en Suisse, les liens pour refuser les publicités personnalisées (Paramètres des annonces Google, aboutads.info et youronlinechoices.eu) et vers la façon dont Google utilise les informations provenant de sites qui utilisent ses services, qui voit des publicités (uniquement les visiteurs sans compte et les comptes gratuits) et notre fichier ads.txt public ; la section 1.5 énumère désormais les identifiants publicitaires que le script publicitaire de Google peut définir. La section 8.9 des Conditions indique désormais que les publicités ne sont affichées que sans compte ou avec un compte gratuit, et que Premium et Pro les suppriment. La section 5 (Publicité) de la Politique de confidentialité indique désormais que le script publicitaire de Google est chargé sur les pages pouvant afficher des publicités, tous les signaux de consentement étant refusés tant que vous n'avez pas fait de choix, et qu'il diffuse des publicités non personnalisées d'ici là. Plus tôt le même jour : Nous avons ajouté des outils vocaux : cloner votre propre voix à partir d'un enregistrement, concevoir une voix à partir d'une description et modifier la voix d'un enregistrement. La Politique de confidentialité comporte une nouvelle section 1.10 sur les échantillons vocaux et les voix conçues : ce que nous conservons, le fait que nous ne l'utilisons que pour créer et faire fonctionner la voix que vous avez demandée, avec votre consentement explicite, que ces données sont stockées dans Amazon S3 selon votre réglage de conservation, ne sont jamais partagées avec un fournisseur d'IA tiers et ne sont jamais utilisées pour entraîner un modèle, et que vous pouvez les supprimer à tout moment et qu'elles sont supprimées avec votre compte ; les sections 3, 3.4, 3.5 et 4 mentionnent désormais les voix. Les Conditions comportent une nouvelle section 8.11 : vous ne pouvez créer une voix qu'à partir de votre propre voix ou avec l'autorisation explicite de la personne qui parle ; l'usurpation d'identité, la fraude, les deepfakes politiques et le harcèlement sont interdits ; la parole générée et convertie porte un filigrane inaudible, contrairement à l'audio décalé ; et nous pouvons retirer des voix et suspendre des comptes. La section 1 des Conditions énumère les outils vocaux. Tout ce qui figurait dans la mise à jour du 2026-10-26 reste applicable : Nous avons ajouté Motion, notre éditeur d'animation SVG (en bêta). La Politique de confidentialité comporte une nouvelle section 1.9 : les projets et les exports Motion sont créés dans votre navigateur et ne sont pas envoyés sur nos serveurs pour être produits ; les projets que vous enregistrez dans votre compte sont stockés comme les projets Darkroom, suivent la durée de conservation que vous choisissez et peuvent être supprimés ; et pour chaque export comptabilisé, nous enregistrons son format, sa taille, sa durée et son heure afin d'appliquer le quota quotidien. Les sections 3, 3.3 et 3.4 mentionnent désormais les projets Motion. La section 13 des Conditions confirme que vos exports Motion vous appartiennent, explique que certains exports contiennent du code anime.js sous licence MIT dont la mention doit être conservée, et renvoie à notre page des licences open source. Tout ce qui figure dans la mise à jour du 25/10/2026 (l'offre Pro, les changements d'offre et les remboursements) reste applicable. La section 10 des Conditions indique désormais que vous pouvez payer en dollars américains ou en euros au même prix, que les euros sont affichés par défaut en Europe et que la devise d'un abonnement ne peut pas changer tant qu'il est actif ; la section 1.6 de la Politique de confidentialité mentionne désormais la devise de facturation que nous stockons et le cookie mm-currency qui mémorise votre choix. La section 8 précise désormais aussi que les traducteurs que nous engageons soumettent leur travail sous forme de pull requests GitHub créées par la GitHub App de CreaTV Ltd., et que ces soumissions ne contiennent que du texte de traduction, sans aucune donnée personnelle sur les visiteurs. Cette traduction française a été produite par un modèle de langage et est en attente de relecture par un locuteur natif ; en cas de divergence, la version anglaise fait foi."
+    "whatChangedTitle": "Ce qui a changé le 03/11/2026",
+    "whatChangedBody": "La Politique de confidentialité comporte une nouvelle section 17 et les Conditions une nouvelle section 25 pour l'application Media Manipulator pour Android. La section 17 explique ce que l'application collecte (les données de votre compte, des informations sur l'appareil et l'application, un identifiant propre à chaque installation, les statistiques d'utilisation de l'application, un jeton de notification push si vous autorisez les notifications, les rapports de plantage de Firebase Crashlytics et les fichiers que vous choisissez de traiter), les autorisations qu'elle utilise, comment désactiver les statistiques d'utilisation et les effacer dans Compte → Confidentialité et données, les notifications push, les rapports de plantage, et comment supprimer votre compte dans l'application, sur le web ou par e-mail. La section 6 indique désormais que Firebase est aussi utilisé dans l'application pour les notifications push et les rapports de plantage, et la section 8 nomme Firebase Cloud Messaging et Firebase Crashlytics. La section 25 des Conditions couvre l'application, les conditions propres aux boutiques d'applications, les mises à jour automatiques et les offres achetées sur le web, et la section 1 mentionne désormais l'application. Il existe également une nouvelle page publique à l'adresse media-manipulator.com/delete-account qui explique comment supprimer votre compte sans vous connecter. Tout ce qui figurait dans la mise à jour précédente du 2026-11-03 continue de s'appliquer : Nous avons ajouté Aperture, notre éditeur de photos (en bêta). La Politique de confidentialité comporte une nouvelle section 1.12 : dans Aperture, votre photo est retouchée dans votre navigateur et n'est envoyée sur nos serveurs que lorsque vous enregistrez un projet dans votre compte, exportez, sélectionnez un sujet par IA, corrigez des taches ou appliquez vos retouches à d'autres photos ; les projets enregistrés dans votre compte sont stockés sur nos serveurs selon la durée de conservation que vous choisissez, peuvent être supprimés et sont supprimés avec votre compte ; la sélection de sujet et la correction s'exécutent sur notre propre serveur GPU et aucune photo n'est envoyée à un service tiers ; et pour chaque export, sélection de sujet et correction, nous enregistrons le type de tâche, le format et la taille du résultat, l'heure et votre offre afin d'appliquer le quota quotidien. Les sections 3, 3.3, 3.4 et 4 mentionnent désormais les projets Aperture et les modèles utilisés. Les Conditions citent Aperture à la section 1, et la section 13 précise que vos exports Aperture vous appartiennent. Tout ce qui figurait dans la mise à jour du 2026-11-01 reste applicable : Vous pouvez désormais vous connecter avec Apple, en plus d'une adresse e-mail et d'un mot de passe ou de Google. La Politique de confidentialité (section 1.7) explique que, si vous vous connectez avec Apple, Apple nous communique votre nom et votre adresse e-mail, ou une adresse de relais privée si vous choisissez « Masquer mon adresse e-mail », et que la politique de confidentialité d'Apple s'applique à votre compte Apple ; la section 8 cite Apple parmi les parties avec lesquelles nous partageons des informations de connexion, et la section 1.7 précise désormais que Firebase envoie un lien de réinitialisation à votre adresse e-mail si vous demandez la réinitialisation de votre mot de passe. La section 9 des Conditions indique désormais que vous pouvez vous connecter avec une adresse e-mail et un mot de passe, avec Google ou avec Apple. Tout ce qui figurait dans la mise à jour du 28/10/2026 reste applicable : Nous avons ajouté un formulaire de contact sur media-manipulator.com/contact : la Politique de confidentialité comporte une nouvelle section 1.11 sur les messages que vous nous envoyez (votre nom, votre adresse e-mail, l'objet et le message, transmis à notre boîte de messagerie d'assistance via Resend et conservés jusqu'à la clôture de la conversation, jamais plus de 12 mois), et la section 16 renvoie désormais vers le formulaire. Nous avons ajouté les informations sur les cookies publicitaires exigées par Google et les liens de désinscription. La Politique de confidentialité comporte une nouvelle section 5.1 sur les cookies publicitaires et Google AdSense : les cookies publicitaires de Google, les publicités non personnalisées, le message de consentement de Google dans l'EEE, au Royaume-Uni et en Suisse, les liens pour refuser les publicités personnalisées (Paramètres des annonces Google, aboutads.info et youronlinechoices.eu) et vers la façon dont Google utilise les informations provenant de sites qui utilisent ses services, qui voit des publicités (uniquement les visiteurs sans compte et les comptes gratuits) et notre fichier ads.txt public ; la section 1.5 énumère désormais les identifiants publicitaires que le script publicitaire de Google peut définir. La section 8.9 des Conditions indique désormais que les publicités ne sont affichées que sans compte ou avec un compte gratuit, et que Premium et Pro les suppriment. La section 5 (Publicité) de la Politique de confidentialité indique désormais que le script publicitaire de Google est chargé sur les pages pouvant afficher des publicités, tous les signaux de consentement étant refusés tant que vous n'avez pas fait de choix, et qu'il diffuse des publicités non personnalisées d'ici là. Plus tôt le même jour : Nous avons ajouté des outils vocaux : cloner votre propre voix à partir d'un enregistrement, concevoir une voix à partir d'une description et modifier la voix d'un enregistrement. La Politique de confidentialité comporte une nouvelle section 1.10 sur les échantillons vocaux et les voix conçues : ce que nous conservons, le fait que nous ne l'utilisons que pour créer et faire fonctionner la voix que vous avez demandée, avec votre consentement explicite, que ces données sont stockées dans Amazon S3 selon votre réglage de conservation, ne sont jamais partagées avec un fournisseur d'IA tiers et ne sont jamais utilisées pour entraîner un modèle, et que vous pouvez les supprimer à tout moment et qu'elles sont supprimées avec votre compte ; les sections 3, 3.4, 3.5 et 4 mentionnent désormais les voix. Les Conditions comportent une nouvelle section 8.11 : vous ne pouvez créer une voix qu'à partir de votre propre voix ou avec l'autorisation explicite de la personne qui parle ; l'usurpation d'identité, la fraude, les deepfakes politiques et le harcèlement sont interdits ; la parole générée et convertie porte un filigrane inaudible, contrairement à l'audio décalé ; et nous pouvons retirer des voix et suspendre des comptes. La section 1 des Conditions énumère les outils vocaux. Tout ce qui figurait dans la mise à jour du 2026-10-26 reste applicable : Nous avons ajouté Motion, notre éditeur d'animation SVG (en bêta). La Politique de confidentialité comporte une nouvelle section 1.9 : les projets et les exports Motion sont créés dans votre navigateur et ne sont pas envoyés sur nos serveurs pour être produits ; les projets que vous enregistrez dans votre compte sont stockés comme les projets Darkroom, suivent la durée de conservation que vous choisissez et peuvent être supprimés ; et pour chaque export comptabilisé, nous enregistrons son format, sa taille, sa durée et son heure afin d'appliquer le quota quotidien. Les sections 3, 3.3 et 3.4 mentionnent désormais les projets Motion. La section 13 des Conditions confirme que vos exports Motion vous appartiennent, explique que certains exports contiennent du code anime.js sous licence MIT dont la mention doit être conservée, et renvoie à notre page des licences open source. Tout ce qui figure dans la mise à jour du 25/10/2026 (l'offre Pro, les changements d'offre et les remboursements) reste applicable. La section 10 des Conditions indique désormais que vous pouvez payer en dollars américains ou en euros au même prix, que les euros sont affichés par défaut en Europe et que la devise d'un abonnement ne peut pas changer tant qu'il est actif ; la section 1.6 de la Politique de confidentialité mentionne désormais la devise de facturation que nous stockons et le cookie mm-currency qui mémorise votre choix. La section 8 précise désormais aussi que les traducteurs que nous engageons soumettent leur travail sous forme de pull requests GitHub créées par la GitHub App de CreaTV Ltd., et que ces soumissions ne contiennent que du texte de traduction, sans aucune donnée personnelle sur les visiteurs. Cette traduction française a été produite par un modèle de langage et est en attente de relecture par un locuteur natif ; en cas de divergence, la version anglaise fait foi."
   },
   "privacyPolicy": {
     "title": "Politique de confidentialité",
@@ -709,7 +817,7 @@
           {
             "title": "1.7 Informations de compte",
             "paragraphs": [
-              "Si vous créez un compte, la connexion est gérée par Firebase Authentication, un service de Google. Vous pouvez vous connecter avec une adresse e-mail et un mot de passe ou avec votre compte Google. Firebase stocke vos identifiants et envoie les e-mails nécessaires au fonctionnement de la connexion, comme la vérification de l'adresse e-mail.",
+              "Si vous créez un compte, la connexion est gérée par Firebase Authentication, un service de Google. Vous pouvez vous connecter avec une adresse e-mail et un mot de passe, avec votre compte Google ou avec votre compte Apple. Si vous vous connectez avec Apple, Apple nous communique votre nom et votre adresse e-mail ou, si vous choisissez « Masquer mon adresse e-mail », une adresse de relais privée qui vous transmet les messages ; la politique de confidentialité d'Apple s'applique à votre compte Apple. Firebase stocke vos identifiants et envoie les e-mails nécessaires au fonctionnement de la connexion, comme la vérification de l'adresse e-mail. Si vous demandez la réinitialisation de votre mot de passe, Firebase envoie un lien de réinitialisation à votre adresse e-mail.",
               "De notre côté, nous stockons un enregistrement pour votre compte : votre adresse e-mail, votre nom affiché, le fait que votre e-mail soit vérifié ou non, votre identifiant de connexion Firebase, votre offre, la date de votre inscription et de votre dernière utilisation du service, les paramètres de conservation que vous avez choisis, ainsi que votre historique de conversions et vos projets (section 3). Nous envoyons un petit nombre d'e-mails de service depuis Media Manipulator : un e-mail de bienvenue, des notifications de paiement et de suppression de compte et, si vous les laissez activés dans les paramètres de votre compte, des rappels avant l'expiration de vos fichiers et des notifications lorsqu'une longue tâche IA se termine. Nous n'envoyons pas d'e-mails marketing. Les e-mails sont acheminés par notre prestataire d'envoi, Resend."
             ]
           },
@@ -743,6 +851,14 @@
               "Lorsque vous utilisez le formulaire de contact sur media-manipulator.com/contact, nous recevons votre nom, votre adresse e-mail, l'objet que vous choisissez et votre message, ainsi que l'heure d'envoi et un court numéro de référence. Le formulaire transmet ces informations à notre boîte de messagerie d'assistance par e-mail, via notre fournisseur de messagerie Resend ; les messages de contact ne sont pas stockés dans la base de données de notre application. Lorsque vous nous écrivez directement par e-mail, nous recevons le même type d'informations depuis votre e-mail.",
               "Nous utilisons ces messages uniquement pour vous répondre et traiter votre demande, par exemple un signalement de bogue, une question de facturation ou une demande relative à la vie privée. Ils sont conservés dans notre boîte de messagerie d'assistance jusqu'à la clôture de la conversation, et jamais plus de 12 mois. Pour limiter le spam, le formulaire est soumis à une limitation de débit par session de navigateur et par adresse IP, comme le reste du site, et une tentative bloquée est conservée comme enregistrement de prévention des abus (Section 3.6)."
             ]
+          },
+          {
+            "title": "1.12 Projets et exports Aperture",
+            "paragraphs": [
+              "Aperture, notre éditeur de photos, retouche votre photo dans votre navigateur : l'aperçu que vous voyez est dessiné sur votre propre appareil. Une photo ne quitte votre appareil que lorsque vous demandez une opération qui nécessite nos serveurs : l'enregistrer dans votre compte comme projet, exporter le fichier final, sélectionner un sujet par IA, corriger des taches par IA ou appliquer vos retouches à d'autres photos.",
+              "Si vous êtes connecté et enregistrez un projet, la photo originale, une copie d'aperçu de celle-ci jusqu'à 1920 pixels, une petite vignette, le document de retouche (la liste des réglages, des masques et des zones corrigées) ainsi que les masques et les versions corrigées de la photo sont stockés sur nos serveurs dans le dossier du projet. Ils constituent votre contenu, ils suivent la durée de conservation que vous choisissez (section 3), vous pouvez supprimer un projet depuis votre page Compte, ils sont supprimés avec votre compte, et les projets figurent dans l'export de vos données. Sans compte, une seule photo est conservée uniquement dans votre navigateur (dans IndexedDB) et n'est pas envoyée tant que vous n'exportez pas, ne sélectionnez pas un sujet et ne corrigez pas ; cet envoi est une tâche temporaire ordinaire et est conservé pendant 24 heures. Les préréglages que vous enregistrez sont conservés avec votre compte jusqu'à ce que vous les supprimiez ou que le compte soit supprimé.",
+              "Les exports, la sélection de sujet par IA et la correction sont des tâches exécutées sur nos serveurs. Les exports sont générés à partir de votre photo originale, la sélection de sujet et la correction s'exécutent sur notre propre serveur GPU, et aucune de vos photos n'est envoyée à un service tiers. Chaque export, chaque sélection de sujet et chaque correction est comptabilisé afin d'appliquer le quota quotidien de votre offre : nous conservons le type de tâche, le format et la taille du résultat, l'heure, votre offre et un identifiant de votre compte, de votre session de navigateur ou une adresse IP hachée. Les fichiers résultats sont conservés selon les règles de conservation habituelles (section 3), et lorsque vous supprimez votre compte, ces enregistrements sont dissociés de votre identité."
+            ]
           }
         ]
       },
@@ -769,7 +885,7 @@
         "id": "retention",
         "title": "3. Stockage, conservation et suppression des fichiers",
         "paragraphs": [
-          "La durée pendant laquelle nous conservons vos fichiers dépend de l'existence ou non d'un compte. Cette section couvre les fichiers envoyés, les résultats générés, les médias Darkroom, les projets Darkroom, les projets Motion et les voix enregistrés dans votre compte, stockés sur nos serveurs et dans Amazon S3 (us-west-2). Les enregistrements relatifs à vos conversions et à vos paramètres (comme l'historique des tâches, les choix de conservation et les détails du compte) sont conservés dans une base de données PostgreSQL, et le traitement IA s'exécute sur notre propre serveur GPU auto-hébergé."
+          "La durée pendant laquelle nous conservons vos fichiers dépend de l'existence ou non d'un compte. Cette section couvre les fichiers envoyés, les résultats générés, les médias Darkroom, les projets Darkroom, les projets Motion, les projets Aperture et les voix enregistrés dans votre compte, stockés sur nos serveurs et dans Amazon S3 (us-west-2). Les enregistrements relatifs à vos conversions et à vos paramètres (comme l'historique des tâches, les choix de conservation et les détails du compte) sont conservés dans une base de données PostgreSQL, et le traitement IA s'exécute sur notre propre serveur GPU auto-hébergé."
         ],
         "subsections": [
           {
@@ -794,7 +910,7 @@
           {
             "title": "3.3 Supprimer vos fichiers",
             "paragraphs": [
-              "Si vous avez un compte, vous pouvez supprimer un résultat individuel, un projet Darkroom ou un projet Motion, supprimer tous vos fichiers d'un coup, ou supprimer l'intégralité de votre compte depuis la page Compte. Les visiteurs sans compte peuvent supprimer leurs propres résultats pendant la session au cours de laquelle ils ont été créés."
+              "Si vous avez un compte, vous pouvez supprimer un résultat individuel, un projet Darkroom, un projet Motion ou un projet Aperture, supprimer tous vos fichiers d'un coup, ou supprimer l'intégralité de votre compte depuis la page Compte. Les visiteurs sans compte peuvent supprimer leurs propres résultats pendant la session au cours de laquelle ils ont été créés."
             ]
           },
           {
@@ -804,7 +920,7 @@
             ],
             "bullets": [
               "annulons votre abonnement Premium ou Pro auprès de Stripe, si vous en avez un ;",
-              "supprimons vos fichiers ainsi que vos projets Darkroom et Motion et vos voix enregistrées ;",
+              "supprimons vos fichiers ainsi que vos projets Darkroom, Motion et Aperture et vos voix enregistrées ;",
               "supprimons l'enregistrement et les paramètres de votre compte et détachons vos enregistrements d'activité restants de votre identité ;",
               "demandons à notre analyse d'audience interne de supprimer les données d'analyse liées à votre compte (voir section 6) ;",
               "supprimons votre identifiant de connexion."
@@ -844,7 +960,7 @@
         ],
         "afterBullets": [
           "Tout le traitement IA utilisé par Media Manipulator est effectué localement sur nos propres serveurs ou sur une infrastructure que nous contrôlons. Nous ne confions pas les fichiers envoyés, les résultats générés, les transcriptions, les résumés, les descriptions ou les analyses de sécurité du contenu à des fournisseurs d'IA tiers pour traitement.",
-          "Les fonctions IA utilisent des modèles et des outils ouverts que nous exécutons nous-mêmes, principalement sur un serveur GPU auto-hébergé : Whisper pour la transcription, Real-ESRGAN pour l'agrandissement d'images, Demucs pour la séparation audio, Chatterbox et Qwen3-TTS pour le clonage vocal, la conception de voix et la parole, et d'autres modèles locaux, ainsi que des modèles de langage et de vision servis via Ollama pour les tâches textuelles comme les résumés, les descriptions et la traduction de sous-titres.",
+          "Les fonctions IA utilisent des modèles et des outils ouverts que nous exécutons nous-mêmes, principalement sur un serveur GPU auto-hébergé : Whisper pour la transcription, Real-ESRGAN pour l'agrandissement d'images, rembg et LaMa pour la sélection d'un sujet et la correction de taches dans les photos, Demucs pour la séparation audio, Chatterbox et Qwen3-TTS pour le clonage vocal, la conception de voix et la parole, et d'autres modèles locaux, ainsi que des modèles de langage et de vision servis via Ollama pour les tâches textuelles comme les résumés, les descriptions et la traduction de sous-titres.",
           "Cela signifie que, lorsque les fonctions IA sont utilisées, vos fichiers envoyés et les résultats générés restent dans l'environnement de traitement de Media Manipulator et sont gérés conformément aux pratiques de stockage, de conservation, de suppression et de sécurité décrites dans la présente Politique de confidentialité.",
           "Les fichiers envoyés et les résultats générés sont conservés et supprimés comme décrit à la section 3, y compris lorsque des fonctions IA sont utilisées. Après la durée de conservation applicable, ils sont supprimés de nos systèmes actifs, sauf suppression anticipée ou conservation limitée légalement requise à des fins de sécurité, de prévention des abus, de conformité légale ou d'application de nos règles.",
           "Les résultats générés par IA peuvent être imparfaits, incomplets ou inexacts. Les utilisateurs sont responsables de la vérification de tout résultat généré par IA avant de s'y fier.",
@@ -887,7 +1003,7 @@
         "title": "6. Analyse d'audience",
         "paragraphs": [
           "Media Manipulator utilise sa propre analyse d'audience interne, conçue et exploitée par nos soins et hébergée sur notre propre infrastructure à l'adresse analytics.media-manipulator.com. C'est notre principal moyen de comprendre quels outils sont utilisés, où ils échouent et ce que nous devons construire ensuite.",
-          "Nous utilisions auparavant Mixpanel et Firebase Analytics. Les deux ont été retirés, tout comme la surveillance Firebase Performance. Firebase n'est désormais utilisé que pour la connexion au compte."
+          "Nous utilisions auparavant Mixpanel et Firebase Analytics. Les deux ont été retirés, tout comme la surveillance Firebase Performance. Firebase est utilisé pour la connexion au compte et, dans l'application mobile uniquement, pour les notifications push (Firebase Cloud Messaging) et les rapports de plantage (Firebase Crashlytics) — voir la section 17."
         ],
         "subsections": [
           {
@@ -978,7 +1094,8 @@
         "bullets": [
           "des fournisseurs d'hébergement et d'infrastructure cloud ;",
           "Amazon Web Services, qui héberge notre stockage de fichiers (Amazon S3, région us-west-2) ;",
-          "Google, pour Firebase Authentication (connexion), les événements Google Analytics 4 limités décrits à la section 6.4 et, lorsque des publicités sont affichées, Google AdSense ;",
+          "Google, pour Firebase Authentication (connexion), les événements Google Analytics 4 limités décrits à la section 6.4, Firebase Cloud Messaging et Firebase Crashlytics pour l'application mobile (section 17) et, lorsque des publicités sont affichées, Google AdSense ;",
+          "Apple, lorsque vous choisissez Se connecter avec Apple (Apple vérifie votre connexion ; nous recevons le nom et l'adresse e-mail ou l'adresse de relais que vous autorisez) ;",
           "des partenaires publicitaires ;",
           "des prestataires de sécurité, de détection des abus et de sécurité du contenu ;",
           "le traitement IA est effectué localement sur nos propres serveurs ou sur une infrastructure que nous contrôlons, et nous ne partageons pas les fichiers envoyés, les résultats générés, les transcriptions, les résumés, les descriptions ou les analyses de sécurité du contenu avec des fournisseurs d'IA tiers pour un traitement par IA ;",
@@ -1076,6 +1193,67 @@
         ],
         "contactBlock": true,
         "contactEmail": "privacy@media-manipulator.com"
+      },
+      {
+        "title": "17. L'application Media Manipulator",
+        "paragraphs": [
+          "La présente section s'applique à l'application Media Manipulator pour Android, exploitée par CreaTV Ltd. Elle complète le reste de la présente Politique de confidentialité, qui s'applique également : l'application utilise le même compte, les mêmes serveurs et les mêmes paramètres de conservation que le site web. Pour utiliser l'application, vous vous connectez à votre compte Media Manipulator."
+        ],
+        "subsections": [
+          {
+            "title": "17.1 Ce que l'application collecte",
+            "paragraphs": [
+              "Lorsque vous utilisez l'application, nous et nos prestataires recevons :"
+            ],
+            "bullets": [
+              "les données de votre compte, comme décrit à la section 1.7 ;",
+              "des informations sur l'appareil et l'application : le modèle de votre appareil, la version d'Android, la version et le numéro de build de l'application, votre langue, votre fuseau horaire et votre type de connexion (Wi-Fi, données mobiles ou aucune) ;",
+              "un identifiant propre à chaque installation, que l'application crée lors de sa première ouverture, et un identifiant de visite qui change après 30 minutes d'inactivité ;",
+              "les événements d'analyse d'audience de l'application : les écrans que vous consultez, les outils que vous utilisez, le moment où les tâches démarrent, se terminent ou échouent, et le moment où vous enregistrez ou partagez un résultat. Ils sont liés à votre compte et à votre offre tant que vous êtes connecté. Ils ne contiennent jamais les noms ni le contenu de vos fichiers ;",
+              "un jeton de notification push pour votre appareil, avec la plateforme, la version de l'application et la langue de l'appareil ainsi que la date de création et de dernière mise à jour du jeton, si vous autorisez les notifications (section 17.4). Un compte peut avoir jusqu'à 10 jetons ;",
+              "les rapports de plantage de Firebase Crashlytics : les détails techniques d'un plantage (trace de pile, modèle d'appareil, version d'Android, version de l'application, langue), l'identifiant de votre compte et votre offre (section 17.5) ;",
+              "les fichiers que vous choisissez de traiter, que l'application envoie sur nos serveurs via une connexion chiffrée. Ils sont conservés pendant la durée de conservation que vous avez définie (section 3) et vous pouvez les supprimer à tout moment."
+            ]
+          },
+          {
+            "title": "17.2 Autorisations",
+            "bullets": [
+              "Photos et vidéos : vous choisissez les fichiers avec les sélecteurs de photos et de fichiers du système Android. L'application ne lit pas votre photothèque et n'en demande pas l'accès.",
+              "Notifications : l'application vous le demande la première fois qu'une tâche dure longtemps. C'est facultatif, et l'application fonctionne sans.",
+              "Enregistrement dans votre galerie : lorsque vous enregistrez un résultat, l'application l'ajoute à votre galerie. Elle ne lit pas ce qui s'y trouve déjà."
+            ]
+          },
+          {
+            "title": "17.3 Analyse d'audience dans l'application",
+            "paragraphs": [
+              "L'analyse d'audience de l'application est interne : elle est envoyée au même service que celle du site web (section 6) et non à un réseau publicitaire. Elle est activée dès le premier lancement, sans demande de consentement. Vous pouvez la désactiver à tout moment dans l'application, sous Compte → Confidentialité et données → Statistiques d'utilisation. La désactiver arrête la collecte et ne supprime pas ce qui a déjà été collecté. Pour l'effacer, utilisez Compte → Confidentialité et données → Supprimer mes données d'analyse : cela supprime les données d'analyse liées à votre compte et à cet appareil, et l'application repart avec un nouvel identifiant. Le réglage de l'analyse d'audience ne contrôle pas les rapports de plantage (section 17.5)."
+            ]
+          },
+          {
+            "title": "17.4 Notifications push",
+            "paragraphs": [
+              "Nous envoyons une notification lorsqu'une tâche longue se termine ou échoue. Nous n'envoyons aucune notification marketing. Les notifications sont transmises par Firebase Cloud Messaging, un service de Google, qui reçoit le jeton et le texte de la notification. Vous pouvez les désactiver dans l'application, sous Compte → Alertes, ou dans les paramètres d'Android. Nous supprimons le jeton lorsque vous vous déconnectez de l'application ou supprimez votre compte."
+            ]
+          },
+          {
+            "title": "17.5 Rapports de plantage",
+            "paragraphs": [
+              "Les rapports de plantage sont collectés par Firebase Crashlytics, un service de Google qui agit comme notre sous-traitant. Nous les utilisons uniquement pour trouver et corriger les plantages. Ils comprennent les informations énumérées à la section 17.1 et sont liés à l'identifiant de votre compte, à votre offre et à votre langue afin que nous puissions reproduire un problème. Google conserve les données de Crashlytics pendant 90 jours avant de commencer à les supprimer de ses systèmes actifs et de sauvegarde. Les rapports de plantage ne sont pas collectés dans les versions de développement de l'application."
+            ]
+          },
+          {
+            "title": "17.6 Suppression de votre compte",
+            "paragraphs": [
+              "Vous pouvez supprimer votre compte dans l'application, sous Compte → Confidentialité et données → Supprimer mon compte (il peut vous être demandé de vous reconnecter pour confirmer), sur le site web, sous Compte → Confidentialité et données, ou en suivant les instructions à l'adresse https://www.media-manipulator.com/delete-account, qui explique aussi comment nous écrire par e-mail si vous ne pouvez pas vous connecter. Ce qui est supprimé, ce qui est conservé et pour combien de temps sont décrits aux sections 3.4 et 13 ; l'application supprime également ses jetons push et vos données d'analyse. Dans l'application, vous pouvez aussi exporter vos données, supprimer tous vos fichiers et vous déconnecter de tous vos appareils."
+            ]
+          },
+          {
+            "title": "17.7 Boutiques d'applications",
+            "paragraphs": [
+              "Les conditions et la politique de confidentialité de Google Play s'appliquent au téléchargement et à la mise à jour de l'application, et les conditions des autres boutiques d'applications s'appliquent si nous y proposons l'application. Les boutiques ne reçoivent pas vos fichiers."
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1100,7 +1278,9 @@
           "la transcription, la génération de sous-titres, les résumés et les descriptions assistés par IA ;",
           "la classification de sécurité du contenu et l'analyse de prévention des abus ;",
           "la création, l'animation et l'export de graphiques vectoriels et d'animations avec Motion ;",
+          "la retouche de photos avec des calques de réglage, des masques, de la géométrie et de la correction, et l'export du résultat, avec Aperture ;",
           "la création de voix à partir de vos propres enregistrements, la conception de voix à partir d'une description, la génération de parole à partir de texte et la modification de la voix d'un enregistrement (Voix, voir la section 8.11) ;",
+          "une application mobile pour Android avec les mêmes outils et le même compte (section 25) ;",
           "un historique de conversions temporaire et des résultats traités téléchargeables."
         ],
         "afterBullets": [
@@ -1362,7 +1542,7 @@
         "title": "9. Création de compte",
         "paragraphs": [
           "Media Manipulator est disponible sans compte pour la plupart des fonctionnalités. Un compte débloque des limites plus élevées et un historique enregistré, et Premium et Pro sont des abonnements payants décrits à la section 10.",
-          "Les comptes sont gérés par Firebase Authentication (un service de Google) ; vous pouvez vous connecter avec une adresse e-mail et un mot de passe ou avec Google. Vous pouvez vous déconnecter de tous les appareils ou supprimer votre compte depuis la page Compte. La suppression de votre compte annule également tout abonnement Premium ou Pro, comme décrit dans la Politique de confidentialité.",
+          "Les comptes sont gérés par Firebase Authentication (un service de Google) ; vous pouvez vous connecter avec une adresse e-mail et un mot de passe, avec Google ou avec Apple. Vous pouvez vous déconnecter de tous les appareils ou supprimer votre compte depuis la page Compte. La suppression de votre compte annule également tout abonnement Premium ou Pro, comme décrit dans la Politique de confidentialité.",
           "Il vous incombe de préserver la confidentialité de vos identifiants de compte et vous êtes responsable de toute activité effectuée sous votre compte.",
           "Nous nous réservons le droit de suspendre, de restreindre ou de résilier les comptes qui enfreignent les présentes Conditions, créent un risque juridique, provoquent des abus du service ou nuisent aux utilisateurs, aux annonceurs, à notre marque ou à notre infrastructure."
         ]
@@ -1413,7 +1593,8 @@
           "Vous ne pouvez pas copier, modifier, distribuer, vendre, louer, rétro-concevoir Media Manipulator ni en créer des œuvres dérivées, sauf dans la mesure permise par la loi ou avec notre autorisation écrite.",
           "Vous conservez la propriété de vos propres fichiers envoyés et résultats générés, sous réserve des droits et licences accordés dans les présentes Conditions.",
           "Les animations et les fichiers que vous créez avec Motion, y compris les exports en SVG animé, Lottie, code et image, vous appartiennent au même titre que vos autres résultats générés. Certains exports incluent du code open source tiers qui fait fonctionner l'animation : anime.js, distribué sous licence MIT. Sa mention de copyright et de licence est écrite en tête du fichier exporté, et vous devez conserver cette mention si vous utilisez ou distribuez le fichier. Les exports de code qui utilisent un paquet au lieu de l'intégrer (le paquet anime.js pour React et JavaScript, et flutter_svg ou webview_flutter pour Flutter) le nomment dans le fichier, et vous l'installez vous-même sous sa propre licence (MIT, ou BSD-3-Clause pour webview_flutter).",
-          "Media Manipulator utilise des bibliothèques open source dans votre navigateur, dont mediabunny, distribuée sous la Mozilla Public License 2.0 et utilisée sans modification pour empaqueter les fichiers vidéo créés dans votre navigateur. Leurs licences, mentions de copyright et liens vers le code source sont listés sur notre page des licences open source : https://www.media-manipulator.com/licenses."
+          "Media Manipulator utilise des bibliothèques open source dans votre navigateur, dont mediabunny, distribuée sous la Mozilla Public License 2.0 et utilisée sans modification pour empaqueter les fichiers vidéo créés dans votre navigateur. Leurs licences, mentions de copyright et liens vers le code source sont listés sur notre page des licences open source : https://www.media-manipulator.com/licenses.",
+          "Les photos que vous retouchez et exportez avec Aperture vous appartiennent au même titre que vos autres résultats générés. Aperture ne modifie jamais le fichier original que vous envoyez : un export est toujours un nouveau fichier. Il vous incombe de disposer du droit de retoucher et d'exporter les photos que vous utilisez."
         ]
       },
       {
@@ -1567,6 +1748,16 @@
         ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
+      },
+      {
+        "title": "25. L'application Media Manipulator",
+        "paragraphs": [
+          "L'application Media Manipulator pour Android est fournie par CreaTV Ltd. et les présentes Conditions s'y appliquent comme elles s'appliquent au site web. Pour utiliser l'application, vous avez besoin d'un compte Media Manipulator.",
+          "Les conditions de Google Play s'appliquent au téléchargement de l'application. Google n'est responsable ni de l'application, ni de son assistance, ni des présentes Conditions ; nous en sommes responsables. Les conditions des autres boutiques d'applications s'appliquent de la même manière si nous y proposons l'application.",
+          "Nous pouvons diffuser automatiquement des mises à jour de l'application, y compris des mises à jour du code de l'application qui arrivent sans nouveau téléchargement depuis la boutique. L'application peut nécessiter une version récente d'Android, et nous pouvons cesser de prendre en charge les anciennes versions.",
+          "Les offres s'achètent et se gèrent sur le site web, et non dans l'application. L'application utilise votre offre et ses limites comme décrit à la section 10 ; vous pouvez gérer ou résilier votre offre sur le site web.",
+          "La Politique de confidentialité explique ce que l'application collecte (section 17 de la Politique de confidentialité)."
+        ]
       }
     ]
   },
@@ -1606,7 +1797,11 @@
       "adsRemoved": "Publicités",
       "exportsPerDay": "Exports Darkroom par jour",
       "vectorExportsPerDay": "Exports Motion par jour",
-      "vectorProjects": "Projets Motion enregistrés"
+      "vectorProjects": "Projets Motion enregistrés",
+      "photoProjects": "Projets {{brand}} enregistrés",
+      "photoMaxMegapixels": "Export {{brand}} maximal",
+      "photoBatch": "Photos {{brand}} par lot",
+      "photoPresets": "Préréglages {{brand}} enregistrés"
     },
     "values": {
       "yes": "Inclus",
@@ -1617,7 +1812,10 @@
       "gpuPriority": "Prioritaire",
       "adsShown": "Affichées",
       "adsRemoved": "Supprimées",
-      "heightSuffix": "{{height}}p"
+      "heightSuffix": "{{height}}p",
+      "photoLocalOnly": "1, dans ce navigateur uniquement",
+      "megapixels": "{{count}} MP",
+      "notAvailable": "Non disponible"
     },
     "unavailableTitle": "Le détail des offres est temporairement indisponible",
     "unavailableBody": "Nous n'avons pas pu joindre le service des offres. Tous les outils fonctionnent ; rechargez dans un instant pour voir le comparatif.",
@@ -1630,7 +1828,9 @@
       "q3": "Les comptes gratuits voient-ils des publicités ?",
       "a3": "Oui. Les publicités financent l'offre gratuite, seuls Premium et Pro les suppriment. Il n'y a jamais plus de deux publicités sur une page, jamais au-dessus des outils, et jamais sur les pages d'accueil, de tarifs, de compte ou légales. Il n'y a ni interstitiels, ni comptes à rebours, ni attentes forcées sur aucune offre.",
       "q4": "Puis-je l'utiliser sans aucun compte ?",
-      "a4": "Oui, et c'est voulu. Chaque outil fonctionne sans connexion ; un compte relève simplement le plafond et conserve votre historique. Sans compte, vos fichiers sont conservés 24 heures ; avec un compte, vous choisissez la durée, de 24 heures à 2 ans."
+      "a4": "Oui, et c'est voulu. Chaque outil fonctionne sans connexion ; un compte relève simplement le plafond et conserve votre historique. Sans compte, vos fichiers sont conservés 24 heures ; avec un compte, vous choisissez la durée, de 24 heures à 2 ans.",
+      "q5": "Combien coûte {{brand}} ?",
+      "a5": "La retouche dans {{brand}} est gratuite : les aperçus, tous les réglages, les masques, les styles et Annuler ne coûtent rien. Chaque export compte comme une tâche standard, la sélection d'un sujet par IA compte comme une tâche standard (répéter la même demande est gratuit), et chaque pression sur Corriger compte comme une tâche IA. Ce qui change selon votre offre, c'est le nombre de projets que vous pouvez enregistrer, la taille maximale d'un export et le nombre de photos que vous pouvez retoucher en un seul lot ; le tableau ci-dessus donne les chiffres."
     },
     "retentionNote": "Vous choisissez : de 24 heures à 2 ans. Visiteurs sans compte : 24 heures.",
     "pendingFrom": "Premium à partir du {{date}}",
@@ -1809,7 +2009,29 @@
       "deleteFailed": "Impossible de supprimer ce projet. Rien n'a été modifié ; réessayez.",
       "kindDarkroom": "Darkroom",
       "motionLoadFailed": "Impossible de charger vos projets {{brand}}.",
-      "motionDeleteBody": "Le projet {{brand}} et sa vignette sont retirés de nos serveurs. Cette action est irréversible."
+      "motionDeleteBody": "Le projet {{brand}} et sa vignette sont retirés de nos serveurs. Cette action est irréversible.",
+      "rename": "Renommer",
+      "renameLabel": "Nom du projet",
+      "renameSave": "Enregistrer",
+      "renamed": "Projet renommé.",
+      "renameFailed": "Impossible de renommer ce projet. Rien n'a été modifié ; réessayez.",
+      "photoDeleteBody": "Le projet {{brand}}, sa photo originale, ses aperçus et toutes les versions corrigées sont retirés de nos serveurs. Cette action est irréversible.",
+      "presetsHeading": "Préréglages",
+      "presetsIntro": "Vos préréglages {{brand}} enregistrés. Ils restent dans votre compte jusqu'à ce que vous les supprimiez.",
+      "presetsEmpty": "Aucun préréglage enregistré pour le moment. Enregistrez-en un depuis le panneau Préréglages de {{brand}}.",
+      "presetsLoadFailed": "Impossible de charger vos préréglages.",
+      "presetDeleteBody": "Le préréglage est retiré de votre compte. Cette action est irréversible.",
+      "presetDeleted": "Préréglage supprimé.",
+      "presetDeleteFailed": "Impossible de supprimer ce préréglage. Rien n'a été modifié ; réessayez.",
+      "presetRenamed": "Préréglage renommé.",
+      "presetRenameFailed": "Impossible de renommer ce préréglage. Rien n'a été modifié ; réessayez.",
+      "presetCategory": {
+        "color": "Couleur",
+        "bw": "Noir et blanc",
+        "film": "Pellicule",
+        "fix": "Correction",
+        "custom": "Personnalisé"
+      }
     },
     "billing": {
       "plans": "Comparer les offres"
@@ -1915,6 +2137,7 @@
         "reauthBody": "Pour votre sécurité, la suppression d'un compte nécessite une connexion datant de moins de 5 minutes.",
         "reauthPassword": "Mot de passe",
         "reauthGoogle": "Continuer avec Google",
+        "reauthApple": "Continuer avec Apple",
         "reauthPasswordCta": "Confirmer le mot de passe",
         "reauthFailed": "Cette connexion n'a pas fonctionné. Vérifiez et réessayez.",
         "reauthBlocked": "La fenêtre de connexion a été bloquée. Autorisez les fenêtres surgissantes pour ce site et réessayez.",
@@ -2018,7 +2241,7 @@
       "images": "<strong>Images et PDF.</strong> <removeExif>Supprimez les métadonnées EXIF</removeExif> comme la position GPS avant de partager une photo, <compressImage>compressez une image</compressImage> pour une page plus rapide, <resizeImage>redimensionnez-la</resizeImage> aux dimensions exactes en pixels, et convertissez des <imageToPdf>images en PDF</imageToPdf> ou des <pdfToJpg>pages PDF en JPG</pdfToJpg>.",
       "audio": "<strong>Audio et voix.</strong> <extractAudio>Extrayez la piste audio</extractAudio> d'une vidéo en MP3, WAV, M4A, FLAC ou OGG, et <transcribe>transcrivez ce qui est dit</transcribe> en texte consultable ou en sous-titres. La transcription utilise Whisper sur notre propre serveur GPU.",
       "ai": "<strong>Outils IA.</strong> <removeBg>Supprimez l'arrière-plan</removeBg> d'une photo, <imageRestore>restaurez et agrandissez une vieille image</imageRestore>, <videoRestore>comparez des modèles de restauration vidéo</videoRestore> côte à côte sur un court extrait, ou <docScan>transformez des pages numérisées en PDF consultable</docScan>. Chaque modèle fonctionne sur des serveurs que nous exploitons.",
-      "editors": "<strong>Éditeurs.</strong> Quand une seule conversion ne suffit pas, <darkroom>Darkroom</darkroom> est un éditeur vidéo multipiste et <motion>Motion</motion> anime des illustrations SVG sur une chronologie d'images clés. Les deux fonctionnent dans votre navigateur, et la connexion à un compte conserve vos projets."
+      "editors": "<strong>Éditeurs.</strong> Quand une seule conversion ne suffit pas, <darkroom>Darkroom</darkroom> est un éditeur vidéo multipiste et <motion>Motion</motion> anime des illustrations SVG sur une chronologie d'images clés, et <aperture>Aperture</aperture> retouche les photos avec des calques de réglage et des masques. Tous les trois fonctionnent dans votre navigateur, et la connexion à un compte conserve vos projets."
     },
     "whatWeDont": {
       "eyebrow": "Ce que nous ne faisons pas",
@@ -2046,7 +2269,8 @@
       "ai": "Outils IA",
       "metadata": "Outils de confidentialité et de métadonnées",
       "contentStudio": "Darkroom",
-      "motion": "Animation SVG"
+      "motion": "Animation SVG",
+      "photo": "Retouche photo"
     },
     "multiTrackEditor": "Éditeur multipiste",
     "open": "Ouvrir",
@@ -2076,7 +2300,9 @@
       "editor": "Éditeurs"
     },
     "moreTools": "{{category}} : {{count}} de plus",
-    "alsoLine": "Aussi : {{names}}."
+    "alsoLine": "Aussi : {{names}}.",
+    "photoEditor": "Éditeur de photos",
+    "apertureTutorial": "Tutoriel {{brand}}"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Fil d'Ariane",
@@ -2484,7 +2710,101 @@
       "motion": {
         "alt": "L'éditeur Motion avec un SVG importé sur le canevas et des images clés sur la chronologie d'animation",
         "caption": "L'éditeur Motion : calques, canevas et chronologie des images clés."
+      },
+      "aperture": {
+        "alt": "L'éditeur {{brand}} avec une photo sur le canevas, le panneau De base à droite et l'histogramme au-dessus",
+        "caption": "L'éditeur {{brand}} : canevas, histogramme et panneau De base."
       }
     }
+  },
+  "photoPage": {
+    "guide": {
+      "summaryTitle": "Comment fonctionne {{brand}}",
+      "whatItIsTitle": "Ce que c'est",
+      "whatItIsBody": "{{brand}} est un éditeur de photos qui ne modifie jamais votre original. Chaque réglage, de l'exposition et des courbes aux plages de couleurs, aux masques et à la correction, est un calque posé sur la photo, que vous pouvez réordonner, atténuer, masquer ou supprimer. L'aperçu est dessiné dans votre navigateur, et le fichier que vous exportez est généré à partir de l'original sur notre serveur.",
+      "stepsTitle": "Quatre étapes",
+      "step1": "Déposez une photo ci-dessous ou choisissez-en une. L'éditeur s'ouvre en plein écran avec le panneau de cette page au premier plan.",
+      "step2": "Déplacez un curseur et regardez la photo et l'histogramme changer. Annuler et rétablir couvrent chaque étape, et maintenir la touche barre oblique inverse affiche l'original.",
+      "step3": "Limitez un calque à une partie de la photo avec un masque, redressez-la ou recadrez-la, corrigez une tache, ou partez de l'un des styles intégrés.",
+      "step4": "Exportez en JPG, PNG, WebP, AVIF ou TIFF. Le fichier est généré sur notre serveur en pleine résolution, dans la limite de votre offre.",
+      "editorTitle": "L'éditeur",
+      "editorBody": "{{brand}} s'ouvre en plein écran, sans l'en-tête du site ni publicité. Sans compte, une photo est conservée dans ce navigateur ; les utilisateurs connectés conservent leurs projets dans leur compte."
+    },
+    "dropzone": {
+      "drop": "Déposez une photo ici ou choisissez-en une sur votre appareil.",
+      "choose": "Choisir une photo",
+      "hint": "JPG, PNG, WebP, GIF, AVIF, HEIC, TIFF ou BMP. Rien n'est envoyé tant que vous n'exportez pas, ne sélectionnez pas un sujet et ne corrigez pas.",
+      "opening": "Ouverture de l'éditeur…",
+      "openEmpty": "Ouvrir l'éditeur sans photo"
+    },
+    "launcher": {
+      "recentTitle": "Projets récents",
+      "sourceAccount": "Enregistré dans votre compte",
+      "sourceBrowser": "Enregistré dans ce navigateur",
+      "loading": "Chargement de vos projets…",
+      "empty": "Aucun projet pour l'instant. Vos photos apparaîtront ici.",
+      "error": "Impossible de charger vos projets pour le moment. Vous pouvez tout de même ouvrir une nouvelle photo.",
+      "edited": "Modifié le {{date}}"
+    },
+    "plans": {
+      "title": "Projets, taille d'export et lots selon l'offre",
+      "intro": "La retouche, tous les réglages, les masques et les styles sont gratuits dans toutes les offres. Ce qui change selon l'offre, c'est le nombre de projets que vous pouvez conserver, la taille maximale d'un export et le nombre de photos que vous pouvez retoucher en un seul lot. Ces chiffres viennent directement de nos serveurs : ils sont donc toujours à jour.",
+      "caption": "Quotas de {{brand}} selon l'offre",
+      "feature": "Fonctionnalité",
+      "rows": {
+        "projects": "Projets enregistrés",
+        "maxMegapixels": "Export maximal",
+        "batch": "Photos par lot"
+      },
+      "values": {
+        "unlimited": "Illimité",
+        "localOnly": "1, dans ce navigateur uniquement",
+        "megapixels": "{{count}} MP",
+        "notAvailable": "Non disponible"
+      },
+      "costNote": "Chaque export compte comme une tâche standard et chaque correction comme une tâche IA. L'aperçu, les réglages, les masques et les styles ne coûtent rien.",
+      "unavailable": "Impossible de charger le tableau des offres pour le moment. La page des tarifs indique le quota de chaque offre.",
+      "seePlans": "Comparer toutes les offres"
+    }
+  },
+  "deleteAccount": {
+    "metaTitle": "Supprimer votre compte | Media Manipulator",
+    "metaDesc": "Comment supprimer votre compte Media Manipulator et ses données : dans l'application, sur le site web, ou par e-mail si vous ne pouvez pas vous connecter.",
+    "title": "Supprimer votre compte Media Manipulator",
+    "intro": "Cette page explique comment supprimer votre compte pour l'application Media Manipulator pour Android et pour media-manipulator.com. L'application et le site web sont exploités par CreaTV Ltd. et partagent un seul compte ; le supprimer le retire donc partout.",
+    "inAppTitle": "Dans l'application",
+    "inAppSteps": [
+      "Ouvrez l'application et connectez-vous.",
+      "Allez dans Compte, puis dans Confidentialité et données.",
+      "Appuyez sur Supprimer mon compte.",
+      "Saisissez DELETE MY ACCOUNT pour confirmer. Il peut vous être demandé de vous reconnecter."
+    ],
+    "webTitle": "Sur le site web",
+    "webSteps": [
+      "Connectez-vous sur media-manipulator.com.",
+      "Ouvrez votre page Compte et choisissez l'onglet Confidentialité et données.",
+      "Choisissez Supprimer mon compte et saisissez DELETE MY ACCOUNT pour confirmer."
+    ],
+    "webLink": "Ouvrir Confidentialité et données",
+    "emailTitle": "Si vous ne pouvez pas vous connecter",
+    "emailBody": "Écrivez à privacy@media-manipulator.com depuis l'adresse e-mail de votre compte en indiquant que vous souhaitez que votre compte soit supprimé. Nous vérifions que la demande émane du titulaire du compte et le supprimons dans un délai de 30 jours.",
+    "whatIsDeletedTitle": "Ce qui est supprimé",
+    "whatIsDeleted": [
+      "l'enregistrement de votre compte, vos paramètres et votre identifiant de connexion ;",
+      "vos fichiers, résultats et historique, ainsi que vos projets Darkroom, Motion et Aperture ;",
+      "vos voix enregistrées ;",
+      "les jetons de notification push de vos appareils ;",
+      "les données d'analyse liées à votre compte ;",
+      "votre abonnement Premium ou Pro, qui est résilié immédiatement."
+    ],
+    "whatIsKeptTitle": "Ce qui est conservé, et pour combien de temps",
+    "whatIsKept": [
+      "un enregistrement de suppression minimal, contenant uniquement un hachage irréversible de l'identifiant de votre compte et la date, pendant 30 jours ;",
+      "le journal de vos choix de consentement et d'opposition, pendant cinq ans, car la loi exige que nous puissions les prouver ;",
+      "les justificatifs de paiement conservés par Stripe, notre prestataire de paiement, aussi longtemps que la loi l'exige ;",
+      "les rapports de plantage conservés par Firebase Crashlytics, que Google supprime après 90 jours."
+    ],
+    "timing": "La suppression depuis l'application ou le site web démarre immédiatement. Si une étape ne peut pas être menée à bien, vous en êtes informé et vous pouvez nous écrire à l'adresse indiquée ci-dessus.",
+    "moreInfo": "Pour tout ce que nous collectons et la manière dont nous l'utilisons, lisez la Politique de confidentialité."
   }
 }

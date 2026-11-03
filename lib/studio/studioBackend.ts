@@ -17,6 +17,7 @@ import {
 } from '@/lib/studioTypes';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
+import { jobEventsUrl } from '@/lib/results/inline';
 import { getSessionId } from '@/lib/analytics';
 
 /**
@@ -237,7 +238,7 @@ export function createMmBackend(): StudioBackend {
     voiceoverUrl: (projectId) => `${base()}/studio/projects/${encodeURIComponent(projectId)}/voiceover`,
 
     jobUrl: (jobId) => `${base()}/job/${jobId}`,
-    jobEventsUrl: (jobId) => `${base()}/job/${jobId}/events`,
+    jobEventsUrl: (jobId) => jobEventsUrl(jobId),
     downloadUrl: (jobId) => `${base()}/download/${jobId}`,
 
     adaptCreateProject: (req) => req,

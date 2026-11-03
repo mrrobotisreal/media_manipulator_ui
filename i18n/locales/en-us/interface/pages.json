@@ -340,6 +340,10 @@
       "motion": {
         "title": "Animation tutorials",
         "description": "Animate SVG artwork on a keyframe timeline and export it as animated SVG, Lottie, code or GIF."
+      },
+      "photo": {
+        "title": "Photo editing tutorials",
+        "description": "Fix light and color, mask, heal and export photos with {{brand}}."
       }
     },
     "tutorials": {
@@ -513,6 +517,110 @@
             "darkroomDesc": "Edit video on a multi-track timeline and export MP4."
           }
         }
+      },
+      "aperture": {
+        "title": "How to edit a photo online with {{brand}}",
+        "excerpt": "An eight-step guide to {{brand}}: open a photo, fix light and color, make one color pop, mask part of the image, heal blemishes, export at full resolution, save looks, and apply the same edits to more photos.",
+        "readTime": "8 min read",
+        "page": {
+          "eyebrow": "Photo Editing Tutorial",
+          "title": "How to edit a photo with {{brand}}",
+          "intro": "{{brand}} is Media Manipulator's non-destructive photo editor. Every change you make is an adjustment layer stacked over the untouched original, so you can reorder, mask, fade or delete any step later, and the file you opened is never altered. The preview is drawn on your graphics card from a 1920 px copy; the export is rendered on our server from the original at full resolution with the same formulas. This guide walks through one edit from opening a photo to applying the finished look to a whole set, using the panel and slider names you will see in the editor.",
+          "open": {
+            "title": "1. Open a photo",
+            "body": "Open {{brand}} from its tool page or from any photo tool page on Media Manipulator. The editor takes over the whole screen with no ads. Drop a photo onto the open screen or press Choose a photo. Once it is decoded you get the preview in the middle, the Panels and Layers tabs on one side, and a live histogram showing red, green, blue and luminance. Hold the backslash key at any time to see the original, or turn on Split view to compare halves.",
+            "bullets": {
+              "formats": "You can open JPG, PNG, WebP, GIF, HEIC, HEIF, AVIF, TIFF and BMP files. Your browser decodes the common web formats on its own. HEIC, HEIF, TIFF and BMP need an account, because the server makes a preview copy before the editor can show them.",
+              "local": "Without an account, the photo and your edits stay in this browser's storage and nothing is uploaded until you export, select a subject or heal. Guests keep one photo at a time; opening a second one replaces the saved project, and the editor asks before it does so.",
+              "account": "Signed in, each photo becomes a project saved to your account: 5 projects on Free, 50 on Premium and unlimited on Pro. The project opens on any device and autosaves as you work, with the saved state shown in the top bar.",
+              "original": "The original file is never changed. Every adjustment is a layer over it, with its own opacity from 0 to 100 percent, a blend mode of normal, luminosity or color, and an optional mask. You can stack up to 64 layers, and the History panel lists every step."
+            }
+          },
+          "basic": {
+            "title": "2. Fix light and color with Basic",
+            "body": "Most photos need the Basic panel first. It groups the global sliders into Exposure, Light, Tone, White balance and Color sections, each of which becomes its own adjustment layer the moment you move a slider. Work from the top down: get overall brightness right, then recover highlights and shadows, then correct the color cast, then decide how much color you want. Watch the histogram while you drag; clipping shows up as a pile-up at either end.",
+            "bullets": {
+              "exposure": "Exposure (EV) runs from -5 to +5 stops and multiplies every pixel by two to the power of the value, so +1 doubles the light. Offset adds or subtracts a flat amount from -0.5 to 0.5, and Gamma from 0.1 to 10 bends the midtones. Light holds Brightness and Contrast from -100 to 100.",
+              "tone": "Tone has Highlights, Shadows, Whites and Blacks. Pull Highlights down to bring back a bright sky, raise Shadows to open a dark face, and use Whites and Blacks to set where the brightest and darkest points land. Each slider targets its own part of the luminance range instead of moving everything.",
+              "whiteBalance": "White balance has Temperature and Tint. Temperature shifts the photo toward blue or amber; Tint shifts it toward green or magenta. Indoor shots under warm bulbs usually need Temperature pulled toward blue, and fluorescent light often needs a little magenta Tint. Judge the result on something that should be neutral gray or white.",
+              "history": "Nothing here is permanent. Undo and redo are on the top bar and the keyboard, the History panel jumps back to any earlier state, and you can save a named snapshot of a version you like for the rest of the session. Lower a layer's opacity to apply half of an adjustment instead of redoing it."
+            }
+          },
+          "colorPop": {
+            "title": "3. Make one color pop",
+            "body": "The selective color effect, where one color stays and everything else turns gray, lives in the Color (HSL) panel. You can get there in one step with a built-in look or build it by hand. The hand-built route gives you control over exactly which hues survive and how soft the edge between color and gray is, which matters for things like skin that sits between reds and yellows.",
+            "bullets": {
+              "look": "In the Looks panel, choose Color pop: red, yellow, green, cyan, blue or magenta. The look adds a Color (HSL) layer on top of your edits that desaturates every range except the one you picked. If it is not what you wanted, a single Undo removes the whole look.",
+              "chips": "To build it yourself, open Color (HSL). Each of the six ranges, Reds, Yellows, Greens, Cyans, Blues and Magentas, has a Gray except this chip. Press the chip on the color you want to keep and the other five ranges drop to minus 100 saturation in one move.",
+              "ranges": "If the color you want to keep is not one of the six, use Pick a color from the photo to add a custom range with the eyedropper. Each range has Width and Feather controls, so you can widen it to include neighboring hues or soften the border so the transition does not look cut out.",
+              "tune": "Then fine-tune the surviving color with its own Hue, Saturation and Lightness sliders. A little extra Saturation and a touch less Lightness usually makes the kept color read stronger against gray. If the look is too strong overall, lower the layer's opacity in the Layers tab rather than redoing it."
+            }
+          },
+          "masks": {
+            "title": "4. Edit only part of the photo with masks",
+            "body": "Any adjustment layer can carry a mask, which limits where it applies. Select the layer in the Layers tab, open Masks and add a component. White areas of the mask get the full adjustment, black areas get none, and gray areas get a proportion. Mask view switches between off, a colored overlay on the photo and the mask alone, so you can see exactly what you are affecting before you start moving sliders.",
+            "bullets": {
+              "kinds": "There are six mask kinds: Linear gradient for a sky or a floor, Radial for a spotlight around a point, Brush for painting by hand with adjustable size and an erase toggle, Luminosity range for the bright or dark parts only, Color range for pixels of a chosen color, and Select subject.",
+              "combine": "A mask can hold several components, and each one is set to Add, Subtract or Intersect. A common recipe is a Linear gradient over the sky with a Subtract Brush that protects a building that pokes into it. Mask feather softens the edge, Mask strength scales the whole thing, and Invert flips it.",
+              "colorRange": "Color range uses the same eyedropper idea as the HSL panel: pick a color, shift-click to add up to eight more, and raise Fuzziness to include nearby shades. It is a quick way to darken only a blue sky or warm only the skin tones without painting anything.",
+              "subject": "Select subject asks our GPU to find the main person or object and returns a soft-edged mask in a few seconds. It is the one mask kind that uploads the photo and counts as an everyday operation on your plan; an identical repeat is a free cache hit. Every other mask kind is computed in your browser and costs nothing."
+            }
+          },
+          "heal": {
+            "title": "5. Heal spots and blemishes",
+            "body": "Dust on a sensor, a pimple, a stray wire or a bit of litter can all go through the Heal panel. Unlike the sliders, healing is a generative step: our server fills the painted area with new pixels that match the surroundings. It still lands in your layer stack and your history, so you can undo it or hold backslash to compare with the original, but it is the one tool in this guide that costs an AI operation.",
+            "bullets": {
+              "paint": "Pick the Spot brush and paint over each mark you want gone. Make the dab a little larger than the spot itself so the fill has clean texture to blend into. The panel counts the spots you have marked, and Clear spots starts over if you change your mind before pressing Heal.",
+              "press": "Press Heal when the spots are marked. The photo and the painted area go to our GPU, where the LaMa inpainting model fills the marked areas; this can take up to a minute on a large file. When it comes back, the result is applied as a step in your history with an Undo available.",
+              "cost": "Each press of Heal is one AI operation on your plan, no matter how many spots you painted, so mark everything first and press once. The daily allowance per plan is listed on the pricing page. Painting spots, clearing them and undoing a heal cost nothing.",
+              "base": "Healing sits in your layer stack like everything else, so the color and tone layers you add afterward apply to the healed result, and Undo or the History panel takes it back out. For red eyes in flash portraits there is a separate Red-eye panel that needs no AI at all."
+            }
+          },
+          "export": {
+            "title": "6. Export at full resolution",
+            "body": "Press Export on the top bar when the edit is finished. The preview you have been working on is a 1920 px copy drawn on your graphics card; the export is a server job that renders the original at its full size with the same formulas, so the two agree to within a few 8-bit levels at most. The result is downloaded as a new file named after the original with (retouched) added, and the original file is untouched.",
+            "bullets": {
+              "format": "Choose JPG, PNG, WebP, AVIF or TIFF, set Quality from 1 to 100 where it applies, and choose whether to Keep or Strip the metadata. Stripping removes the EXIF block, including camera settings and any GPS location, which is usually what you want before posting a photo publicly.",
+              "size": "Max size offers Original, 12, 24, 64 and 120 megapixels. The dialog estimates the file size for your choice: a JPG at quality 92 is about 0.45 MB per megapixel, so a 6000 x 4000 photo at 24 MP comes out near 10.8 MB, while WebP is around 0.3 MB and AVIF around 0.2 MB per megapixel.",
+              "server": "Exports up to 12 MP are available to guests and on the Free plan, so a larger original is exported at 12 MP. Premium and Pro export up to 120 MP. The job runs on our server, which renders with NumPy and OpenCV, encodes with ImageMagick and offers the file for download when it is done.",
+              "cost": "One export is one everyday operation on your plan, and you can run Export again with different settings afterward, for example a full-size TIFF for printing and a 12 MP WebP for the web. Previewing, every slider, every non-AI mask, looks and undo are free and unlimited."
+            }
+          },
+          "presets": {
+            "title": "7. Save and reuse looks",
+            "body": "A look in {{brand}} is a saved group of adjustment layers. The Looks panel ships with 18 built-in looks plus Auto, and it is also where your own presets live. Saving a preset captures the layers you choose with their current values, so the warm, slightly faded treatment you dialed in for one photo can be dropped onto the next one in a single click, and still comes in as editable layers rather than a baked-in filter.",
+            "bullets": {
+              "builtin": "The built-in looks are grouped as Color, Black & white, Film and Fix, and include the six Color pop looks, Black & white film, High-contrast black & white, Warm, Cool, Matte, Fade, Vivid, Punch, Cross-process, Vintage, Portrait soften, Landscape and Auto. Use the filter box to find one by name.",
+              "append": "Applying a look adds its adjustments as a named group on top of what you already have instead of replacing your work. That means you can stack Warm over your own Basic corrections, open the group in the Layers tab to tweak individual sliders, and remove the whole look with one Undo.",
+              "mine": "Choose Save current edits as a preset, give it a name and tick the adjustments to include. It appears under My presets. When you are signed in your presets are stored on your account and follow you to your other devices; without an account they are stored in this browser. You can rename or delete them from the same panel.",
+              "file": "Export presets writes your saved presets to a JSON file; Import presets reads one back in. Use this to move presets to another browser or computer, to keep a backup, or to share a look with someone else who uses {{brand}} on Media Manipulator."
+            }
+          },
+          "batch": {
+            "title": "8. Apply the same edits to more photos",
+            "body": "When several photos from the same shoot need the same treatment, you do not have to repeat the edit. Finish one photo, open the Export dialog and choose Apply to more photos. It takes the entire layer stack of the current project, including masks and healing you have already done on this photo, and renders it onto the other files you pick with the export settings you chose, then hands you everything as one download.",
+            "bullets": {
+              "limit": "Apply to more photos is available only when you are signed in; the dialog asks guests to sign in. The Free plan applies edits to up to 3 photos at a time, Premium up to 10 and Pro up to 25. Pick more than your plan allows and the extra files are left out, and the dialog says how many.",
+              "run": "Each chosen photo is first created as its own project in your account, one after another, so the originals and their edits are kept like any other project. Then a single batch job renders them all on the server, and the dialog shows each photo move from Preparing to Rendering with a percentage to Done.",
+              "zip": "When the renders finish, press Download as ZIP. The archive is built in your browser from the finished files, so nothing extra is uploaded and you get one file to save instead of a dozen separate downloads. If a file could not be added, the dialog tells you how many are missing.",
+              "retry": "If a photo fails, the others are not held up. The dialog shows how many failed and offers a Retry button for just those files, and the ZIP can be built again once they finish. Exports count as everyday operations on your plan, so check the pricing page before running a large batch."
+            }
+          },
+          "cta": {
+            "title": "Try it on your own photo",
+            "body": "Open {{brand}}, drop in a photo and work through the eight steps above. Every slider, mask and look is free to try without an account, and your photo stays in your browser until you choose to export it.",
+            "button": "Open {{brand}}"
+          },
+          "related": {
+            "title": "Related",
+            "intro": "More pages for working with photos on Media Manipulator.",
+            "toolDesc": "The editor's tool page, with the full list of panels, export formats and what each plan allows.",
+            "darkroom": "Darkroom video editor tutorial",
+            "darkroomDesc": "Edit video on a multi-track timeline and export an MP4.",
+            "licenses": "Open-source licenses",
+            "licensesDesc": "The open-source libraries and models behind the editor and the rest of Media Manipulator."
+          }
+        }
       }
     },
     "newToHere": {
@@ -576,15 +684,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Effective Date: 2026-10-24",
-    "lastUpdated": "Last Updated: 2026-10-28",
+    "lastUpdated": "Last Updated: 2026-11-03",
     "operator": "Media Manipulator is a product and service operated by CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Operating as Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "What changed on 2026-10-28",
-    "whatChangedBody": "We added a contact form at media-manipulator.com/contact: the Privacy Policy has a new section 1.11 on the messages you send us (your name, email address, subject and message, delivered to our support mailbox through Resend and kept there until the conversation is closed, never longer than 12 months), and section 16 now points to the form. Added the advertising-cookie disclosures Google requires and the opt-out links. The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense: Google’s advertising cookies, non-personalised ads, Google’s consent message in the EEA, the UK and Switzerland, the links to opt out of personalised ads (Google Ads Settings, aboutads.info and youronlinechoices.eu) and to how Google uses information from sites that use its services, who sees ads (only visitors without an account and free accounts) and our public ads.txt file; section 1.5 now lists the advertising identifiers Google’s ad script may set. Section 8.9 of the Terms now says that ads are shown only without an account or with a free account, and that Premium and Pro remove them. Section 5 (Advertising) of the Privacy Policy now says that Google's ad script loads on pages that can show ads, with all consent signals denied until you choose, and serves non-personalised ads until then. Earlier the same day: We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
+    "whatChangedTitle": "What changed on 2026-11-03",
+    "whatChangedBody": "The Privacy Policy has a new Section 17 and the Terms a new Section 25 for the Media Manipulator app for Android. Section 17 explains what the app collects (your account data, device and app information, a per-install identifier, the app's usage analytics, a push notification token if you allow notifications, crash reports from Firebase Crashlytics, and the files you choose to process), the permissions it uses, how to turn analytics off and erase it in Account → Privacy & data, push notifications, crash reports, and how to delete your account in the app, on the web or by email. Section 6 now says Firebase is also used in the app for push notifications and crash reports, and Section 8 names Firebase Cloud Messaging and Firebase Crashlytics. Section 25 of the Terms covers the app, the app stores' own terms, automatic updates and plans bought on the web, and Section 1 now lists the app. There is also a new public page at media-manipulator.com/delete-account that explains how to delete your account without signing in. Everything from the earlier update on 2026-11-03 still applies: We added Aperture, our photo editor (in beta). The Privacy Policy has a new section 1.12: in Aperture your photo is edited in your browser, and it is uploaded to our servers only when you save a project to your account, export, select a subject with AI, heal spots or apply your edits to more photos; projects saved to your account are stored on our servers under the retention period you choose, can be deleted and are deleted with your account; subject selection and healing run on our own GPU server and no photo is sent to a third-party service; and for each export, subject selection and healing we record the kind of job, the result's format and size, the time and your plan to enforce the daily allowance. Sections 3, 3.3, 3.4 and 4 now name Aperture projects and the models used. The Terms list Aperture in section 1, and section 13 says your Aperture exports belong to you. Everything from the 2026-11-01 update still applies: You can now sign in with Apple, in addition to an email address and password or your Google account. The Privacy Policy (section 1.7) explains that if you sign in with Apple, Apple shares your name and email address with us, or a private relay address if you choose \"Hide My Email\", and that Apple's privacy policy applies to your Apple Account; section 8 lists Apple among the parties we share sign-in information with, and section 1.7 now says Firebase sends a reset link to your email address if you ask to reset your password. Section 9 of the Terms now says you can sign in with an email address and password, with Google or with Apple. Everything from the 2026-10-28 update still applies: We added a contact form at media-manipulator.com/contact: the Privacy Policy has a new section 1.11 on the messages you send us (your name, email address, subject and message, delivered to our support mailbox through Resend and kept there until the conversation is closed, never longer than 12 months), and section 16 now points to the form. Added the advertising-cookie disclosures Google requires and the opt-out links. The Privacy Policy has a new section 5.1 on advertising cookies and Google AdSense: Google’s advertising cookies, non-personalised ads, Google’s consent message in the EEA, the UK and Switzerland, the links to opt out of personalised ads (Google Ads Settings, aboutads.info and youronlinechoices.eu) and to how Google uses information from sites that use its services, who sees ads (only visitors without an account and free accounts) and our public ads.txt file; section 1.5 now lists the advertising identifiers Google’s ad script may set. Section 8.9 of the Terms now says that ads are shown only without an account or with a free account, and that Premium and Pro remove them. Section 5 (Advertising) of the Privacy Policy now says that Google's ad script loads on pages that can show ads, with all consent signals denied until you choose, and serves non-personalised ads until then. Earlier the same day: We added voice tools: cloning your own voice from a recording, designing a voice from a description, and changing the voice in a recording. The Privacy Policy has a new section 1.10 on voice samples and designed voices: what we store, that we use it only to make and run the voice you asked for with your explicit consent, that it is stored in Amazon S3 under your retention setting, never shared with a third-party AI provider and never used to train any model, and that you can delete it at any time and it is deleted with your account; sections 3, 3.4, 3.5 and 4 now mention voices. The Terms have a new section 8.11: you may only create a voice from your own voice or with the explicit permission of the person speaking; impersonation, fraud, political deepfakes and harassment are not allowed; generated and converted speech carries an inaudible watermark and shifted audio does not; and we may remove voices and suspend accounts. Section 1 of the Terms lists the voice tools. Everything from the 2026-10-26 update still applies: We added Motion, our SVG animation editor (in beta). The Privacy Policy has a new section 1.9: Motion projects and exports are made in your browser and are not uploaded to make them; projects you save to your account are stored like Darkroom projects, follow the retention period you choose and can be deleted; and for each counted export we record its format, size, length and time to enforce the daily allowance. Sections 3, 3.3 and 3.4 now name Motion projects. Section 13 of the Terms confirms that your Motion exports belong to you, explains that some exports contain MIT-licensed anime.js code whose notice must be kept, and points to our open-source licences page. Everything from the 2026-10-25 update (the Pro plan, plan changes and refunds) still applies. Section 10 of the Terms now says you can pay in US dollars or euros at the same price, that euros are shown by default in Europe, and that a subscription's currency cannot change while it is active; section 1.6 of the Privacy Policy now lists the billing currency we store and the mm-currency cookie that remembers your choice. Section 8 now also says that translators we hire submit their work as GitHub pull requests made by CreaTV Ltd.'s GitHub App, and that those submissions contain only translation text and no personal data about visitors."
   },
   "privacyPolicy": {
     "title": "Privacy Policy",
@@ -709,7 +817,7 @@
           {
             "title": "1.7 Account Information",
             "paragraphs": [
-              "If you create an account, sign-in is handled by Firebase Authentication, a Google service. You can sign in with an email address and password or with your Google account. Firebase stores your credentials and sends the emails it needs to run sign-in, such as email verification.",
+              "If you create an account, sign-in is handled by Firebase Authentication, a Google service. You can sign in with an email address and password, with your Google account or with your Apple Account. If you sign in with Apple, Apple shares your name and email address with us, or, if you choose \"Hide My Email\", a private relay address that forwards to you; Apple's privacy policy applies to your Apple Account. Firebase stores your credentials and sends the emails it needs to run sign-in, such as email verification. If you ask to reset your password, Firebase sends a reset link to your email address.",
               "On our side we store a record for your account: your email address, display name, whether your email is verified, your Firebase sign-in identifier, your plan, when you signed up and last used the service, the retention settings you chose, and your conversion history and projects (Section 3). We send a small number of service emails from Media Manipulator: a welcome email, payment and account-deletion notices, and, if you keep them switched on in your account settings, reminders before your files expire and notices when a long AI job finishes. We do not send marketing email. Emails are delivered through our email provider, Resend."
             ]
           },
@@ -743,6 +851,14 @@
               "When you use the contact form at media-manipulator.com/contact, we receive your name, your email address, the subject you choose and your message, together with the time it was sent and a short reference number. The form delivers this to our support mailbox by email, through our email provider Resend; contact messages are not stored in our application database. When you email us directly, we receive the same kind of information from your email.",
               "We use these messages only to answer you and to handle what you ask for, such as a bug report, a billing question or a privacy request. They are kept in our support mailbox until the conversation is closed, and never longer than 12 months. To limit spam, the form is rate-limited per browser session and per IP address like the rest of the site, and a blocked attempt is kept as an abuse-prevention record (Section 3.6)."
             ]
+          },
+          {
+            "title": "1.12 Aperture Projects and Exports",
+            "paragraphs": [
+              "Aperture, our photo editor, edits your photo in your browser: the preview you see is drawn on your own device. A photo leaves your device only when you ask for something that needs our servers: saving it to your account as a project, exporting the finished file, selecting a subject with AI, healing spots with AI, or applying your edits to more photos.",
+              "If you are signed in and save a project, the original photo, a preview copy of it at up to 1920 pixels, a small thumbnail, the editing document (the list of adjustments, masks and healed areas) and any masks and healed versions of the photo are stored on our servers in the project's folder. They are your content, they follow the retention period you choose (Section 3), you can delete a project from your Account page, they are deleted with your account, and the projects are listed in your data export. Without an account, one photo is kept only in your browser (in IndexedDB) and is not uploaded until you export, select a subject or heal; that upload is a normal temporary job and is kept for 24 hours. Presets you save are stored with your account until you delete them or the account.",
+              "Exports, AI subject selection and healing are jobs on our servers. Exports are rendered from your original photo, subject selection and healing run on our own GPU server, and none of your photos is sent to a third-party service. Each export, subject selection and healing is counted to enforce your plan's daily allowance: we store the kind of job, the format and size of the result, the time, your plan and an identifier for your account, your browser session or a hashed IP address. The result files are kept under the usual retention rules (Section 3), and when you delete your account these records are detached from your identity."
+            ]
           }
         ]
       },
@@ -769,7 +885,7 @@
         "id": "retention",
         "title": "3. File Storage, Retention and Deletion",
         "paragraphs": [
-          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media, Darkroom projects, Motion projects and saved voices in your account, stored on our servers and in Amazon S3 (us-west-2). Records about your conversions and settings (such as job history, retention choices and account details) are kept in a PostgreSQL database, and AI processing runs on our own self-hosted GPU server."
+          "How long we keep your files depends on whether you have an account. This section covers uploaded files, generated outputs (results), Darkroom media, Darkroom projects, Motion projects, Aperture projects and saved voices in your account, stored on our servers and in Amazon S3 (us-west-2). Records about your conversions and settings (such as job history, retention choices and account details) are kept in a PostgreSQL database, and AI processing runs on our own self-hosted GPU server."
         ],
         "subsections": [
           {
@@ -794,7 +910,7 @@
           {
             "title": "3.3 Deleting your files",
             "paragraphs": [
-              "If you have an account, you can delete an individual result, Darkroom project or Motion project, delete all of your files at once, or delete your whole account from the Account page. Visitors without an account can delete their own results during the session in which they were created."
+              "If you have an account, you can delete an individual result, Darkroom project, Motion project or Aperture project, delete all of your files at once, or delete your whole account from the Account page. Visitors without an account can delete their own results during the session in which they were created."
             ]
           },
           {
@@ -804,7 +920,7 @@
             ],
             "bullets": [
               "cancel your Premium or Pro subscription with Stripe, if you have one;",
-              "delete your files, your Darkroom and Motion projects and your saved voices;",
+              "delete your files, your Darkroom, Motion and Aperture projects and your saved voices;",
               "delete your account record and settings and detach your remaining activity records from your identity;",
               "ask our first-party analytics to delete the analytics data linked to your account (see Section 6);",
               "delete your sign-in login."
@@ -844,7 +960,7 @@
         ],
         "afterBullets": [
           "All AI processing used by Media Manipulator is performed locally on our own servers or infrastructure that we control. We do not outsource uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans to third-party AI providers for processing.",
-          "The AI features use open models and tools that we run ourselves, mainly on a self-hosted GPU server: Whisper for transcription, Real-ESRGAN for image upscaling, Demucs for separating audio, Chatterbox and Qwen3-TTS for voice cloning, voice design and speech, and other local models, plus language and vision models served through Ollama for text tasks such as summaries, descriptions and caption translation.",
+          "The AI features use open models and tools that we run ourselves, mainly on a self-hosted GPU server: Whisper for transcription, Real-ESRGAN for image upscaling, rembg and LaMa for selecting a subject and healing spots in photos, Demucs for separating audio, Chatterbox and Qwen3-TTS for voice cloning, voice design and speech, and other local models, plus language and vision models served through Ollama for text tasks such as summaries, descriptions and caption translation.",
           "This means that when AI features are used, your uploaded files and generated outputs remain within Media Manipulator’s processing environment and are handled according to the storage, retention, deletion, and security practices described in this Privacy Policy.",
           "Uploaded files and generated outputs are kept and deleted as described in Section 3, including when AI features are used. After the applicable retention period they are deleted from our active systems unless earlier deletion occurs or limited retention is legally required for security, abuse prevention, legal compliance, or enforcement purposes.",
           "AI-generated outputs may be imperfect, incomplete, or inaccurate. Users are responsible for reviewing any AI-generated output before relying on it.",
@@ -887,7 +1003,7 @@
         "title": "6. Analytics",
         "paragraphs": [
           "Media Manipulator uses its own first-party analytics, built and operated by us and hosted on our own infrastructure at analytics.media-manipulator.com. It is the primary way we understand which tools are used, where they fail, and what to build next.",
-          "We previously used Mixpanel and Firebase Analytics. Both have been removed, as has Firebase Performance monitoring. Firebase is now used only for account sign-in."
+          "We previously used Mixpanel and Firebase Analytics. Both have been removed, as has Firebase Performance monitoring. Firebase is used for account sign-in and, in the mobile app only, for push notifications (Firebase Cloud Messaging) and crash reports (Firebase Crashlytics) — see Section 17."
         ],
         "subsections": [
           {
@@ -978,7 +1094,8 @@
         "bullets": [
           "hosting and cloud infrastructure providers;",
           "Amazon Web Services, which hosts our file storage (Amazon S3, region us-west-2);",
-          "Google, for Firebase Authentication (sign-in), the limited Google Analytics 4 events described in Section 6.4 and, where ads are shown, Google AdSense;",
+          "Google, for Firebase Authentication (sign-in), the limited Google Analytics 4 events described in Section 6.4, Firebase Cloud Messaging and Firebase Crashlytics for the mobile app (Section 17) and, where ads are shown, Google AdSense;",
+          "Apple, when you choose Sign in with Apple (Apple verifies your sign-in; we receive the name and email address or relay address you allow);",
           "advertising partners;",
           "security, abuse-detection, and content-safety providers;",
           "AI processing is performed locally on our own servers or infrastructure that we control, and we do not share uploaded files, generated outputs, transcripts, summaries, descriptions, or content-safety scans with third-party AI providers for AI processing;",
@@ -1076,6 +1193,67 @@
         ],
         "contactBlock": true,
         "contactEmail": "privacy@media-manipulator.com"
+      },
+      {
+        "title": "17. The Media Manipulator App",
+        "paragraphs": [
+          "This section applies to the Media Manipulator app for Android, operated by CreaTV Ltd. It adds to the rest of this Privacy Policy, which also applies: the app uses the same account, the same servers and the same retention settings as the website. To use the app you sign in to your Media Manipulator account."
+        ],
+        "subsections": [
+          {
+            "title": "17.1 What the app collects",
+            "paragraphs": [
+              "When you use the app, we and our providers receive:"
+            ],
+            "bullets": [
+              "your account data, as described in Section 1.7;",
+              "device and app information: your device model, Android version, the app version and build, your language, your time zone and your connection type (Wi-Fi, mobile data or none);",
+              "a per-install identifier that the app creates when you first open it, and a visit identifier that changes after 30 minutes of inactivity;",
+              "the app's analytics events: which screens you view, which tools you use, when jobs start, finish or fail, and when you save or share a result. They are linked to your account and plan while you are signed in. They never contain the names or the contents of your files;",
+              "a push notification token for your device, with the platform, app version and language of the device and when the token was created and last updated, if you allow notifications (Section 17.4). One account can have up to 10 tokens;",
+              "crash reports from Firebase Crashlytics: the technical details of a crash (stack trace, device model, Android version, app version, language), the identifier of your account and your plan (Section 17.5);",
+              "the files you choose to process, which the app uploads to our servers over an encrypted connection. They are kept for the retention period you set (Section 3) and you can delete them at any time."
+            ]
+          },
+          {
+            "title": "17.2 Permissions",
+            "bullets": [
+              "Photos and videos: you pick files with Android's system photo and file pickers. The app does not read your photo library and does not ask for access to it.",
+              "Notifications: the app asks the first time a job runs long. It is optional, and the app works without it.",
+              "Saving to your gallery: when you save a result, the app adds it to your gallery. It does not read what is already there."
+            ]
+          },
+          {
+            "title": "17.3 Analytics in the app",
+            "paragraphs": [
+              "The app's analytics are first-party: they go to the same service as the website's analytics (Section 6) and not to an advertising network. They are on from the first launch, without a consent prompt. You can turn them off at any time in the app under Account → Privacy & data → Analytics. Turning them off stops collection and does not delete what was already collected. To erase it, use Account → Privacy & data → Delete my analytics data: it deletes the analytics data linked to your account and this device, and the app starts with a new identifier. The analytics switch does not control crash reports (Section 17.5)."
+            ]
+          },
+          {
+            "title": "17.4 Push notifications",
+            "paragraphs": [
+              "We send one notification when a long job finishes or fails. We send no marketing notifications. Notifications are delivered through Firebase Cloud Messaging, a Google service, which receives the token and the notification text. You can turn them off in the app under Account → Notifications or in Android's settings. We delete the token when you sign out of the app or delete your account."
+            ]
+          },
+          {
+            "title": "17.5 Crash reports",
+            "paragraphs": [
+              "Crash reports are collected by Firebase Crashlytics, a Google service that acts as our processor. We use them only to find and fix crashes. They include the details listed in Section 17.1 and are linked to your account identifier, plan and language so we can reproduce a problem. Google keeps Crashlytics data for 90 days before it starts removing it from its live and backup systems. Crash reports are not collected in development builds of the app."
+            ]
+          },
+          {
+            "title": "17.6 Deleting your account",
+            "paragraphs": [
+              "You can delete your account in the app under Account → Privacy & data → Delete my account (you may need to sign in again to confirm), on the website under Account → Privacy & data, or by following the instructions at https://www.media-manipulator.com/delete-account, which also explains how to ask us by email if you cannot sign in. What is deleted, and what is kept and for how long, is described in Sections 3.4 and 13; the app also deletes its push tokens and your analytics data. In the app you can also export your data, delete all your files, and sign out of all devices."
+            ]
+          },
+          {
+            "title": "17.7 App stores",
+            "paragraphs": [
+              "Google Play's terms and privacy policy apply to downloading and updating the app, and other app stores' terms apply if we offer the app there. The stores do not receive your files."
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1100,7 +1278,9 @@
           "AI-assisted transcription, caption generation, summaries, and descriptions;",
           "content-safety classification and abuse-prevention scanning;",
           "creating, animating and exporting vector graphics and animations with Motion;",
+          "editing photos with adjustment layers, masks, geometry and healing, and exporting the result, with Aperture;",
           "creating voices from your own recordings, designing voices from a description, generating speech from text and changing the voice in a recording (Voices, see Section 8.11);",
+          "a mobile app for Android with the same tools and account (Section 25);",
           "temporary conversion history and downloadable processed outputs."
         ],
         "afterBullets": [
@@ -1362,7 +1542,7 @@
         "title": "9. Account Registration",
         "paragraphs": [
           "Media Manipulator is available without an account for most features. An account unlocks higher limits and saved history, and Premium and Pro are paid subscriptions described in Section 10.",
-          "Accounts are handled by Firebase Authentication (a Google service); you can sign in with an email address and password or with Google. You can sign out of all devices or delete your account from the Account page. Deleting your account also cancels any Premium or Pro subscription, as described in the Privacy Policy.",
+          "Accounts are handled by Firebase Authentication (a Google service); you can sign in with an email address and password, with Google or with Apple. You can sign out of all devices or delete your account from the Account page. Deleting your account also cancels any Premium or Pro subscription, as described in the Privacy Policy.",
           "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account.",
           "We reserve the right to suspend, restrict, or terminate accounts that violate these Terms, create legal risk, cause service abuse, or harm users, advertisers, our brand, or our infrastructure."
         ]
@@ -1413,7 +1593,8 @@
           "You may not copy, modify, distribute, sell, lease, reverse engineer, or create derivative works from Media Manipulator except as permitted by law or with our written permission.",
           "You retain ownership of your own uploaded files and generated outputs, subject to the rights and licenses granted in these Terms.",
           "Animations and files you create with Motion, including animated SVG, Lottie, code and image exports, belong to you in the same way as your other generated outputs. Some exports include third-party open-source code that makes the animation play: anime.js, which is licensed under the MIT License. Its copyright and licence notice is written at the top of the exported file, and you must keep that notice if you use or distribute the file. Code exports that use a package instead of embedding it (the anime.js package for React and JavaScript, and flutter_svg or webview_flutter for Flutter) name it in the file, and you install it yourself under its own licence (MIT, or BSD-3-Clause for webview_flutter).",
-          "Media Manipulator uses open-source libraries in your browser, including mediabunny, which is licensed under the Mozilla Public License 2.0 and is used unmodified to package video files made in your browser. Their licences, copyright notices and source code links are listed on our open-source licences page: https://www.media-manipulator.com/licenses."
+          "Media Manipulator uses open-source libraries in your browser, including mediabunny, which is licensed under the Mozilla Public License 2.0 and is used unmodified to package video files made in your browser. Their licences, copyright notices and source code links are listed on our open-source licences page: https://www.media-manipulator.com/licenses.",
+          "Photos you edit and export with Aperture belong to you in the same way as your other generated outputs. Aperture never changes the original file you upload: an export is always a new file. You are responsible for having the right to edit and export the photos you use."
         ]
       },
       {
@@ -1567,6 +1748,16 @@
         ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
+      },
+      {
+        "title": "25. The Media Manipulator App",
+        "paragraphs": [
+          "The Media Manipulator app for Android is provided by CreaTV Ltd. and these Terms apply to it as they do to the website. To use the app you need a Media Manipulator account.",
+          "The Google Play terms apply to downloading the app. Google is not responsible for the app, for its support or for these Terms, and we are responsible for them. Terms of other app stores apply in the same way if we offer the app there.",
+          "We may deliver updates to the app automatically, including updates to the app's code that arrive without a new download from the store. The app may need a recent version of Android, and we may stop supporting older versions.",
+          "Plans are bought and managed on the website, not in the app. The app uses your plan and its limits as described in Section 10; you can manage or cancel your plan on the website.",
+          "The Privacy Policy explains what the app collects (Section 17 of the Privacy Policy)."
+        ]
       }
     ]
   },
@@ -1606,7 +1797,11 @@
       "adsRemoved": "Ads",
       "exportsPerDay": "Darkroom exports per day",
       "vectorExportsPerDay": "Motion exports per day",
-      "vectorProjects": "Saved Motion projects"
+      "vectorProjects": "Saved Motion projects",
+      "photoProjects": "Saved {{brand}} projects",
+      "photoMaxMegapixels": "Largest {{brand}} export",
+      "photoBatch": "{{brand}} photos per batch",
+      "photoPresets": "Saved {{brand}} presets"
     },
     "values": {
       "yes": "Included",
@@ -1617,7 +1812,10 @@
       "gpuPriority": "Priority",
       "adsShown": "Shown",
       "adsRemoved": "Removed",
-      "heightSuffix": "{{height}}p"
+      "heightSuffix": "{{height}}p",
+      "photoLocalOnly": "1, in this browser only",
+      "megapixels": "{{count}} MP",
+      "notAvailable": "Not available"
     },
     "unavailableTitle": "Plan details are temporarily unavailable",
     "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
@@ -1630,7 +1828,9 @@
       "q3": "Do free accounts see ads?",
       "a3": "Yes. Ads pay for the free tier, so only Premium and Pro remove them. There are never more than two ads on a page, never over the tools, and never on the home, pricing, account or legal pages. There are no interstitials, countdowns or forced waits on any plan.",
       "q4": "Can I use it without an account at all?",
-      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history. Without an account your files are kept for 24 hours; with an account you choose how long, from 24 hours to 2 years."
+      "a4": "Yes, and that is deliberate. Every tool works signed out — an account just raises the ceiling and keeps your history. Without an account your files are kept for 24 hours; with an account you choose how long, from 24 hours to 2 years.",
+      "q5": "What does {{brand}} cost?",
+      "a5": "Editing in {{brand}} is free: previews, every adjustment, masks, looks and undo cost nothing. Each export counts as one everyday job, selecting a subject with AI counts as one everyday job (repeating the same request is free), and each time you press Heal counts as one AI job. What changes with your plan is how many projects you can save, how large an export can be and how many photos you can edit in one batch; the table above lists the numbers."
     },
     "retentionNote": "You choose: 24 hours to 2 years. Guests without an account: 24 hours.",
     "pendingFrom": "Premium from {{date}}",
@@ -1809,7 +2009,29 @@
       "deleteFailed": "Could not delete this project. Nothing was changed; try again.",
       "kindDarkroom": "Darkroom",
       "motionLoadFailed": "Could not load your {{brand}} projects.",
-      "motionDeleteBody": "The {{brand}} project and its thumbnail are removed from our servers. This cannot be undone."
+      "motionDeleteBody": "The {{brand}} project and its thumbnail are removed from our servers. This cannot be undone.",
+      "rename": "Rename",
+      "renameLabel": "Project name",
+      "renameSave": "Save",
+      "renamed": "Project renamed.",
+      "renameFailed": "Could not rename this project. Nothing was changed; try again.",
+      "photoDeleteBody": "The {{brand}} project, its original photo, its previews and any healed versions are removed from our servers. This cannot be undone.",
+      "presetsHeading": "Presets",
+      "presetsIntro": "Your saved {{brand}} presets. They stay with your account until you delete them.",
+      "presetsEmpty": "No saved presets yet. Save one from the Presets panel in {{brand}}.",
+      "presetsLoadFailed": "Could not load your presets.",
+      "presetDeleteBody": "The preset is removed from your account. This cannot be undone.",
+      "presetDeleted": "Preset deleted.",
+      "presetDeleteFailed": "Could not delete this preset. Nothing was changed; try again.",
+      "presetRenamed": "Preset renamed.",
+      "presetRenameFailed": "Could not rename this preset. Nothing was changed; try again.",
+      "presetCategory": {
+        "color": "Color",
+        "bw": "Black & white",
+        "film": "Film",
+        "fix": "Fix",
+        "custom": "Custom"
+      }
     },
     "billing": {
       "plans": "Compare plans"
@@ -1915,6 +2137,7 @@
         "reauthBody": "For your security, deleting an account needs a sign-in from the last 5 minutes.",
         "reauthPassword": "Password",
         "reauthGoogle": "Continue with Google",
+        "reauthApple": "Continue with Apple",
         "reauthPasswordCta": "Confirm password",
         "reauthFailed": "That sign-in did not work. Check it and try again.",
         "reauthBlocked": "The sign-in window was blocked. Allow pop-ups for this site and try again.",
@@ -2018,7 +2241,7 @@
       "images": "<strong>Images and PDFs.</strong> <removeExif>Remove EXIF metadata</removeExif> such as GPS location before you share a photo, <compressImage>compress an image</compressImage> for a faster page, <resizeImage>resize it</resizeImage> to exact pixel dimensions, and convert <imageToPdf>images to PDF</imageToPdf> or <pdfToJpg>PDF pages to JPG</pdfToJpg>.",
       "audio": "<strong>Audio and speech.</strong> <extractAudio>Extract the audio track</extractAudio> from a video as MP3, WAV, M4A, FLAC or OGG, and <transcribe>transcribe what is said</transcribe> into searchable text or captions. Transcription runs Whisper on our own GPU server.",
       "ai": "<strong>AI tools.</strong> <removeBg>Remove the background</removeBg> from a photo, <imageRestore>restore and upscale an old picture</imageRestore>, <videoRestore>compare video restoration models</videoRestore> side by side on a short clip, or <docScan>turn scanned pages into a searchable PDF</docScan>. Every model runs on servers we operate.",
-      "editors": "<strong>Editors.</strong> When one conversion is not enough, <darkroom>Darkroom</darkroom> is a multi-track video editor and <motion>Motion</motion> animates SVG artwork on a keyframe timeline. Both run in your browser, and signing in keeps your projects with your account."
+      "editors": "<strong>Editors.</strong> When one conversion is not enough, <darkroom>Darkroom</darkroom> is a multi-track video editor and <motion>Motion</motion> animates SVG artwork on a keyframe timeline, and <aperture>Aperture</aperture> edits photos with adjustment layers and masks. All three run in your browser, and signing in keeps your projects with your account."
     },
     "whatWeDont": {
       "eyebrow": "What we don't do",
@@ -2046,7 +2269,8 @@
       "ai": "AI tools",
       "metadata": "Privacy & metadata tools",
       "contentStudio": "Darkroom",
-      "motion": "SVG animation"
+      "motion": "SVG animation",
+      "photo": "Photo editing"
     },
     "multiTrackEditor": "Multi-track editor",
     "open": "Open",
@@ -2076,7 +2300,9 @@
       "editor": "Editors"
     },
     "moreTools": "{{category}}: {{count}} more",
-    "alsoLine": "Also: {{names}}."
+    "alsoLine": "Also: {{names}}.",
+    "photoEditor": "Photo editor",
+    "apertureTutorial": "{{brand}} tutorial"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Breadcrumb",
@@ -2484,7 +2710,101 @@
       "motion": {
         "alt": "The Motion editor with an imported SVG on the canvas and keyframes on the animation timeline",
         "caption": "The Motion editor: layers, canvas and the keyframe timeline."
+      },
+      "aperture": {
+        "alt": "The {{brand}} editor with a photo on the canvas, the Basic panel on the right and the histogram above it",
+        "caption": "The {{brand}} editor: canvas, histogram and the Basic panel."
       }
     }
+  },
+  "photoPage": {
+    "guide": {
+      "summaryTitle": "How {{brand}} works",
+      "whatItIsTitle": "What it is",
+      "whatItIsBody": "{{brand}} is a photo editor that never changes your original. Every adjustment, from exposure and curves to color ranges, masks and healing, is a layer on top of the photo that you can reorder, fade, hide or delete. The preview is drawn in your browser, and the file you export is rendered from the original on our server.",
+      "stepsTitle": "Four steps",
+      "step1": "Drop a photo below, or choose one. The editor opens full screen with the panel for this page in front.",
+      "step2": "Move a slider and watch the photo and the histogram change. Undo and redo cover every step, and holding the backslash key shows the original.",
+      "step3": "Limit a layer to part of the photo with a mask, straighten or crop it, heal a spot, or start from one of the built-in looks.",
+      "step4": "Export JPG, PNG, WebP, AVIF or TIFF. The file is rendered on our server at full resolution, up to your plan's limit.",
+      "editorTitle": "The editor",
+      "editorBody": "{{brand}} opens full screen, without the site header or ads. Without an account one photo is kept in this browser; signed-in users keep their projects on their account."
+    },
+    "dropzone": {
+      "drop": "Drop a photo here, or choose one from your device.",
+      "choose": "Choose a photo",
+      "hint": "JPG, PNG, WebP, GIF, AVIF, HEIC, TIFF or BMP. Nothing is uploaded until you export, select a subject or heal.",
+      "opening": "Opening the editor…",
+      "openEmpty": "Open the editor without a photo"
+    },
+    "launcher": {
+      "recentTitle": "Recent projects",
+      "sourceAccount": "Saved to your account",
+      "sourceBrowser": "Saved in this browser",
+      "loading": "Loading your projects…",
+      "empty": "No projects yet. Your photos will appear here.",
+      "error": "Your projects could not be loaded right now. You can still open a new photo.",
+      "edited": "Edited {{date}}"
+    },
+    "plans": {
+      "title": "Projects, export size and batches by plan",
+      "intro": "Editing, every adjustment, the masks and the looks are free on every plan. What changes with the plan is how many projects you can keep, how large an export can be and how many photos you can edit in one batch. These numbers come straight from our servers, so they are always current.",
+      "caption": "{{brand}} allowances by plan",
+      "feature": "Feature",
+      "rows": {
+        "projects": "Saved projects",
+        "maxMegapixels": "Largest export",
+        "batch": "Photos per batch"
+      },
+      "values": {
+        "unlimited": "Unlimited",
+        "localOnly": "1, in this browser only",
+        "megapixels": "{{count}} MP",
+        "notAvailable": "Not available"
+      },
+      "costNote": "Each export counts as one everyday job and each heal as one AI job. Previewing, adjusting, masks and looks cost nothing.",
+      "unavailable": "The plan table could not be loaded right now. The pricing page lists every plan's allowance.",
+      "seePlans": "Compare all plans"
+    }
+  },
+  "deleteAccount": {
+    "metaTitle": "Delete your account | Media Manipulator",
+    "metaDesc": "How to delete your Media Manipulator account and its data: in the app, on the website, or by email if you cannot sign in.",
+    "title": "Delete your Media Manipulator account",
+    "intro": "This page explains how to delete your account for the Media Manipulator app for Android and for media-manipulator.com. The app and the website are operated by CreaTV Ltd. and share one account, so deleting it removes it everywhere.",
+    "inAppTitle": "In the app",
+    "inAppSteps": [
+      "Open the app and sign in.",
+      "Go to Account, then Privacy & data.",
+      "Tap Delete my account.",
+      "Type DELETE MY ACCOUNT to confirm. You may be asked to sign in again."
+    ],
+    "webTitle": "On the website",
+    "webSteps": [
+      "Sign in at media-manipulator.com.",
+      "Open your Account page and choose the Privacy & data tab.",
+      "Choose Delete account and type DELETE MY ACCOUNT to confirm."
+    ],
+    "webLink": "Open Privacy & data",
+    "emailTitle": "If you cannot sign in",
+    "emailBody": "Email privacy@media-manipulator.com from the email address of your account and write that you want your account deleted. We verify that the request comes from the owner of the account and delete it within 30 days.",
+    "whatIsDeletedTitle": "What is deleted",
+    "whatIsDeleted": [
+      "your account record, your settings and your sign-in;",
+      "your files, results and history, and your Darkroom, Motion and Aperture projects;",
+      "your saved voices;",
+      "the push notification tokens of your devices;",
+      "the analytics data linked to your account;",
+      "your Premium or Pro subscription, which is cancelled immediately."
+    ],
+    "whatIsKeptTitle": "What is kept, and for how long",
+    "whatIsKept": [
+      "a minimal deletion record with only a one-way hash of your account identifier and the date, for 30 days;",
+      "the log of your consent and opt-out choices, for five years, as the law requires us to be able to prove them;",
+      "payment records held by Stripe, our payment processor, for as long as the law requires;",
+      "crash reports held by Firebase Crashlytics, which Google removes after 90 days."
+    ],
+    "timing": "Deleting from the app or the website starts immediately. If a step cannot be completed, you are told, and you can write to us at the address above.",
+    "moreInfo": "For everything we collect and how we use it, read the Privacy Policy."
   }
 }

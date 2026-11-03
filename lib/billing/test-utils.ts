@@ -17,7 +17,7 @@ export function fakeLocalization() {
  * read every number from here, so a component that prints a literal instead of the served
  * value fails them. Deliberately odd prices (not 8/80, 15/150) catch a hard-coded price.
  */
-export function tiersFixture(over: { proPurchasable?: boolean; withPro?: boolean } = {}) {
+export function tiersFixture(over: { proPurchasable?: boolean; withPro?: boolean; withPhoto?: boolean } = {}) {
   const GB = 1024 * 1024 * 1024;
   const motion = (exports: number, formats: string[], projects: number, height: number) => ({
     vectorExportsPerDay: exports, vectorFormats: formats, vectorProjects: projects,
@@ -30,8 +30,16 @@ export function tiersFixture(over: { proPurchasable?: boolean; withPro?: boolean
     { tier: 'premium' as const, limits: { opsPerDay: 300, aiOpsPerDay: 100, exportsPerDay: 300, maxFileBytes: 5 * GB, maxVideoSeconds: 7200, maxOutputHeight: 2160, maxLadderHeight: 2160, studioProjects: -1, priorityGpu: true, resultRetentionHours: 720, adsRemoved: true, ...motion(30, premiumFormats, 25, 720) } },
     { tier: 'pro' as const, limits: { opsPerDay: 700, aiOpsPerDay: 200, exportsPerDay: 700, maxFileBytes: 5 * GB, maxVideoSeconds: 7200, maxOutputHeight: 2160, maxLadderHeight: 2160, studioProjects: -1, priorityGpu: true, resultRetentionHours: 720, adsRemoved: true, ...motion(30, premiumFormats, 25, 720) } },
   ];
+  // MM100: Aperture's served fields (design 9): projects 0/5/50/unlimited, export MP 12/12/120/120, batch 0/3/10/25.
+  const photo: Record<string, { photoProjects: number; photoMaxMegapixels: number; photoBatch: number }> = {
+    anonymous: { photoProjects: 0, photoMaxMegapixels: 12, photoBatch: 0 },
+    free: { photoProjects: 5, photoMaxMegapixels: 12, photoBatch: 3 },
+    premium: { photoProjects: 50, photoMaxMegapixels: 120, photoBatch: 10 },
+    pro: { photoProjects: -1, photoMaxMegapixels: 120, photoBatch: 25 },
+  };
+  const withPhoto = over.withPhoto ? tiers.map((x) => ({ ...x, limits: { ...x.limits, ...photo[x.tier] } })) : tiers;
   return {
-    tiers: over.withPro === false ? tiers.filter((x) => x.tier !== 'pro') : tiers,
+    tiers: over.withPro === false ? withPhoto.filter((x) => x.tier !== 'pro') : withPhoto,
     premiumPurchasable: true,
     premiumPriceUSD: 9,
     premiumPriceYearlyUSD: 90,

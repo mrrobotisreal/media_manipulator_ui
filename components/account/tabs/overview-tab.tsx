@@ -20,7 +20,7 @@ import { LINK_CLASS } from '@/components/account/tabs/shared';
 export interface OverviewExtras {
   tierNames: Record<string, string>;
   unlimited: string;
-  planRows: { label: string; value: 'ops' | 'file' | 'video' | 'output' | 'projects' }[];
+  planRows: { label: string; value: 'ops' | 'file' | 'video' | 'output' | 'projects' | 'photoProjects' | 'photoPresets' }[];
 }
 
 const METRICS: UsageMetric[] = ['ops', 'ai_ops', 'export'];
@@ -107,6 +107,12 @@ export const OverviewTab: React.FC<{
         return `${limits.maxOutputHeight}p`;
       case 'projects':
         return isUnlimited(limits.studioProjects) ? extras.unlimited : `${limits.studioProjects}`;
+      case 'photoProjects':
+        // MM100: Aperture's saved projects beside Darkroom's; absent on APIs before MM95.
+        return typeof limits.photoProjects !== 'number' ? '—' : isUnlimited(limits.photoProjects) ? extras.unlimited : `${limits.photoProjects}`;
+      case 'photoPresets':
+        // MM103: saved Aperture presets; absent on APIs before MM103.
+        return typeof limits.photoPresets !== 'number' ? '—' : isUnlimited(limits.photoPresets) ? extras.unlimited : `${limits.photoPresets}`;
       default:
         return '—';
     }
@@ -154,7 +160,7 @@ export const OverviewTab: React.FC<{
         </p>
         {limits ? (
           <div className="grid gap-3">
-            {extras.planRows.map((row) => (
+            {extras.planRows.filter((row) => (row.value !== 'photoProjects' || typeof limits.photoProjects === 'number') && (row.value !== 'photoPresets' || typeof limits.photoPresets === 'number')).map((row) => (
               <Stat key={row.value} orientation="inline" label={row.label} value={planValue(row.value)} wrap />
             ))}
             <Stat orientation="inline" label={copy.retentionLabel} value={copy.retentionChoose} wrap />

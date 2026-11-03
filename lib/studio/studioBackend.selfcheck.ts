@@ -39,7 +39,7 @@ export function runStudioBackendSelfCheck(): { ok: true } {
     'mm captions path',
   );
   assert(mm.jobUrl('j1') === `${base}/job/j1`, 'mm job poll url');
-  assert(mm.jobEventsUrl?.('j1') === `${base}/job/j1/events`, 'mm job sse url');
+  assert(mm.jobEventsUrl?.('j1')?.startsWith(`${base}/job/j1/events?sid=`) === true, 'mm job sse url carries sid');
   assert(mm.downloadUrl('j1') === `${base}/download/j1`, 'mm download url');
   assert(mm.proxyUrl('a1') === `${base}/studio/assets/a1/proxy`, 'mm proxy url');
   assert(mm.spriteUrl('a1') === `${base}/studio/assets/a1/sprite`, 'mm sprite url');

@@ -61,7 +61,16 @@ function loadAliases() {
   if (!block) return new Map();
   return new Map([...block[1].matchAll(/['"]([a-z0-9-]+)['"]\s*:\s*['"]([a-z0-9-]+)['"]/g)].map((m) => [m[1], m[2]]));
 }
-const PENDING_SLUGS = loadPending();
+// MM100: the 24 Aperture adjustment pages are listed (copy-bar set, noindex) like the pending set.
+function loadPhotoPending() {
+  const src = readFileSync(join(ROOT, 'content/photo/slugs.ts'), 'utf8');
+  const block = src.match(/PHOTO_ADJUSTMENT_SLUGS\s*=\s*\[([^\]]*)\]/s);
+  if (!block) return new Set();
+  return new Set([...block[1].matchAll(/['"]([a-z0-9-]+)['"]/g)].map((m) => m[1]));
+}
+const PHOTO_SLUGS = loadPhotoPending();
+if (PHOTO_SLUGS.size === 0) fail('content/photo/slugs.ts', 'could not read PHOTO_ADJUSTMENT_SLUGS');
+const PENDING_SLUGS = new Set([...loadPending(), ...PHOTO_SLUGS]);
 const ALIAS_OF = loadAliases();
 // Linkable without rel="nofollow" on en.html and en/tools.html while the
 // full-index flag is off: the allowlist plus the pending set (decision 4).

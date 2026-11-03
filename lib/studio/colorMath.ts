@@ -51,10 +51,13 @@ export function eqAdjust(c: RGB, brightness: number, contrast: number, saturatio
  * each channel gets its midtone amount added under that weight. Shadows and
  * highlights stay at 0 (the export only emits rm/gm/bm).
  */
-export function colorBalanceMidtones(c: RGB, rm: number, gm: number, bm: number): RGB {
+export function colorBalanceMidtoneWeight(c: RGB): number {
   const l = 0.5 * (Math.max(...c) + Math.min(...c));
-  const w =
-    clamp01((l - 0.333) * 4 + 0.5) * clamp01((1 - l - 0.333) * 4 + 0.5) * 0.7;
+  return clamp01((l - 0.333) * 4 + 0.5) * clamp01((1 - l - 0.333) * 4 + 0.5) * 0.7;
+}
+
+export function colorBalanceMidtones(c: RGB, rm: number, gm: number, bm: number): RGB {
+  const w = colorBalanceMidtoneWeight(c);
   return [clamp01(c[0] + rm * w), clamp01(c[1] + gm * w), clamp01(c[2] + bm * w)];
 }
 

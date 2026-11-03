@@ -32,6 +32,62 @@ _Avoid_: "vector" in anything a user can see; the `motion` npm package (we do no
 **vector**:
 The code identifier for the same editor, everywhere: directories `components/vector/`, `lib/vector/`, API `/api/vector/*`, tables `vector_*`, analytics `vector_*` and `feature: 'vector'`, env `VECTOR_*`. Cosmetic-only brand, exactly like Darkroom/`studio` (design `docs/design/MOTION_SVG_ANIMATOR.md` §1, ADR-0012).
 
+### Naming: the Aperture photo editor
+
+**Aperture**:
+The user-facing name for the photo editor (`/photo/[projectId]`, chromeless like `/dr` and `/motion`; public landing page `/tools/aperture` arrives with MM100). Code identifier `photo` everywhere (`lib/photo`, `components/photo`, `/api/photo/*`, `photo_*`); the one copy constant is `PHOTO_BRAND` in `lib/photo/brand.ts`, interpolated into i18n as `{{brand}}` (`lib/photo/brand.test.ts` enforces it). Shown with a "Beta" chip. _Avoid_: "Photoshop", "image editor" (Darkroom edits video; the old image tools are one-shot forms).
+
+**PhotoDoc**:
+The Aperture document, v1 (Zod in `lib/photo/photoTypes.ts`, Go mirror `internal/photo` in the API): source size, heals, geometry, an ordered stack of adjustment layers (each with blend, opacity and an optional mask) and output hints. **Additive-only**: unknown `version` refused, unknown keys kept. `canonicalPhotoDoc` is the canonical JSON (compact, code-point-sorted keys, defaults filled, nullable fields `null`, optional fields absent); the shared fixtures in `lib/photo/fixtures/docs/` are byte-identical with the API's `internal/photo/testdata/docs/`. The editor schema clamps out-of-range numbers exactly like the Go sanitizer. From MM97 on the UI is the source of the fixtures, images and goldens; the API copies them.
+
+**Reference math**:
+`lib/photo/colorMath.ts`, the normative statement of every Aperture adjustment (Darkroom's `eqAdjust`, `colorBalanceMidtones`, `vibranceAdjust` are imported, never copied). The GLSL, the server NumPy render and the phone SkSL mirror it stage for stage with the same constant names.
+
+**Preview renderer**:
+`lib/photo/gl/photoRenderer.ts`: the WebGL2 live preview (one pass per layer, one program per layer type from `shaders/adjustSource.ts`, float working texture when `EXT_color_buffer_float` exists). Without WebGL2 the editor renders `renderDocCPU` on a 1 MP downscale and shows a "Reduced preview" chip. Pure packing (`gl/uniforms.ts`) is unit-tested; the GPU is checked by the workstation-only `e2e/photo-parity.spec.ts`.
+
+**Golden**:
+A reference output PNG `lib/photo/fixtures/goldens/<doc>.<image>.png` made by `npm run photo:goldens` from `renderDocCPU` over the three fixture images. A test fails if a committed golden differs from a fresh render, so a formula change must regenerate them deliberately; the server's `photo_render.py --selftest` and the GPU parity spec compare against the same bytes.
+
+**Grey except this**:
+The HSL panel action that sets saturation to -100 on every hue range except the chosen one (`greyExcept` in `lib/photo/layerOps.ts`): "everything grey except red".
+
+**Mask**:
+A layer's selection (`layer.mask`): folded components (gradient, radial, brush, luminosity, colour range, subject; add / subtract / intersect left to right), then feather (Gaussian, sigma = feather/100 x 0.05 x long side), invert, opacity. Computed on the geometry-corrected source once per distinct mask; a layer may carry the mask inline or reference a named one in `doc.masks` with `{ref}`. The math is in `lib/photo/colorMath.ts` (`renderMaskCPU`); the WebGL passes are `gl/shaders/maskGeoSource.ts`, cached by `gl/maskPlan.ts` keys.
+
+**Geometry space**:
+The image after `doc.geometry` (rotate -> flip -> perspective -> crop, canvas grown to the rotated box). Mask coordinates, brush PNGs and heal-stroke display coordinates are all normalised to it; changing the crop re-maps parametric masks and re-samples brush PNGs (`geometryOps.applyCropRemap`).
+
+**Heal base**:
+The latest `doc.heals[].baseRef` (`bases/<hash>.png` on the server, `local:<id>` for a guest). Renderers start from it instead of the original; the editor swaps the preview source when the doc's current base changes, so undoing a heal reverts the pixels.
+
+**Preset** (MM99):
+A named set of adjustment layers (`lib/photo/presets/`): the 18 built-ins in `builtin/*.json` plus Auto (computed from the histogram, written as explicit params), and the user's own saved in this browser (IndexedDB `photo-presets`, columns `name, category, layers, createdAt`, JSON export/import; MM103 moves them to the account). Applying a preset APPENDS its layers, ids `preset-<id>-<n>`, all carrying `layer.group = "Preset: <name>"`, which the layers panel shows under one collapsible header. _Avoid_: "filter" (that is the Photo filter layer).
+
+**Batch apply** (MM99):
+"Apply to more photos" in the export dialog (`components/photo/batch-apply.tsx`, `lib/photo/batch.ts`): one project per file, ONE `POST /api/photo/batch`, a job per project tracked to completion, results zipped client-side. Capped by `capabilities.photoBatch`.
+
+**Snapshot** (MM99):
+A named, session-only bookmark of the document in the History panel (`useSnapshotStore`); going to one is itself an undoable step. Not part of the saved document.
+
+**Browser-local project**:
+Anonymous visitors get exactly one Aperture project, stored in the browser (original Blob + doc in IndexedDB, doc mirrored to `localStorage`); a second photo asks to replace it; export uses the stateless `POST /api/photo/export`; after sign-in the project is offered for upload as a server project.
+
+### Aperture tool pages (MM100)
+
+**Aperture landing** (`/tools/aperture`):
+The static localized route `app/(localized)/[lang]/tools/aperture/page.tsx` (excluded from `[slug]` by `STATIC_ROUTE_SLUGS`, in `REVIEW_INDEXED_TOOL_SLUGS` and `CORE_ROUTES`, no `REVIEW_TOOL_AD_SLOTS` entry so it carries no ad). The H1 is `PHOTO_BRAND` plus a descriptor; the four-step guide and the plan table are server-rendered (`components/photo/landing/aperture-landing.tsx`, table from `lib/photo/planTable.ts` over the served `photo*` tier fields, hidden when the API predates them); the one client island is the launcher (drop zone + five most recent projects: `GET /api/photo/projects` signed in, the one browser-local project signed out).
+
+**Aperture adjustment page**:
+One of the 24 data-driven `[slug]` pages in `content/photo/` (`pages-a..d.ts`, English prose by Fable 5.1, wiring in `content/photo/index.ts`: `embed.preset = { kind: 'photo', panel, preset? }`). They are `PHOTO_PENDING_SLUGS` in `content/reviewAllowlist.ts`: in `REVIEW_CATALOG_SLUGS` (listed, linked, held to the MM84 copy bar by `scripts/check-photo-bodies.ts` and `content/toolCopy.test.ts`) but `noindex` until Mitch moves approved slugs into `REVIEW_INDEXED_TOOL_SLUGS`. Each shows the same drop zone with its panel (and look) in front. Non-English locales render the English body (`noindex`) until MM102-`<prefix>`.
+_Avoid_: "SEO pages", "tool pages for the editor" (the editor is `/photo/*`).
+
+**Photo hand-off** (`lib/photo/handoff.ts`):
+How a tool page's drop zone passes the chosen photo to the unlocalized editor route: the bytes wait in IndexedDB `mm-photo-handoff` (one record, 10 minutes), the browser goes to `/photo/new?handoff=1&panel=<id>&preset=<id>`, and `components/photo/editor.tsx` takes it once, opens the photo and then opens the panel and applies the built-in look. When storage is unavailable the page falls back to the bare `/photo/new` link.
+
+**Fine-tune in Aperture** (`content/photo/handoffs.ts`):
+One English sentence plus one `related` link added to the eleven one-shot image tool pages by `withPhotoHandoff`, applied to the English rendering only (in `localizeTool`), so locale coverage still measures the canonical body.
+
 ### Motion domain
 
 **VectorDoc**:
@@ -222,3 +278,15 @@ _Avoid_: "support ticket", "ticket number" (it is a **reference**).
 
 **Page dates** (MM85):
 `content/pageDates.ts`: the real "last materially changed" date of each core page (`PAGE_DATES`) and each tutorial (`TUTORIAL_DATES`), read from `git log`. They feed the sitemap's `lastModified`, the tutorial bylines and the TechArticle JSON-LD; tool pages use their own `lastReviewed`, blog posts `dateModified`. Bump a page's date in the commit that changes what a visitor reads on it; never `new Date()`.
+
+### Accounts and sign-in
+
+**Sign in with Apple** (MA09):
+Firebase's `signInWithPopup(new OAuthProvider('apple.com'))` with scopes `email` and `name` (`signInWithApple` in `lib/firebase.ts`). The button, the Apple re-auth option for account deletion and the linking option all sit behind `NEXT_PUBLIC_AUTH_APPLE_ENABLED=true` (`isAppleAuthEnabled()`, default off). Apple returns the name only on the first sign-in; it is stored with `updateProfile` and sent as `displayName` on `/account/sync` with `signupSource: 'apple'`. Analytics: `method: 'apple'`.
+_Avoid_: "Apple login" in UI copy; the Apple Account is "your Apple Account".
+
+**Account linking** (MA09):
+Firebase allows one account per email. When Google or Apple sign-in fails with `auth/account-exists-with-different-credential`, the auth modal keeps the pending credential (`pendingCredentialFromError`), shows the link notice, and after the user signs in with the existing method calls `linkWithCredential` (`linkPendingCredential`, which never throws or signs anyone out).
+
+**Password reset** (MA09):
+The inline "Forgot password?" view inside the auth modal (no route). `sendPasswordReset` always ends in the neutral confirmation (no account enumeration; `auth/user-not-found` is swallowed); Firebase's hosted page handles the emailed link. Analytics: `password_reset_requested {surface: 'web'}`, registered in the analytics catalog by MA06.

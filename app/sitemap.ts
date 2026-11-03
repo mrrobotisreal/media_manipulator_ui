@@ -27,6 +27,8 @@ const CORE_ROUTES = [
   '/tools/content-studio',
   // MM48: Motion's landing page, beside Darkroom (also in the review allowlist).
   '/tools/motion',
+  // MM100: Aperture's landing page (also in the review allowlist).
+  '/tools/aperture',
   '/about',
   '/how-it-works',
   '/tutorials',
@@ -41,12 +43,14 @@ const CORE_ROUTES = [
   // MM47's open-source licence notices (mediabunny MPL-2.0, anime.js, fflate);
   // indexable in translated locales, listed here by MM48.
   '/licenses',
+  // MA26: the public account-deletion page (Google Play requires a web URL).
+  '/delete-account',
   // MM85: the contact page (who runs the site, how to reach them).
   '/contact',
 ] as const;
 
 /** Tool pages already emitted as core routes, so the tool lists skip them. */
-const CORE_TOOL_SLUGS = new Set(['content-studio', 'motion']);
+const CORE_TOOL_SLUGS = new Set(['content-studio', 'motion', 'aperture']);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // MM52: a translator deployment lists nothing.

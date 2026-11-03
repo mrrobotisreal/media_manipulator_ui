@@ -140,6 +140,115 @@ export const signInWithGoogle = async () => {
   }
 };
 
+/** Feature flag for every Apple surface (button, re-auth, linking). Default off. */
+export const isAppleAuthEnabled = (): boolean => process.env.NEXT_PUBLIC_AUTH_APPLE_ENABLED === 'true';
+
+/** Apple's locale format is `de_DE`; our UI language is a BCP-47 tag like `de-DE`. */
+function appleLocale(): string | undefined {
+  const lang = currentUiLocale();
+  if (!lang) return undefined;
+  return lang.replace('-', '_');
+}
+
+/** Pending credential from an `account-exists-with-different-credential` error. */
+export type PendingCredential = import('firebase/auth').AuthCredential;
+
+/**
+ * Extracts the credential that Firebase could not use because the email already belongs to
+ * an account with a different provider. Returns null for any other error.
+ */
+export const pendingCredentialFromError = async (error: unknown): Promise<PendingCredential | null> => {
+  if ((error as { code?: string } | null)?.code !== 'auth/account-exists-with-different-credential') return null;
+  const { OAuthProvider, GoogleAuthProvider } = await import('firebase/auth');
+  const asError = error as never;
+  return (
+    OAuthProvider.credentialFromError(asError) ?? GoogleAuthProvider.credentialFromError(asError) ?? null
+  );
+};
+
+/**
+ * Links a pending credential (kept from a failed Google/Apple attempt) to the user who just
+ * signed in with the existing method. Never signs anyone out: failures return false.
+ */
+export const linkPendingCredential = async (pending: PendingCredential): Promise<boolean> => {
+  try {
+    const auth = await getFirebaseAuth();
+    const user = auth?.currentUser;
+    if (!user) return false;
+    const { linkWithCredential } = await import('firebase/auth');
+    await linkWithCredential(user, pending);
+    return true;
+  } catch (error) {
+    console.warn('Account linking failed; staying signed in.', error);
+    return false;
+  }
+};
+
+/**
+ * Sign in with Apple through Firebase's popup flow.
+ *
+ * Apple returns the user's name only on the very first authorization, and Firebase does not
+ * always copy it into `displayName`; when it is present in the additional user info and the
+ * Firebase profile has none, it is written with `updateProfile` before syncing.
+ */
+export const signInWithApple = async () => {
+  const auth = await getFirebaseAuth();
+  if (!auth) return firebaseUnavailable();
+  try {
+    const { OAuthProvider, signInWithPopup, getAdditionalUserInfo, updateProfile } = await import('firebase/auth');
+    const provider = new OAuthProvider('apple.com');
+    provider.addScope('email');
+    provider.addScope('name');
+    const locale = appleLocale();
+    if (locale) provider.setCustomParameters({ locale });
+    const result = await signInWithPopup(auth, provider);
+    let displayName = result.user.displayName || undefined;
+    if (!displayName) {
+      const profile = getAdditionalUserInfo(result)?.profile as
+        | { name?: string | { firstName?: string; lastName?: string }; firstName?: string; lastName?: string }
+        | undefined;
+      const rawName = profile?.name;
+      const fromObject =
+        rawName && typeof rawName === 'object'
+          ? [rawName.firstName, rawName.lastName].filter(Boolean).join(' ')
+          : '';
+      const fromTop = [profile?.firstName, profile?.lastName].filter(Boolean).join(' ');
+      const found = (typeof rawName === 'string' ? rawName : fromObject || fromTop).trim();
+      if (found) {
+        try {
+          await updateProfile(result.user, { displayName: found });
+          displayName = found;
+        } catch (error) {
+          console.warn('Could not store the Apple display name.', error);
+        }
+      }
+    }
+    await registerSignIn(result.user, 'apple', displayName);
+    return { user: result.user, isNewUser: getAdditionalUserInfo(result)?.isNewUser === true };
+  } catch (error) {
+    console.error('Apple sign-in error:', error);
+    throw error;
+  }
+};
+
+/**
+ * Sends Firebase's password-reset email. Firebase's hosted page handles the link. With email
+ * enumeration protection on, unknown addresses resolve silently; `auth/user-not-found` from an
+ * older configuration is treated the same, so the caller always shows the neutral message.
+ * Other errors (invalid-email, too-many-requests, network) propagate.
+ */
+export const sendPasswordReset = async (email: string): Promise<void> => {
+  const auth = await getFirebaseAuth();
+  if (!auth) return firebaseUnavailable();
+  try {
+    const { sendPasswordResetEmail } = await import('firebase/auth');
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    if ((error as { code?: string } | null)?.code === 'auth/user-not-found') return;
+    throw error;
+  }
+};
+
 export const signInWithEmail = async (email: string, password: string) => {
   const auth = await getFirebaseAuth();
   if (!auth) return firebaseUnavailable();
@@ -220,7 +329,7 @@ export async function getFreshIdToken(): Promise<string | null> {
   }
 }
 
-/** Provider ids of the signed-in user (`password`, `google.com`), empty when signed out. */
+/** Provider ids of the signed-in user (`password`, `google.com`, `apple.com`), empty when signed out. */
 export const getSignInProviders = async (): Promise<string[]> => {
   const auth = await getFirebaseAuth();
   return auth?.currentUser?.providerData.map((p) => p.providerId) ?? [];
@@ -234,7 +343,7 @@ export const getSignInProviders = async (): Promise<string[]> => {
  * caller can say so.
  */
 export const reauthenticate = async (
-  method: { kind: 'password'; password: string } | { kind: 'google' },
+  method: { kind: 'password'; password: string } | { kind: 'google' } | { kind: 'apple' },
 ): Promise<string> => {
   const auth = await getFirebaseAuth();
   const user = auth?.currentUser;
@@ -242,6 +351,8 @@ export const reauthenticate = async (
   const mod = await import('firebase/auth');
   if (method.kind === 'google') {
     await mod.reauthenticateWithPopup(user, new mod.GoogleAuthProvider());
+  } else if (method.kind === 'apple') {
+    await mod.reauthenticateWithPopup(user, new mod.OAuthProvider('apple.com'));
   } else {
     if (!user.email) throw new Error('This account has no email to re-authenticate with');
     await mod.reauthenticateWithCredential(user, mod.EmailAuthProvider.credential(user.email, method.password));
