@@ -592,7 +592,7 @@
             "bullets": {
               "builtin": "Các phong cách có sẵn được xếp thành Màu, Đen trắng, Phim và Sửa lỗi, gồm sáu phong cách Nổi bật màu, Phim đen trắng, Đen trắng tương phản cao, Ấm, Lạnh, Mờ mịn, Phai màu, Sống động, Nổi bật, Xử lý chéo, Cổ điển, Làm mịn chân dung, Phong cảnh và Tự động. Dùng ô lọc để tìm theo tên.",
               "append": "Áp dụng một phong cách sẽ thêm các chỉnh sửa của nó thành một nhóm có tên lên trên những gì bạn đã có thay vì thay thế công việc của bạn. Nghĩa là bạn có thể xếp Ấm lên trên các chỉnh sửa Cơ bản của riêng mình, mở nhóm trong tab Lớp để tinh chỉnh từng thanh trượt, và gỡ cả phong cách bằng một lần Hoàn tác.",
-              "mine": "Chọn Lưu các chỉnh sửa hiện tại thành cài đặt sẵn, đặt tên và đánh dấu các chỉnh sửa cần đưa vào. Nó xuất hiện dưới Cài đặt sẵn của tôi. Cài đặt sẵn của bạn được lưu trong trình duyệt này, nên chúng không tự theo bạn sang thiết bị khác, và bạn có thể đổi tên hoặc xóa chúng từ cùng bảng.",
+              "mine": "Chọn Lưu các chỉnh sửa hiện tại thành cài đặt sẵn, đặt tên và đánh dấu các chỉnh sửa cần đưa vào. Nó xuất hiện dưới Cài đặt sẵn của tôi. Khi đã đăng nhập, cài đặt sẵn của bạn được lưu trong tài khoản và theo bạn sang các thiết bị khác; nếu không có tài khoản, chúng được lưu trong trình duyệt này. Bạn có thể đổi tên hoặc xóa chúng từ cùng bảng.",
               "file": "Xuất cài đặt sẵn ghi các cài đặt sẵn đã lưu của bạn ra một tệp JSON; Nhập cài đặt sẵn đọc một tệp trở lại. Dùng cách này để chuyển cài đặt sẵn sang trình duyệt hoặc máy tính khác, để sao lưu, hoặc để chia sẻ một phong cách với người khác cũng dùng {{brand}} trên Media Manipulator."
             }
           },

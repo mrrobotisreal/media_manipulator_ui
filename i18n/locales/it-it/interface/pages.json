@@ -592,7 +592,7 @@
             "bullets": {
               "builtin": "I look integrati sono raggruppati in Colore, Bianco e nero, Pellicola e Correzione, e comprendono i sei look Colore selettivo, Pellicola in bianco e nero, Bianco e nero ad alto contrasto, Caldo, Freddo, Opaco, Sbiadito, Vivido, Incisivo, Cross-processing, Vintage, Ammorbidimento ritratto, Paesaggio e Auto. Usa il campo filtro per trovarne uno per nome.",
               "append": "Applicare un look aggiunge le sue regolazioni come gruppo con nome sopra ciò che hai già, invece di sostituire il tuo lavoro. Significa che puoi sovrapporre Caldo alle tue correzioni Base, aprire il gruppo nella scheda Strati per ritoccare i singoli cursori, e rimuovere l'intero look con un solo Annulla.",
-              "mine": "Scegli Salva le modifiche attuali come preset, dagli un nome e spunta le regolazioni da includere. Compare sotto I miei preset. I tuoi preset sono salvati in questo browser, quindi non ti seguono da soli su un altro dispositivo, e puoi rinominarli o eliminarli dallo stesso pannello.",
+              "mine": "Scegli Salva le modifiche attuali come preset, dagli un nome e spunta le regolazioni da includere. Compare sotto I miei preset. Se hai effettuato l'accesso, i tuoi preset sono salvati nel tuo account e ti seguono sugli altri dispositivi; senza account sono salvati in questo browser. Puoi rinominarli o eliminarli dallo stesso pannello.",
               "file": "Esporta preset scrive i tuoi preset salvati in un file JSON; Importa preset ne rilegge uno. Usalo per spostare i preset su un altro browser o computer, per tenerne un backup, o per condividere un look con qualcun altro che usa {{brand}} su Media Manipulator."
             }
           },
