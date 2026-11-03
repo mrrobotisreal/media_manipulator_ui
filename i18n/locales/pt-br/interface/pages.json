@@ -692,7 +692,7 @@
     "emailLabel": "E-mail:",
     "websiteLabel": "Site:",
     "whatChangedTitle": "O que mudou em 03/11/2026",
-    "whatChangedBody": "Adicionamos o Aperture, nosso editor de fotos (em beta). A Política de Privacidade tem uma nova seção 1.12: no Aperture, a sua foto é editada no seu navegador e só é enviada aos nossos servidores quando você salva um projeto na sua conta, exporta, seleciona um assunto com IA, retoca manchas ou aplica as suas edições a mais fotos; os projetos salvos na sua conta ficam armazenados nos nossos servidores pelo período de retenção que você escolher, podem ser excluídos e são excluídos junto com a sua conta; a seleção de assunto e o retoque rodam no nosso próprio servidor com GPU e nenhuma foto é enviada a um serviço de terceiros; e, para cada exportação, seleção de assunto e retoque, registramos o tipo de trabalho, o formato e o tamanho do resultado, o horário e o seu plano para fazer valer a cota diária. As seções 3, 3.3, 3.4 e 4 agora citam os projetos do Aperture e os modelos usados. Os Termos listam o Aperture na seção 1, e a seção 13 diz que as suas exportações do Aperture pertencem a você. Tudo o que consta da atualização de 01/11/2026 continua valendo: Agora você pode entrar com a Apple, além de um endereço de e-mail e senha ou do Google. A Política de Privacidade (seção 1.7) explica que, se você entrar com a Apple, a Apple compartilha conosco seu nome e e-mail, ou um endereço de retransmissão privado se você escolher \"Ocultar E-mail\", e que a política de privacidade da Apple se aplica à sua Conta Apple; a seção 8 lista a Apple entre as partes com quem compartilhamos informações de login, e a seção 1.7 agora diz que o Firebase envia um link de redefinição para o seu e-mail se você pedir para redefinir a senha. A seção 9 dos Termos agora diz que você pode entrar com um endereço de e-mail e senha, com o Google ou com a Apple. Tudo da atualização de 28/10/2026 continua valendo: Adicionamos um formulário de contato em media-manipulator.com/contact: a Política de Privacidade tem uma nova seção 1.11 sobre as mensagens que você nos envia (seu nome, e-mail, assunto e mensagem, entregues na nossa caixa de suporte por meio do Resend e guardadas lá até a conversa ser encerrada, nunca por mais de 12 meses), e a seção 16 agora remete ao formulário. Adicionamos as divulgações sobre cookies de publicidade exigidas pelo Google e os links para desativação. A Política de Privacidade tem uma nova seção 5.1 sobre cookies de publicidade e Google AdSense: os cookies de publicidade do Google, os anúncios não personalizados, a mensagem de consentimento do Google no EEE, no Reino Unido e na Suíça, os links para desativar os anúncios personalizados (Configurações de anúncios do Google, aboutads.info e youronlinechoices.eu) e para saber como o Google usa informações de sites que usam seus serviços, quem vê anúncios (somente visitantes sem conta e contas gratuitas) e o nosso arquivo público ads.txt; a seção 1.5 agora lista os identificadores de publicidade que o script de anúncios do Google pode definir. A seção 8.9 dos Termos agora diz que os anúncios são exibidos apenas sem conta ou com uma conta gratuita, e que o Premium e o Pro os removem. A seção 5 (Publicidade) da Política de Privacidade agora informa que o script de anúncios do Google é carregado nas páginas que podem exibir anúncios, com todos os sinais de consentimento negados até você escolher, e que até lá veicula anúncios não personalizados. Mais cedo no mesmo dia: Adicionamos ferramentas de voz: clonar a sua própria voz a partir de uma gravação, criar uma voz a partir de uma descrição e alterar a voz de uma gravação. A Política de Privacidade tem uma nova seção 1.10 sobre amostras de voz e vozes criadas: o que armazenamos, que só usamos para criar e executar a voz que você pediu, com o seu consentimento explícito, que ela fica armazenada no Amazon S3 conforme a sua configuração de retenção, nunca é compartilhada com um provedor de IA terceirizado nem usada para treinar qualquer modelo, e que você pode excluí-la a qualquer momento e ela é excluída junto com a sua conta; as seções 3, 3.4, 3.5 e 4 agora mencionam as vozes. Os Termos têm uma nova seção 8.11: você só pode criar uma voz a partir da sua própria voz ou com a permissão explícita de quem fala; falsificação de identidade, fraude, deepfakes políticos e assédio não são permitidos; a fala gerada e convertida leva uma marca d'água inaudível e o áudio deslocado não; e podemos remover vozes e suspender contas. A seção 1 dos Termos lista as ferramentas de voz. Tudo da atualização de 2026-10-26 continua valendo: Adicionamos o Motion, nosso editor de animação SVG (em beta). A Política de Privacidade tem uma nova seção 1.9: os projetos e as exportações do Motion são feitos no seu navegador e não são enviados para serem produzidos; os projetos que você salva na sua conta são armazenados como os projetos do Darkroom, seguem o período de retenção que você escolher e podem ser excluídos; e, para cada exportação contabilizada, registramos formato, tamanho, duração e horário para aplicar a cota diária. As seções 3, 3.3 e 3.4 agora mencionam os projetos do Motion. A seção 13 dos Termos confirma que as suas exportações do Motion pertencem a você, explica que algumas exportações contêm código anime.js licenciado sob MIT, cujo aviso deve ser mantido, e remete à nossa página de licenças de código aberto. Tudo o que consta da atualização de 25/10/2026 (o plano Pro, as mudanças de plano e os reembolsos) continua válido. A seção 10 dos Termos agora informa que você pode pagar em dólares americanos ou em euros pelo mesmo preço, que os euros são exibidos por padrão na Europa e que a moeda de uma assinatura não pode mudar enquanto ela estiver ativa; a seção 1.6 da Política de Privacidade agora lista a moeda de cobrança que armazenamos e o cookie mm-currency, que lembra a sua escolha. A seção 8 agora também informa que os tradutores que contratamos enviam o trabalho deles como pull requests no GitHub, feitos pelo GitHub App da CreaTV Ltd., e que esses envios contêm apenas texto de tradução e nenhum dado pessoal sobre visitantes. Esta versão em português do Brasil é uma tradução feita por um modelo de IA e aguarda revisão por um falante nativo; em caso de divergência, prevalece a versão em inglês."
+    "whatChangedBody": "A Política de Privacidade tem uma nova Seção 17 e os Termos têm uma nova Seção 25 para o app Media Manipulator para Android. A Seção 17 explica o que o app coleta (os dados da sua conta, informações do dispositivo e do app, um identificador por instalação, a análise de uso do app, um token de notificações push se você permitir notificações, relatórios de falhas do Firebase Crashlytics e os arquivos que você escolhe processar), as permissões que ele usa, como desativar a análise e apagá-la em Conta → Privacidade e dados, as notificações push, os relatórios de falhas e como excluir sua conta no app, na web ou por e-mail. A Seção 6 agora informa que o Firebase também é usado no app para notificações push e relatórios de falhas, e a Seção 8 cita o Firebase Cloud Messaging e o Firebase Crashlytics. A Seção 25 dos Termos trata do app, dos termos das próprias lojas de aplicativos, das atualizações automáticas e dos planos comprados na web, e a Seção 1 agora lista o app. Há também uma nova página pública em media-manipulator.com/delete-account que explica como excluir sua conta sem fazer login. Tudo o que consta da atualização anterior de 2026-11-03 continua valendo: Adicionamos o Aperture, nosso editor de fotos (em beta). A Política de Privacidade tem uma nova seção 1.12: no Aperture, a sua foto é editada no seu navegador e só é enviada aos nossos servidores quando você salva um projeto na sua conta, exporta, seleciona um assunto com IA, retoca manchas ou aplica as suas edições a mais fotos; os projetos salvos na sua conta ficam armazenados nos nossos servidores pelo período de retenção que você escolher, podem ser excluídos e são excluídos junto com a sua conta; a seleção de assunto e o retoque rodam no nosso próprio servidor com GPU e nenhuma foto é enviada a um serviço de terceiros; e, para cada exportação, seleção de assunto e retoque, registramos o tipo de trabalho, o formato e o tamanho do resultado, o horário e o seu plano para fazer valer a cota diária. As seções 3, 3.3, 3.4 e 4 agora citam os projetos do Aperture e os modelos usados. Os Termos listam o Aperture na seção 1, e a seção 13 diz que as suas exportações do Aperture pertencem a você. Tudo o que consta da atualização de 01/11/2026 continua valendo: Agora você pode entrar com a Apple, além de um endereço de e-mail e senha ou do Google. A Política de Privacidade (seção 1.7) explica que, se você entrar com a Apple, a Apple compartilha conosco seu nome e e-mail, ou um endereço de retransmissão privado se você escolher \"Ocultar E-mail\", e que a política de privacidade da Apple se aplica à sua Conta Apple; a seção 8 lista a Apple entre as partes com quem compartilhamos informações de login, e a seção 1.7 agora diz que o Firebase envia um link de redefinição para o seu e-mail se você pedir para redefinir a senha. A seção 9 dos Termos agora diz que você pode entrar com um endereço de e-mail e senha, com o Google ou com a Apple. Tudo da atualização de 28/10/2026 continua valendo: Adicionamos um formulário de contato em media-manipulator.com/contact: a Política de Privacidade tem uma nova seção 1.11 sobre as mensagens que você nos envia (seu nome, e-mail, assunto e mensagem, entregues na nossa caixa de suporte por meio do Resend e guardadas lá até a conversa ser encerrada, nunca por mais de 12 meses), e a seção 16 agora remete ao formulário. Adicionamos as divulgações sobre cookies de publicidade exigidas pelo Google e os links para desativação. A Política de Privacidade tem uma nova seção 5.1 sobre cookies de publicidade e Google AdSense: os cookies de publicidade do Google, os anúncios não personalizados, a mensagem de consentimento do Google no EEE, no Reino Unido e na Suíça, os links para desativar os anúncios personalizados (Configurações de anúncios do Google, aboutads.info e youronlinechoices.eu) e para saber como o Google usa informações de sites que usam seus serviços, quem vê anúncios (somente visitantes sem conta e contas gratuitas) e o nosso arquivo público ads.txt; a seção 1.5 agora lista os identificadores de publicidade que o script de anúncios do Google pode definir. A seção 8.9 dos Termos agora diz que os anúncios são exibidos apenas sem conta ou com uma conta gratuita, e que o Premium e o Pro os removem. A seção 5 (Publicidade) da Política de Privacidade agora informa que o script de anúncios do Google é carregado nas páginas que podem exibir anúncios, com todos os sinais de consentimento negados até você escolher, e que até lá veicula anúncios não personalizados. Mais cedo no mesmo dia: Adicionamos ferramentas de voz: clonar a sua própria voz a partir de uma gravação, criar uma voz a partir de uma descrição e alterar a voz de uma gravação. A Política de Privacidade tem uma nova seção 1.10 sobre amostras de voz e vozes criadas: o que armazenamos, que só usamos para criar e executar a voz que você pediu, com o seu consentimento explícito, que ela fica armazenada no Amazon S3 conforme a sua configuração de retenção, nunca é compartilhada com um provedor de IA terceirizado nem usada para treinar qualquer modelo, e que você pode excluí-la a qualquer momento e ela é excluída junto com a sua conta; as seções 3, 3.4, 3.5 e 4 agora mencionam as vozes. Os Termos têm uma nova seção 8.11: você só pode criar uma voz a partir da sua própria voz ou com a permissão explícita de quem fala; falsificação de identidade, fraude, deepfakes políticos e assédio não são permitidos; a fala gerada e convertida leva uma marca d'água inaudível e o áudio deslocado não; e podemos remover vozes e suspender contas. A seção 1 dos Termos lista as ferramentas de voz. Tudo da atualização de 2026-10-26 continua valendo: Adicionamos o Motion, nosso editor de animação SVG (em beta). A Política de Privacidade tem uma nova seção 1.9: os projetos e as exportações do Motion são feitos no seu navegador e não são enviados para serem produzidos; os projetos que você salva na sua conta são armazenados como os projetos do Darkroom, seguem o período de retenção que você escolher e podem ser excluídos; e, para cada exportação contabilizada, registramos formato, tamanho, duração e horário para aplicar a cota diária. As seções 3, 3.3 e 3.4 agora mencionam os projetos do Motion. A seção 13 dos Termos confirma que as suas exportações do Motion pertencem a você, explica que algumas exportações contêm código anime.js licenciado sob MIT, cujo aviso deve ser mantido, e remete à nossa página de licenças de código aberto. Tudo o que consta da atualização de 25/10/2026 (o plano Pro, as mudanças de plano e os reembolsos) continua válido. A seção 10 dos Termos agora informa que você pode pagar em dólares americanos ou em euros pelo mesmo preço, que os euros são exibidos por padrão na Europa e que a moeda de uma assinatura não pode mudar enquanto ela estiver ativa; a seção 1.6 da Política de Privacidade agora lista a moeda de cobrança que armazenamos e o cookie mm-currency, que lembra a sua escolha. A seção 8 agora também informa que os tradutores que contratamos enviam o trabalho deles como pull requests no GitHub, feitos pelo GitHub App da CreaTV Ltd., e que esses envios contêm apenas texto de tradução e nenhum dado pessoal sobre visitantes. Esta versão em português do Brasil é uma tradução feita por um modelo de IA e aguarda revisão por um falante nativo; em caso de divergência, prevalece a versão em inglês."
   },
   "privacyPolicy": {
     "title": "Política de Privacidade",
@@ -1003,7 +1003,7 @@
         "title": "6. Análise",
         "paragraphs": [
           "O Media Manipulator usa sua própria análise (first-party), desenvolvida e operada por nós e hospedada na nossa própria infraestrutura em analytics.media-manipulator.com. É a principal forma de entendermos quais ferramentas são usadas, onde falham e o que construir a seguir.",
-          "Anteriormente usávamos o Mixpanel e o Firebase Analytics. Ambos foram removidos, assim como o monitoramento do Firebase Performance. O Firebase agora é usado apenas para o login da conta."
+          "Antes usávamos o Mixpanel e o Firebase Analytics. Ambos foram removidos, assim como o monitoramento de desempenho do Firebase (Firebase Performance). O Firebase é usado para o login na conta e, somente no app móvel, para notificações push (Firebase Cloud Messaging) e relatórios de falhas (Firebase Crashlytics) — veja a Seção 17."
         ],
         "subsections": [
           {
@@ -1094,7 +1094,7 @@
         "bullets": [
           "provedores de hospedagem e infraestrutura em nuvem;",
           "a Amazon Web Services, que hospeda nosso armazenamento de arquivos (Amazon S3, região us-west-2);",
-          "o Google, para o Firebase Authentication (login), os eventos limitados do Google Analytics 4 descritos na Seção 6.4 e, quando anúncios são exibidos, o Google AdSense;",
+          "o Google, para o Firebase Authentication (login), os eventos limitados do Google Analytics 4 descritos na Seção 6.4, o Firebase Cloud Messaging e o Firebase Crashlytics para o app móvel (Seção 17) e, quando anúncios são exibidos, o Google AdSense;",
           "a Apple, quando você escolhe entrar com a Apple (a Apple verifica seu login; recebemos o nome e o e-mail ou endereço de retransmissão que você permitir);",
           "parceiros de publicidade;",
           "provedores de segurança, detecção de abusos e segurança de conteúdo;",
@@ -1193,6 +1193,67 @@
         ],
         "contactBlock": true,
         "contactEmail": "privacy@media-manipulator.com"
+      },
+      {
+        "title": "17. O app Media Manipulator",
+        "paragraphs": [
+          "Esta seção se aplica ao app Media Manipulator para Android, operado pela CreaTV Ltd. Ela complementa o restante desta Política de Privacidade, que também se aplica: o app usa a mesma conta, os mesmos servidores e as mesmas configurações de retenção do site. Para usar o app, você entra na sua conta Media Manipulator."
+        ],
+        "subsections": [
+          {
+            "title": "17.1 O que o app coleta",
+            "paragraphs": [
+              "Quando você usa o app, nós e nossos provedores recebemos:"
+            ],
+            "bullets": [
+              "os dados da sua conta, conforme descrito na Seção 1.7;",
+              "informações do dispositivo e do app: o modelo do dispositivo, a versão do Android, a versão e o build do app, seu idioma, seu fuso horário e seu tipo de conexão (Wi-Fi, dados móveis ou nenhuma);",
+              "um identificador por instalação que o app cria quando você o abre pela primeira vez e um identificador de visita que muda após 30 minutos de inatividade;",
+              "os eventos de análise do app: quais telas você vê, quais ferramentas você usa, quando tarefas começam, terminam ou falham e quando você salva ou compartilha um resultado. Eles são vinculados à sua conta e ao seu plano enquanto você está conectado. Nunca contêm os nomes nem o conteúdo dos seus arquivos;",
+              "um token de notificações push do seu dispositivo, com a plataforma, a versão do app e o idioma do dispositivo e quando o token foi criado e atualizado pela última vez, se você permitir notificações (Seção 17.4). Uma conta pode ter até 10 tokens;",
+              "relatórios de falhas do Firebase Crashlytics: os detalhes técnicos de uma falha (stack trace, modelo do dispositivo, versão do Android, versão do app, idioma), o identificador da sua conta e o seu plano (Seção 17.5);",
+              "os arquivos que você escolhe processar, que o app envia para nossos servidores por uma conexão criptografada. Eles são mantidos pelo período de retenção que você definir (Seção 3) e você pode excluí-los a qualquer momento."
+            ]
+          },
+          {
+            "title": "17.2 Permissões",
+            "bullets": [
+              "Fotos e vídeos: você escolhe os arquivos com os seletores de fotos e de arquivos do sistema Android. O app não lê sua galeria de fotos e não pede acesso a ela.",
+              "Notificações: o app pergunta na primeira vez que uma tarefa demora muito. É opcional, e o app funciona sem ela.",
+              "Salvar na galeria: quando você salva um resultado, o app o adiciona à sua galeria. Ele não lê o que já está lá."
+            ]
+          },
+          {
+            "title": "17.3 Análise no app",
+            "paragraphs": [
+              "A análise do app é própria: vai para o mesmo serviço da análise do site (Seção 6) e não para uma rede de publicidade. Ela fica ativada desde a primeira abertura, sem pedido de consentimento. Você pode desativá-la a qualquer momento no app, em Conta → Privacidade e dados → Análises. Desativá-la interrompe a coleta e não exclui o que já foi coletado. Para apagar esses dados, use Conta → Privacidade e dados → Excluir meus dados de análise: isso exclui os dados de análise vinculados à sua conta e a este dispositivo, e o app passa a ter um novo identificador. A chave da análise não controla os relatórios de falhas (Seção 17.5)."
+            ]
+          },
+          {
+            "title": "17.4 Notificações push",
+            "paragraphs": [
+              "Enviamos uma notificação quando uma tarefa longa termina ou falha. Não enviamos notificações de marketing. As notificações são entregues pelo Firebase Cloud Messaging, um serviço do Google, que recebe o token e o texto da notificação. Você pode desativá-las no app, em Conta → Notificações, ou nas configurações do Android. Excluímos o token quando você sai do app ou exclui sua conta."
+            ]
+          },
+          {
+            "title": "17.5 Relatórios de falhas",
+            "paragraphs": [
+              "Os relatórios de falhas são coletados pelo Firebase Crashlytics, um serviço do Google que atua como nosso operador. Nós os usamos apenas para encontrar e corrigir falhas. Eles incluem os detalhes listados na Seção 17.1 e são vinculados ao identificador da sua conta, ao plano e ao idioma para que possamos reproduzir um problema. O Google mantém os dados do Crashlytics por 90 dias antes de começar a removê-los de seus sistemas ativos e de backup. Os relatórios de falhas não são coletados em builds de desenvolvimento do app."
+            ]
+          },
+          {
+            "title": "17.6 Excluir sua conta",
+            "paragraphs": [
+              "Você pode excluir sua conta no app, em Conta → Privacidade e dados → Excluir minha conta (talvez seja preciso entrar novamente para confirmar), no site, em Conta → Privacidade e dados, ou seguindo as instruções em https://www.media-manipulator.com/delete-account, que também explica como nos pedir por e-mail se você não conseguir entrar. O que é excluído, e o que é mantido e por quanto tempo, está descrito nas Seções 3.4 e 13; o app também exclui seus tokens push e seus dados de análise. No app você também pode exportar seus dados, excluir todos os seus arquivos e sair de todos os dispositivos."
+            ]
+          },
+          {
+            "title": "17.7 Lojas de aplicativos",
+            "paragraphs": [
+              "Os termos e a política de privacidade do Google Play se aplicam ao download e à atualização do app, e os termos de outras lojas de aplicativos se aplicam se oferecermos o app nelas. As lojas não recebem seus arquivos."
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1219,6 +1280,7 @@
           "criação, animação e exportação de gráficos vetoriais e animações com o Motion;",
           "edição de fotos com camadas de ajuste, máscaras, geometria e retoque, e exportação do resultado, com o Aperture;",
           "criação de vozes a partir das suas próprias gravações, criação de vozes a partir de uma descrição, geração de fala a partir de texto e alteração da voz de uma gravação (Vozes, veja a Seção 8.11);",
+          "um app móvel para Android com as mesmas ferramentas e a mesma conta (Seção 25);",
           "histórico temporário de conversões e saídas processadas para download."
         ],
         "afterBullets": [
@@ -1686,6 +1748,16 @@
         ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
+      },
+      {
+        "title": "25. O app Media Manipulator",
+        "paragraphs": [
+          "O app Media Manipulator para Android é fornecido pela CreaTV Ltd. e estes Termos se aplicam a ele como se aplicam ao site. Para usar o app, você precisa de uma conta Media Manipulator.",
+          "Os termos do Google Play se aplicam ao download do app. O Google não é responsável pelo app, pelo suporte a ele nem por estes Termos; nós somos responsáveis por eles. Os termos de outras lojas de aplicativos se aplicam da mesma forma se oferecermos o app nelas.",
+          "Podemos entregar atualizações do app automaticamente, inclusive atualizações do código do app que chegam sem um novo download da loja. O app pode exigir uma versão recente do Android, e podemos deixar de oferecer suporte a versões mais antigas.",
+          "Os planos são comprados e gerenciados no site, não no app. O app usa o seu plano e os respectivos limites, conforme descrito na Seção 10; você pode gerenciar ou cancelar seu plano no site.",
+          "A Política de Privacidade explica o que o app coleta (Seção 17 da Política de Privacidade)."
+        ]
       }
     ]
   },
@@ -2694,5 +2766,45 @@
       "unavailable": "Não foi possível carregar a tabela de planos agora. A página de preços lista o limite de cada plano.",
       "seePlans": "Comparar todos os planos"
     }
+  },
+  "deleteAccount": {
+    "metaTitle": "Excluir sua conta | Media Manipulator",
+    "metaDesc": "Como excluir sua conta do Media Manipulator e os respectivos dados: no app, no site ou por e-mail se você não conseguir entrar.",
+    "title": "Excluir sua conta do Media Manipulator",
+    "intro": "Esta página explica como excluir sua conta do app Media Manipulator para Android e de media-manipulator.com. O app e o site são operados pela CreaTV Ltd. e compartilham uma única conta, então excluí-la a remove em todos os lugares.",
+    "inAppTitle": "No app",
+    "inAppSteps": [
+      "Abra o app e entre.",
+      "Vá em Conta e depois em Privacidade e dados.",
+      "Toque em Excluir minha conta.",
+      "Digite DELETE MY ACCOUNT (em inglês, exatamente assim) para confirmar. Pode ser pedido que você entre novamente."
+    ],
+    "webTitle": "No site",
+    "webSteps": [
+      "Entre em media-manipulator.com.",
+      "Abra a página Conta e escolha a aba Privacidade e dados.",
+      "Escolha Excluir conta e digite DELETE MY ACCOUNT (em inglês, exatamente assim) para confirmar."
+    ],
+    "webLink": "Abrir Privacidade e dados",
+    "emailTitle": "Se você não conseguir entrar",
+    "emailBody": "Envie um e-mail para privacy@media-manipulator.com a partir do endereço de e-mail da sua conta e escreva que deseja que sua conta seja excluída. Verificamos que a solicitação vem do titular da conta e a excluímos em até 30 dias.",
+    "whatIsDeletedTitle": "O que é excluído",
+    "whatIsDeleted": [
+      "o registro da sua conta, suas configurações e o seu login;",
+      "seus arquivos, resultados e histórico, e seus projetos do Darkroom, do Motion e do Aperture;",
+      "suas vozes salvas;",
+      "os tokens de notificações push dos seus dispositivos;",
+      "os dados de análise vinculados à sua conta;",
+      "sua assinatura Premium ou Pro, que é cancelada imediatamente."
+    ],
+    "whatIsKeptTitle": "O que é mantido e por quanto tempo",
+    "whatIsKept": [
+      "um registro mínimo de exclusão com apenas um hash unidirecional do identificador da sua conta e a data, por 30 dias;",
+      "o registro das suas escolhas de consentimento e de recusa, por cinco anos, pois a lei exige que possamos comprová-las;",
+      "os registros de pagamento mantidos pela Stripe, nossa processadora de pagamentos, pelo tempo que a lei exigir;",
+      "os relatórios de falhas mantidos pelo Firebase Crashlytics, que o Google remove após 90 dias."
+    ],
+    "timing": "A exclusão a partir do app ou do site começa imediatamente. Se alguma etapa não puder ser concluída, você será avisado e poderá nos escrever no endereço acima.",
+    "moreInfo": "Para tudo o que coletamos e como usamos, leia a Política de Privacidade."
   }
 }

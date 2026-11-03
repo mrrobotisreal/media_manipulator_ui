@@ -692,7 +692,7 @@
     "emailLabel": "Email:",
     "websiteLabel": "Website:",
     "whatChangedTitle": "Những thay đổi ngày 03/11/2026",
-    "whatChangedBody": "Chúng tôi đã thêm Aperture, trình chỉnh sửa ảnh của chúng tôi (bản beta). Chính sách quyền riêng tư có mục 1.12 mới: trong Aperture, ảnh của bạn được chỉnh sửa trong trình duyệt và chỉ được tải lên máy chủ của chúng tôi khi bạn lưu dự án vào tài khoản, xuất, chọn chủ thể bằng AI, chữa lành các đốm hoặc áp dụng các chỉnh sửa cho nhiều ảnh hơn; các dự án được lưu vào tài khoản của bạn được lưu trên máy chủ của chúng tôi theo thời gian lưu giữ bạn chọn, có thể xóa và bị xóa cùng tài khoản của bạn; việc chọn chủ thể và chữa lành chạy trên máy chủ GPU của chính chúng tôi và không có ảnh nào được gửi đến dịch vụ của bên thứ ba; và với mỗi lần xuất, chọn chủ thể và chữa lành, chúng tôi ghi lại loại tác vụ, định dạng và kích thước của kết quả, thời gian và gói của bạn để thực thi hạn mức hằng ngày. Các mục 3, 3.3, 3.4 và 4 giờ đây nêu rõ các dự án Aperture và các mô hình được sử dụng. Điều khoản liệt kê Aperture trong mục 1, và mục 13 nêu rằng các bản xuất Aperture của bạn thuộc về bạn. Mọi nội dung từ bản cập nhật ngày 2026-11-01 vẫn được áp dụng: Giờ đây bạn có thể đăng nhập bằng Apple, ngoài việc dùng địa chỉ email và mật khẩu hoặc Google. Chính sách quyền riêng tư (mục 1.7) giải thích rằng nếu bạn đăng nhập bằng Apple, Apple chia sẻ tên và địa chỉ email của bạn với chúng tôi, hoặc một địa chỉ chuyển tiếp riêng tư nếu bạn chọn \"Ẩn Email của tôi\", và chính sách quyền riêng tư của Apple áp dụng cho Tài khoản Apple của bạn; mục 8 liệt kê Apple trong số các bên mà chúng tôi chia sẻ thông tin đăng nhập, và mục 1.7 nay nêu rằng Firebase gửi liên kết đặt lại đến địa chỉ email của bạn nếu bạn yêu cầu đặt lại mật khẩu. Mục 9 của Điều khoản nay nêu rằng bạn có thể đăng nhập bằng địa chỉ email và mật khẩu, bằng Google hoặc bằng Apple. Mọi nội dung từ bản cập nhật ngày 2026-10-28 vẫn được áp dụng: Chúng tôi đã thêm một biểu mẫu liên hệ tại media-manipulator.com/contact: Chính sách quyền riêng tư có mục 1.11 mới về các tin nhắn bạn gửi cho chúng tôi (tên, địa chỉ email, chủ đề và tin nhắn của bạn, được chuyển đến hộp thư hỗ trợ của chúng tôi qua Resend và được lưu ở đó cho đến khi cuộc trao đổi kết thúc, không bao giờ quá 12 tháng), và mục 16 hiện trỏ đến biểu mẫu. Đã bổ sung các thông tin công bố về cookie quảng cáo mà Google yêu cầu và các liên kết từ chối. Chính sách quyền riêng tư có mục 5.1 mới về cookie quảng cáo và Google AdSense: cookie quảng cáo của Google, quảng cáo không cá nhân hóa, thông báo đồng ý của Google tại EEA, Vương quốc Anh và Thụy Sĩ, các liên kết để từ chối quảng cáo cá nhân hóa (Cài đặt quảng cáo của Google, aboutads.info và youronlinechoices.eu) và đến trang về cách Google sử dụng thông tin từ các trang web sử dụng dịch vụ của Google, ai thấy quảng cáo (chỉ khách truy cập không có tài khoản và tài khoản miễn phí) và tệp ads.txt công khai của chúng tôi; mục 1.5 nay liệt kê các mã định danh quảng cáo mà script quảng cáo của Google có thể đặt. Mục 8.9 của Điều khoản nay nêu rằng quảng cáo chỉ được hiển thị khi không có tài khoản hoặc với tài khoản miễn phí, và Premium và Pro loại bỏ chúng. Mục 5 (Quảng cáo) của Chính sách quyền riêng tư nay nêu rằng script quảng cáo của Google được tải trên các trang có thể hiển thị quảng cáo, với mọi tín hiệu đồng ý bị từ chối cho đến khi bạn lựa chọn, và cho đến lúc đó chỉ phân phối quảng cáo không được cá nhân hóa. Trước đó cùng ngày: Chúng tôi đã bổ sung các công cụ giọng nói: sao chép giọng của chính bạn từ một bản ghi âm, thiết kế một giọng nói từ mô tả, và thay đổi giọng nói trong một bản ghi âm. Chính sách quyền riêng tư có mục 1.10 mới về mẫu giọng nói và giọng nói được thiết kế: những gì chúng tôi lưu, việc chúng tôi chỉ dùng chúng để tạo và vận hành giọng nói bạn yêu cầu với sự đồng ý rõ ràng của bạn, việc chúng được lưu trong Amazon S3 theo thiết lập thời gian lưu giữ của bạn, không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào, và việc bạn có thể xóa chúng bất cứ lúc nào và chúng bị xóa cùng với tài khoản của bạn; các mục 3, 3.4, 3.5 và 4 nay có nhắc đến giọng nói. Điều khoản có mục 8.11 mới: bạn chỉ được tạo giọng nói từ giọng của chính bạn hoặc với sự cho phép rõ ràng của người đang nói; mạo danh, gian lận, deepfake chính trị và quấy rối đều không được phép; lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được còn âm thanh được đổi cao độ thì không; và chúng tôi có thể gỡ bỏ giọng nói và đình chỉ tài khoản. Mục 1 của Điều khoản liệt kê các công cụ giọng nói. Mọi nội dung từ bản cập nhật ngày 2026-10-26 vẫn được áp dụng: Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
+    "whatChangedBody": "Chính sách quyền riêng tư có thêm Mục 17 mới và Điều khoản có thêm Mục 25 mới dành cho ứng dụng Media Manipulator trên Android. Mục 17 giải thích ứng dụng thu thập những gì (dữ liệu tài khoản của bạn, thông tin thiết bị và ứng dụng, mã định danh theo từng lần cài đặt, dữ liệu phân tích mức độ sử dụng của ứng dụng, mã thông báo đẩy nếu bạn cho phép thông báo, báo cáo sự cố từ Firebase Crashlytics và các tệp bạn chọn xử lý), các quyền mà ứng dụng sử dụng, cách tắt phân tích và xóa dữ liệu đó trong Tài khoản → Quyền riêng tư và dữ liệu, thông báo đẩy, báo cáo sự cố, và cách xóa tài khoản của bạn trong ứng dụng, trên web hoặc qua email. Mục 6 nay nêu rõ Firebase cũng được dùng trong ứng dụng cho thông báo đẩy và báo cáo sự cố, và Mục 8 nêu tên Firebase Cloud Messaging và Firebase Crashlytics. Mục 25 của Điều khoản đề cập đến ứng dụng, các điều khoản riêng của cửa hàng ứng dụng, các bản cập nhật tự động và các gói mua trên web, và Mục 1 nay liệt kê ứng dụng. Ngoài ra còn có một trang công khai mới tại media-manipulator.com/delete-account giải thích cách xóa tài khoản của bạn mà không cần đăng nhập. Mọi nội dung trong bản cập nhật trước đó ngày 2026-11-03 vẫn có hiệu lực: Chúng tôi đã thêm Aperture, trình chỉnh sửa ảnh của chúng tôi (bản beta). Chính sách quyền riêng tư có mục 1.12 mới: trong Aperture, ảnh của bạn được chỉnh sửa trong trình duyệt và chỉ được tải lên máy chủ của chúng tôi khi bạn lưu dự án vào tài khoản, xuất, chọn chủ thể bằng AI, chữa lành các đốm hoặc áp dụng các chỉnh sửa cho nhiều ảnh hơn; các dự án được lưu vào tài khoản của bạn được lưu trên máy chủ của chúng tôi theo thời gian lưu giữ bạn chọn, có thể xóa và bị xóa cùng tài khoản của bạn; việc chọn chủ thể và chữa lành chạy trên máy chủ GPU của chính chúng tôi và không có ảnh nào được gửi đến dịch vụ của bên thứ ba; và với mỗi lần xuất, chọn chủ thể và chữa lành, chúng tôi ghi lại loại tác vụ, định dạng và kích thước của kết quả, thời gian và gói của bạn để thực thi hạn mức hằng ngày. Các mục 3, 3.3, 3.4 và 4 giờ đây nêu rõ các dự án Aperture và các mô hình được sử dụng. Điều khoản liệt kê Aperture trong mục 1, và mục 13 nêu rằng các bản xuất Aperture của bạn thuộc về bạn. Mọi nội dung từ bản cập nhật ngày 2026-11-01 vẫn được áp dụng: Giờ đây bạn có thể đăng nhập bằng Apple, ngoài việc dùng địa chỉ email và mật khẩu hoặc Google. Chính sách quyền riêng tư (mục 1.7) giải thích rằng nếu bạn đăng nhập bằng Apple, Apple chia sẻ tên và địa chỉ email của bạn với chúng tôi, hoặc một địa chỉ chuyển tiếp riêng tư nếu bạn chọn \"Ẩn Email của tôi\", và chính sách quyền riêng tư của Apple áp dụng cho Tài khoản Apple của bạn; mục 8 liệt kê Apple trong số các bên mà chúng tôi chia sẻ thông tin đăng nhập, và mục 1.7 nay nêu rằng Firebase gửi liên kết đặt lại đến địa chỉ email của bạn nếu bạn yêu cầu đặt lại mật khẩu. Mục 9 của Điều khoản nay nêu rằng bạn có thể đăng nhập bằng địa chỉ email và mật khẩu, bằng Google hoặc bằng Apple. Mọi nội dung từ bản cập nhật ngày 2026-10-28 vẫn được áp dụng: Chúng tôi đã thêm một biểu mẫu liên hệ tại media-manipulator.com/contact: Chính sách quyền riêng tư có mục 1.11 mới về các tin nhắn bạn gửi cho chúng tôi (tên, địa chỉ email, chủ đề và tin nhắn của bạn, được chuyển đến hộp thư hỗ trợ của chúng tôi qua Resend và được lưu ở đó cho đến khi cuộc trao đổi kết thúc, không bao giờ quá 12 tháng), và mục 16 hiện trỏ đến biểu mẫu. Đã bổ sung các thông tin công bố về cookie quảng cáo mà Google yêu cầu và các liên kết từ chối. Chính sách quyền riêng tư có mục 5.1 mới về cookie quảng cáo và Google AdSense: cookie quảng cáo của Google, quảng cáo không cá nhân hóa, thông báo đồng ý của Google tại EEA, Vương quốc Anh và Thụy Sĩ, các liên kết để từ chối quảng cáo cá nhân hóa (Cài đặt quảng cáo của Google, aboutads.info và youronlinechoices.eu) và đến trang về cách Google sử dụng thông tin từ các trang web sử dụng dịch vụ của Google, ai thấy quảng cáo (chỉ khách truy cập không có tài khoản và tài khoản miễn phí) và tệp ads.txt công khai của chúng tôi; mục 1.5 nay liệt kê các mã định danh quảng cáo mà script quảng cáo của Google có thể đặt. Mục 8.9 của Điều khoản nay nêu rằng quảng cáo chỉ được hiển thị khi không có tài khoản hoặc với tài khoản miễn phí, và Premium và Pro loại bỏ chúng. Mục 5 (Quảng cáo) của Chính sách quyền riêng tư nay nêu rằng script quảng cáo của Google được tải trên các trang có thể hiển thị quảng cáo, với mọi tín hiệu đồng ý bị từ chối cho đến khi bạn lựa chọn, và cho đến lúc đó chỉ phân phối quảng cáo không được cá nhân hóa. Trước đó cùng ngày: Chúng tôi đã bổ sung các công cụ giọng nói: sao chép giọng của chính bạn từ một bản ghi âm, thiết kế một giọng nói từ mô tả, và thay đổi giọng nói trong một bản ghi âm. Chính sách quyền riêng tư có mục 1.10 mới về mẫu giọng nói và giọng nói được thiết kế: những gì chúng tôi lưu, việc chúng tôi chỉ dùng chúng để tạo và vận hành giọng nói bạn yêu cầu với sự đồng ý rõ ràng của bạn, việc chúng được lưu trong Amazon S3 theo thiết lập thời gian lưu giữ của bạn, không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào, và việc bạn có thể xóa chúng bất cứ lúc nào và chúng bị xóa cùng với tài khoản của bạn; các mục 3, 3.4, 3.5 và 4 nay có nhắc đến giọng nói. Điều khoản có mục 8.11 mới: bạn chỉ được tạo giọng nói từ giọng của chính bạn hoặc với sự cho phép rõ ràng của người đang nói; mạo danh, gian lận, deepfake chính trị và quấy rối đều không được phép; lời nói được tạo và được chuyển đổi mang một hình mờ âm thanh không nghe thấy được còn âm thanh được đổi cao độ thì không; và chúng tôi có thể gỡ bỏ giọng nói và đình chỉ tài khoản. Mục 1 của Điều khoản liệt kê các công cụ giọng nói. Mọi nội dung từ bản cập nhật ngày 2026-10-26 vẫn được áp dụng: Chúng tôi đã bổ sung Motion, trình biên tập hoạt ảnh SVG của chúng tôi (đang ở giai đoạn beta). Chính sách quyền riêng tư có mục 1.9 mới: các dự án và bản xuất của Motion được tạo trong trình duyệt của bạn và không được tải lên để tạo ra chúng; các dự án bạn lưu vào tài khoản được lưu trữ như dự án Darkroom, tuân theo thời gian lưu giữ bạn chọn và có thể bị xóa; và với mỗi lần xuất được tính, chúng tôi ghi lại định dạng, kích thước, độ dài và thời điểm để áp dụng hạn mức hằng ngày. Các mục 3, 3.3 và 3.4 nay nêu tên dự án Motion. Mục 13 của Điều khoản xác nhận rằng các bản xuất Motion của bạn thuộc về bạn, giải thích rằng một số bản xuất chứa mã anime.js theo giấy phép MIT mà thông báo giấy phép phải được giữ nguyên, và dẫn đến trang giấy phép mã nguồn mở của chúng tôi. Mọi nội dung từ bản cập nhật ngày 25/10/2026 (gói Pro, thay đổi gói và hoàn tiền) vẫn được áp dụng. Mục 10 của Điều khoản nay nêu rằng bạn có thể thanh toán bằng đô la Mỹ hoặc euro với cùng mức giá, rằng euro được hiển thị mặc định tại châu Âu, và rằng đơn vị tiền tệ của một gói đăng ký không thể thay đổi khi gói đang hoạt động; mục 1.6 của Chính sách quyền riêng tư nay liệt kê đơn vị tiền tệ thanh toán mà chúng tôi lưu trữ và cookie mm-currency ghi nhớ lựa chọn của bạn. Mục 8 nay cũng nêu rằng các biên dịch viên chúng tôi thuê nộp bản dịch dưới dạng pull request trên GitHub do GitHub App của CreaTV Ltd. tạo ra, và rằng các bản nộp đó chỉ chứa nội dung bản dịch, không có dữ liệu cá nhân nào về khách truy cập. Bản dịch tiếng Việt này do một mô hình ngôn ngữ thực hiện và đang chờ người bản ngữ rà soát; trong trường hợp có bất kỳ sự khác biệt nào, bản tiếng Anh sẽ được ưu tiên áp dụng."
   },
   "privacyPolicy": {
     "title": "Chính sách quyền riêng tư",
@@ -1003,7 +1003,7 @@
         "title": "6. Phân tích",
         "paragraphs": [
           "Media Manipulator sử dụng hệ thống phân tích của bên thứ nhất do chính chúng tôi xây dựng và vận hành, được lưu trữ trên hạ tầng của chúng tôi tại analytics.media-manipulator.com. Đây là cách chính để chúng tôi hiểu công cụ nào được sử dụng, chúng lỗi ở đâu và nên xây dựng gì tiếp theo.",
-          "Trước đây chúng tôi sử dụng Mixpanel và Firebase Analytics. Cả hai đã được gỡ bỏ, cũng như giám sát Firebase Performance. Firebase hiện chỉ được dùng cho việc đăng nhập tài khoản."
+          "Trước đây chúng tôi đã dùng Mixpanel và Firebase Analytics. Cả hai đã bị gỡ bỏ, cũng như tính năng giám sát hiệu năng của Firebase. Firebase được dùng để đăng nhập tài khoản và, chỉ trong ứng dụng di động, cho thông báo đẩy (Firebase Cloud Messaging) và báo cáo sự cố (Firebase Crashlytics) — xem Mục 17."
         ],
         "subsections": [
           {
@@ -1094,7 +1094,7 @@
         "bullets": [
           "các nhà cung cấp hạ tầng lưu trữ và đám mây;",
           "Amazon Web Services, nơi lưu trữ tệp của chúng tôi (Amazon S3, khu vực us-west-2);",
-          "Google, cho Firebase Authentication (đăng nhập), các sự kiện Google Analytics 4 hạn chế được mô tả tại Mục 6.4 và, khi quảng cáo được hiển thị, Google AdSense;",
+          "Google, cho Firebase Authentication (đăng nhập), các sự kiện Google Analytics 4 có giới hạn được mô tả trong Mục 6.4, Firebase Cloud Messaging và Firebase Crashlytics cho ứng dụng di động (Mục 17) và, khi có hiển thị quảng cáo, Google AdSense;",
           "Apple, khi bạn chọn Đăng nhập bằng Apple (Apple xác minh việc đăng nhập của bạn; chúng tôi nhận tên và địa chỉ email hoặc địa chỉ chuyển tiếp mà bạn cho phép);",
           "các đối tác quảng cáo;",
           "các nhà cung cấp bảo mật, phát hiện lạm dụng và an toàn nội dung;",
@@ -1193,6 +1193,67 @@
         ],
         "contactBlock": true,
         "contactEmail": "privacy@media-manipulator.com"
+      },
+      {
+        "title": "17. Ứng dụng Media Manipulator",
+        "paragraphs": [
+          "Mục này áp dụng cho ứng dụng Media Manipulator trên Android do CreaTV Ltd. vận hành. Mục này bổ sung cho phần còn lại của Chính sách quyền riêng tư này, phần đó cũng được áp dụng: ứng dụng dùng cùng tài khoản, cùng máy chủ và cùng cài đặt lưu giữ như trang web. Để dùng ứng dụng, bạn đăng nhập vào tài khoản Media Manipulator của mình."
+        ],
+        "subsections": [
+          {
+            "title": "17.1 Ứng dụng thu thập những gì",
+            "paragraphs": [
+              "Khi bạn dùng ứng dụng, chúng tôi và các nhà cung cấp của chúng tôi nhận được:"
+            ],
+            "bullets": [
+              "dữ liệu tài khoản của bạn, như mô tả trong mục 1.7;",
+              "thông tin thiết bị và ứng dụng: kiểu thiết bị, phiên bản Android, phiên bản và bản dựng của ứng dụng, ngôn ngữ, múi giờ và loại kết nối của bạn (Wi-Fi, dữ liệu di động hoặc không có);",
+              "mã định danh theo từng lần cài đặt mà ứng dụng tạo ra khi bạn mở lần đầu, và mã định danh lượt truy cập thay đổi sau 30 phút không hoạt động;",
+              "các sự kiện phân tích của ứng dụng: bạn xem màn hình nào, dùng công cụ nào, khi nào tác vụ bắt đầu, hoàn tất hoặc thất bại, và khi nào bạn lưu hoặc chia sẻ một kết quả. Chúng được liên kết với tài khoản và gói của bạn khi bạn đã đăng nhập. Chúng không bao giờ chứa tên hoặc nội dung tệp của bạn;",
+              "mã thông báo đẩy cho thiết bị của bạn, kèm nền tảng, phiên bản ứng dụng và ngôn ngữ của thiết bị cũng như thời điểm mã được tạo và cập nhật lần cuối, nếu bạn cho phép thông báo (mục 17.4). Một tài khoản có thể có tối đa 10 mã thông báo;",
+              "báo cáo sự cố từ Firebase Crashlytics: chi tiết kỹ thuật của sự cố (dấu vết ngăn xếp, kiểu thiết bị, phiên bản Android, phiên bản ứng dụng, ngôn ngữ), mã định danh tài khoản và gói của bạn (mục 17.5);",
+              "các tệp bạn chọn xử lý, được ứng dụng tải lên máy chủ của chúng tôi qua kết nối được mã hóa. Chúng được lưu giữ trong khoảng thời gian lưu giữ bạn đặt (mục 3) và bạn có thể xóa chúng bất cứ lúc nào."
+            ]
+          },
+          {
+            "title": "17.2 Quyền truy cập",
+            "bullets": [
+              "Ảnh và video: bạn chọn tệp bằng trình chọn ảnh và tệp của hệ thống Android. Ứng dụng không đọc thư viện ảnh của bạn và không yêu cầu quyền truy cập vào đó.",
+              "Thông báo: ứng dụng hỏi vào lần đầu tiên một tác vụ chạy lâu. Đây là tùy chọn và ứng dụng vẫn hoạt động khi không có thông báo.",
+              "Lưu vào thư viện: khi bạn lưu một kết quả, ứng dụng thêm nó vào thư viện của bạn. Ứng dụng không đọc những gì đã có sẵn trong đó."
+            ]
+          },
+          {
+            "title": "17.3 Phân tích trong ứng dụng",
+            "paragraphs": [
+              "Phân tích của ứng dụng là phân tích bên thứ nhất: dữ liệu được gửi đến cùng dịch vụ với phân tích của trang web (mục 6) chứ không gửi đến mạng quảng cáo. Phân tích được bật từ lần khởi chạy đầu tiên, không có lời nhắc xin đồng ý. Bạn có thể tắt bất cứ lúc nào trong ứng dụng tại Tài khoản → Quyền riêng tư và dữ liệu → Phân tích. Tắt phân tích sẽ dừng việc thu thập nhưng không xóa dữ liệu đã thu thập. Để xóa dữ liệu đó, hãy dùng Tài khoản → Quyền riêng tư và dữ liệu → Xóa dữ liệu phân tích của tôi: thao tác này xóa dữ liệu phân tích liên kết với tài khoản của bạn và thiết bị này, và ứng dụng bắt đầu với một mã định danh mới. Công tắc phân tích không kiểm soát báo cáo sự cố (mục 17.5)."
+            ]
+          },
+          {
+            "title": "17.4 Thông báo đẩy",
+            "paragraphs": [
+              "Chúng tôi gửi một thông báo khi một tác vụ dài hoàn tất hoặc thất bại. Chúng tôi không gửi thông báo tiếp thị. Thông báo được gửi qua Firebase Cloud Messaging, một dịch vụ của Google, dịch vụ này nhận mã thông báo và nội dung thông báo. Bạn có thể tắt chúng trong ứng dụng tại Tài khoản → Thông báo hoặc trong cài đặt của Android. Chúng tôi xóa mã thông báo khi bạn đăng xuất khỏi ứng dụng hoặc xóa tài khoản của mình."
+            ]
+          },
+          {
+            "title": "17.5 Báo cáo sự cố",
+            "paragraphs": [
+              "Báo cáo sự cố được thu thập bởi Firebase Crashlytics, một dịch vụ của Google đóng vai trò là bên xử lý dữ liệu của chúng tôi. Chúng tôi chỉ dùng chúng để tìm và sửa lỗi sự cố. Chúng bao gồm các chi tiết được liệt kê trong mục 17.1 và được liên kết với mã định danh tài khoản, gói và ngôn ngữ của bạn để chúng tôi có thể tái hiện sự cố. Google lưu giữ dữ liệu Crashlytics trong 90 ngày trước khi bắt đầu xóa khỏi các hệ thống đang hoạt động và hệ thống sao lưu của mình. Báo cáo sự cố không được thu thập trong các bản dựng phát triển của ứng dụng."
+            ]
+          },
+          {
+            "title": "17.6 Xóa tài khoản của bạn",
+            "paragraphs": [
+              "Bạn có thể xóa tài khoản của mình trong ứng dụng tại Tài khoản → Quyền riêng tư và dữ liệu → Xóa tài khoản của tôi (bạn có thể cần đăng nhập lại để xác nhận), trên trang web tại Tài khoản → Quyền riêng tư & dữ liệu, hoặc làm theo hướng dẫn tại https://www.media-manipulator.com/delete-account, trang này cũng giải thích cách yêu cầu chúng tôi qua email nếu bạn không thể đăng nhập. Những gì bị xóa, và những gì được giữ lại và trong bao lâu, được mô tả trong các mục 3.4 và 13; ứng dụng cũng xóa các mã thông báo đẩy và dữ liệu phân tích của bạn. Trong ứng dụng, bạn cũng có thể xuất dữ liệu của mình, xóa tất cả tệp của mình và đăng xuất khỏi tất cả thiết bị."
+            ]
+          },
+          {
+            "title": "17.7 Cửa hàng ứng dụng",
+            "paragraphs": [
+              "Điều khoản và chính sách quyền riêng tư của Google Play áp dụng cho việc tải xuống và cập nhật ứng dụng, và điều khoản của các cửa hàng ứng dụng khác áp dụng nếu chúng tôi cung cấp ứng dụng tại đó. Các cửa hàng không nhận được tệp của bạn."
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1219,6 +1280,7 @@
           "tạo, tạo hoạt ảnh và xuất đồ họa vector và hoạt ảnh bằng Motion;",
           "chỉnh sửa ảnh bằng các lớp chỉnh sửa, mặt nạ, hình học và chữa lành, rồi xuất kết quả, với Aperture;",
           "tạo giọng nói từ bản ghi âm của chính bạn, thiết kế giọng nói từ mô tả, tạo lời nói từ văn bản và thay đổi giọng nói trong một bản ghi âm (Giọng nói, xem Mục 8.11);",
+          "ứng dụng di động cho Android với cùng các công cụ và tài khoản (Mục 25);",
           "lịch sử chuyển đổi tạm thời và đầu ra đã xử lý có thể tải xuống."
         ],
         "afterBullets": [
@@ -1686,6 +1748,16 @@
         ],
         "contactBlock": true,
         "contactEmail": "support@media-manipulator.com"
+      },
+      {
+        "title": "25. Ứng dụng Media Manipulator",
+        "paragraphs": [
+          "Ứng dụng Media Manipulator trên Android do CreaTV Ltd. cung cấp và các Điều khoản này áp dụng cho ứng dụng giống như đối với trang web. Để dùng ứng dụng, bạn cần có tài khoản Media Manipulator.",
+          "Điều khoản của Google Play áp dụng cho việc tải ứng dụng xuống. Google không chịu trách nhiệm về ứng dụng, về việc hỗ trợ ứng dụng hay về các Điều khoản này; chúng tôi chịu trách nhiệm về những điều đó. Điều khoản của các cửa hàng ứng dụng khác áp dụng tương tự nếu chúng tôi cung cấp ứng dụng tại đó.",
+          "Chúng tôi có thể cung cấp các bản cập nhật cho ứng dụng một cách tự động, bao gồm cả các bản cập nhật mã của ứng dụng được gửi đến mà không cần tải xuống mới từ cửa hàng. Ứng dụng có thể cần phiên bản Android gần đây, và chúng tôi có thể ngừng hỗ trợ các phiên bản cũ hơn.",
+          "Các gói được mua và quản lý trên trang web, không phải trong ứng dụng. Ứng dụng sử dụng gói của bạn và các giới hạn của gói như mô tả trong Mục 10; bạn có thể quản lý hoặc hủy gói của mình trên trang web.",
+          "Chính sách quyền riêng tư giải thích ứng dụng thu thập những gì (Mục 17 của Chính sách quyền riêng tư)."
+        ]
       }
     ]
   },
@@ -2694,5 +2766,45 @@
       "unavailable": "Hiện chưa thể tải bảng gói. Trang giá liệt kê hạn mức của từng gói.",
       "seePlans": "So sánh tất cả các gói"
     }
+  },
+  "deleteAccount": {
+    "metaTitle": "Xóa tài khoản của bạn | Media Manipulator",
+    "metaDesc": "Cách xóa tài khoản Media Manipulator của bạn và dữ liệu của tài khoản: trong ứng dụng, trên trang web, hoặc qua email nếu bạn không thể đăng nhập.",
+    "title": "Xóa tài khoản Media Manipulator của bạn",
+    "intro": "Trang này giải thích cách xóa tài khoản của bạn cho ứng dụng Media Manipulator trên Android và cho media-manipulator.com. Ứng dụng và trang web do CreaTV Ltd. vận hành và dùng chung một tài khoản, vì vậy xóa tài khoản sẽ gỡ bỏ nó ở mọi nơi.",
+    "inAppTitle": "Trong ứng dụng",
+    "inAppSteps": [
+      "Mở ứng dụng và đăng nhập.",
+      "Vào Tài khoản, rồi chọn Quyền riêng tư và dữ liệu.",
+      "Nhấn Xóa tài khoản của tôi.",
+      "Nhập DELETE MY ACCOUNT để xác nhận (cụm từ này phải nhập bằng tiếng Anh). Bạn có thể được yêu cầu đăng nhập lại."
+    ],
+    "webTitle": "Trên trang web",
+    "webSteps": [
+      "Đăng nhập tại media-manipulator.com.",
+      "Mở trang Tài khoản của bạn và chọn tab Quyền riêng tư & dữ liệu.",
+      "Chọn Xóa tài khoản và nhập DELETE MY ACCOUNT để xác nhận (cụm từ này phải nhập bằng tiếng Anh)."
+    ],
+    "webLink": "Mở Quyền riêng tư & dữ liệu",
+    "emailTitle": "Nếu bạn không thể đăng nhập",
+    "emailBody": "Hãy gửi email đến privacy@media-manipulator.com từ địa chỉ email của tài khoản và nêu rõ bạn muốn xóa tài khoản. Chúng tôi xác minh yêu cầu đến từ chủ sở hữu tài khoản và xóa tài khoản trong vòng 30 ngày.",
+    "whatIsDeletedTitle": "Những gì bị xóa",
+    "whatIsDeleted": [
+      "hồ sơ tài khoản, cài đặt và thông tin đăng nhập của bạn;",
+      "các tệp, kết quả và lịch sử của bạn, cùng các dự án Darkroom, Motion và Aperture của bạn;",
+      "các giọng nói đã lưu của bạn;",
+      "các mã thông báo đẩy của thiết bị của bạn;",
+      "dữ liệu phân tích liên kết với tài khoản của bạn;",
+      "gói đăng ký Premium hoặc Pro của bạn, được hủy ngay lập tức."
+    ],
+    "whatIsKeptTitle": "Những gì được giữ lại, và trong bao lâu",
+    "whatIsKept": [
+      "một bản ghi xóa tối thiểu chỉ gồm giá trị băm một chiều của mã định danh tài khoản và ngày xóa, trong 30 ngày;",
+      "nhật ký các lựa chọn đồng ý và từ chối của bạn, trong năm năm, vì pháp luật yêu cầu chúng tôi phải có khả năng chứng minh chúng;",
+      "hồ sơ thanh toán do Stripe, đơn vị xử lý thanh toán của chúng tôi, lưu giữ trong thời gian pháp luật yêu cầu;",
+      "báo cáo sự cố do Firebase Crashlytics lưu giữ, được Google xóa sau 90 ngày."
+    ],
+    "timing": "Việc xóa từ ứng dụng hoặc trang web bắt đầu ngay lập tức. Nếu một bước không thể hoàn tất, bạn sẽ được thông báo, và bạn có thể viết thư cho chúng tôi theo địa chỉ ở trên.",
+    "moreInfo": "Để biết mọi thứ chúng tôi thu thập và cách chúng tôi sử dụng, hãy đọc Chính sách quyền riêng tư."
   }
 }
