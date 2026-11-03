@@ -79,6 +79,7 @@ export default async function ToolSlugPage({
             <PhotoDropzone
               panel={tool.embed.preset.panel}
               preset={tool.embed.preset.preset}
+              slug={tool.slug}
               title={tool.embed.title}
               description={tool.embed.description}
               labels={photoDropzoneLabels(getServerT('interface', locale))}

@@ -75,10 +75,12 @@ function readBytes(file: Blob): Promise<ArrayBuffer> {
 }
 
 /** Query string the tool page navigates to. */
-export function handoffHref(panel: PhotoPanelId | null, preset: string | null): string {
+export function handoffHref(panel: PhotoPanelId | null, preset: string | null, slug?: string | null): string {
   const q = new URLSearchParams({ handoff: '1' });
   if (panel) q.set('panel', panel);
   if (preset) q.set('preset', preset);
+  // MM101: the page the photo was chosen on, the primary source of the editor's `tool_slug`.
+  if (slug && /^[a-z0-9][a-z0-9-]{0,59}$/.test(slug)) q.set('slug', slug);
   return `/photo/new?${q.toString()}`;
 }
 

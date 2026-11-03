@@ -43,6 +43,12 @@ import { fetchProjectFile, proxyCandidates, type HealOutcome } from '@/lib/photo
 import { currentBaseRef } from '@/lib/photo/healOps';
 import { onCompareUsed, onPresetApplied, onShortcutsOpened } from '@/lib/photo/seams';
 import { takeHandoff } from '@/lib/photo/handoff';
+import { resolvePhotoToolSlug, setPhotoTier, setPhotoToolSlug, photoTierProp } from '@/lib/photo/analytics';
+import { resolveProjectsGate } from '@/lib/photo/gating';
+import { EVENTS } from '@/lib/analytics/events';
+import type { TiersResponse } from '@/lib/auth/accountApi';
+import { usePhotoAnalytics } from './use-photo-analytics';
+import { PhotoUpgradeCta } from './upgrade-cta';
 import { type PhotoPanelId } from '@/lib/photo/panelIds';
 import { appendPreset, parsePresetLayers, presetById } from '@/lib/photo/presets';
 import { setLocalBase } from '@/lib/photo/localProject';
@@ -88,6 +94,12 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const route = React.useMemo(() => classifyPhotoRoute(projectId), [projectId]);
   const signedIn = useSignedIn();
   const localized = useLocalizedHref();
+  // MM101: consent-gated `photo_*` events through the seams (lib/photo/analytics.ts).
+  const pa = usePhotoAnalytics();
+  /** How this session's photo arrived (set where it is chosen; `projects` for a saved project). */
+  const openSource = React.useRef<import('@/lib/analytics/events').PhotoEditorSource>('upload');
+  const openedFor = React.useRef<string | null>(null);
+  const localDecode = React.useRef(true);
 
   const doc = usePhotoStore((s) => s.doc);
   const name = usePhotoStore((s) => s.name);
@@ -122,6 +134,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const [offerBusy, setOfferBusy] = React.useState(false);
   const [offerError, setOfferError] = React.useState(false);
   const [freeProjects, setFreeProjects] = React.useState<number>(5);
+  const [tiers, setTiers] = React.useState<TiersResponse | null>(null);
   const [sheetOpen, setSheetOpen] = React.useState(true);
   const [pickedMask, setPickedMask] = React.useState<{ r: number; g: number; b: number; n: number; shift: boolean } | null>(null);
   const [thumb, setThumb] = React.useState<import('@/lib/photo/colorMath').FloatImage | null>(null);
@@ -162,12 +175,36 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   React.useEffect(() => {
     void fetch(`${getBaseURL()}/tiers`)
       .then((r) => (r.ok ? r.json() : null))
-      .then((j: { tiers?: Array<{ tier: string; limits: { photoProjects?: number } }> } | null) => {
+      .then((j: (Partial<TiersResponse> & { tiers?: Array<{ tier: string; limits: { photoProjects?: number } }> }) | null) => {
         const free = j?.tiers?.find((x) => x.tier === 'free')?.limits.photoProjects;
         if (typeof free === 'number' && free > 0) setFreeProjects(free);
+        if (j?.tiers) setTiers(j as TiersResponse);
       })
       .catch(() => undefined);
   }, []);
+
+  // MM101: `context.tool_slug` = the page that opened the editor (?slug from the tool page's drop zone,
+  // else a same-site /tools/<slug> referrer, else `aperture`); the tier rides along once known.
+  React.useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    setPhotoToolSlug(resolvePhotoToolSlug({ slug: q.get('slug'), referrer: document.referrer, selfHost: window.location.host }));
+  }, []);
+  const tierName = signedIn === true ? photoTierProp(caps?.tier) : 'anonymous';
+  React.useEffect(() => {
+    if (signedIn !== null) setPhotoTier(tierName);
+  }, [signedIn, tierName]);
+  /** Report a projects-limit wall once per kind (the guest banner, a refused upload, a full account). */
+  const projectsGated = React.useRef(new Set<string>());
+  const projectsGate = React.useMemo(() => resolveProjectsGate(tierName, signedIn === true ? Number.POSITIVE_INFINITY : undefined, tiers), [tierName, signedIn, tiers]);
+  const projectsCta = projectsGate.allowed ? (tierName === 'anonymous' ? 'signup' : tierName === 'free' ? 'premium' : tierName === 'premium' ? 'pro' : 'none') : projectsGate.cta;
+  const reportProjectsGate = React.useCallback(
+    (kind: string) => {
+      if (projectsGated.current.has(kind)) return;
+      projectsGated.current.add(kind);
+      pa.track(EVENTS.PHOTO_EXPORT_GATED, { reason: 'projects', tier: tierName, upgrade_path: projectsCta });
+    },
+    [pa, tierName, projectsCta],
+  );
 
   // ---- opening ------------------------------------------------------------
   const decode = React.useCallback(async (blob: Blob): Promise<PhotoSourceInfo> => {
@@ -186,6 +223,11 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       loadedBase.current = currentBaseRef(docIn);
       usePhotoStore.getState().load(id, docIn, projName, serverRev);
       revisionRef.current = usePhotoStore.getState().revision;
+      // MM101: once per opened document (a background upload's id swap is not a new opening).
+      if (openedFor.current === null || openedFor.current !== id) {
+        openedFor.current = id;
+        pa.opened(openSource.current, localDecode.current);
+      }
       const entry = pendingEntry.current;
       if (entry) {
         pendingEntry.current = null;
@@ -200,7 +242,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       }
       setLoading(false);
     },
-    [t],
+    [t, pa],
   );
 
   /** A server heal base as a decodable proxy (`bases/<hash>.proxy.jpg|png`); null when unavailable. */
@@ -244,6 +286,8 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         originalBlob.current = blob;
         setServerId(id);
         setIsLocal(false);
+        openSource.current = 'projects';
+        localDecode.current = true;
         beginEditing(src, null, id, p.doc, p.name, p.revision);
         const d = await getPhotoDraft(id);
         if (shouldOfferRecovery(d, p.doc, p.updatedAt ? Date.parse(p.updatedAt) : null)) setDraft(d);
@@ -271,6 +315,8 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         setServerId(null);
         setIsLocal(true);
         setLocalProject(lp);
+        openSource.current = 'projects';
+        localDecode.current = true;
         beginEditing(src, new File([lp.original], lp.fileName, { type: lp.original.type }), 'local', lp.doc, lp.name, null);
         window.history.replaceState(null, '', '/photo/local');
       } catch {
@@ -300,6 +346,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       } catch {
         src = null;
       }
+      localDecode.current = src !== null;
       const projName = nameFromFile(file.name, t('photo.untitled'));
       if (!src) {
         if (!signed) {
@@ -315,6 +362,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
           setServerId(proj.id);
           setIsLocal(false);
           beginEditing(proxy, file, proj.id, proj.doc, proj.name || projName, proj.revision);
+          pa.created(file, proxy);
           window.history.replaceState(null, '', `/photo/${proj.id}`);
           setSaveState('saved');
         } catch {
@@ -332,6 +380,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         setServerId(null);
         setIsLocal(true);
         beginEditing(src, file, 'local', newDoc, projName, null);
+        pa.created(file, src);
         window.history.replaceState(null, '', '/photo/local');
         return;
       }
@@ -340,6 +389,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       setServerId(null);
       setIsLocal(false);
       beginEditing(src, file, tempId, newDoc, projName, null);
+      pa.created(file, src);
       setSaveState('uploading');
       void createPhotoProject({ file, fileName: file.name, name: projName, doc: newDoc })
         .then((proj) => {
@@ -352,6 +402,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         .catch(async () => {
           // Could not create a project (cap, offline): keep the work in this browser.
           setSaveState('error');
+          reportProjectsGate('upload_refused');
           toast.error(t('photo.banner.uploadFailed'));
           const lp: LocalProject = { name: projName, fileName: file.name, original: file, base: null, doc: newDoc, savedAt: Date.now() };
           await putLocalProject(lp);
@@ -359,7 +410,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
           setIsLocal(true);
         });
     },
-    [beginEditing, decode, signedIn, t],
+    [beginEditing, decode, signedIn, t, pa, reportProjectsGate],
   );
 
   // First load once Firebase has answered.
@@ -400,6 +451,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         const handed = await takeHandoff();
         if (handed) {
           pendingEntry.current = { panel: handed.panel, preset: handed.preset };
+          openSource.current = 'tool_page';
           setLoading(true);
           await openFile(handed.file);
           return;
@@ -407,6 +459,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       }
       const from = query.get('from');
       if (isJobId(from)) {
+        openSource.current = 'result';
         setLoading(true);
         try {
           let res = await authedFetch(`${getBaseURL()}/result/${encodeURIComponent(from)}`);
@@ -497,6 +550,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       usePhotoStore.getState().markSaved(out.project.revision);
       setSaveState('saved');
       void deletePhotoDraft(serverId);
+      pa.saved(s.doc);
       return true;
     }
     if (out.kind === 'conflict') {
@@ -504,7 +558,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       setSaveState('error');
     } else setSaveState('error');
     return false;
-  }, [serverId]);
+  }, [serverId, pa]);
 
   React.useEffect(() => {
     if (!serverId || !dirty) return;
@@ -873,9 +927,19 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         </Button>
       </header>
 
-      {isLocal && signedIn !== true ? <LocalBanner count={freeProjects} /> : null}
+      {isLocal && signedIn !== true ? (
+        <LocalBanner count={freeProjects} cta={<PhotoUpgradeCta cta={projectsCta} placement="aperture_projects" ctaId="aperture_projects_signup" tier={tierName} track={pa} />} onShown={() => reportProjectsGate('local_banner')} />
+      ) : null}
       {uploadOffer && isLocal && signedIn === true ? (
-        <UploadOffer canUpload={uploadOffer.canUpload} busy={offerBusy} error={offerError} onAccept={() => void acceptOffer()} onDismiss={() => setUploadOffer(null)} />
+        <UploadOffer
+          canUpload={uploadOffer.canUpload}
+          busy={offerBusy}
+          error={offerError}
+          onAccept={() => void acceptOffer()}
+          onDismiss={() => setUploadOffer(null)}
+          cta={!uploadOffer.canUpload ? <PhotoUpgradeCta cta={projectsCta} placement="aperture_projects" ctaId={`aperture_projects_${projectsCta}`} tier={tierName} track={pa} /> : null}
+          onShown={!uploadOffer.canUpload && caps ? () => reportProjectsGate('account_full') : undefined}
+        />
       ) : null}
 
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
@@ -941,6 +1005,8 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         signedIn={signedIn === true}
         capabilities={caps}
         originalFile={originalFile}
+        tiers={tiers}
+        track={pa}
       />
       <ShortcutsSheet open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       <ConflictDialog open={conflict !== null} onKeepMine={() => void onKeepMine()} onLoadTheirs={() => void onLoadTheirs()} />

@@ -2098,6 +2098,17 @@
       "zipMissing_one": "Impossibile aggiungere {{count}} foto allo ZIP.",
       "zipMissing_many": "Impossibile aggiungere {{count}} foto allo ZIP.",
       "zipMissing_other": "Impossibile aggiungere {{count}} foto allo ZIP."
+    },
+    "gate": {
+      "cta": {
+        "signup": "Accedi gratis",
+        "premium": "Passa a Premium",
+        "pro": "Passa a Pro"
+      },
+      "sizes": {
+        "premium": "Le esportazioni oltre {{mp}} MP sono incluse in Premium.",
+        "pro": "Le esportazioni oltre {{mp}} MP sono incluse in Pro."
+      }
     }
   }
 }

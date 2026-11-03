@@ -8,7 +8,7 @@ export type AdjustmentListener = (type: string, param: string) => void;
 
 let listener: AdjustmentListener | null = null;
 const timers = new Map<string, ReturnType<typeof setTimeout>>();
-export const ADJUSTMENT_DEBOUNCE_MS = 500;
+export const ADJUSTMENT_DEBOUNCE_MS = 600;
 
 /** MM101 installs its `photo_adjustment_changed` emitter here. Returns an uninstaller. */
 export function setAdjustmentListener(fn: AdjustmentListener | null): () => void {

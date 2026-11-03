@@ -2111,6 +2111,17 @@
       "zipMissing_one": "לא ניתן היה להוסיף תמונה {{count}} ל-ZIP.",
       "zipMissing_two": "לא ניתן היה להוסיף {{count}} תמונות ל-ZIP.",
       "zipMissing_other": "לא ניתן היה להוסיף {{count}} תמונות ל-ZIP."
+    },
+    "gate": {
+      "cta": {
+        "signup": "התחברו בחינם",
+        "premium": "שדרגו לפרימיום",
+        "pro": "שדרגו ל־Pro"
+      },
+      "sizes": {
+        "premium": "ייצואים מעל {{mp}} MP כלולים ב-Premium.",
+        "pro": "ייצואים מעל {{mp}} MP כלולים ב-Pro."
+      }
     }
   }
 }

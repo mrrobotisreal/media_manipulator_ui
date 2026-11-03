@@ -30,6 +30,7 @@ export const PHOTO_EDITOR_HREF = '/photo/new';
 export default function PhotoDropzone({
   panel,
   preset,
+  slug,
   title,
   description,
   labels,
@@ -38,6 +39,8 @@ export default function PhotoDropzone({
 }: {
   panel: PhotoPanelId;
   preset?: string;
+  /** MM101: this page's slug (`aperture` on the landing); the editor's analytics `tool_slug`. */
+  slug?: string;
   title: string;
   description: string;
   labels: PhotoDropzoneLabels;
@@ -55,9 +58,9 @@ export default function PhotoDropzone({
       setBusy(true);
       const stored = await stash(file, panel, preset ?? null);
       // Storage unavailable: the editor's own drop zone is the fallback (nothing is lost).
-      navigate(stored ? handoffHref(panel, preset ?? null) : PHOTO_EDITOR_HREF);
+      navigate(stored ? handoffHref(panel, preset ?? null, slug) : PHOTO_EDITOR_HREF);
     },
-    [busy, navigate, panel, preset, stash],
+    [busy, navigate, panel, preset, slug, stash],
   );
 
   return (

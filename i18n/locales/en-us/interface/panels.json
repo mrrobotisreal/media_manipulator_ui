@@ -2091,6 +2091,17 @@
       "zipFailed": "The ZIP could not be prepared. Please try again.",
       "zipMissing_one": "{{count}} photo could not be added to the ZIP.",
       "zipMissing_other": "{{count}} photos could not be added to the ZIP."
+    },
+    "gate": {
+      "cta": {
+        "signup": "Sign in free",
+        "premium": "Upgrade to Premium",
+        "pro": "Upgrade to Pro"
+      },
+      "sizes": {
+        "premium": "Exports above {{mp}} MP are included with Premium.",
+        "pro": "Exports above {{mp}} MP are included with Pro."
+      }
     }
   }
 }

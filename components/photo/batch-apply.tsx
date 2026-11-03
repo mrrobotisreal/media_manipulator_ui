@@ -20,6 +20,14 @@ import {
 import { onBatchStarted } from '@/lib/photo/seams';
 import type { PhotoDoc } from '@/lib/photo/photoTypes';
 
+/** How a batch run ended (MM101): rows that produced a file, failed rows, wall-clock ms, and the refusal code when the batch itself was refused. */
+export interface BatchFinish {
+  done: number;
+  failed: number;
+  ms: number;
+  error?: string;
+}
+
 export interface BatchApplyProps {
   doc: PhotoDoc;
   options: BatchExportOptions;
@@ -29,6 +37,12 @@ export interface BatchApplyProps {
   renderReady: boolean;
   /** MM101 seam: the user hit the limit / sign-in wall. */
   onGated?: (reason: 'sign_in' | 'limit') => void;
+  /** MM101: a run is about to start (the dialog records the format and size the seam reports). */
+  onStart?: () => void;
+  /** MM101: the run ended or was refused. */
+  onFinished?: (r: BatchFinish) => void;
+  /** MM101: the upgrade CTA shown with the sign-in / limit line. */
+  upgrade?: React.ReactNode;
   /** Test seam. */
   deps?: BatchDeps;
 }
@@ -36,7 +50,7 @@ export interface BatchApplyProps {
 const percent = (r: BatchRow) => Math.round((r.progress ?? 0) * 100);
 
 /** "Apply to more photos" (design §5.5 / §6.2, MM99 decision 6). */
-export function BatchApply({ doc, options, photoBatch, signedIn, renderReady, onGated, deps }: BatchApplyProps) {
+export function BatchApply({ doc, options, photoBatch, signedIn, renderReady, onGated, onStart, onFinished, upgrade, deps }: BatchApplyProps) {
   const { t } = useLocalization('interface');
   const d = React.useMemo(() => deps ?? defaultBatchDeps(), [deps]);
   const input = React.useRef<HTMLInputElement>(null);
@@ -52,14 +66,18 @@ export function BatchApply({ doc, options, photoBatch, signedIn, renderReady, on
 
   const run = async (existing?: BatchRow[]) => {
     setBusy(true);
+    onStart?.();
+    const t0 = Date.now();
     try {
-      await runBatch(files.current, doc, options, d, setRows, existing, undefined, { onBatchStarted });
+      const final = await runBatch(files.current, doc, options, d, setRows, existing, undefined, { onBatchStarted });
+      onFinished?.({ done: final.filter((r) => r.status === 'done').length, failed: final.filter((r) => r.status === 'failed').length, ms: Date.now() - t0 });
     } catch (e) {
       if (e instanceof BatchError && (e.code === 'photo_batch_limit' || e.code === 'sign_in_required')) {
         const reason = e.code === 'sign_in_required' ? 'sign_in' : 'limit';
         setWall(reason);
         onGated?.(reason);
       }
+      onFinished?.({ done: 0, failed: files.current.length, ms: Date.now() - t0, error: e instanceof BatchError ? e.code : 'failed' });
     } finally {
       setBusy(false);
     }
@@ -107,11 +125,11 @@ export function BatchApply({ doc, options, photoBatch, signedIn, renderReady, on
     <section className="space-y-2 rounded-md border border-edge p-3" aria-label={t('photo.batch.title')} data-testid="batch-apply">
       <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t('photo.batch.title')}</h3>
       <p className="text-xs text-muted-foreground">{t('photo.batch.body')}</p>
-      {blocked === 'sign_in' && !wall ? <p className="text-xs" data-testid="batch-signin">{t('photo.batch.signIn')}</p> : null}
-      {wall === 'sign_in' ? <p role="status" className="text-xs" data-testid="batch-signin">{t('photo.batch.signIn')}</p> : null}
+      {blocked === 'sign_in' && !wall ? <p className="text-xs" data-testid="batch-signin">{t('photo.batch.signIn')} {upgrade}</p> : null}
+      {wall === 'sign_in' ? <p role="status" className="text-xs" data-testid="batch-signin">{t('photo.batch.signIn')} {upgrade}</p> : null}
       {wall === 'limit' ? (
         <p role="status" className="text-xs" data-testid="batch-limit">
-          {t('photo.batch.limit', { count: photoBatch })}
+          {t('photo.batch.limit', { count: photoBatch })} {upgrade}
         </p>
       ) : null}
       {photoBatch > 0 && rows.length === 0 ? <p className="text-xs text-muted-foreground">{t('photo.batch.upTo', { count: photoBatch })}</p> : null}
