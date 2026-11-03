@@ -258,17 +258,24 @@ export async function exportStateless(file: Blob, fileName: string, doc: PhotoDo
   return id;
 }
 
-/** Bytes-per-megapixel estimates per format (MM81-style table). */
-export const BYTES_PER_MP: Record<(typeof PHOTO_FORMATS)[number], (quality: number) => number> = {
-  jpg: (q) => 60_000 + q * 9_000,
-  webp: (q) => 40_000 + q * 6_000,
-  avif: (q) => 25_000 + q * 3_500,
-  png: () => 1_900_000,
+/**
+ * Bytes-per-megapixel estimates (MM81-style table; MM99 decision 9). Reference
+ * points at the default settings: JPG q92 ~ 0.45 MB/MP, WebP ~ 0.3, AVIF ~ 0.2,
+ * PNG ~ 2.5 (photographic) or ~ 1.0 (graphic: flat colour, logos), TIFF ~ 3.0.
+ * Lossy formats scale with the quality slider (q = 92 is the reference).
+ */
+export type ExportContentKind = 'photo' | 'graphic';
+const lossy = (refBytes: number) => (q: number) => refBytes * (0.2 + 0.8 * Math.pow(Math.max(1, Math.min(100, q)) / 92, 2));
+export const BYTES_PER_MP: Record<(typeof PHOTO_FORMATS)[number], (quality: number, kind?: ExportContentKind) => number> = {
+  jpg: lossy(450_000),
+  webp: lossy(300_000),
+  avif: lossy(200_000),
+  png: (_q, kind = 'photo') => (kind === 'graphic' ? 1_000_000 : 2_500_000),
   tiff: () => 3_000_000,
 };
 
-export function estimateExportBytes(format: (typeof PHOTO_FORMATS)[number], quality: number, megapixels: number): number {
-  return Math.round(BYTES_PER_MP[format](quality) * megapixels);
+export function estimateExportBytes(format: (typeof PHOTO_FORMATS)[number], quality: number, megapixels: number, kind: ExportContentKind = 'photo'): number {
+  return Math.round(BYTES_PER_MP[format](quality, kind) * megapixels);
 }
 
 /** Max-size options of the export dialog; MP 0 = original. */

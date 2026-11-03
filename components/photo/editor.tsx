@@ -41,7 +41,7 @@ import { cn } from '@/lib/utils';
 import { PhotoCanvas, type CanvasHandle, type PhotoSourceInfo } from './canvas';
 import { fetchProjectFile, proxyCandidates, type HealOutcome } from '@/lib/photo/aiApi';
 import { currentBaseRef } from '@/lib/photo/healOps';
-import { onCompareUsed } from '@/lib/photo/seams';
+import { onCompareUsed, onShortcutsOpened } from '@/lib/photo/seams';
 import { setLocalBase } from '@/lib/photo/localProject';
 import { clearMaskAssets, registerSubjectMask } from '@/lib/photo/maskAssets';
 import { useToolStore } from '@/lib/photo/toolStore';
@@ -53,6 +53,10 @@ import { MasksPanel } from './masks/masks-panel';
 import { GeometryPanel } from './panels/geometry-panel';
 import { HealPanel } from './panels/heal-panel';
 import { RedEyePanel } from './panels/redeye-panel';
+import { DetailPanel } from './panels/detail-panel';
+import { PresetsPanel } from './panels/presets-panel';
+import { HistoryPanel } from './panels/history-panel';
+import { ShortcutsSheet } from './shortcuts-sheet';
 import { ConflictDialog, DraftDialog, LocalBanner, ReplaceLocalDialog, UploadOffer } from './dialogs';
 import { ExportDialog } from './export-dialog';
 import { LayersPanel, panelForLayer, type PanelId } from './layers-panel';
@@ -66,7 +70,7 @@ import { EffectsPanel, LutPanel } from './panels/lut-effects-panels';
 import { HistogramPlot } from './histogram-plot';
 import { useSignedIn } from './use-signed-in';
 
-const PANELS: PanelId[] = ['basic', 'geometry', 'masks', 'heal', 'redEye', 'curves', 'levels', 'hsl', 'colorBalance', 'blackWhite', 'channelMixer', 'photoFilter', 'splitTone', 'lut', 'effects'];
+const PANELS: PanelId[] = ['presets', 'basic', 'detail', 'geometry', 'masks', 'heal', 'redEye', 'curves', 'levels', 'hsl', 'colorBalance', 'blackWhite', 'channelMixer', 'photoFilter', 'splitTone', 'lut', 'effects', 'history'];
 const AUTOSAVE_MS = 2500;
 
 type Picked = { r: number; g: number; b: number; n: number } | null;
@@ -103,6 +107,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const [draft, setDraft] = React.useState<PhotoDraft | null>(null);
   const [conflict, setConflict] = React.useState<number | null>(null);
   const [exportOpen, setExportOpen] = React.useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = React.useState(false);
   const [showOriginal, setShowOriginal] = React.useState(false);
   const [split, setSplit] = React.useState<number | null>(null);
   const [picking, setPicking] = React.useState<'curves' | 'hsl' | 'mask' | null>(null);
@@ -561,6 +566,14 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
           ts.toggleTool('heal');
           setPanel('heal');
         } else if (e.key === 'Escape') ts.setTool('none');
+        else if (e.key === '0') canvasRef.current?.fit();
+        else if (e.key === '1') canvasRef.current?.actualSize();
+        else if (e.key === '+' || e.key === '=') canvasRef.current?.zoomBy(1.25);
+        else if (e.key === '-' || e.key === '_') canvasRef.current?.zoomBy(0.8);
+        else if (e.key === '?') {
+          setShortcutsOpen((o) => !o);
+          onShortcutsOpened();
+        }
       }
       const mod = e.metaKey || e.ctrlKey;
       if (mod && e.key.toLowerCase() === 'z' && !typing(e)) {
@@ -573,6 +586,9 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       } else if (mod && e.key.toLowerCase() === 's') {
         e.preventDefault();
         void save();
+      } else if (mod && e.key.toLowerCase() === 'e' && !e.shiftKey) {
+        e.preventDefault();
+        setExportOpen(true);
       }
     };
     const up = (e: KeyboardEvent) => {
@@ -635,11 +651,11 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
     void swapSource(healRef);
   }, [healRef, source, swapSource]);
 
-  // A <= 64 px float thumbnail of the source for mask thumbnails.
+  // A <= 96 px float thumbnail of the source for mask and preset thumbnails.
   React.useEffect(() => {
     if (!source) return;
     try {
-      const k = Math.min(1, 64 / Math.max(source.width, source.height));
+      const k = Math.min(1, 96 / Math.max(source.width, source.height));
       const w = Math.max(1, Math.round(source.width * k));
       const h = Math.max(1, Math.round(source.height * k));
       const c = document.createElement('canvas');
@@ -676,6 +692,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       requestPick: () => setPicking('mask'),
       picked: pickedMask,
       keepLocalMask: (ref, blob) => registerSubjectMask(ref, blob),
+      zoom100: () => canvasRef.current?.actualSize(),
       onHealed: async (outcome: HealOutcome) => {
         let next: PhotoSourceInfo | null = null;
         if (outcome.blob) {
@@ -765,6 +782,12 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         return <HealPanel />;
       case 'redEye':
         return <RedEyePanel />;
+      case 'detail':
+        return <DetailPanel />;
+      case 'presets':
+        return <PresetsPanel />;
+      case 'history':
+        return <HistoryPanel />;
       case 'layers':
         return <LayersPanel onOpenPanel={openPanel} />;
     }
@@ -813,6 +836,9 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         </Button>
         <Button size="sm" variant="outline" disabled={!canSave} onClick={() => void save()}>
           {t('photo.bar.save')}
+        </Button>
+        <Button size="icon" variant="ghost" aria-label={t('photo.bar.shortcuts')} onClick={() => { setShortcutsOpen(true); onShortcutsOpened(); }} data-testid="shortcuts-open">
+          <span aria-hidden="true" className="font-mono text-sm">?</span>
         </Button>
         <Button size="sm" onClick={() => setExportOpen(true)} data-testid="export-open">
           {t('photo.bar.export')}
@@ -888,6 +914,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         capabilities={caps}
         originalFile={originalFile}
       />
+      <ShortcutsSheet open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       <ConflictDialog open={conflict !== null} onKeepMine={() => void onKeepMine()} onLoadTheirs={() => void onLoadTheirs()} />
       <DraftDialog
         open={!!draft}

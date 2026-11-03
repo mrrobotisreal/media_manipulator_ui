@@ -372,7 +372,10 @@ export class PhotoRenderer {
     };
     switch (plan.kind) {
       case 'unsharp':
-        run('D_LUMA_H', input, a, (p) => (gl.uniform2f(p.loc.uDir, 1, 0), gl.uniform1f(p.loc.uSigma, plan.sigma)));
+        run('D_LUMA_H', input, a, (p) => {
+          gl.uniform2f(p.loc.uDir, 1, 0);
+          gl.uniform1f(p.loc.uSigma, plan.sigma);
+        });
         run('D_UNSHARP_V', input, out, (p) => {
           gl.uniform2f(p.loc.uDir, 0, 1);
           gl.uniform1f(p.loc.uSigma, plan.sigma);
@@ -380,8 +383,14 @@ export class PhotoRenderer {
         }, { prev: a.tex, mask });
         break;
       case 'blur':
-        run('D_BLUR_H', input, a, (p) => (gl.uniform2f(p.loc.uDir, 1, 0), gl.uniform1f(p.loc.uSigma, plan.sigma)));
-        run('D_BLUR_V', input, out, (p) => (gl.uniform2f(p.loc.uDir, 0, 1), gl.uniform1f(p.loc.uSigma, plan.sigma)), { prev: a.tex, mask });
+        run('D_BLUR_H', input, a, (p) => {
+          gl.uniform2f(p.loc.uDir, 1, 0);
+          gl.uniform1f(p.loc.uSigma, plan.sigma);
+        });
+        run('D_BLUR_V', input, out, (p) => {
+          gl.uniform2f(p.loc.uDir, 0, 1);
+          gl.uniform1f(p.loc.uSigma, plan.sigma);
+        }, { prev: a.tex, mask });
         break;
       case 'nr':
         run('D_NR_LAB', input, a, () => undefined);
@@ -590,7 +599,10 @@ export class PhotoRenderer {
     this.targets?.forEach((t) => (gl.deleteTexture(t.tex), gl.deleteFramebuffer(t.fb)));
     if (this.geoTarget) (gl.deleteTexture(this.geoTarget.tex), gl.deleteFramebuffer(this.geoTarget.fb));
     this.detailTmp?.forEach((t) => (gl.deleteTexture(t.tex), gl.deleteFramebuffer(t.fb)));
-    if (this.dehazeGrid) (gl.deleteTexture(this.dehazeGrid.tex), gl.deleteFramebuffer(this.dehazeGrid.fb));
+    if (this.dehazeGrid) {
+      gl.deleteTexture(this.dehazeGrid.tex);
+      gl.deleteFramebuffer(this.dehazeGrid.fb);
+    }
     this.masks.clear();
     this.maskTmp?.forEach((m) => this.freeMask(m));
     this.alphas.forEach((a) => gl.deleteTexture(a.tex));
