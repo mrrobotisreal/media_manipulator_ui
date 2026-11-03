@@ -32,6 +32,29 @@ _Avoid_: "vector" in anything a user can see; the `motion` npm package (we do no
 **vector**:
 The code identifier for the same editor, everywhere: directories `components/vector/`, `lib/vector/`, API `/api/vector/*`, tables `vector_*`, analytics `vector_*` and `feature: 'vector'`, env `VECTOR_*`. Cosmetic-only brand, exactly like Darkroom/`studio` (design `docs/design/MOTION_SVG_ANIMATOR.md` §1, ADR-0012).
 
+### Naming: the Aperture photo editor
+
+**Aperture**:
+The user-facing name for the photo editor (`/photo/[projectId]`, chromeless like `/dr` and `/motion`; public landing page `/tools/aperture` arrives with MM100). Code identifier `photo` everywhere (`lib/photo`, `components/photo`, `/api/photo/*`, `photo_*`); the one copy constant is `PHOTO_BRAND` in `lib/photo/brand.ts`, interpolated into i18n as `{{brand}}` (`lib/photo/brand.test.ts` enforces it). Shown with a "Beta" chip. _Avoid_: "Photoshop", "image editor" (Darkroom edits video; the old image tools are one-shot forms).
+
+**PhotoDoc**:
+The Aperture document, v1 (Zod in `lib/photo/photoTypes.ts`, Go mirror `internal/photo` in the API): source size, heals, geometry, an ordered stack of adjustment layers (each with blend, opacity and an optional mask) and output hints. **Additive-only**: unknown `version` refused, unknown keys kept. `canonicalPhotoDoc` is the canonical JSON (compact, code-point-sorted keys, defaults filled, nullable fields `null`, optional fields absent); the shared fixtures in `lib/photo/fixtures/docs/` are byte-identical with the API's `internal/photo/testdata/docs/`. The editor schema clamps out-of-range numbers exactly like the Go sanitizer. From MM97 on the UI is the source of the fixtures, images and goldens; the API copies them.
+
+**Reference math**:
+`lib/photo/colorMath.ts`, the normative statement of every Aperture adjustment (Darkroom's `eqAdjust`, `colorBalanceMidtones`, `vibranceAdjust` are imported, never copied). The GLSL, the server NumPy render and the phone SkSL mirror it stage for stage with the same constant names.
+
+**Preview renderer**:
+`lib/photo/gl/photoRenderer.ts`: the WebGL2 live preview (one pass per layer, one program per layer type from `shaders/adjustSource.ts`, float working texture when `EXT_color_buffer_float` exists). Without WebGL2 the editor renders `renderDocCPU` on a 1 MP downscale and shows a "Reduced preview" chip. Pure packing (`gl/uniforms.ts`) is unit-tested; the GPU is checked by the workstation-only `e2e/photo-parity.spec.ts`.
+
+**Golden**:
+A reference output PNG `lib/photo/fixtures/goldens/<doc>.<image>.png` made by `npm run photo:goldens` from `renderDocCPU` over the three fixture images. A test fails if a committed golden differs from a fresh render, so a formula change must regenerate them deliberately; the server's `photo_render.py --selftest` and the GPU parity spec compare against the same bytes.
+
+**Grey except this**:
+The HSL panel action that sets saturation to -100 on every hue range except the chosen one (`greyExcept` in `lib/photo/layerOps.ts`): "everything grey except red".
+
+**Browser-local project**:
+Anonymous visitors get exactly one Aperture project, stored in the browser (original Blob + doc in IndexedDB, doc mirrored to `localStorage`); a second photo asks to replace it; export uses the stateless `POST /api/photo/export`; after sign-in the project is offered for upload as a server project.
+
 ### Motion domain
 
 **VectorDoc**:

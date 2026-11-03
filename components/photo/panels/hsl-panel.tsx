@@ -34,7 +34,7 @@ export function HslPanel({ pickedValue, onRequestPick }: { pickedValue?: { r: nu
   const current = sel === 'master' ? null : ranges.find((r) => r.id === sel) ?? null;
   const target = current ?? params.master;
   const setField = (field: 'hue' | 'saturation' | 'lightness' | 'width' | 'feather', value: number) => {
-    update('Colour', `${sel}.${field}`, (p) => {
+    update('Color', `${sel}.${field}`, (p) => {
       if (!current) return { ...p, master: { ...p.master, [field]: value } };
       return { ...p, ranges: ranges.map((r) => (r.id === sel ? { ...r, [field]: value } : r)) };
     });
@@ -63,7 +63,7 @@ export function HslPanel({ pickedValue, onRequestPick }: { pickedValue?: { r: nu
             className="w-full rounded-md border border-primary/50 bg-primary/10 px-3 py-2 text-sm font-medium text-foreground hover:bg-primary/20"
             onClick={() => {
               const base = ensureRanges();
-              update('Grey except', current.id, (p) => ({ ...p, ranges: greyExcept(p.ranges.length ? p.ranges : base, current.id) }));
+              update('Gray except', current.id, (p) => ({ ...p, ranges: greyExcept(p.ranges.length ? p.ranges : base, current.id) }));
             }}
           >
             {t('photo.hsl.greyExceptNamed', { name: rangeName(current, ranges.indexOf(current)) })}

@@ -192,8 +192,8 @@ describe('Export dialog', () => {
   });
 
   it('signed in: posts to the project route with the doc; signed out: the stateless multipart route', async () => {
-    const project = vi.fn(async () => 'job-1');
-    const stateless = vi.fn(async () => 'job-2');
+    const project = vi.fn<(a: string, b: unknown, c: unknown) => Promise<string>>(async () => 'job-1');
+    const stateless = vi.fn<(a: Blob, b: string, c: unknown, d: unknown) => Promise<string>>(async () => 'job-2');
     const { unmount } = render(<Wrap><ExportDialog {...base} projectId="p1" file={null} signedIn capabilities={caps()} exporters={{ project, stateless }} /></Wrap>);
     fireEvent.click(screen.getByRole('radio', { name: '12 MP' }));
     fireEvent.click(screen.getByTestId('export-start'));

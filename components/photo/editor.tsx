@@ -113,6 +113,15 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
     document.title = `${PHOTO_BRAND} · ${title}`;
   }, [title]);
 
+  // Workstation parity spec hook (`e2e/photo-parity.spec.ts`): dev builds only, opt-in by query.
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === 'production') return;
+    if (new URLSearchParams(window.location.search).get('parity') !== '1') return;
+    void import('@/lib/photo/gl/photoRenderer').then((m) => {
+      (window as unknown as { __photoParity?: unknown }).__photoParity = { PhotoRenderer: m.PhotoRenderer };
+    });
+  }, []);
+
   // ---- capabilities + tier numbers ------------------------------------
   React.useEffect(() => {
     void getPhotoCapabilities().then(setCaps);

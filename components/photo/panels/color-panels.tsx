@@ -26,13 +26,13 @@ export function ColorBalancePanel() {
               max={100}
               defaultValue={0}
               gestureLabel={`colorBalance.${z}.${c}`}
-              onChange={(v) => update('Colour balance', `${z}.${c}`, (p) => ({ ...p, [z]: { ...p[z], [c]: v } }))}
+              onChange={(v) => update('Color balance', `${z}.${c}`, (p) => ({ ...p, [z]: { ...p[z], [c]: v } }))}
             />
           ))}
         </PanelSection>
       ))}
       <PanelSection title={t('photo.colorBalance.title')}>
-        <ToggleChip pressed={params.preserveLuminosity} onClick={() => update('Colour balance', 'preserveLuminosity', (p) => ({ ...p, preserveLuminosity: !p.preserveLuminosity }))}>
+        <ToggleChip pressed={params.preserveLuminosity} onClick={() => update('Color balance', 'preserveLuminosity', (p) => ({ ...p, preserveLuminosity: !p.preserveLuminosity }))}>
           {t('photo.colorBalance.preserveLuminosity')}
         </ToggleChip>
       </PanelSection>

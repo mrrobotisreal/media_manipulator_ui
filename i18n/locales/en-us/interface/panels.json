@@ -1491,8 +1491,8 @@
       "basic": "Basic",
       "curves": "Curves",
       "levels": "Levels",
-      "hsl": "Colour (HSL)",
-      "colorBalance": "Colour balance",
+      "hsl": "Color (HSL)",
+      "colorBalance": "Color balance",
       "blackWhite": "Black & white",
       "channelMixer": "Channel mixer",
       "photoFilter": "Photo filter",
@@ -1530,7 +1530,7 @@
         "tint": "Tint"
       },
       "vibranceSaturation": {
-        "title": "Colour",
+        "title": "Color",
         "vibrance": "Vibrance",
         "saturation": "Saturation"
       }
@@ -1571,22 +1571,22 @@
         "blues": "Blues",
         "magentas": "Magentas"
       },
-      "master": "All colours",
+      "master": "All colors",
       "hue": "Hue",
       "saturation": "Saturation",
       "lightness": "Lightness",
-      "greyExcept": "Grey except this",
-      "greyExceptNamed": "Grey except {{name}}",
+      "greyExcept": "Gray except this",
+      "greyExceptNamed": "Gray except {{name}}",
       "custom": "Custom range {{index}}",
-      "pickRange": "Pick a colour from the photo",
+      "pickRange": "Pick a color from the photo",
       "width": "Width",
       "feather": "Feather",
       "removeRange": "Remove range",
-      "resetRanges": "Reset colours",
-      "selected": "Selected colour range"
+      "resetRanges": "Reset colors",
+      "selected": "Selected color range"
     },
     "colorBalance": {
-      "title": "Colour balance",
+      "title": "Color balance",
       "shadows": "Shadows",
       "midtones": "Midtones",
       "highlights": "Highlights",
@@ -1623,8 +1623,8 @@
     },
     "photoFilter": {
       "title": "Photo filter",
-      "color": "Colour",
-      "custom": "Custom colour",
+      "color": "Color",
+      "custom": "Custom color",
       "density": "Density",
       "preserveLuminosity": "Preserve luminosity",
       "warming": "Warming",
@@ -1673,7 +1673,7 @@
       "blendMode": {
         "normal": "Normal",
         "luminosity": "Luminosity",
-        "color": "Colour"
+        "color": "Color"
       },
       "duplicate": "Duplicate",
       "delete": "Delete",
@@ -1690,8 +1690,8 @@
         "curves": "Curves",
         "whiteBalance": "White balance",
         "vibranceSaturation": "Vibrance / saturation",
-        "hsl": "Colour (HSL)",
-        "colorBalance": "Colour balance",
+        "hsl": "Color (HSL)",
+        "colorBalance": "Color balance",
         "blackWhite": "Black & white",
         "channelMixer": "Channel mixer",
         "photoFilter": "Photo filter",
