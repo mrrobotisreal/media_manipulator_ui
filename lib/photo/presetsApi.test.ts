@@ -33,7 +33,7 @@ afterEach(() => {
 
 describe('presets API client (signed in)', () => {
   it('lists with ?full=1 and parses layers, cap and use', async () => {
-    const f = vi.fn(async (_u: string, _i?: RequestInit) => json(200, { presets: [wire('a', 'Warm')], limit: 10, used: 1 }));
+    const f = vi.fn<(u: string, i?: RequestInit) => Promise<Response>>(async () => json(200, { presets: [wire('a', 'Warm')], limit: 10, used: 1 }));
     const r = await listServerPresets(f);
     expect(String(f.mock.calls[0][0])).toMatch(/\/photo\/presets\?full=1$/);
     expect(r.limit).toBe(10);
@@ -86,7 +86,7 @@ describe('one-time migration of browser presets', () => {
     const local = await listUserPresets();
     expect(local).toHaveLength(3);
     let created = 0;
-    const f = vi.fn(async (_u: string, _i?: RequestInit) => {
+    const f = vi.fn<(u: string, i?: RequestInit) => Promise<Response>>(async () => {
       created += 1;
       return created <= 2 ? json(201, wire(`s${created}`, `P${created}`)) : json(403, { error: 'photo_presets_limit', limit: 2, used: 2, upgradePath: 'premium' });
     });
@@ -100,7 +100,7 @@ describe('one-time migration of browser presets', () => {
   it('migrates everything and empties the browser store when the cap allows', async () => {
     await saveUserPreset({ name: 'A', layers: layers() });
     await saveUserPreset({ name: 'B', layers: layers() });
-    const f = vi.fn(async (_u: string, _i?: RequestInit) => json(201, wire('s', 'x')));
+    const f = vi.fn<(u: string, i?: RequestInit) => Promise<Response>>(async () => json(201, wire('s', 'x')));
     const r = await migrateLocalPresets(await listUserPresets(), f);
     expect(r).toEqual({ uploaded: 2, remaining: 0, capped: false });
     expect(await listUserPresets()).toEqual([]);
