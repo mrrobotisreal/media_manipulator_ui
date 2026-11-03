@@ -340,6 +340,10 @@
       "motion": {
         "title": "Animations-Tutorials",
         "description": "Animieren Sie SVG-Grafiken auf einer Keyframe-Zeitleiste und exportieren Sie sie als animiertes SVG, Lottie, Code oder GIF."
+      },
+      "photo": {
+        "title": "Tutorials zur Fotobearbeitung",
+        "description": "Korrigieren Sie Licht und Farbe, maskieren, reparieren und exportieren Sie Fotos mit {{brand}}."
       }
     },
     "tutorials": {
@@ -513,6 +517,110 @@
             "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4."
           }
         }
+      },
+      "aperture": {
+        "title": "So bearbeiten Sie ein Foto online mit {{brand}}",
+        "excerpt": "Eine Anleitung in acht Schritten zu {{brand}}: ein Foto öffnen, Licht und Farbe korrigieren, eine Farbe hervorheben, einen Bildteil maskieren, Makel reparieren, in voller Auflösung exportieren, Looks speichern und dieselben Bearbeitungen auf weitere Fotos anwenden.",
+        "readTime": "8 Min. Lesezeit",
+        "page": {
+          "eyebrow": "Tutorial zur Fotobearbeitung",
+          "title": "So bearbeiten Sie ein Foto mit {{brand}}",
+          "intro": "{{brand}} ist der nicht destruktive Fotoeditor von Media Manipulator. Jede Änderung ist eine Einstellungsebene über dem unberührten Original, sodass Sie jeden Schritt später umordnen, maskieren, abschwächen oder löschen können und die geöffnete Datei nie verändert wird. Die Vorschau wird auf Ihrer Grafikkarte aus einer 1920 px breiten Kopie gezeichnet; der Export wird auf unserem Server mit denselben Formeln aus dem Original in voller Auflösung gerendert. Diese Anleitung führt Sie durch eine Bearbeitung, vom Öffnen des Fotos bis zum Anwenden des fertigen Looks auf eine ganze Serie, mit den Namen der Bedienfelder und Regler, die Sie im Editor sehen.",
+          "open": {
+            "title": "1. Ein Foto öffnen",
+            "body": "Öffnen Sie {{brand}} über seine Tool-Seite oder über eine beliebige Foto-Tool-Seite von Media Manipulator. Der Editor füllt den ganzen Bildschirm, ohne Werbung. Ziehen Sie ein Foto auf den Startbildschirm oder wählen Sie „Foto auswählen“. Sobald es dekodiert ist, sehen Sie in der Mitte die Vorschau, an der Seite die Register „Bedienfelder“ und „Ebenen“ und ein Live-Histogramm für Rot, Grün, Blau und Luminanz. Halten Sie jederzeit die Backslash-Taste gedrückt, um das Original zu sehen, oder aktivieren Sie die „Geteilte Ansicht“, um beide Hälften zu vergleichen.",
+            "bullets": {
+              "formats": "Sie können JPG-, PNG-, WebP-, GIF-, HEIC-, HEIF-, AVIF-, TIFF- und BMP-Dateien öffnen. Die gängigen Webformate dekodiert Ihr Browser selbst. HEIC, HEIF, TIFF und BMP erfordern ein Konto, weil der Server eine Vorschaukopie erstellt, bevor der Editor sie anzeigen kann.",
+              "local": "Ohne Konto bleiben das Foto und Ihre Bearbeitungen im Speicher dieses Browsers, und nichts wird hochgeladen, bis Sie exportieren, ein Motiv auswählen oder reparieren. Gäste behalten jeweils ein Foto; das Öffnen eines zweiten ersetzt das gespeicherte Projekt, und der Editor fragt vorher nach.",
+              "account": "Wenn Sie angemeldet sind, wird jedes Foto zu einem in Ihrem Konto gespeicherten Projekt: 5 Projekte im kostenlosen Tarif, 50 in Premium und unbegrenzt in Pro. Das Projekt lässt sich auf jedem Gerät öffnen und wird während der Arbeit automatisch gespeichert; der Speicherstatus steht in der oberen Leiste.",
+              "original": "Die Originaldatei wird nie verändert. Jede Anpassung ist eine Ebene darüber, mit eigener Deckkraft von 0 bis 100 Prozent, einer Füllmethode (Normal, Luminanz oder Farbe) und einer optionalen Maske. Sie können bis zu 64 Ebenen stapeln, und das Bedienfeld „Verlauf“ listet jeden Schritt auf."
+            }
+          },
+          "basic": {
+            "title": "2. Licht und Farbe mit den Grundeinstellungen korrigieren",
+            "body": "Die meisten Fotos brauchen zuerst das Bedienfeld „Grundeinstellungen“. Es fasst die globalen Regler in die Abschnitte Belichtung, Licht, Tonwerte, Weißabgleich und Farbe zusammen, und jeder Abschnitt wird zu einer eigenen Einstellungsebene, sobald Sie einen Regler bewegen. Arbeiten Sie von oben nach unten: erst die Gesamthelligkeit, dann Lichter und Tiefen zurückholen, dann den Farbstich korrigieren und zuletzt entscheiden, wie viel Farbe Sie möchten. Beobachten Sie beim Ziehen das Histogramm; Beschneidung zeigt sich als Anhäufung an einem der beiden Enden.",
+            "bullets": {
+              "exposure": "Belichtung (EV) reicht von -5 bis +5 Blendenstufen und multipliziert jedes Pixel mit zwei hoch dem Wert, sodass +1 das Licht verdoppelt. „Versatz“ addiert oder subtrahiert einen festen Betrag von -0,5 bis 0,5, und „Gamma“ von 0,1 bis 10 biegt die Mitteltöne. Unter „Licht“ finden Sie Helligkeit und Kontrast von -100 bis 100.",
+              "tone": "„Tonwerte“ enthält Lichter, Tiefen, Weiß und Schwarz. Ziehen Sie die Lichter herunter, um einen hellen Himmel zurückzuholen, heben Sie die Tiefen an, um ein dunkles Gesicht aufzuhellen, und legen Sie mit Weiß und Schwarz fest, wo die hellsten und dunkelsten Punkte landen. Jeder Regler wirkt auf seinen eigenen Teil des Helligkeitsbereichs, statt alles zu verschieben.",
+              "whiteBalance": "Der Weißabgleich hat Temperatur und Farbton. Die Temperatur verschiebt das Foto Richtung Blau oder Bernstein; der Farbton Richtung Grün oder Magenta. Aufnahmen in Innenräumen unter warmen Glühbirnen brauchen meist eine Temperatur Richtung Blau, und Leuchtstoffröhrenlicht erfordert oft einen leichten Magenta-Farbton. Beurteilen Sie das Ergebnis an etwas, das neutral grau oder weiß sein sollte.",
+              "history": "Nichts davon ist endgültig. „Rückgängig“ und „Wiederholen“ finden Sie in der oberen Leiste und auf der Tastatur, das Bedienfeld „Verlauf“ springt zu jedem früheren Zustand zurück, und eine gelungene Version können Sie für den Rest der Sitzung als benannten Schnappschuss speichern. Verringern Sie die Deckkraft einer Ebene, um nur die Hälfte einer Anpassung anzuwenden, statt sie neu zu machen."
+            }
+          },
+          "colorPop": {
+            "title": "3. Eine Farbe hervorheben",
+            "body": "Den selektiven Farbeffekt, bei dem eine Farbe bleibt und alles andere grau wird, finden Sie im Bedienfeld „Farbe (HSL)“. Sie erreichen ihn in einem Schritt mit einem integrierten Look oder bauen ihn von Hand auf. Der manuelle Weg gibt Ihnen Kontrolle darüber, welche Farbtöne genau erhalten bleiben und wie weich der Übergang zwischen Farbe und Grau ist, was etwa bei Haut wichtig ist, die zwischen Rot und Gelb liegt.",
+            "bullets": {
+              "look": "Wählen Sie im Bedienfeld „Looks“ „Farbakzent“: Rot, Gelb, Grün, Cyan, Blau oder Magenta. Der Look fügt über Ihren Bearbeitungen eine Ebene „Farbe (HSL)“ hinzu, die alle Bereiche außer dem gewählten entsättigt. Wenn Ihnen das Ergebnis nicht gefällt, entfernt ein einziges „Rückgängig“ den ganzen Look.",
+              "chips": "Um den Effekt selbst aufzubauen, öffnen Sie „Farbe (HSL)“. Jeder der sechs Bereiche, Rottöne, Gelbtöne, Grüntöne, Cyantöne, Blautöne und Magentatöne, hat die Schaltfläche „Grau außer diesem“. Wählen Sie sie bei der Farbe, die bleiben soll, und die anderen fünf Bereiche fallen in einem Zug auf eine Sättigung von minus 100.",
+              "ranges": "Gehört die gewünschte Farbe nicht zu den sechs, fügen Sie mit „Farbe aus dem Foto wählen“ per Pipette einen eigenen Bereich hinzu. Jeder Bereich hat die Regler „Breite“ und „Weiche Kante“: Vergrößern Sie ihn, um benachbarte Farbtöne einzuschließen, oder weichen Sie die Grenze auf, damit der Übergang nicht ausgeschnitten wirkt.",
+              "tune": "Feinjustieren Sie dann die verbleibende Farbe mit ihren eigenen Reglern für Farbton, Sättigung und Helligkeit. Etwas mehr Sättigung und etwas weniger Helligkeit lassen die behaltene Farbe vor Grau meist kräftiger wirken. Ist der Look insgesamt zu stark, verringern Sie die Deckkraft der Ebene im Register „Ebenen“, statt ihn neu zu machen."
+            }
+          },
+          "masks": {
+            "title": "4. Nur einen Teil des Fotos mit Masken bearbeiten",
+            "body": "Jede Einstellungsebene kann eine Maske tragen, die begrenzt, wo sie wirkt. Wählen Sie die Ebene im Register „Ebenen“ aus, öffnen Sie „Masken“ und fügen Sie eine Komponente hinzu. Weiße Bereiche der Maske erhalten die volle Anpassung, schwarze keine, und graue einen entsprechenden Anteil. Die „Maskenansicht“ schaltet zwischen „Aus“, einer farbigen „Überlagerung“ auf dem Foto und „Nur Maske“ um, sodass Sie genau sehen, was Sie beeinflussen, bevor Sie Regler bewegen.",
+            "bullets": {
+              "kinds": "Es gibt sechs Maskenarten: „Verlaufsmaske“ für einen Himmel oder einen Boden, „Radial“ für einen Scheinwerfer um einen Punkt, „Pinsel“ zum Malen von Hand mit einstellbarer Größe und Radieren-Schalter, „Luminanzbereich“ nur für die hellen oder dunklen Bereiche, „Farbbereich“ für Pixel einer gewählten Farbe und „Motiv auswählen“.",
+              "combine": "Eine Maske kann mehrere Komponenten enthalten, und jede ist auf „Hinzufügen“, „Subtrahieren“ oder „Schnittmenge“ gestellt. Ein bewährtes Rezept ist eine Verlaufsmaske über dem Himmel mit einem Pinsel im Modus „Subtrahieren“, der ein hineinragendes Gebäude schützt. „Weiche Kante der Maske“ macht den Rand weicher, „Maskenstärke“ skaliert das Ganze, und „Umkehren“ kehrt es um.",
+              "colorRange": "Der Farbbereich nutzt dieselbe Pipettenidee wie das HSL-Bedienfeld: Wählen Sie eine Farbe, fügen Sie mit Umschalt-Klick bis zu acht weitere hinzu und erhöhen Sie die „Toleranz“, um ähnliche Farbtöne einzuschließen. So dunkeln Sie schnell nur einen blauen Himmel ab oder wärmen nur die Hauttöne auf, ohne etwas zu malen.",
+              "subject": "„Motiv auswählen“ bittet unsere GPU, die Hauptperson oder das Hauptobjekt zu finden, und liefert in wenigen Sekunden eine Maske mit weichem Rand. Es ist die einzige Maskenart, die das Foto hochlädt und in Ihrem Tarif als Standardvorgang zählt; ein identischer Wiederholungsaufruf ist ein kostenloser Cache-Treffer. Jede andere Maskenart wird in Ihrem Browser berechnet und kostet nichts."
+            }
+          },
+          "heal": {
+            "title": "5. Flecken und Makel reparieren",
+            "body": "Staub auf dem Sensor, ein Pickel, ein verirrtes Kabel oder ein Stück Müll lassen sich alle mit dem Bedienfeld „Reparieren“ entfernen. Anders als die Regler ist die Reparatur ein generativer Schritt: Unser Server füllt den übermalten Bereich mit neuen Pixeln, die zur Umgebung passen. Sie landet dennoch in Ihrem Ebenenstapel und im Verlauf, sodass Sie sie rückgängig machen oder mit gedrückter Backslash-Taste mit dem Original vergleichen können, ist aber das einzige Werkzeug in dieser Anleitung, das einen KI-Vorgang kostet.",
+            "bullets": {
+              "paint": "Wählen Sie den Fleckenpinsel und übermalen Sie jede Stelle, die verschwinden soll. Malen Sie den Tupfer etwas größer als den Fleck selbst, damit die Füllung saubere Textur zum Einblenden hat. Das Bedienfeld zählt die markierten Flecken, und „Flecken löschen“ beginnt von vorn, falls Sie es sich vor dem Reparieren anders überlegen.",
+              "press": "Wählen Sie „Reparieren“, sobald die Flecken markiert sind. Das Foto und der übermalte Bereich gehen an unsere GPU, wo das Inpainting-Modell LaMa die markierten Stellen füllt; bei einer großen Datei kann das bis zu einer Minute dauern. Kommt das Ergebnis zurück, wird es als Schritt im Verlauf angewendet, und „Rückgängig“ ist verfügbar.",
+              "cost": "Jedes Auslösen von „Reparieren“ ist ein KI-Vorgang in Ihrem Tarif, egal wie viele Flecken Sie übermalt haben; markieren Sie also zuerst alles und lösen Sie nur einmal aus. Das Tageskontingent je Tarif steht auf der Preisseite. Flecken zu übermalen, zu löschen und eine Reparatur rückgängig zu machen kostet nichts.",
+              "base": "Die Reparatur liegt wie alles andere in Ihrem Ebenenstapel, sodass später hinzugefügte Farb- und Tonwert-Ebenen auf das reparierte Ergebnis wirken und „Rückgängig“ oder das Bedienfeld „Verlauf“ sie wieder entfernt. Für rote Augen bei Blitzporträts gibt es ein eigenes Bedienfeld „Rote Augen“, das ganz ohne KI auskommt."
+            }
+          },
+          "export": {
+            "title": "6. In voller Auflösung exportieren",
+            "body": "Wählen Sie in der oberen Leiste „Exportieren“, wenn die Bearbeitung fertig ist. Die Vorschau, mit der Sie gearbeitet haben, ist eine 1920 px breite Kopie auf Ihrer Grafikkarte; der Export ist ein Serverauftrag, der das Original mit denselben Formeln in voller Größe rendert, sodass beide höchstens um einige 8-Bit-Stufen abweichen. Das Ergebnis wird als neue Datei mit dem Namen des Originals und dem Zusatz (retouched) heruntergeladen; das Original bleibt unberührt.",
+            "bullets": {
+              "format": "Wählen Sie JPG, PNG, WebP, AVIF oder TIFF, stellen Sie, wo es zutrifft, die Qualität von 1 bis 100 ein und legen Sie fest, ob die Metadaten „Behalten“ oder „Entfernen“ werden. Das Entfernen löscht den EXIF-Block, einschließlich Kameraeinstellungen und GPS-Standort, was vor dem öffentlichen Posten eines Fotos meist gewünscht ist.",
+              "size": "Bei „Maximale Größe“ stehen Original, 12, 24, 64 und 120 Megapixel zur Wahl. Der Dialog schätzt die Dateigröße für Ihre Auswahl: ein JPG mit Qualität 92 hat etwa 0,45 MB pro Megapixel, ein Foto mit 6000 x 4000 bei 24 MP kommt also auf rund 10,8 MB, während WebP bei etwa 0,3 MB und AVIF bei etwa 0,2 MB pro Megapixel liegt.",
+              "server": "Exporte bis 12 MP stehen Gästen und im kostenlosen Tarif zur Verfügung, ein größeres Original wird also mit 12 MP exportiert. Premium und Pro exportieren bis zu 120 MP. Der Auftrag läuft auf unserem Server, der mit NumPy und OpenCV rendert, mit ImageMagick kodiert und die Datei nach Abschluss zum Download anbietet.",
+              "cost": "Ein Export ist ein Standardvorgang in Ihrem Tarif, und Sie können den Export danach mit anderen Einstellungen wiederholen, zum Beispiel ein TIFF in voller Größe zum Drucken und ein WebP mit 12 MP fürs Web. Vorschau, jeder Regler, jede Nicht-KI-Maske, Looks und „Rückgängig“ sind kostenlos und unbegrenzt."
+            }
+          },
+          "presets": {
+            "title": "7. Looks speichern und wiederverwenden",
+            "body": "Ein Look in {{brand}} ist eine gespeicherte Gruppe von Einstellungsebenen. Das Bedienfeld „Looks“ bringt 18 integrierte Looks plus „Automatisch“ mit, und dort liegen auch Ihre eigenen Voreinstellungen. Beim Speichern einer Voreinstellung werden die gewählten Ebenen mit ihren aktuellen Werten festgehalten, sodass die warme, leicht verblasste Bearbeitung, die Sie für ein Foto eingestellt haben, mit einem Klick auf das nächste übertragen werden kann und weiterhin als bearbeitbare Ebenen ankommt, nicht als eingebrannter Filter.",
+            "bullets": {
+              "builtin": "Die integrierten Looks sind in Farbe, Schwarzweiß, Film und Korrektur gruppiert und umfassen die sechs Looks „Farbakzent“, Schwarzweißfilm, Schwarzweiß mit hohem Kontrast, Warm, Kühl, Matt, Verblasst, Lebendig, Kraftvoll, Kreuzentwicklung, Vintage, Porträt weichzeichnen, Landschaft und Automatisch. Mit dem Filterfeld finden Sie einen nach Namen.",
+              "append": "Das Anwenden eines Looks fügt seine Anpassungen als benannte Gruppe über Ihrer bisherigen Arbeit hinzu, statt sie zu ersetzen. So können Sie „Warm“ über Ihre eigenen Korrekturen in den Grundeinstellungen legen, die Gruppe im Register „Ebenen“ öffnen, um einzelne Regler anzupassen, und den ganzen Look mit einem „Rückgängig“ wieder entfernen.",
+              "mine": "Wählen Sie „Aktuelle Bearbeitung als Voreinstellung speichern“, geben Sie einen Namen ein und haken Sie die einzuschließenden Anpassungen an. Die Voreinstellung erscheint unter „Meine Voreinstellungen“. Ihre Voreinstellungen werden in diesem Browser gespeichert und folgen Ihnen daher nicht von selbst auf ein anderes Gerät; im selben Bedienfeld können Sie sie umbenennen oder löschen.",
+              "file": "„Voreinstellungen exportieren“ schreibt Ihre gespeicherten Voreinstellungen in eine JSON-Datei; „Voreinstellungen importieren“ liest eine solche Datei wieder ein. So übertragen Sie Voreinstellungen in einen anderen Browser oder auf einen anderen Computer, legen eine Sicherung an oder teilen einen Look mit jemandem, der {{brand}} auf Media Manipulator nutzt."
+            }
+          },
+          "batch": {
+            "title": "8. Dieselben Bearbeitungen auf weitere Fotos anwenden",
+            "body": "Wenn mehrere Fotos desselben Shootings dieselbe Behandlung brauchen, müssen Sie die Bearbeitung nicht wiederholen. Beenden Sie ein Foto, öffnen Sie den Exportdialog und wählen Sie „Auf weitere Fotos anwenden“. Er übernimmt den gesamten Ebenenstapel des aktuellen Projekts, einschließlich der Masken und Reparaturen, die Sie an diesem Foto bereits vorgenommen haben, rendert ihn mit den gewählten Exporteinstellungen auf die anderen ausgewählten Dateien und liefert Ihnen alles als einen Download.",
+            "bullets": {
+              "limit": "„Auf weitere Fotos anwenden“ ist nur verfügbar, wenn Sie angemeldet sind; Gäste werden im Dialog zur Anmeldung aufgefordert. Der kostenlose Tarif wendet Bearbeitungen auf bis zu 3 Fotos gleichzeitig an, Premium auf bis zu 10 und Pro auf bis zu 25. Wählen Sie mehr, als Ihr Tarif erlaubt, werden die überzähligen Dateien ausgelassen, und der Dialog nennt die Anzahl.",
+              "run": "Jedes gewählte Foto wird zunächst nacheinander als eigenes Projekt in Ihrem Konto angelegt, sodass die Originale und ihre Bearbeitungen wie jedes andere Projekt erhalten bleiben. Dann rendert ein einzelner Stapelauftrag alle auf dem Server, und der Dialog zeigt, wie jedes Foto von „Wird vorbereitet“ über „Wird gerendert“ mit Prozentangabe zu „Fertig“ wechselt.",
+              "zip": "Wenn die Renderings abgeschlossen sind, wählen Sie „Als ZIP herunterladen“. Das Archiv wird in Ihrem Browser aus den fertigen Dateien erstellt, sodass nichts zusätzlich hochgeladen wird und Sie eine Datei statt einem Dutzend einzelner Downloads speichern. Konnte eine Datei nicht hinzugefügt werden, nennt der Dialog, wie viele fehlen.",
+              "retry": "Scheitert ein Foto, werden die anderen nicht aufgehalten. Der Dialog zeigt, wie viele fehlgeschlagen sind, und bietet eine Schaltfläche zum erneuten Versuch nur für diese Dateien; das ZIP lässt sich neu erstellen, sobald sie fertig sind. Exporte zählen in Ihrem Tarif als Standardvorgänge, prüfen Sie also die Preisseite, bevor Sie einen großen Stapel starten."
+            }
+          },
+          "cta": {
+            "title": "Probieren Sie es an Ihrem eigenen Foto aus",
+            "body": "Öffnen Sie {{brand}}, ziehen Sie ein Foto hinein und arbeiten Sie die acht Schritte oben durch. Jeder Regler, jede Maske und jeder Look lässt sich ohne Konto kostenlos ausprobieren, und Ihr Foto bleibt in Ihrem Browser, bis Sie sich zum Export entscheiden.",
+            "button": "{{brand}} öffnen"
+          },
+          "related": {
+            "title": "Verwandtes",
+            "intro": "Weitere Seiten zur Arbeit mit Fotos auf Media Manipulator.",
+            "toolDesc": "Die Tool-Seite des Editors mit der vollständigen Liste der Bedienfelder, Exportformate und dem, was jeder Tarif erlaubt.",
+            "darkroom": "Darkroom-Videoeditor-Tutorial",
+            "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4.",
+            "licenses": "Open-Source-Lizenzen",
+            "licensesDesc": "Die Open-Source-Bibliotheken und -Modelle hinter dem Editor und dem übrigen Media Manipulator."
+          }
+        }
       }
     },
     "newToHere": {
@@ -576,15 +684,15 @@
   },
   "legalCommon": {
     "effectiveDate": "Gültig ab: 24.10.2026",
-    "lastUpdated": "Zuletzt aktualisiert: 01.11.2026",
+    "lastUpdated": "Zuletzt aktualisiert: 03.11.2026",
     "operator": "Media Manipulator ist ein Produkt und Dienst der CreaTV Ltd.",
     "operatorEntity": "CreaTV Ltd.",
     "operatingAs": "Firmierend als Media Manipulator",
     "location": "Colorado, USA",
     "emailLabel": "E-Mail:",
     "websiteLabel": "Website:",
-    "whatChangedTitle": "Was sich am 01.11.2026 geändert hat",
-    "whatChangedBody": "Du kannst dich jetzt zusätzlich zu E-Mail-Adresse und Passwort oder Google auch mit Apple anmelden. Die Datenschutzerklärung (Abschnitt 1.7) erklärt, dass Apple bei einer Anmeldung mit Apple deinen Namen und deine E-Mail-Adresse mit uns teilt, oder eine private Weiterleitungsadresse, wenn du \"E-Mail-Adresse verbergen\" wählst, und dass die Datenschutzerklärung von Apple für deinen Apple-Account gilt; Abschnitt 8 nennt Apple unter den Parteien, mit denen wir Anmeldeinformationen teilen, und Abschnitt 1.7 sagt jetzt, dass Firebase einen Link zum Zurücksetzen an deine E-Mail-Adresse sendet, wenn du dein Passwort zurücksetzen möchtest. Abschnitt 9 der Nutzungsbedingungen besagt jetzt, dass du dich mit E-Mail-Adresse und Passwort, mit Google oder mit Apple anmelden kannst. Alles aus dem Update vom 28.10.2026 gilt weiterhin: Wir haben ein Kontaktformular unter media-manipulator.com/contact hinzugefügt: Die Datenschutzerklärung enthält einen neuen Abschnitt 1.11 zu den Nachrichten, die Sie uns senden (Ihr Name, Ihre E-Mail-Adresse, Betreff und Nachricht, die über Resend in unser Support-Postfach zugestellt und dort bis zum Abschluss der Unterhaltung aufbewahrt werden, nie länger als 12 Monate), und Abschnitt 16 verweist nun auf das Formular. Wir haben die von Google geforderten Offenlegungen zu Werbe-Cookies und die Opt-out-Links ergänzt. Die Datenschutzerklärung enthält einen neuen Abschnitt 5.1 zu Werbe-Cookies und Google AdSense: die Werbe-Cookies von Google, nicht personalisierte Werbung, die Einwilligungsmeldung von Google im EWR, im Vereinigten Königreich und in der Schweiz, die Links zum Widerspruch gegen personalisierte Werbung (Google-Anzeigeneinstellungen, aboutads.info und youronlinechoices.eu) und dazu, wie Google Informationen von Websites verwendet, die seine Dienste nutzen, wer Werbung sieht (nur Besucher ohne Konto und kostenlose Konten) sowie unsere öffentliche ads.txt-Datei; Abschnitt 1.5 listet nun die Werbekennungen auf, die das Werbeskript von Google setzen kann. Abschnitt 8.9 der Nutzungsbedingungen besagt nun, dass Werbung nur ohne Konto oder mit einem kostenlosen Konto angezeigt wird und dass Premium und Pro sie entfernen. Abschnitt 5 (Werbung) der Datenschutzerklärung besagt jetzt, dass das Google-Werbeskript auf Seiten geladen wird, die Anzeigen zeigen können, wobei alle Einwilligungssignale abgelehnt sind, bis Sie eine Auswahl treffen, und bis dahin nicht personalisierte Anzeigen ausliefert. Am selben Tag zuvor: Wir haben Stimmwerkzeuge hinzugefügt: das Klonen Ihrer eigenen Stimme aus einer Aufnahme, das Entwerfen einer Stimme aus einer Beschreibung und das Ändern der Stimme in einer Aufnahme. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.10 zu Stimmproben und entworfenen Stimmen: was wir speichern, dass wir es nur verwenden, um die von Ihnen gewünschte Stimme mit Ihrer ausdrücklichen Einwilligung zu erstellen und zu betreiben, dass es unter Ihrer Aufbewahrungseinstellung in Amazon S3 gespeichert, niemals an einen KI-Anbieter eines Drittanbieters weitergegeben und niemals zum Training eines Modells verwendet wird und dass Sie es jederzeit löschen können und es mit Ihrem Konto gelöscht wird; die Abschnitte 3, 3.4, 3.5 und 4 nennen nun Stimmen. Die Nutzungsbedingungen enthalten einen neuen Abschnitt 8.11: Sie dürfen eine Stimme nur aus Ihrer eigenen Stimme oder mit der ausdrücklichen Erlaubnis der sprechenden Person erstellen; Nachahmung, Betrug, politische Deepfakes und Belästigung sind nicht erlaubt; erzeugte und umgewandelte Sprache trägt ein unhörbares Wasserzeichen, verschobene Audiodaten nicht; und wir können Stimmen entfernen und Konten sperren. Abschnitt 1 der Nutzungsbedingungen führt die Stimmwerkzeuge auf. Alles aus dem Update vom 2026-10-26 gilt weiterhin: Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin. Abschnitt 10 der Nutzungsbedingungen besagt nun, dass du in US-Dollar oder Euro zum selben Preis zahlen kannst, dass in Europa standardmäßig Euro angezeigt werden und dass sich die Währung eines Abonnements nicht ändern kann, solange es aktiv ist; Abschnitt 1.6 der Datenschutzerklärung nennt nun die gespeicherte Abrechnungswährung und das Cookie mm-currency, das deine Auswahl speichert. Abschnitt 8 erklärt nun außerdem, dass von uns beauftragte Übersetzer ihre Arbeit als GitHub-Pull-Requests über die GitHub-App der CreaTV Ltd. einreichen und dass diese Einreichungen nur Übersetzungstext und keine personenbezogenen Daten über Besucher enthalten."
+    "whatChangedTitle": "Was sich am 03.11.2026 geändert hat",
+    "whatChangedBody": "Wir haben Aperture hinzugefügt, unseren Fotoeditor (in der Beta). Die Datenschutzerklärung hat einen neuen Abschnitt 1.12: In Aperture wird dein Foto in deinem Browser bearbeitet und nur dann auf unsere Server hochgeladen, wenn du ein Projekt in deinem Konto speicherst, exportierst, ein Motiv mit KI auswählst, Flecken reparierst oder deine Bearbeitungen auf weitere Fotos anwendest; in deinem Konto gespeicherte Projekte werden auf unseren Servern für die von dir gewählte Aufbewahrungsdauer gespeichert, können gelöscht werden und werden mit deinem Konto gelöscht; Motivauswahl und Reparatur laufen auf unserem eigenen GPU-Server, und kein Foto wird an einen Drittanbieterdienst gesendet; und für jeden Export, jede Motivauswahl und jede Reparatur erfassen wir die Art des Auftrags, das Format und die Größe des Ergebnisses, den Zeitpunkt und deinen Tarif, um das Tageskontingent durchzusetzen. Die Abschnitte 3, 3.3, 3.4 und 4 nennen nun Aperture-Projekte und die verwendeten Modelle. Die Nutzungsbedingungen führen Aperture in Abschnitt 1 auf, und Abschnitt 13 besagt, dass deine Aperture-Exporte dir gehören. Alles aus dem Update vom 01.11.2026 gilt weiterhin: Du kannst dich jetzt zusätzlich zu E-Mail-Adresse und Passwort oder Google auch mit Apple anmelden. Die Datenschutzerklärung (Abschnitt 1.7) erklärt, dass Apple bei einer Anmeldung mit Apple deinen Namen und deine E-Mail-Adresse mit uns teilt, oder eine private Weiterleitungsadresse, wenn du \"E-Mail-Adresse verbergen\" wählst, und dass die Datenschutzerklärung von Apple für deinen Apple-Account gilt; Abschnitt 8 nennt Apple unter den Parteien, mit denen wir Anmeldeinformationen teilen, und Abschnitt 1.7 sagt jetzt, dass Firebase einen Link zum Zurücksetzen an deine E-Mail-Adresse sendet, wenn du dein Passwort zurücksetzen möchtest. Abschnitt 9 der Nutzungsbedingungen besagt jetzt, dass du dich mit E-Mail-Adresse und Passwort, mit Google oder mit Apple anmelden kannst. Alles aus dem Update vom 28.10.2026 gilt weiterhin: Wir haben ein Kontaktformular unter media-manipulator.com/contact hinzugefügt: Die Datenschutzerklärung enthält einen neuen Abschnitt 1.11 zu den Nachrichten, die Sie uns senden (Ihr Name, Ihre E-Mail-Adresse, Betreff und Nachricht, die über Resend in unser Support-Postfach zugestellt und dort bis zum Abschluss der Unterhaltung aufbewahrt werden, nie länger als 12 Monate), und Abschnitt 16 verweist nun auf das Formular. Wir haben die von Google geforderten Offenlegungen zu Werbe-Cookies und die Opt-out-Links ergänzt. Die Datenschutzerklärung enthält einen neuen Abschnitt 5.1 zu Werbe-Cookies und Google AdSense: die Werbe-Cookies von Google, nicht personalisierte Werbung, die Einwilligungsmeldung von Google im EWR, im Vereinigten Königreich und in der Schweiz, die Links zum Widerspruch gegen personalisierte Werbung (Google-Anzeigeneinstellungen, aboutads.info und youronlinechoices.eu) und dazu, wie Google Informationen von Websites verwendet, die seine Dienste nutzen, wer Werbung sieht (nur Besucher ohne Konto und kostenlose Konten) sowie unsere öffentliche ads.txt-Datei; Abschnitt 1.5 listet nun die Werbekennungen auf, die das Werbeskript von Google setzen kann. Abschnitt 8.9 der Nutzungsbedingungen besagt nun, dass Werbung nur ohne Konto oder mit einem kostenlosen Konto angezeigt wird und dass Premium und Pro sie entfernen. Abschnitt 5 (Werbung) der Datenschutzerklärung besagt jetzt, dass das Google-Werbeskript auf Seiten geladen wird, die Anzeigen zeigen können, wobei alle Einwilligungssignale abgelehnt sind, bis Sie eine Auswahl treffen, und bis dahin nicht personalisierte Anzeigen ausliefert. Am selben Tag zuvor: Wir haben Stimmwerkzeuge hinzugefügt: das Klonen Ihrer eigenen Stimme aus einer Aufnahme, das Entwerfen einer Stimme aus einer Beschreibung und das Ändern der Stimme in einer Aufnahme. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.10 zu Stimmproben und entworfenen Stimmen: was wir speichern, dass wir es nur verwenden, um die von Ihnen gewünschte Stimme mit Ihrer ausdrücklichen Einwilligung zu erstellen und zu betreiben, dass es unter Ihrer Aufbewahrungseinstellung in Amazon S3 gespeichert, niemals an einen KI-Anbieter eines Drittanbieters weitergegeben und niemals zum Training eines Modells verwendet wird und dass Sie es jederzeit löschen können und es mit Ihrem Konto gelöscht wird; die Abschnitte 3, 3.4, 3.5 und 4 nennen nun Stimmen. Die Nutzungsbedingungen enthalten einen neuen Abschnitt 8.11: Sie dürfen eine Stimme nur aus Ihrer eigenen Stimme oder mit der ausdrücklichen Erlaubnis der sprechenden Person erstellen; Nachahmung, Betrug, politische Deepfakes und Belästigung sind nicht erlaubt; erzeugte und umgewandelte Sprache trägt ein unhörbares Wasserzeichen, verschobene Audiodaten nicht; und wir können Stimmen entfernen und Konten sperren. Abschnitt 1 der Nutzungsbedingungen führt die Stimmwerkzeuge auf. Alles aus dem Update vom 2026-10-26 gilt weiterhin: Wir haben Motion, unseren SVG-Animationseditor (in der Beta), hinzugefügt. Die Datenschutzerklärung enthält einen neuen Abschnitt 1.9: Motion-Projekte und Exporte werden in Ihrem Browser erstellt und nicht hochgeladen, um sie zu erstellen; Projekte, die Sie in Ihrem Konto speichern, werden wie Darkroom-Projekte gespeichert, folgen der von Ihnen gewählten Aufbewahrungsdauer und können gelöscht werden; und zu jedem gezählten Export erfassen wir Format, Größe, Länge und Zeitpunkt, um das tägliche Kontingent durchzusetzen. Die Abschnitte 3, 3.3 und 3.4 nennen nun Motion-Projekte. Abschnitt 13 der Nutzungsbedingungen bestätigt, dass Ihre Motion-Exporte Ihnen gehören, erklärt, dass einige Exporte MIT-lizenzierten anime.js-Code enthalten, dessen Vermerk beibehalten werden muss, und verweist auf unsere Seite mit Open-Source-Lizenzen. Alles aus dem Update vom 25.10.2026 (der Pro-Tarif, Tarifwechsel und Rückerstattungen) gilt weiterhin. Abschnitt 10 der Nutzungsbedingungen besagt nun, dass du in US-Dollar oder Euro zum selben Preis zahlen kannst, dass in Europa standardmäßig Euro angezeigt werden und dass sich die Währung eines Abonnements nicht ändern kann, solange es aktiv ist; Abschnitt 1.6 der Datenschutzerklärung nennt nun die gespeicherte Abrechnungswährung und das Cookie mm-currency, das deine Auswahl speichert. Abschnitt 8 erklärt nun außerdem, dass von uns beauftragte Übersetzer ihre Arbeit als GitHub-Pull-Requests über die GitHub-App der CreaTV Ltd. einreichen und dass diese Einreichungen nur Übersetzungstext und keine personenbezogenen Daten über Besucher enthalten."
   },
   "privacyPolicy": {
     "title": "Datenschutzerklärung",
@@ -743,6 +851,14 @@
               "Wenn Sie das Kontaktformular unter media-manipulator.com/contact verwenden, erhalten wir Ihren Namen, Ihre E-Mail-Adresse, den von Ihnen gewählten Betreff und Ihre Nachricht, zusammen mit dem Zeitpunkt des Versands und einer kurzen Referenznummer. Das Formular stellt diese Angaben per E-Mail über unseren E-Mail-Anbieter Resend in unser Support-Postfach zu; Kontaktnachrichten werden nicht in unserer Anwendungsdatenbank gespeichert. Wenn Sie uns direkt eine E-Mail schreiben, erhalten wir dieselbe Art von Informationen aus Ihrer E-Mail.",
               "Wir verwenden diese Nachrichten nur, um Ihnen zu antworten und das zu bearbeiten, worum Sie bitten, etwa eine Fehlermeldung, eine Abrechnungsfrage oder eine Datenschutzanfrage. Sie bleiben in unserem Support-Postfach, bis die Unterhaltung abgeschlossen ist, und nie länger als 12 Monate. Um Spam einzudämmen, ist das Formular wie die übrige Website pro Browsersitzung und pro IP-Adresse ratenbegrenzt, und ein blockierter Versuch wird als Datensatz zur Missbrauchsverhinderung gespeichert (Abschnitt 3.6)."
             ]
+          },
+          {
+            "title": "1.12 Aperture-Projekte und -Exporte",
+            "paragraphs": [
+              "Aperture, unser Fotoeditor, bearbeitet Ihr Foto in Ihrem Browser: Die Vorschau, die Sie sehen, wird auf Ihrem eigenen Gerät gezeichnet. Ein Foto verlässt Ihr Gerät nur, wenn Sie etwas verlangen, das unsere Server erfordert: es als Projekt in Ihrem Konto zu speichern, die fertige Datei zu exportieren, ein Motiv mit KI auszuwählen, Flecken mit KI zu reparieren oder Ihre Bearbeitungen auf weitere Fotos anzuwenden.",
+              "Wenn Sie angemeldet sind und ein Projekt speichern, werden das Originalfoto, eine Vorschaukopie mit bis zu 1920 Pixeln, ein kleines Vorschaubild, das Bearbeitungsdokument (die Liste der Anpassungen, Masken und reparierten Bereiche) sowie alle Masken und reparierten Versionen des Fotos im Ordner des Projekts auf unseren Servern gespeichert. Sie sind Ihre Inhalte, sie folgen der von Ihnen gewählten Aufbewahrungsdauer (Abschnitt 3), Sie können ein Projekt auf Ihrer Kontoseite löschen, sie werden mit Ihrem Konto gelöscht, und die Projekte sind in Ihrem Datenexport aufgeführt. Ohne Konto wird ein Foto nur in Ihrem Browser (in IndexedDB) aufbewahrt und erst hochgeladen, wenn Sie exportieren, ein Motiv auswählen oder reparieren; dieser Upload ist ein normaler vorübergehender Auftrag und wird 24 Stunden aufbewahrt.",
+              "Exporte, die KI-Motivauswahl und die Reparatur sind Aufträge auf unseren Servern. Exporte werden aus Ihrem Originalfoto gerendert, Motivauswahl und Reparatur laufen auf unserem eigenen GPU-Server, und keines Ihrer Fotos wird an einen Drittanbieterdienst gesendet. Jeder Export, jede Motivauswahl und jede Reparatur wird gezählt, um das Tageskontingent Ihres Tarifs durchzusetzen: Wir speichern die Art des Auftrags, das Format und die Größe des Ergebnisses, den Zeitpunkt, Ihren Tarif und eine Kennung für Ihr Konto, Ihre Browsersitzung oder eine gehashte IP-Adresse. Die Ergebnisdateien werden nach den üblichen Aufbewahrungsregeln (Abschnitt 3) aufbewahrt, und wenn Sie Ihr Konto löschen, werden diese Datensätze von Ihrer Identität getrennt."
+            ]
           }
         ]
       },
@@ -769,7 +885,7 @@
         "id": "retention",
         "title": "3. Dateispeicherung, Aufbewahrung und Löschung",
         "paragraphs": [
-          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien, Darkroom-Projekte, in Ihrem Konto gespeicherte Motion-Projekte und gespeicherte Stimmen, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu Ihren Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
+          "Wie lange wir Ihre Dateien aufbewahren, hängt davon ab, ob Sie ein Konto haben. Dieser Abschnitt betrifft hochgeladene Dateien, erzeugte Ergebnisse, Darkroom-Medien, Darkroom-Projekte, in Ihrem Konto gespeicherte Motion-Projekte, Aperture-Projekte und gespeicherte Stimmen, die auf unseren Servern und in Amazon S3 (us-west-2) gespeichert sind. Datensätze zu Ihren Konvertierungen und Einstellungen (etwa Auftragsverlauf, Aufbewahrungsauswahl und Kontodaten) werden in einer PostgreSQL-Datenbank gespeichert, und die KI-Verarbeitung läuft auf unserem eigenen, selbst gehosteten GPU-Server."
         ],
         "subsections": [
           {
@@ -794,7 +910,7 @@
           {
             "title": "3.3 Löschen Ihrer Dateien",
             "paragraphs": [
-              "Wenn Sie ein Konto haben, können Sie auf der Seite „Konto“ ein einzelnes Ergebnis, Darkroom-Projekt oder Motion-Projekt löschen, alle Ihre Dateien auf einmal löschen oder Ihr gesamtes Konto löschen. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden."
+              "Wenn Sie ein Konto haben, können Sie auf der Seite „Konto“ ein einzelnes Ergebnis, Darkroom-Projekt, Motion-Projekt oder Aperture-Projekt löschen, alle Ihre Dateien auf einmal löschen oder Ihr gesamtes Konto löschen. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden."
             ]
           },
           {
@@ -804,7 +920,7 @@
             ],
             "bullets": [
               "Wir kündigen Ihr Premium- oder Pro-Abonnement bei Stripe, falls Sie eines haben;",
-              "wir löschen Ihre Dateien sowie Ihre Darkroom- und Motion-Projekte und Ihre gespeicherten Stimmen;",
+              "wir löschen Ihre Dateien sowie Ihre Darkroom-, Motion- und Aperture-Projekte und Ihre gespeicherten Stimmen;",
               "wir löschen Ihren Kontodatensatz und Ihre Einstellungen und lösen Ihre übrigen Aktivitätsdatensätze von Ihrer Identität;",
               "wir bitten unsere First-Party-Analyse, die mit Ihrem Konto verknüpften Analysedaten zu löschen (siehe Abschnitt 6);",
               "wir löschen Ihren Anmelde-Zugang."
@@ -844,7 +960,7 @@
         ],
         "afterBullets": [
           "Sämtliche von Media Manipulator eingesetzte KI-Verarbeitung erfolgt lokal auf unseren eigenen Servern oder auf von uns kontrollierter Infrastruktur. Wir lagern hochgeladene Dateien, erzeugte Ergebnisse, Transkripte, Zusammenfassungen, Beschreibungen oder Inhaltssicherheitsscans nicht zur Verarbeitung an KI-Anbieter Dritter aus.",
-          "Die KI-Funktionen nutzen offene Modelle und Werkzeuge, die wir selbst betreiben, hauptsächlich auf einem selbst gehosteten GPU-Server: Whisper für die Transkription, Real-ESRGAN für die Bildhochskalierung, Demucs zur Trennung von Audiospuren, Chatterbox und Qwen3-TTS für Stimmklonen, Stimmentwurf und Sprache und weitere lokale Modelle, dazu über Ollama bereitgestellte Sprach- und Bildmodelle für Textaufgaben wie Zusammenfassungen, Beschreibungen und Untertitelübersetzung.",
+          "Die KI-Funktionen nutzen offene Modelle und Werkzeuge, die wir selbst betreiben, hauptsächlich auf einem selbst gehosteten GPU-Server: Whisper für die Transkription, Real-ESRGAN für die Bildhochskalierung, rembg und LaMa für die Motivauswahl und die Reparatur von Flecken in Fotos, Demucs zur Trennung von Audiospuren, Chatterbox und Qwen3-TTS für Stimmklonen, Stimmentwurf und Sprache und weitere lokale Modelle, dazu über Ollama bereitgestellte Sprach- und Bildmodelle für Textaufgaben wie Zusammenfassungen, Beschreibungen und Untertitelübersetzung.",
           "Das bedeutet, dass Ihre hochgeladenen Dateien und erzeugten Ergebnisse bei Nutzung von KI-Funktionen innerhalb der Verarbeitungsumgebung von Media Manipulator verbleiben und gemäß den in dieser Datenschutzerklärung beschriebenen Speicher-, Aufbewahrungs-, Lösch- und Sicherheitspraktiken behandelt werden.",
           "Hochgeladene Dateien und erzeugte Ergebnisse werden gespeichert und gelöscht, wie in Abschnitt 3 beschrieben, auch wenn KI-Funktionen genutzt werden. Nach Ablauf des jeweils geltenden Aufbewahrungszeitraums werden sie aus unseren aktiven Systemen gelöscht, sofern keine frühere Löschung erfolgt oder eine begrenzte Aufbewahrung aus Gründen der Sicherheit, Missbrauchsprävention, gesetzlichen Compliance oder Durchsetzung rechtlich erforderlich ist.",
           "KI-generierte Ausgaben können unvollkommen, unvollständig oder ungenau sein. Nutzer sind dafür verantwortlich, jede KI-generierte Ausgabe zu überprüfen, bevor sie sich darauf verlassen.",
@@ -1101,6 +1217,7 @@
           "KI-gestützte Transkription, Untertitelerzeugung, Zusammenfassungen und Beschreibungen;",
           "Inhaltssicherheitsklassifizierung und Missbrauchspräventions-Scans;",
           "Erstellen, Animieren und Exportieren von Vektorgrafiken und Animationen mit Motion;",
+          "Bearbeiten von Fotos mit Einstellungsebenen, Masken, Geometrie und Reparatur sowie Exportieren des Ergebnisses mit Aperture;",
           "Erstellen von Stimmen aus Ihren eigenen Aufnahmen, Entwerfen von Stimmen aus einer Beschreibung, Erzeugen von Sprache aus Text und Ändern der Stimme in einer Aufnahme (Stimmen, siehe Abschnitt 8.11);",
           "vorübergehender Konvertierungsverlauf und herunterladbare verarbeitete Ausgaben."
         ],
@@ -1414,7 +1531,8 @@
           "Sie dürfen Media Manipulator nicht kopieren, verändern, verbreiten, verkaufen, verleasen, zurückentwickeln oder daraus abgeleitete Werke erstellen, außer soweit gesetzlich zulässig oder mit unserer schriftlichen Genehmigung.",
           "Sie behalten das Eigentum an Ihren eigenen hochgeladenen Dateien und erzeugten Ergebnissen, vorbehaltlich der in diesen Bedingungen gewährten Rechte und Lizenzen.",
           "Animationen und Dateien, die Sie mit Motion erstellen, einschließlich animiertem SVG sowie Lottie-, Code- und Bildexporten, gehören Ihnen auf dieselbe Weise wie Ihre anderen erzeugten Ergebnisse. Einige Exporte enthalten Open-Source-Code von Drittanbietern, der die Animation abspielt: anime.js, das unter der MIT License lizenziert ist. Sein Urheberrechts- und Lizenzvermerk steht am Anfang der exportierten Datei, und Sie müssen diesen Vermerk beibehalten, wenn Sie die Datei verwenden oder verbreiten. Code-Exporte, die ein Paket verwenden, statt es einzubetten (das Paket anime.js für React und JavaScript sowie flutter_svg oder webview_flutter für Flutter), nennen es in der Datei, und Sie installieren es selbst unter seiner eigenen Lizenz (MIT oder BSD-3-Clause für webview_flutter).",
-          "Media Manipulator verwendet Open-Source-Bibliotheken in Ihrem Browser, darunter mediabunny, das unter der Mozilla Public License 2.0 lizenziert ist und unverändert verwendet wird, um in Ihrem Browser erstellte Videodateien zu verpacken. Ihre Lizenzen, Urheberrechtsvermerke und Quellcode-Links sind auf unserer Seite mit Open-Source-Lizenzen aufgeführt: https://www.media-manipulator.com/licenses."
+          "Media Manipulator verwendet Open-Source-Bibliotheken in Ihrem Browser, darunter mediabunny, das unter der Mozilla Public License 2.0 lizenziert ist und unverändert verwendet wird, um in Ihrem Browser erstellte Videodateien zu verpacken. Ihre Lizenzen, Urheberrechtsvermerke und Quellcode-Links sind auf unserer Seite mit Open-Source-Lizenzen aufgeführt: https://www.media-manipulator.com/licenses.",
+          "Fotos, die Sie mit Aperture bearbeiten und exportieren, gehören Ihnen auf dieselbe Weise wie Ihre anderen erzeugten Ergebnisse. Aperture verändert die von Ihnen hochgeladene Originaldatei nie: Ein Export ist immer eine neue Datei. Sie sind dafür verantwortlich, dass Sie das Recht haben, die von Ihnen verwendeten Fotos zu bearbeiten und zu exportieren."
         ]
       },
       {
@@ -1607,7 +1725,10 @@
       "adsRemoved": "Werbung",
       "exportsPerDay": "Darkroom-Exporte pro Tag",
       "vectorExportsPerDay": "Motion-Exporte pro Tag",
-      "vectorProjects": "Gespeicherte Motion-Projekte"
+      "vectorProjects": "Gespeicherte Motion-Projekte",
+      "photoProjects": "Gespeicherte {{brand}}-Projekte",
+      "photoMaxMegapixels": "Größter {{brand}}-Export",
+      "photoBatch": "{{brand}}-Fotos pro Stapel"
     },
     "values": {
       "yes": "Enthalten",
@@ -1618,7 +1739,10 @@
       "gpuPriority": "Priorität",
       "adsShown": "Angezeigt",
       "adsRemoved": "Entfernt",
-      "heightSuffix": "{{height}}p"
+      "heightSuffix": "{{height}}p",
+      "photoLocalOnly": "1, nur in diesem Browser",
+      "megapixels": "{{count}} MP",
+      "notAvailable": "Nicht verfügbar"
     },
     "unavailableTitle": "Plandetails sind vorübergehend nicht verfügbar",
     "unavailableBody": "Wir konnten den Plandienst nicht erreichen. Alle Werkzeuge funktionieren weiterhin — laden Sie die Seite gleich neu, um den Vergleich zu sehen.",
@@ -1631,7 +1755,9 @@
       "q3": "Sehen kostenlose Konten Werbung?",
       "a3": "Ja. Werbung finanziert die kostenlose Stufe, deshalb entfernen nur Premium und Pro sie. Es gibt nie mehr als zwei Anzeigen auf einer Seite, nie über den Werkzeugen und nie auf der Startseite, der Preisseite, der Kontoseite oder den rechtlichen Seiten. Es gibt bei keinem Tarif Interstitials, Countdowns oder erzwungene Wartezeiten.",
       "q4": "Kann ich es ganz ohne Konto nutzen?",
-      "a4": "Ja, und das ist Absicht. Jedes Werkzeug funktioniert auch abgemeldet — ein Konto hebt lediglich die Obergrenze an und speichert Ihren Verlauf. Ohne Konto werden Ihre Dateien 24 Stunden aufbewahrt; mit einem Konto bestimmen Sie selbst, wie lange, von 24 Stunden bis 2 Jahren."
+      "a4": "Ja, und das ist Absicht. Jedes Werkzeug funktioniert auch abgemeldet — ein Konto hebt lediglich die Obergrenze an und speichert Ihren Verlauf. Ohne Konto werden Ihre Dateien 24 Stunden aufbewahrt; mit einem Konto bestimmen Sie selbst, wie lange, von 24 Stunden bis 2 Jahren.",
+      "q5": "Was kostet {{brand}}?",
+      "a5": "Das Bearbeiten in {{brand}} ist kostenlos: Vorschau, jede Anpassung, Masken, Looks und „Rückgängig“ kosten nichts. Jeder Export zählt als ein Standardauftrag, die Motivauswahl mit KI zählt als ein Standardauftrag (eine Wiederholung derselben Anfrage ist kostenlos), und jedes Auslösen von „Reparieren“ zählt als ein KI-Auftrag. Was sich mit Ihrem Tarif ändert, ist, wie viele Projekte Sie speichern können, wie groß ein Export sein darf und wie viele Fotos Sie in einem Stapel bearbeiten können; die Tabelle oben nennt die Zahlen."
     },
     "retentionNote": "Sie bestimmen: 24 Stunden bis 2 Jahre. Gäste ohne Konto: 24 Stunden.",
     "pendingFrom": "Premium ab dem {{date}}",
@@ -1810,7 +1936,13 @@
       "deleteFailed": "Dieses Projekt konnte nicht gelöscht werden. Es wurde nichts geändert; versuchen Sie es erneut.",
       "kindDarkroom": "Darkroom",
       "motionLoadFailed": "Ihre {{brand}}-Projekte konnten nicht geladen werden.",
-      "motionDeleteBody": "Das {{brand}}-Projekt und sein Vorschaubild werden von unseren Servern entfernt. Dies kann nicht rückgängig gemacht werden."
+      "motionDeleteBody": "Das {{brand}}-Projekt und sein Vorschaubild werden von unseren Servern entfernt. Dies kann nicht rückgängig gemacht werden.",
+      "rename": "Umbenennen",
+      "renameLabel": "Projektname",
+      "renameSave": "Speichern",
+      "renamed": "Projekt umbenannt.",
+      "renameFailed": "Dieses Projekt konnte nicht umbenannt werden. Es wurde nichts geändert; versuchen Sie es erneut.",
+      "photoDeleteBody": "Das {{brand}}-Projekt, sein Originalfoto, seine Vorschauen und alle reparierten Versionen werden von unseren Servern entfernt. Dies kann nicht rückgängig gemacht werden."
     },
     "billing": {
       "plans": "Pläne vergleichen"
@@ -2020,7 +2152,7 @@
       "images": "<strong>Bilder und PDFs.</strong> <removeExif>Entfernen Sie EXIF-Metadaten</removeExif> wie den GPS-Standort, bevor Sie ein Foto teilen, <compressImage>komprimieren Sie ein Bild</compressImage> für eine schnellere Seite, <resizeImage>ändern Sie seine Größe</resizeImage> auf exakte Pixelmaße und wandeln Sie <imageToPdf>Bilder in PDF</imageToPdf> oder <pdfToJpg>PDF-Seiten in JPG</pdfToJpg> um.",
       "audio": "<strong>Audio und Sprache.</strong> <extractAudio>Extrahieren Sie die Tonspur</extractAudio> aus einem Video als MP3, WAV, M4A, FLAC oder OGG und <transcribe>transkribieren Sie das Gesprochene</transcribe> in durchsuchbaren Text oder Untertitel. Die Transkription läuft mit Whisper auf unserem eigenen GPU-Server.",
       "ai": "<strong>KI-Tools.</strong> <removeBg>Entfernen Sie den Hintergrund</removeBg> aus einem Foto, <imageRestore>restaurieren und vergrößern Sie ein altes Bild</imageRestore>, <videoRestore>vergleichen Sie Modelle zur Videorestaurierung</videoRestore> nebeneinander an einem kurzen Clip oder <docScan>wandeln Sie gescannte Seiten in ein durchsuchbares PDF um</docScan>. Jedes Modell läuft auf Servern, die wir selbst betreiben.",
-      "editors": "<strong>Editoren.</strong> Wenn eine einzelne Konvertierung nicht reicht, ist <darkroom>Darkroom</darkroom> ein Multi-Track-Videoeditor und <motion>Motion</motion> animiert SVG-Grafiken auf einer Keyframe-Zeitleiste. Beide laufen in Ihrem Browser, und mit der Anmeldung bleiben Ihre Projekte in Ihrem Konto."
+      "editors": "<strong>Editoren.</strong> Wenn eine einzelne Konvertierung nicht reicht, ist <darkroom>Darkroom</darkroom> ein Multi-Track-Videoeditor, <motion>Motion</motion> animiert SVG-Grafiken auf einer Keyframe-Zeitleiste, und <aperture>Aperture</aperture> bearbeitet Fotos mit Einstellungsebenen und Masken. Alle drei laufen in Ihrem Browser, und mit der Anmeldung bleiben Ihre Projekte in Ihrem Konto."
     },
     "whatWeDont": {
       "eyebrow": "Was wir nicht tun",
@@ -2048,7 +2180,8 @@
       "ai": "KI-Werkzeuge",
       "metadata": "Datenschutz- & Metadatenwerkzeuge",
       "contentStudio": "Darkroom",
-      "motion": "SVG-Animation"
+      "motion": "SVG-Animation",
+      "photo": "Fotobearbeitung"
     },
     "multiTrackEditor": "Multi-Track-Editor",
     "open": "Öffnen",
@@ -2078,7 +2211,9 @@
       "editor": "Editoren"
     },
     "moreTools": "{{category}}: {{count}} weitere",
-    "alsoLine": "Auch: {{names}}."
+    "alsoLine": "Auch: {{names}}.",
+    "photoEditor": "Fotoeditor",
+    "apertureTutorial": "{{brand}}-Tutorial"
   },
   "toolLandingPage": {
     "breadcrumbAriaLabel": "Brotkrumen-Navigation",
@@ -2486,7 +2621,61 @@
       "motion": {
         "alt": "Der Motion-Editor mit einem importierten SVG auf der Arbeitsfläche und Keyframes auf der Animationszeitleiste",
         "caption": "Der Motion-Editor: Ebenen, Arbeitsfläche und Keyframe-Zeitleiste."
+      },
+      "aperture": {
+        "alt": "Der {{brand}}-Editor mit einem Foto auf der Arbeitsfläche, dem Bedienfeld „Grundeinstellungen“ rechts und dem Histogramm darüber",
+        "caption": "Der {{brand}}-Editor: Arbeitsfläche, Histogramm und Grundeinstellungen."
       }
+    }
+  },
+  "photoPage": {
+    "guide": {
+      "summaryTitle": "So funktioniert {{brand}}",
+      "whatItIsTitle": "Was es ist",
+      "whatItIsBody": "{{brand}} ist ein Fotoeditor, der Ihr Original niemals verändert. Jede Anpassung, von Belichtung und Gradationskurven bis zu Farbbereichen, Masken und Reparatur, ist eine Ebene über dem Foto, die Sie umordnen, abschwächen, ausblenden oder löschen können. Die Vorschau wird in Ihrem Browser gezeichnet, und die exportierte Datei wird auf unserem Server aus dem Original gerendert.",
+      "stepsTitle": "Vier Schritte",
+      "step1": "Ziehen Sie unten ein Foto hinein oder wählen Sie eines aus. Der Editor öffnet sich im Vollbild, das Bedienfeld dieser Seite liegt vorn.",
+      "step2": "Bewegen Sie einen Regler und beobachten Sie, wie sich Foto und Histogramm verändern. „Rückgängig“ und „Wiederholen“ erfassen jeden Schritt, und mit gedrückter Backslash-Taste sehen Sie das Original.",
+      "step3": "Begrenzen Sie eine Ebene mit einer Maske auf einen Teil des Fotos, begradigen oder beschneiden Sie es, reparieren Sie einen Fleck oder starten Sie mit einem der integrierten Looks.",
+      "step4": "Exportieren Sie JPG, PNG, WebP, AVIF oder TIFF. Die Datei wird auf unserem Server in voller Auflösung gerendert, bis zum Limit Ihres Tarifs.",
+      "editorTitle": "Der Editor",
+      "editorBody": "{{brand}} öffnet sich im Vollbild, ohne Seitenkopf und Werbung. Ohne Konto wird ein Foto in diesem Browser gespeichert; angemeldete Nutzer behalten ihre Projekte in ihrem Konto."
+    },
+    "dropzone": {
+      "drop": "Ziehen Sie ein Foto hierher oder wählen Sie eines von Ihrem Gerät aus.",
+      "choose": "Foto auswählen",
+      "hint": "JPG, PNG, WebP, GIF, AVIF, HEIC, TIFF oder BMP. Nichts wird hochgeladen, bis Sie exportieren, ein Motiv auswählen oder reparieren.",
+      "opening": "Der Editor wird geöffnet…",
+      "openEmpty": "Editor ohne Foto öffnen"
+    },
+    "launcher": {
+      "recentTitle": "Letzte Projekte",
+      "sourceAccount": "In Ihrem Konto gespeichert",
+      "sourceBrowser": "In diesem Browser gespeichert",
+      "loading": "Ihre Projekte werden geladen…",
+      "empty": "Noch keine Projekte. Ihre Fotos erscheinen hier.",
+      "error": "Ihre Projekte konnten derzeit nicht geladen werden. Sie können trotzdem ein neues Foto öffnen.",
+      "edited": "Bearbeitet am {{date}}"
+    },
+    "plans": {
+      "title": "Projekte, Exportgröße und Stapel nach Tarif",
+      "intro": "Bearbeiten, jede Anpassung, die Masken und die Looks sind in jedem Tarif kostenlos. Was sich mit dem Tarif ändert, ist, wie viele Projekte Sie behalten können, wie groß ein Export sein darf und wie viele Fotos Sie in einem Stapel bearbeiten können. Diese Zahlen stammen direkt von unseren Servern und sind daher immer aktuell.",
+      "caption": "{{brand}}-Kontingente nach Tarif",
+      "feature": "Funktion",
+      "rows": {
+        "projects": "Gespeicherte Projekte",
+        "maxMegapixels": "Größter Export",
+        "batch": "Fotos pro Stapel"
+      },
+      "values": {
+        "unlimited": "Unbegrenzt",
+        "localOnly": "1, nur in diesem Browser",
+        "megapixels": "{{count}} MP",
+        "notAvailable": "Nicht verfügbar"
+      },
+      "costNote": "Jeder Export zählt als ein Standardauftrag und jede Reparatur als ein KI-Auftrag. Vorschau, Anpassungen, Masken und Looks kosten nichts.",
+      "unavailable": "Die Tariftabelle konnte derzeit nicht geladen werden. Die Preisseite listet das Kontingent jedes Tarifs auf.",
+      "seePlans": "Alle Tarife vergleichen"
     }
   }
 }
