@@ -66,7 +66,7 @@ describe('photo copy in every locale (zero English, zero TODO)', () => {
       // Genuine cognates / loanwords that are spelled the same in the Latin-script locales
       // (reviewed: "Beta", "Gamma", "Sepia", "Normal", "Original", "Format", "Magentas", ...).
       // CJK, Cyrillic, Arabic, Hebrew and Hindi never match, so any hit there is a real miss.
-      const COGNATE_KEYS = /(^|\.)(beta|gamma|sepia|balance|normal|original|format|vignette|texture|grain|color|hsl|vibrance|saturation|cyans|magentas|monochrome|point|offset|type\.(hsl|gamma|texture|grain|vignette|vibranceSaturation)|(params\.)?vibranceSaturation\.(title|vibrance|saturation))$/;
+      const COGNATE_KEYS = /(^|\.)(beta|gamma|sepia|balance|normal|original|format|vignette|texture|grain|color|hsl|vibrance|saturation|cyans|magentas|monochrome|point|offset|radial|perspective|rotate|fillTransparent|fillColor|kind\.radial|type\.(hsl|gamma|texture|grain|vignette|vibranceSaturation)|(params\.)?vibranceSaturation\.(title|vibrance|saturation))$/;
       const CJK_OR_NON_LATIN = /^(ar-SA|he-IL|hi-IN|ja-JP|ko-KR|ru-RU|uk-UA|zh-CN|zh-TW)$/;
       const bad = same.filter(([k]) => CJK_OR_NON_LATIN.test(l.code) || !COGNATE_KEYS.test(k)).map(([k]) => k);
       expect(bad).toEqual([]);
