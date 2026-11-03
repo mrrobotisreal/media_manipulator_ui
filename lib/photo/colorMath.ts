@@ -291,7 +291,7 @@ export function applyHsl(c: RGB, p: P<'hsl'>): RGB {
   const neutral = Math.min(1, s / HSL_NEUTRAL_SAT);
   let dh = p.master.hue;
   let sMul = 1 + p.master.saturation / 100;
-  let dl = p.master.lightness / 100;
+  const dl = p.master.lightness / 100;
   let lPos = 0;
   let lNeg = 0;
   if (dl > 0) lPos += dl;
