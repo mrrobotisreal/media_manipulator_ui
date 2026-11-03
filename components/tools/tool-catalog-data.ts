@@ -33,7 +33,10 @@ export type CatalogGroup = 'convert' | 'edit' | 'ai' | 'privacy' | 'editor';
 
 export type CatalogCategory = Exclude<ToolPageContent['category'], 'contentStudio' | 'motion'>;
 
-export const CATALOG_CATEGORY_ORDER: CatalogCategory[] = ['image', 'video', 'audio', 'ai', 'metadata'];
+export const CATALOG_CATEGORY_ORDER: CatalogCategory[] = ['image', 'photo', 'video', 'audio', 'ai', 'metadata'];
+
+/** MM100: the Aperture landing is featured beside Darkroom and Motion, never in the grid. */
+export const CATALOG_FEATURED_EDITOR_SLUGS: readonly string[] = ['aperture'];
 export const CATALOG_GROUP_ORDER: CatalogGroup[] = ['edit', 'convert', 'ai', 'privacy', 'editor'];
 
 /**
@@ -117,7 +120,7 @@ export function buildCatalogTools(
     aliasesByPrimary.set(page.aliasOf, [...(aliasesByPrimary.get(page.aliasOf) ?? []), page]);
   }
   return pages
-    .filter((tool) => !tool.aliasOf && tool.category !== 'contentStudio' && tool.category !== 'motion')
+    .filter((tool) => !tool.aliasOf && tool.category !== 'contentStudio' && tool.category !== 'motion' && !CATALOG_FEATURED_EDITOR_SLUGS.includes(tool.slug))
     .map((tool) =>
       toCatalogTool(tool, opts.featuredSlugs.has(tool.slug), {
         listed: opts.fullIndex || opts.listedSlugs.has(tool.slug),

@@ -12,6 +12,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { PENDING_ALLOWLIST, REVIEW_CATALOG_SLUGS, REVIEW_INDEXED_TOOL_SLUGS } from "@/content/reviewAllowlist";
 import { TOOL_PAGES } from "@/content/toolPages";
+import { PHOTO_ADJUSTMENT_SLUGS } from "@/content/photo/slugs";
 import { locales, reviewedLocales, unreviewedLocales } from "@/i18n/locales";
 import { buildToolMetadata, isToolPageIndexable } from "@/lib/metadata";
 import sitemap from "@/app/sitemap";
@@ -26,6 +27,9 @@ const ORIGIN = "https://www.media-manipulator.com";
 const nonEnglish = locales.filter((l) => l.code !== "en-US");
 
 afterEach(() => vi.unstubAllEnvs());
+
+/** MM100: the Aperture landing and its 24 pages (English bodies until the per-locale tickets). */
+const APERTURE_SLUGS = new Set<string>(['aperture', ...PHOTO_ADJUSTMENT_SLUGS]);
 
 describe("localeBodyCoverage", () => {
   it("English is always complete and lists the fields the page renders", () => {
@@ -98,29 +102,30 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
   // down (an English edit to a translated page must be translated too).
   it("MM93: pages with an English body per locale never increase", () => {
     const nonAlias = TOOL_PAGES.filter((t) => !t.aliasOf).map((t) => t.slug);
-    expect(nonAlias).toHaveLength(98);
+    expect(nonAlias).toHaveLength(98 + 25); // MM100 adds the 25 Aperture pages (English bodies until MM102-<prefix>)
     const pinned: Record<string, number> = {
-      "uk-UA": 0, "ru-RU": 0, "de-DE": 0,
-      "he-IL": 0, "es-ES": 98, "es-MX": 98, "fr-FR": 0, "it-IT": 98, "pt-BR": 98, "pt-PT": 98,
-      "ja-JP": 98, "zh-CN": 98, "zh-TW": 98, "ko-KR": 98, "ar-SA": 98, "hi-IN": 98, "vi-VN": 98,
+      "uk-UA": 25, "ru-RU": 25, "de-DE": 25,
+      "he-IL": 25, "es-ES": 123, "es-MX": 123, "fr-FR": 25, "it-IT": 123, "pt-BR": 123, "pt-PT": 123,
+      "ja-JP": 123, "zh-CN": 123, "zh-TW": 123, "ko-KR": 123, "ar-SA": 123, "hi-IN": 123, "vi-VN": 123,
     };
     const rows: string[] = [];
     for (const l of nonEnglish) {
       const english = nonAlias.filter((slug) => !localeBodyCoverage(slug, l.code).complete);
-      rows.push(`${l.code.padEnd(6)} English bodies ${String(english.length).padStart(2)}/98`);
+      rows.push(`${l.code.padEnd(6)} English bodies ${String(english.length).padStart(3)}/123`);
       expect(english.length, `${l.code}: ${english.slice(0, 5).join(", ")}`).toBeLessThanOrEqual(pinned[l.code]);
       if (english.length < pinned[l.code]) rows.push(`  ${l.code}: pin can drop to ${english.length}`);
     }
-    console.log(["MM93 tool-body coverage (98 non-alias pages):", ...rows].join("\n"));
+    console.log(["MM93 tool-body coverage (123 non-alias pages):", ...rows].join("\n"));
   });
 
   it("MM86 S3: uk-UA, ru-RU and de-DE fully cover all 24 copy-bar pages (an English edit must be translated too)", () => {
     for (const code of ["uk-UA", "ru-RU", "de-DE"]) {
-      const gaps = REVIEW_CATALOG_SLUGS.filter((slug) => !localeBodyCoverage(slug, code).complete);
+      // MM100: the Aperture pages have English bodies until MM102-uk/ru/de.
+      const gaps = REVIEW_CATALOG_SLUGS.filter((slug) => !APERTURE_SLUGS.has(slug) && !localeBodyCoverage(slug, code).complete);
       expect(gaps, code).toEqual([]);
     }
     for (const slug of REVIEW_INDEXED_TOOL_SLUGS) {
-      expect(fullyCoveredLocaleCodes(slug), slug).toEqual(["en-US", "uk-UA", "ru-RU", "de-DE"]);
+      expect(fullyCoveredLocaleCodes(slug), slug).toEqual(APERTURE_SLUGS.has(slug) ? ["en-US"] : ["en-US", "uk-UA", "ru-RU", "de-DE"]);
     }
   });
 

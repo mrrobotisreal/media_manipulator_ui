@@ -118,6 +118,30 @@ describe('three-column pricing (MM40 decision 1)', () => {
     expect(cell('pro', 'maxFileBytes')).toBe('5 GB');
   });
 
+  it('MM100: the three Aperture rows are the served photo fields; the anonymous project is browser-only', () => {
+    const photoHtml = renderToStaticMarkup(<PricingView data={tiersFixture({ withPhoto: true })} />);
+    const cell = (tier: string, row: string) => photoHtml.match(new RegExp(`data-tier="${tier}" data-row="${row}"><span[^>]*>([^<]*)<`))?.[1];
+    expect(cell('anonymous', 'photoProjects')).toBe('1, in this browser only');
+    expect(cell('free', 'photoProjects')).toBe('5');
+    expect(cell('premium', 'photoProjects')).toBe('50');
+    expect(cell('pro', 'photoProjects')).toBe('Unlimited');
+    expect(cell('free', 'photoMaxMegapixels')).toBe('12 MP');
+    expect(cell('pro', 'photoMaxMegapixels')).toBe('120 MP');
+    expect(cell('anonymous', 'photoBatch')).toBe('Not available');
+    expect(cell('free', 'photoBatch')).toBe('3');
+    expect(cell('premium', 'photoBatch')).toBe('10');
+    expect(cell('pro', 'photoBatch')).toBe('25');
+    expect(photoHtml).toContain('Saved Aperture projects');
+    expect(photoHtml).toContain('What does Aperture cost?');
+    expect(photoHtml).toContain('one AI job');
+  });
+
+  it('MM100: a payload without photo fields hides the Aperture rows and does not crash', () => {
+    const out = renderToStaticMarkup(<PricingView data={tiersFixture()} />);
+    for (const row of ['photoProjects', 'photoMaxMegapixels', 'photoBatch']) expect(out).not.toContain(`data-row="${row}"`);
+    expect(out).toContain('data-row="opsPerDay"');
+  });
+
   it('a changed table changes the page: nothing is a literal', () => {
     const retuned = tiersFixture();
     const pro = retuned.tiers.find((x) => x.tier === 'pro')!.limits;

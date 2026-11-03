@@ -23,6 +23,19 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM100: Aperture's public face (the editor itself shipped over MM97-MM99).
+  {
+    id: '2026-11-03-aperture-beta',
+    date: '2026-11-03',
+    title: 'Aperture, a photo editor, is in beta',
+    body: 'Aperture edits photos without changing the original. Every adjustment is a layer you can reorder, fade, mask or delete: exposure, contrast, highlights and shadows, white balance, curves, levels, color by range, color balance, black and white, split toning, LUTs, sharpening, noise reduction, vignette and more. Limit any layer to part of the photo with a gradient, a brush, a color range or an AI subject selection, straighten or fix perspective, heal spots, start from 18 built-in looks (including color pop, where everything turns gray except one color), and apply your edits to several photos at once. The preview runs in your browser; the file you export is rendered on our server from the original. Without an account one photo is kept in your browser; with one, projects stay on your account (5 on Free, 50 on Premium, unlimited on Pro). Each export counts as one everyday job and each heal as one AI job. A tutorial and a page for each adjustment are on the site.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Aperture', href: '/tools/aperture' },
+      { label: 'Aperture tutorial', href: '/tutorials/aperture' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MA09: Sign in with Apple, Forgot password, account linking (Apple button ships behind
   // NEXT_PUBLIC_AUTH_APPLE_ENABLED; Mitch flips it after the Preview check).
   {

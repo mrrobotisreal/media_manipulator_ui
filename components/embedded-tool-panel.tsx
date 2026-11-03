@@ -120,6 +120,9 @@ export type EmbeddedTask =
   // route; like ai_video_restoration, the literal only lets its toolPages entry
   // typecheck and the generic embedded panel never sees it.
   | 'motion_editor'
+  // Aperture (MM100): the 24 adjustment pages render the photo drop zone (components/photo/landing),
+  // never the generic panel; the literal only lets their toolPages entries typecheck.
+  | 'photo_editor'
   | 'png_to_jpg'
   | 'jpg_to_png'
   | 'webp_to_png'
