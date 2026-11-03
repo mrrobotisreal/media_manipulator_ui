@@ -23,6 +23,14 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM93: full tool-page bodies in the first ten non-English languages.
+  {
+    id: '2026-11-03-tool-pages-ten-languages',
+    date: '2026-11-03',
+    title: 'Every tool page now reads in full in ten languages',
+    body: 'Opening a tool page in Ukrainian, Russian, German, French, Hebrew, Italian, Portuguese (Brazil), Portuguese (Portugal), Spanish (Spain) or Spanish (Latin America) used to show a translated title over English text on most tools. All 98 tool pages are now translated in full in those ten languages: the introduction, the steps, the technical details, the worked examples, the use cases, the privacy note, the FAQ and the related-tool links. The new Aperture photo pages follow separately. Japanese, Chinese (Simplified and Traditional), Korean, Arabic, Hindi and Vietnamese are next. These translations were written with an AI model; native-speaker review is ongoing, and only reviewed languages are offered to search engines.',
+    tags: ['improved'],
+  },
   // MA26: the Android app's legal copy and the public account-deletion page.
   {
     id: '2026-11-03-mobile-legal',
