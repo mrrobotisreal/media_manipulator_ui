@@ -166,6 +166,28 @@ export const EVENTS = {
   VECTOR_EXPORT_GATED: 'vector_export_gated',
   VECTOR_PROJECT_SAVED: 'vector_project_saved',
 
+  // --- Aperture (code name photo, MM101) --------------------------------------
+  // The chromeless /photo editor. Sent only with the visitor's stored analytics
+  // consent (lib/photo/analytics.ts); the server twin of the export counter,
+  // `server_photo_export_counted`, lives in the Go catalogs like `server_*`.
+  PHOTO_EDITOR_OPENED: 'photo_editor_opened',
+  PHOTO_PROJECT_CREATED: 'photo_project_created',
+  PHOTO_ADJUSTMENT_CHANGED: 'photo_adjustment_changed',
+  PHOTO_MASK_ADDED: 'photo_mask_added',
+  PHOTO_AI_MASK_REQUESTED: 'photo_ai_mask_requested',
+  PHOTO_AI_MASK_COMPLETED: 'photo_ai_mask_completed',
+  PHOTO_AI_MASK_FAILED: 'photo_ai_mask_failed',
+  PHOTO_HEAL_REQUESTED: 'photo_heal_requested',
+  PHOTO_HEAL_COMPLETED: 'photo_heal_completed',
+  PHOTO_HEAL_FAILED: 'photo_heal_failed',
+  PHOTO_PRESET_APPLIED: 'photo_preset_applied',
+  PHOTO_COMPARE_USED: 'photo_compare_used',
+  PHOTO_PROJECT_SAVED: 'photo_project_saved',
+  PHOTO_EXPORT_STARTED: 'photo_export_started',
+  PHOTO_EXPORT_COMPLETED: 'photo_export_completed',
+  PHOTO_EXPORT_FAILED: 'photo_export_failed',
+  PHOTO_EXPORT_GATED: 'photo_export_gated',
+
   // --- Video / audio summary (MM75) -----------------------------------------
   // One per completed summary job, from the summarize panel. The server twin is the
   // ordinary server_job_* lifecycle with tool `video_summary` (MM74), not a new event.
@@ -314,6 +336,25 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   vector_export_failed: PRIORITY_CRITICAL,
   vector_export_gated: PRIORITY_CRITICAL,
   vector_project_saved: PRIORITY_NORMAL,
+
+  // Aperture (photo, MM101)
+  photo_editor_opened: PRIORITY_HIGH,
+  photo_project_created: PRIORITY_HIGH,
+  photo_adjustment_changed: PRIORITY_LOW,
+  photo_mask_added: PRIORITY_NORMAL,
+  photo_ai_mask_requested: PRIORITY_NORMAL,
+  photo_ai_mask_completed: PRIORITY_NORMAL,
+  photo_ai_mask_failed: PRIORITY_NORMAL,
+  photo_heal_requested: PRIORITY_NORMAL,
+  photo_heal_completed: PRIORITY_NORMAL,
+  photo_heal_failed: PRIORITY_NORMAL,
+  photo_preset_applied: PRIORITY_NORMAL,
+  photo_compare_used: PRIORITY_LOW,
+  photo_project_saved: PRIORITY_NORMAL,
+  photo_export_started: PRIORITY_HIGH,
+  photo_export_completed: PRIORITY_HIGH,
+  photo_export_failed: PRIORITY_HIGH,
+  photo_export_gated: PRIORITY_HIGH,
 
   // Video / audio summary (MM75)
   summary_generated: PRIORITY_HIGH,
@@ -1037,6 +1078,118 @@ export interface VectorProjectSavedProps {
 }
 
 /* ---------------------------------------------------------------------------
+ * Aperture (code name photo) — MM101, design PHOTO_EDITOR.md §10.
+ *
+ * snake_case like the funnel. WITHOUT EXCEPTION enums or buckets from
+ * `lib/analytics/buckets.ts`: never a slider value, a filename, a project name
+ * or a raw size. Built only by `lib/photo/analytics.ts`.
+ * ------------------------------------------------------------------------- */
+
+/** How the editor opened. `app_intake` / `app_share` are reserved for the mobile hand-off (MA50-MA52). */
+export type PhotoEditorSource = 'upload' | 'tool_page' | 'result' | 'history' | 'projects' | 'app_intake' | 'app_share';
+export type PhotoFormatProp = 'jpg' | 'png' | 'webp' | 'avif' | 'tiff';
+export type PhotoMaskKindProp = 'gradient' | 'radial' | 'brush' | 'luminosity' | 'colorRange' | 'subject';
+export type PhotoCompareMode = 'hold' | 'split' | 'wipe';
+export type PhotoGateReasonProp = 'megapixels' | 'batch' | 'projects';
+export type PhotoUpgradePathProp = 'signup' | 'premium' | 'pro' | 'none';
+export type PhotoFailReason =
+  | 'locked'
+  | 'limit'
+  | 'quota'
+  | 'unavailable'
+  | 'too_large'
+  | 'unsupported'
+  | 'render'
+  | 'timeout'
+  | 'cancelled'
+  | 'error';
+
+export interface PhotoEditorOpenedProps {
+  source: PhotoEditorSource;
+  /** The browser decoded the photo itself (false: the server's proxy was used). */
+  local_decode: boolean;
+}
+
+export interface PhotoProjectCreatedProps {
+  source_format: string;
+  /** photoMegapixelBucket. */
+  megapixels_bucket: string;
+  has_alpha: boolean;
+}
+
+export interface PhotoAdjustmentChangedProps {
+  /** The layer type (an enum of the 27 adjustment types). */
+  adjustment: string;
+  /** The parameter KEY only, never its value. */
+  param: string;
+}
+
+export interface PhotoMaskAddedProps {
+  mask_kind: PhotoMaskKindProp;
+}
+
+export type PhotoAiRequestedProps = Record<string, never>;
+export interface PhotoAiCompletedProps {
+  /** vectorMsBucket of the wall-clock request time. */
+  ms: string;
+}
+export interface PhotoAiFailedProps extends PhotoAiCompletedProps {
+  reason: PhotoFailReason;
+}
+
+export interface PhotoPresetAppliedProps {
+  /** The built-in id (or `auto`); `custom` for the visitor's own presets. */
+  preset_id: string;
+  builtin: boolean;
+}
+
+export interface PhotoCompareUsedProps {
+  mode: PhotoCompareMode;
+}
+
+export interface PhotoProjectSavedProps {
+  /** countBucket of the adjustment layers. */
+  layers: string;
+  /** countBucket of the masks. */
+  masks: string;
+  /** countBucket of the heals. */
+  heals: string;
+  /** vectorBytesBucket of the saved document. */
+  doc_bytes_bucket: string;
+}
+
+export interface PhotoExportStartedProps {
+  format: PhotoFormatProp;
+  megapixels_bucket: string;
+  layers: string;
+  masks: string;
+  /** batchBucket: `1` for a single export. */
+  batch_size: string;
+}
+
+export interface PhotoExportCompletedProps {
+  format: PhotoFormatProp;
+  megapixels_bucket: string;
+  /** vectorMsBucket. */
+  ms: string;
+  /** vectorBytesBucket of the result (absent for a batch). */
+  bytes_bucket?: string;
+}
+
+export interface PhotoExportFailedProps {
+  format: PhotoFormatProp;
+  megapixels_bucket: string;
+  ms: string;
+  reason: PhotoFailReason;
+}
+
+export interface PhotoExportGatedProps {
+  reason: PhotoGateReasonProp;
+  tier: Tier;
+  upgrade_path: PhotoUpgradePathProp;
+}
+
+/* ---------------------------------------------------------------------------
  * Video / audio summary (MM75, design VIDEO_SUMMARY.md §5). camelCase like the
  * design names them. Enums and small bounded counts only; never a title, a
  * file name or any summary text.
@@ -1214,6 +1367,24 @@ export interface EventPropsMap {
   vector_export_failed: VectorExportFailedProps;
   vector_export_gated: VectorExportGatedProps;
   vector_project_saved: VectorProjectSavedProps;
+
+  photo_editor_opened: PhotoEditorOpenedProps;
+  photo_project_created: PhotoProjectCreatedProps;
+  photo_adjustment_changed: PhotoAdjustmentChangedProps;
+  photo_mask_added: PhotoMaskAddedProps;
+  photo_ai_mask_requested: PhotoAiRequestedProps;
+  photo_ai_mask_completed: PhotoAiCompletedProps;
+  photo_ai_mask_failed: PhotoAiFailedProps;
+  photo_heal_requested: PhotoAiRequestedProps;
+  photo_heal_completed: PhotoAiCompletedProps;
+  photo_heal_failed: PhotoAiFailedProps;
+  photo_preset_applied: PhotoPresetAppliedProps;
+  photo_compare_used: PhotoCompareUsedProps;
+  photo_project_saved: PhotoProjectSavedProps;
+  photo_export_started: PhotoExportStartedProps;
+  photo_export_completed: PhotoExportCompletedProps;
+  photo_export_failed: PhotoExportFailedProps;
+  photo_export_gated: PhotoExportGatedProps;
 
   summary_generated: SummaryGeneratedProps;
 

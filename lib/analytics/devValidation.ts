@@ -107,6 +107,12 @@ const vectorExport = z
   })
   .strict();
 
+// Aperture (photo, MM101) shared shapes.
+const photoFormat = z.enum(['jpg', 'png', 'webp', 'avif', 'tiff']);
+const photoFailReason = z.enum(['locked', 'limit', 'quota', 'unavailable', 'too_large', 'unsupported', 'render', 'timeout', 'cancelled', 'error']);
+const photoAiCompleted = z.object({ ms: z.string() }).strict();
+const photoAiFailed = z.object({ ms: z.string(), reason: photoFailReason }).strict();
+
 const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } = {
   page_view: z
     .object({ page_title: z.string().optional(), is_initial: z.boolean().optional() })
@@ -522,6 +528,33 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     })
     .strict(),
   vector_project_saved: z.object({ revision: z.string(), bytes: z.string() }).strict(),
+
+  // Aperture (photo, MM101): every value an enum, a bucket string or a flag.
+  photo_editor_opened: z
+    .object({ source: z.enum(['upload', 'tool_page', 'result', 'history', 'projects', 'app_intake', 'app_share']), local_decode: z.boolean() })
+    .strict(),
+  photo_project_created: z.object({ source_format: z.string(), megapixels_bucket: z.string(), has_alpha: z.boolean() }).strict(),
+  photo_adjustment_changed: z.object({ adjustment: z.string(), param: z.string() }).strict(),
+  photo_mask_added: z.object({ mask_kind: z.enum(['gradient', 'radial', 'brush', 'luminosity', 'colorRange', 'subject']) }).strict(),
+  photo_ai_mask_requested: z.object({}).strict(),
+  photo_ai_mask_completed: photoAiCompleted,
+  photo_ai_mask_failed: photoAiFailed,
+  photo_heal_requested: z.object({}).strict(),
+  photo_heal_completed: photoAiCompleted,
+  photo_heal_failed: photoAiFailed,
+  photo_preset_applied: z.object({ preset_id: z.string(), builtin: z.boolean() }).strict(),
+  photo_compare_used: z.object({ mode: z.enum(['hold', 'split', 'wipe']) }).strict(),
+  photo_project_saved: z.object({ layers: z.string(), masks: z.string(), heals: z.string(), doc_bytes_bucket: z.string() }).strict(),
+  photo_export_started: z
+    .object({ format: photoFormat, megapixels_bucket: z.string(), layers: z.string(), masks: z.string(), batch_size: z.string() })
+    .strict(),
+  photo_export_completed: z
+    .object({ format: photoFormat, megapixels_bucket: z.string(), ms: z.string(), bytes_bucket: z.string().optional() })
+    .strict(),
+  photo_export_failed: z.object({ format: photoFormat, megapixels_bucket: z.string(), ms: z.string(), reason: photoFailReason }).strict(),
+  photo_export_gated: z
+    .object({ reason: z.enum(['megapixels', 'batch', 'projects']), tier, upgrade_path: z.enum(['signup', 'premium', 'pro', 'none']) })
+    .strict(),
 
   summary_generated: z
     .object({

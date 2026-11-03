@@ -2072,6 +2072,17 @@
       "zipping": "正在準備 ZIP…",
       "zipFailed": "無法準備 ZIP，請再試一次。",
       "zipMissing_other": "有 {{count}} 張相片無法加入 ZIP。"
+    },
+    "gate": {
+      "cta": {
+        "signup": "免費登入",
+        "premium": "升級至 Premium",
+        "pro": "升級至 Pro"
+      },
+      "sizes": {
+        "premium": "超過 {{mp}} MP 的匯出包含在 Premium 中。",
+        "pro": "超過 {{mp}} MP 的匯出包含在 Pro 中。"
+      }
     }
   }
 }

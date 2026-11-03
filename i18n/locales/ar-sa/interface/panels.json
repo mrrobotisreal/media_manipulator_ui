@@ -2167,6 +2167,17 @@
       "zipMissing_few": "تعذّرت إضافة {{count}} صور إلى ZIP.",
       "zipMissing_many": "تعذّرت إضافة {{count}} صورة إلى ZIP.",
       "zipMissing_other": "تعذّرت إضافة {{count}} صورة إلى ZIP."
+    },
+    "gate": {
+      "cta": {
+        "signup": "تسجيل الدخول مجانًا",
+        "premium": "الترقية إلى Premium",
+        "pro": "الترقية إلى Pro"
+      },
+      "sizes": {
+        "premium": "الصادرات التي تتجاوز {{mp}} MP مضمّنة في Premium.",
+        "pro": "الصادرات التي تتجاوز {{mp}} MP مضمّنة في Pro."
+      }
     }
   }
 }

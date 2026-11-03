@@ -2129,6 +2129,17 @@
       "zipMissing_few": "{{count}} фото не удалось добавить в ZIP.",
       "zipMissing_many": "{{count}} фото не удалось добавить в ZIP.",
       "zipMissing_other": "{{count}} фото не удалось добавить в ZIP."
+    },
+    "gate": {
+      "cta": {
+        "signup": "Войти бесплатно",
+        "premium": "Перейти на Premium",
+        "pro": "Перейти на Pro"
+      },
+      "sizes": {
+        "premium": "Экспорт выше {{mp}} MP входит в Premium.",
+        "pro": "Экспорт выше {{mp}} MP входит в Pro."
+      }
     }
   }
 }

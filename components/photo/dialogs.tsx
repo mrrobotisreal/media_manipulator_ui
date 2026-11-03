@@ -70,23 +70,25 @@ export function DraftDialog({ open, when, onRestore, onDiscard }: { open: boolea
 }
 
 /** Guest banner: neutral, no purchase link. `count` is the free tier's project cap. */
-export function LocalBanner({ count }: { count: number }) {
+export function LocalBanner({ count, cta, onShown }: { count: number; cta?: React.ReactNode; onShown?: () => void }) {
   const { t } = useLocalization('interface');
+  React.useEffect(() => onShown?.(), [onShown]);
   return (
     <p className="border-b border-edge bg-surface-2 px-3 py-1.5 text-xs text-muted-foreground" data-testid="local-banner">
-      {t('photo.banner.local', { count })}
+      {t('photo.banner.local', { count })} {cta}
     </p>
   );
 }
 
 /** After sign-in: offer to keep the browser-local project on the account. */
-export function UploadOffer({ canUpload, busy, error, onAccept, onDismiss }: { canUpload: boolean; busy: boolean; error: boolean; onAccept: () => void; onDismiss: () => void }) {
+export function UploadOffer({ canUpload, busy, error, onAccept, onDismiss, cta, onShown }: { canUpload: boolean; busy: boolean; error: boolean; onAccept: () => void; onDismiss: () => void; cta?: React.ReactNode; onShown?: () => void }) {
   const { t } = useLocalization('interface');
+  React.useEffect(() => onShown?.(), [onShown]);
   return (
     <div className="flex flex-wrap items-center gap-3 border-b border-edge bg-primary/10 px-3 py-2 text-sm" role="status" data-testid="upload-offer">
       <div className="min-w-0 flex-1">
         <p className="font-medium">{t('photo.banner.offerTitle')}</p>
-        <p className="text-xs text-muted-foreground">{canUpload ? t('photo.banner.offerBody') : t('photo.banner.offerFull')}</p>
+        <p className="text-xs text-muted-foreground">{canUpload ? t('photo.banner.offerBody') : t('photo.banner.offerFull')} {cta}</p>
         {error ? <p className="text-xs text-destructive">{t('photo.banner.uploadFailed')}</p> : null}
       </div>
       {canUpload ? (

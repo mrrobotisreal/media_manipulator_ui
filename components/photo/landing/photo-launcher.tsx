@@ -156,7 +156,7 @@ export default function PhotoLauncher({
 
   return (
     <div data-testid="photo-launcher">
-      <PhotoDropzone panel={panel} title={labels.title} description={labels.description} labels={labels} />
+      <PhotoDropzone panel={panel} slug="aperture" title={labels.title} description={labels.description} labels={labels} />
       <div className="mt-6 rounded-lg border border-edge bg-surface-1 p-4 sm:p-6">
         <h2 className="mb-3 text-base font-semibold text-card-foreground">{labels.recentTitle}</h2>
         <PhotoRecentList state={state} labels={labels} locale={locale} />

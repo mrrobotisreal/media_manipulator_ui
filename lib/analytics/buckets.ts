@@ -247,6 +247,18 @@ export function vectorMsBucket(ms: number): string {
   return '2m+';
 }
 
+/**
+ * Aperture output / source size in megapixels (`megapixels_bucket`, MM101).
+ * Upper-inclusive; mirrors the API's analyticsemit.MegapixelBucket.
+ */
+export function photoMegapixelBucket(megapixels: number): '<=2' | '<=8' | '<=16' | '<=32' | '>32' {
+  if (!(megapixels > 2)) return '<=2';
+  if (megapixels <= 8) return '<=8';
+  if (megapixels <= 16) return '<=16';
+  if (megapixels <= 32) return '<=32';
+  return '>32';
+}
+
 /** A saved project's revision (`revision`). */
 export function vectorRevisionBucket(revision: number): string {
   if (revision <= 1) return '1';
