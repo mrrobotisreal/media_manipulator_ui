@@ -14,7 +14,6 @@ import {
   EXTRA_DOC_LAYERS,
   EXTRA_FULL_DOCS,
   GEOMETRY_BORDER_PX,
-  NEW_SHARED_DOCS,
   buildFullDoc,
   FIXTURES_ROOT,
   GOLDEN_IMAGES,
@@ -35,10 +34,6 @@ for (const [name, layers] of Object.entries(EXTRA_DOC_LAYERS)) {
 for (const [name, body] of Object.entries(EXTRA_FULL_DOCS)) {
   const p = goldenDocPath(name);
   writeFileSync(p, `${canonicalPhotoDoc(buildFullDoc(body()))}\n`);
-}
-for (const [name, body] of Object.entries(NEW_SHARED_DOCS)) {
-  const b = body();
-  writeFileSync(join(FIXTURES_ROOT, 'docs', `${name}.json`), `${canonicalPhotoDoc(buildFullDoc(b, b.source as { width: number; height: number }))}\n`);
 }
 
 mkdirSync(dirname(goldenPath('x', 'y')), { recursive: true });

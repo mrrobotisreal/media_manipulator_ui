@@ -13,14 +13,14 @@ coordinator): `images/{photo,chart,alpha}.png` (made by
 rung-1 type, made by `npm run photo:goldens`), `goldens/<doc>.<image>.png`
 (8-bit RGBA, rendered by `lib/photo/colorMath.ts`). The goldens cover the
 shared docs `blank, defaults, curves-s, hsl-grey-except-red, levels-channels,
-rung1-all-layers` plus (MM98) `masks-all-kinds, masks-named-ref,
+rung1-all-layers` plus (MM98) `masks-all-kinds, masks-named,
 geometry-rotate-crop, geometry-perspective` and every `golden-docs/*.json`
 (MM98 added `mask-*`, `redeye`, `geometry-straighten-edge`,
 `geometry-flip-fill-colour`); `detail-all` gets goldens from MM99.
 `golden-manifest.json` lists each golden's size and the `borderPx` (2 for the
 geometry docs) a comparison must exclude. MM98 also added the shared docs
-`masks-named-ref.json` (D3: `doc.masks` + `layer.mask = {ref}`) and
-`heal-bases.json` (D2: heals with `baseRef`). `subject` mask components have no
+`masks-named.json` (D3: `doc.masks` + `layer.mask = {ref}`) and
+`heal-base-refs.json` (D2: heals with `baseRef`), both authored by MM96 and copied byte for byte. `subject` mask components have no
 pixels in the goldens and are skipped by every renderer.
 
 Zod side: `canonicalPhotoDoc(parsePhotoDoc(x).doc)` equals the file minus its

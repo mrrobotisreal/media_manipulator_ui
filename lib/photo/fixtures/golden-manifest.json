@@ -104,17 +104,17 @@
   "height": 256,
   "borderPx": 0
  },
- "masks-named-ref.photo": {
+ "masks-named.photo": {
   "width": 256,
   "height": 192,
   "borderPx": 0
  },
- "masks-named-ref.chart": {
+ "masks-named.chart": {
   "width": 256,
   "height": 256,
   "borderPx": 0
  },
- "masks-named-ref.alpha": {
+ "masks-named.alpha": {
   "width": 256,
   "height": 256,
   "borderPx": 0

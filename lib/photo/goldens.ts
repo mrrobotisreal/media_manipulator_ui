@@ -28,7 +28,7 @@ export const SHARED_GOLDEN_DOCS = [
   'rung1-all-layers',
   // MM98: masks and geometry
   'masks-all-kinds',
-  'masks-named-ref',
+  'masks-named',
   'geometry-rotate-crop',
   'geometry-perspective',
 ];
@@ -226,34 +226,6 @@ export const EXTRA_FULL_DOCS: Record<string, () => Record<string, unknown>> = {
     layers: [{ id: 'l1', type: 'exposure', params: { ev: 0.3 }, mask: { components: [{ kind: 'radial', feather: 0.5 }] } }],
   }),
   'geometry-flip-fill-colour': () => ({ geometry: { rotate: 30, flipV: true, fill: '#336699' }, layers: [] }),
-};
-
-/** New shared docs (docs/): authored here, copied to the API; valid for the Go sanitizer after MM96's D2/D3. */
-export const NEW_SHARED_DOCS: Record<string, () => Record<string, unknown>> = {
-  'masks-named-ref': () => ({
-    source: { width: 4000, height: 3000 },
-    masks: {
-      face: {
-        components: [{ kind: 'radial', center: { x: 0.4, y: 0.45 }, rx: 0.2, ry: 0.28, rotate: 10, feather: 0.5 }],
-        feather: 4,
-      },
-    },
-    layers: [
-      { id: 'exp', type: 'exposure', params: { ev: 0.7 }, mask: { ref: 'face' } },
-      { id: 'tone', type: 'tone', params: { shadows: 30 }, mask: { ref: 'face' } },
-      { id: 'sat', type: 'vibranceSaturation', params: { saturation: 20 }, mask: { ref: 'face' } },
-      { id: 'all', type: 'invert', enabled: false },
-    ],
-  }),
-  'heal-bases': () => ({
-    source: { width: 4000, height: 3000 },
-    heals: [
-      { id: 'h1', maskRef: 'masks/h1.png', baseRef: 'bases/0a1b2c3d4e5f.png' },
-      { id: 'h2', baseRef: 'local:7f3e9d21c0a4' },
-      { id: 'h3', maskRef: 'masks/h3.png' },
-    ],
-    layers: [{ id: 'ex', type: 'exposure', params: { ev: 0.5 } }],
-  }),
 };
 
 export function buildFullDoc(body: Record<string, unknown>, source = { width: 256, height: 192 }): PhotoDoc {
