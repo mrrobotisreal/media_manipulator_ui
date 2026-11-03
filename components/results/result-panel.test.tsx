@@ -206,3 +206,31 @@ describe('ResultPanel', () => {
     });
   });
 });
+
+describe('ResultPanel: Open in the photo editor (MM97)', () => {
+  beforeEach(() => {
+    let n = 0;
+    Object.assign(URL, { createObjectURL: vi.fn(() => `blob:fake-${++n}`), revokeObjectURL: vi.fn() });
+  });
+  afterEach(() => {
+    cleanup();
+    resetResultBlobCache();
+    resetPreviewedForTests();
+  });
+  it('offers "Open in Aperture" on image results, linking to /photo/new?from=<jobId>', () => {
+    render(<ResultPanel descriptor={descriptorFor('image', 'out.png')} />);
+    const a = screen.getByTestId('open-in-photo-editor') as HTMLAnchorElement;
+    expect(a.getAttribute('href')).toBe('/photo/new?from=job-image');
+    expect(a.textContent).toBe('Open in Aperture');
+  });
+  it('is absent for video, read-only shares, tokenised results and offerPhotoEditor={false}', () => {
+    const { rerender } = render(<ResultPanel descriptor={descriptorFor('video', 'out.mp4')} />);
+    expect(screen.queryByTestId('open-in-photo-editor')).toBeNull();
+    rerender(<ResultPanel descriptor={descriptorFor('image', 'out.png')} readOnly />);
+    expect(screen.queryByTestId('open-in-photo-editor')).toBeNull();
+    rerender(<ResultPanel descriptor={{ ...descriptorFor('image', 'out.png'), sourceUrl: 'https://x/r/t' }} />);
+    expect(screen.queryByTestId('open-in-photo-editor')).toBeNull();
+    rerender(<ResultPanel descriptor={descriptorFor('image', 'out.png')} offerPhotoEditor={false} />);
+    expect(screen.queryByTestId('open-in-photo-editor')).toBeNull();
+  });
+});

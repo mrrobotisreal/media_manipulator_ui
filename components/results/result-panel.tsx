@@ -11,6 +11,7 @@ import { ConfirmDialog } from '@/components/account/confirm-dialog';
 import { useShareAction, type ShareMessages } from '@/components/share/use-share-action';
 import { isShareable } from '@/lib/share/shareApi';
 import { Panel } from '@/components/darkroom/panel';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { Segmented } from '@/components/darkroom/segmented';
 import { Stat } from '@/components/darkroom/stat';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
@@ -63,6 +64,12 @@ export interface ResultPanelProps {
    * before stems followed the input format). Only the owner's panel; shared pages never show it.
    */
   offerMp3?: boolean;
+  /**
+   * MM97: offer "Open in {{brand}}" on image results (the photo editor), linking to
+   * `/photo/new?from=<jobId>`. Default on for `image` descriptors, never on the read-only
+   * share rendering or a tokenised `sourceUrl`.
+   */
+  offerPhotoEditor?: boolean;
   /** Shows a "Run another" action. */
   onRunAnother?: () => void;
   /** Comparison modes offered when `descriptor.original` exists. */
@@ -251,6 +258,7 @@ function ResultPanelBody({
   onDownload,
   onDownloaded,
   offerMp3 = false,
+  offerPhotoEditor = true,
   onRunAnother,
   compareModes = ALL_COMPARE_MODES,
   onCompareModeChange,
@@ -529,6 +537,15 @@ function ResultPanelBody({
         </button>
         {offerMp3 && !readOnly && !descriptor.sourceUrl && canDownloadAsMp3(saveName) && (
           <Mp3DownloadAction jobId={descriptor.jobId} fileName={saveName} />
+        )}
+        {offerPhotoEditor && !readOnly && !descriptor.sourceUrl && descriptor.kind === 'image' && (
+          <a
+            href={`/photo/new?from=${encodeURIComponent(descriptor.jobId)}`}
+            data-testid="open-in-photo-editor"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-control px-4 py-2 font-medium text-foreground transition-colors hover:bg-surface-2"
+          >
+            {t('resultPanel.openInPhoto', { brand: PHOTO_BRAND })}
+          </a>
         )}
         {compareMode !== null && entryModes.length > 1 && (
           <Segmented

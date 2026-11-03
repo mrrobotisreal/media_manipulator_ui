@@ -143,13 +143,13 @@ export function getLocaleDef(code: string): LocaleDef | undefined {
  * unknown code) returns the href unchanged, preserving the unprefixed URLs;
  * on a translator deployment English gets `/en` (MM56, `translatorHomeLocale`).
  * External URLs, `mailto:`, hashes, `/dr`, `/embed`, `/api` and the Motion
- * editor (`/motion`, `/motion/…`; MM42) are returned as-is. The Motion check is
+ * editor (`/motion`, `/motion/…`; MM42) and the Aperture editor (`/photo`, `/photo/…`; MM97) are returned as-is. The Motion check is
  * exact, so `/tools/motion` and any `/motion-*` page are still localized.
  */
 export function localizeHref(href: string, code: string): string {
   if (!href.startsWith("/")) return href;
   if (href.startsWith("/dr") || href.startsWith("/embed") || href.startsWith("/api")) return href;
-  if (isMotionEditorHref(href)) return href;
+  if (isMotionEditorHref(href) || isPhotoEditorHref(href)) return href;
   const def = byCode.get(code);
   if (!def) return href;
   if (def.code === defaultLocale) {
@@ -182,6 +182,11 @@ export function translatorHomeLocale(): LocaleDef | null {
 /** `/motion`, `/motion/…`, `/motion?…`, `/motion#…`: the chromeless editor route. */
 function isMotionEditorHref(href: string): boolean {
   return href === "/motion" || /^\/motion[/?#]/.test(href);
+}
+
+/** `/photo`, `/photo/…`, `/photo?…`, `/photo#…`: the chromeless Aperture editor (MM97). Exact, so `/tools/aperture` stays localized. */
+function isPhotoEditorHref(href: string): boolean {
+  return href === "/photo" || /^\/photo[/?#]/.test(href);
 }
 
 /**
