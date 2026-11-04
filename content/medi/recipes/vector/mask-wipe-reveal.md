@@ -1,0 +1,34 @@
+---
+id: "mask-wipe-reveal"
+editor: "vector"
+title: "Mask wipe reveal"
+intents: ["wipe reveal", "reveal text from left to right", "mask reveal", "text appears behind a wipe", "slide reveal"]
+difficulty: "advanced"
+ops_example: true
+tools: ["motion"]
+---
+
+## When to use
+
+Text or an image that should appear as if uncovered.
+
+## What a pro does and why
+
+A rectangle used as the layer's clip or mask grows from width 0 to full width; the content stays still, which looks more designed than sliding the content itself. The `maskClip` animator animates the clip shape with its own tracks.
+
+## Ops
+
+```json
+{
+  "summary": "Wipe reveal",
+  "ops": [
+    {"op": "apply_animator", "layerIds": ["LAYER_ID"], "animator": "maskClip", "span": {"start": 0, "end": 600, "easing": "easeOut"}}
+  ]
+}
+```
+
+The layer needs a clip or mask shape first (the digest shows `clipPath`/`mask`); if it has none, explain how to add one in the Mask/Clip panel.
+
+## How to adjust
+
+Reveal from the right: start the clip rectangle at the right edge. Softer edge: use a mask with a gradient instead of a clip.

@@ -38,6 +38,10 @@ describe('export:medi corpus shape (decision 1, 2)', () => {
     for (const editor of ['studio', 'vector', 'photo']) {
       expect(docs.filter(([p]) => p.startsWith(`editors/${editor}/`)).length, editor).toBeGreaterThanOrEqual(4);
     }
+    // MM106: every recipe under content/medi/recipes is exported under recipes/.
+    for (const editor of ['photo', 'studio', 'vector', 'workflow']) {
+      expect(docs.filter(([p]) => p.startsWith(`recipes/${editor}/`)).length, editor).toBeGreaterThanOrEqual(10);
+    }
   });
 
   it('never exports the private or operator surfaces', () => {
@@ -51,7 +55,7 @@ describe('export:medi corpus shape (decision 1, 2)', () => {
     for (const [p, body] of docs) {
       expect(body.startsWith(GENERATED_LINE), p).toBe(true);
       expect(body, p).toMatch(/^# .+$/m);
-      expect(body, p).toMatch(/- Kind: `(tool|page|editor)`/);
+      expect(body, p).toMatch(/- Kind: `(tool|page|editor|recipe)`/);
       const order = ['## Summary', '## Details', '## Search keywords', '## Links'].map((h) => body.indexOf(`\n${h}\n`));
       expect(order.every((i) => i > 0), `${p} sections`).toBe(true);
       expect([...order].sort((a, b) => a - b), `${p} order`).toEqual(order);

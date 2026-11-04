@@ -19,6 +19,8 @@
  * count, a price or a per-plan size cap are dropped from the exported copy
  * (`stripTierNumbers`), and `knowledgeExport.test.ts` fails if any slips through.
  */
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join, relative } from 'node:path';
 import { z } from 'zod';
 
 import { PRIMARY_TOOL_PAGES, TOOL_CATEGORIES, type ToolPageContent } from '@/content/toolPages';
@@ -61,6 +63,7 @@ import { BLEND_MODES, LAYER_PARAMS, geometrySchema, maskComponentSchema, maskSch
 import { BUILTIN_PRESETS } from '@/lib/photo/presets';
 import { SHORTCUTS as PHOTO_SHORTCUTS } from '@/lib/photo/shortcuts';
 import { PHOTO_PANEL_IDS, type PhotoPanelId } from '@/lib/photo/panelIds';
+import { RECIPE_SECTIONS, parseRecipe, type Recipe } from '@/lib/assistant/recipes';
 
 /** Output directory relative to the UI repo root (the script's default). */
 export const MEDI_KNOWLEDGE_DIR = '../media_manipulator_api/internal/assistant/knowledge';
@@ -72,7 +75,10 @@ export const GENERATED_LINE =
 export const MAX_CORPUS_BYTES = 1.5 * 1024 * 1024;
 export const MAX_DOC_BYTES = 24 * 1024;
 
-export type DocKind = 'tool' | 'page' | 'editor';
+export type DocKind = 'tool' | 'page' | 'editor' | 'recipe';
+
+/** MM106: the hand-written recipe library, relative to the UI repo root. */
+export const MEDI_RECIPES_DIR = 'content/medi/recipes';
 
 // ---------------------------------------------------------------------------
 // English copy for the i18n shards (the corpus is English; design §7.1)
@@ -983,13 +989,50 @@ const stableJson = (v: unknown) => JSON.stringify(v, null, 1) + '\n';
 // The whole corpus
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Recipes (MM106, design §7.2): hand-written, exported in the same doc shape
+// ---------------------------------------------------------------------------
+
+/** Read and parse every recipe under `root` (default: the UI repo's content/medi/recipes). */
+export function loadRecipes(root: string = join(process.cwd(), MEDI_RECIPES_DIR)): Recipe[] {
+  const walk = (dir: string): string[] =>
+    readdirSync(dir).flatMap((n) => {
+      const p = join(dir, n);
+      return statSync(p).isDirectory() ? walk(p) : n.endsWith('.md') ? [p] : [];
+    });
+  return walk(root)
+    .map((p) => parseRecipe(relative(root, p).split('\\').join('/'), readFileSync(p, 'utf8')))
+    .sort((a, b) => a.path.localeCompare(b.path));
+}
+
+const RECIPE_EDITOR_LABEL: Record<string, string> = { photo: PHOTO_BRAND, studio: 'Darkroom', vector: MOTION_BRAND, workflow: 'Cross-tool workflow' };
+
+/** First sentence of a section, for the doc summary and the capsule line. */
+const firstSentenceOf = (s: string) => (/^([\s\S]+?[.!?])(\s|$)/.exec(s.replace(/\s+/g, ' ').trim())?.[1] ?? s).trim();
+
+export function recipeDoc(r: Recipe): string {
+  const details: string[] = [];
+  for (const name of RECIPE_SECTIONS) details.push(`### ${name}`, '', ...r.sections[name].split('\n'), '');
+  return doc({
+    title: r.title,
+    kind: 'recipe',
+    category: r.editor,
+    slug: `${r.editor}/${r.id}`,
+    summary: `${RECIPE_EDITOR_LABEL[r.editor]} recipe (${r.difficulty}). ${firstSentenceOf(r.sections['What a pro does and why'])}`,
+    details,
+    keywords: [r.title, ...r.intents],
+    links: r.tools.map((slug) => `/tools/${slug}`),
+  });
+}
+
 /** Every Medi knowledge file keyed by its path relative to `knowledge/`. */
-export function buildMediKnowledge(): Record<string, string> {
+export function buildMediKnowledge(recipes: Recipe[] = loadRecipes()): Record<string, string> {
   const files: Record<string, string> = {};
   for (const t of PRIMARY_TOOL_PAGES) files[`tools/${t.slug}.md`] = toolDoc(t);
   const specs = pageSpecs();
   for (const s of specs) files[pageFile(s.route)] = pageDoc(s);
   for (const [p, body] of [...studioDocs(), ...vectorDocs(), ...photoDocs()]) files[p] = body;
+  for (const r of recipes) files[`recipes/${r.path}`] = recipeDoc(r);
 
   const index: Record<string, ReturnType<typeof indexEntry>> = {};
   for (const [p, body] of Object.entries(files)) index[p.replace(/\.md$/, '')] = indexEntry(p, body);
@@ -1009,6 +1052,7 @@ export function buildMediKnowledge(): Record<string, string> {
     '- `tools/<slug>.md`: one per primary tool page (aliases are keywords of their target)',
     '- `pages/<route>.md`: every other public route',
     '- `editors/{studio,vector,photo}/*.md`: what each editor can do, from its registries',
+    '- `recipes/{photo,studio,vector,workflow}/*.md`: professional techniques with op examples (from `content/medi/recipes/`)',
     '- `routes.json`: the closed list of navigable targets',
     '- `names/<locale>.json`: localized tool/page names and locale-prefixed paths',
     '- `index.json`: doc id → title, kind, keywords, token estimate',
