@@ -12788,7 +12788,7 @@ const esToolPages = {
         'Cubre el tono y el color globales con los paneles «Básico», «Curvas», «Niveles», «Color (HSL)», «Equilibrio de color», «Blanco y negro», «Mezclador de canales», «Filtro fotográfico», «Tonos divididos», «LUT» y «Efectos», con controles deslizantes cuyos rangos coinciden con los de un editor de escritorio.',
         'Limita cualquier capa a una parte del encuadre con un degradado lineal, una máscara radial, un pincel pintado a mano, un rango de luminosidad, un rango de color elegido con el cuentagotas o una máscara de sujeto por IA, combinados mediante añadir, restar o intersecar.',
         'Repara píxeles con la herramienta «Reparar» (pintas las manchas, pulsas «Reparar» y un modelo de relleno, de tipo inpainting, las rellena en nuestra GPU), una corrección de «Ojos rojos» y el panel «Geometría» para recortar, enderezar, girar, voltear y corregir la perspectiva por cuatro esquinas.',
-        'Guarda y vuelve a aplicar estilos: 18 preajustes integrados más «Automático», tus propios preajustes guardados en este navegador o exportados como JSON y, en un plan de pago, la misma pila aplicada a un lote de otras fotos.',
+        'Guarda y vuelve a aplicar estilos: 18 preajustes integrados más «Automático», tus propios preajustes guardados en este navegador o exportados como JSON y, una vez que inicias sesión con cualquier plan, la misma pila aplicada a un lote de otras fotos.',
       ],
       flowSteps: [
         {
@@ -13000,7 +13000,7 @@ const esToolPages = {
           body: 'Un escaneo TIFF de 3000 x 2000 (6 MP, 36 MB, abierto con la sesión iniciada) con tonos de 20, 60, 128 y 200. «Brillo» +30 los lleva a 58, 98, 166 y 238, sumando aproximadamente los mismos 38 niveles en todas partes, de modo que el borde negro se vuelve gris. «Exposición» +1,2 EV los lleva en cambio a 34, 91, 187 y 255, con lo que el borde sigue cerca del negro pero el tono más claro se recorta. Una vía intermedia, «Exposición» +1 EV con «Negros» +20 en «Tono», da 35, 85, 176 y 255 a partir de 20, 60, 128 y 200. Exportado como PNG, el resultado de 6 MP pesa unos 15 MB; como WebP con calidad 90, unos 1,8 MB.',
         },
       ],
-      whenNotToUse: 'Si la foto tiene suficiente luz pero se ve apagada, no necesitas aclararla en absoluto; la página de contraste o una curva son la solución adecuada, y añadir exposición solo empujará las luces altas hacia el blanco. Una foto cuyas sombras son negro sólido sin textura no se puede rescatar con ningún control, porque un JPEG de 8 bits no guarda nada por debajo de cero. Y para una foto que solo está oscura en las esquinas, el control «Viñeteado» con una cantidad negativa aclara de forma más limpia y ponderada hacia los bordes que un cambio global de exposición.',
+      whenNotToUse: 'Si la foto tiene suficiente luz pero se ve apagada, no necesitas aclararla en absoluto; la página de contraste o una curva son la solución adecuada, y añadir exposición solo empujará las luces altas hacia el blanco. Una foto cuyas sombras son negro sólido sin textura no se puede rescatar con ningún control, porque un JPEG de 8 bits no guarda nada por debajo de cero. Y para una foto que solo está oscura en las esquinas, el control «Viñeteado» con una cantidad positiva aclara de forma más limpia y ponderada hacia los bordes que un cambio global de exposición.',
       whyMediaManipulator: [
         'Aperture te ofrece los tres controles de aclarado como capas independientes en lugar de un único control de brillo, y cada capa se puede limitar con una máscara.',
         'Las fórmulas son las mismas en la vista previa, en la exportación y en la app móvil, y el servidor se comprueba frente a renders de referencia en cada despliegue.',
@@ -13289,10 +13289,10 @@ const esToolPages = {
         },
         {
           title: 'Foto de concierto subexpuesta de 12 MP a +1,5 EV con «Luces altas» -40',
-          body: 'Un JPEG de 4000 x 3000 (12 MP, 3,8 MB) con tonos del público en 20 y 60, una cara en 128 y luces del escenario en 180 y 200. «Exposición» +1,5 EV da 38, 100, 205, 255 y 255: ambas luces se recortan. Añadir «Luces altas» -40 encima da 38, 100, 186, 229 y 229, así que las luces vuelven por debajo del blanco pero, como se recortaron en el paso de exposición, ambas acaban idénticas. Si en cambio bajas la exposición a +1,2 EV con una capa «Tono» con «Sombras» +40, obtienes 56, 100 y 187 para los tres tonos oscuros, con las luces aún separadas. Exporta como AVIF con calidad 80: unos 2,4 MB, un trabajo estándar.',
+          body: 'Un JPEG de 4000 x 3000 (12 MP, 3,8 MB) con tonos del público en 20 y 60, una cara en 128 y luces del escenario en 180 y 200. «Exposición» +1,5 EV da 38, 100, 205, 255 y 255: ambas luces se recortan. Añadir «Luces altas» -40 encima da 38, 100, 186, 229 y 229, así que las luces vuelven por debajo del blanco pero, como se recortaron en el paso de exposición, ambas acaban idénticas. Si en cambio bajas la exposición a +1,2 EV con una capa «Tono» con «Sombras» +40, obtienes 56, 100 y 187 para los tres tonos oscuros, pero ambas luces siguen recortándose en 255; solo una exposición de unos +0,75 EV las mantiene separadas, en 227 y 252. Exporta como AVIF con calidad 80: unos 2,4 MB, un trabajo estándar.',
         },
       ],
-      whenNotToUse: 'Si el único problema es una foto algo plana o apagada que no está ni demasiado clara ni demasiado oscura, esta no es la página adecuada: la herramienta de contraste o una curva conseguirán más con menos. Si la foto está tan sobreexpuesta que las caras o los cielos son blanco sólido, ningún control devolverá la textura, porque el JPEG nunca la guardó; la herramienta «Reparar» puede tapar pequeñas zonas quemadas, pero un cielo quemado necesita otra fotografía. Y si el problema de exposición se limita a los bordes, un viñeteado con cantidad negativa es más sencillo que una capa de exposición enmascarada.',
+      whenNotToUse: 'Si el único problema es una foto algo plana o apagada que no está ni demasiado clara ni demasiado oscura, esta no es la página adecuada: la herramienta de contraste o una curva conseguirán más con menos. Si la foto está tan sobreexpuesta que las caras o los cielos son blanco sólido, ningún control devolverá la textura, porque el JPEG nunca la guardó; la herramienta «Reparar» puede tapar pequeñas zonas quemadas, pero un cielo quemado necesita otra fotografía. Y si el problema de exposición se limita a los bordes, un viñeteado con cantidad positiva es más sencillo que una capa de exposición enmascarada.',
       whyMediaManipulator: [
         'La exposición y la recuperación son capas independientes con máscaras independientes, algo que no puede hacer el único control de brillo de un corrector rápido.',
         'Aperture muestra un histograma RGB todo el tiempo, no solo en un cuadro de exportación, así que corriges la exposición basándote en los datos y no en tu monitor.',
@@ -13360,7 +13360,7 @@ const esToolPages = {
         {
           label: 'Añadir una viñeta',
           to: '/tools/add-vignette',
-          description: 'Una cantidad de viñeteado negativa aclara las esquinas cuando solo los bordes están oscuros.',
+          description: 'Una cantidad de viñeteado positiva aclara las esquinas cuando solo los bordes están oscuros.',
         },
       ],
       embed: {
@@ -13585,11 +13585,11 @@ const esToolPages = {
       workedExamples: [
         {
           title: 'De coche rojo a verde: «Tolerancia» 60 y «Matiz» de «Todos los colores» a +120 en un JPEG de 20 MP',
-          body: 'Una foto de anuncio de 5472 x 3648 (20 megapíxeles, 9 MB). Al hacer clic en la puerta se elige (204, 26, 31), Lab (43,8; 64,9; 45,5). Un panel en sombra de (153, 20, 26) está a dE 20,6 de él, y un brillo al sol de (242, 89, 84), a dE 19,6. Con una «Tolerancia» de 40 el radio es 24 y esos dos puntúan solo 0,199 y 0,303, lo que deja un coche a manchas; con una «Tolerancia» de 60 el radio es 36 y puntúan 0,945 y 0,977. Una pared de ladrillo detrás del coche, en (166, 77, 56), está a dE 33,8 y puntúa 0,043; el asfalto, en (89, 89, 92), está a dE 79,9 y puntúa 0. Con el «Matiz» de «Todos los colores» a +120, el píxel en sombra se recolorea a (26, 153, 20) y, mezclado a 0,945, queda en (33, 146, 21); el brillo pasa a (84, 242, 89) y, mezclado a 0,977, a (88, 239, 89). La exportación como JPG con calidad 92 ocupa unos 9 MB según la estimación de 0,45 MB por megapíxel y requiere Premium o Pro para los 20 megapíxeles completos; el límite gratuito es de 12.',
+          body: 'Una foto de anuncio de 5472 x 3648 (20 megapíxeles, 9 MB). Al hacer clic en la puerta se elige (204, 26, 31), Lab (43,8; 64,9; 45,5). Un panel en sombra de (153, 20, 26) está a dE 20,7 de él, y un brillo al sol de (242, 89, 84), a dE 19,6. Con una «Tolerancia» de 40 el radio es 24 y esos dos puntúan solo 0,187 y 0,309, lo que deja un coche a manchas; con una «Tolerancia» de 60 el radio es 36 y puntúan 0,940 y 0,979. Una pared de ladrillo detrás del coche, en (166, 77, 56), está a dE 33,8 y puntúa 0,041; el asfalto, en (89, 89, 92), está a dE 80,0 y puntúa 0. Con el «Matiz» de «Todos los colores» a +120, el píxel en sombra se recolorea a (26, 153, 20) y, mezclado a 0,940, queda en (34, 145, 20); el brillo pasa a (84, 242, 89) y, mezclado a 0,979, a (87, 239, 89). La exportación como JPG con calidad 92 ocupa unos 9 MB según la estimación de 0,45 MB por megapíxel y requiere Premium o Pro para los 20 megapíxeles completos; el límite gratuito es de 12.',
         },
         {
           title: 'De chaqueta amarilla a azul: desplazamiento del rango «Amarillos» frente a una máscara en una foto de móvil de 12 MP',
-          body: 'Un HEIC de 4032 x 3024 hecho con un móvil (12,2 megapíxeles). El píxel de la chaqueta, (242, 204, 38), tiene matiz 48,75, saturación 0,89 y luminosidad 0,55. Dos caminos dan la misma chaqueta. Primer camino: «Matiz» de «Amarillos» a +190 sin máscara; a 11,25 grados del centro de «Amarillos» el peso es 1, el matiz pasa a 238,75 y el píxel se exporta como (38, 43, 242), pero un cartel de carretera amarillo del fondo también se vuelve azul. Segundo camino: un componente «Rango de color» elegido sobre la chaqueta con «Tolerancia» 50 (radio 30), intersecado con un componente «Pincel» pintado sobre la chaqueta, y «Matiz» de «Todos los colores» a +190; el cartel puntúa 0 porque el pincel lo excluye, y el píxel de la chaqueta se exporta con el mismo valor, (38, 43, 242). La exportación con calidad 92 ocupa unos 5,5 MB; el propio original HEIC requiere una cuenta para que el servidor pueda decodificarlo para la vista previa.',
+          body: 'Un HEIC de 4032 x 3024 hecho con un móvil (12,2 megapíxeles). El píxel de la chaqueta, (242, 204, 38), tiene matiz 48,8, saturación 0,89 y luminosidad 0,55. Dos caminos dan la misma chaqueta. Primer camino: «Matiz» de «Amarillos» a -170 sin máscara; a 11,2 grados del centro de «Amarillos» el peso es 1, el matiz pasa a 238,8 y el píxel se exporta como (38, 42, 242), pero un cartel de carretera amarillo del fondo también se vuelve azul. Segundo camino: un componente «Rango de color» elegido sobre la chaqueta con «Tolerancia» 50 (radio 30), intersecado con un componente «Pincel» pintado sobre la chaqueta, y «Matiz» de «Todos los colores» a -170; el cartel puntúa 0 porque el pincel lo excluye, y el píxel de la chaqueta se exporta con el mismo valor, (38, 42, 242). La exportación con calidad 92 ocupa unos 5,5 MB; el propio original HEIC requiere una cuenta para que el servidor pueda decodificarlo para la vista previa.',
         },
       ],
       whenNotToUse: 'Una selección por color no puede separar dos objetos del mismo color bajo la misma luz; eso es trabajo de una máscara de «Pincel» o «Radial», o de «Seleccionar sujeto» cuando el objeto es el sujeto principal del encuadre. Tampoco puede crear un color que no sea un matiz, así que los acabados blancos, negros y metalizados necesitan un cambio de saturación y luminosidad en lugar de un giro, y no puede cambiar el estampado ni el material de una superficie. Cuando lo que tiene una dominante es toda la foto y no un solo objeto, usa en su lugar las páginas de balance de blancos o de balance de color, y cuando quieras recortar el objeto sobre un fondo transparente, usa el eliminador de fondos.',
@@ -13756,7 +13756,7 @@ const esToolPages = {
         },
         {
           question: '¿Por qué las caras conservan algo de color cuando se conservan los rojos?',
-          answer: 'La piel está en torno al matiz 20, dentro del rango «Rojos», así que el estilo la conserva por diseño. Un píxel en (217, 158, 128) pierde solo alrededor del 12 % de su saturación. Reduce la «Anchura» de «Rojos», o añade sobre la cara una máscara de «Pincel» en modo «Restar», si quieres la piel en gris.',
+          answer: 'La piel está en torno al matiz 20, dentro del rango «Rojos», así que el estilo la conserva por diseño. Un píxel en (217, 158, 128) pierde solo alrededor del 11 % de su saturación. Reduce la «Anchura» de «Rojos», o añade sobre la cara una máscara de «Pincel» en modo «Restar», si quieres la piel en gris.',
         },
         {
           question: '¿Puedo conservar dos colores a la vez?',
@@ -13822,7 +13822,7 @@ const esToolPages = {
         '«Intensidad» de -100 a +100: un realce o una reducción que tiene en cuenta la saturación. Con un valor positivo, el factor es 1 + v por (1 - rango), así que un color apagado con un rango de canales de 0,08 recibe casi todo el realce, mientras que un color vivo con un rango de 0,63 recibe aproximadamente un tercio.',
         '«Saturación» de -100 a +100: cada canal se aleja (o se acerca) de la luma BT.709 del píxel por el factor 1 + saturación / 100; -100 es una conversión a gris perfecta con los pesos 0,2126; 0,7152 y 0,0722.',
         'Ambos controles están en una única capa «Intensidad / saturación», así que una sola opacidad, un solo modo de fusión y una sola máscara cubren el par; añade una segunda capa si quieres máscaras distintas para cada uno.',
-        'La protección de la piel viene de serie con la fórmula de la intensidad: un tono de piel típico tiene un rango de canales cercano a 0,3, así que «Intensidad» +50 añade alrededor del 35 % de la saturación que el mismo valor añade a un color casi gris.',
+        'La protección de la piel viene de serie con la fórmula de la intensidad: un tono de piel típico tiene un rango de canales cercano a 0,3, así que «Intensidad» +50 le da alrededor del 70 % del aumento de saturación que el mismo valor da a un color casi gris.',
         'Para un control por color, la misma página te remite al panel «Color (HSL)», donde cada uno de los seis rangos de matiz tiene su propio control «Saturación», con anchura y desvanecimiento.',
       ],
       flowSteps: [
@@ -13881,7 +13881,7 @@ const esToolPages = {
         },
         {
           title: 'Desaturar de dos formas una foto callejera de 12 MP',
-          body: 'Un JPEG de 4000 x 3000 (12 MP, 4,5 MB) con un letrero de neón rosa en 255, 40, 180, una puerta de madera en 160, 120, 80 y un coche azul en 90, 150, 230. «Saturación» -30 da 207, 57, 155; luego 150, 122, 94; y luego 132, 150, 186: cada color pierde el 30 % de su distancia al gris. «Intensidad» -40 da en cambio 130, 73, 110 para el letrero (factor 0,26), 136, 117, 98 para la puerta (factor 0,47) y, con el coche a medio camino, un resultado en el que el color más chillón es el que más se ha domado. «Saturación» -100 llevaría los tres a grises planos de 100, 125 y 143. Exportado como WebP con calidad 88, unos 3,6 MB.',
+          body: 'Un JPEG de 4000 x 3000 (12 MP, 4,5 MB) con un letrero de neón rosa en 255, 40, 180, una puerta de madera en 160, 120, 80 y un coche azul en 90, 150, 230. «Saturación» -30 da 207, 57, 155; luego 150, 122, 94; y luego 106, 148, 204: cada color pierde el 30 % de su distancia al gris. «Intensidad» -40 da en cambio 130, 73, 110 para el letrero (factor 0,26), 136, 117, 98 para la puerta (factor 0,47) y, con el coche a medio camino, un resultado en el que el color más chillón es el que más se ha domado. «Saturación» -100 llevaría los tres a grises planos de 96, 126 y 143. Exportado como WebP con calidad 88, unos 3,6 MB.',
         },
       ],
       whenNotToUse: 'Esta página cambia la fuerza de todos los colores a la vez, así que no es la herramienta adecuada cuando el problema es un solo color: un cielo que necesita más azul o una cara que necesita menos rojo corresponden al panel «Color (HSL)», donde cada rango de matiz tiene su propia saturación. Si quieres una foto gris excepto un objeto, los preajustes «Resalte de color» ya lo hacen. Y si los colores parecen incorrectos más que débiles, empieza por el balance de blancos; saturar una foto con una dominante de color solo refuerza la dominante.',
@@ -14021,7 +14021,7 @@ const esToolPages = {
       ],
       workedExamples: [
         {
-          title: 'Estirar un escaneo plano de 20 MP',
+          title: 'Estirar un escaneo plano de 19,4 MP',
           body: 'Un escaneo JPEG de 5400 x 3600 (19,4 MP, 7,2 MB) cuyo histograma va aproximadamente de 26 a 230. En el canal RGB: «Negro de entrada» 0,1, «Blanco de entrada» 0,9, «Tonos medios» 1,2, «Negro de salida» 0 y «Blanco de salida» 1. Un píxel en 0,3 pasa a ((0,3 - 0,1) / 0,8) ^ (1 / 1,2) = 0,315, unos 80; un píxel en 0,5 pasa a 0,5612, unos 143; un píxel en 0,7 pasa a 0,7868, unos 201; y 0,1 y 0,9 quedan en 0 y 1. Todo lo que esté en 0,1 o por debajo se recorta a negro. Exportado en JPG con calidad 92, el archivo de 19,4 MP ocupa unos 8,7 MB en Premium o Pro; la exportación de un invitado se reduce a 12 MP, unos 5,4 MB.',
         },
         {
@@ -14033,7 +14033,7 @@ const esToolPages = {
       whyMediaManipulator: [
         'Aperture aplica los niveles con la misma fórmula en la vista previa por GPU, en el servidor de exportación y en la aplicación móvil, y el histograma con el que fijas los puntos se calcula a partir del resultado renderizado real, no solo de la imagen de origen.',
         '«Niveles» forma parte de una pila no destructiva de 64 capas con máscaras, así que un estiramiento tonal puede limitarse al cielo o a las sombras con un rango de luminosidad.',
-        'El proyecto se guarda en tu cuenta al iniciar sesión y la exportación se genera a partir del archivo original, así que un escaneo corregido sobre la vista previa de 1920 px se exporta a su anchura real de 6000 px.',
+        'El proyecto se guarda en tu cuenta al iniciar sesión y la exportación se genera a partir del archivo original, así que un escaneo corregido sobre la vista previa de 1920 px se exporta a su anchura real de 5400 px.',
       ],
       privacyNote: 'Los controles de «Niveles» se evalúan en tu navegador sobre la foto decodificada y sobre el histograma del resultado; el archivo solo se sube para una exportación, una máscara de sujeto o una reparación, y el servidor transforma el original con los mismos extremos y la misma gamma. Los archivos se conservan 24 horas para invitados; con una cuenta gratuita eliges de 24 horas a 2 años. Con la sesión iniciada, el original y su vista previa se conservan según tu ajuste de retención hasta que se elimina el proyecto.',
       faq: [
@@ -14292,7 +14292,7 @@ const esToolPages = {
       advancedDetails: [
         'Por píxel: R, G y B se decodifican de sRGB a lineal (v / 12,92 por debajo de 0,04045; en caso contrario, ((v + 0,055) / 1,055) elevado a 2,4). Luminosidad l = (max + min) / 2 de los canales lineales. Peso w = clamp((l - 0,333) por 4 + 0,5) por clamp((1 - l - 0,333) por 4 + 0,5) por 0,7.',
         'Después, R += (temperatura / 100) por w, G += (-matiz / 100) por w y B += (-temperatura / 100) por w, cada uno limitado de 0 a 1, y los tres canales se vuelven a codificar en sRGB. Es exactamente el mismo equilibrio de color de tonos medios del editor de vídeo Darkroom, reutilizado aquí.',
-        'Valores del peso: 0 con luminosidad lineal 0,1; 0,118 con 0,25; 0,342 con 0,333; 0,7 con 0,5; 0,538 con 0,6; 0,118 con 0,75; 0 con 0,9. En valores sRGB, el efecto se limita aproximadamente al tramo de 126 a 230 y es más intenso cerca de 188.',
+        'Valores del peso: 0 con luminosidad lineal 0,1; 0,118 con 0,25; 0,35 con 0,333; 0,7 con 0,5; 0,538 con 0,6; 0,118 con 0,75; 0 con 0,9. En valores sRGB, el efecto se limita aproximadamente al tramo de 126 a 230 y es más intenso cerca de 188.',
         'Un gris de ejemplo: un gris sRGB de 188 con «Temperatura» a +40 pasa a 229, 188, 130; con -40 pasa a 130, 188, 229. El mismo control sobre un gris de 128 da 129, 128, 126, y sobre uno de 230 da 230, 230, 229: fuera de los tonos medios el desplazamiento es pequeño, y es así por diseño.',
         '«Matiz» sobre el mismo gris de 188: +30 da 188, 147, 188 (se quita verde, así que el píxel se ve magenta) y -30 da 188, 220, 188.',
         'La vista previa se dibuja en tu GPU (WebGL2) a partir de una copia de 1920 px; el archivo exportado se renderiza en nuestro servidor a partir del original a resolución completa con las mismas fórmulas, y ambos coinciden dentro de una tolerancia pequeña y documentada de, como mucho, unos pocos niveles de 8 bits (el grano es exacto); el balance de blancos, al calcularse por píxel, coincide nivel a nivel.',
@@ -14468,11 +14468,11 @@ const esToolPages = {
       workedExamples: [
         {
           title: 'Un retrato con cielo azul: «Película en blanco y negro» en un JPEG de 24 MP',
-          body: 'Un JPEG de 6000 x 4000 (24 megapíxeles, 11 MB) con los pesos de canal por defecto. Un píxel de piel, (217, 158, 128), tiene saturación HSV 0,412, valor 0,85 y luma 0,660; su matiz de 20,6 grados da a «Rojos» un peso de 0,814 y a «Amarillos» 0,186, así que el término ponderado es 0,814 x 0,4 + 0,186 x 0,6 = 0,437 y el gris es 0,588 x 0,660 + 0,412 x 0,437 x 0,85 = 0,541, nivel 138. El píxel del cielo, (140, 191, 242), con matiz 210, saturación 0,421, valor 0,95 y luma 0,722, recibe 0,5 de «Cianes» a 0,6 y 0,5 de «Azules» a 0,2, así que el gris es 0,579 x 0,722 + 0,421 x 0,4 x 0,95 = 0,578, nivel 147. Después, la curva lleva 0,541 a 0,549 (140) y 0,578 a 0,592 (151), y el grano suma hasta 5 niveles en un sentido u otro. Una carta gris en 128 se queda en 128 en ambas capas. Exportar los 24 megapíxeles completos requiere Premium o Pro; el JPG con calidad 92 ocupa unos 10,8 MB.',
+          body: 'Un JPEG de 6000 x 4000 (24 megapíxeles, 11 MB) con los pesos de canal por defecto. Un píxel de piel, (217, 158, 128), tiene saturación HSV 0,410, valor 0,851 y luma 0,660; su matiz de 20,2 grados da a «Rojos» un peso de 0,826 y a «Amarillos» 0,174, así que el término ponderado es 0,826 x 0,4 + 0,174 x 0,6 = 0,435 y el gris es 0,590 x 0,660 + 0,410 x 0,435 x 0,851 = 0,541, nivel 138. El píxel del cielo, (140, 191, 242), con matiz 210, saturación 0,421, valor 0,95 y luma 0,721, recibe 0,5 de «Cianes» a 0,6 y 0,5 de «Azules» a 0,2, así que el gris es 0,579 x 0,721 + 0,421 x 0,4 x 0,95 = 0,577, nivel 147. Después, la curva lleva 0,541 a 0,549 (140) y 0,577 a 0,590 (151), y el grano suma hasta 5 niveles en un sentido u otro. Una carta gris en 128 se queda en 128 en ambas capas. Exportar los 24 megapíxeles completos requiere Premium o Pro; el JPG con calidad 92 ocupa unos 10,8 MB.',
         },
         {
           title: 'Oscurecer el cielo: «Azules» -40 y «Blanco y negro de alto contraste» en una foto de 12 MP',
-          body: 'Un JPEG de 4000 x 3000 (12 megapíxeles, 5 MB). Al cambiar a «Blanco y negro de alto contraste» se ponen «Rojos» 40, «Amarillos» 40 y «Azules» -40, y se mantienen «Verdes» 40, «Cianes» 60 y «Magentas» 80. El mismo píxel de cielo, (140, 191, 242), recibe ahora un término ponderado de 0,5 x 0,6 + 0,5 x -0,4 = 0,1, así que el gris es 0,579 x 0,722 + 0,421 x 0,1 x 0,95 = 0,458, nivel 117 en lugar de 147. Una chaqueta azul intenso en (51, 77, 204), con matiz 230, tiene saturación 0,75 y valor 0,8: 0,25 x 0,315 + 0,75 x -0,4 x 0,8 = -0,161, que se limita a 0, negro puro. Una puerta roja en (204, 51, 51) no cambia con el paso de un estilo a otro: 0,25 x 0,328 + 0,75 x 0,4 x 0,8 = 0,322, nivel 82, porque «Rojos» sigue en 40. Después, el estilo añade «Contraste» +40 y «Claridad» 25 como dos capas más. La exportación de 12 megapíxeles cabe en el límite gratuito y ocupa unos 5,4 MB como JPG con calidad 92.',
+          body: 'Un JPEG de 4000 x 3000 (12 megapíxeles, 5 MB). Al cambiar a «Blanco y negro de alto contraste» se ponen «Rojos» 40, «Amarillos» 40 y «Azules» -40, y se mantienen «Verdes» 40, «Cianes» 60 y «Magentas» 80. El mismo píxel de cielo, (140, 191, 242), recibe ahora un término ponderado de 0,5 x 0,6 + 0,5 x -0,4 = 0,1, así que el gris es 0,579 x 0,721 + 0,421 x 0,1 x 0,95 = 0,457, nivel 117 en lugar de 147. Una chaqueta azul intenso en (51, 77, 204), con matiz 230, tiene saturación 0,75 y valor 0,8: 0,25 x 0,315 + 0,75 x -0,4 x 0,8 = -0,161, que se limita a 0, negro puro. Una puerta roja en (204, 51, 51) no cambia con el paso de un estilo a otro: 0,25 x 0,328 + 0,75 x 0,4 x 0,8 = 0,322, nivel 82, porque «Rojos» sigue en 40. Después, el estilo añade «Contraste» +40 y «Claridad» 25 como dos capas más. La exportación de 12 megapíxeles cabe en el límite gratuito y ocupa unos 5,4 MB como JPG con calidad 92.',
         },
       ],
       whenNotToUse: 'Una conversión a blanco y negro descarta el matiz, así que, cuando lo que buscas es conservar un color y pasar el resto a gris, la página de resalte de color mantiene la información de matiz y solo desatura los demás rangos. Si la foto ya es monocroma y solo está plana, las páginas de curvas, niveles o contraste cambian sus tonos sin que estorbe una capa de conversión. Una imagen en color desvaída que necesita recuperar su color es trabajo de la saturación o la intensidad. Y un baño sepia o de cianotipia es una capa de «Filtro fotográfico» o de «Tonos divididos» sobre esta conversión, no un sustituto de ella.',
@@ -14622,7 +14622,7 @@ const esToolPages = {
         },
         {
           title: 'Una copia en sepia: «Blanco y negro» y después «Sepia» a «Densidad» 50 en un escaneo de 45 MP',
-          body: 'Un escaneo TIFF de 8256 x 5504 (45 megapíxeles, 136 MB), que necesita una cuenta para abrirse y un plan Premium o Pro para exportar por encima de 12 megapíxeles. Una capa de «Blanco y negro» con las ponderaciones por defecto queda debajo de un «Filtro fotográfico» configurado en «Sepia» #ac7a33, «Densidad» 50 y «Mantener luminosidad» activado. Un gris medio de 128 pasa a (142, 126, 102): antes del reescalado era (0,4186; 0,3696; 0,3), con luma 0,375, y el cociente 1,333 lo devuelve a una luma de 0,5. Un blanco de 255 a «Densidad» 60 se exporta como (255, 250, 189), recortado en el rojo. Sin «Mantener luminosidad», el gris medio sería (107, 94, 77), una copia visiblemente más oscura. Exportado con un tamaño máximo de 64 megapíxeles, el archivo conserva los 45 megapíxeles completos; en JPG con calidad 92 ocupa unos 20 MB, y en WebP unos 13,6 MB según la estimación de 0,3 MB por megapíxel.',
+          body: 'Un escaneo TIFF de 8256 x 5504 (45 megapíxeles, 136 MB), que necesita una cuenta para abrirse y un plan Premium o Pro para exportar por encima de 12 megapíxeles. Una capa de «Blanco y negro» con las ponderaciones por defecto queda debajo de un «Filtro fotográfico» configurado en «Sepia» #ac7a33, «Densidad» 50 y «Mantener luminosidad» activado. Un gris medio de 128 pasa a (142, 126, 102): antes del reescalado era (0,4186; 0,3696; 0,3), con luma 0,375, y el cociente 1,333 lo devuelve a una luma de 0,5. Un blanco de 255 se exporta como (255, 251, 204), recortado en el rojo. Sin «Mantener luminosidad», el gris medio sería (107, 94, 77), una copia visiblemente más oscura. Exportado con un tamaño máximo de 64 megapíxeles, el archivo conserva los 45 megapíxeles completos; en JPG con calidad 92 ocupa unos 20 MB, y en WebP unos 13,6 MB según la estimación de 0,3 MB por megapíxel.',
         },
       ],
       whenNotToUse: 'Un filtro fotográfico añade una dominante; no es la herramienta para eliminarla, porque multiplicar por un color no puede recuperar un canal que la luz se llevó, y la página de balance de blancos hace eso en luz lineal con una pareja de temperatura y matiz. Cuando quieras las sombras de un color y las luces altas de otro, los tonos divididos tienen un control para cada extremo más un equilibrio entre ambos. Para una gradación completa a partir de un archivo de referencia, un LUT .cube en el panel «LUT» la reproduce en una sola capa. Un tinte sobre una foto que además está subexpuesta debe esperar a que se corrija la exposición, ya que el reescalado de luma conserva el brillo que haya.',
@@ -15150,7 +15150,7 @@ const esToolPages = {
       metaDescription: 'Invierte una foto a su negativo en el navegador con un clic. Cada canal pasa a ser 1 menos su valor; enmascáralo, apílalo y exporta a resolución completa.',
       ogTitle: 'Invertir los colores de una imagen online',
       ogDescription: 'Convierte una foto en su negativo, o un negativo escaneado en un positivo, con una capa de inversión que se puede enmascarar y fusionar. Exportación a tamaño completo.',
-      intro: 'Invertir una imagen sustituye cada color por su opuesto: el negro se vuelve blanco, un cielo azul intenso se vuelve naranja cálido y un negativo de película escaneado se convierte en un positivo que se puede ver. En Aperture es la opción «Invertir» del panel «Efectos», una capa de ajuste en la etapa de espacio gamma de la pila que calcula 1 menos cada canal del píxel codificado en sRGB. Como es una capa y no un filtro destructivo, puedes enmascararla a una zona, bajar su opacidad al 50 % para una semiinversión solarizada, poner su modo de fusión en «Luminosidad» para invertir los tonos manteniendo los matices, o apilarla debajo de «Niveles» y «Curvas» para terminar la conversión de un negativo. El mismo panel incluye «Posterizar», «Umbral» y «Gamma», que se combinan de forma natural con una inversión.',
+      intro: 'Invertir una imagen sustituye cada color por su opuesto: el negro se vuelve blanco, un cielo azul intenso se vuelve naranja cálido y un negativo de película escaneado se convierte en un positivo que se puede ver. En Aperture es la opción «Invertir» del panel «Efectos», una capa de ajuste en la etapa de espacio gamma de la pila que calcula 1 menos cada canal del píxel codificado en sRGB. Como es una capa y no un filtro destructivo, puedes enmascararla a una zona, bajar su opacidad para una inversión parcial (exactamente al 50 %, cada píxel queda en el gris medio), poner su modo de fusión en «Luminosidad» para invertir los tonos manteniendo los matices, o apilarla debajo de «Niveles» y «Curvas» para terminar la conversión de un negativo. El mismo panel incluye «Posterizar», «Umbral» y «Gamma», que se combinan de forma natural con una inversión.',
       whatItDoes: [
         'Añade una capa «Invertir» desde el panel «Efectos» que convierte cada canal en 1 menos su valor y transforma la foto en su negativo exacto.',
         'Admite una máscara, de modo que solo se invierte una zona seleccionada, un rango de luminosidad o un rango de color, mientras el resto se queda como se tomó.',
@@ -15199,7 +15199,7 @@ const esToolPages = {
         },
         {
           title: 'Efectos de solarización',
-          description: 'Invierte al 50 % de opacidad, o añade una máscara de luminosidad para que solo se inviertan las luces altas, para un aspecto al estilo Sabattier.',
+          description: 'Añade una máscara de luminosidad para que solo se inviertan las luces altas, para un aspecto al estilo Sabattier; con una simple opacidad del 50 %, en cambio, todo el encuadre quedaría en gris medio.',
         },
         {
           title: 'Buscar costuras en una composición',
@@ -15209,11 +15209,11 @@ const esToolPages = {
       workedExamples: [
         {
           title: 'Un escaneo de negativo de 3000 x 2000 pasado a positivo',
-          body: 'Un escaneo TIFF de 3000 x 2000 (6 MP, unos 18 MB) abierto con una cuenta. «Invertir» convierte un píxel de la base de la película de (0,93; 0,08; 0,12) en (0,07; 0,92; 0,88), es decir, (18, 235, 224), la dominante azul cian que muestra todo negativo en color invertido. Una capa de «Niveles» encima, con el negro de entrada en 0,06 y el blanco de entrada en 0,86 en el canal maestro, estira después un valor de 0,3 a 0,3 y uno de 0,7 a 0,8, así que la dominante se elimina fijando por separado los puntos de entrada del rojo, el verde y el azul a partir del histograma. La exportación en PNG ocupa unos 15 MB; en JPG con calidad 92, unos 2,7 MB. Toda la imagen queda por debajo del límite de 12 MP.',
+          body: 'Un escaneo TIFF de 3000 x 2000 (6 MP, unos 18 MB) abierto con una cuenta. «Invertir» convierte un píxel de la base de la película de (0,93; 0,08; 0,12) en (0,07; 0,92; 0,88), es decir, (18, 235, 224), la dominante azul cian que muestra todo negativo en color invertido. Una capa de «Niveles» encima, con el negro de entrada en 0,06 y el blanco de entrada en 0,86 en el canal maestro, solo estira el contraste, un valor de 0,3 a 0,3 y uno de 0,7 a 0,8, y deja la dominante; la dominante se elimina fijando por separado los puntos de entrada del rojo, el verde y el azul a partir del histograma. La exportación en PNG ocupa unos 15 MB; en JPG con calidad 92, unos 2,7 MB. Toda la imagen queda por debajo del límite de 12 MP.',
         },
         {
-          title: 'Una inversión a media intensidad para un póster solarizado',
-          body: 'Un JPEG de 4000 x 3000 (12 MP, 4,5 MB). Capa «Invertir» al 50 % de opacidad: un valor de 0,2 se mezcla con su negativo 0,8 y da 0,5, un valor de 0,8 se mezcla con 0,2 y da 0,5, y toda la foto se aplana hacia el gris medio, que es el clásico aplanamiento solarizado. Al 100 %, el gris oscuro (51, 51, 51) pasa a (204, 204, 204). Añade encima una capa «Umbral» con nivel 0,5: un píxel de cielo con luma 0,529 antes de la inversión pasa a blanco, y todo lo más oscuro pasa a negro. La exportación a WebP con calidad 85 ocupa unos 3,6 MB y es un trabajo estándar.',
+          title: 'Inversiones a media y plena intensidad para un póster',
+          body: 'Un JPEG de 4000 x 3000 (12 MP, 4,5 MB). Capa «Invertir» al 50 % de opacidad: un valor de 0,2 se mezcla con su negativo 0,8 y da 0,5, un valor de 0,8 se mezcla con 0,2 y da 0,5, y cada píxel queda exactamente en el gris medio, así que una inversión a media intensidad por sí sola borra la imagen. Al 100 %, el gris oscuro (51, 51, 51) pasa a (204, 204, 204). Añade una capa «Umbral» con nivel 0,5 encima de un «Invertir» a plena intensidad: un píxel de cielo con luma 0,529 antes de la inversión tiene luma 0,471 después y pasa a negro, mientras que todo lo que era más oscuro que 0,5 pasa a blanco. La exportación a WebP con calidad 85 ocupa unos 3,6 MB y es un trabajo estándar.',
         },
       ],
       whenNotToUse: 'Invertir es la herramienta equivocada cuando una foto simplemente se ve demasiado oscura o tiene una dominante de color; corrige la exposición con el panel «Básico» y las dominantes con el balance de blancos o el balance de color. Una conversión a blanco y negro con controles por canal da mucho más control sobre la tonalidad que invertir una imagen desaturada, y para diagramas que deban quedar en blanco sobre negro con bordes nítidos, una capa «Umbral» después de la inversión suele hacer más trabajo que la propia inversión.',
@@ -15295,7 +15295,7 @@ const esToolPages = {
       metaDescription: 'Posteriza una foto en el navegador ajustando cada canal a entre 2 y 255 niveles. Ve las bandas en directo, combínalo con blanco y negro y exporta a tamaño completo.',
       ogTitle: 'Posterizar una imagen online',
       ogDescription: 'Reduce una foto a bandas planas de color con una capa de posterizado. Cálculo exacto de los niveles, máscaras, deshacer y exportación a resolución completa.',
-      intro: 'Posterizar cuantiza cada canal de color a un pequeño conjunto de valores equidistantes, de modo que los degradados suaves se convierten en bandas planas y la foto empieza a parecer una serigrafía. En Aperture es la entrada «Posterizar» del panel «Efectos», con un único control «Niveles» de 2 a 255 (4 por defecto), que se aplica como capa en espacio gamma después de las etapas tonales y de color de la pila. «Niveles» es el número de valores distintos que puede tomar cada canal, así que 2 da negro o blanco puro por canal, lo que supone ocho colores posibles en total, y 4 da 64. Como es una capa de ajuste, puedes posterizar solo una zona enmascarada, conservar los matices con el modo de fusión «Color» o poner debajo una capa «Blanco y negro» para un póster clásico de dos o tres tonos.',
+      intro: 'Posterizar cuantiza cada canal de color a un pequeño conjunto de valores equidistantes, de modo que los degradados suaves se convierten en bandas planas y la foto empieza a parecer una serigrafía. En Aperture es la entrada «Posterizar» del panel «Efectos», con un único control «Niveles» de 2 a 255 (4 por defecto), que se aplica como capa en espacio gamma después de las etapas tonales y de color de la pila. «Niveles» es el número de valores distintos que puede tomar cada canal, así que 2 da negro o blanco puro por canal, lo que supone ocho colores posibles en total, y 4 da 64. Como es una capa de ajuste, puedes posterizar solo una zona enmascarada, conservar los matices originales con el modo de fusión «Luminosidad» o poner debajo una capa «Blanco y negro» para un póster clásico de dos o tres tonos.',
       whatItDoes: [
         'Añade una capa «Posterizar» con un solo control «Niveles»; 2 produce 8 colores posibles, 4 produce 64 y 8 produce 512, todos con el mismo espaciado.',
         'Ajusta cada canal por separado al nivel permitido más cercano, así que el rojo, el verde y el azul de un mismo píxel pueden caer en escalones distintos.',
@@ -15323,9 +15323,9 @@ const esToolPages = {
       ],
       advancedDetails: [
         'Con «Niveles» fijado en el valor del control, el código usa n = levels - 1 como número de escalones y calcula floor(clamp(v, 0, 1) x n + 0,5) / n por canal. Las salidas permitidas son 0, 1/n, 2/n, ... 1, así que cada canal tiene exactamente tantos valores distintos como niveles, incluidos el negro y el blanco.',
-        'El + 0,5 antes de floor convierte la operación en un redondeo al valor más cercano: con «Niveles» en 4 (n = 3), un valor de 0,45 pasa a floor(1,85) / 3 = 0,3333 y 0,5 pasa a floor(2,0) / 3 = 0,6667, de modo que, en la entrada, el límite entre la primera y la segunda banda está en 0,5 y entre la segunda y la tercera en 0,8333.',
+        'El + 0,5 antes de floor convierte la operación en un redondeo al valor más cercano: con «Niveles» en 4 (n = 3), un valor de 0,45 pasa a floor(1,85) / 3 = 0,3333 y 0,5 pasa a floor(2,0) / 3 = 0,6667, de modo que, en la entrada, el límite entre la segunda y la tercera banda está en 0,5, y los otros dos en 0,1667 y 0,8333.',
         '«Niveles» en 2 es un umbral por canal en 0,5, no un umbral de luma: un píxel de (0,35; 0,55; 0,85) pasa a (0; 1; 1), cian, mientras que la capa «Umbral» usa la luma BT.709 y daría blanco para ese mismo píxel. «Niveles» en 255 no cambia nada en una entrada de 8 bits.',
-        'Cada canal se cuantiza por su cuenta, así que un degradado gris produce bandas grises, pero un degradado de color produce bandas cuyo matiz cambia en cada escalón en el que solo un canal cruza un límite; para evitarlo, añade debajo una capa «Blanco y negro», o usa el modo de fusión «Color» para conservar los matices originales.',
+        'Cada canal se cuantiza por su cuenta, así que un degradado gris produce bandas grises, pero un degradado de color produce bandas cuyo matiz cambia en cada escalón en el que solo un canal cruza un límite; para evitarlo, añade debajo una capa «Blanco y negro», o usa el modo de fusión «Luminosidad» para conservar los matices originales.',
         'La vista previa con bandas la dibuja tu GPU (WebGL2) a partir de una copia de 1920 px; el archivo exportado se genera en nuestro servidor a partir del original a resolución completa con la misma fórmula de redondeo, y ambos coinciden dentro de una pequeña tolerancia documentada de, como mucho, unos pocos niveles de 8 bits (el grano es exacto).',
       ],
       whyItMatters: [
@@ -15358,7 +15358,7 @@ const esToolPages = {
         },
         {
           title: 'Seis niveles sobre piel y luego dos',
-          body: 'Un retrato de 3000 x 4000 (12 MP, 5,1 MB). Con «Niveles» en 6 (n = 5), un tono de piel de (0,78; 0,6; 0,5) pasa a (0,8; 0,6; 0,6), o (204, 153, 153); el canal azul sube de 128 a 153 porque 0,5 x 5 + 0,5 = 3,0, que floor deja en 3. Si cambias el control a «Niveles» en 2 (n = 1), se obtiene (1; 1; 1), blanco, ya que todos los canales están por encima de 0,5, mientras que una sombra de (0,3; 0,25; 0,2) pasa a (0; 0; 0). Con una capa «Blanco y negro» debajo y la mezcla de canales por defecto, ese mismo corte con «Niveles» en 2 produce una plantilla limpia de dos tonos. La exportación en PNG ocupa unos 8 MB.',
+          body: 'Un retrato de 3000 x 4000 (12 MP, 5,1 MB). Con «Niveles» en 6 (n = 5), un tono de piel de (0,78; 0,6; 0,5) pasa a (0,8; 0,6; 0,6), o (204, 153, 153); el canal azul sube de 128 a 153 porque 0,5 x 5 + 0,5 = 3,0, que floor deja en 3. Si cambias el control a «Niveles» en 2 (n = 1), se obtiene (1; 1; 1), blanco, ya que todos los canales están en 0,5 o por encima y se redondean hacia arriba, mientras que una sombra de (0,3; 0,25; 0,2) pasa a (0; 0; 0). Con una capa «Blanco y negro» debajo y la mezcla de canales por defecto, ese mismo corte con «Niveles» en 2 produce una plantilla limpia de dos tonos. La exportación en PNG ocupa unos 8 MB.',
         },
       ],
       whenNotToUse: '«Posterizar» es un efecto gráfico, no una corrección: si una foto tiene bandas que quieres eliminar, esto añade más, y lo indicado es la reducción de ruido o un ajuste suave de «Curvas». Para un recorte puro en blanco o negro según el brillo, usa la capa «Umbral», que evalúa la luma en lugar de cada canal. Si lo que buscas son menos colores para que el archivo pese menos, la herramienta Comprimir imagen reduce el tamaño sin escalones visibles, y para una miniatura sirve más redimensionar que recortar la paleta.',
@@ -15367,7 +15367,7 @@ const esToolPages = {
         'La capa de posterizado admite seis tipos de máscara, incluida una máscara de sujeto calculada en nuestra propia GPU, así que el efecto póster puede rodear a una persona sin tocarle la cara.',
         'Una exportación en PNG conserva exactos los colores planos y el proyecto sigue siendo editable, así que pasar más adelante de 4 a 5 niveles es cuestión de mover un control, no de rehacer el trabajo.',
       ],
-      privacyNote: 'Posterizar es un redondeo por canal que se hace en tu navegador sobre la foto decodificada; no se sube nada hasta que exportas, seleccionas un sujeto o reparas, y entonces el servidor cuantiza el original con el mismo número de escalones. Los archivos se conservan 24 horas para invitados; con una cuenta gratuita eliges de 24 horas a 2 años. Con la sesión iniciada, el original y su vista previa de 1920 px se conservan según tu ajuste de retención hasta que se elimina el proyecto.',
+      privacyNote: 'Posterizar es un redondeo por canal que se hace en tu navegador sobre la foto decodificada; no se sube nada hasta que exportas, seleccionas un sujeto o reparas, y, al exportar, el servidor cuantiza el original con el mismo número de escalones. Los archivos se conservan 24 horas para invitados; con una cuenta gratuita eliges de 24 horas a 2 años. Con la sesión iniciada, el original y su vista previa de 1920 px se conservan según tu ajuste de retención hasta que se elimina el proyecto.',
       faq: [
         {
           question: '¿Qué significa exactamente el número de «Niveles»?',
@@ -15489,7 +15489,7 @@ const esToolPages = {
         },
         {
           title: 'Copias antiguas escaneadas',
-          description: 'El ruido del escáner es fino y sobre todo de luminancia. «Luminancia» en 40 con una pasada de «Color» de 20, sin radio que ajustar, suele bastar; después deja «Textura» en 0.',
+          description: 'El ruido del escáner es fino y sobre todo de luminancia. «Luminancia» en 40 con una pasada ligera de «Color» de 20, un gaussiano de 1,2 px, suele bastar; después deja «Textura» en 0.',
         },
         {
           title: 'Fotos de producto sobre fondo oscuro',
@@ -15524,7 +15524,7 @@ const esToolPages = {
         },
         {
           question: '¿Es una reducción de ruido con IA?',
-          answer: 'No. Es una pareja determinista de filtros, bilateral y gaussiano, que no cuesta nada por uso y se ejecuta al instante en la vista previa. Los únicos trabajos de IA del editor son «Seleccionar sujeto» y «Reparar».',
+          answer: 'No. Es una pareja determinista de filtros, bilateral y gaussiano, que no cuesta nada por uso y se ejecuta al instante en la vista previa. Los únicos pasos del editor que usan un modelo de IA son «Seleccionar sujeto» y «Reparar».',
         },
         {
           question: '¿Puedo reducir el ruido solo de las sombras?',
@@ -15594,7 +15594,7 @@ const esToolPages = {
       whatItDoes: [
         'Oscurece los bordes con una «Cantidad» negativa o los aclara con una positiva, multiplicando cada píxel por 1 + amount/100 por el factor de distancia en el encuadre.',
         'Empieza el efecto en el «Punto medio» y lo aplica de forma gradual a lo largo del ancho de «Difuminado» con un smoothstep, así que nunca aparece un anillo visible.',
-        'Da forma a la caída con «Redondez»: -100 sigue el rectángulo del encuadre, 0 es el término medio y 100 es una elipse auténtica inscrita en el encuadre.',
+        'Da forma a la caída con «Redondez»: -100 sigue el rectángulo del encuadre, 0 es el término medio y 100 es un círculo auténtico centrado en el encuadre que llega a las cuatro esquinas.',
         'Protege los píxeles claros al oscurecer: con «Altas luces» en 50, un píxel con luma 0,9 se oscurece solo un 55 % de lo que se oscurece uno negro.',
         'Exporta a partir del original a resolución completa con coordenadas normalizadas del encuadre, así que la viñeta cae en el mismo sitio en el archivo de 24 MP que en la vista previa.',
       ],
@@ -15620,7 +15620,7 @@ const esToolPages = {
         'Cada píxel recibe unas coordenadas normalizadas nx y ny de -1 a 1 a lo largo del encuadre (centros de píxel en +0,5). Se calculan dos distancias: la métrica rectangular max(|nx|, |ny|) y la métrica circular, que es la distancia euclídea al centro en píxeles dividida entre la media diagonal. Se mezclan con un peso de (roundness + 100)/200 para el círculo, así que «Redondez» -100 es un rectángulo puro, 0 es una mezcla 50/50 y 100 es un círculo puro. Todas las métricas valen 0 en el centro y exactamente 1 en las cuatro esquinas.',
         'El factor v es smoothstep(midpoint/100, midpoint/100 + feather/100, d): 0 hasta que la distancia llega al punto medio y 1 cuando alcanza el punto medio más el difuminado, con la transición cúbica 3t al cuadrado menos 2t al cubo entre ambos. Con los valores por defecto, «Punto medio» 50 y «Difuminado» 50, un píxel a medio camino de una esquina tiene v = 0, uno a tres cuartas partes del camino tiene v = 0,5 y uno en d = 0,9 tiene v = 0,896.',
         'El píxel se multiplica por k = 1 + amount/100 por v por prot, donde prot = 1 - highlights/100 por la luma BT.709 del píxel cuando «Cantidad» es negativa, y 1 cuando es positiva; después se limita a 0..1. Por eso, al aclarar se recorta: con «Cantidad» en +30 en una esquina, un píxel en 0,8 (204) pasa a 1,0 (255).',
-        'En un encuadre de 6000 x 4000 con «Redondez» en 0, el centro del lado largo está en d = 0,916 y el centro del lado corto en d = 0,777; con «Redondez» en 100 pasan a 0,832 y 0,555, así que en un encuadre 3:2 una viñeta circular deja los bordes superior e inferior bastante más claros que los laterales.',
+        'En un encuadre de 6000 x 4000 con «Redondez» en 0, el centro de un lado corto está en d = 0,916 y el centro de un lado largo en d = 0,777; con «Redondez» en 100 pasan a 0,832 y 0,555, así que en un encuadre 3:2 una viñeta circular deja los bordes superior e inferior bastante más claros que los laterales.',
         'La vista previa de Aperture se dibuja en tu GPU (WebGL2) a partir de una copia de 1920 px, la exportación se genera en nuestro servidor a partir del original a resolución completa con las mismas fórmulas, y ambas coinciden dentro de una pequeña tolerancia documentada; para la viñeta, un error medio de como mucho un nivel de 8 bits, ya que la distancia se calcula en unidades normalizadas del encuadre y no depende del número de píxeles.',
       ],
       whyItMatters: [
@@ -15635,7 +15635,7 @@ const esToolPages = {
         },
         {
           title: 'Corregir un objetivo de 35 mm a máxima apertura',
-          description: '«Cantidad» +25, «Punto medio» 30, «Difuminado» 70 y «Redondez» 100 levantan las esquinas aproximadamente un tercio de paso e igualan el cielo.',
+          description: '«Cantidad» +25, «Punto medio» 30, «Difuminado» 70 y «Redondez» 100 elevan los valores de las esquinas hasta un 25 % e igualan el cielo.',
         },
         {
           title: 'Fotos de producto sobre fondo blanco',
@@ -15649,7 +15649,7 @@ const esToolPages = {
       workedExamples: [
         {
           title: 'Oscurecer un retrato de 6000 x 4000, JPG de 24 MP, 9,8 MB',
-          body: '«Cantidad» -40, «Punto medio» 50, «Difuminado» 50, «Redondez» 0, «Altas luces» 0. En la esquina (d = 1, v = 1) el factor es 1 - 0,40 = 0,60, así que un gris medio de 128 pasa a 77. En el centro del lado largo, d = 0,916 y v = 0,925, y un 128 pasa a unos 81. A tres cuartas partes del camino, v = 0,5 y 128 pasa a 102; por dentro de d = 0,5 no cambia nada. Exportado como JPG con calidad 92 con el límite de 12 MP para invitados: unos 5,4 MB, un trabajo estándar.',
+          body: '«Cantidad» -40, «Punto medio» 50, «Difuminado» 50, «Redondez» 0, «Altas luces» 0. En la esquina (d = 1, v = 1) el factor es 1 - 0,40 = 0,60, así que un gris medio de 128 pasa a 77. En el centro de un lado corto, d = 0,916 y v = 0,925, y un 128 pasa a unos 81. A tres cuartas partes del camino, v = 0,5 y 128 pasa a 102; por dentro de d = 0,5 no cambia nada. Exportado como JPG con calidad 92 con el límite de 12 MP para invitados: unos 5,4 MB, un trabajo estándar.',
         },
         {
           title: 'Levantar la caída de luz del objetivo en un paisaje de 4000 x 6000, 24 MP, cuenta Premium',
@@ -15660,7 +15660,7 @@ const esToolPages = {
       whyMediaManipulator: [
         'La forma, la rampa y la protección están documentadas con sus constantes exactas, así que un ajuste que te guste puede guardarse como estilo y se aplicará de forma idéntica en la siguiente foto.',
         'Como la viñeta es una capa, puede fusionarse en modo «Luminosidad» para evitar cualquier cambio de color en los bordes oscurecidos.',
-        'La exportación se genera a partir del original, hasta 120 MP en Pro, con las mismas coordenadas normalizadas, sin estirar la vista previa de la pantalla.',
+        'La exportación se genera a partir del original, hasta 120 MP en Premium y Pro, con las mismas coordenadas normalizadas, sin estirar la vista previa de la pantalla.',
       ],
       privacyNote: 'Una viñeta se calcula solo a partir de las coordenadas del encuadre y de los valores de los píxeles, sin ningún paso de IA. Sin cuenta, la foto y el oscurecimiento de sus bordes no salen de tu navegador hasta que exportas, y la exportación es entonces un trabajo de invitado normal. Con cuenta, el original y su vista previa de 1920 px se quedan en nuestro servidor según tu ajuste de retención. Los archivos se conservan 24 horas para invitados; con una cuenta gratuita eliges de 24 horas a 2 años. No interviene ningún tercero.',
       faq: [
@@ -15670,7 +15670,7 @@ const esToolPages = {
         },
         {
           question: '¿Por qué la viñeta se ve redonda en la vista previa pero llega antes a los laterales al exportar?',
-          answer: 'No es así; en ambos casos la distancia está normalizada respecto al encuadre. Lo que cambia la forma es «Redondez»: en -100 sigue el rectángulo y los bordes laterales se oscurecen primero; en 100 es una elipse inscrita.',
+          answer: 'No es así; en ambos casos la distancia está normalizada respecto al encuadre. Lo que cambia la forma es «Redondez»: en -100 sigue el rectángulo y los bordes laterales se oscurecen primero; en 100 es un círculo centrado en el encuadre.',
         },
         {
           question: '¿Qué hace exactamente «Altas luces»?',
@@ -15805,7 +15805,7 @@ const esToolPages = {
       whyMediaManipulator: [
         'Aperture te da los tres controles reales de una máscara de enfoque y documenta su fórmula, en lugar de un único control de intensidad con ajustes ocultos.',
         'La capa de enfoque se apila sobre la reducción de ruido, bajo una máscara si quieres, y el resultado se previsualiza al instante en tu propia GPU.',
-        'Las exportaciones se generan a resolución completa, hasta 120 MP en Pro, así que el radio que ajustaste al 100 % es el radio del archivo entregado.',
+        'Las exportaciones se generan a resolución completa, hasta 120 MP en Premium y Pro, así que el radio que ajustaste al 100 % es el radio del archivo entregado.',
       ],
       privacyNote: 'El enfoque es una convolución local y nunca llama a un servicio de IA. Sin cuenta, tu foto y sus ajustes de enfoque se quedan en este navegador hasta que exportas, momento en el que el archivo se sube para ese único render como trabajo de invitado. Con cuenta, el original, su vista previa de 1920 px y la miniatura se quedan en nuestro servidor según tu ajuste de conservación y se eliminan cuando se elimina el proyecto. Los archivos se conservan 24 horas para invitados; con una cuenta gratuita eliges de 24 horas a 2 años. No se comparte nada con terceros.',
       faq: [
@@ -15885,11 +15885,11 @@ const esToolPages = {
       metaDescription: 'Nivela un horizonte inclinado en el navegador: escribe un ángulo o dibuja una línea sobre el horizonte, recorta automáticamente al mayor rectángulo interior y exporta a resolución completa.',
       ogTitle: 'Enderezar una foto torcida online',
       ogDescription: 'Dibuja una línea sobre el horizonte y la rotación se ajusta sola. El recorte automático conserva el mayor rectángulo, o rellena las esquinas con transparencia, el borde o un color.',
-      intro: '«Enderezar» está en el panel «Geometría» de Aperture y se aplica a los píxeles de origen antes que cualquier capa de ajuste. Puedes escribir un ángulo en grados, o pulsar «Dibujar una línea» y arrastrar a lo largo de algo que debería estar nivelado o vertical; el editor calcula la inclinación de tu línea, la lleva al rango de -45 a 45 grados y ajusta la rotación para anularla. La rotación es un único remuestreo bilineal por mapeo inverso, así que cada píxel se muestrea exactamente una vez. Por defecto, el encuadre se recorta automáticamente al mayor rectángulo con la proporción original que solo contiene píxeles reales; si lo desactivas, las esquinas se rellenan con transparencia, con el borde estirado o con un color que elijas. El recorte, los volteos y la perspectiva comparten ese mismo remuestreo único.',
+      intro: '«Enderezar» está en el panel «Geometría» de Aperture y se aplica a los píxeles de origen antes que cualquier capa de ajuste. Puedes escribir un ángulo en grados, o pulsar «Dibujar una línea» y arrastrar a lo largo de algo que debería estar nivelado o vertical; el editor calcula la inclinación de tu línea, la lleva al rango de -45 a 45 grados y ajusta la rotación para anularla. La rotación es un único remuestreo bilineal por mapeo inverso, así que cada píxel se muestrea exactamente una vez. Por defecto, el encuadre se recorta automáticamente al mayor rectángulo centrado, con las proporciones del lienzo girado, que solo contiene píxeles reales; si lo desactivas, las esquinas se rellenan con transparencia, con el borde estirado o con un color que elijas. El recorte, los volteos y la perspectiva comparten ese mismo remuestreo único.',
       whatItDoes: [
         'Gira cualquier ángulo de -360 a 360 grados con un único remuestreo bilineal de los píxeles originales; los giros de 90 y 180 grados son copias exactas.',
         'Fija el ángulo a partir de una línea que dibujas: la inclinación de la línea se lleva al intervalo (-45, 45] grados y se resta, así que sirve tanto una línea sobre un horizonte como sobre el marco de una puerta.',
-        'Recorta automáticamente al mayor rectángulo centrado con la proporción original cuyo perímetro entero cae dentro del original girado, hallado con una búsqueda binaria de 30 pasos.',
+        'Recorta automáticamente al mayor rectángulo centrado con las proporciones del lienzo girado cuyo perímetro entero cae dentro del original girado, hallado con una búsqueda binaria de 30 pasos.',
         'Rellena las esquinas vacías con transparencia, con el píxel del borde más próximo o con un color sólido cuando prefieres conservar todo el encuadre girado.',
         'Mantiene las máscaras alineadas: cada máscara se guarda en el espacio enderezado y recortado, y la exportación aplica la misma geometría al original.',
       ],
@@ -15913,7 +15913,7 @@ const esToolPages = {
       ],
       advancedDetails: [
         'El lienzo girado crece hasta el rectángulo envolvente del original girado: anchura |w cos| + |h sin| y altura |w sin| + |h cos|, redondeadas. Una foto de 6000 x 4000 girada 2,5 grados tiene un lienzo de 6169 x 4258. El centro de cada píxel de salida se lleva de vuelta, a través del recorte, la homografía de perspectiva, los volteos y la rotación inversa, hasta una coordenada continua del original, y se muestrea de forma bilineal a partir de sus cuatro vecinos; las coordenadas que caen fuera del original toman el relleno.',
-        'El recorte automático busca la mayor escala s de un rectángulo centrado con la proporción pedida tal que los 100 puntos de muestra de su perímetro (25 por lado) caigan dentro del original, mediante una búsqueda binaria sobre s de 30 iteraciones. Para 2,5 grados en 6000 x 4000 eso da un recorte del 88,44 % del lienzo en cada dirección, 5456 x 3766 píxeles, 20,55 MP, y conserva el 85,6 % de los píxeles originales. Con 1,2 grados conserva el 92,5 %, y con 5 grados, alrededor del 79 %.',
+        'El recorte automático busca la mayor escala s de un rectángulo centrado con la proporción del lienzo tal que los 100 puntos de muestra de su perímetro (25 por lado) caigan dentro del original, mediante una búsqueda binaria sobre s de 30 iteraciones. Para 2,5 grados en 6000 x 4000 eso da un recorte del 88,44 % del lienzo en cada dirección, 5456 x 3766 píxeles (1,45:1, las proporciones del lienzo), 20,55 MP, y conserva el 85,6 % de los píxeles originales. Con 1,2 grados conserva el 92,5 %, y con 5 grados, alrededor del 75 %.',
         '«Dibujar una línea»: el ángulo de la línea en coordenadas de pantalla (y hacia abajo) es atan2(dy, dx) en grados, reducido en múltiplos de 90 al intervalo (-45, 45], y su opuesto se suma a la rotación actual, redondeado a 0,01 grados. Una línea de (200, 1080) a (1800, 1020) en una vista previa de 1920 px es una inclinación de 2,15 grados y fija la rotación en +2,15.',
         'Relleno: «Transparente» escribe RGBA 0 fuera del original (PNG y WebP lo conservan; JPG lo muestra en negro), «Estirar el borde» limita la muestra al texel del borde más cercano y «Color» escribe un #rrggbb opaco. La interpolación bilineal también se aplica al canal alfa, así que un relleno transparente tiene un borde suave de un píxel.',
         'Aperture previsualiza en tu GPU (WebGL2) a partir de una copia de 1920 px, genera la exportación en nuestro servidor a partir del original a resolución completa con las mismas fórmulas, y ambas coinciden dentro de una pequeña tolerancia documentada: para la geometría, un máximo de 2 niveles de 8 bits en el interior, excluido un borde de 2 px, ya que las posiciones de muestreo bilineal difieren ligeramente entre las dos escalas; las operaciones de color se mantienen en una media de 1 nivel y el grano es exacto.',
@@ -15926,7 +15926,7 @@ const esToolPages = {
       useCases: [
         {
           title: 'Marinas y puestas de sol',
-          description: 'Dibuja sobre la línea del agua. Una corrección de 1,5 grados en un encuadre de 24 MP conserva el 92,6 % de los píxeles.',
+          description: 'Dibuja sobre la línea del agua. Una corrección de 1,5 grados en un encuadre de 24 MP conserva el 90,8 % de los píxeles.',
         },
         {
           title: 'Edificios y puertas',
@@ -15938,7 +15938,7 @@ const esToolPages = {
         },
         {
           title: 'Fotos de móvil hechas con prisa',
-          description: 'Corregir 2 grados en una foto de 4032 x 3024 cuesta alrededor del 9 % de los píxeles y aún deja 11 MP.',
+          description: 'Corregir 2 grados en una foto de 4032 x 3024 cuesta alrededor del 10 % de los píxeles y aún deja 11 MP.',
         },
       ],
       workedExamples: [
@@ -15961,7 +15961,7 @@ const esToolPages = {
       faq: [
         {
           question: '¿Cuánta foto pierdo al enderezar?',
-          answer: 'Depende del ángulo y de la proporción. En un encuadre 3:2, 1 grado conserva alrededor del 95 % de los píxeles, 2,5 grados alrededor del 86 % y 5 grados alrededor del 79 %, con el recorte automático manteniendo la relación de aspecto original.',
+          answer: 'Depende del ángulo y de la proporción. En un encuadre 3:2, 1 grado conserva alrededor del 94 % de los píxeles, 2,5 grados alrededor del 86 % y 5 grados alrededor del 75 %, con el recorte automático manteniendo las proporciones del lienzo girado.',
         },
         {
           question: '¿Puedo conservar las esquinas en lugar de recortar?',
@@ -16100,7 +16100,7 @@ const esToolPages = {
       whyMediaManipulator: [
         'La transformación es una homografía proyectiva documentada, así que el resultado es geometría exacta y no una deformación aproximada con una malla.',
         'La perspectiva comparte un único remuestreo bilineal con el enderezado, el volteo y el recorte, algo que importa cuando una foto necesita corregir tanto la inclinación como la distorsión trapezoidal.',
-        'El original corregido se exporta a resolución completa, hasta 120 MP en Pro, con la vista previa dentro de una tolerancia documentada.',
+        'El original corregido se exporta a resolución completa, hasta 120 MP en Premium y Pro, con la vista previa dentro de una tolerancia documentada.',
       ],
       privacyNote: 'Corregir la perspectiva es aritmética sobre coordenadas y no usa ningún modelo de IA ni ningún servicio externo. Sin cuenta, la vista previa corregida solo existe en tu navegador hasta que exportas, y esa subida se conserva como cualquier trabajo de invitado. Con cuenta, el original, su vista previa de 1920 px y la miniatura permanecen en nuestro servidor según tu ajuste de conservación y se eliminan con el proyecto. Los archivos se conservan 24 horas para invitados; con una cuenta gratuita eliges de 24 horas a 2 años.',
       faq: [
@@ -16394,7 +16394,7 @@ const esToolPages = {
       whenNotToUse: 'Una selección por rango de color es la herramienta equivocada cuando el sujeto comparte colores con el fondo, como una persona con camisa verde sobre la hierba; usa en su lugar «Seleccionar sujeto», la máscara con IA, o un pincel. También tiene problemas en fotos en escala de grises o muy desaturadas, donde cada píxel está a pocas unidades Lab de todos los demás y la tolerancia no puede separarlos; ahí funciona mejor una máscara «Rango de luminosidad». Si quieres desplazar un matiz en toda la foto, los rangos HSL de la página «Cambiar el color de un objeto» ya lo hacen sin ninguna máscara.',
       whyMediaManipulator: [
         'La máscara es una distancia Lab documentada con un radio y una caída declarados, así que la misma tolerancia significa la misma selección en la siguiente foto.',
-        'Una máscara de rango de color se calcula gratis y se previsualiza en tiempo real en tu GPU; solo la máscara de sujeto usa un trabajo de IA.',
+        'Una máscara de rango de color se calcula gratis y se previsualiza en tiempo real en tu GPU; solo «Seleccionar sujeto» sube la foto, como un trabajo estándar.',
         'Las máscaras se pueden compartir entre capas y combinar con degradados, pinceles y rangos de luminosidad en una sola pila, y después se exportan a resolución completa.',
       ],
       privacyNote: 'Una máscara de rango de color se calcula a partir de tus propios píxeles en el espacio Lab y no necesita ninguna llamada al servidor. Sin sesión iniciada, la foto, los colores muestreados y todas las máscaras se quedan en este navegador hasta que exportas, lo que sube el archivo para ese único render como trabajo de invitado. Con la sesión iniciada, el original, su vista previa de 1920 px y la miniatura se guardan con el proyecto según tu ajuste de conservación y se eliminan con él. Los archivos se conservan 24 horas para invitados; con una cuenta gratuita eliges de 24 horas a 2 años. Nada llega a terceros.',

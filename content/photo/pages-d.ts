@@ -44,7 +44,7 @@ const PAGES: PhotoPageBody[] = [
     useCases: [
       { title: 'Concert and night shots at ISO 6400', description: 'Color 60 removes the magenta and green blotches in the blacks; Luminance 30 calms the grain without erasing stage haze.' },
       { title: 'Shadow recovery after a big Exposure push', description: 'Lifting shadows by 2 EV amplifies noise that was hiding. Add noise reduction above the exposure layer and mask it to a luminosity range of the darks.' },
-      { title: 'Old scanned prints', description: 'Scanner noise is fine and mostly luminance. Luminance 40 with a radius-free Color pass of 20 is usually enough; keep Texture at 0 afterwards.' },
+      { title: 'Old scanned prints', description: 'Scanner noise is fine and mostly luminance. Luminance 40 with a light Color pass of 20, a 1.2 px Gaussian, is usually enough; keep Texture at 0 afterwards.' },
       { title: 'Product photos on a dark backdrop', description: 'Denoise only the backdrop with a color range mask on the background, so the product edges keep every pixel of detail.' },
     ],
     whyMediaManipulator: [
@@ -56,7 +56,7 @@ const PAGES: PhotoPageBody[] = [
     faq: [
       { question: 'Why does the photo look clean in the preview but still a little noisy after export?', answer: 'The filter window is measured in pixels. On the 1920 px preview a 9 by 9 window covers a bigger fraction of the frame than it does on the full-size original, so the export smooths relatively less. Judge at 100% zoom, which shows the real pixel scale.' },
       { question: 'What is the difference between the Luminance and Color sliders?', answer: 'Luminance runs a bilateral filter on the Lab lightness channel and preserves edges; Color runs a Gaussian on the Lab a and b channels and only affects hue and saturation speckle. Color can usually go much higher than Luminance.' },
-      { question: 'Is this AI denoising?', answer: 'No. It is a deterministic bilateral and Gaussian filter pair that costs nothing per use and runs in the preview instantly. The only AI operations in the editor are Select subject and Heal.' },
+      { question: 'Is this AI denoising?', answer: 'No. It is a deterministic bilateral and Gaussian filter pair that costs nothing per use and runs in the preview instantly. The only steps in the editor that use an AI model are Select subject and Heal.' },
       { question: 'Can I denoise only the shadows?', answer: 'Yes. Give the noise reduction layer a Luminosity range mask, set From brightness 0 and To brightness around 0.35 with a feather, and the midtones and highlights keep their full detail.' },
       { question: 'Does noise reduction change the colors?', answer: 'The Lab round trip is exact to well under one 8-bit level on flat areas. Strong Color values can desaturate tiny colored details such as distant fairy lights, because they are averaged with their surroundings.' },
       { question: 'Should I sharpen before or after denoising?', answer: 'Put the sharpen layer above the noise reduction layer so the unsharp mask sees the smoothed image; sharpening first would amplify the grain the denoise then has to remove.' },
@@ -109,7 +109,7 @@ const PAGES: PhotoPageBody[] = [
     whatItDoes: [
       'Darkens the edges with a negative Amount or lightens them with a positive one, multiplying each pixel by 1 + amount/100 times the frame distance factor.',
       'Starts the effect at the Midpoint and ramps it over the Feather width with a smoothstep, so there is never a visible ring.',
-      'Shapes the fall-off with Roundness: -100 follows the rectangle of the frame, 0 is halfway, 100 is a true ellipse inscribed in the frame.',
+      'Shapes the fall-off with Roundness: -100 follows the rectangle of the frame, 0 is halfway, 100 is a true circle centered on the frame that reaches the four corners.',
       'Protects bright pixels when darkening: with Highlights at 50, a pixel at luma 0.9 is darkened only 55 percent as much as a black one.',
       'Exports from the original at full resolution with the normalized frame coordinates, so the vignette lands in the same place on the 24 MP file as on the preview.',
     ],
@@ -123,7 +123,7 @@ const PAGES: PhotoPageBody[] = [
       'Each pixel gets normalized coordinates nx and ny from -1 to 1 across the frame (pixel centers at +0.5). Two distances are computed: the rectangle metric max(|nx|, |ny|), and the circle metric, the Euclidean distance from the center in pixels divided by the half diagonal. They are blended with weight (roundness + 100)/200 on the circle, so Roundness -100 is pure rectangle, 0 is a 50/50 mix and 100 is pure circle. Every metric is 0 at the center and exactly 1 at the four corners.',
       'The factor v is smoothstep(midpoint/100, midpoint/100 + feather/100, d): 0 until the distance reaches the midpoint, 1 once it reaches midpoint plus feather, with the cubic 3t squared minus 2t cubed ease between. At the defaults Midpoint 50 and Feather 50, a pixel halfway to a corner has v = 0, a pixel three quarters of the way has v = 0.5, and a pixel at d = 0.9 has v = 0.896.',
       'The pixel is multiplied by k = 1 + amount/100 times v times prot, where prot = 1 - highlights/100 times the BT.709 luma of the pixel when Amount is negative and 1 when it is positive, then clamped to 0..1. Lightening therefore clips: with Amount +30 at a corner, a pixel at 0.8 (204) becomes 1.0 (255).',
-      'On a 6000 x 4000 frame with Roundness 0 the middle of the long edge is at d = 0.916 and the middle of the short edge at d = 0.777; with Roundness 100 those become 0.832 and 0.555, so a circular vignette leaves the top and bottom edges noticeably lighter than the sides on a 3:2 frame.',
+      'On a 6000 x 4000 frame with Roundness 0 the middle of a short side is at d = 0.916 and the middle of a long edge at d = 0.777; with Roundness 100 those become 0.832 and 0.555, so a circular vignette leaves the top and bottom edges noticeably lighter than the sides on a 3:2 frame.',
       `The ${PHOTO_BRAND} preview is drawn on your GPU (WebGL2) from a 1920 px copy, the export is rendered on our server from the original at full resolution with the same formulas, and the two agree within a small documented tolerance; for the vignette that is a mean error of at most one 8-bit level, since the distance is computed in normalized frame units and does not depend on the pixel count.`,
     ],
     whyItMatters: [
@@ -133,19 +133,19 @@ const PAGES: PhotoPageBody[] = [
     ],
     useCases: [
       { title: 'Portraits against a busy background', description: 'Amount -35, Midpoint 40, Feather 60, Roundness 60 pulls attention to the face without an obvious dark ring.' },
-      { title: 'Correcting a wide-open 35mm lens', description: 'Amount +25, Midpoint 30, Feather 70, Roundness 100 lifts the corners roughly a third of a stop and evens the sky.' },
+      { title: 'Correcting a wide-open 35mm lens', description: 'Amount +25, Midpoint 30, Feather 70, Roundness 100 raises the corner values by up to 25 percent and evens the sky.' },
       { title: 'Product shots on white', description: 'A slight negative vignette with Highlights 80 keeps the white backdrop white while subtly grounding the object.' },
       { title: 'Square social crops', description: 'Set the crop first in Geometry; the vignette is computed on the cropped frame, so the corners stay in the corners.' },
     ],
     whyMediaManipulator: [
       'The shape, ramp and protection are all documented with their exact constants, so a setting you like can be saved as a look and will land identically on the next photo.',
       'Because the vignette is a layer, it can be blended in Luminosity mode to avoid any color shift in the darkened edges.',
-      'Export is rendered from the original at up to 120 MP on Pro with the same normalized coordinates, not stretched from the screen preview.',
+      'Export is rendered from the original at up to 120 MP on Premium and Pro with the same normalized coordinates, not stretched from the screen preview.',
     ],
     privacyNote: `A vignette is computed from frame coordinates and pixel values alone, with no AI step. Without an account the photo and its edge darkening never leave your browser until you export, and the export is then a normal guest job. With an account the original and its 1920 px preview stay on our server under your retention setting. ${RETENTION_PROMISE}. No third party is involved.`,
     faq: [
       { question: 'How do I remove the vignette a lens left in my photo?', answer: 'Use a positive Amount. Lens fall-off is roughly circular and reaches the corners, so Roundness 100, Midpoint 20 to 35 and Feather 60 to 80 with Amount +15 to +40 usually cancels it. Watch bright corners, since lightening clips at 255.' },
-      { question: 'Why does the vignette look round on the preview but reach the sides first on export?', answer: 'It does not; the distance is normalized to the frame on both. What changes the shape is Roundness: at -100 it follows the rectangle and the side edges darken first, at 100 it is an inscribed ellipse.' },
+      { question: 'Why does the vignette look round on the preview but reach the sides first on export?', answer: 'It does not; the distance is normalized to the frame on both. What changes the shape is Roundness: at -100 it follows the rectangle and the side edges darken first, at 100 it is a circle centered on the frame.' },
       { question: 'What does Highlights do exactly?', answer: 'When Amount is negative, the darkening of each pixel is scaled by 1 - highlights/100 times its luma. At Highlights 100 a pure white pixel is not darkened at all and a mid-gray is darkened half as much. It has no effect when Amount is positive.' },
       { question: 'Does the vignette follow the crop?', answer: 'Yes. Geometry, including crop and straighten, is applied before any layer, so the center and corners are those of the cropped frame, not of the original file.' },
       { question: 'Can I make the vignette off-center?', answer: 'Not with the vignette sliders, which are always centered. For an off-center darkening, add a Local adjustment with a Radial mask, invert it and lower Exposure; the radial mask has a draggable center, size and rotation.' },
@@ -171,7 +171,7 @@ const PAGES: PhotoPageBody[] = [
     workedExamples: [
       {
         title: 'Darkening a 6000 x 4000 portrait, 24 MP JPG, 9.8 MB',
-        body: 'Amount -40, Midpoint 50, Feather 50, Roundness 0, Highlights 0. At the corner (d = 1, v = 1) the factor is 1 - 0.40 = 0.60, so a mid-gray of 128 becomes 77. At the middle of the long edge, d = 0.916 and v = 0.925, a 128 becomes about 81. Three quarters of the way out, v = 0.5, 128 becomes 102; inside d = 0.5 nothing changes. Exported as JPG quality 92 at the 12 MP guest cap: about 5.4 MB, one everyday operation.',
+        body: 'Amount -40, Midpoint 50, Feather 50, Roundness 0, Highlights 0. At the corner (d = 1, v = 1) the factor is 1 - 0.40 = 0.60, so a mid-gray of 128 becomes 77. At the middle of a short side, d = 0.916 and v = 0.925, a 128 becomes about 81. Three quarters of the way out, v = 0.5, 128 becomes 102; inside d = 0.5 nothing changes. Exported as JPG quality 92 at the 12 MP guest cap: about 5.4 MB, one everyday operation.',
       },
       {
         title: 'Lifting lens fall-off on a 4000 x 6000 landscape, 24 MP, Premium account',
@@ -229,7 +229,7 @@ const PAGES: PhotoPageBody[] = [
     whyMediaManipulator: [
       `${PHOTO_BRAND} gives you the three real unsharp-mask controls and documents their formula, rather than a single strength slider with hidden settings.`,
       'The sharpen layer stacks above noise reduction, under a mask if you like, with the result previewed instantly on your own GPU.',
-      'Exports are rendered at full resolution up to 120 MP on Pro, so the radius you tuned at 100% is the radius in the delivered file.',
+      'Exports are rendered at full resolution up to 120 MP on Premium and Pro, so the radius you tuned at 100% is the radius in the delivered file.',
     ],
     privacyNote: `Sharpening is a local convolution and never calls an AI service. Without an account your photo and its sharpen settings stay in this browser until you export, when the file is uploaded for that one render as a guest job. With an account the original, its 1920 px preview and thumbnail stay on our server under your retention setting and go when the project goes. ${RETENTION_PROMISE}. Nothing is shared with any third party.`,
     faq: [
@@ -284,11 +284,11 @@ const PAGES: PhotoPageBody[] = [
     ogTitle: 'Straighten a Crooked Photo Online',
     ogDescription:
       'Draw a line along the horizon and the rotation is set for you. Auto-crop keeps the largest rectangle, or fill the corners with transparency, the edge or a color.',
-    intro: `Straighten lives in the Geometry panel of ${PHOTO_BRAND} and is applied to the source pixels before any adjustment layer. You can type an angle in degrees, or press Draw a line and drag along something that should be level or upright; the editor computes the tilt of your line, folds it into the range -45 to 45 degrees, and sets the rotation to cancel it. Rotation is one inverse-mapped bilinear resample, so pixels are sampled exactly once. By default the frame auto-crops to the largest rectangle of the original aspect that contains only real pixels; turn that off and the corners are filled with transparency, the stretched edge, or a color you choose. The crop, flips and perspective share the same single resample.`,
+    intro: `Straighten lives in the Geometry panel of ${PHOTO_BRAND} and is applied to the source pixels before any adjustment layer. You can type an angle in degrees, or press Draw a line and drag along something that should be level or upright; the editor computes the tilt of your line, folds it into the range -45 to 45 degrees, and sets the rotation to cancel it. Rotation is one inverse-mapped bilinear resample, so pixels are sampled exactly once. By default the frame auto-crops to the largest centered rectangle, in the proportions of the rotated canvas, that contains only real pixels; turn that off and the corners are filled with transparency, the stretched edge, or a color you choose. The crop, flips and perspective share the same single resample.`,
     whatItDoes: [
       'Rotates by any angle from -360 to 360 degrees with a single bilinear resample of the original pixels; 90 and 180 degree steps are exact copies.',
       'Sets the angle from a line you draw: the tilt of the line is wrapped into (-45, 45] degrees and subtracted, so a line along a horizon or a door frame both work.',
-      'Auto-crops to the largest centered rectangle of the original aspect whose entire perimeter lands inside the rotated source, found by a 30-step binary search.',
+      'Auto-crops to the largest centered rectangle in the proportions of the rotated canvas whose entire perimeter lands inside the rotated source, found by a 30-step binary search.',
       'Fills empty corners with transparency, the clamped edge pixel, or a solid color when you prefer to keep the whole rotated frame.',
       'Keeps masks aligned: every mask is stored in the straightened, cropped space, and the export renders the same geometry on the original.',
     ],
@@ -300,7 +300,7 @@ const PAGES: PhotoPageBody[] = [
     ],
     advancedDetails: [
       'The rotated canvas grows to the bounding box of the rotated source: width |w cos| + |h sin|, height |w sin| + |h cos|, rounded. A 6000 x 4000 photo rotated 2.5 degrees has a 6169 x 4258 canvas. Each output pixel center is mapped back through the crop, the perspective homography, the flips and the inverse rotation to a continuous source coordinate and sampled bilinearly from its four neighbors; coordinates outside the source take the fill.',
-      'Auto-crop searches for the largest scale s of a centered rectangle of the requested aspect such that all 100 sample points along its perimeter (25 per side) map inside the source, by binary search on s for 30 iterations. For 2.5 degrees on 6000 x 4000 that gives a crop of 88.44 percent of the canvas in each direction, 5456 x 3766 pixels, 20.55 MP, keeping 85.6 percent of the original pixels. At 1.2 degrees it keeps 92.5 percent, at 5 degrees about 79 percent.',
+      'Auto-crop searches for the largest scale s of a centered rectangle in the aspect of the canvas such that all 100 sample points along its perimeter (25 per side) map inside the source, by binary search on s for 30 iterations. For 2.5 degrees on 6000 x 4000 that gives a crop of 88.44 percent of the canvas in each direction, 5456 x 3766 pixels (1.45:1, the canvas proportions), 20.55 MP, keeping 85.6 percent of the original pixels. At 1.2 degrees it keeps 92.5 percent, at 5 degrees about 75 percent.',
       'Draw a line: the angle of the line in screen coordinates (y down) is atan2(dy, dx) in degrees, reduced by multiples of 90 into (-45, 45], and its negative is added to the current rotation, rounded to 0.01 degree. A line from (200, 1080) to (1800, 1020) on a 1920 px preview is a 2.15 degree tilt and sets the rotation to +2.15.',
       'Fill: Transparent writes RGBA 0 outside the source (PNG and WebP keep it; JPG shows it as black), Stretch the edge clamps the sample to the nearest edge texel, and Color writes an opaque #rrggbb. Bilinear interpolation is also applied to the alpha channel, so a transparent fill has a one-pixel soft border.',
       `${PHOTO_BRAND} previews on your GPU (WebGL2) from a 1920 px copy, renders the export on our server from the original at full resolution with the same formulas, and the two agree within a small documented tolerance: for geometry that is a maximum of 2 8-bit levels over the interior with a 2 px border excluded, since the bilinear sample positions differ slightly at the two scales; color operations are held to a mean of 1 level and grain is exact.`,
@@ -311,10 +311,10 @@ const PAGES: PhotoPageBody[] = [
       'Knowing how many pixels the crop costs lets you decide between a tight auto-crop and a filled corner before export.',
     ],
     useCases: [
-      { title: 'Seascapes and sunsets', description: 'Draw along the water line. A 1.5 degree correction on a 24 MP frame keeps 92.6 percent of the pixels.' },
+      { title: 'Seascapes and sunsets', description: 'Draw along the water line. A 1.5 degree correction on a 24 MP frame keeps 90.8 percent of the pixels.' },
       { title: 'Buildings and doorways', description: 'Draw along a vertical edge instead; the angle wraps into the same -45 to 45 range so uprights work as well as horizons.' },
       { title: 'Scanned documents and prints', description: 'Draw along the paper edge, use Stretch the edge as the fill, and export PNG so nothing is re-compressed.' },
-      { title: 'Phone photos taken in a hurry', description: 'A 2 degree fix on a 4032 x 3024 shot costs about 9 percent of the pixels and still leaves 11 MP.' },
+      { title: 'Phone photos taken in a hurry', description: 'A 2 degree fix on a 4032 x 3024 shot costs about 10 percent of the pixels and still leaves 11 MP.' },
     ],
     whyMediaManipulator: [
       'Straighten, crop, flip and perspective are folded into one resample, so a straightened photo is not softened twice.',
@@ -323,7 +323,7 @@ const PAGES: PhotoPageBody[] = [
     ],
     privacyNote: `Straightening is pure geometry on your own pixels; no model, no third-party service. Signed out, the rotated preview is computed in your browser and nothing is uploaded until you export, which is a normal guest job. Signed in, the original and its 1920 px preview stay on our server under your retention setting and are removed with the project. ${RETENTION_PROMISE}.`,
     faq: [
-      { question: 'How much of the photo do I lose when straightening?', answer: 'It depends on the angle and the aspect. On a 3:2 frame, 1 degree keeps about 95 percent of the pixels, 2.5 degrees about 86 percent and 5 degrees about 79 percent, with the auto-crop holding the original aspect ratio.' },
+      { question: 'How much of the photo do I lose when straightening?', answer: 'It depends on the angle and the aspect. On a 3:2 frame, 1 degree keeps about 94 percent of the pixels, 2.5 degrees about 86 percent and 5 degrees about 75 percent, with the auto-crop keeping the proportions of the rotated canvas.' },
       { question: 'Can I keep the corners instead of cropping?', answer: 'Yes. Switch off Auto-crop to the largest rectangle and choose a fill: Transparent for PNG or WebP output, Stretch the edge to smear the border pixels outward, or Color for a solid fill.' },
       { question: 'Does rotating by a small angle blur the photo?', answer: 'A single bilinear resample softens very slightly, about what a half-pixel shift does. The editor never resamples twice for straighten plus crop, and 90 and 180 degree turns are exact.' },
       { question: 'Which way is positive rotation?', answer: 'Positive angles rotate clockwise on screen. Drawing a line that slopes down to the right produces a positive correction that lifts the right side.' },
@@ -408,7 +408,7 @@ const PAGES: PhotoPageBody[] = [
     whyMediaManipulator: [
       'The map is a documented projective homography, so the result is exact geometry rather than a warp approximated with a mesh.',
       'Perspective shares one bilinear resample with straighten, flip and crop, which matters when a photo needs both a tilt fix and a keystone fix.',
-      'The corrected original is exported at full resolution, up to 120 MP on Pro, with the preview held within a documented tolerance.',
+      'The corrected original is exported at full resolution, up to 120 MP on Premium and Pro, with the preview held within a documented tolerance.',
     ],
     privacyNote: `A perspective fix is arithmetic on coordinates and uses no AI model and no outside service. Without an account the corrected preview exists only in your browser until you export, and that upload is kept like any guest job. With an account the original, its 1920 px preview and thumbnail remain on our server under your retention setting and are deleted with the project. ${RETENTION_PROMISE}.`,
     faq: [
@@ -586,7 +586,7 @@ const PAGES: PhotoPageBody[] = [
     ],
     whyMediaManipulator: [
       'The mask is a documented Lab distance with a stated radius and roll-off, so the same fuzziness means the same selection on the next photo.',
-      'A color range mask is free to compute and previews in real time on your GPU; only the subject mask uses an AI operation.',
+      'A color range mask is free to compute and previews in real time on your GPU; only Select subject uploads the photo, as one everyday operation.',
       'Masks can be shared between layers and combined with gradients, brushes and luminosity ranges in one stack, then exported at full resolution.',
     ],
     privacyNote: `A color range mask is computed from your own pixels in Lab space and needs no server call. Signed out, the photo, the sampled colors and every mask stay in this browser until you export, which uploads the file for that one render as a guest job. Signed in, the original and its 1920 px preview and thumbnail are stored with the project under your retention setting and are deleted with it. ${RETENTION_PROMISE}. Nothing goes to a third party.`,

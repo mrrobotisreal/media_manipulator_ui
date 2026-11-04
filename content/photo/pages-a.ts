@@ -23,7 +23,7 @@ const PAGES: PhotoPageBody[] = [
       'Covers global tone and color in the Basic, Curves, Levels, Color (HSL), Color balance, Black & white, Channel mixer, Photo filter, Split toning, LUT and Effects panels, with sliders whose ranges match a desktop editor.',
       'Limits any layer to part of the frame with a linear gradient, a radial, a painted brush, a luminosity range, a color range picked with an eyedropper, or an AI subject mask, combined by add, subtract or intersect.',
       'Repairs pixels with the Heal tool (paint the spots, press Heal, and an inpainting model fills them on our GPU), a Red-eye fix, and the Geometry panel for crop, straighten, rotate, flip and four-corner perspective.',
-      'Saves and reapplies looks: 18 built-in presets plus Auto, your own presets stored in this browser or exported as JSON, and, on a paid plan, the same stack applied to a batch of other photos.',
+      'Saves and reapplies looks: 18 built-in presets plus Auto, your own presets stored in this browser or exported as JSON, and, once you are signed in on any plan, the same stack applied to a batch of other photos.',
     ],
     flowSteps: [
       { title: 'Open a photo', description: 'Drop a file on this page. The browser decodes it, the editor opens and the live histogram appears under the panels.' },
@@ -182,7 +182,7 @@ const PAGES: PhotoPageBody[] = [
         body: 'A 3000 x 2000 TIFF scan (6 MP, 36 MB, opened signed in) with tones at 20, 60, 128 and 200. Brightness +30 moves them to 58, 98, 166 and 238, adding roughly the same 38 levels everywhere so the black border turns gray. Exposure +1.2 EV moves them to 34, 91, 187 and 255 instead, keeping the border near black but clipping the brightest tone. A middle route of Exposure +1 EV with Tone Blacks +20 gives 35, 85, 176 and 255 from 20, 60, 128 and 200. Exported as PNG the 6 MP result is about 15 MB; as WebP at quality 90 about 1.8 MB.',
       },
     ],
-    whenNotToUse: 'If the photo is bright enough but looks dull, you do not need to brighten it at all; the contrast page or a curve is the right fix, and adding exposure will only push the highlights into white. A photo whose shadows are solid black with no texture cannot be rescued by any slider, because an 8-bit JPEG stores nothing below zero. And for a photo that is dark only in the corners, the Vignette slider at a negative amount is a cleaner, edge-weighted brightening than a global exposure change.',
+    whenNotToUse: 'If the photo is bright enough but looks dull, you do not need to brighten it at all; the contrast page or a curve is the right fix, and adding exposure will only push the highlights into white. A photo whose shadows are solid black with no texture cannot be rescued by any slider, because an 8-bit JPEG stores nothing below zero. And for a photo that is dark only in the corners, the Vignette slider at a positive amount is a cleaner, edge-weighted brightening than a global exposure change.',
   },
   // ------------------------------------------------------------------ adjust-image-contrast
   {
@@ -341,7 +341,7 @@ const PAGES: PhotoPageBody[] = [
       { label: 'Photo curves', to: '/tools/photo-curves', description: 'Pull the highlight end of the curve down by hand for a gentler recovery shape.' },
       { label: 'Adjust image contrast', to: '/tools/adjust-image-contrast', description: 'Restore punch after a recovery has compressed the tonal range.' },
       { label: 'Reduce image noise', to: '/tools/reduce-image-noise', description: 'Clean the shadow noise that a large positive exposure brings out.' },
-      { label: 'Add a vignette', to: '/tools/add-vignette', description: 'A negative vignette amount brightens the corners when only the edges are dark.' },
+      { label: 'Add a vignette', to: '/tools/add-vignette', description: 'A positive vignette amount brightens the corners when only the edges are dark.' },
     ],
     primaryKeyword: 'fix overexposed photo',
     secondaryKeywords: ['fix underexposed photo', 'correct photo exposure online', 'recover highlights online', 'fix washed out photo', 'photo too bright fix', 'exposure correction tool'],
@@ -360,10 +360,10 @@ const PAGES: PhotoPageBody[] = [
       },
       {
         title: 'Underexposed 12 MP concert photo at +1.5 EV with Highlights -40',
-        body: 'A 4000 x 3000 JPEG (12 MP, 3.8 MB) with crowd tones at 20 and 60, a face at 128, and stage lights at 180 and 200. Exposure +1.5 EV gives 38, 100, 205, 255 and 255: both lights clip. Adding Highlights -40 on top yields 38, 100, 186, 229 and 229, so the lights return below white but, having clipped in the exposure step, both end up identical. Lowering the exposure to +1.2 EV with a Tone layer at Shadows +40 instead gives 56, 100 and 187 for the three dark tones with the lights still separated. Export as AVIF at quality 80: about 2.4 MB, one everyday operation.',
+        body: 'A 4000 x 3000 JPEG (12 MP, 3.8 MB) with crowd tones at 20 and 60, a face at 128, and stage lights at 180 and 200. Exposure +1.5 EV gives 38, 100, 205, 255 and 255: both lights clip. Adding Highlights -40 on top yields 38, 100, 186, 229 and 229, so the lights return below white but, having clipped in the exposure step, both end up identical. Lowering the exposure to +1.2 EV with a Tone layer at Shadows +40 instead gives 56, 100 and 187 for the three dark tones, but both lights still clip at 255; only an exposure of about +0.75 EV keeps them apart, at 227 and 252. Export as AVIF at quality 80: about 2.4 MB, one everyday operation.',
       },
     ],
-    whenNotToUse: 'If the only problem is a slightly flat or dull photo that is neither too bright nor too dark, this is the wrong page: the contrast tool or a curve will do more with less. If the photo is overexposed to the point that faces or skies are solid white, no slider will bring texture back, because the JPEG never stored it; the Heal tool can patch small blown spots, but a blown sky needs a different photograph. And if the exposure problem is confined to the edges, a vignette at a negative amount is simpler than a masked exposure layer.',
+    whenNotToUse: 'If the only problem is a slightly flat or dull photo that is neither too bright nor too dark, this is the wrong page: the contrast tool or a curve will do more with less. If the photo is overexposed to the point that faces or skies are solid white, no slider will bring texture back, because the JPEG never stored it; the Heal tool can patch small blown spots, but a blown sky needs a different photograph. And if the exposure problem is confined to the edges, a vignette at a positive amount is simpler than a masked exposure layer.',
   },
   // ------------------------------------------------------------------ image-saturation
   {
@@ -384,7 +384,7 @@ const PAGES: PhotoPageBody[] = [
       'Vibrance from -100 to +100: a saturation-aware boost or cut. For a positive value the factor is 1 + v times (1 - range), so a muted color with a channel range of 0.08 gets almost the full boost while a vivid color with a range of 0.63 gets about a third of it.',
       'Saturation from -100 to +100: every channel moves away from (or toward) the BT.709 luma of the pixel by the factor 1 + saturation / 100; -100 is a perfect gray conversion using the weights 0.2126, 0.7152, 0.0722.',
       'Both sliders live in one Vibrance / saturation layer, so one opacity, one blend mode and one mask cover the pair; add a second layer if you want different masks for each.',
-      'Skin protection comes free from the vibrance formula: a typical skin tone has a channel range near 0.3, so Vibrance +50 adds about 35 percent of the saturation that the same value adds to a near-gray.',
+      'Skin protection comes free from the vibrance formula: a typical skin tone has a channel range near 0.3, so Vibrance +50 gives it about 70 percent of the saturation boost that the same value gives a near-gray.',
       'For color-specific control, the same page points you to the Color (HSL) panel, where each of six hue ranges has its own Saturation slider with width and feather.',
     ],
     flowSteps: [
@@ -450,7 +450,7 @@ const PAGES: PhotoPageBody[] = [
       },
       {
         title: 'Desaturating a 12 MP street photo two ways',
-        body: 'A 4000 x 3000 JPEG (12 MP, 4.5 MB) with a neon pink sign at 255, 40, 180, a wooden door at 160, 120, 80 and a blue car at 90, 150, 230. Saturation -30 gives 207, 57, 155, then 150, 122, 94, then 132, 150, 186: every color loses 30 percent of its distance from gray. Vibrance -40 instead gives 130, 73, 110 for the sign (factor 0.26), 136, 117, 98 for the door (factor 0.47) and, with the car in between, a result where the loudest color has been tamed most. Saturation -100 would send all three to flat grays of 100, 125 and 143. Exported as WebP at quality 88, about 3.6 MB.',
+        body: 'A 4000 x 3000 JPEG (12 MP, 4.5 MB) with a neon pink sign at 255, 40, 180, a wooden door at 160, 120, 80 and a blue car at 90, 150, 230. Saturation -30 gives 207, 57, 155, then 150, 122, 94, then 106, 148, 204: every color loses 30 percent of its distance from gray. Vibrance -40 instead gives 130, 73, 110 for the sign (factor 0.26), 136, 117, 98 for the door (factor 0.47) and, with the car in between, a result where the loudest color has been tamed most. Saturation -100 would send all three to flat grays of 96, 126 and 143. Exported as WebP at quality 88, about 3.6 MB.',
       },
     ],
     whenNotToUse: 'This page changes the strength of every color at once, so it is the wrong tool when only one color is the problem: a sky that needs more blue, or a face that needs less red, belongs in the Color (HSL) panel, where each hue range has its own saturation. If you want a photo that is gray except for one object, the color pop presets already do that. And if the colors look wrong rather than weak, start with white balance; saturating a photo with a cast only makes the cast stronger.',
@@ -486,7 +486,7 @@ const PAGES: PhotoPageBody[] = [
     advancedDetails: [
       'Per pixel: decode R, G, B from sRGB to linear (v / 12.92 below 0.04045, otherwise ((v + 0.055) / 1.055) to the power 2.4). Lightness l = (max + min) / 2 of the linear channels. Weight w = clamp((l - 0.333) times 4 + 0.5) times clamp((1 - l - 0.333) times 4 + 0.5) times 0.7.',
       'Then R += (temperature / 100) times w, G += (-tint / 100) times w, B += (-temperature / 100) times w, each clamped to 0 to 1, and the three channels are encoded back to sRGB. This is the Darkroom video editor midtone color balance reused exactly.',
-      'Weight values: 0 at linear lightness 0.1, 0.118 at 0.25, 0.342 at 0.333, 0.7 at 0.5, 0.538 at 0.6, 0.118 at 0.75, 0 at 0.9. In sRGB terms the effect is confined to roughly 126 to 230 and is strongest near 188.',
+      'Weight values: 0 at linear lightness 0.1, 0.118 at 0.25, 0.35 at 0.333, 0.7 at 0.5, 0.538 at 0.6, 0.118 at 0.75, 0 at 0.9. In sRGB terms the effect is confined to roughly 126 to 230 and is strongest near 188.',
       'Worked gray: an sRGB gray of 188 at Temperature +40 becomes 229, 188, 130; at -40 it becomes 130, 188, 229. The same slider on a gray of 128 gives 129, 128, 126, and on 230 gives 230, 230, 229: the shift is small outside the midtones by design.',
       'Tint on the same gray of 188: +30 gives 188, 147, 188 (green removed, so the pixel looks magenta) and -30 gives 188, 220, 188.',
       'The preview is drawn on your GPU (WebGL2) from a 1920 px copy; the exported file is rendered on our server from the original at full resolution with the same formulas, and the two agree within a small documented tolerance of a few 8-bit levels at most (grain is exact); white balance, being per pixel, matches to the level.',
