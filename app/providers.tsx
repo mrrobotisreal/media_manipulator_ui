@@ -31,6 +31,11 @@ const TranslatorWorkbench =
     ? dynamic(() => loadTranslatorWorkbench() ?? Promise.resolve({ default: () => null }), { ssr: false })
     : null;
 
+// MM107: the Medi guide launcher. Client-only and lazy: its own module renders nothing until the
+// browser is idle after the first interaction and the API says the guide is on, so no page gains
+// server HTML, layout shift or first-load JS for it (the sheet and its i18n shard load on open).
+const MediGuide = dynamic(() => import('@/components/assistant/medi-guide'), { ssr: false });
+
 // One QueryClient for the app lifetime. Created lazily inside the component so
 // each browser tab gets its own instance and it is never shared across requests
 // on the server.
@@ -164,6 +169,7 @@ export default function Providers({
             <main id={MAIN_CONTENT_ID} tabIndex={-1} className="flex-1 outline-none">{children}</main>
             <Footer />
             {toaster}
+            <MediGuide />
             {TranslatorWorkbench ? <TranslatorWorkbench /> : null}
           </AnalyticsProvider>
         </AuthProvider>

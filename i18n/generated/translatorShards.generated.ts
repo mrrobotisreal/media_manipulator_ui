@@ -7,7 +7,7 @@
 
 export type TranslatorShardModule = { default: Record<string, unknown> };
 
-export const TRANSLATOR_SHARD_PATHS = ["interface/_core", "interface/pages", "interface/forms", "interface/panels", "interface/components", "interface/tools", "interface/articles", "error/_core", "accessibility/_core", "accessibility/components", "interface/email"] as const;
+export const TRANSLATOR_SHARD_PATHS = ["interface/_core", "interface/pages", "interface/forms", "interface/panels", "interface/components", "interface/tools", "interface/articles", "error/_core", "accessibility/_core", "accessibility/components", "interface/email", "interface/assistant"] as const;
 
 export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promise<TranslatorShardModule>>> = {
   "en-US": {
@@ -22,6 +22,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/en-us/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/en-us/accessibility/components.json"),
     "interface/email": () => import("../locales/en-us/interface/email.json"),
+    "interface/assistant": () => import("../locales/en-us/interface/assistant.json"),
   },
   "uk-UA": {
     "interface/_core": () => import("../locales/uk-ua/interface/_core.json"),
@@ -35,6 +36,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/uk-ua/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/uk-ua/accessibility/components.json"),
     "interface/email": () => import("../locales/uk-ua/interface/email.json"),
+    "interface/assistant": () => import("../locales/uk-ua/interface/assistant.json"),
   },
   "ru-RU": {
     "interface/_core": () => import("../locales/ru-ru/interface/_core.json"),
@@ -48,6 +50,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/ru-ru/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/ru-ru/accessibility/components.json"),
     "interface/email": () => import("../locales/ru-ru/interface/email.json"),
+    "interface/assistant": () => import("../locales/ru-ru/interface/assistant.json"),
   },
   "he-IL": {
     "interface/_core": () => import("../locales/he-il/interface/_core.json"),
@@ -61,6 +64,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/he-il/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/he-il/accessibility/components.json"),
     "interface/email": () => import("../locales/he-il/interface/email.json"),
+    "interface/assistant": () => import("../locales/he-il/interface/assistant.json"),
   },
   "de-DE": {
     "interface/_core": () => import("../locales/de-de/interface/_core.json"),
@@ -74,6 +78,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/de-de/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/de-de/accessibility/components.json"),
     "interface/email": () => import("../locales/de-de/interface/email.json"),
+    "interface/assistant": () => import("../locales/de-de/interface/assistant.json"),
   },
   "es-ES": {
     "interface/_core": () => import("../locales/es-es/interface/_core.json"),
@@ -87,6 +92,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/es-es/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/es-es/accessibility/components.json"),
     "interface/email": () => import("../locales/es-es/interface/email.json"),
+    "interface/assistant": () => import("../locales/es-es/interface/assistant.json"),
   },
   "es-MX": {
     "interface/_core": () => import("../locales/es-mx/interface/_core.json"),
@@ -100,6 +106,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/es-mx/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/es-mx/accessibility/components.json"),
     "interface/email": () => import("../locales/es-mx/interface/email.json"),
+    "interface/assistant": () => import("../locales/es-mx/interface/assistant.json"),
   },
   "fr-FR": {
     "interface/_core": () => import("../locales/fr-fr/interface/_core.json"),
@@ -113,6 +120,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/fr-fr/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/fr-fr/accessibility/components.json"),
     "interface/email": () => import("../locales/fr-fr/interface/email.json"),
+    "interface/assistant": () => import("../locales/fr-fr/interface/assistant.json"),
   },
   "it-IT": {
     "interface/_core": () => import("../locales/it-it/interface/_core.json"),
@@ -126,6 +134,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/it-it/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/it-it/accessibility/components.json"),
     "interface/email": () => import("../locales/it-it/interface/email.json"),
+    "interface/assistant": () => import("../locales/it-it/interface/assistant.json"),
   },
   "ja-JP": {
     "interface/_core": () => import("../locales/ja-jp/interface/_core.json"),
@@ -139,6 +148,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/ja-jp/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/ja-jp/accessibility/components.json"),
     "interface/email": () => import("../locales/ja-jp/interface/email.json"),
+    "interface/assistant": () => import("../locales/ja-jp/interface/assistant.json"),
   },
   "zh-CN": {
     "interface/_core": () => import("../locales/zh-cn/interface/_core.json"),
@@ -152,6 +162,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/zh-cn/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/zh-cn/accessibility/components.json"),
     "interface/email": () => import("../locales/zh-cn/interface/email.json"),
+    "interface/assistant": () => import("../locales/zh-cn/interface/assistant.json"),
   },
   "zh-TW": {
     "interface/_core": () => import("../locales/zh-tw/interface/_core.json"),
@@ -165,6 +176,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/zh-tw/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/zh-tw/accessibility/components.json"),
     "interface/email": () => import("../locales/zh-tw/interface/email.json"),
+    "interface/assistant": () => import("../locales/zh-tw/interface/assistant.json"),
   },
   "ko-KR": {
     "interface/_core": () => import("../locales/ko-kr/interface/_core.json"),
@@ -178,6 +190,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/ko-kr/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/ko-kr/accessibility/components.json"),
     "interface/email": () => import("../locales/ko-kr/interface/email.json"),
+    "interface/assistant": () => import("../locales/ko-kr/interface/assistant.json"),
   },
   "ar-SA": {
     "interface/_core": () => import("../locales/ar-sa/interface/_core.json"),
@@ -191,6 +204,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/ar-sa/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/ar-sa/accessibility/components.json"),
     "interface/email": () => import("../locales/ar-sa/interface/email.json"),
+    "interface/assistant": () => import("../locales/ar-sa/interface/assistant.json"),
   },
   "hi-IN": {
     "interface/_core": () => import("../locales/hi-in/interface/_core.json"),
@@ -204,6 +218,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/hi-in/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/hi-in/accessibility/components.json"),
     "interface/email": () => import("../locales/hi-in/interface/email.json"),
+    "interface/assistant": () => import("../locales/hi-in/interface/assistant.json"),
   },
   "pt-PT": {
     "interface/_core": () => import("../locales/pt-pt/interface/_core.json"),
@@ -217,6 +232,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/pt-pt/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/pt-pt/accessibility/components.json"),
     "interface/email": () => import("../locales/pt-pt/interface/email.json"),
+    "interface/assistant": () => import("../locales/pt-pt/interface/assistant.json"),
   },
   "pt-BR": {
     "interface/_core": () => import("../locales/pt-br/interface/_core.json"),
@@ -230,6 +246,7 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/pt-br/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/pt-br/accessibility/components.json"),
     "interface/email": () => import("../locales/pt-br/interface/email.json"),
+    "interface/assistant": () => import("../locales/pt-br/interface/assistant.json"),
   },
   "vi-VN": {
     "interface/_core": () => import("../locales/vi-vn/interface/_core.json"),
@@ -243,5 +260,6 @@ export const TRANSLATOR_SHARD_LOADERS: Record<string, Record<string, () => Promi
     "accessibility/_core": () => import("../locales/vi-vn/accessibility/_core.json"),
     "accessibility/components": () => import("../locales/vi-vn/accessibility/components.json"),
     "interface/email": () => import("../locales/vi-vn/interface/email.json"),
+    "interface/assistant": () => import("../locales/vi-vn/interface/assistant.json"),
   },
 };

@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { getBaseURL } from '@/lib/utils';
 import { getCurrentIdToken } from '@/lib/firebase';
-import { extractSSERecords, parseSSERecordData } from './sse';
+import { extractSSERecords, parseSSERecordData } from '@/lib/sse/parse';
 import { chatLabKeys, projectKeys } from './useDrChatLab';
 import {
   ChatLabStreamEventSchema,

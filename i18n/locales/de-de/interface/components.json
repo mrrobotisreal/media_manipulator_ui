@@ -773,5 +773,8 @@
     "aiOpsUnlimited": "Unbegrenzte KI-Aufträge pro Tag",
     "fileSize": "Dateien bis {{value}}",
     "compare": "Alle Tarife vergleichen"
+  },
+  "mediGuideButton": {
+    "label": "{{brand}} fragen, den Guide von Media Manipulator"
   }
 }

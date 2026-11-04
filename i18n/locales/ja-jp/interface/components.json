@@ -770,5 +770,8 @@
     "aiOpsUnlimited": "1日のAIジョブ数無制限",
     "fileSize": "ファイルは最大{{value}}まで",
     "compare": "すべてのプランを比較"
+  },
+  "mediGuideButton": {
+    "label": "Media Manipulator のガイド {{brand}} に質問する"
   }
 }

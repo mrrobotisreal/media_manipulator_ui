@@ -30,6 +30,9 @@ import type { AnalyticsClient } from './client';
 import { EVENTS, type EventPropsMap, type PropertyValue } from './events';
 import type { QueuedEvent, WireContext } from './queue';
 
+/** Medi's surface prop (MM107). */
+const assistantSurface = z.enum(['guide', 'studio', 'vector', 'photo']);
+
 /** Recursive schema for the JSON-safe property value union. */
 const propertyValue: z.ZodType<PropertyValue> = z.lazy(() =>
   z.union([
@@ -581,6 +584,59 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
       language: z.string().regex(/^([a-z]{2}|none)$/),
       source: z.enum(['tool_page', 'darkroom', 'account']),
     })
+    .strict(),
+  assistant_opened: z
+    .object({ surface: assistantSurface, entry: z.enum(['button', 'shortcut', 'chip', 'limit_sheet']) })
+    .strict(),
+  assistant_message_sent: z
+    .object({
+      surface: assistantSurface,
+      has_frame: z.boolean(),
+      turn_index_bucket: z.enum(['1', '2-3', '4-10', '11+']),
+      plan: z.boolean(),
+    })
+    .strict(),
+  assistant_response_completed: z
+    .object({
+      surface: assistantSurface,
+      model_tier: z.enum(['guide', 'copilot', 'plan']),
+      latency_bucket: z.enum(['<1s', '1-3s', '3-10s', '10-30s', '30s+']),
+      tool_rounds: z.number().int().min(0).max(8),
+      outcome: z.enum(['text', 'edits', 'action', 'ask', 'static', 'out_of_scope']),
+    })
+    .strict(),
+  assistant_response_failed: z
+    .object({
+      surface: assistantSurface,
+      reason: z.enum(['upstream', 'timeout', 'paused', 'limit', 'invalid_ops', 'rate_limited', 'sign_in', 'aborted', 'error']),
+    })
+    .strict(),
+  assistant_edits_applied: z
+    .object({
+      surface: assistantSurface,
+      op_count: z.number().int().min(0),
+      op_kinds: z.string().regex(/^[a-z_]+(,[a-z_]+){0,7}$/),
+      round: z.union([z.literal(1), z.literal(2)]),
+    })
+    .strict(),
+  assistant_edits_rejected: z
+    .object({ surface: assistantSurface, reason: z.enum(['validation', 'unknown_id', 'locked']) })
+    .strict(),
+  assistant_edits_undone: z
+    .object({ surface: assistantSurface, within_seconds_bucket: z.enum(['<10s', '10-60s', '60-300s', '300s+']) })
+    .strict(),
+  assistant_action_clicked: z
+    .object({
+      surface: assistantSurface,
+      kind: z.enum(['navigate', 'open_tool', 'generate_captions', 'subject_mask', 'heal', 'voiceover', 'derive_audio', 'export']),
+    })
+    .strict(),
+  assistant_link_clicked: z
+    .object({ surface: assistantSurface, target_kind: z.enum(['tool', 'page', 'editor', 'pricing']) })
+    .strict(),
+  assistant_feedback_given: z.object({ surface: assistantSurface, rating: z.enum(['up', 'down']) }).strict(),
+  assistant_limit_hit: z
+    .object({ surface: assistantSurface, tier: z.enum(['anonymous', 'free', 'premium', 'pro', 'operator']) })
     .strict(),
   contact_submitted: z
     .object({

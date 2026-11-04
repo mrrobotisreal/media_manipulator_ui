@@ -773,5 +773,8 @@
     "aiOpsUnlimited": "प्रतिदिन असीमित AI जॉब",
     "fileSize": "{{value}} तक की फ़ाइलें",
     "compare": "सभी प्लान की तुलना करें"
+  },
+  "mediGuideButton": {
+    "label": "Media Manipulator के गाइड {{brand}} से पूछें"
   }
 }

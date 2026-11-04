@@ -13,6 +13,7 @@ import { join } from "node:path";
 
 import { defaultLocale, locales } from "../locales";
 import {
+  ASSISTANT_SHARD,
   EAGER_SHARDS,
   LAZY_SHARDS,
   SERVER_SHARDS,
@@ -70,11 +71,17 @@ describe("generated i18n registry", () => {
     }
     expect(expected["i18n/generated/shardLoaders.generated.ts"]).not.toMatch(/^import /m);
     expect(expected["i18n/generated/serverBundles.generated.ts"]).not.toContain("metadata.json");
+    // MM107: Medi's shard is lazy only (opened panels), never eager or server.
+    expect(client).not.toContain("/interface/assistant.json");
+    expect(expected["i18n/generated/serverBundles.generated.ts"]).not.toContain("assistant.json");
+    for (const { code } of locales) {
+      expect(expected["i18n/generated/shardLoaders.generated.ts"]).toContain(`/${codeToDir(code)}/interface/assistant.json")`);
+    }
   });
 });
 
 describe("every registered locale has its shard directory", () => {
-  const shards = [...new Set([...EAGER_SHARDS, ...LAZY_SHARDS, ...SERVER_SHARDS])];
+  const shards = [...new Set([...EAGER_SHARDS, ...LAZY_SHARDS, ...SERVER_SHARDS, ASSISTANT_SHARD])];
   for (const { code } of locales) {
     it(`${code} → i18n/locales/${codeToDir(code)}/ has all ${shards.length} shards`, () => {
       const missing = shards.filter((s) => !existsSync(join(LOCALES_DIR, codeToDir(code), `${s}.json`)));

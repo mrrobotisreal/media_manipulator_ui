@@ -777,5 +777,8 @@
     "aiOpsUnlimited": "משימות AI ללא הגבלה ביום",
     "fileSize": "קבצים עד {{value}}",
     "compare": "השוואת כל התוכניות"
+  },
+  "mediGuideButton": {
+    "label": "לשאול את {{brand}}, המדריך של Media Manipulator"
   }
 }

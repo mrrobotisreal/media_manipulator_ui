@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getBaseURL } from '@/lib/utils';
 import { getCurrentIdToken } from '@/lib/firebase';
-import { extractSSERecords, parseSSERecordData } from './sse';
+import { extractSSERecords, parseSSERecordData } from '@/lib/sse/parse';
 import { feedbackKeys } from './useDrFeedback';
 
 // Live-update accelerant for the feedback workspace. The browser's EventSource

@@ -785,5 +785,8 @@
     "aiOpsUnlimited": "مهام ذكاء اصطناعي غير محدودة في اليوم",
     "fileSize": "ملفات حتى {{value}}",
     "compare": "مقارنة كل الباقات"
+  },
+  "mediGuideButton": {
+    "label": "اسأل {{brand}}، دليل Media Manipulator"
   }
 }

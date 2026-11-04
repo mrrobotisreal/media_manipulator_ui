@@ -770,5 +770,8 @@
     "aiOpsUnlimited": "每天不限数量的AI任务",
     "fileSize": "文件最大{{value}}",
     "compare": "比较所有套餐"
+  },
+  "mediGuideButton": {
+    "label": "询问 Media Manipulator 向导 {{brand}}"
   }
 }
