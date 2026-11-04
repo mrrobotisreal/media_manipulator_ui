@@ -12829,7 +12829,7 @@ const viToolPages = {
         'Xử lý tông và màu trên toàn ảnh trong các bảng Cơ bản, Đường cong, Mức, Màu (HSL), Cân bằng màu, Đen trắng, Trộn kênh màu, Bộ lọc ảnh, Chia tông màu, LUT và Hiệu ứng, với các thanh trượt có phạm vi giống hệt một trình chỉnh sửa trên máy tính.',
         'Giới hạn bất kỳ lớp nào vào một phần khung hình bằng dải chuyển sắc tuyến tính, vùng xuyên tâm, nét cọ tô tay, dải độ sáng, dải màu chọn bằng ống nhỏ giọt hoặc mặt nạ chủ thể bằng AI, kết hợp với nhau theo kiểu thêm, trừ hoặc giao.',
         'Sửa điểm ảnh bằng công cụ Chữa lành (tô lên các đốm, nhấn Chữa lành, và một mô hình tô vá sẽ lấp chúng trên GPU của chúng tôi), công cụ sửa Mắt đỏ, cùng bảng Hình học để cắt, làm thẳng, xoay, lật và chỉnh phối cảnh bằng bốn góc.',
-        'Lưu và áp dụng lại phong cách: 18 cài đặt sẵn tích hợp cùng phong cách Tự động, các cài đặt sẵn của riêng bạn được lưu trong trình duyệt này hoặc xuất ra dưới dạng JSON, và với gói trả phí, áp dụng cùng một chồng lớp cho cả một loạt ảnh khác.',
+        'Lưu và áp dụng lại phong cách: 18 cài đặt sẵn tích hợp cùng phong cách Tự động, các cài đặt sẵn của riêng bạn được lưu trong trình duyệt này hoặc xuất ra dưới dạng JSON, và khi đã đăng nhập với bất kỳ gói nào, áp dụng cùng một chồng lớp cho cả một loạt ảnh khác.',
       ],
       flowSteps: [
         {
@@ -13041,7 +13041,7 @@ const viToolPages = {
           body: 'Một bản quét TIFF 3000 x 2000 (6 MP, 36 MB, mở khi đã đăng nhập) có các tông ở 20, 60, 128 và 200. Độ sáng +30 đưa chúng thành 58, 98, 166 và 238, cộng thêm khoảng 38 mức như nhau ở mọi nơi nên viền đen chuyển sang xám. Phơi sáng +1,2 EV thì đưa chúng thành 34, 91, 187 và 255, giữ viền gần đen nhưng làm cháy tông sáng nhất. Một hướng trung gian là Phơi sáng +1 EV cùng Điểm đen +20 trong Tông cho ra 35, 85, 176 và 255 từ 20, 60, 128 và 200. Xuất thành PNG, kết quả 6 MP nặng khoảng 15 MB; thành WebP ở chất lượng 90 khoảng 1,8 MB.',
         },
       ],
-      whenNotToUse: 'Nếu ảnh đã đủ sáng nhưng trông nhạt nhòa, bạn hoàn toàn không cần làm sáng; trang độ tương phản hoặc một đường cong mới là cách sửa đúng, còn tăng phơi sáng chỉ đẩy vùng sáng thành trắng. Một bức ảnh có vùng tối đen đặc, không còn kết cấu, thì không thanh trượt nào cứu được, vì một ảnh JPEG 8 bit không lưu gì dưới mức không. Còn với ảnh chỉ tối ở các góc, thanh trượt Tối góc với lượng âm là cách làm sáng gọn gàng hơn, có trọng số theo mép ảnh, so với một thay đổi phơi sáng toàn cục.',
+      whenNotToUse: 'Nếu ảnh đã đủ sáng nhưng trông nhạt nhòa, bạn hoàn toàn không cần làm sáng; trang độ tương phản hoặc một đường cong mới là cách sửa đúng, còn tăng phơi sáng chỉ đẩy vùng sáng thành trắng. Một bức ảnh có vùng tối đen đặc, không còn kết cấu, thì không thanh trượt nào cứu được, vì một ảnh JPEG 8 bit không lưu gì dưới mức không. Còn với ảnh chỉ tối ở các góc, thanh trượt Tối góc với lượng dương là cách làm sáng gọn gàng hơn, có trọng số theo mép ảnh, so với một thay đổi phơi sáng toàn cục.',
       whyMediaManipulator: [
         'Aperture cho bạn cả ba điều khiển làm sáng dưới dạng các lớp riêng chứ không chỉ một thanh trượt độ sáng, và mỗi lớp đều có thể được giới hạn bằng mặt nạ.',
         'Các công thức giống nhau trong bản xem trước, bản xuất và ứng dụng di động, và máy chủ được đối chiếu với các bản kết xuất chuẩn mỗi lần triển khai.',
@@ -13330,10 +13330,10 @@ const viToolPages = {
         },
         {
           title: 'Ảnh hòa nhạc thiếu sáng 12 MP ở +1,5 EV với Vùng sáng -40',
-          body: 'Một ảnh JPEG 4000 x 3000 (12 MP, 3,8 MB) với các tông đám đông ở 20 và 60, một khuôn mặt ở 128, và đèn sân khấu ở 180 và 200. Phơi sáng +1,5 EV cho ra 38, 100, 205, 255 và 255: cả hai ngọn đèn đều bị cháy. Thêm Vùng sáng -40 phía trên cho ra 38, 100, 186, 229 và 229, nên các ngọn đèn trở về dưới mức trắng nhưng, vì đã bị cháy ở bước phơi sáng, cả hai thành giống hệt nhau. Nếu thay vào đó hạ phơi sáng về +1,2 EV với một lớp Tông ở Vùng tối +40, bạn có 56, 100 và 187 cho ba tông tối mà các ngọn đèn vẫn tách biệt. Xuất thành AVIF ở chất lượng 80: khoảng 2,4 MB, một tác vụ thường.',
+          body: 'Một ảnh JPEG 4000 x 3000 (12 MP, 3,8 MB) với các tông đám đông ở 20 và 60, một khuôn mặt ở 128, và đèn sân khấu ở 180 và 200. Phơi sáng +1,5 EV cho ra 38, 100, 205, 255 và 255: cả hai ngọn đèn đều bị cháy. Thêm Vùng sáng -40 phía trên cho ra 38, 100, 186, 229 và 229, nên các ngọn đèn trở về dưới mức trắng nhưng, vì đã bị cháy ở bước phơi sáng, cả hai thành giống hệt nhau. Nếu thay vào đó hạ phơi sáng về +1,2 EV với một lớp Tông ở Vùng tối +40, bạn có 56, 100 và 187 cho ba tông tối, nhưng cả hai ngọn đèn vẫn bị cháy ở 255; chỉ phơi sáng khoảng +0,75 EV mới giữ chúng tách biệt, ở 227 và 252. Xuất thành AVIF ở chất lượng 80: khoảng 2,4 MB, một tác vụ thường.',
         },
       ],
-      whenNotToUse: 'Nếu vấn đề duy nhất là ảnh hơi nhạt hoặc thiếu sức sống, không quá sáng cũng không quá tối, thì đây không phải trang bạn cần: công cụ độ tương phản hoặc một đường cong sẽ làm được nhiều hơn với ít công sức hơn. Nếu ảnh thừa sáng đến mức khuôn mặt hay bầu trời trắng xóa, không thanh trượt nào mang kết cấu trở lại được, vì tệp JPEG chưa bao giờ lưu nó; công cụ Chữa lành có thể vá những đốm cháy sáng nhỏ, nhưng một bầu trời cháy sáng thì cần một bức ảnh khác. Và nếu lỗi phơi sáng chỉ nằm ở các mép, một hiệu ứng tối góc với lượng âm đơn giản hơn một lớp phơi sáng có mặt nạ.',
+      whenNotToUse: 'Nếu vấn đề duy nhất là ảnh hơi nhạt hoặc thiếu sức sống, không quá sáng cũng không quá tối, thì đây không phải trang bạn cần: công cụ độ tương phản hoặc một đường cong sẽ làm được nhiều hơn với ít công sức hơn. Nếu ảnh thừa sáng đến mức khuôn mặt hay bầu trời trắng xóa, không thanh trượt nào mang kết cấu trở lại được, vì tệp JPEG chưa bao giờ lưu nó; công cụ Chữa lành có thể vá những đốm cháy sáng nhỏ, nhưng một bầu trời cháy sáng thì cần một bức ảnh khác. Và nếu lỗi phơi sáng chỉ nằm ở các mép, một hiệu ứng tối góc với lượng dương đơn giản hơn một lớp phơi sáng có mặt nạ.',
       whyMediaManipulator: [
         'Phơi sáng và khôi phục là những lớp riêng với mặt nạ riêng, điều mà một thanh trượt độ sáng duy nhất trong một công cụ sửa nhanh không làm được.',
         'Aperture hiển thị biểu đồ tần suất RGB suốt quá trình chỉnh sửa thay vì chỉ trong hộp thoại xuất, nên bạn sửa phơi sáng dựa trên dữ liệu chứ không dựa vào màn hình của mình.',
@@ -13401,7 +13401,7 @@ const viToolPages = {
         {
           label: 'Thêm tối góc',
           to: '/tools/add-vignette',
-          description: 'Lượng tối góc âm làm sáng các góc khi chỉ có các mép bị tối.',
+          description: 'Lượng tối góc dương làm sáng các góc khi chỉ có các mép bị tối.',
         },
       ],
       embed: {
@@ -13626,11 +13626,11 @@ const viToolPages = {
       workedExamples: [
         {
           title: 'Xe đỏ thành xanh lá: Độ nhòe 60 và Sắc độ của Tất cả màu +120 trên ảnh JPEG 20 MP',
-          body: 'Một ảnh đăng tin 5472 x 3648 (20 megapixel, 9 MB). Nhấp vào cửa xe chọn được (204, 26, 31), Lab (43,8; 64,9; 45,5). Một tấm thân xe trong bóng (153, 20, 26) cách nó dE 20,6 và một điểm phản quang dưới nắng (242, 89, 84) cách dE 19,6. Ở Độ nhòe 40, bán kính là 24 và hai điểm này chỉ đạt 0,199 và 0,303, khiến chiếc xe bị loang lổ; ở Độ nhòe 60, bán kính là 36 và chúng đạt 0,945 và 0,977. Bức tường gạch phía sau xe ở (166, 77, 56) cách dE 33,8 và đạt 0,043, mặt đường nhựa ở (89, 89, 92) cách dE 79,9 và đạt 0. Với Sắc độ của Tất cả màu ở +120, điểm ảnh trong bóng được đổi màu thành (26, 153, 20) và hòa trộn ở mức 0,945 thành (33, 146, 21); điểm phản quang thành (84, 242, 89), hòa trộn ở mức 0,977 thành (88, 239, 89). Xuất JPG ở chất lượng 92 cho tệp khoảng 9 MB theo ước tính 0,45 MB mỗi megapixel và cần gói Premium hoặc Pro để có đủ 20 megapixel; giới hạn miễn phí là 12.',
+          body: 'Một ảnh đăng tin 5472 x 3648 (20 megapixel, 9 MB). Nhấp vào cửa xe chọn được (204, 26, 31), Lab (43,8; 64,9; 45,5). Một tấm thân xe trong bóng (153, 20, 26) cách nó dE 20,7 và một điểm phản quang dưới nắng (242, 89, 84) cách dE 19,6. Ở Độ nhòe 40, bán kính là 24 và hai điểm này chỉ đạt 0,187 và 0,309, khiến chiếc xe bị loang lổ; ở Độ nhòe 60, bán kính là 36 và chúng đạt 0,940 và 0,979. Bức tường gạch phía sau xe ở (166, 77, 56) cách dE 33,8 và đạt 0,041, mặt đường nhựa ở (89, 89, 92) cách dE 80,0 và đạt 0. Với Sắc độ của Tất cả màu ở +120, điểm ảnh trong bóng được đổi màu thành (26, 153, 20) và hòa trộn ở mức 0,940 thành (34, 145, 20); điểm phản quang thành (84, 242, 89), hòa trộn ở mức 0,979 thành (87, 239, 89). Xuất JPG ở chất lượng 92 cho tệp khoảng 9 MB theo ước tính 0,45 MB mỗi megapixel và cần gói Premium hoặc Pro để có đủ 20 megapixel; giới hạn miễn phí là 12.',
         },
         {
           title: 'Áo khoác vàng thành xanh dương: dịch dải Vàng so với dùng mặt nạ trên ảnh điện thoại 12 MP',
-          body: 'Một tệp HEIC 4032 x 3024 từ điện thoại (12,2 megapixel). Điểm ảnh áo khoác (242, 204, 38) có sắc độ 48,75, độ bão hòa 0,89, độ sáng 0,55. Hai cách cho ra cùng một chiếc áo khoác. Cách thứ nhất: Sắc độ của Vàng +190, không dùng mặt nạ; cách tâm Vàng 11,25 độ nên trọng số là 1, sắc độ thành 238,75 và điểm ảnh được xuất ra là (38, 43, 242), nhưng một biển báo giao thông màu vàng ở hậu cảnh cũng chuyển sang xanh dương. Cách thứ hai: một thành phần Dải màu chọn trên áo khoác với Độ nhòe 50 (bán kính 30), giao với một thành phần Cọ tô lên áo khoác, và Sắc độ của Tất cả màu +190; biển báo đạt 0 vì cọ đã loại trừ nó, còn điểm ảnh áo khoác vẫn được xuất ra là (38, 43, 242). Tệp xuất ở chất lượng 92 nặng khoảng 5,5 MB; riêng ảnh gốc HEIC cần tài khoản để máy chủ giải mã cho bản xem trước.',
+          body: 'Một tệp HEIC 4032 x 3024 từ điện thoại (12,2 megapixel). Điểm ảnh áo khoác (242, 204, 38) có sắc độ 48,8, độ bão hòa 0,89, độ sáng 0,55. Hai cách cho ra cùng một chiếc áo khoác. Cách thứ nhất: Sắc độ của Vàng -170, không dùng mặt nạ; cách tâm Vàng 11,2 độ nên trọng số là 1, sắc độ thành 238,8 và điểm ảnh được xuất ra là (38, 42, 242), nhưng một biển báo giao thông màu vàng ở hậu cảnh cũng chuyển sang xanh dương. Cách thứ hai: một thành phần Dải màu chọn trên áo khoác với Độ nhòe 50 (bán kính 30), giao với một thành phần Cọ tô lên áo khoác, và Sắc độ của Tất cả màu -170; biển báo đạt 0 vì cọ đã loại trừ nó, còn điểm ảnh áo khoác vẫn được xuất ra là (38, 42, 242). Tệp xuất ở chất lượng 92 nặng khoảng 5,5 MB; riêng ảnh gốc HEIC cần tài khoản để máy chủ giải mã cho bản xem trước.',
         },
       ],
       whenNotToUse: 'Vùng chọn theo màu không tách được hai vật thể cùng màu trong cùng điều kiện ánh sáng; đó là việc của mặt nạ Cọ hoặc Xuyên tâm, hoặc của Chọn chủ thể khi vật thể là chủ thể chính của khung hình. Nó không tạo được một màu không phải là sắc độ, nên màu trắng, đen và bề mặt kim loại cần thay đổi độ bão hòa và độ sáng thay vì xoay sắc độ, và nó cũng không thể thay đổi hoa văn hay chất liệu của bề mặt. Khi cả bức ảnh bị ám màu chứ không riêng một vật thể, hãy dùng trang cân bằng trắng hoặc cân bằng màu, còn khi bạn muốn tách vật thể ra trên nền trong suốt, hãy dùng công cụ xóa nền.',
@@ -13797,7 +13797,7 @@ const viToolPages = {
         },
         {
           question: 'Vì sao khuôn mặt vẫn còn chút màu khi giữ lại màu đỏ?',
-          answer: 'Làn da nằm quanh sắc độ 20, bên trong dải Đỏ, nên phong cách này giữ lại da theo thiết kế. Một điểm ảnh ở (217, 158, 128) chỉ mất khoảng 12% độ bão hòa. Hãy thu hẹp Độ rộng của Đỏ, hoặc thêm mặt nạ Cọ ở chế độ Trừ lên khuôn mặt, nếu bạn muốn da chuyển sang xám.',
+          answer: 'Làn da nằm quanh sắc độ 20, bên trong dải Đỏ, nên phong cách này giữ lại da theo thiết kế. Một điểm ảnh ở (217, 158, 128) chỉ mất khoảng 11% độ bão hòa. Hãy thu hẹp Độ rộng của Đỏ, hoặc thêm mặt nạ Cọ ở chế độ Trừ lên khuôn mặt, nếu bạn muốn da chuyển sang xám.',
         },
         {
           question: 'Tôi có giữ được hai màu cùng lúc không?',
@@ -13863,7 +13863,7 @@ const viToolPages = {
         'Độ rực rỡ từ -100 đến +100: tăng hoặc giảm có tính đến độ bão hòa sẵn có. Với giá trị dương, hệ số là 1 + v nhân (1 - range), nên một màu nhạt có dải kênh 0,08 nhận gần trọn mức tăng, trong khi một màu rực có dải 0,63 chỉ nhận khoảng một phần ba.',
         'Độ bão hòa từ -100 đến +100: mọi kênh dịch ra xa (hoặc lại gần) độ chói BT.709 của điểm ảnh theo hệ số 1 + saturation / 100; -100 là một phép chuyển sang xám hoàn hảo với các trọng số 0,2126; 0,7152; 0,0722.',
         'Cả hai thanh trượt nằm trong cùng một lớp Độ rực rỡ / bão hòa, nên một độ mờ đục, một chế độ hòa trộn và một mặt nạ áp dụng cho cả cặp; hãy thêm lớp thứ hai nếu bạn muốn mỗi thanh trượt có mặt nạ riêng.',
-        'Bảo vệ màu da có sẵn nhờ công thức độ rực rỡ: một tông da điển hình có dải kênh gần 0,3, nên Độ rực rỡ +50 chỉ thêm khoảng 35% độ bão hòa so với mức mà cùng giá trị đó thêm cho một màu gần xám.',
+        'Bảo vệ màu da có sẵn nhờ công thức độ rực rỡ: một tông da điển hình có dải kênh gần 0,3, nên Độ rực rỡ +50 tăng độ bão hòa cho nó khoảng 70% so với mức tăng mà cùng giá trị đó mang lại cho một màu gần xám.',
         'Để kiểm soát theo từng màu, trang này hướng bạn đến bảng Màu (HSL), nơi mỗi dải trong sáu dải sắc độ có thanh trượt Độ bão hòa riêng, kèm độ rộng và làm mờ viền.',
       ],
       flowSteps: [
@@ -13922,7 +13922,7 @@ const viToolPages = {
         },
         {
           title: 'Giảm bão hòa một ảnh đường phố 12 MP theo hai cách',
-          body: 'Một ảnh JPEG 4000 x 3000 (12 MP, 4,5 MB) có biển hiệu neon hồng 255, 40, 180, cánh cửa gỗ 160, 120, 80 và chiếc ô tô xanh dương 90, 150, 230. Độ bão hòa -30 cho ra 207, 57, 155, rồi 150, 122, 94, rồi 132, 150, 186: mọi màu mất 30% khoảng cách tới màu xám. Còn Độ rực rỡ -40 cho ra 130, 73, 110 với biển hiệu (hệ số 0,26), 136, 117, 98 với cánh cửa (hệ số 0,47) và, với chiếc ô tô ở mức giữa hai màu này, một kết quả trong đó màu chói nhất được tiết chế nhiều nhất. Độ bão hòa -100 sẽ đưa cả ba thành những mảng xám phẳng 100, 125 và 143. Xuất thành WebP ở chất lượng 88, khoảng 3,6 MB.',
+          body: 'Một ảnh JPEG 4000 x 3000 (12 MP, 4,5 MB) có biển hiệu neon hồng 255, 40, 180, cánh cửa gỗ 160, 120, 80 và chiếc ô tô xanh dương 90, 150, 230. Độ bão hòa -30 cho ra 207, 57, 155, rồi 150, 122, 94, rồi 106, 148, 204: mọi màu mất 30% khoảng cách tới màu xám. Còn Độ rực rỡ -40 cho ra 130, 73, 110 với biển hiệu (hệ số 0,26), 136, 117, 98 với cánh cửa (hệ số 0,47) và, với chiếc ô tô ở mức giữa hai màu này, một kết quả trong đó màu chói nhất được tiết chế nhiều nhất. Độ bão hòa -100 sẽ đưa cả ba thành những mảng xám phẳng 96, 126 và 143. Xuất thành WebP ở chất lượng 88, khoảng 3,6 MB.',
         },
       ],
       whenNotToUse: 'Trang này thay đổi cường độ của mọi màu cùng lúc, nên đây không phải công cụ phù hợp khi chỉ một màu có vấn đề: bầu trời cần xanh hơn hay khuôn mặt cần bớt đỏ thuộc về bảng Màu (HSL), nơi mỗi dải sắc độ có độ bão hòa riêng. Nếu bạn muốn một bức ảnh xám toàn bộ trừ một vật thể, các cài đặt sẵn Nổi bật màu đã làm sẵn việc đó. Còn nếu màu trông sai chứ không phải nhạt, hãy bắt đầu với cân bằng trắng; tăng bão hòa cho một ảnh bị ám màu chỉ làm vệt ám màu nặng thêm.',
@@ -14062,7 +14062,7 @@ const viToolPages = {
       ],
       workedExamples: [
         {
-          title: 'Kéo giãn một bản quét bị bệt 20 MP',
+          title: 'Kéo giãn một bản quét bị bệt 19,4 MP',
           body: 'Một bản quét JPEG 5400 x 3600 (19,4 MP, 7,2 MB) có biểu đồ tần suất trải từ khoảng 26 đến 230. Trên kênh RGB: Đen đầu vào 0,1, Trắng đầu vào 0,9, Tông trung bình 1,2, Đen đầu ra 0, Trắng đầu ra 1. Điểm ảnh 0,3 trở thành ((0,3 - 0,1) / 0,8) ^ (1 / 1,2) = 0,315, khoảng 80; điểm ảnh 0,5 thành 0,5612, khoảng 143; điểm ảnh 0,7 thành 0,7868, khoảng 201; còn 0,1 và 0,9 rơi đúng vào 0 và 1. Mọi giá trị từ 0,1 trở xuống bị cắt thành đen. Khi xuất JPG chất lượng 92, tệp 19,4 MP nặng khoảng 8,7 MB với gói Premium hoặc Pro; bản xuất của khách bị thu nhỏ về 12 MP, khoảng 5,4 MB.',
         },
         {
@@ -14074,7 +14074,7 @@ const viToolPages = {
       whyMediaManipulator: [
         'Aperture áp dụng mức bằng cùng một công thức trên bản xem trước GPU, máy chủ xuất và ứng dụng điện thoại, và biểu đồ tần suất mà bạn dựa vào để đặt các điểm được tính từ kết quả kết xuất thực tế, không chỉ từ ảnh nguồn.',
         'Mức nằm trong một chồng tối đa 64 lớp không phá hủy có mặt nạ, nên một lần kéo giãn tông có thể chỉ giới hạn ở bầu trời hoặc vùng tối nhờ mặt nạ dải độ sáng.',
-        'Khi đăng nhập, dự án được lưu vào tài khoản của bạn và ảnh xuất được kết xuất từ tệp gốc, nên một bản quét được hiệu chỉnh ở kích thước xem trước 1920 px vẫn xuất ra ở chiều rộng thật 6000 px.',
+        'Khi đăng nhập, dự án được lưu vào tài khoản của bạn và ảnh xuất được kết xuất từ tệp gốc, nên một bản quét được hiệu chỉnh ở kích thước xem trước 1920 px vẫn xuất ra ở chiều rộng thật 5400 px.',
       ],
       privacyNote: 'Các thanh trượt Mức được tính ngay trong trình duyệt của bạn trên ảnh đã giải mã và trên biểu đồ tần suất của kết quả; tệp chỉ được tải lên khi bạn xuất, tạo mặt nạ chủ thể hoặc chữa lành, và máy chủ ánh xạ bản gốc với cùng các điểm đầu mút và gamma. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm. Khi đã đăng nhập, bản gốc và bản xem trước của nó được giữ theo thiết lập thời hạn lưu trữ của bạn cho đến khi dự án bị xóa.',
       faq: [
@@ -14333,7 +14333,7 @@ const viToolPages = {
       advancedDetails: [
         'Với mỗi điểm ảnh: giải mã R, G, B từ sRGB sang tuyến tính (v / 12,92 khi dưới 0,04045, ngược lại là ((v + 0,055) / 1,055) mũ 2,4). Độ sáng l = (max + min) / 2 của các kênh tuyến tính. Trọng số w = clamp((l - 0,333) x 4 + 0,5) x clamp((1 - l - 0,333) x 4 + 0,5) x 0,7.',
         'Sau đó R += (nhiệt độ màu / 100) x w, G += (-sắc thái / 100) x w, B += (-nhiệt độ màu / 100) x w, mỗi kênh được giới hạn trong khoảng 0 đến 1, rồi ba kênh được mã hóa lại sang sRGB. Đây chính là phép cân bằng màu tông trung bình của trình chỉnh sửa video Darkroom, được dùng lại nguyên vẹn.',
-        'Các giá trị trọng số: 0 tại độ sáng tuyến tính 0,1; 0,118 tại 0,25; 0,342 tại 0,333; 0,7 tại 0,5; 0,538 tại 0,6; 0,118 tại 0,75; 0 tại 0,9. Xét theo sRGB, hiệu ứng chỉ giới hạn trong khoảng 126 đến 230 và mạnh nhất quanh 188.',
+        'Các giá trị trọng số: 0 tại độ sáng tuyến tính 0,1; 0,118 tại 0,25; 0,35 tại 0,333; 0,7 tại 0,5; 0,538 tại 0,6; 0,118 tại 0,75; 0 tại 0,9. Xét theo sRGB, hiệu ứng chỉ giới hạn trong khoảng 126 đến 230 và mạnh nhất quanh 188.',
         'Ví dụ với màu xám: một màu xám sRGB 188 ở Nhiệt độ màu +40 trở thành 229, 188, 130; ở -40 trở thành 130, 188, 229. Cùng thanh trượt đó trên màu xám 128 cho 129, 128, 126, và trên 230 cho 230, 230, 229: phép dịch nhỏ ở ngoài tông trung bình là do thiết kế.',
         'Sắc thái trên cùng màu xám 188: +30 cho 188, 147, 188 (kênh xanh lá bị bớt đi nên điểm ảnh trông ngả tím đỏ) và -30 cho 188, 220, 188.',
         'Bản xem trước được vẽ trên GPU của bạn (WebGL2) từ một bản sao 1920 px; tệp xuất được kết xuất trên máy chủ của chúng tôi từ ảnh gốc ở độ phân giải đầy đủ với cùng các công thức, và hai bên khớp nhau trong một dung sai nhỏ đã được công bố, tối đa vài mức 8-bit (hạt nhiễu khớp chính xác); cân bằng trắng là phép tính theo từng điểm ảnh nên khớp đến từng mức.',
@@ -14509,11 +14509,11 @@ const viToolPages = {
       workedExamples: [
         {
           title: 'Chân dung với bầu trời xanh: Phim đen trắng trên ảnh JPEG 24 MP',
-          body: 'Một tệp JPEG 6000 x 4000 (24 megapixel, 11 MB) với trọng số kênh mặc định. Một điểm ảnh da (217, 158, 128) có độ bão hòa HSV 0,412, giá trị 0,85 và độ chói 0,660; sắc độ 20,6 độ của nó cho Đỏ trọng số 0,814 và Vàng 0,186, nên số hạng có trọng số là 0,814 x 0,4 + 0,186 x 0,6 = 0,437 và mức xám là 0,588 x 0,660 + 0,412 x 0,437 x 0,85 = 0,541, tức mức 138. Điểm ảnh bầu trời (140, 191, 242), sắc độ 210, độ bão hòa 0,421, giá trị 0,95, độ chói 0,722, nhận 0,5 từ Xanh lơ ở 0,6 và 0,5 từ Xanh dương ở 0,2, nên mức xám là 0,579 x 0,722 + 0,421 x 0,4 x 0,95 = 0,578, tức mức 147. Sau đó đường cong ánh xạ 0,541 thành 0,549 (140) và 0,578 thành 0,592 (151), và hạt nhiễu cộng thêm tối đa 5 mức theo mỗi hướng. Một thẻ xám ở 128 vẫn giữ 128 qua cả hai bước. Xuất trọn 24 megapixel cần gói Premium hoặc Pro; tệp JPG ở chất lượng 92 nặng khoảng 10,8 MB.',
+          body: 'Một tệp JPEG 6000 x 4000 (24 megapixel, 11 MB) với trọng số kênh mặc định. Một điểm ảnh da (217, 158, 128) có độ bão hòa HSV 0,410, giá trị 0,851 và độ chói 0,660; sắc độ 20,2 độ của nó cho Đỏ trọng số 0,826 và Vàng 0,174, nên số hạng có trọng số là 0,826 x 0,4 + 0,174 x 0,6 = 0,435 và mức xám là 0,590 x 0,660 + 0,410 x 0,435 x 0,851 = 0,541, tức mức 138. Điểm ảnh bầu trời (140, 191, 242), sắc độ 210, độ bão hòa 0,421, giá trị 0,95, độ chói 0,721, nhận 0,5 từ Xanh lơ ở 0,6 và 0,5 từ Xanh dương ở 0,2, nên mức xám là 0,579 x 0,721 + 0,421 x 0,4 x 0,95 = 0,577, tức mức 147. Sau đó đường cong ánh xạ 0,541 thành 0,549 (140) và 0,577 thành 0,590 (151), và hạt nhiễu cộng thêm tối đa 5 mức theo mỗi hướng. Một thẻ xám ở 128 vẫn giữ 128 qua cả hai bước. Xuất trọn 24 megapixel cần gói Premium hoặc Pro; tệp JPG ở chất lượng 92 nặng khoảng 10,8 MB.',
         },
         {
           title: 'Làm tối bầu trời: Xanh dương -40 và Đen trắng tương phản cao trên ảnh 12 MP',
-          body: 'Một tệp JPEG 4000 x 3000 (12 megapixel, 5 MB). Chuyển sang Đen trắng tương phản cao sẽ đặt Đỏ 40, Vàng 40, Xanh dương -40, và giữ Xanh lá 40, Xanh lơ 60, Tím đỏ 80. Cùng điểm ảnh bầu trời (140, 191, 242) giờ có số hạng có trọng số là 0,5 x 0,6 + 0,5 x -0,4 = 0,1, nên mức xám là 0,579 x 0,722 + 0,421 x 0,1 x 0,95 = 0,458, tức mức 117 thay vì 147. Một chiếc áo khoác xanh thẫm ở (51, 77, 204), sắc độ 230, có độ bão hòa 0,75 và giá trị 0,8: 0,25 x 0,315 + 0,75 x -0,4 x 0,8 = -0,161, bị giới hạn về 0, đen tuyền. Một cánh cửa đỏ ở (204, 51, 51) không thay đổi khi chuyển phong cách, ở mức 0,25 x 0,328 + 0,75 x 0,4 x 0,8 = 0,322, tức mức 82, vì Đỏ vẫn là 40. Sau đó phong cách thêm Độ tương phản +40 và Độ rõ nét 25 dưới dạng hai lớp nữa. Tệp xuất 12 megapixel nằm trong giới hạn miễn phí và nặng khoảng 5,4 MB ở dạng JPG chất lượng 92.',
+          body: 'Một tệp JPEG 4000 x 3000 (12 megapixel, 5 MB). Chuyển sang Đen trắng tương phản cao sẽ đặt Đỏ 40, Vàng 40, Xanh dương -40, và giữ Xanh lá 40, Xanh lơ 60, Tím đỏ 80. Cùng điểm ảnh bầu trời (140, 191, 242) giờ có số hạng có trọng số là 0,5 x 0,6 + 0,5 x -0,4 = 0,1, nên mức xám là 0,579 x 0,721 + 0,421 x 0,1 x 0,95 = 0,457, tức mức 117 thay vì 147. Một chiếc áo khoác xanh thẫm ở (51, 77, 204), sắc độ 230, có độ bão hòa 0,75 và giá trị 0,8: 0,25 x 0,315 + 0,75 x -0,4 x 0,8 = -0,161, bị giới hạn về 0, đen tuyền. Một cánh cửa đỏ ở (204, 51, 51) không thay đổi khi chuyển phong cách, ở mức 0,25 x 0,328 + 0,75 x 0,4 x 0,8 = 0,322, tức mức 82, vì Đỏ vẫn là 40. Sau đó phong cách thêm Độ tương phản +40 và Độ rõ nét 25 dưới dạng hai lớp nữa. Tệp xuất 12 megapixel nằm trong giới hạn miễn phí và nặng khoảng 5,4 MB ở dạng JPG chất lượng 92.',
         },
       ],
       whenNotToUse: 'Chuyển sang đen trắng sẽ loại bỏ sắc độ, nên khi mục tiêu là giữ một màu và chuyển phần còn lại sang xám, trang nổi bật màu giữ lại thông tin sắc độ và chỉ giảm bão hòa các dải khác. Nếu ảnh vốn đã đơn sắc và chỉ bị phẳng, các trang đường cong, mức hoặc độ tương phản sẽ thay đổi tông của nó mà không cần một lớp chuyển đổi chen giữa. Một ảnh màu bị phai cần lấy lại màu là việc của độ bão hòa hoặc độ rực rỡ. Còn một lớp phủ nâu đỏ (sepia) hay cyanotype là một lớp Bộ lọc ảnh hoặc chia tông màu đặt lên trên phép chuyển đổi này chứ không thay thế nó.',
@@ -14663,7 +14663,7 @@ const viToolPages = {
         },
         {
           title: 'Bản in nâu đỏ: Đen trắng rồi Nâu đỏ ở Mật độ 50 trên bản quét 45 MP',
-          body: 'Một bản quét TIFF 8256 x 5504 (45 megapixel, 136 MB), cần có tài khoản để mở và gói Premium hoặc Pro để xuất trên 12 megapixel. Một lớp Đen trắng với trọng số mặc định nằm dưới một lớp Bộ lọc ảnh đặt ở Nâu đỏ (sepia) #ac7a33, Mật độ 50, bật Giữ nguyên độ chói. Một điểm xám trung bình 128 trở thành (142, 126, 102): trước khi co giãn nó là (0,4186; 0,3696; 0,3), độ chói 0,375, và tỷ lệ 1,333 đưa nó trở lại độ chói 0,5. Một điểm trắng 255 ở Mật độ 60 xuất ra thành (255, 250, 189), bị kẹp ở kênh đỏ. Nếu không có Giữ nguyên độ chói, điểm xám trung bình sẽ là (107, 94, 77), một bản in tối hơn thấy rõ. Khi xuất với kích thước tối đa 64 megapixel, tệp giữ trọn 45 megapixel; dưới dạng JPG ở chất lượng 92 tệp nặng khoảng 20 MB, còn dưới dạng WebP khoảng 13,6 MB theo mức ước tính 0,3 MB cho mỗi megapixel.',
+          body: 'Một bản quét TIFF 8256 x 5504 (45 megapixel, 136 MB), cần có tài khoản để mở và gói Premium hoặc Pro để xuất trên 12 megapixel. Một lớp Đen trắng với trọng số mặc định nằm dưới một lớp Bộ lọc ảnh đặt ở Nâu đỏ (sepia) #ac7a33, Mật độ 50, bật Giữ nguyên độ chói. Một điểm xám trung bình 128 trở thành (142, 126, 102): trước khi co giãn nó là (0,4186; 0,3696; 0,3), độ chói 0,375, và tỷ lệ 1,333 đưa nó trở lại độ chói 0,5. Một điểm trắng 255 xuất ra thành (255, 251, 204), bị kẹp ở kênh đỏ. Nếu không có Giữ nguyên độ chói, điểm xám trung bình sẽ là (107, 94, 77), một bản in tối hơn thấy rõ. Khi xuất với kích thước tối đa 64 megapixel, tệp giữ trọn 45 megapixel; dưới dạng JPG ở chất lượng 92 tệp nặng khoảng 20 MB, còn dưới dạng WebP khoảng 13,6 MB theo mức ước tính 0,3 MB cho mỗi megapixel.',
         },
       ],
       whenNotToUse: 'Bộ lọc ảnh thêm ám màu chứ không phải công cụ để loại bỏ ám màu, vì nhân với một màu không thể khôi phục một kênh mà ánh sáng đã lấy mất; trang cân bằng trắng làm việc đó trong ánh sáng tuyến tính bằng cặp Nhiệt độ màu và Sắc thái. Khi bạn muốn vùng tối mang một màu còn vùng sáng mang màu khác, chia tông màu có một thanh trượt cho mỗi đầu cùng một thanh cân bằng giữa hai đầu. Để tái tạo trọn một bản chỉnh màu từ tệp tham chiếu, một LUT .cube trong bảng LUT làm được điều đó chỉ với một lớp. Ảnh vừa cần phủ sắc vừa bị thiếu sáng thì nên sửa phơi sáng trước, vì phép co giãn độ chói giữ nguyên mức sáng đang có.',
@@ -15191,7 +15191,7 @@ const viToolPages = {
       metaDescription: 'Đảo ngược ảnh thành âm bản ngay trong trình duyệt chỉ bằng một cú nhấp. Mỗi kênh trở thành 1 trừ đi giá trị của nó; tạo mặt nạ, xếp chồng và xuất ở độ phân giải đầy đủ.',
       ogTitle: 'Đảo ngược màu ảnh trực tuyến',
       ogDescription: 'Biến một bức ảnh thành âm bản, hoặc biến một âm bản đã quét thành dương bản, bằng một lớp đảo ngược có thể tạo mặt nạ và hòa trộn. Xuất ở kích thước đầy đủ.',
-      intro: 'Đảo ngược một bức ảnh là thay mỗi màu bằng màu đối lập của nó: đen thành trắng, bầu trời xanh thẫm thành màu cam ấm, và một tấm phim âm bản đã quét thành ảnh dương bản xem được. Trong Aperture, đây là mục Đảo ngược của bảng Hiệu ứng, một lớp chỉnh sửa nằm ở bước xử lý trong không gian gamma của chồng lớp, tính 1 trừ đi từng kênh của điểm ảnh đã mã hóa sRGB. Vì là một lớp chứ không phải bộ lọc phá hủy, bạn có thể tạo mặt nạ để giới hạn nó trong một vùng, hạ độ mờ đục xuống 50% để có hiệu ứng đảo ngược một nửa kiểu phơi sáng ngược (solarization), đặt chế độ hòa trộn thành Độ chói để lật tông mà vẫn giữ sắc độ, hoặc xếp nó bên dưới Mức và Đường cong để hoàn tất việc chuyển âm bản. Cùng bảng này còn có Phân tách tông màu, Ngưỡng và Gamma, những hiệu ứng kết hợp rất tự nhiên với phép đảo ngược.',
+      intro: 'Đảo ngược một bức ảnh là thay mỗi màu bằng màu đối lập của nó: đen thành trắng, bầu trời xanh thẫm thành màu cam ấm, và một tấm phim âm bản đã quét thành ảnh dương bản xem được. Trong Aperture, đây là mục Đảo ngược của bảng Hiệu ứng, một lớp chỉnh sửa nằm ở bước xử lý trong không gian gamma của chồng lớp, tính 1 trừ đi từng kênh của điểm ảnh đã mã hóa sRGB. Vì là một lớp chứ không phải bộ lọc phá hủy, bạn có thể tạo mặt nạ để giới hạn nó trong một vùng, hạ độ mờ đục để đảo ngược một phần (ở đúng 50%, mọi điểm ảnh đều về xám trung bình), đặt chế độ hòa trộn thành Độ chói để lật tông mà vẫn giữ sắc độ, hoặc xếp nó bên dưới Mức và Đường cong để hoàn tất việc chuyển âm bản. Cùng bảng này còn có Phân tách tông màu, Ngưỡng và Gamma, những hiệu ứng kết hợp rất tự nhiên với phép đảo ngược.',
       whatItDoes: [
         'Thêm một lớp Đảo ngược từ bảng Hiệu ứng, ánh xạ mỗi kênh thành 1 trừ đi giá trị của nó, biến bức ảnh thành âm bản chính xác của chính nó.',
         'Nhận mặt nạ để chỉ đảo ngược một vùng đã chọn, một dải độ sáng hoặc một dải màu, còn phần còn lại giữ nguyên như lúc chụp.',
@@ -15240,7 +15240,7 @@ const viToolPages = {
         },
         {
           title: 'Hiệu ứng phơi sáng ngược',
-          description: 'Đảo ngược ở độ mờ đục 50%, hoặc thêm mặt nạ độ sáng để chỉ vùng sáng bị lật, nhằm tạo phong cách kiểu Sabattier.',
+          description: 'Thêm mặt nạ độ sáng để chỉ vùng sáng bị lật, nhằm tạo phong cách kiểu Sabattier; còn chỉ đặt độ mờ đục 50% thì toàn bộ khung hình sẽ thành xám trung bình.',
         },
         {
           title: 'Kiểm tra đường nối trong ảnh ghép',
@@ -15250,11 +15250,11 @@ const viToolPages = {
       workedExamples: [
         {
           title: 'Chuyển bản quét âm bản 3000 x 2000 thành dương bản',
-          body: 'Một bản quét TIFF 3000 x 2000 (6 MP, khoảng 18 MB) được mở bằng tài khoản. Đảo ngược biến một điểm ảnh của lớp nền phim (0,93; 0,08; 0,12) thành (0,07; 0,92; 0,88), tức (18, 235, 224), chính là ám xanh dương - xanh lơ mà mọi phim âm bản màu sau khi đảo ngược đều có. Một lớp Mức đặt bên trên với Đen đầu vào 0,06 và Trắng đầu vào 0,86 trên kênh tổng khi đó kéo giãn giá trị 0,3 thành 0,3 và giá trị 0,7 thành 0,8, nên ám màu được loại bỏ bằng cách đặt riêng các điểm đầu vào của kênh đỏ, xanh lá và xanh dương theo biểu đồ tần suất. Xuất dưới dạng PNG khoảng 15 MB; dưới dạng JPG ở chất lượng 92 khoảng 2,7 MB. Toàn bộ khung hình nằm dưới giới hạn 12 MP.',
+          body: 'Một bản quét TIFF 3000 x 2000 (6 MP, khoảng 18 MB) được mở bằng tài khoản. Đảo ngược biến một điểm ảnh của lớp nền phim (0,93; 0,08; 0,12) thành (0,07; 0,92; 0,88), tức (18, 235, 224), chính là ám xanh dương - xanh lơ mà mọi phim âm bản màu sau khi đảo ngược đều có. Một lớp Mức đặt bên trên với Đen đầu vào 0,06 và Trắng đầu vào 0,86 trên kênh tổng chỉ kéo giãn độ tương phản, giá trị 0,3 thành 0,3 và giá trị 0,7 thành 0,8, mà vẫn để nguyên ám màu; ám màu được loại bỏ bằng cách đặt riêng các điểm đầu vào của kênh đỏ, xanh lá và xanh dương theo biểu đồ tần suất. Xuất dưới dạng PNG khoảng 15 MB; dưới dạng JPG ở chất lượng 92 khoảng 2,7 MB. Toàn bộ khung hình nằm dưới giới hạn 12 MP.',
         },
         {
-          title: 'Đảo ngược nửa cường độ cho áp phích phơi sáng ngược',
-          body: 'Một ảnh JPEG 4000 x 3000 (12 MP, 4,5 MB). Lớp Đảo ngược ở độ mờ đục 50%: giá trị 0,2 hòa trộn với âm bản 0,8 của nó thành 0,5, giá trị 0,8 hòa trộn với 0,2 cũng thành 0,5, và cả bức ảnh dồn về phía xám trung bình, đúng kiểu làm phẳng tông kinh điển của phơi sáng ngược. Ở 100%, màu xám tối (51, 51, 51) trở thành (204, 204, 204). Thêm một lớp Ngưỡng ở mức 0,5 bên trên: một điểm ảnh bầu trời có độ chói 0,529 trước khi đảo ngược sẽ thành trắng, mọi thứ tối hơn thành đen. Xuất WebP ở chất lượng 85 cho tệp khoảng 3,6 MB và tính là một tác vụ thường.',
+          title: 'Đảo ngược nửa phần và toàn phần cho áp phích',
+          body: 'Một ảnh JPEG 4000 x 3000 (12 MP, 4,5 MB). Lớp Đảo ngược ở độ mờ đục 50%: giá trị 0,2 hòa trộn với âm bản 0,8 của nó thành 0,5, giá trị 0,8 hòa trộn với 0,2 cũng thành 0,5, và mọi điểm ảnh đều về đúng xám trung bình, nên riêng một phép đảo ngược nửa cường độ sẽ xóa sạch bức ảnh. Ở 100%, màu xám tối (51, 51, 51) trở thành (204, 204, 204). Thêm một lớp Ngưỡng ở mức 0,5 bên trên một lớp Đảo ngược toàn cường độ: một điểm ảnh bầu trời có độ chói 0,529 trước khi đảo ngược sẽ có độ chói 0,471 sau đó và thành đen, còn mọi thứ vốn tối hơn 0,5 thành trắng. Xuất WebP ở chất lượng 85 cho tệp khoảng 3,6 MB và tính là một tác vụ thường.',
         },
       ],
       whenNotToUse: 'Đảo ngược là công cụ không phù hợp khi bức ảnh chỉ đơn giản trông quá tối hoặc bị ám màu; hãy sửa phơi sáng bằng bảng Cơ bản và sửa ám màu bằng cân bằng trắng hoặc cân bằng màu. Chuyển sang đen trắng bằng các thanh trượt kênh màu cho bạn kiểm soát tông màu tốt hơn nhiều so với đảo ngược một ảnh đã khử bão hòa, và với những sơ đồ cần chữ trắng trên nền đen với cạnh sắc nét, một lớp Ngưỡng sau phép đảo ngược thường đảm nhận nhiều việc hơn chính phép đảo ngược.',
@@ -15336,7 +15336,7 @@ const viToolPages = {
       metaDescription: 'Phân tách tông màu ảnh ngay trong trình duyệt bằng cách ép mỗi kênh về 2-255 mức. Xem các dải trực tiếp, kết hợp với đen trắng, xuất ở kích thước đầy đủ.',
       ogTitle: 'Phân tách tông màu ảnh trực tuyến',
       ogDescription: 'Thu gọn ảnh thành các dải màu phẳng bằng một lớp phân tách tông màu. Công thức mức chính xác, mặt nạ, hoàn tác, xuất ở độ phân giải đầy đủ.',
-      intro: 'Phân tách tông màu lượng tử hóa từng kênh màu về một tập nhỏ các giá trị cách đều nhau, nên những dải chuyển mượt mà trở thành các dải màu phẳng và bức ảnh bắt đầu trông như một bản in lụa. Trong Aperture, đây là mục Phân tách tông màu của bảng Hiệu ứng, chỉ có một thanh trượt Mức (số mức) từ 2 đến 255 (mặc định 4), được áp dụng như một lớp trong không gian gamma, sau các bước xử lý tông và màu của chồng lớp. Số mức là số giá trị phân biệt mà mỗi kênh có thể nhận, nên 2 khiến mỗi kênh chỉ còn đen tuyệt đối hoặc trắng tuyệt đối, tức tổng cộng tám màu có thể có, còn 4 cho 64 màu. Vì đây là một lớp chỉnh sửa, bạn có thể chỉ phân tách tông màu một vùng đã tạo mặt nạ, giữ nguyên sắc độ bằng chế độ hòa trộn Màu, hoặc đặt một lớp Đen trắng bên dưới để có tấm áp phích hai tông hoặc ba tông cổ điển.',
+      intro: 'Phân tách tông màu lượng tử hóa từng kênh màu về một tập nhỏ các giá trị cách đều nhau, nên những dải chuyển mượt mà trở thành các dải màu phẳng và bức ảnh bắt đầu trông như một bản in lụa. Trong Aperture, đây là mục Phân tách tông màu của bảng Hiệu ứng, chỉ có một thanh trượt Mức (số mức) từ 2 đến 255 (mặc định 4), được áp dụng như một lớp trong không gian gamma, sau các bước xử lý tông và màu của chồng lớp. Số mức là số giá trị phân biệt mà mỗi kênh có thể nhận, nên 2 khiến mỗi kênh chỉ còn đen tuyệt đối hoặc trắng tuyệt đối, tức tổng cộng tám màu có thể có, còn 4 cho 64 màu. Vì đây là một lớp chỉnh sửa, bạn có thể chỉ phân tách tông màu một vùng đã tạo mặt nạ, giữ nguyên sắc độ gốc bằng chế độ hòa trộn Độ chói, hoặc đặt một lớp Đen trắng bên dưới để có tấm áp phích hai tông hoặc ba tông cổ điển.',
       whatItDoes: [
         'Thêm một lớp Phân tách tông màu với một thanh trượt Mức duy nhất; 2 mức tạo ra 8 màu có thể có, 4 mức tạo ra 64, 8 mức tạo ra 512, các mức luôn cách đều nhau.',
         'Làm tròn từng kênh một cách độc lập về mức cho phép gần nhất, nên kênh đỏ, xanh lá và xanh dương của cùng một điểm ảnh có thể rơi vào các bậc khác nhau.',
@@ -15364,9 +15364,9 @@ const viToolPages = {
       ],
       advancedDetails: [
         'Với giá trị Mức trên thanh trượt, mã dùng n = số mức - 1 làm số bậc và tính floor(clamp(v, 0, 1) x n + 0,5) / n cho từng kênh. Các đầu ra cho phép là 0, 1/n, 2/n, ... 1, nên mỗi kênh có đúng bằng số mức giá trị phân biệt, kể cả đen và trắng.',
-        'Phần + 0,5 trước floor biến phép tính thành làm tròn đến giá trị gần nhất: với Mức 4 (n = 3), giá trị 0,45 thành floor(1,85) / 3 = 0,3333 và 0,5 thành floor(2,0) / 3 = 0,6667, nên ranh giới giữa dải thứ nhất và dải thứ hai nằm ở 0,5, còn giữa dải thứ hai và dải thứ ba nằm ở 0,8333 trên thang đầu vào.',
+        'Phần + 0,5 trước floor biến phép tính thành làm tròn đến giá trị gần nhất: với Mức 4 (n = 3), giá trị 0,45 thành floor(1,85) / 3 = 0,3333 và 0,5 thành floor(2,0) / 3 = 0,6667, nên ranh giới giữa dải thứ hai và dải thứ ba nằm ở 0,5 trên thang đầu vào, còn hai ranh giới kia nằm ở 0,1667 và 0,8333.',
         'Mức 2 là một ngưỡng theo từng kênh tại 0,5, không phải ngưỡng theo độ chói: điểm ảnh (0,35; 0,55; 0,85) trở thành (0, 1, 1), tức xanh lơ, trong khi lớp Ngưỡng dùng độ chói BT.709 và sẽ cho ra màu trắng với cùng điểm ảnh đó. Mức 255 là phép đồng nhất với đầu vào 8-bit.',
-        'Mỗi kênh được lượng tử hóa riêng, nên một dải chuyển xám tạo ra các dải xám, nhưng một dải chuyển có màu sẽ tạo ra các dải có sắc độ thay đổi ở mỗi bậc mà chỉ một kênh vượt qua ranh giới; hãy thêm một lớp Đen trắng bên dưới để tránh điều đó, hoặc dùng chế độ hòa trộn Màu để giữ sắc độ gốc.',
+        'Mỗi kênh được lượng tử hóa riêng, nên một dải chuyển xám tạo ra các dải xám, nhưng một dải chuyển có màu sẽ tạo ra các dải có sắc độ thay đổi ở mỗi bậc mà chỉ một kênh vượt qua ranh giới; hãy thêm một lớp Đen trắng bên dưới để tránh điều đó, hoặc dùng chế độ hòa trộn Độ chói để giữ sắc độ gốc.',
         'Bản xem trước đã phân dải do GPU của bạn (WebGL2) vẽ từ một bản sao 1920 px; tệp xuất được kết xuất trên máy chủ của chúng tôi từ bản gốc ở độ phân giải đầy đủ bằng cùng công thức làm tròn, và hai bên khớp nhau trong một dung sai nhỏ đã được công bố, tối đa vài mức 8-bit (hạt nhiễu thì khớp tuyệt đối).',
       ],
       whyItMatters: [
@@ -15399,7 +15399,7 @@ const viToolPages = {
         },
         {
           title: 'Sáu mức trên làn da, rồi hai mức',
-          body: 'Một ảnh chân dung 3000 x 4000 (12 MP, 5,1 MB). Ở Mức 6 (n = 5), màu da (0,78; 0,6; 0,5) trở thành (0,8; 0,6; 0,6), tức (204, 153, 153); kênh xanh dương tăng từ 128 lên 153 vì 0,5 x 5 + 0,5 = 3,0, làm tròn xuống còn 3. Chuyển thanh trượt sang Mức 2 (n = 1) cho ra (1, 1, 1), tức màu trắng, vì kênh nào cũng trên 0,5, còn một điểm vùng tối (0,3; 0,25; 0,2) trở thành (0, 0, 0). Khi có một lớp Đen trắng bên dưới với tỷ lệ trộn kênh mặc định, cùng nhát cắt Mức 2 đó tạo ra một khuôn tô hai tông sạch sẽ. Xuất PNG khoảng 8 MB.',
+          body: 'Một ảnh chân dung 3000 x 4000 (12 MP, 5,1 MB). Ở Mức 6 (n = 5), màu da (0,78; 0,6; 0,5) trở thành (0,8; 0,6; 0,6), tức (204, 153, 153); kênh xanh dương tăng từ 128 lên 153 vì 0,5 x 5 + 0,5 = 3,0, làm tròn xuống còn 3. Chuyển thanh trượt sang Mức 2 (n = 1) cho ra (1, 1, 1), tức màu trắng, vì kênh nào cũng bằng hoặc trên 0,5 và được làm tròn lên, còn một điểm vùng tối (0,3; 0,25; 0,2) trở thành (0, 0, 0). Khi có một lớp Đen trắng bên dưới với tỷ lệ trộn kênh mặc định, cùng nhát cắt Mức 2 đó tạo ra một khuôn tô hai tông sạch sẽ. Xuất PNG khoảng 8 MB.',
         },
       ],
       whenNotToUse: 'Phân tách tông màu là một hiệu ứng đồ họa, không phải công cụ hiệu chỉnh: nếu ảnh bị phân tầng màu mà bạn muốn loại bỏ, hiệu ứng này chỉ làm tình trạng nặng hơn, và hướng đúng là giảm nhiễu hoặc một chỉnh sửa Đường cong nhẹ nhàng. Để tách thuần đen hoặc trắng theo độ sáng, hãy dùng lớp Ngưỡng, vốn đánh giá theo độ chói thay vì từng kênh. Nếu mục tiêu là ít màu hơn để tệp nhỏ hơn, công cụ Nén ảnh giảm dung lượng mà không tạo ra các bậc nhìn thấy được, và với ảnh thu nhỏ thì đổi kích thước có ích hơn nhiều so với cắt giảm bảng màu.',
@@ -15408,7 +15408,7 @@ const viToolPages = {
         'Lớp phân tách tông màu có thể được tạo mặt nạ bằng sáu loại mặt nạ, trong đó có mặt nạ chủ thể chạy trên GPU của chính chúng tôi, nên hiệu ứng áp phích có thể bao quanh một người mà không chạm vào khuôn mặt của họ.',
         'Xuất PNG giữ màu phẳng chính xác và dự án vẫn chỉnh sửa được, nên muốn đổi từ 4 sang 5 mức sau này thì chỉ cần kéo thanh trượt, không phải làm lại từ đầu.',
       ],
-      privacyNote: 'Phân tách tông màu là phép làm tròn theo từng kênh, thực hiện ngay trong trình duyệt của bạn trên ảnh đã giải mã; không có gì được tải lên cho đến khi bạn xuất, chọn chủ thể hoặc chữa lành, lúc đó máy chủ lượng tử hóa bản gốc với cùng số bậc. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm. Khi đã đăng nhập, bản gốc và bản xem trước 1920 px của nó được giữ theo thiết lập thời hạn lưu trữ của bạn cho đến khi dự án bị xóa.',
+      privacyNote: 'Phân tách tông màu là phép làm tròn theo từng kênh, thực hiện ngay trong trình duyệt của bạn trên ảnh đã giải mã; không có gì được tải lên cho đến khi bạn xuất, chọn chủ thể hoặc chữa lành, và khi xuất, máy chủ lượng tử hóa bản gốc với cùng số bậc. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm. Khi đã đăng nhập, bản gốc và bản xem trước 1920 px của nó được giữ theo thiết lập thời hạn lưu trữ của bạn cho đến khi dự án bị xóa.',
       faq: [
         {
           question: 'Con số Mức chính xác có nghĩa là gì?',
@@ -15530,7 +15530,7 @@ const viToolPages = {
         },
         {
           title: 'Ảnh in cũ đã quét',
-          description: 'Nhiễu máy quét mịn và chủ yếu là nhiễu độ chói. Độ chói 40 kèm một lượt Màu 20 (không có thanh trượt bán kính) thường là đủ; sau đó hãy giữ Kết cấu ở 0.',
+          description: 'Nhiễu máy quét mịn và chủ yếu là nhiễu độ chói. Độ chói 40 kèm một lượt Màu nhẹ 20, tức một bộ lọc Gaussian 1,2 px, thường là đủ; sau đó hãy giữ Kết cấu ở 0.',
         },
         {
           title: 'Ảnh sản phẩm trên phông tối',
@@ -15565,7 +15565,7 @@ const viToolPages = {
         },
         {
           question: 'Đây có phải khử nhiễu bằng AI không?',
-          answer: 'Không. Đây là một cặp bộ lọc song phương và Gaussian có tính tất định, không tốn gì cho mỗi lần dùng và chạy tức thì trong bản xem trước. Các tác vụ AI duy nhất trong trình chỉnh sửa là Chọn chủ thể và Chữa lành.',
+          answer: 'Không. Đây là một cặp bộ lọc song phương và Gaussian có tính tất định, không tốn gì cho mỗi lần dùng và chạy tức thì trong bản xem trước. Các bước duy nhất trong trình chỉnh sửa dùng mô hình AI là Chọn chủ thể và Chữa lành.',
         },
         {
           question: 'Tôi có thể chỉ khử nhiễu vùng tối không?',
@@ -15635,7 +15635,7 @@ const viToolPages = {
       whatItDoes: [
         'Làm tối các cạnh với Lượng âm hoặc làm sáng chúng với Lượng dương, bằng cách nhân mỗi điểm ảnh với 1 + Lượng/100 nhân hệ số khoảng cách trong khung hình.',
         'Bắt đầu hiệu ứng tại Điểm giữa và tăng dần trên toàn bộ độ rộng Độ mềm viền bằng hàm smoothstep, nên không bao giờ xuất hiện một vòng tròn lộ rõ.',
-        'Định hình vùng chuyển bằng Độ tròn: -100 bám theo hình chữ nhật của khung, 0 nằm ở giữa, 100 là một hình elip thực sự nội tiếp trong khung.',
+        'Định hình vùng chuyển bằng Độ tròn: -100 bám theo hình chữ nhật của khung, 0 nằm ở giữa, 100 là một hình tròn thực sự có tâm ở giữa khung và chạm tới bốn góc.',
         'Bảo vệ các điểm ảnh sáng khi làm tối: với Vùng sáng ở 50, một điểm ảnh có độ chói 0,9 chỉ bị làm tối bằng 55% so với một điểm ảnh đen.',
         'Xuất từ bản gốc ở độ phân giải đầy đủ với tọa độ khung hình đã chuẩn hóa, nên hiệu ứng tối góc nằm đúng chỗ trên tệp 24 MP như trên bản xem trước.',
       ],
@@ -15661,7 +15661,7 @@ const viToolPages = {
         'Mỗi điểm ảnh có tọa độ chuẩn hóa nx và ny từ -1 đến 1 trên toàn khung hình (tâm điểm ảnh ở +0,5). Hai khoảng cách được tính: thước đo chữ nhật max(|nx|, |ny|), và thước đo tròn, tức khoảng cách Euclid từ tâm tính bằng điểm ảnh chia cho nửa đường chéo. Hai giá trị được trộn với trọng số (Độ tròn + 100)/200 cho thước đo tròn, nên Độ tròn -100 là chữ nhật thuần túy, 0 là trộn 50/50 và 100 là hình tròn thuần túy. Mọi thước đo đều bằng 0 ở tâm và đúng bằng 1 ở bốn góc.',
         'Hệ số v là smoothstep(Điểm giữa/100, Điểm giữa/100 + Độ mềm viền/100, d): bằng 0 cho đến khi khoảng cách chạm tới điểm giữa, bằng 1 khi đạt điểm giữa cộng độ mềm viền, với đường chuyển bậc ba 3t bình phương trừ 2t mũ ba ở giữa. Với giá trị mặc định Điểm giữa 50 và Độ mềm viền 50, một điểm ảnh nằm ở nửa đường tới góc có v = 0, một điểm ảnh ở ba phần tư quãng đường có v = 0,5, và một điểm ảnh tại d = 0,9 có v = 0,896.',
         'Điểm ảnh được nhân với k = 1 + Lượng/100 nhân v nhân prot, trong đó prot = 1 - Vùng sáng/100 nhân độ chói BT.709 của điểm ảnh khi Lượng âm và bằng 1 khi Lượng dương, rồi được ép về 0..1. Vì vậy làm sáng sẽ gây cháy sáng: với Lượng +30 tại một góc, một điểm ảnh 0,8 (204) trở thành 1,0 (255).',
-        'Trên khung hình 6000 x 4000 với Độ tròn 0, điểm giữa cạnh dài nằm ở d = 0,916 và điểm giữa cạnh ngắn ở d = 0,777; với Độ tròn 100, hai giá trị đó thành 0,832 và 0,555, nên trên khung 3:2, hiệu ứng tối góc hình tròn để cạnh trên và cạnh dưới sáng hơn hai bên rõ rệt.',
+        'Trên khung hình 6000 x 4000 với Độ tròn 0, điểm giữa cạnh ngắn nằm ở d = 0,916 và điểm giữa cạnh dài ở d = 0,777; với Độ tròn 100, hai giá trị đó thành 0,832 và 0,555, nên trên khung 3:2, hiệu ứng tối góc hình tròn để cạnh trên và cạnh dưới sáng hơn hai bên rõ rệt.',
         'Bản xem trước của Aperture do GPU của bạn (WebGL2) vẽ từ một bản sao 1920 px, ảnh xuất được kết xuất trên máy chủ của chúng tôi từ bản gốc ở độ phân giải đầy đủ bằng cùng công thức, và hai bên khớp nhau trong một dung sai nhỏ đã được công bố; với tối góc, đó là sai số trung bình tối đa một mức 8-bit, vì khoảng cách được tính theo đơn vị khung hình chuẩn hóa và không phụ thuộc vào số điểm ảnh.',
       ],
       whyItMatters: [
@@ -15676,7 +15676,7 @@ const viToolPages = {
         },
         {
           title: 'Sửa ống kính 35mm khi mở khẩu tối đa',
-          description: 'Lượng +25, Điểm giữa 30, Độ mềm viền 70, Độ tròn 100 nâng các góc khoảng một phần ba stop và làm bầu trời đều màu.',
+          description: 'Lượng +25, Điểm giữa 30, Độ mềm viền 70, Độ tròn 100 nâng giá trị ở các góc lên tới 25% và làm bầu trời đều màu.',
         },
         {
           title: 'Ảnh sản phẩm trên nền trắng',
@@ -15690,7 +15690,7 @@ const viToolPages = {
       workedExamples: [
         {
           title: 'Làm tối góc ảnh chân dung 6000 x 4000, JPG 24 MP, 9,8 MB',
-          body: 'Lượng -40, Điểm giữa 50, Độ mềm viền 50, Độ tròn 0, Vùng sáng 0. Tại góc (d = 1, v = 1), hệ số là 1 - 0,40 = 0,60, nên màu xám trung bình 128 thành 77. Ở điểm giữa cạnh dài, d = 0,916 và v = 0,925, giá trị 128 thành khoảng 81. Ở ba phần tư quãng đường ra ngoài, v = 0,5, 128 thành 102; bên trong d = 0,5 thì không có gì thay đổi. Xuất JPG chất lượng 92 ở giới hạn 12 MP dành cho khách: khoảng 5,4 MB, tốn một tác vụ thường.',
+          body: 'Lượng -40, Điểm giữa 50, Độ mềm viền 50, Độ tròn 0, Vùng sáng 0. Tại góc (d = 1, v = 1), hệ số là 1 - 0,40 = 0,60, nên màu xám trung bình 128 thành 77. Ở điểm giữa cạnh ngắn, d = 0,916 và v = 0,925, giá trị 128 thành khoảng 81. Ở ba phần tư quãng đường ra ngoài, v = 0,5, 128 thành 102; bên trong d = 0,5 thì không có gì thay đổi. Xuất JPG chất lượng 92 ở giới hạn 12 MP dành cho khách: khoảng 5,4 MB, tốn một tác vụ thường.',
         },
         {
           title: 'Nâng sáng tối góc ống kính trên ảnh phong cảnh 4000 x 6000, 24 MP, tài khoản Premium',
@@ -15701,7 +15701,7 @@ const viToolPages = {
       whyMediaManipulator: [
         'Hình dạng, đường chuyển và cơ chế bảo vệ đều được công bố với hằng số chính xác, nên một thiết lập bạn ưng ý có thể lưu thành một phong cách và sẽ cho kết quả y hệt trên bức ảnh tiếp theo.',
         'Vì tối góc là một lớp, bạn có thể hòa trộn nó ở chế độ Độ chói để tránh mọi hiện tượng lệch màu ở các cạnh bị làm tối.',
-        'Ảnh xuất được kết xuất từ bản gốc, tối đa 120 MP với gói Pro, bằng cùng tọa độ chuẩn hóa, chứ không phải kéo giãn từ bản xem trước trên màn hình.',
+        'Ảnh xuất được kết xuất từ bản gốc, tối đa 120 MP với gói Premium và Pro, bằng cùng tọa độ chuẩn hóa, chứ không phải kéo giãn từ bản xem trước trên màn hình.',
       ],
       privacyNote: 'Hiệu ứng tối góc chỉ được tính từ tọa độ khung hình và giá trị điểm ảnh, không có bước AI nào. Khi không có tài khoản, ảnh và phần làm tối cạnh của nó không bao giờ rời khỏi trình duyệt của bạn cho đến khi bạn xuất, và khi đó bản xuất là một tác vụ bình thường của khách. Khi có tài khoản, bản gốc và bản xem trước 1920 px của nó được lưu trên máy chủ của chúng tôi theo thiết lập thời hạn lưu trữ của bạn. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm. Không có bên thứ ba nào tham gia.',
       faq: [
@@ -15711,7 +15711,7 @@ const viToolPages = {
         },
         {
           question: 'Vì sao hiệu ứng tối góc trông tròn trên bản xem trước nhưng lại chạm hai bên trước khi xuất?',
-          answer: 'Thực ra không phải vậy; khoảng cách được chuẩn hóa theo khung hình ở cả hai nơi. Thứ thay đổi hình dạng là Độ tròn: ở -100 nó bám theo hình chữ nhật và hai cạnh bên tối đi trước, ở 100 nó là một hình elip nội tiếp.',
+          answer: 'Thực ra không phải vậy; khoảng cách được chuẩn hóa theo khung hình ở cả hai nơi. Thứ thay đổi hình dạng là Độ tròn: ở -100 nó bám theo hình chữ nhật và hai cạnh bên tối đi trước, ở 100 nó là một hình tròn có tâm ở giữa khung.',
         },
         {
           question: 'Vùng sáng chính xác làm gì?',
@@ -15846,7 +15846,7 @@ const viToolPages = {
       whyMediaManipulator: [
         'Aperture cho bạn đủ ba điều khiển unsharp mask thực thụ và công bố công thức của chúng, thay vì một thanh trượt cường độ duy nhất với các thiết lập ẩn.',
         'Lớp làm nét nằm phía trên lớp giảm nhiễu, có thể đặt dưới một mặt nạ nếu bạn muốn, và kết quả được xem trước tức thì trên GPU của chính bạn.',
-        'Bản xuất được kết xuất ở độ phân giải đầy đủ, tới 120 MP với gói Pro, nên bán kính bạn tinh chỉnh ở 100% cũng chính là bán kính trong tệp giao đi.',
+        'Bản xuất được kết xuất ở độ phân giải đầy đủ, tới 120 MP với gói Premium và Pro, nên bán kính bạn tinh chỉnh ở 100% cũng chính là bán kính trong tệp giao đi.',
       ],
       privacyNote: 'Làm nét là một phép tích chập cục bộ và không bao giờ gọi đến dịch vụ AI. Khi chưa có tài khoản, ảnh và thiết lập làm nét của bạn nằm trong trình duyệt này cho đến khi bạn xuất; lúc đó tệp được tải lên cho riêng lần kết xuất ấy dưới dạng tác vụ của khách. Khi có tài khoản, ảnh gốc, bản xem trước 1920 px và ảnh thu nhỏ của nó được lưu trên máy chủ của chúng tôi theo thời gian lưu bạn chọn và bị xóa cùng dự án. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm. Không có gì được chia sẻ với bên thứ ba.',
       faq: [
@@ -15926,11 +15926,11 @@ const viToolPages = {
       metaDescription: 'Làm phẳng đường chân trời bị nghiêng ngay trong trình duyệt: nhập một góc hoặc vẽ một đường dọc đường chân trời, tự động cắt thành hình chữ nhật nội tiếp lớn nhất và xuất ở độ phân giải đầy đủ.',
       ogTitle: 'Chỉnh thẳng ảnh bị nghiêng trực tuyến',
       ogDescription: 'Vẽ một đường dọc đường chân trời và góc xoay sẽ được đặt tự động. Tự động cắt giữ hình chữ nhật lớn nhất, hoặc lấp các góc bằng vùng trong suốt, phần cạnh hay một màu.',
-      intro: 'Làm thẳng nằm trong bảng Hình học của Aperture và được áp dụng lên điểm ảnh nguồn trước mọi lớp chỉnh sửa. Bạn có thể nhập góc theo độ, hoặc nhấn Vẽ một đường rồi kéo dọc theo thứ cần nằm ngang hoặc thẳng đứng; trình chỉnh sửa tính độ nghiêng của đường bạn vẽ, quy nó về khoảng -45 đến 45 độ và đặt góc xoay để triệt tiêu độ nghiêng đó. Phép xoay là một lần lấy mẫu lại song tuyến tính theo ánh xạ ngược, nên mỗi điểm ảnh chỉ được lấy mẫu đúng một lần. Theo mặc định, khung hình tự động cắt thành hình chữ nhật lớn nhất giữ tỷ lệ gốc mà chỉ chứa điểm ảnh thật; nếu tắt tùy chọn này, các góc sẽ được lấp bằng vùng trong suốt, phần cạnh kéo giãn hoặc một màu bạn chọn. Vùng cắt, các phép lật và phối cảnh dùng chung một lần lấy mẫu lại duy nhất đó.',
+      intro: 'Làm thẳng nằm trong bảng Hình học của Aperture và được áp dụng lên điểm ảnh nguồn trước mọi lớp chỉnh sửa. Bạn có thể nhập góc theo độ, hoặc nhấn Vẽ một đường rồi kéo dọc theo thứ cần nằm ngang hoặc thẳng đứng; trình chỉnh sửa tính độ nghiêng của đường bạn vẽ, quy nó về khoảng -45 đến 45 độ và đặt góc xoay để triệt tiêu độ nghiêng đó. Phép xoay là một lần lấy mẫu lại song tuyến tính theo ánh xạ ngược, nên mỗi điểm ảnh chỉ được lấy mẫu đúng một lần. Theo mặc định, khung hình tự động cắt thành hình chữ nhật lớn nhất ở chính giữa, theo tỷ lệ của khung vẽ đã xoay, mà chỉ chứa điểm ảnh thật; nếu tắt tùy chọn này, các góc sẽ được lấp bằng vùng trong suốt, phần cạnh kéo giãn hoặc một màu bạn chọn. Vùng cắt, các phép lật và phối cảnh dùng chung một lần lấy mẫu lại duy nhất đó.',
       whatItDoes: [
         'Xoay theo bất kỳ góc nào từ -360 đến 360 độ chỉ với một lần lấy mẫu lại song tuyến tính từ điểm ảnh gốc; các bước xoay 90 và 180 độ là bản sao chính xác.',
         'Đặt góc từ một đường bạn vẽ: độ nghiêng của đường được quy về khoảng (-45, 45] độ rồi trừ đi, nên vẽ dọc đường chân trời hay dọc khung cửa đều được.',
-        'Tự động cắt thành hình chữ nhật lớn nhất ở chính giữa, giữ tỷ lệ gốc, có toàn bộ chu vi nằm trong ảnh nguồn đã xoay, được tìm bằng phép tìm kiếm nhị phân 30 bước.',
+        'Tự động cắt thành hình chữ nhật lớn nhất ở chính giữa, theo tỷ lệ của khung vẽ đã xoay, có toàn bộ chu vi nằm trong ảnh nguồn đã xoay, được tìm bằng phép tìm kiếm nhị phân 30 bước.',
         'Lấp các góc trống bằng vùng trong suốt, điểm ảnh biên được kẹp lại hoặc một màu đặc khi bạn muốn giữ trọn khung hình đã xoay.',
         'Giữ mặt nạ khớp vị trí: mọi mặt nạ được lưu trong không gian đã làm thẳng và cắt, và bản xuất kết xuất cùng hình học đó trên ảnh gốc.',
       ],
@@ -15954,7 +15954,7 @@ const viToolPages = {
       ],
       advancedDetails: [
         'Khung vẽ sau khi xoay nở ra bằng hộp bao của ảnh nguồn đã xoay: rộng |w cos| + |h sin|, cao |w sin| + |h cos|, làm tròn. Ảnh 6000 x 4000 xoay 2,5 độ có khung vẽ 6169 x 4258. Tâm của mỗi điểm ảnh đầu ra được ánh xạ ngược qua vùng cắt, phép đồng nhất phối cảnh, các phép lật và phép xoay ngược về một tọa độ nguồn liên tục, rồi được lấy mẫu song tuyến tính từ bốn điểm lân cận; tọa độ nằm ngoài ảnh nguồn sẽ nhận phần lấp.',
-        'Tự động cắt tìm tỷ lệ s lớn nhất của một hình chữ nhật ở chính giữa, theo tỷ lệ khung hình yêu cầu, sao cho cả 100 điểm mẫu dọc chu vi của nó (25 điểm mỗi cạnh) đều ánh xạ vào trong ảnh nguồn, bằng tìm kiếm nhị phân trên s qua 30 vòng lặp. Với 2,5 độ trên ảnh 6000 x 4000, kết quả là vùng cắt bằng 88,44% khung vẽ theo mỗi chiều, 5456 x 3766 điểm ảnh, 20,55 MP, giữ lại 85,6% điểm ảnh gốc. Ở 1,2 độ, ảnh giữ lại 92,5%, ở 5 độ khoảng 79%.',
+        'Tự động cắt tìm tỷ lệ s lớn nhất của một hình chữ nhật ở chính giữa, theo tỷ lệ của khung vẽ, sao cho cả 100 điểm mẫu dọc chu vi của nó (25 điểm mỗi cạnh) đều ánh xạ vào trong ảnh nguồn, bằng tìm kiếm nhị phân trên s qua 30 vòng lặp. Với 2,5 độ trên ảnh 6000 x 4000, kết quả là vùng cắt bằng 88,44% khung vẽ theo mỗi chiều, 5456 x 3766 điểm ảnh (1,45:1, đúng tỷ lệ khung vẽ), 20,55 MP, giữ lại 85,6% điểm ảnh gốc. Ở 1,2 độ, ảnh giữ lại 92,5%, ở 5 độ khoảng 75%.',
         'Vẽ một đường: góc của đường trong tọa độ màn hình (trục y hướng xuống) là atan2(dy, dx) tính theo độ, được trừ bớt các bội số của 90 để về khoảng (-45, 45], và giá trị đối của nó được cộng vào góc xoay hiện tại, làm tròn đến 0,01 độ. Một đường từ (200, 1080) đến (1800, 1020) trên bản xem trước 1920 px là độ nghiêng 2,15 độ và đặt góc xoay thành +2,15.',
         'Kiểu lấp: Trong suốt ghi RGBA 0 bên ngoài ảnh nguồn (PNG và WebP giữ được; JPG hiển thị thành màu đen), Kéo giãn cạnh kẹp mẫu về texel biên gần nhất, còn Màu ghi một màu #rrggbb đục. Nội suy song tuyến tính cũng được áp dụng cho kênh alpha, nên phần lấp trong suốt có đường viền mềm rộng một điểm ảnh.',
         'Aperture xem trước trên GPU của bạn (WebGL2) từ một bản sao 1920 px, kết xuất tệp xuất trên máy chủ của chúng tôi từ ảnh gốc ở độ phân giải đầy đủ với cùng công thức, và hai bản khớp nhau trong một dung sai nhỏ đã được công bố: với hình học, sai lệch tối đa là 2 mức 8-bit ở phần bên trong, không tính dải viền 2 px, vì vị trí lấy mẫu song tuyến tính hơi khác nhau ở hai tỷ lệ; các phép màu được giữ ở sai số trung bình 1 mức, còn hạt nhiễu khớp tuyệt đối.',
@@ -15967,7 +15967,7 @@ const viToolPages = {
       useCases: [
         {
           title: 'Cảnh biển và hoàng hôn',
-          description: 'Vẽ dọc theo mép nước. Chỉnh 1,5 độ trên khung hình 24 MP vẫn giữ được 92,6% điểm ảnh.',
+          description: 'Vẽ dọc theo mép nước. Chỉnh 1,5 độ trên khung hình 24 MP vẫn giữ được 90,8% điểm ảnh.',
         },
         {
           title: 'Tòa nhà và ô cửa',
@@ -15979,7 +15979,7 @@ const viToolPages = {
         },
         {
           title: 'Ảnh điện thoại chụp vội',
-          description: 'Chỉnh 2 độ trên ảnh 4032 x 3024 tốn khoảng 9% điểm ảnh và vẫn còn lại 11 MP.',
+          description: 'Chỉnh 2 độ trên ảnh 4032 x 3024 tốn khoảng 10% điểm ảnh và vẫn còn lại 11 MP.',
         },
       ],
       workedExamples: [
@@ -16002,7 +16002,7 @@ const viToolPages = {
       faq: [
         {
           question: 'Làm thẳng ảnh sẽ mất bao nhiêu phần ảnh?',
-          answer: 'Điều đó phụ thuộc vào góc và tỷ lệ khung hình. Trên khung 3:2, xoay 1 độ giữ khoảng 95% điểm ảnh, 2,5 độ khoảng 86% và 5 độ khoảng 79%, với tự động cắt giữ nguyên tỷ lệ khung hình gốc.',
+          answer: 'Điều đó phụ thuộc vào góc và tỷ lệ khung hình. Trên khung 3:2, xoay 1 độ giữ khoảng 94% điểm ảnh, 2,5 độ khoảng 86% và 5 độ khoảng 75%, với tự động cắt giữ tỷ lệ của khung vẽ đã xoay.',
         },
         {
           question: 'Tôi có thể giữ các góc thay vì cắt bỏ không?',
@@ -16141,7 +16141,7 @@ const viToolPages = {
       whyMediaManipulator: [
         'Phép ánh xạ là một phép đồng nhất xạ ảnh đã được công bố, nên kết quả là hình học chính xác chứ không phải phép bóp méo xấp xỉ bằng lưới.',
         'Phối cảnh dùng chung một lần lấy mẫu lại song tuyến tính với làm thẳng, lật và cắt, điều quan trọng khi một bức ảnh cần sửa cả độ nghiêng lẫn méo hình thang.',
-        'Ảnh gốc đã hiệu chỉnh được xuất ở độ phân giải đầy đủ, tới 120 MP với gói Pro, và bản xem trước được giữ trong một dung sai đã công bố.',
+        'Ảnh gốc đã hiệu chỉnh được xuất ở độ phân giải đầy đủ, tới 120 MP với gói Premium và Pro, và bản xem trước được giữ trong một dung sai đã công bố.',
       ],
       privacyNote: 'Sửa phối cảnh là phép tính trên tọa độ, không dùng mô hình AI và không dùng dịch vụ bên ngoài. Khi chưa có tài khoản, bản xem trước đã hiệu chỉnh chỉ tồn tại trong trình duyệt của bạn cho đến khi bạn xuất, và lần tải lên đó được lưu như mọi tác vụ của khách. Khi có tài khoản, ảnh gốc, bản xem trước 1920 px và ảnh thu nhỏ của nó được lưu trên máy chủ của chúng tôi theo thời gian lưu bạn chọn và bị xóa cùng dự án. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm.',
       faq: [
@@ -16435,7 +16435,7 @@ const viToolPages = {
       whenNotToUse: 'Vùng chọn theo dải màu là công cụ sai khi chủ thể có cùng màu với nền, chẳng hạn một người mặc áo xanh lá trên bãi cỏ; khi đó hãy dùng Chọn chủ thể, loại mặt nạ AI, hoặc dùng cọ. Nó cũng gặp khó với ảnh thang xám hoặc ảnh rất nhạt màu, nơi mọi điểm ảnh đều chỉ cách nhau vài đơn vị Lab và độ nhòe không thể tách chúng ra; mặt nạ Dải độ sáng làm tốt hơn trong trường hợp đó. Nếu bạn muốn dịch một sắc độ trên toàn bộ ảnh, các dải HSL trên trang Đổi màu vật thể đã làm được điều đó mà không cần mặt nạ.',
       whyMediaManipulator: [
         'Mặt nạ là khoảng cách Lab đã được công bố, với bán kính và độ suy giảm rõ ràng, nên cùng một độ nhòe sẽ cho cùng một vùng chọn trên bức ảnh tiếp theo.',
-        'Mặt nạ dải màu được tính miễn phí và xem trước theo thời gian thực trên GPU của bạn; chỉ mặt nạ chủ thể mới dùng tác vụ AI.',
+        'Mặt nạ dải màu được tính miễn phí và xem trước theo thời gian thực trên GPU của bạn; chỉ Chọn chủ thể mới tải ảnh lên, tính là một tác vụ thường.',
         'Mặt nạ có thể dùng chung giữa các lớp và kết hợp với dải chuyển sắc, cọ và dải độ sáng trong cùng một chồng lớp, rồi xuất ở độ phân giải đầy đủ.',
       ],
       privacyNote: 'Mặt nạ dải màu được tính từ chính các điểm ảnh của bạn trong không gian Lab và không cần gọi đến máy chủ. Khi chưa đăng nhập, ảnh, các màu đã lấy mẫu và mọi mặt nạ nằm trong trình duyệt này cho đến khi bạn xuất; lúc đó tệp được tải lên cho riêng lần kết xuất ấy dưới dạng tác vụ của khách. Khi đã đăng nhập, ảnh gốc cùng bản xem trước 1920 px và ảnh thu nhỏ của nó được lưu cùng dự án theo thời gian lưu bạn chọn và bị xóa cùng dự án. Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm. Không có gì được gửi tới bên thứ ba.',
