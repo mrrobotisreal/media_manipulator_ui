@@ -39,3 +39,6 @@ cardconv.py
 jsxconv.py
 sweep.py
 mm93-it-bodies/
+
+# Aperture render goldens and fixture images/docs (MM100)
+lib/photo/fixtures/
