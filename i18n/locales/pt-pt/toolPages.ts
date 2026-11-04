@@ -5,7 +5,8 @@
  * Scope: MM65 (2026-10-27) added Motion's full page body; MM92 (2026-10-31)
  * added `name` + `tagline` for every tool; MM93 (2026-11-03) added the full
  * body of every non-alias tool page (98), model-written by Fable 5.1 and
- * Opus 5.5; native review pending.
+ * Opus 5.5; native review pending. MM102-pt-pt (2026-11-04) added the full
+ * body of the 25 Aperture pages, model-written by Opus 5.5; native review pending.
  *
  * Register: European Portuguese (pt-PT, AO90), third-person polite with no
  * explicit `você`; brand names, formats and codecs stay untranslated;
@@ -12811,153 +12812,3696 @@ const ptPtToolPages = {
     // MM100: Aperture's page lines (name, tagline, SEO title and description); full bodies come with MM102-<prefix>. Model-written, needs native review.
     'aperture': {
       name: 'Aperture',
+      h1: 'Aperture: editor de fotografias online',
       tagline: 'Um editor de fotografias por camadas no seu navegador: exposição, curvas, cor, máscaras, correção e predefinições, exportado em resolução total.',
       metaTitle: 'Aperture, editor de fotografias online: camadas, curvas | Media Manipulator',
       metaDescription: 'Edite fotografias no navegador com o Aperture: camadas de ajuste não destrutivas, curvas, níveis, HSL, máscaras, correção de manchas, predefinições e exportação em resolução total.',
+      ogTitle: 'Aperture: editor de fotografias online',
+      ogDescription: 'Edição de fotografias não destrutiva no navegador. Empilhe camadas de ajuste, aplique-lhes máscaras, corrija manchas e exporte JPG, PNG, WebP, AVIF ou TIFF em resolução total.',
+      intro: 'O Aperture é o editor de fotografias integrado no Media Manipulator. Abre uma única fotografia em ecrã inteiro, sem anúncios, e permite construir a edição como uma pilha de camadas de ajuste sobre o original intacto: uma camada de exposição, uma curva, uma camada HSL limitada a um único intervalo de cores, uma vinheta, uma passagem de nitidez, cada uma com a sua opacidade, o seu modo de mistura e uma máscara opcional. A pré-visualização é desenhada pela sua placa gráfica a partir de uma cópia de 1920 px, para que cada controlo responda de imediato, e a exportação é renderizada no nosso servidor a partir do ficheiro original, em resolução total, com a mesma matemática. Nada do que fizer aqui reescreve o ficheiro que abriu: o resultado é sempre um ficheiro novo com o nome do original acrescido do sufixo (retouched).',
+      whatItDoes: [
+        'Mantém cada edição numa camada de ajuste separada, até 64 por fotografia, para que qualquer camada possa mais tarde ser ocultada, reordenada, duplicada, reajustada ou eliminada sem mexer no resto da pilha.',
+        'Cobre o tom e a cor globais nos painéis Básico, Curvas, Níveis, Cor (HSL), Equilíbrio de cores, Preto e branco, Misturador de canais, Filtro de foto, Divisão de tons, LUT e Efeitos, com controlos cujos intervalos correspondem aos de um editor para computador.',
+        'Limita qualquer camada a uma parte do enquadramento com um gradiente linear, uma máscara radial, um pincel, um intervalo de luminosidade, um intervalo de cores escolhido com o conta-gotas ou uma máscara de motivo por IA, combinados por adição, subtração ou interseção.',
+        'Repara píxeis com a ferramenta Corrigir (pinte as manchas, prima Corrigir e um modelo de preenchimento completa-as na nossa GPU), com a correção de Olhos vermelhos e com o painel Geometria, para recortar, endireitar, rodar, inverter e corrigir a perspetiva pelos quatro cantos.',
+        'Guarda e volta a aplicar looks: 18 predefinições incorporadas mais Automático, as suas próprias predefinições guardadas neste navegador ou exportadas em JSON e, num plano pago, a mesma pilha aplicada a um lote de outras fotografias.',
+      ],
+      flowSteps: [
+        {
+          title: 'Abra uma fotografia',
+          description: 'Largue um ficheiro nesta página. O navegador descodifica-o, o editor abre e o histograma em direto aparece por baixo dos painéis.',
+        },
+        {
+          title: 'Empilhe ajustes',
+          description: 'Mova um controlo em qualquer painel e aparece uma camada na lista Camadas. Dê-lhe uma máscara, baixe a opacidade ou mude-a para o modo de mistura Luminosidade ou Cor.',
+        },
+        {
+          title: 'Compare e afine',
+          description: 'Mantenha premida a tecla de barra invertida para ver o original, ou use a Vista dividida para uma comparação lado a lado. Anular, refazer e o painel Histórico recuam tanto quanto quiser.',
+        },
+        {
+          title: 'Exporte em tamanho total',
+          description: 'Escolha JPG, PNG, WebP, AVIF ou TIFF, uma qualidade de 1 a 100, se quer manter os metadados e um tamanho máximo. O servidor renderiza o original e o ficheiro é transferido.',
+        },
+      ],
+      advancedDetails: [
+        'Os valores de trabalho são números de vírgula flutuante sRGB de 0 a 1, e cada etapa restringe o resultado a esse intervalo; só as camadas Exposição e Equilíbrio de brancos convertem primeiro para luz linear (descodificação sRGB: v / 12,92 abaixo de 0,04045; caso contrário, ((v + 0,055) / 1,055) elevado a 2,4) e voltam a codificar no fim.',
+        'As camadas aplicam-se pela ordem da pilha, de baixo para cima. Cada uma calcula a sua cor ajustada; depois, o modo de mistura fica com o resultado inteiro (Normal), apenas com a variação de luma BT.709, com os pesos 0,2126; 0,7152 e 0,0722 (Luminosidade), ou apenas com a variação de crominância (Cor) e, por fim, a opacidade da camada multiplicada pelo valor da máscara, de 0 a 1, mistura-o com a entrada.',
+        'A pré-visualização é desenhada na sua GPU em WebGL2 a partir de uma cópia de 1920 px da fotografia; o ficheiro exportado é renderizado no nosso servidor a partir do original em resolução total, com as mesmas fórmulas, e os dois coincidem dentro de uma tolerância pequena e documentada: as operações de cor diferem em média, no máximo, um nível de 8 bits e nunca mais de quatro, as convoluções no máximo oito, e o grão é exato porque ambos os lados partilham uma única função de hash.',
+        'Uma máscara é construída a partir dos seus componentes, por ordem, começando em 0: Adicionar fica com o maior entre o valor acumulado e o componente, Subtrair fica com o menor entre o valor acumulado e um menos o componente, e Intersetar fica com o menor dos dois. A Suavização da máscara é uma desfocagem gaussiana cujo sigma é a percentagem de suavização vezes 0,05 vezes o lado maior da imagem; Inverter e a Intensidade da máscara aplicam-se depois da desfocagem.',
+        'A geometria é um único mapeamento inverso: a rotação, o ângulo de endireitamento, a inversão, o quadrilátero de perspetiva dos quatro cantos e o recorte compõem-se numa única transformação, e os píxeis de saída são amostrados de forma bilinear a partir da origem, pelo que empilhar várias alterações de geometria nunca reamostra a fotografia mais de uma vez.',
+        'As imagens até 4 megapíxeis são renderizadas no servidor em float64, para coincidirem bit a bit com a referência em TypeScript; as maiores usam float32. O autoteste executado em cada implementação compara 126 renderizações de referência e mede atualmente um erro máximo de um nível de 8 bits.',
+      ],
+      whyItMatters: [
+        'Uma ferramenta de filtro de passagem única dá-lhe uma só oportunidade; uma pilha de camadas permite voltar uma semana depois, baixar a vinheta para 40% de opacidade e manter tudo o resto exatamente como estava.',
+        'Pré-visualizar numa cópia redimensionada é a forma como qualquer editor sério se mantém fluido, mas só funciona quando há a garantia de que a exportação coincide, e é por isso que a renderização no servidor e a pré-visualização partilham o mesmo conjunto de fórmulas e uma tolerância medida.',
+        'As máscaras transformam controlos globais em ferramentas locais: o mesmo controlo Exposição aclara um rosto, o céu ou tudo o que esteja abaixo de uma luminância de 0,3, consoante a máscara que lhe associar.',
+      ],
+      useCases: [
+        {
+          title: 'Recuperar uma fotografia de telemóvel',
+          description: 'Aclare as sombras, recupere um céu queimado com uma camada Exposição mascarada por um gradiente, aqueça o equilíbrio de brancos e exporte um JPG de 12 MP sem instalar nada.',
+        },
+        {
+          title: 'Fotografias de produto para um anúncio',
+          description: 'Endireite, recorte para 1:1 ou 4:5, defina um equilíbrio de brancos limpo com o conta-gotas, elimine o pó com a correção, aplique nitidez com um raio de 1 px e aplique a mesma pilha às outras 9 fotografias do lote.',
+        },
+        {
+          title: 'Um look coerente num conjunto de fotografias',
+          description: 'Crie o look uma vez, guarde-o como predefinição e volte a aplicá-lo. A predefinição acrescenta as suas camadas como um grupo, pelo que continua a poder ajustar a exposição de cada fotografia por baixo dela.',
+        },
+        {
+          title: 'Retratos e pele',
+          description: 'Elimine imperfeições com Corrigir, suavize com Clareza a -20 sob uma máscara de pincel, baixe alguns pontos à saturação dos Vermelhos em Cor (HSL) e mantenha os olhos nítidos com uma máscara radial numa camada Nitidez.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma paisagem de 24 MP com quatro camadas',
+          body: 'Um JPEG de 6000 x 4000 (24 MP, 9,6 MB) recebe uma camada Exposição a +0,5 EV, uma camada Tom com Realces -60 e Sombras +30, uma camada HSL com a saturação dos Azuis a +20 sob uma máscara de gradiente linear sobre o céu e uma camada Nitidez com quantidade 120, raio 1,0 e limiar 4. A pré-visualização trabalha numa cópia de 1920 x 1280; a exportação renderiza no servidor os 24 milhões de píxeis. Exportado como JPG com qualidade 92, o ficheiro tem cerca de 10,8 MB e custa uma tarefa normal; no plano Free, o limite de 12 MP redimensiona-o para 4243 x 2828, com cerca de 5,4 MB.',
+        },
+        {
+          title: 'Uma edição de visitante numa fotografia de telemóvel de 12 MP',
+          body: 'Sem iniciar sessão, um JPEG de 4032 x 3024 tirado com um telemóvel (12,2 MP, 3,1 MB) recebe Temperatura -30 no Equilíbrio de brancos, uma camada Exposição a +0,8 EV com máscara de Pincel no rosto e duas manchas de pó pintadas e corrigidas com uma única pressão em Corrigir (uma tarefa de IA). A exportação em WebP com qualidade 85 é reduzida ao limite de 12 MP para visitantes, cerca de 4000 x 3000, e pesa cerca de 3,6 MB, a 0,3 MB por megapíxel. O projeto fica no IndexedDB até à pressão em Corrigir, que carrega a fotografia como um processamento de visitante.',
+        },
+      ],
+      whenNotToUse: 'O Aperture edita uma fotografia de cada vez com camadas paramétricas, por isso não é a ferramenta certa para pintar píxeis, sobrepor texto e formas, compor duas fotografias ou desenhar. Se só precisa de um ficheiro mais pequeno, o compressor de imagens faz isso num único passo sem abrir um editor; se precisa de um recorte com fundo transparente, o removedor de fundo devolve diretamente um PNG; e, se quer eliminar os dados de localização antes de publicar, o removedor de EXIF é mais rápido do que exportar com os Metadados definidos como Remover. As edições em lote de mais de 25 fotografias também estão fora dos seus limites.',
+      whyMediaManipulator: [
+        'O Aperture faz parte do Media Manipulator, pelo que a mesma conta, o mesmo histórico e os mesmos limites de plano abrangem a conversão de imagens, a compressão, a remoção de fundo e este editor.',
+        'O editor abre em ecrã inteiro, sem anúncios, sem marca de água e sem propostas de compra dentro da tela; os limites do plano decidem apenas o tamanho da exportação, os projetos guardados e o tamanho do lote.',
+        'A matemática não é segredo: cada página de ferramenta deste site documenta a fórmula exata que o seu controlo executa, com números concretos, para que saiba o que um valor de 40 faz realmente.',
+      ],
+      privacyNote: 'Sem conta, todo o editor funciona neste navegador: a fotografia e a respetiva pilha de camadas ficam no IndexedDB do seu dispositivo e nada é carregado até exportar, premir Selecionar motivo ou premir Corrigir, ações que enviam a fotografia para o nosso servidor como um processamento de visitante comum. Com sessão iniciada, o original, a respetiva pré-visualização de 1920 px e uma miniatura são guardados com o projeto, de acordo com a sua definição de retenção, e são eliminados com o projeto ou com a conta. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. As máscaras de motivo e a correção são executadas numa GPU operada por nós; nenhuma fotografia é enviada a terceiros.',
+      faq: [
+        {
+          question: 'O Aperture é um editor destrutivo?',
+          answer: 'Não. O ficheiro original nunca é modificado. Cada alteração é um parâmetro numa camada, a pilha é guardada como um pequeno documento JSON junto da fotografia e a exportação escreve um ficheiro novo com o sufixo (retouched) antes da extensão.',
+        },
+        {
+          question: 'Quantas camadas e máscaras pode ter uma fotografia?',
+          answer: 'Até 64 camadas de ajuste, cada uma com a sua opacidade de 0 a 100%, um modo de mistura Normal, Luminosidade ou Cor e uma máscara opcional construída a partir de qualquer número de componentes de gradiente, radial, pincel, luminosidade, intervalo de cores ou motivo.',
+        },
+        {
+          question: 'Qual é a maior fotografia que posso exportar?',
+          answer: 'Os visitantes e o plano Free exportam até 12 megapíxeis; um original maior é reduzido para caber. O Premium e o Pro exportam até 120 megapíxeis, e a caixa de diálogo de exportação oferece Original, 12, 24, 64 ou 120 MP como limite.',
+        },
+        {
+          question: 'Que ações contam para a minha quota diária?',
+          answer: 'Cada exportação é uma tarefa normal, o primeiro Selecionar motivo numa dada fotografia é uma tarefa normal (uma repetição idêntica é um resultado já em cache, gratuito) e cada pressão em Corrigir é uma tarefa de IA. Mover controlos, anular, aplicar predefinições e usar os outros cinco tipos de máscara não custa nada. Os números diários exatos estão na página de preços.',
+        },
+        {
+          question: 'Posso abrir fotografias HEIC de um iPhone?',
+          answer: 'Sim, com sessão iniciada. O navegador não consegue descodificar sozinho HEIC, HEIF, TIFF nem BMP, pelo que o servidor cria uma cópia de pré-visualização para o editor; JPG, PNG, WebP, GIF e AVIF abrem diretamente, sem conta.',
+        },
+        {
+          question: 'A fotografia exportada vai ficar exatamente igual à pré-visualização?',
+          answer: 'Dentro de uma tolerância documentada. Os ajustes de cor coincidem, no pior caso, com uma diferença de poucos níveis de 8 bits e são normalmente idênticos; o grão é idêntico bit a bit. A pré-visualização é calculada a partir de uma cópia de 1920 px, pelo que uma nitidez muito fina ou uma redução de ruído podem parecer ligeiramente diferentes em tamanho total, e é por isso que a exportação é tratada como a referência.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'HEIC, HEIF, TIFF e BMP exigem uma conta: o servidor descodifica-os para uma cópia de pré-visualização, porque os navegadores não o fazem. Os outros formatos abrem localmente.',
+          'Tamanhos de exportação aproximados por megapíxel indicados na caixa de diálogo: JPG com qualidade 92, cerca de 0,45 MB; WebP, cerca de 0,3 MB; AVIF, cerca de 0,2 MB; PNG, cerca de 2,5 MB para fotografias; TIFF, cerca de 3,0 MB.',
+        ],
+      },
+      related: [
+        {
+          label: 'Aclarar imagem',
+          to: '/tools/brighten-image',
+          description: 'A Exposição em luz linear face aos controlos Brilho e Sombras, com os números por trás de cada um.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Até 16 pontos por canal numa curva cúbica monótona, amostrada numa tabela de 256 entradas.',
+        },
+        {
+          label: 'Remover imperfeições',
+          to: '/tools/remove-blemishes',
+          description: 'Pinte as manchas, prima Corrigir e um modelo de preenchimento completa-as na nossa GPU.',
+        },
+        {
+          label: 'Selecionar por cor',
+          to: '/tools/select-by-color',
+          description: 'Escolha uma cor com o conta-gotas e limite qualquer camada aos píxeis que estejam dentro de uma certa distância Lab dessa cor.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Quando só precisa de um ficheiro mais pequeno e não de uma edição, o compressor é mais rápido.',
+        },
+        {
+          label: 'Tutorial do Aperture',
+          to: '/tutorials/aperture',
+          description: 'Uma primeira edição guiada, desde abrir uma fotografia até uma exportação concluída.',
+        },
+      ],
+      embed: {
+        title: 'Abrir o editor',
+        description: 'Largue aqui uma fotografia JPG, PNG, WebP, GIF, HEIC, AVIF, TIFF ou BMP, ou escolha uma no seu dispositivo, e o editor abre em ecrã inteiro com o painel Básico à frente.',
+      },
     },
     'brighten-image': {
       name: 'Aclarar imagem',
+      h1: 'Aclarar uma imagem online',
       tagline: 'Aclare uma fotografia escura com um controlo de exposição real em luz linear, ou com Brilho e Sombras quando quiser uma alteração mais suave e seletiva.',
       metaTitle: 'Aclarar uma imagem online: exposição, brilho e sombras | Aperture',
       metaDescription: 'Aclare uma fotografia escura no navegador. Exposição em stops EV, um controlo de Brilho e recuperação de Sombras, com pré-visualização em direto e exportação em resolução total.',
+      ogTitle: 'Aclarar uma imagem online',
+      ogDescription: 'Três formas de aclarar uma fotografia escura: Exposição em stops EV em luz linear, Brilho e recuperação de Sombras. Pré-visualização em direto, exportação em resolução total.',
+      intro: 'Uma fotografia escura pode ser aclarada de três maneiras diferentes, e o resultado não é o mesmo. O controlo Exposição (EV) do painel Básico do Aperture trabalha em luz linear, tal como um stop na câmara: +1 EV duplica a luz em cada píxel, pelo que as sombras e os meios-tons sobem proporcionalmente, enquanto as zonas já claras queimam mais cedo. O controlo Brilho, pelo contrário, soma uma quantidade fixa ao valor sRGB, o que levanta sobretudo os pretos e dá um aspeto mais plano. O controlo Sombras do grupo Tom eleva apenas a extremidade escura, com uma ponderação pela luminância, e deixa os realces onde estavam. Esta página explica a matemática de cada um, com números, para que possa escolher o que melhor se adequa à fotografia que tem à frente.',
+      whatItDoes: [
+        'Exposição (EV) de -5 a +5: descodifica cada canal de sRGB para luz linear, multiplica por 2 elevado a EV, soma o Deslocamento, volta a codificar e aplica depois a Gama. Um stop é uma duplicação, exatamente como numa câmara.',
+        'Brilho de -100 a +100 no grupo Luz: soma o valor dividido por 200 ao canal sRGB antes da etapa de contraste, pelo que +50 soma 0,25, cerca de 64 níveis numa escala de 8 bits, a cada píxel que tenha margem para isso.',
+        'Sombras de -100 a +100 no grupo Tom: uma elevação ponderada pela luminância, máxima no preto, que se desvanece por completo numa luma de 0,6 e escala os três canais em conjunto, para que as cores mantenham a tonalidade.',
+        'Cada controlo é a sua própria camada de ajuste, pelo que uma camada de +1 EV e uma camada de Sombras +40 podem ser mascaradas, misturadas e desligadas de forma independente.',
+        'O histograma por baixo dos painéis atualiza-se enquanto arrasta, para que veja quando a extremidade direita começa a acumular-se contra o branco e possa recuar antes de alguma coisa queimar.',
+      ],
+      flowSteps: [
+        {
+          title: 'Abra a fotografia escura',
+          description: 'Largue um JPG, PNG, WebP ou AVIF, ou inicie sessão para HEIC e TIFF. O painel Básico está à frente.',
+        },
+        {
+          title: 'Defina a exposição',
+          description: 'Arraste Exposição (EV) em direção a +1 enquanto observa o histograma. Pare quando os meios-tons estiverem onde os quer, mesmo que os cantos mais escuros continuem turvos.',
+        },
+        {
+          title: 'Abra as sombras',
+          description: 'Use Sombras, no grupo Tom, para as zonas escuras que restam. Só atua em píxeis abaixo de uma luma de 0,6, por isso o céu e os realces da pele ficam onde estão.',
+        },
+        {
+          title: 'Verifique e exporte',
+          description: 'Mantenha premida a tecla de barra invertida para comparar com o original e depois exporte. O servidor volta a renderizar o original em tamanho total com as mesmas duas fórmulas.',
+        },
+      ],
+      advancedDetails: [
+        'Exposição por canal: linear = descodificação sRGB de v; depois clamp(linear vezes 2 elevado a EV mais Deslocamento) para 0 a 1, nova codificação em sRGB e, por fim, elevação a 1 / Gama. A descodificação usa v / 12,92 abaixo de 0,04045 e ((v + 0,055) / 1,055) elevado a 2,4 acima desse valor.',
+        'Como a multiplicação acontece em luz linear, um cinzento médio de 0,5 (128 de 255) passa a 0,686 (175) a +1 EV, a 0,801 (204) a +1,5 EV e a 0,934 (238) a +2 EV, enquanto 0,8 (204) já fica cortado em 1,0 a +1 EV.',
+        'Brilho e Contraste partilham uma camada: v = clamp(v + brightness / 200); depois, (v - 0,5) vezes 2 elevado a (contrast / 50) mais 0,5. Com o Contraste a 0, a segunda etapa é a identidade, pelo que Brilho +25 soma exatamente 0,125 a cada canal que tenha margem para isso.',
+        'Sombras: sendo L a luma BT.709, o peso é 1 - smoothstep(0; 0,6; L) e a variação de luma é 0,25 vezes shadows / 100 vezes esse peso. A nova luma dividida pela antiga (com um mínimo de 0,0001) escala os três canais, pelo que um píxel com luma 0,1 recebe um peso de 0,926 e sobe para 0,216 com Sombras +50.',
+        'A pré-visualização é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px; o ficheiro exportado é renderizado no nosso servidor a partir do original em resolução total, com as mesmas fórmulas, e os dois coincidem dentro de uma tolerância pequena e documentada de, no máximo, poucos níveis de 8 bits (o grão é exato). Uma alteração de exposição, por si só, coincide normalmente nível a nível.',
+        'O Deslocamento (-0,5 a +0,5) soma-se em luz linear depois da multiplicação, e é por isso que um valor pequeno como 0,05 transforma o preto puro 0 em 0,248 (63): é uma elevação do piso, não um aclaramento, e serve sobretudo para looks mate.',
+      ],
+      whyItMatters: [
+        'Aclarar no espaço sRGB, que é o que muitas ferramentas rápidas fazem, comprime os realces e deixa as fotografias escuras acinzentadas; uma exposição em luz linear mantém as relações entre tons que a câmara registou.',
+        'As fotografias de telemóvel subexpostas têm normalmente dados aproveitáveis nas sombras; subir a exposição um stop e depois abrir as sombras recupera detalhe que uma simples subida de brilho transformaria numa papa.',
+        'Conhecer a diferença poupa tempo: se os meios-tons estão certos e só os cantos estão escuros, Sombras é o único controlo em que deve mexer; se está tudo escuro, é a Exposição.',
+      ],
+      useCases: [
+        {
+          title: 'Fotografia de interior que saiu escura',
+          description: 'Exposição +1,2 EV com Sombras +40 recupera uma fotografia de uma sala de estar mal iluminada; os realces do candeeiro vão queimar, por isso acrescente uma máscara radial à volta do candeeiro que exclua a camada Exposição dessa zona.',
+        },
+        {
+          title: 'Retrato em contraluz',
+          description: 'Deixe a Exposição a 0 para que a janela fique branca em vez de completamente queimada e acrescente uma camada Tom com Sombras +60 para o rosto, ou pinte uma máscara de pincel sobre o rosto numa camada Exposição +1.',
+        },
+        {
+          title: 'Impressão digitalizada que parece cinzenta',
+          description: 'Uma digitalização globalmente escura, mas sem pretos verdadeiros, responde melhor a Brilho -10 com Contraste +20 do que à exposição, porque o problema é um piso elevado e não falta de luz.',
+        },
+        {
+          title: 'Captura de ecrã ou gráfico plano',
+          description: 'Em ilustrações com preenchimentos planos, Brilho +15 soma os mesmos 0,075 a todas as cores e mantém os preenchimentos uniformes, ao passo que uma alteração de exposição os alteraria de forma desigual.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma fotografia de restaurante de 12 MP com pouca luz, a +1 EV mais Sombras',
+          body: 'Um JPEG de 4000 x 3000 (12 MP, 4,2 MB) com os valores de amostra 20, 60, 128 e 200 no canto mais escuro, num casaco, numa toalha de mesa e numa vela. A Exposição +1 EV, sozinha, leva-os a 31, 85, 176 e 255: a vela queima. Uma camada Tom com Sombras +30 por cima eleva os três tons escuros para 48, 93 e 176, enquanto a vela se mantém em 255. Recuar a Exposição para +0,7 EV dá, em vez disso, 28, 77, 160 e 248, com a vela intacta. Exporte como JPG com qualidade 92: cerca de 5,4 MB, uma tarefa normal, e 12 MP, pelo que cabe exatamente no limite para visitantes.',
+        },
+        {
+          title: 'Brilho face a Exposição na mesma digitalização de 6 MP',
+          body: 'Uma digitalização TIFF de 3000 x 2000 (6 MP, 36 MB, aberta com sessão iniciada) com tons em 20, 60, 128 e 200. Brilho +30 leva-os a 58, 98, 166 e 238, somando aproximadamente os mesmos 38 níveis em todo o lado, pelo que a moldura preta fica cinzenta. Exposição +1,2 EV leva-os, pelo contrário, a 34, 91, 187 e 255, mantendo a moldura perto do preto mas queimando o tom mais claro. Uma via intermédia, Exposição +1 EV com Pretos +20 no Tom, dá 35, 85, 176 e 255 a partir de 20, 60, 128 e 200. Exportado em PNG, o resultado de 6 MP tem cerca de 15 MB; em WebP com qualidade 90, cerca de 1,8 MB.',
+        },
+      ],
+      whenNotToUse: 'Se a fotografia tem luz suficiente mas parece baça, não precisa de a aclarar: a página de contraste ou uma curva é a correção certa, e acrescentar exposição só vai empurrar os realces para o branco. Uma fotografia cujas sombras são preto sólido, sem textura, não pode ser recuperada por nenhum controlo, porque um JPEG de 8 bits não guarda nada abaixo de zero. E, numa fotografia que só está escura nos cantos, o controlo Vinheta com uma quantidade negativa é um aclaramento mais limpo, concentrado nas margens, do que uma alteração global da exposição.',
+      whyMediaManipulator: [
+        'O Aperture dá-lhe os três controlos de aclaramento como camadas separadas, em vez de um único controlo de brilho, e cada camada pode ser limitada com uma máscara.',
+        'As fórmulas são as mesmas na pré-visualização, na exportação e na aplicação móvel, e o servidor é verificado contra renderizações de referência em cada implementação.',
+        'O histograma e a tecla de comparação (que se mantém premida) estão sempre no ecrã, para que avalie o aclaramento face ao original e não de memória.',
+      ],
+      privacyNote: 'Aclarar é uma alteração aritmética píxel a píxel, por isso corre inteiramente no seu navegador até exportar: a fotografia escura e as respetivas camadas Exposição, Luz e Tom ficam no IndexedDB do seu dispositivo, a menos que inicie sessão ou use Selecionar motivo ou Corrigir. Ao exportar, o original é carregado uma vez e renderizado no nosso servidor com as mesmas fórmulas, e o resultado é conservado como qualquer outro processamento. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Nenhum terceiro recebe a imagem.',
+      faq: [
+        {
+          question: 'O que faz +1 EV a um píxel?',
+          answer: 'Duplica o píxel em luz linear. Na escala sRGB, isso não é uma duplicação: 0,5 passa a 0,686, 0,2 passa a 0,285 e 0,8 fica cortado em 1,0. Os valores são limitados ao intervalo de 0 a 1 depois da multiplicação, pelo que tudo o que ultrapassaria o branco se perde, a menos que baixe a exposição ou mascare a zona.',
+        },
+        {
+          question: 'Porque é que o Brilho parece mais plano do que a Exposição?',
+          answer: 'O Brilho soma a mesma quantidade a todos os canais em sRGB: +25 soma 0,125 tanto a um preto de 0 como a um cinzento de 0,5, pelo que o piso sobe e a imagem perde contraste. A Exposição multiplica em luz linear, o que mantém os tons escuros escuros em relação aos claros.',
+        },
+        {
+          question: 'Até onde posso aclarar antes de a imagem se degradar?',
+          answer: 'Até cerca de +1,5 EV, um JPEG de 8 bits costuma aguentar, embora o ruído nas sombras se torne visível. Acima de +2 EV aparecem bandas nos gradientes suaves, porque o ficheiro só tinha 256 níveis à partida. As camadas Redução de ruído e Grão do painel Detalhe conseguem disfarçar parte disto.',
+        },
+        {
+          question: 'Posso aclarar apenas parte da fotografia?',
+          answer: 'Sim. Acrescente a camada Exposição e dê-lhe uma máscara: um gradiente linear para um primeiro plano escuro, um pincel para um rosto, um intervalo de luminosidade para tudo o que esteja abaixo de um brilho escolhido, ou Selecionar motivo para o objeto principal. O ajuste só se aplica onde a máscara é branca.',
+        },
+        {
+          question: 'Aclarar altera as cores?',
+          answer: 'A Exposição e as Sombras escalam o vermelho, o verde e o azul em conjunto, pelo que a tonalidade se mantém até um canal ficar cortado. O Brilho também soma por igual aos três canais, o que dessatura ligeiramente as cores fortes à medida que se aproximam do branco. Se notar um desvio de cor, reduza a quantidade ou mude o modo de mistura da camada para Luminosidade.',
+        },
+        {
+          question: 'A fotografia exportada fica mais clara exatamente na mesma medida que a pré-visualização?',
+          answer: 'Sim, com uma margem de um ou dois níveis de 8 bits. O servidor executa a mesma descodificação, multiplicação e codificação de exposição sobre o original em resolução total, em float64 para fotografias até 4 megapíxeis, e o autoteste de cada implementação verifica-o contra renderizações de referência guardadas.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A Exposição e o Tom são operações píxel a píxel, sem vizinhança, pelo que a pré-visualização é instantânea em qualquer tamanho e o tempo de exportação é dominado pela descodificação e pela codificação do ficheiro.',
+          'Aclarar uma origem de 8 bits não consegue criar detalhe que ficou cortado a preto na câmara; uma zona registada como 0, 0, 0 mantém-se neutra e só sobe com o Deslocamento ou o Brilho.',
+        ],
+      },
+      related: [
+        {
+          label: 'Corrigir exposição',
+          to: '/tools/fix-photo-exposure',
+          description: 'Os mesmos controlos Exposição e Tom aplicados a fotografias sobreexpostas e subexpostas, com recuperação de realces.',
+        },
+        {
+          label: 'Ajustar contraste',
+          to: '/tools/adjust-image-contrast',
+          description: 'O que fazer depois de aclarar quando o resultado parece plano: o controlo Contraste, o Tom e as Curvas.',
+        },
+        {
+          label: 'Níveis',
+          to: '/tools/photo-levels',
+          description: 'Defina os pontos de preto e de branco de entrada quando o histograma não chega às extremidades.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Aclare as sombras com um único ponto numa curva, com controlo total sobre a forma do aclaramento.',
+        },
+        {
+          label: 'Reduzir o ruído da imagem',
+          to: '/tools/reduce-image-noise',
+          description: 'Limpe o ruído nas sombras que uma subida forte da exposição faz sobressair.',
+        },
+      ],
+      embed: {
+        title: 'Aclarar uma fotografia',
+        description: 'Largue aqui uma fotografia escura. O editor abre com o painel Básico à frente e o controlo Exposição (EV) pronto a usar.',
+      },
     },
     'adjust-image-contrast': {
       name: 'Ajustar contraste',
+      h1: 'Ajustar o contraste de uma imagem online',
       tagline: 'Um controlo de Contraste que roda em torno do cinzento médio, mais Tom e Curvas para ganhar contraste sem esmagar as extremidades.',
       metaTitle: 'Ajustar o contraste de uma imagem online: tom ou curvas | Aperture',
       metaDescription: 'Aumente ou reduza o contraste de uma imagem no navegador. O controlo de Contraste roda em torno do cinzento médio; Tom e Curvas dão-lhe controlo da forma. Exporta em tamanho total.',
+      ogTitle: 'Ajustar o contraste de uma imagem online',
+      ogDescription: 'Rode o contraste em torno do cinzento médio com um único controlo, ou dê-lhe forma com o Tom e as Curvas. Pré-visualização em direto, exportação em resolução total.',
+      intro: 'O contraste é a distância entre os tons escuros e os tons claros de uma fotografia. No Aperture, o controlo Contraste do grupo Luz, no painel Básico, afasta cada canal do cinzento médio por um fator de 2 elevado a (contrast / 50): +50 duplica a distância a 0,5, -50 reduz essa distância a metade e o próprio 0,5 nunca se move. É um instrumento grosseiro, exatamente o que quer para uma digitalização sem contraste ou uma fotografia de telemóvel enevoada, e exatamente o que não quer quando os realces já estão perto do branco. Para esses casos, esta mesma página mostra-lhe o grupo Tom, que acrescenta contraste afastando Realces e Sombras com pesos de luminância, e o painel Curvas, que permite desenhar um S com qualquer inclinação através de até 16 pontos. Os três são camadas separadas e podem ser mascarados.',
+      whatItDoes: [
+        'Contraste de -100 a +100 no grupo Luz: multiplica a distância de cada canal a 0,5 por 2 elevado a (contrast / 50), pelo que +50 é um fator de 2, +100 um fator de 4 e -50 um fator de 0,5.',
+        'Partilha uma camada com o Brilho, que é somado primeiro; mexer uns pontos no Brilho desloca, na prática, o pivô, e é assim que evita que os meios-tons escureçam quando sobe o contraste.',
+        'O contraste pelo Tom como alternativa: Realces positivos e Sombras negativas afastam as extremidades com pesos de luminância suaves e, como os três canais são reescalados em conjunto, a tonalidade de cada píxel mantém-se.',
+        'As Curvas como alternativa precisa: um S que passa por (0,25; 0,2) e (0,75; 0,8) é um aumento de contraste suave que continua a chegar às duas extremidades do intervalo, já que a curva fixa 0 e 1.',
+        'Reduzir o contraste (valores negativos) é um desvanecimento a sério: -50 leva o preto a 0,25 e o branco a 0,75, o aspeto de uma impressão mate, e o resultado não corta nada.',
+      ],
+      flowSteps: [
+        {
+          title: 'Abra a fotografia',
+          description: 'Largue a imagem. Observe o histograma: uma fotografia sem contraste tem um monte ao meio e espaço vazio nas duas extremidades.',
+        },
+        {
+          title: 'Experimente primeiro o controlo',
+          description: 'Suba o Contraste em direção a +30. Se o histograma transbordar por alguma das extremidades antes de a imagem ficar bem, pare e passe ao passo seguinte.',
+        },
+        {
+          title: 'Dê-lhe forma com o Tom ou as Curvas',
+          description: 'Volte a pôr o Contraste a 0 e use Realces +30 com Sombras -30, ou arraste um S na curva RGB. Ambos deixam as extremidades no lugar.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Compare com o original e depois exporte em resolução total. O servidor aplica a mesma multiplicação, os mesmos pesos ou a mesma tabela de curva aos píxeis originais.',
+        },
+      ],
+      advancedDetails: [
+        'A camada Luz calcula v = clamp(v + brightness / 200) e depois v = clamp((v - 0,5) vezes 2 elevado a (contrast / 50) + 0,5), por canal, no espaço sRGB, sem qualquer ponderação de luminância.',
+        'Fatores para valores comuns: +20 é 1,32; +25 é 1,41; +30 é 1,52; +40 é 1,74; +50 é 2,0; +100 é 4,0; -25 é 0,71; -30 é 0,66; -50 é 0,5. Qualquer píxel mais afastado do cinzento médio do que 0,5 / fator fica cortado a partir de +50, pelo que, a +50, tudo o que está abaixo de 0,25 passa a preto e tudo o que está acima de 0,75 passa a branco.',
+        'Contraste pelo Tom: sendo L a luma BT.709, os Realces contribuem para a luma com 0,25 vezes highlights / 100 vezes smoothstep(0,4; 1; L) e as Sombras com 0,25 vezes shadows / 100 vezes (1 - smoothstep(0; 0,6; L)); a nova luma sobre a antiga escala R, G e B, pelo que a variação máxima de um controlo na intensidade máxima é um quarto do intervalo.',
+        'As Curvas constroem uma tabela de 256 entradas a partir de uma cúbica monótona que passa pelos seus pontos, pelo que um S nunca pode inverter tons. A tabela é amostrada primeiro por canal (curvas Vermelho, Verde e Azul) e depois pela curva mestra RGB.',
+        'A pré-visualização é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px; o ficheiro exportado é renderizado no nosso servidor a partir do original em resolução total, com as mesmas fórmulas, e os dois coincidem dentro de uma tolerância pequena e documentada (no máximo, poucos níveis de 8 bits; o grão é exato). O Contraste, o Tom e as Curvas são operações píxel a píxel, pelo que estão entre as que coincidem nível a nível.',
+        'Mudar o modo de mistura da camada Luz para Luminosidade aplica apenas a variação de luma e deixa a crominância intacta, o que impede que os píxeis de cor intensa mudem de tonalidade quando um canal fica cortado antes dos outros.',
+      ],
+      whyItMatters: [
+        'Subir o contraste com uma simples multiplicação é a forma mais rápida de dar definição a uma fotografia enevoada, e também a forma mais rápida de perder um céu ou uma camisa branca; saber onde fica o limiar de corte permite parar antes de isso acontecer.',
+        'Reduzir o contraste é um estilo legítimo e não apenas um erro a corrigir, e fazê-lo com uma fórmula que leva o preto a 0,25 e o branco a 0,75 dá um look mate reproduzível.',
+        'O contraste por canal no espaço sRGB altera a saturação: as cores saturadas ficam mais saturadas quando acrescenta contraste e mais baças quando o retira, algo que uma camada Tom ponderada pela luminância evita.',
+      ],
+      useCases: [
+        {
+          title: 'Paisagem enevoada',
+          description: 'Contraste +30 com Brilho -5 devolve a profundidade; se o céu queimar, use antes Remoção de neblina +40, no painel Detalhe, que trabalha a partir do canal mais escuro de cada vizinhança de 15 x 15 em vez de esticar tudo.',
+        },
+        {
+          title: 'Documento ou impressão digitalizados sem contraste',
+          description: 'Contraste +40 e depois Níveis com Preto de entrada a 0,08 e Branco de entrada a 0,92 põem o papel em branco e a tinta em preto.',
+        },
+        {
+          title: 'Retrato com a luz dura do meio-dia',
+          description: 'Contraste -20 numa camada com máscara de pincel sobre o rosto suaviza a luz na pele, enquanto o fundo mantém o seu impacto.',
+        },
+        {
+          title: 'Look de película mate',
+          description: 'Contraste -35 eleva o preto para 0,19 e baixa o branco para 0,81; depois, a Divisão de tons acrescenta um realce quente e uma sombra fria para completar o look.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Fotografia de céu nublado de 20 MP, sem contraste, com Contraste +25',
+          body: 'Um JPEG de 5472 x 3648 (20 MP, 7,1 MB) cujos tons em 40, 90, 128, 166 e 215 ficam bem dentro do intervalo. Contraste +25 é um fator de 1,414, que os leva a 4, 74, 128, 182 e 251: as extremidades quase tocam agora no preto e no branco, e o meio-tom não se altera. A +40 (fator 1,74), os mesmos tons passam a 0, 62, 128, 195 e 255, pelo que as zonas mais escuras e mais claras ficam cortadas. Exportado como JPG com qualidade 92, o ficheiro completo de 20 MP tem cerca de 9 MB num plano pago; o limite de 12 MP para visitantes redimensiona-o para cerca de 4243 x 2828, com cerca de 5,4 MB.',
+        },
+        {
+          title: 'Desvanecimento mate num retrato de 8 MP com Contraste -35',
+          body: 'Um JPEG de 3264 x 2448 (8 MP, 2,9 MB). Contraste -35 é um fator de 0,616. O preto puro 0 passa a 49, uma sombra em 40 passa a 74, o cinzento médio fica em 128, um realce em 215 passa a 181 e o branco puro passa a 206. Toda a imagem vive agora entre 49 e 206. Uma segunda camada Tom com Pretos -30 puxa os tons mais profundos de volta para 0 (10 passa a 0, 30 passa a 24, 60 e 128 mantêm-se), para que o desvanecimento conserve uma base sólida. Exportado em WebP com qualidade 85, o resultado de 8 MP tem cerca de 2,4 MB e custa uma tarefa normal.',
+        },
+      ],
+      whenNotToUse: 'Quando uma fotografia parece plana por causa de neblina ou de reflexos, e não de uma gama tonal estreita, a Remoção de neblina do painel Detalhe é mais adequada, porque subtrai um véu estimado a partir do canal escuro local em vez de esticar todos os tons. Quando uma fotografia parece plana simplesmente por estar escura, suba primeiro a exposição; contraste sobre escuridão só torna as sombras mais empastadas. E, se um dos lados do histograma já estiver cortado, nenhum controlo de contraste o consegue recuperar, por isso baixe os Realces ou os Brancos antes de mexer no Contraste.',
+      whyMediaManipulator: [
+        'Três formas de acrescentar contraste convivem no mesmo editor, para que possa começar pelo controlo e passar ao Tom ou às Curvas sem voltar a carregar a fotografia.',
+        'No Aperture, cada alteração de contraste é uma camada com opacidade, por isso um +50 ligeiramente excessivo passa a um +50 a 70% de opacidade com um só gesto, em vez de um palpite sobre um novo valor.',
+        'O Media Manipulator documenta o multiplicador real de cada valor do controlo, para que uma definição de contraste signifique o mesmo em qualquer fotografia.',
+      ],
+      privacyNote: 'Uma alteração de contraste multiplica a distância de cada píxel ao cinzento médio, e essa multiplicação acontece na sua própria placa gráfica até exportar; como visitante, a fotografia fica neste navegador e nada é enviado para lado nenhum antes disso. A renderização em resolução total é um processamento no servidor, em equipamento gerido por nós. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Nada vai para um serviço de terceiros.',
+      faq: [
+        {
+          question: 'Porque é que o cinzento médio não muda quando mexo no Contraste?',
+          answer: 'Porque a fórmula roda em torno de 0,5: o valor é subtraído, multiplicado e somado de volta, pelo que (0,5 - 0,5) vezes qualquer fator continua a ser 0. Tudo o que é mais claro aproxima-se do branco e tudo o que é mais escuro aproxima-se do preto, na mesma proporção.',
+        },
+        {
+          question: 'A partir de que valor é que o controlo Contraste começa a cortar?',
+          answer: 'Qualquer valor positivo corta alguma coisa se a fotografia já chegar às duas extremidades. A +25 (fator 1,41), os tons abaixo de 0,146 ou acima de 0,854 ficam cortados; a +50 (fator 2), os limiares são 0,25 e 0,75; a +100 (fator 4), só sobrevive o intervalo de 0,375 a 0,625. Se o histograma tocar numa margem, use antes o Tom ou as Curvas.',
+        },
+        {
+          question: 'Devo usar o Contraste ou a Clareza?',
+          answer: 'O Contraste é global e tonal. A Clareza, no painel Detalhe, é um contraste local: soma a diferença entre um píxel e uma cópia desfocada da sua vizinhança, ponderada para os meios-tons. A Clareza faz sobressair as texturas sem mexer nas extremidades do histograma; o Contraste desloca toda a distribuição.',
+        },
+        {
+          question: 'Como reduzo o contraste sem que a fotografia fique deslavada?',
+          answer: 'Use um Contraste ligeiramente negativo, como -15, e depois recupere os pretos com Pretos -20 no Tom, para que os tons mais escuros voltem ao fundo. O resultado mantém um ponto de preto sólido com meios-tons comprimidos, o que se lê como suave e não como enevoado.',
+        },
+        {
+          question: 'O controlo altera a saturação?',
+          answer: 'Sim, ligeiramente, porque trabalha por canal em sRGB: uma cor com os canais 200, 120, 80 a +30 passa a 237, 116, 56, e a diferença entre os canais aumentou. Defina o modo de mistura da camada como Luminosidade se quiser a alteração tonal sem a alteração de cor.',
+        },
+        {
+          question: 'Qual é a diferença entre Contraste e Níveis?',
+          answer: 'Os Níveis escolhem pontos de preto e de branco de entrada explícitos e uma gama para os meios-tons, pelo que decide exatamente que tons passam a 0 e a 1. O Contraste aplica um único fator simétrico em torno de 0,5. Os Níveis são melhores quando o histograma está desequilibrado; o Contraste é mais rápido quando está centrado.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A multiplicação do contraste é aplicada por píxel em vírgula flutuante, pelo que a exportação não mostra mais bandas do que as que o ficheiro de origem e a qualidade de saída escolhida introduzem.',
+          'Um contraste positivo elevado numa origem de 8 bits afasta os níveis existentes; a +100, o intervalo que sobrevive, de 0,375 a 0,625, contém apenas 64 níveis de origem, pelo que os gradientes podem apresentar bandas.',
+        ],
+      },
+      related: [
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Desenhe a forma exata do contraste com até 16 pontos por canal.',
+        },
+        {
+          label: 'Níveis',
+          to: '/tools/photo-levels',
+          description: 'Defina pontos de preto e de branco por canal com um histograma, a ferramenta certa para uma gama tonal desequilibrada.',
+        },
+        {
+          label: 'Corrigir exposição',
+          to: '/tools/fix-photo-exposure',
+          description: 'Quando o problema é o brilho geral e não a gama tonal, comece por aí.',
+        },
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'Conversão monocromática com controlos por canal, onde as escolhas de contraste mais pesam.',
+        },
+        {
+          label: 'Aumentar a nitidez da fotografia',
+          to: '/tools/sharpen-photo-online',
+          description: 'Contraste de contornos, por oposição ao contraste tonal, através de uma máscara de nitidez.',
+        },
+      ],
+      embed: {
+        title: 'Alterar o contraste',
+        description: 'Largue aqui uma fotografia sem contraste ou demasiado dura. O painel Básico abre com o grupo Luz, onde está o controlo Contraste.',
+      },
     },
     'fix-photo-exposure': {
       name: 'Corrigir exposição',
+      h1: 'Corrigir uma fotografia sobreexposta ou subexposta',
       tagline: 'Defina a exposição em stops e recupere realces e sombras em separado, enquanto o histograma mostra com o que ainda pode trabalhar.',
       metaTitle: 'Corrigir fotografias sobreexpostas ou subexpostas online | Aperture',
       metaDescription: 'Corrija a exposição de uma fotografia no navegador: Exposição em stops EV mais recuperação de Realces, Sombras, Brancos e Pretos, com histograma em direto e exportação em resolução total.',
+      ogTitle: 'Corrigir uma fotografia sobreexposta ou subexposta online',
+      ogDescription: 'Exposição em stops mais recuperação de Realces, Sombras, Brancos e Pretos, com histograma RGB em direto. Exporta em resolução total.',
+      intro: 'Um problema de exposição é um problema de histograma: os dados estão amontoados contra a margem direita (sobreexposição) ou contra a margem esquerda (subexposição), e a correção consiste em trazê-los de volta para o meio sem deitar fora o que ainda lá está. No Aperture, isso exige duas camadas do painel Básico. A Exposição (EV) desloca tudo em stops inteiros ou fracionários, em luz linear, o que reposiciona o monte. O grupo Tom trabalha depois as extremidades de forma independente: Realces e Brancos comprimem ou alargam o lado claro, Sombras e Pretos o lado escuro, cada um com um peso de luminância, para que os meios-tons quase não sejam tocados. O histograma RGB e de luma em direto, por baixo dos painéis, indica-lhe quando o monte deixou de tocar na margem, e a tecla de comparação que se mantém premida diz-lhe se foi longe demais.',
+      whatItDoes: [
+        'A Exposição (EV), de -5 a +5, desloca toda a fotografia em stops, em luz linear, a mesma unidade da câmara: -1 EV reduz a luz a metade, o que transforma um branco cortado de 255 num cinzento plano de 188, sem qualquer detalhe, e transforma 230 em 168.',
+        'Os Realces, de -100 a +100, comprimem ou abrem os tons acima de uma luma de 0,4, atingindo a intensidade máxima no branco; -100 baixa o branco puro para 0,75 e deixa o cinzento médio em 0,48.',
+        'As Sombras, de -100 a +100, fazem o mesmo desde o preto até uma luma de 0,6; +100 eleva um quase preto de 0,05 para 0,295, enquanto 0,5 só passa para 0,519.',
+        'Os Brancos e os Pretos são versões mais estreitas e mais fracas para o último quarto de cada extremidade: os Brancos atuam acima de uma luma de 0,75 e os Pretos abaixo de 0,25, cada um com uma variação máxima de 0,15.',
+        'O histograma mostra as contagens de vermelho, verde, azul e luma da pré-visualização atual, pelo que um único canal cortado (uma flor vermelha, um céu azul) fica visível mesmo quando a imagem no seu conjunto parece bem.',
+      ],
+      flowSteps: [
+        {
+          title: 'Leia o histograma',
+          description: 'Abra a fotografia e veja onde está a massa. Um pico na extremidade direita são realces queimados; um pico na extremidade esquerda são sombras empastadas.',
+        },
+        {
+          title: 'Mova a exposição',
+          description: 'Arraste Exposição (EV) em passos de meio stop até os meios-tons parecerem certos. Ignore as extremidades por agora; são o passo seguinte.',
+        },
+        {
+          title: 'Recupere as extremidades',
+          description: 'Numa fotografia sobreexposta, puxe os Realces para valores negativos e, se as zonas mais claras continuarem planas, também os Brancos. Numa fotografia subexposta, suba as Sombras e, se for preciso, os Pretos.',
+        },
+        {
+          title: 'Verifique e exporte',
+          description: 'Confirme que o histograma já não toca numa margem, mantenha premida a tecla de barra invertida para comparar com o original e exporte em resolução total.',
+        },
+      ],
+      advancedDetails: [
+        'A Exposição descodifica sRGB para linear (v / 12,92 abaixo de 0,04045; caso contrário, ((v + 0,055) / 1,055) elevado a 2,4), multiplica por 2 elevado a EV, soma o Deslocamento, limita ao intervalo de 0 a 1, volta a codificar e aplica 1 / Gama. O corte é definitivo: um canal que já era 1,0 no ficheiro não tem dados ocultos, pelo que -1 EV o transforma num 0,735 (188) plano.',
+        'O Tom calcula L como a luma BT.709 (0,2126 R + 0,7152 G + 0,0722 B) e quatro pesos: Sombras 1 - smoothstep(0; 0,6; L), Realces smoothstep(0,4; 1; L), Pretos 1 - smoothstep(0; 0,25; L) e Brancos smoothstep(0,75; 1; L), em que smoothstep(a, b, x) é t ao quadrado vezes (3 - 2t) para t = (x - a) / (b - a) limitado.',
+        'A variação de luma é 0,25 vezes (shadows / 100) vezes o respetivo peso, mais 0,25 vezes (highlights / 100) vezes o respetivo peso, mais 0,15 vezes (blacks / 100) vezes o respetivo peso, mais 0,15 vezes (whites / 100) vezes o respetivo peso. A nova luma limitada, dividida pela antiga (com um mínimo de 0,0001), escala R, G e B em conjunto, pelo que o Tom nunca altera a tonalidade.',
+        'Pesos em alguns valores de luma: em L = 0,1, Sombras vale 0,926 e Pretos 0,648; em L = 0,5, Sombras e Realces valem ambos 0,074; em L = 0,8, Realces vale 0,741 e Brancos 0,104; em L = 0,9, Realces vale 0,926 e Brancos 0,648.',
+        'A pré-visualização é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px; o ficheiro exportado é renderizado no nosso servidor a partir do original em resolução total, com as mesmas fórmulas, e os dois coincidem dentro de uma tolerância pequena e documentada, no máximo poucos níveis de 8 bits (o grão é exato). A Exposição e o Tom são matemática pura píxel a píxel, por isso ficam no extremo dessa tolerância em que os resultados são idênticos.',
+        'O histograma é calculado a partir da pré-visualização, pelo que reflete a cópia de 1920 px; a exportação em resolução total tem a mesma distribuição, porque as fórmulas são aplicadas píxel a píxel e não dependem do tamanho da imagem.',
+      ],
+      whyItMatters: [
+        'Baixar a exposição numa fotografia sobreexposta não é o mesmo que recuperar realces: a multiplicação transforma o branco cortado num cinzento uniforme, enquanto os Realces comprimem os tons claros que ainda têm textura e deixam a zona cortada em paz, para ser mascarada ou aceite.',
+        'As fotografias subexpostas trazem ruído nas sombras; uma elevação das Sombras limitada a uma luma abaixo de 0,6 deixa em paz os meios-tons limpos, ao passo que um aumento global da exposição amplificaria o ruído em todo o lado.',
+        'Como cada alteração é uma camada separada, pode dar à camada Exposição uma máscara radial sobre uma janela queimada e manter global a camada Tom, que é como uma verdadeira correção de exposição costuma acabar.',
+      ],
+      useCases: [
+        {
+          title: 'Cena de praia ou de neve queimada',
+          description: 'Exposição -0,7 EV, depois Realces -50 e Brancos -20 para trazer a areia ou a neve do branco para um 0,7 com textura; os pontos especulares de branco puro continuam brancos.',
+        },
+        {
+          title: 'Fotografia de concerto ou noturna escura',
+          description: 'Primeiro Exposição +1,5 EV, depois Realces -40 para proteger as luzes do palco que a exposição empurrou para a margem e, por fim, Sombras +20 para o público.',
+        },
+        {
+          title: 'Janela em segundo plano',
+          description: 'Deixe a exposição global como está e acrescente uma segunda camada Exposição a -1,5 EV sob uma máscara de gradiente linear ou de pincel que cubra apenas a janela.',
+        },
+        {
+          title: 'Câmara que mediu a luz no motivo errado',
+          description: 'Um rosto demasiado escuro contra uma parede clara leva Exposição +0,5 EV com uma máscara Selecionar motivo, para que a parede não vá atrás.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Fotografia de praia sobreexposta de 16 MP a -0,7 EV e Realces -50',
+          body: 'Um JPEG de 4608 x 3456 (16 MP, 6,0 MB) com areia em 245, 235, 220, um meio-tom de 128 e uma sombra em 30. Exposição -0,7 EV leva a areia a 198, 189, 177, o meio-tom a 102 e a sombra a 22. Uma camada Tom com Realces -50 por cima baixa ainda mais a areia, para 177, 170, 159, enquanto o meio-tom fica em 102, porque o seu peso nessa luma é inferior a 0,1. As zonas que eram 255 puro no ficheiro saem como um 188 plano depois da etapa de exposição, por isso uma máscara radial exclui o sol. Exportado como JPG com qualidade 92, o ficheiro completo de 16 MP tem cerca de 7,2 MB (plano pago), ou cerca de 5,4 MB com o limite de 12 MP.',
+        },
+        {
+          title: 'Fotografia de concerto subexposta de 12 MP a +1,5 EV com Realces -40',
+          body: 'Um JPEG de 4000 x 3000 (12 MP, 3,8 MB) com tons do público em 20 e 60, um rosto em 128 e luzes do palco em 180 e 200. Exposição +1,5 EV dá 38, 100, 205, 255 e 255: as duas luzes ficam cortadas. Acrescentar Realces -40 por cima dá 38, 100, 186, 229 e 229, pelo que as luzes regressam para baixo do branco, mas, como ficaram cortadas na etapa de exposição, acabam ambas idênticas. Baixar a exposição para +1,2 EV com uma camada Tom em Sombras +40 dá, em vez disso, 56, 100 e 187 para os três tons escuros, com as luzes ainda separadas. Exporte como AVIF com qualidade 80: cerca de 2,4 MB, uma tarefa normal.',
+        },
+      ],
+      whenNotToUse: 'Se o único problema é uma fotografia ligeiramente plana ou baça, nem demasiado clara nem demasiado escura, esta não é a página certa: a ferramenta de contraste ou uma curva fará mais com menos. Se a fotografia estiver sobreexposta ao ponto de os rostos ou os céus serem branco sólido, nenhum controlo trará a textura de volta, porque o JPEG nunca a guardou; a ferramenta Corrigir consegue remendar pequenas zonas queimadas, mas um céu queimado precisa de outra fotografia. E, se o problema de exposição se limitar às margens, uma vinheta com quantidade negativa é mais simples do que uma camada de exposição com máscara.',
+      whyMediaManipulator: [
+        'A exposição e a recuperação são camadas separadas, com máscaras separadas, algo que um único controlo de brilho de um corretor rápido não consegue fazer.',
+        'O Aperture mostra sempre um histograma RGB, e não apenas numa caixa de diálogo de exportação, para que corrija a exposição com base nos dados e não no seu monitor.',
+        'A mesma correção pode ser guardada como predefinição e aplicada ao resto de uma sessão fotográfica com o mesmo erro de medição da luz, 3 fotografias de cada vez no plano Free e 25 no Pro.',
+      ],
+      privacyNote: 'Corrigir a exposição executa a matemática da Exposição e do Tom na sua própria GPU enquanto edita, pelo que a fotografia que largar aqui fica no navegador até decidir exportar, selecionar um motivo ou corrigir. A exportação carrega o original uma vez para que o nosso servidor aplique os mesmos stops e pesos de recuperação a cada píxel, e o ficheiro é depois conservado como qualquer processamento de visitante ou de conta. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. O histograma é calculado localmente e nunca é enviado para lado nenhum.',
+      faq: [
+        {
+          question: 'É possível recuperar realces cortados de um JPEG?',
+          answer: 'Não, se estiverem mesmo cortados. Um píxel guardado como 255, 255, 255 já não tem informação, e baixar a exposição transforma-o num cinzento plano (188 a -1 EV). O que normalmente se pode recuperar são as zonas quase brancas, como 240 a 254, que Realces -60 comprime para cerca de 205 a 217 com a textura intacta. Um ficheiro RAW guardaria mais, mas o editor trabalha sobre a imagem que o navegador consegue descodificar.',
+        },
+        {
+          question: 'Por que ordem devo aplicar a Exposição e o Tom?',
+          answer: 'Primeiro a Exposição, com o Tom por cima. Os pesos do Tom dependem da luma que recebem, por isso, se recuperar os realces e depois subir a exposição, a recuperação deixa de visar os píxeis certos. As camadas aplicam-se de baixo para cima, e o painel Básico cria-as por essa ordem.',
+        },
+        {
+          question: 'Qual é a diferença entre Realces e Brancos?',
+          answer: 'Os Realces começam numa luma de 0,4 e atingem a intensidade máxima em 1,0, com uma variação máxima de 0,25; os Brancos começam em 0,75, com uma variação máxima de 0,15. Use os Realces para um céu claro ou para a pele, e os Brancos para o último passo antes do branco puro, quando os tons mais claros continuam a parecer planos.',
+        },
+        {
+          question: 'Porque é que -1 EV não reduz simplesmente os valores dos píxeis a metade?',
+          answer: 'Porque a redução a metade acontece em luz linear e o ficheiro está codificado em sRGB. Um cinzento médio de 128 passa a 92, e não a 64, e um 230 claro passa a 168. A curva sRGB comprime os tons claros, pelo que uma variação de um stop parece menor na metade superior do intervalo do que na inferior.',
+        },
+        {
+          question: 'Em que é que isto difere de uma correção automática da exposição?',
+          answer: 'O look Automático do painel Predefinições acrescenta uma pilha inicial razoável, que pode anular com um único passo. Os controlos desta página são a versão manual, com o histograma e uma tecla de comparação, para fotografias em que uma tentativa automática se engana no motivo.',
+        },
+        {
+          question: 'Corrigir a exposição altera as cores da fotografia?',
+          answer: 'A Exposição escala os três canais por igual em luz linear, e o Tom escala-os por igual segundo uma razão de luma, pelo que a tonalidade se mantém até um canal ficar cortado. Um pôr do sol que perde o vermelho quando sobe a exposição tem o canal vermelho cortado, que o histograma RGB mostra como um pico vermelho na margem direita.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A recuperação trabalha sobre os tons que o ficheiro ainda contém; as origens TIFF de 16 bits, abertas com sessão iniciada, conservam mais gradação nos realces do que os JPEG de 8 bits quando são puxadas para baixo.',
+          'Uma exposição muito negativa num JPEG revela os blocos de compressão que estavam escondidos nas zonas claras; exportar como JPG com qualidade 92 ou superior evita acrescentar mais.',
+        ],
+      },
+      related: [
+        {
+          label: 'Aclarar imagem',
+          to: '/tools/brighten-image',
+          description: 'A metade subexposta desta página com mais pormenor, incluindo Brilho face a Exposição.',
+        },
+        {
+          label: 'Níveis',
+          to: '/tools/photo-levels',
+          description: 'Defina os pontos de preto e de branco de entrada diretamente a partir do histograma.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Puxe à mão para baixo a extremidade dos realces na curva, para uma recuperação mais suave.',
+        },
+        {
+          label: 'Ajustar contraste',
+          to: '/tools/adjust-image-contrast',
+          description: 'Devolva o impacto depois de uma recuperação ter comprimido a gama tonal.',
+        },
+        {
+          label: 'Reduzir o ruído da imagem',
+          to: '/tools/reduce-image-noise',
+          description: 'Limpe o ruído nas sombras que uma exposição muito positiva faz sobressair.',
+        },
+        {
+          label: 'Adicionar uma vinheta',
+          to: '/tools/add-vignette',
+          description: 'Uma quantidade de vinheta negativa aclara os cantos quando só as margens estão escuras.',
+        },
+      ],
+      embed: {
+        title: 'Corrigir a exposição',
+        description: 'Largue aqui uma fotografia demasiado clara ou demasiado escura. O painel Básico abre com a Exposição e o grupo Tom, e o histograma fica por baixo.',
+      },
     },
     'adjust-image-hue': {
       name: 'Ajustar a tonalidade da imagem',
+      h1: 'Ajustar a tonalidade de uma imagem online',
       tagline: 'Rode todas as cores de uma fotografia até 180 graus, ou mova apenas os vermelhos, os verdes ou os azuis, com pré-visualização em direto e exportação em resolução total.',
       metaTitle: 'Ajustar a tonalidade de uma imagem online | Media Manipulator',
       metaDescription: 'Desloque a tonalidade de uma fotografia inteira de -180 a 180 graus, ou mova só os vermelhos, amarelos, verdes, ciano, azuis ou magentas. Pré-visualização GPU em direto, exportação em resolução total.',
+      ogTitle: 'Ajustar a tonalidade de uma imagem online | Media Manipulator',
+      ogDescription: 'Rode todas as tonalidades de uma vez ou desloque uma gama de cores alguns graus. A largura e a suavização controlam até onde chega cada gama; os cinzentos ficam intactos.',
+      intro: 'A tonalidade é o ângulo de uma cor no círculo cromático, e esta página abre o Aperture, o editor de fotografia do Media Manipulator, com o painel Cor (HSL) à frente, para que possa rodar esse ângulo. O ajuste é uma camada na pilha: cada píxel é convertido de sRGB para HSL, a sua tonalidade é rodada pelo controlo «Todas as cores» mais o que os controlos das seis gamas acrescentam para essa tonalidade em particular, e o resultado é convertido de volta e limitado ao intervalo válido. Nada fica gravado de forma definitiva. Pode arrastar a Tonalidade para +30 para levar uma água azul-esverdeada em direção ao azul, ver logo a alteração na pré-visualização da GPU e depois exportar um ficheiro processado no nosso servidor a partir dos píxeis originais. Um deslocamento global de 180 graus troca cada cor pela sua complementar; um deslocamento de 20 graus numa gama move uma família de cores e deixa o resto onde estava.',
+      whatItDoes: [
+        'O controlo Tonalidade de «Todas as cores» vai de -180 a 180 graus e roda cada píxel pelo mesmo ângulo: +120 transforma o vermelho em verde, -120 transforma o vermelho em azul, e tanto 180 como -180 levam ao lado oposto do círculo.',
+        'Seis gamas com nome, Vermelhos a 0 graus, Amarelos a 60, Verdes a 120, Ciano a 180, Azuis a 240 e Magentas a 300, têm cada uma os seus próprios controlos de Tonalidade, Saturação e Luminosidade, além de uma Largura e de uma Suavização que decidem até onde chega a gama.',
+        'O conta-gotas acrescenta uma gama personalizada centrada em qualquer cor em que clique na fotografia, até 32 gamas por camada, e é assim que se atinge um laranja ou um roxo específicos que caiam entre duas gamas com nome.',
+        'As edições por gama desvanecem-se nos cinzentos: um píxel com saturação HSL inferior a 10% recebe um deslocamento proporcionalmente menor, pelo que o betão, as paredes brancas e as sombras não ganham uma dominante de cor quando move os Vermelhos.',
+        'A camada é não destrutiva, com opacidade, modo de mistura, máscara opcional e anulação ilimitada; pode empilhar uma segunda camada de Cor (HSL) para outra família de cores e exportar quando a pré-visualização estiver como quer.',
+      ],
+      flowSteps: [
+        {
+          title: 'Abra a fotografia',
+          description: 'Largue um JPG, PNG, WebP, GIF, HEIC, AVIF ou TIFF na caixa acima. O editor abre em ecrã inteiro com o painel Cor (HSL) selecionado.',
+        },
+        {
+          title: 'Escolha global ou por gama',
+          description: 'Arraste o controlo Tonalidade de «Todas as cores» para uma rotação global, ou escolha Vermelhos, Amarelos, Verdes, Ciano, Azuis ou Magentas e mova apenas essa gama.',
+        },
+        {
+          title: 'Afine a largura e a suavização',
+          description: 'Alargue uma gama para apanhar as tonalidades vizinhas ou estreite-a para isolar uma só, e defina a suavização de modo a que o limite do deslocamento fique invisível.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha JPG, PNG, WebP, AVIF ou TIFF e uma qualidade; o servidor volta a processar o original em tamanho total com a mesma matemática de tonalidade e acrescenta ao nome do ficheiro o sufixo (retouched).',
+        },
+      ],
+      advancedDetails: [
+        'Para cada píxel, a tonalidade h, a saturação s e a luminosidade l são obtidas em HSL. A tonalidade de saída é h mais a Tonalidade global mais a soma, em todas as gamas, do peso vezes a Tonalidade dessa gama; a saturação é s multiplicado por 1 + Saturação global/100 e pelo produto de 1 + peso vezes Saturação da gama/100; os valores positivos de Luminosidade aproximam l de 1 em quantidade vezes (1 - l) e os negativos aproximam-no de 0 em quantidade vezes l. O resultado volta a RGB e é limitado a 0..1.',
+        'O peso de uma gama é 1 quando a distância circular entre a tonalidade do píxel e o centro da gama é, no máximo, Largura/2, desce em linha reta até 0 ao longo da Suavização e é 0 para lá de Largura/2 + Suavização. Com os valores predefinidos de Largura 30 e Suavização 30, uma gama atua por inteiro até 15 graus de cada lado do centro e desvanece-se até aos 45: a tonalidade 20 recebe um peso de 0,833 dos Vermelhos, a tonalidade 30 recebe 0,5 dos Vermelhos e 0,5 dos Amarelos, e a tonalidade 45 pertence inteiramente aos Amarelos. A Largura aceita de 10 a 120 e a Suavização de 0 a 90.',
+        'Cada peso de gama é multiplicado por min(1; s / 0,1), o desvanecimento neutro. Um píxel com saturação HSL 0,04 recebe só 40% de um deslocamento de gama; um píxel com 0,1 ou mais recebe-o por inteiro. A Tonalidade global não se desvanece, mas um cinzento verdadeiro tem saturação zero e volta como o mesmo cinzento, seja qual for o ângulo acrescentado, e um quase cinzento com 4% de saturação muda apenas alguns níveis.',
+        'A tonalidade é circular, por isso os Vermelhos, com centro em 0, cobrem os dois lados da junção: um píxel com tonalidade 350 está a 10 graus do centro dos Vermelhos e recebe o peso total dos Vermelhos, e um deslocamento que empurre uma tonalidade para lá de 360 dá a volta e recomeça no início do círculo.',
+        'A pré-visualização é desenhada na sua placa gráfica em WebGL2, a partir de uma cópia de 1920 px da fotografia; o ficheiro que transfere é processado pelo nosso servidor a partir dos píxeis originais, com as mesmas fórmulas HSL. Os dois coincidem dentro da tolerância documentada para operações de cor: um erro médio de, no máximo, 1 e um máximo de 4 níveis em 255.',
+      ],
+      whyItMatters: [
+        'A tonalidade é o único eixo da cor em que as ferramentas de brilho e contraste não conseguem mexer: um verde que devia ser amarelo continua verde, por mais que se mude a exposição, e só uma rotação de tonalidade o corrige.',
+        'Os processamentos das câmaras e dos telemóveis costumam deixar a folhagem demasiado azul-esverdeada e os pores do sol demasiado magenta; um deslocamento de 10 a 20 graus numa única gama corrige isso sem alterar mais nada no enquadramento.',
+        'O trabalho de produto e de marca precisa frequentemente do mesmo objeto noutra cor, e um deslocamento de tonalidade por gama, com suavização, é o caminho mais rápido que mantém intactos o sombreado e os brilhos.',
+      ],
+      useCases: [
+        {
+          title: 'Corrigir a água e o céu',
+          description: 'Uma água tropical que saiu azul-esverdeada desloca-se para o azul com uma Tonalidade de +20 a +30 na gama Ciano, enquanto a areia, que quase não tem ciano, fica como está.',
+        },
+        {
+          title: 'Folhagem mais quente ou mais fria',
+          description: 'Uma Tonalidade negativa nos Verdes empurra as folhas para o amarelo, com um ar outonal; uma positiva empurra-as para o ciano, com um aspeto mais fresco e húmido.',
+        },
+        {
+          title: 'Mudar a cor de um produto',
+          description: 'Escolha a cor do produto com o conta-gotas, defina a Tonalidade da gama personalizada para o ângulo de que precisa e mantenha a Largura e a Suavização pequenas, para que nada mais se mexa.',
+        },
+        {
+          title: 'Trocas de cor criativas',
+          description: 'Um deslocamento global de 180 graus troca, de uma só vez, as cores do enquadramento pelas complementares; deslocamentos globais menores dão o aspeto de processamento cruzado de uma película com as cores desviadas.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Água azul-esverdeada para azul: Tonalidade de «Todas as cores» +30 num JPEG de 12 MP',
+          body: 'Uma fotografia de 4000 x 3000 (12 megapíxeis, 4,8 MB) de uma lagoa que ficou demasiado verde. Um píxel de água (26, 153, 166) tem tonalidade 185,5 graus, saturação 0,73 e luminosidade 0,375. Com a Tonalidade de «Todas as cores» a +30 e todas as gamas a 0, a tonalidade passa a 215,5, a saturação e a luminosidade mantêm-se, e o píxel é exportado como (25, 83, 166), um azul franco. A areia, com uma saturação de cerca de 0,2, também roda 30 graus, porque o controlo global não se desvanece com saturação baixa; é por isso que um deslocamento de +30 na gama Ciano (peso 1 na tonalidade 185,5, peso 0 na areia, com tonalidade 35) é a melhor opção para esta fotografia. Exportado em JPG com qualidade 92, o ficheiro tem cerca de 5,4 MB, segundo a estimativa de 0,45 MB por megapíxel da caixa de diálogo, e a exportação é uma tarefa normal.',
+        },
+        {
+          title: 'Folhagem outonal: Tonalidade dos Verdes -30 num JPEG de 24 MP obtido a partir de RAW',
+          body: 'Uma exportação de 6000 x 4000 feita a partir de uma câmara (24 megapíxeis, 11 MB). Um píxel de folha (77, 140, 46) tem tonalidade 100,5 graus. Com a Largura 30 e a Suavização 30 predefinidas, está a 19,5 graus do centro dos Verdes, pelo que o seu peso nos Verdes é 1 - (19,5 - 15) / 30 = 0,85, e a 40,5 graus do centro dos Amarelos, o que dá um peso de 0,15 nos Amarelos. Definir a Tonalidade dos Verdes para -30 roda a folha 0,85 x -30 = -25,5 graus, até à tonalidade 75, e o píxel é exportado como (117, 140, 46), um amarelo-azeitona; definir antes a Tonalidade dos Amarelos para -30 move-o apenas 0,15 x -30 = -4,5 graus, para (84, 140, 46), quase igual. Uma rocha cinzenta esverdeada com (125, 133, 122), tonalidade 105 e saturação 0,04, tem o peso dos Verdes multiplicado por 0,4 e desloca-se apenas 12 graus, para (127, 133, 122), uma diferença de 2 níveis. Exportar os 24 megapíxeis completos exige o plano Premium ou Pro; com qualidade 92, o JPG tem cerca de 10,8 MB.',
+        },
+      ],
+      whenNotToUse: 'Um controlo de tonalidade é a ferramenta errada quando a fotografia inteira está tingida pela luz em que foi tirada: isso é um problema de equilíbrio de brancos, e os controlos Temperatura e Tonalidade da nossa página de equilíbrio de brancos corrigem-no em luz linear, sem empurrar as tonalidades umas para lá das outras. Também é a ferramenta errada para mudar um objeto quando outro objeto da mesma cor, noutro ponto da imagem, tem de ficar como está: as gamas de tonalidade selecionam pela cor e não pela posição, por isso acrescente uma máscara de Pincel ou Radial, ou use a página de mudança de cor de objetos. A dessaturação pura pertence à página de saturação, e a conversão para monocromático pertence à página de preto e branco, onde os seis controlos de canal decidem o cinzento de cada tonalidade.',
+      whyMediaManipulator: [
+        'O Aperture mostra a rotação na sua GPU enquanto arrasta, e o ficheiro exportado é calculado a partir dos seus píxeis originais com os mesmos pesos por gama: a tonalidade que vê é a tonalidade que recebe.',
+        'Largura e Suavização por gama, um desvanecimento neutro para os cinzentos e gamas criadas com o conta-gotas são os controlos que um editor de secretária oferece, aqui num separador do navegador, sem instalar nada.',
+        'Todos os ajustes, todos os tipos de máscara exceto a seleção do motivo, todos os looks e todas as anulações são gratuitos; só a exportação final conta como uma tarefa normal, e a página de preços indica a quota diária.',
+      ],
+      privacyNote: 'Sem conta, a fotografia que larga aqui é descodificada no seu navegador e um deslocamento de tonalidade nunca sai dele; o projeto fica no IndexedDB deste navegador até exportar, e essa exportação é um carregamento normal de visitante, processado no nosso próprio servidor. Com sessão iniciada, o original, a sua pré-visualização de 1920 px e uma miniatura são guardados com o projeto segundo a sua definição de retenção e eliminados com o projeto ou com a conta. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Nenhum terceiro recebe alguma vez o ficheiro.',
+      faq: [
+        {
+          question: 'Qual é a diferença entre a Tonalidade de «Todas as cores» e a Tonalidade de uma gama?',
+          answer: '«Todas as cores» soma o mesmo ângulo a todos os píxeis, seja qual for a sua cor. A Tonalidade de uma gama soma o seu ângulo apenas aos píxeis cuja tonalidade cai dentro dessa gama, multiplicado pelo peso da gama e desvanecido nos píxeis quase cinzentos, pelo que move uma família de cores e deixa as outras intactas.',
+        },
+        {
+          question: 'Porque é que uma pequena mudança de tonalidade parece tão grande em algumas cores?',
+          answer: 'A tonalidade é um ângulo, e o passo percebido por grau não é uniforme ao longo do círculo. Entre o amarelo e o verde, alguns graus notam-se logo; entre o azul e o violeta, o mesmo passo é subtil. Observe a pré-visualização e use o histograma, em vez de procurar um número em particular.',
+        },
+        {
+          question: 'Deslocar os Vermelhos afeta a pele?',
+          answer: 'Sim, normalmente. Os tons de pele situam-se à volta das tonalidades 15 a 30, dentro da gama Vermelhos e em parte dentro dos Amarelos, pelo que uma alteração da Tonalidade dos Vermelhos também move a pele. Acrescente à camada uma máscara de Intervalo de cores ou de Pincel para deixar os rostos de fora, ou estreite a Largura dos Vermelhos para que a gama termine antes das tonalidades alaranjadas da pele.',
+        },
+        {
+          question: 'Porque é que o meu fundo cinzento não mudou quando rodei os Vermelhos?',
+          answer: 'Os deslocamentos de gama são multiplicados por min(1; saturation / 0,1). Um fundo cinzento tem saturação perto de zero, pelo que o seu peso cai para zero e o fundo mantém o tom. É intencional: as edições de tonalidade nos neutros acrescentariam dominantes de cor que nunca pediu.',
+        },
+        {
+          question: 'Posso rodar a tonalidade de uma cor que fica entre duas gamas com nome?',
+          answer: 'Clique nela com o conta-gotas para criar uma gama personalizada centrada na sua tonalidade exata e depois dê a essa gama a sua própria Tonalidade, Largura e Suavização. Cabem até 32 gamas numa camada de Cor (HSL).',
+        },
+        {
+          question: 'Um deslocamento de tonalidade altera o brilho da fotografia?',
+          answer: 'Não no modelo HSL que o editor usa: a luminosidade mantém-se constante enquanto o ângulo roda. Ainda assim, o brilho percebido varia de tonalidade para tonalidade, pelo que um amarelo rodado para azul parece mais escuro, embora a sua luminosidade HSL seja idêntica. O histograma em direto mostra a variação de luma, se a quiser compensar com o controlo Luminosidade.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A rotação de tonalidade é uma operação por píxel em HSL, no espaço gama; a exportação de um original de 24 megapíxeis demora alguns segundos no servidor e o ritmo é ditado pela codificação, não pela matemática.',
+          'Os originais HEIC, TIFF e BMP exigem uma conta, porque é o servidor que prepara a cópia de pré-visualização que o navegador não consegue descodificar.',
+        ],
+      },
+      related: [
+        {
+          label: 'Mudar a cor de um objeto',
+          to: '/tools/change-image-color',
+          description: 'Combine uma rotação de tonalidade com uma máscara de Intervalo de cores para que só um objeto mude.',
+        },
+        {
+          label: 'Saturação da imagem',
+          to: '/tools/image-saturation',
+          description: 'Vibração e Saturação para a fotografia inteira, os outros dois eixos do mesmo painel Cor (HSL).',
+        },
+        {
+          label: 'Cor em destaque',
+          to: '/tools/color-pop',
+          description: 'Mantenha uma cor e dessature tudo o resto com um look incorporado.',
+        },
+        {
+          label: 'Equilíbrio de brancos',
+          to: '/tools/white-balance-photo',
+          description: 'Se o enquadramento inteiro tende para o azul ou para o laranja, a correção certa são os controlos Temperatura e Tonalidade do equilíbrio de brancos, e não a rotação de tonalidade.',
+        },
+        {
+          label: 'Divisão de tons',
+          to: '/tools/split-toning',
+          description: 'Acrescente uma tonalidade às sombras e outra aos realces, em vez de rodar as cores existentes.',
+        },
+        {
+          label: 'Tutorial do editor de fotografia',
+          to: '/tutorials/aperture',
+          description: 'Camadas, máscaras, looks e exportação, pela ordem em que uma primeira edição os encontra.',
+        },
+      ],
+      embed: {
+        title: 'Ajuste a tonalidade de uma imagem',
+        description: 'Largue uma fotografia para abrir o Aperture no painel Cor (HSL): rode todas as cores, ou uma só gama, de -180 a 180 graus e exporte em resolução total.',
+      },
     },
     'change-image-color': {
       name: 'Mudar a cor de um objeto',
+      h1: 'Mudar a cor de um objeto numa fotografia',
       tagline: 'Escolha a cor com um conta-gotas, defina até onde chega a seleção, rode a tonalidade e exporte: um carro vermelho fica verde com as sombras e os reflexos intactos.',
       metaTitle: 'Mudar a cor de um objeto numa fotografia online | Media Manipulator',
       metaDescription: 'Selecione um objeto pela cor com uma máscara de Intervalo de cores, rode a tonalidade com os controlos de Cor (HSL) e exporte em resolução total. As sombras e os brilhos mantêm-se.',
+      ogTitle: 'Mudar a cor de um objeto numa fotografia | Media Manipulator',
+      ogDescription: 'Conta-gotas, tolerância e rotação de tonalidade. Mude a cor de um carro, de uma camisa ou de uma parede no navegador e transfira um ficheiro em tamanho total, processado no nosso servidor.',
+      intro: 'Esta página abre o Aperture, o editor de fotografia do Media Manipulator, no painel Cor (HSL), com uma máscara de Intervalo de cores à distância de um clique: é esta a dupla de ferramentas que muda a cor de um objeto. A máscara faz a seleção: clica no objeto com o conta-gotas e cada píxel recebe uma pontuação conforme a distância entre a sua cor e a que escolheu, medida em CIE Lab, com um controlo Tolerância que define o alcance. A camada de Cor (HSL) faz a mudança: uma rotação de tonalidade dentro dessa máscara dá outra cor ao objeto, enquanto a sua luminosidade e a sua saturação, e portanto o sombreado, os reflexos e a textura, ficam como estavam. As duas são camadas separadas na pilha, por isso pode afinar a seleção depois de escolher a cor e anular qualquer uma delas.',
+      whatItDoes: [
+        'Um componente de máscara Intervalo de cores seleciona os píxeis pela distância a uma cor-alvo que escolhe na fotografia; Shift+clique acrescenta até 8 alvos, para que um carro com dois tons de vermelho seja uma única seleção.',
+        'A Tolerância, de 0 a 100, define o raio da seleção em unidades Lab, até 60 com a tolerância no máximo, com uma margem suave na metade exterior desse raio, para que o contorno do objeto não fique com um corte seco.',
+        'Uma rotação de tonalidade na camada de Cor (HSL), global ou por gama, move os píxeis selecionados à volta do círculo cromático, enquanto a saturação e a luminosidade HSL ficam exatamente como estavam.',
+        'Os componentes de máscara combinam-se: intersete a seleção por cor com um componente Radial, Gradiente linear ou Pincel para a limitar a um objeto quando a mesma cor aparece noutra parte do enquadramento; Inverter inverte-a; a Suavização da máscara suaviza-a.',
+        'A máscara pode ser vista em sobreposição ou isolada, a camada mantém a sua própria opacidade e o seu modo de mistura, e a exportação processa o original em resolução total com a mesma matemática da máscara.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'Qualquer JPG, PNG, WebP, GIF, HEIC, AVIF ou TIFF. O editor abre com o painel Cor (HSL) à frente e uma máscara vazia pronta nessa camada.',
+        },
+        {
+          title: 'Escolha a cor',
+          description: 'No painel Máscaras, acrescente um componente Intervalo de cores, clique no objeto com o conta-gotas e suba a Tolerância até o objeto inteiro ficar coberto na sobreposição da máscara.',
+        },
+        {
+          title: 'Rode a tonalidade',
+          description: 'Mova o controlo Tonalidade de «Todas as cores» até o objeto ter a cor que pretende; só os píxeis abrangidos pela máscara mudam.',
+        },
+        {
+          title: 'Afine e exporte',
+          description: 'Acrescente um componente Pincel ou Radial no modo Intersetar se a cor aparecer noutros sítios, suavize a máscara e depois exporte em JPG, PNG, WebP, AVIF ou TIFF.',
+        },
+      ],
+      advancedDetails: [
+        'A máscara Intervalo de cores converte o píxel e cada alvo para CIE Lab (D65, a partir de sRGB linear) e calcula a distância euclidiana dE entre eles, o delta E de 1976. O raio é R = Tolerância / 100 x 60 e o valor da máscara é 1 - smoothstep(0,5 R; R; dE): seleção total até metade do raio, uma queda suave até zero no raio completo, e prevalece o valor mais alto entre todos os alvos. Uma Tolerância de 40 dá R = 24, pelo que um píxel com dE de 12 ou menos fica totalmente selecionado e um com dE de 24 ou mais não fica selecionado de todo.',
+        'Os componentes combinam-se da esquerda para a direita: Adicionar fica com o máximo, Subtrair com min(m, 1 - component) e Intersetar com o mínimo. A máscara resultante é depois desfocada por uma gaussiana com sigma = Suavização da máscara / 100 x 0,05 x o lado maior da fotografia, opcionalmente invertida, e multiplicada pela Intensidade da máscara. A saída da camada por píxel é lerp(input, adjusted, m).',
+        'A mudança de cor em si é a fórmula de Cor (HSL): tonalidade h + Tonalidade global + as Tonalidades ponderadas das gamas, com a saturação e a luminosidade intactas quando os seus controlos estão a 0, convertida de volta para RGB. Como a máscara é aplicada depois do ajuste, um píxel com valor de máscara 0,9 percorre 90% do caminho entre o seu valor original e o valor com a nova cor, e é isso que faz as margens fundirem-se.',
+        'A distância Lab inclui a luminosidade, pelo que uma sombra profunda num objeto vermelho pode estar mais longe do vermelho escolhido do que uma parede de tijolo. Escolha dois ou três alvos ao longo do sombreado do objeto com Shift+clique, em vez de subir a Tolerância até a parede entrar também na seleção.',
+        'O que vê é um processamento WebGL2, na sua GPU, de uma cópia de 1920 px; o que transfere é processado no nosso servidor a partir do original em tamanho total, com o mesmo código Lab, smoothstep e HSL, e coincide dentro da tolerância documentada para operações de cor: uma média de 1 e um máximo de 4 níveis em 8 bits.',
+      ],
+      whyItMatters: [
+        'Selecionar pela cor conserva cada píxel de sombreado, de brilho especular e de textura, que uma pintura uniforme por cima deitaria fora; depois da mudança, o objeto continua a parecer iluminado pela mesma luz.',
+        'Uma distância Lab acompanha melhor do que uma distância RGB o quão diferentes duas cores parecem a uma pessoa, por isso a margem da seleção cai onde a desenharia.',
+        'Como a seleção e a cor são camadas separadas, mudar mais tarde de ideias quanto à cor é uma questão de um controlo, não de uma nova seleção.',
+      ],
+      useCases: [
+        {
+          title: 'Variantes de cor de um produto',
+          description: 'Fotografe uma das variantes de cor, selecione-a e produza as restantes rodando a tonalidade; as costuras e as sombras são as mesmas em todas as variantes.',
+        },
+        {
+          title: 'Anúncios de carros e de bicicletas',
+          description: 'Mostre o veículo na cor sobre a qual o comprador pergunta; dois alvos, um no painel iluminado e outro na sombra, cobrem a carroçaria toda.',
+        },
+        {
+          title: 'Roupa em retratos',
+          description: 'Mude uma camisa de amarelo para azul; intersete a seleção por cor com um componente Pincel para que uma placa amarela ao fundo fique intacta.',
+        },
+        {
+          title: 'Paredes e divisões',
+          description: 'Experimente cores de tinta numa fotografia da divisão; a seleção por cor apanha a parede e deixa de fora os acabamentos brancos, porque estão demasiado longe em Lab.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Carro vermelho para verde: Tolerância 60 e Tonalidade de «Todas as cores» +120 num JPEG de 20 MP',
+          body: 'Uma fotografia de anúncio de 5472 x 3648 (20 megapíxeis, 9 MB). Clicar na porta escolhe (204, 26, 31), Lab (43,8; 64,9; 45,5). Um painel na sombra com (153, 20, 26) está a dE 20,6 desse alvo e um reflexo ao sol com (242, 89, 84) está a dE 19,6. Com Tolerância 40, o raio é 24 e esses dois pontuam apenas 0,199 e 0,303, o que deixa o carro às manchas; com Tolerância 60, o raio é 36 e pontuam 0,945 e 0,977. Uma parede de tijolo atrás do carro, com (166, 77, 56), está a dE 33,8 e pontua 0,043; o asfalto, com (89, 89, 92), está a dE 79,9 e pontua 0. Com a Tonalidade de «Todas as cores» a +120, o píxel da sombra passa a (26, 153, 20) e, misturado a 0,945, fica em (33, 146, 21); o reflexo passa a (84, 242, 89) e, misturado a 0,977, fica em (88, 239, 89). A exportação em JPG com qualidade 92 tem cerca de 9 MB, segundo a estimativa de 0,45 MB por megapíxel, e exige o plano Premium ou Pro para os 20 megapíxeis completos; o limite gratuito é de 12.',
+        },
+        {
+          title: 'Casaco amarelo para azul: deslocamento na gama Amarelos ou máscara, numa fotografia de telemóvel de 12 MP',
+          body: 'Um HEIC de 4032 x 3024 tirado com um telemóvel (12,2 megapíxeis). O píxel do casaco (242, 204, 38) tem tonalidade 48,75, saturação 0,89 e luminosidade 0,55. Há dois caminhos que dão o mesmo casaco. Primeiro caminho: Tonalidade dos Amarelos +190, sem máscara; a 11,25 graus do centro dos Amarelos o peso é 1, a tonalidade passa a 238,75 e o píxel é exportado como (38, 43, 242), mas uma placa de trânsito amarela ao fundo também fica azul. Segundo caminho: um componente Intervalo de cores escolhido no casaco com Tolerância 50 (raio 30), intersetado com um componente Pincel pintado sobre o casaco, e Tonalidade de «Todas as cores» +190; a placa pontua 0, porque o pincel a exclui, e o píxel do casaco é exportado com o mesmo (38, 43, 242). A exportação com qualidade 92 tem cerca de 5,5 MB; o original HEIC, em si, exige uma conta, para que o servidor o possa descodificar para a pré-visualização.',
+        },
+      ],
+      whenNotToUse: 'Uma seleção por cor não consegue separar dois objetos da mesma cor sob a mesma luz; isso é trabalho para uma máscara de Pincel ou Radial, ou para Selecionar motivo, quando o objeto é o motivo principal do enquadramento. Também não consegue criar uma cor que não seja uma tonalidade, por isso o branco, o preto e os acabamentos metalizados precisam de uma alteração de saturação e de luminosidade em vez de uma rotação, e não consegue mudar o padrão nem o material de uma superfície. Quando é a fotografia inteira que tem uma dominante, e não um objeto, use as páginas de equilíbrio de brancos ou de equilíbrio de cores, e quando quiser o objeto recortado sobre um fundo transparente, use a ferramenta de remoção de fundo.',
+      whyMediaManipulator: [
+        'A máscara Intervalo de cores do Aperture é uma verdadeira seleção por distância Lab, com tolerância, vários alvos e suavização, e não custa nada: só a exportação, uma tarefa normal, é contabilizada.',
+        'As máscaras empilham-se com Adicionar, Subtrair e Intersetar sobre gradientes, radiais, pincéis e intervalos de luminosidade, pelo que a seleção por cor pode ficar presa a um objeto sem ter de o pintar todo.',
+        'A pré-visualização é executada na sua própria GPU; o ficheiro final é processado no nosso servidor a partir dos píxeis originais e coincide com a pré-visualização, pelo que uma fotografia de anúncio de 24 megapíxeis volta com 24 megapíxeis.',
+      ],
+      privacyNote: 'A seleção por Intervalo de cores e a rotação de tonalidade são ambas executadas no seu navegador; os píxeis da fotografia não são carregados para isso. Sem sessão iniciada, o projeto fica no IndexedDB deste navegador e só sai dele quando exporta, seleciona um motivo ou usa Corrigir, como qualquer tarefa de visitante. Com sessão iniciada, o original, uma pré-visualização de 1920 px e uma miniatura são guardados com o projeto segundo a sua definição de retenção e eliminados com o projeto ou com a conta. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Nada é partilhado com terceiros.',
+      faq: [
+        {
+          question: 'Como mudo a cor de apenas um objeto quando a mesma cor aparece duas vezes?',
+          answer: 'Acrescente um segundo componente de máscara, Radial ou Pincel, desenhado sobre o objeto que quer, e defina-o como Intersetar. A máscara passa a ser o mínimo entre a seleção por cor e a forma, pelo que o outro objeto, que fica fora da forma, permanece a zero.',
+        },
+        {
+          question: 'O que regula, afinal, o controlo Tolerância?',
+          answer: 'O raio Lab da seleção: a Tolerância dividida por 100, vezes 60. Os píxeis a menos de metade desse raio de uma cor escolhida ficam totalmente selecionados, os que estão para lá dele não ficam selecionados e, entre os dois, o valor desce ao longo de uma curva smoothstep.',
+        },
+        {
+          question: 'Posso tornar branco ou preto um objeto vermelho?',
+          answer: 'Uma rotação de tonalidade não consegue, porque o branco e o preto não têm tonalidade. Mantenha a mesma máscara, defina o controlo Saturação para -100 na camada de Cor (HSL) e depois use a Luminosidade ou uma camada de Curvas com máscara para levar o cinzento até ao branco ou ao preto.',
+        },
+        {
+          question: 'Porque é que as partes mais escuras do objeto não ficam selecionadas?',
+          answer: 'A distância Lab inclui a luminosidade, por isso o lado na sombra de um carro vermelho pode estar mais longe da cor em que clicou do que outro objeto. Faça Shift+clique num segundo alvo na sombra, em vez de subir a Tolerância para tudo.',
+        },
+        {
+          question: 'Mudar a cor de um objeto gasta uma tarefa de IA?',
+          answer: 'Não. A máscara Intervalo de cores e a rotação de tonalidade são ajustes comuns, calculados a partir dos píxeis. Só Selecionar motivo e Corrigir usam os modelos de IA; uma seleção por cor é gratuita, e a exportação conta como uma tarefa normal.',
+        },
+        {
+          question: 'A nova cor terá o mesmo sombreado que a antiga?',
+          answer: 'Sim. A rotação altera apenas o ângulo da tonalidade; a saturação e a luminosidade HSL de cada píxel mantêm-se, pelo que os brilhos, os reflexos e as sombras conservam a sua forma. O brilho percebido varia de facto entre tonalidades, como o histograma em direto mostrará.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A conversão Lab e a desfocagem da máscara são aplicadas a cada píxel do original na exportação; um ficheiro de 20 megapíxeis é processado em poucos segundos no servidor.',
+          'Os originais PNG transparentes mantêm a transparência: a máscara e a mudança de cor nunca tocam no canal alfa.',
+        ],
+      },
+      related: [
+        {
+          label: 'Ajustar a tonalidade da imagem',
+          to: '/tools/adjust-image-hue',
+          description: 'Os mesmos controlos de tonalidade, aplicados à fotografia inteira ou a uma gama com nome, sem máscara.',
+        },
+        {
+          label: 'Selecionar por cor',
+          to: '/tools/select-by-color',
+          description: 'A máscara Intervalo de cores por si só, para qualquer ajuste que queira limitar a uma cor.',
+        },
+        {
+          label: 'Cor em destaque',
+          to: '/tools/color-pop',
+          description: 'Mantenha a cor do objeto e passe o resto do enquadramento a cinzento.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Quando o objetivo é isolar totalmente o objeto, em vez de lhe mudar a cor.',
+        },
+        {
+          label: 'Saturação da imagem',
+          to: '/tools/image-saturation',
+          description: 'Torne a nova cor mais intensa ou mais suave em toda a imagem.',
+        },
+      ],
+      embed: {
+        title: 'Mude a cor de um objeto',
+        description: 'Largue uma fotografia para abrir o Aperture: escolha a cor do objeto com o conta-gotas, defina a tolerância, rode a tonalidade e exporte em tamanho total.',
+      },
     },
     'color-pop': {
       name: 'Cor em destaque',
+      h1: 'Passar uma fotografia a preto e branco, exceto uma cor',
       tagline: 'Mantenha os vermelhos, ou os azuis, ou qualquer uma de seis famílias de cor, e passe tudo o resto a cinzento com um único look incorporado que pode afinar depois.',
       metaTitle: 'Fotografia a preto e branco, exceto uma cor | Media Manipulator',
       metaDescription: 'Cor seletiva no navegador: mantenha vermelho, amarelo, verde, ciano, azul ou magenta e dessature o resto. Seis looks incorporados, controlo por intervalo, exportação em resolução total.',
+      ogTitle: 'Preto e branco, exceto uma cor | Media Manipulator',
+      ogDescription: 'Os looks «Cor em destaque» dessaturam cinco das seis gamas de tonalidade e dão um pequeno reforço à gama mantida. Afine a largura da gama mantida, acrescente uma máscara e exporte.',
+      intro: 'Esta página abre o Aperture, o editor de fotografia do Media Manipulator, com o painel Cor (HSL) à frente e o look «Cor em destaque: vermelho» já aplicado. Um look acrescenta os seus ajustes à pilha como um grupo, e este é uma única camada de Cor (HSL) cujas seis gamas estão definidas de modo a que os Vermelhos recebam Saturação +10 e os Amarelos, Verdes, Ciano, Azuis e Magentas recebam, cada um, Saturação -100. O efeito é o da clássica fotografia de cor seletiva: uma família de tonalidades sobrevive e tudo o resto passa a cinzento. Outros cinco looks da mesma família mantêm antes o amarelo, o verde, o ciano, o azul ou o magenta, e os botões «Cinzento, exceto esta» do painel fazem o mesmo com um clique para qualquer gama, incluindo uma gama personalizada escolhida com o conta-gotas.',
+      whatItDoes: [
+        'Aplica «Cor em destaque: vermelho» ao abrir, uma camada de Cor (HSL) com Saturação +10 nos Vermelhos e as outras cinco gamas com Saturação -100, e apresenta no painel Looks as variantes «Cor em destaque» amarelo, verde, ciano, azul e magenta para as outras famílias.',
+        'O botão «Cinzento, exceto esta», junto a qualquer gama, incluindo uma gama personalizada do conta-gotas, põe todas as outras gamas com saturação -100 com um só clique, pelo que um laranja ou um roxo específico pode ser a cor mantida.',
+        'Cada gama mantida tem os controlos Largura (10 a 120 graus) e Suavização (0 a 90), que decidem quanto das tonalidades vizinhas sobrevive; é assim que se mantém o laranja juntamente com os vermelhos, ou que se exclui.',
+        'O desvanecimento neutro deixa os cinzentos em paz, a gama mantida pode ser afinada com os seus próprios controlos de Tonalidade e Luminosidade, e o look inteiro pode receber uma máscara, ter a opacidade reduzida ou ser removido com uma única anulação.',
+        'A exportação processa o original em resolução total com a mesma fórmula de seis gamas e acrescenta ao nome do ficheiro o sufixo (retouched).',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'O editor abre em ecrã inteiro no painel Cor (HSL), com «Cor em destaque: vermelho» aplicado como um grupo de uma só camada.',
+        },
+        {
+          title: 'Escolha a cor a manter',
+          description: 'Mude para «Cor em destaque: azul», verde, amarelo, ciano ou magenta em Looks, ou prima «Cinzento, exceto esta» em qualquer gama, incluindo uma que tenha escolhido na fotografia.',
+        },
+        {
+          title: 'Alargue ou estreite a gama mantida',
+          description: 'Suba a Largura para incluir as tonalidades vizinhas e baixe-a para isolar uma só; use a sobreposição da máscara ou o histograma para ver o que sobreviveu.',
+        },
+        {
+          title: 'Exporte',
+          description: 'JPG, PNG, WebP, AVIF ou TIFF com a qualidade que escolher, processado pelo servidor a partir dos píxeis originais.',
+        },
+      ],
+      advancedDetails: [
+        'A saturação por píxel é s multiplicado pelo produto, em todas as gamas, de 1 + peso x Saturação/100. Dentro de uma gama a -100, o fator é 1 - peso, pelo que um píxel totalmente dentro dos Azuis recebe o fator 0 e fica cinzento; dentro da gama mantida dos Vermelhos, a +10, o fator é 1,1, um reforço de dez por cento. O look nunca altera a tonalidade nem a luminosidade.',
+        'Os pesos das gamas vêm da distância circular ao centro da gama, com a Largura 30 e a Suavização 30 predefinidas: totais a 15 graus ou menos, nulos a 45 ou mais e lineares entre os dois. Um píxel exatamente entre duas gamas, como o laranja com tonalidade 30, tem peso 0,5 em ambas, pelo que, com os Vermelhos mantidos, a sua saturação é multiplicada por 1,05 x 0,5 = 0,525.',
+        'Entre duas gamas dessaturadas, o que conta é o produto dos dois fatores: na tonalidade 210, a meio caminho entre Ciano e Azuis, cada peso é 0,5 e o fator de saturação é 0,5 x 0,5 = 0,25, e não 0, pelo que um céu nessa zona conserva um quarto da sua cor. Subir a Largura das duas gamas para 60 faz os seus núcleos encontrarem-se em 210, e o fator desce para 0.',
+        'Cada peso de gama é multiplicado por min(1; s / 0,1), pelo que um píxel com saturação HSL abaixo de 0,1 recebe um reforço proporcionalmente menor na gama mantida; já é quase cinzento, e as gamas a -100 pouco têm a retirar-lhe.',
+        'O look fica guardado no projeto como um grupo de camadas normal: os looks somam-se aos ajustes existentes, Anular remove o grupo inteiro, e as suas próprias variantes podem ser guardadas como predefinição neste navegador ou exportadas em JSON.',
+        'O seu ecrã mostra um processamento WebGL2 de uma cópia de 1920 px; o ficheiro exportado é produzido no nosso servidor a partir do original com a mesma matemática de gamas, dentro da tolerância documentada para operações de cor: um erro médio de, no máximo, 1 e um máximo de 4 níveis em 8 bits.',
+      ],
+      whyItMatters: [
+        'A cor seletiva atrai o olhar para um elemento, um guarda-chuva vermelho numa rua cinzenta ou uma porta azul numa parede de pedra, e fá-lo com o sombreado original intacto, em vez de recorrer a uma máscara pintada.',
+        'Fazê-lo por gama de tonalidade, e não à mão, significa que todos os objetos vermelhos do enquadramento são apanhados, incluindo reflexos e pequenos pormenores que um pincel deixaria escapar.',
+        'Como a gama mantida é um parâmetro, o mesmo look pode ser reutilizado numa série inteira através de «Aplicar a mais fotografias», num plano com sessão iniciada.',
+      ],
+      useCases: [
+        {
+          title: 'Apontamentos de cor em fotografia de rua',
+          description: 'Mantenha os vermelhos de um casaco, de um autocarro ou de uma placa numa cena de rua monocromática; a gama Vermelhos apanha-os todos de uma vez.',
+        },
+        {
+          title: 'Produto sobre cinzento',
+          description: 'Mantenha a cor de marca de um produto e deixe o cenário, as mãos e os adereços passarem a cinzento à sua volta.',
+        },
+        {
+          title: 'Pormenores de casamentos e eventos',
+          description: 'Mantenha a cor das flores ou do vestido contra uma sala cinzenta; uma máscara no look restringe-o à mesa, se a alcatifa tiver a mesma tonalidade.',
+        },
+        {
+          title: 'Portas, barcos e carros',
+          description: '«Cor em destaque: azul» ou «Cor em destaque: amarelo» para um único objeto pintado; alargue a gama mantida se, na sombra, a tinta derivar para o ciano ou para o laranja.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Guarda-chuva vermelho numa rua cinzenta: «Cor em destaque: vermelho» num JPEG de telemóvel de 12 MP',
+          body: 'Um JPEG de 4032 x 3024 (12,2 megapíxeis, 3,9 MB). O píxel do guarda-chuva (204, 51, 51) tem tonalidade 0 e saturação HSL 0,6; totalmente dentro dos Vermelhos, a sua saturação passa a 0,6 x 1,1 = 0,66 e é exportado como (212, 43, 43). Um casaco azul com (51, 77, 204), tonalidade 230, está totalmente dentro dos Azuis: 0,6 x 0 = 0, e é exportado como (128, 128, 128), com a mesma luminosidade de 0,5 que tinha. O céu com (140, 191, 242), tonalidade 210, recebe peso 0,5 do Ciano e 0,5 dos Azuis, pelo que a sua saturação de 0,8 passa a 0,8 x 0,5 x 0,5 = 0,2 e é exportado como (179, 191, 204), um azul ténue; subir as duas Larguras para 60 leva-o ao cinzento total. Uma fachada de loja laranja com (230, 128, 26), tonalidade 30, conserva 0,8 x 1,05 x 0,5 = 0,42 e é exportada como (181, 128, 74). A exportação em JPG com qualidade 92 tem cerca de 5,5 MB e é uma tarefa normal.',
+        },
+        {
+          title: 'Porta azul numa parede de pedra: «Cor em destaque: azul» num JPEG de câmara de 24 MP',
+          body: 'Um ficheiro de 6000 x 4000 (24 megapíxeis, 12 MB). Mudar para «Cor em destaque: azul» define Saturação +10 nos Azuis e -100 nas outras cinco gamas. A porta com (51, 77, 204) passa a (43, 71, 212); uma bicicleta vermelha com (204, 51, 51) fica reduzida a (128, 128, 128); o céu com (140, 191, 242) conserva 0,8 x 0,5 x 1,05 = 0,42 da sua saturação graças à margem partilhada com o Ciano e é exportado como (164, 191, 218). A parede de pedra com (133, 128, 122) tem saturação 0,04, abaixo do limiar neutro de 0,1, pelo que cada peso de gama é multiplicado por 0,4 e a parede move-se, no máximo, um ou dois níveis para um lado ou para o outro. Exportar os 24 megapíxeis completos exige o plano Premium ou Pro; sem conta, a caixa de diálogo fica limitada a 12, e um JPG de 24 megapíxeis com qualidade 92 tem cerca de 10,8 MB.',
+        },
+      ],
+      whenNotToUse: 'A cor seletiva mantém uma tonalidade onde quer que ela apareça, por isso, quando dois objetos partilham uma cor e só um deve ficar colorido, precisa de uma máscara de Pincel ou Radial no look, ou de Selecionar motivo, e não de uma gama mais larga ou mais estreita. Também não é a forma de obter um monocromático limpo, porque uma gama mantida a +10 e cinco gamas a -100 ainda deixam cor a um quarto da intensidade nas junções; para isso, use a página de preto e branco. Se o que quer é uma versão mais forte ou mais suave de todas as cores, a página de saturação fá-lo com um só controlo, e se o objetivo é mudar a cor mantida em vez de a conservar, vá à página de mudança de cor de objetos.',
+      whyMediaManipulator: [
+        'O Aperture inclui seis looks «Cor em destaque» e um botão «Cinzento, exceto esta» para qualquer gama personalizada, pelo que a cor que mantém não se limita aos seis nomes.',
+        'A gama mantida tem Largura e Suavização, uma máscara pode confinar o efeito a um objeto, e o look é uma camada cuja opacidade pode baixar para 60% para um efeito parcial, em vez de tudo ou nada.',
+        'Aplicar um look, ajustá-lo e anulá-lo é gratuito; a exportação da imagem final é uma tarefa normal, e a quota diária está indicada na página de preços.',
+      ],
+      privacyNote: 'Aplicar «Cor em destaque: vermelho» e mudar a gama que sobrevive acontece inteiramente no seu navegador; a fotografia não é enviada para lado nenhum por causa do look. Sem sessão iniciada, o projeto fica guardado no IndexedDB deste navegador e só é carregado quando exporta, seleciona um motivo ou usa Corrigir, como qualquer tarefa de visitante. Com sessão iniciada, o original, com a sua pré-visualização de 1920 px e a miniatura, fica no nosso servidor segundo a sua definição de retenção, até o projeto ou a conta serem eliminados. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Nenhum terceiro vê as suas fotografias.',
+      faq: [
+        {
+          question: 'Que cores posso manter?',
+          answer: 'Qualquer uma das seis gamas com nome, através dos looks «Cor em destaque»: Vermelhos, Amarelos, Verdes, Ciano, Azuis e Magentas; e qualquer outra tonalidade, clicando nela na fotografia com o conta-gotas e premindo «Cinzento, exceto esta» na nova gama personalizada.',
+        },
+        {
+          question: 'Porque é que o meu céu continua ligeiramente azul depois de «Cor em destaque: vermelho»?',
+          answer: 'Um céu com tonalidade 210 fica a meio caminho entre Ciano e Azuis, pelo que recebe peso 0,5 de cada gama e os dois fatores de -100 multiplicam-se para 0,25, deixando um quarto da saturação. Suba a Largura das duas gamas para 60, de modo a que os núcleos se sobreponham em 210, e o fator desce para zero.',
+        },
+        {
+          question: 'Porque é que os rostos mantêm alguma cor quando se mantêm os vermelhos?',
+          answer: 'A pele situa-se à volta da tonalidade 20, dentro da gama Vermelhos, por isso o look mantém-na de propósito. Um píxel com (217, 158, 128) perde apenas cerca de 12% da sua saturação. Estreite a Largura dos Vermelhos, ou acrescente uma máscara de Pincel com Subtrair sobre o rosto, se quiser a pele cinzenta.',
+        },
+        {
+          question: 'Posso manter duas cores ao mesmo tempo?',
+          answer: 'Sim. O look é uma camada de Cor (HSL) normal, por isso, depois de aplicado, reponha uma segunda gama, por exemplo os Amarelos, de -100 para 0, ou prima «Cinzento, exceto esta» numa gama personalizada e depois restaure qualquer gama com nome que também queira manter.',
+        },
+        {
+          question: 'O efeito é reversível depois de exportar?',
+          answer: 'A exportação é um ficheiro novo, com o sufixo (retouched) no nome, e o original nunca é modificado. Dentro do projeto, o look é um grupo de camadas: Anular remove-o, e a camada pode ser ocultada ou eliminada a qualquer momento.',
+        },
+        {
+          question: 'O que faz o +10 na gama mantida?',
+          answer: 'Multiplica por 1,1 a saturação dos píxeis totalmente dentro da gama mantida, para que a cor sobrevivente se destaque um pouco mais contra o cinzento à volta. Reponha-o a 0 se quiser a cor mantida exatamente como foi fotografada.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O look é uma camada de matemática HSL por píxel; o tempo de exportação depende do codificador e do número de píxeis: alguns segundos para um JPG de 12 megapíxeis.',
+          'Um look aplicado através da página é um grupo de camadas a que pode mudar o nome, aplicar uma máscara ou eliminar, como qualquer outra camada.',
+        ],
+      },
+      related: [
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'A conversão monocromática completa, com seis controlos de canal, quando nada deve ficar a cores.',
+        },
+        {
+          label: 'Saturação da imagem',
+          to: '/tools/image-saturation',
+          description: 'Vibração e saturação para todas as cores, sem a seleção por gama.',
+        },
+        {
+          label: 'Mudar a cor de um objeto',
+          to: '/tools/change-image-color',
+          description: 'Mude a cor do objeto que manteve, em vez de o conservar tal como foi fotografado.',
+        },
+        {
+          label: 'Selecionar por cor',
+          to: '/tools/select-by-color',
+          description: 'Uma máscara de Intervalo de cores para qualquer outro ajuste que queira limitar a uma tonalidade.',
+        },
+        {
+          label: 'Adicionar uma vinheta',
+          to: '/tools/add-vignette',
+          description: 'Escureça os cantos para que a cor mantida atraia ainda mais o olhar.',
+        },
+      ],
+      embed: {
+        title: 'Mantenha uma cor e passe o resto a cinzento',
+        description: 'Largue uma fotografia para abrir o Aperture com o look «Cor em destaque: vermelho» aplicado; mude a cor mantida em Looks ou com «Cinzento, exceto esta».',
+      },
     },
     'image-saturation': {
       name: 'Saturação da imagem',
+      h1: 'Aumentar ou reduzir a saturação de uma imagem online',
       tagline: 'Vibração para um reforço que protege a pele e as cores já fortes, Saturação para uma escala uniforme, ambas como camadas que pode mascarar.',
       metaTitle: 'Aumentar ou reduzir a saturação de uma imagem online | Aperture',
       metaDescription: 'Altere a saturação de uma fotografia no navegador. A Vibração reforça as cores esbatidas e protege a pele; a Saturação dimensiona todas as cores por igual. Exportação em resolução total.',
+      ogTitle: 'Aumentar ou reduzir a saturação de uma imagem online',
+      ogDescription: 'Vibração face a Saturação, explicadas com as fórmulas e com números reais. Pré-visualização em direto na sua GPU, exportação em resolução total.',
+      intro: 'A saturação é a distância a que uma cor está do cinzento com o mesmo brilho. O grupo Cor do painel Básico do Aperture tem dois controlos para ela, e a diferença entre eles é toda a razão de ser desta página. A Saturação multiplica a distância de cada píxel à sua luma pelo mesmo fator, 1 + saturation / 100, pelo que +50 empurra um pastel pálido e um letreiro de néon na mesma proporção, e o néon fica cortado primeiro. A Vibração escala essa distância por um fator que diminui à medida que a cor fica mais saturada, 1 + v vezes (1 - range), em que range é a diferença entre o maior e o menor canal, pelo que as cores esbatidas mudam muito, as cores fortes mudam pouco e um cinzento neutro não muda nada. A Vibração é aplicada primeiro e a Saturação depois, numa única camada que pode ser mascarada a um intervalo de cores ou a um motivo.',
+      whatItDoes: [
+        'Vibração de -100 a +100: um reforço ou uma atenuação sensível à saturação. Para um valor positivo, o fator é 1 + v vezes (1 - range), pelo que uma cor esbatida com uma amplitude de canais de 0,08 recebe quase todo o reforço, enquanto uma cor viva com uma amplitude de 0,63 recebe cerca de um terço dele.',
+        'Saturação de -100 a +100: cada canal afasta-se (ou aproxima-se) da luma BT.709 do píxel pelo fator 1 + saturation / 100; -100 é uma conversão perfeita para cinzento com os pesos 0,2126; 0,7152; 0,0722.',
+        'Os dois controlos vivem numa única camada Vibração / saturação, por isso uma opacidade, um modo de mistura e uma máscara cobrem o par; acrescente uma segunda camada se quiser máscaras diferentes para cada um.',
+        'A proteção da pele vem incluída na fórmula da vibração: um tom de pele típico tem uma amplitude de canais perto de 0,3, pelo que Vibração +50 acrescenta cerca de 35% da saturação que o mesmo valor acrescenta a uma cor quase cinzenta.',
+        'Para controlo por cor, esta mesma página encaminha-o para o painel Cor (HSL), onde cada uma das seis gamas de tonalidade tem o seu próprio controlo Saturação, com largura e suavização.',
+      ],
+      flowSteps: [
+        {
+          title: 'Abra a imagem',
+          description: 'Largue o ficheiro. O grupo Cor mostra Vibração e Saturação a 0, e o histograma mostra os canais RGB.',
+        },
+        {
+          title: 'Comece pela Vibração',
+          description: 'Suba-a para +40 ou +60. As zonas esbatidas, como a folhagem, a água e os tecidos, ganham cor primeiro; os rostos e as cores já vivas quase não mudam.',
+        },
+        {
+          title: 'Acrescente ou retire Saturação',
+          description: 'Uma pequena alteração de Saturação (+10 a +20, ou -20 a -40 para um look esbatido) define o nível geral depois de a Vibração ter equilibrado as cores.',
+        },
+        {
+          title: 'Aplique uma máscara, se for preciso, e exporte',
+          description: 'Dê à camada uma máscara Intervalo de cores ou Selecionar motivo para manter a alteração fora de uma zona e depois exporte em resolução total.',
+        },
+      ],
+      advancedDetails: [
+        'Vibração: range = max(R, G, B) - min(R, G, B), l = a luma de vibração do píxel (pesos 0,072 para o vermelho, 0,715 para o verde e 0,213 para o azul, a ordem que o filtro subjacente usa), fator f = 1 + v vezes (1 - sign(v) vezes range), com v = vibrance / 100; cada canal passa a l + (channel - l) vezes f, limitado.',
+        'Saturação: l = luma BT.709 (0,2126; 0,7152; 0,0722); cada canal passa a l + (channel - l) vezes (1 + saturation / 100), limitado. A -100, todos os canais ficam iguais a l, pelo que o resultado é o mesmo cinzento de uma conversão para preto e branco ponderada pela luma.',
+        'O termo do sinal torna a vibração negativa mais forte nas cores saturadas: a -40, um rosa néon de 255, 40, 180 (amplitude 0,84) tem um fator de 0,26 e desce para 130, 73, 110, enquanto um castanho de madeira de 160, 120, 80 (amplitude 0,31) tem um fator de 0,47 e só desce para 136, 117, 98.',
+        'Nenhum dos controlos altera um píxel neutro: quando R = G = B, a distância à luma é 0 e qualquer fator mantém-na em 0, pelo que os cinzentos, os pretos e os brancos ficam intactos em qualquer definição.',
+        'Enquanto edita, a pré-visualização é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px da fotografia; quando exporta, o ficheiro é renderizado no nosso servidor a partir do original em resolução total, com as mesmas fórmulas, e os dois coincidem dentro de uma tolerância pequena e documentada, no máximo poucos níveis de 8 bits, com o grão exato. A Vibração e a Saturação são operações píxel a píxel, por isso, na prática, coincidem nível a nível.',
+        'Como ambas as etapas limitam o resultado ao intervalo de 0 a 1, um reforço grande numa cor forte corta um canal e desloca ligeiramente a tonalidade; mudar o modo de mistura da camada para Cor mantém a luma original e só desloca a crominância, o que limita esse desvio.',
+      ],
+      whyItMatters: [
+        'Um único controlo de saturação trata da mesma forma um rosto queimado pelo sol e uma parede cinzenta; a vibração é a razão pela qual os editores modernos conseguem reforçar uma paisagem sem deixar cor de laranja as pessoas que nela aparecem.',
+        'A dessaturação é um estilo por si só, e a diferença entre Saturação -40 (tudo mais plano) e Vibração -40 (cores fortes domadas, cores esbatidas preservadas) é a diferença entre uma impressão desbotada e uma impressão contida.',
+        'Saber que os cinzentos não se movem significa que pode puxar bem pela vibração numa fotografia de produto com fundo neutro, e o fundo fica exatamente onde estava.',
+      ],
+      useCases: [
+        {
+          title: 'Paisagem plana em dia nublado',
+          description: 'Vibração +60 e depois Saturação +10: a folhagem em 70, 110, 50 e a água ganham cor, o céu cinzento continua cinzento e um caminhante de casaco vermelho não se transforma num farol.',
+        },
+        {
+          title: 'Retrato com cor a mais',
+          description: 'Vibração -30 acalma um casaco vermelho e um fundo azul, enquanto a pele, que tem uma amplitude de canais moderada, mantém a maior parte do seu calor.',
+        },
+        {
+          title: 'Look de película esbatido',
+          description: 'Saturação -35 com Contraste -20, do grupo Luz, e uma camada Divisão de tons dá a paleta desbotada sem recorrer a uma predefinição.',
+        },
+        {
+          title: 'Produto sobre fundo branco',
+          description: 'Saturação +20 sob uma máscara Selecionar motivo reforça apenas o artigo; o fundo branco é neutro e não se teria alterado de qualquer forma, mas a máscara mantém limpas as sombras que nele caem.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Vibração +60 numa paisagem nublada de 24 MP',
+          body: 'Um JPEG de 6000 x 4000 (24 MP, 10,1 MB). Um tom de terreno esbatido de 130, 120, 110 tem uma amplitude de canais de 0,078, pelo que Vibração +60 aplica um fator de 1,55 e eleva-o para 136, 121, 105. Um lago azul-petróleo de 60, 140, 150 (amplitude 0,35) recebe um fator de 1,39 e passa a 30, 141, 155. Um casaco vermelho saturado em 200, 40, 40 (amplitude 0,63) recebe apenas 1,22 e vai para 233, 37, 37, e um tom de pele de 220, 170, 140 passa a 242, 171, 129. A Saturação +35, pelo contrário, levaria o mesmo tom de terreno a 133, 120, 106, mas empurraria o casaco para 244, 28, 28. Exporte como JPG com qualidade 92: cerca de 10,8 MB no Premium, ou redimensionado para 12 MP e cerca de 5,4 MB para um visitante.',
+        },
+        {
+          title: 'Dessaturar de duas maneiras uma fotografia de rua de 12 MP',
+          body: 'Um JPEG de 4000 x 3000 (12 MP, 4,5 MB) com um letreiro de néon rosa em 255, 40, 180, uma porta de madeira em 160, 120, 80 e um carro azul em 90, 150, 230. Saturação -30 dá 207, 57, 155, depois 150, 122, 94 e depois 132, 150, 186: cada cor perde 30% da sua distância ao cinzento. Vibração -40, pelo contrário, dá 130, 73, 110 para o letreiro (fator 0,26) e 136, 117, 98 para a porta (fator 0,47) e, com o carro algures entre os dois, um resultado em que a cor mais berrante foi a mais domada. Saturação -100 levaria os três a cinzentos planos de 100, 125 e 143. Exportado em WebP com qualidade 88, cerca de 3,6 MB.',
+        },
+      ],
+      whenNotToUse: 'Esta página altera a intensidade de todas as cores ao mesmo tempo, por isso não é a ferramenta certa quando só uma cor é o problema: um céu que precisa de mais azul, ou um rosto que precisa de menos vermelho, pertence ao painel Cor (HSL), onde cada gama de tonalidade tem a sua própria saturação. Se quer uma fotografia cinzenta exceto num objeto, as predefinições Cor em destaque já fazem isso. E, se as cores parecem erradas e não fracas, comece pelo equilíbrio de brancos; saturar uma fotografia com uma dominante só torna a dominante mais forte.',
+      whyMediaManipulator: [
+        'O Aperture usa a mesma matemática de vibração e saturação que o editor de vídeo Darkroom deste site, pelo que um look que afine numa fotografia se transpõe para um clipe.',
+        'Ambos os controlos podem ser restringidos a um intervalo de cores com o conta-gotas, o que transforma uma alteração global da saturação numa alteração por cor sem abrir outro painel.',
+        'O Media Manipulator publica o fator que cada valor do controlo produz, por isso +50 é uma quantidade conhecida e não uma sensação.',
+      ],
+      privacyNote: 'Alterar a saturação aproxima ou afasta cada píxel do seu próprio valor de cinzento, um cálculo que o seu navegador faz sobre a cópia local da fotografia; como visitante, nada é carregado até exportar, premir Selecionar motivo ou premir Corrigir. A exportação envia o original uma vez para o nosso servidor para a renderização em resolução total e conserva o resultado como qualquer outro processamento. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Não passamos imagens a serviços externos.',
+      faq: [
+        {
+          question: 'Quando devo usar a Vibração em vez da Saturação?',
+          answer: 'Use a Vibração quando a fotografia tem pessoas ou já tem uma cor forte: o seu reforço diminui à medida que uma cor fica mais saturada, pelo que a pele, com uma amplitude de canais de cerca de 0,3, recebe aproximadamente um terço menos do que um verde-acinzentado esbatido. Use a Saturação quando quer que todas as cores se movam na mesma proporção, como numa dessaturação uniforme para um estilo esbatido.',
+        },
+        {
+          question: 'A Saturação -100 dá um preto e branco a sério?',
+          answer: 'Dá um cinzento ponderado pela luma com os pesos BT.709, o que é um ponto de partida razoável. O painel Preto e branco é melhor quando quer controlar a forma como cada cor é convertida: os seus seis controlos de canal começam em 40, 60, 40, 60, 20 e 80 e podem escurecer um céu azul ou aclarar a folhagem na conversão.',
+        },
+        {
+          question: 'Porque é que uma cor forte muda de tonalidade quando puxo pela saturação?',
+          answer: 'Porque o resultado é limitado a 0 e 1 em cada canal. Um vermelho de 200, 40, 40 com Saturação +50 passa a 255, 23, 23: o canal vermelho bateu no teto enquanto os outros continuaram a descer, pelo que a relação entre os canais mudou. Mude o modo de mistura da camada para Cor ou use um valor mais pequeno para o limitar.',
+        },
+        {
+          question: 'As zonas cinzentas ou brancas vão ganhar uma dominante de cor?',
+          answer: 'Não. Um píxel com canais iguais já está na sua luma, e multiplicar uma distância nula por qualquer fator dá zero, pelo que os neutros continuam neutros em qualquer posição do controlo, nos dois sentidos.',
+        },
+        {
+          question: 'Posso saturar só uma cor, como o céu?',
+          answer: 'De duas maneiras. Acrescente uma máscara Intervalo de cores a esta camada, com o conta-gotas no céu, ou abra o painel Cor (HSL) e suba a Saturação apenas na gama Azuis. A via HSL também permite definir a largura e a suavização da gama.',
+        },
+        {
+          question: 'Uma alteração de saturação é visível no ficheiro exportado em tamanho total?',
+          answer: 'Sim, de forma idêntica: o servidor aplica as mesmas duas fórmulas píxel a píxel ao original e, como não incluem nenhuma desfocagem nem etapa de vizinhança, a exportação coincide com a pré-visualização com uma diferença inferior a um nível de 8 bits.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Reforços fortes de saturação num JPEG amplificam os artefactos da subamostragem de crominância à volta dos contornos vermelhos e azuis; exportar em PNG ou em WebP com qualidade 95 ou superior evita acrescentar mais.',
+          'A matemática da saturação é aplicada píxel a píxel, sem vizinhança, pelo que o tempo de exportação é dominado pela descodificação e pela codificação e não pelo ajuste.',
+        ],
+      },
+      related: [
+        {
+          label: 'Cor em destaque',
+          to: '/tools/color-pop',
+          description: 'Mantenha uma cor e passe tudo o resto a cinzento, uma predefinição construída a partir do painel HSL.',
+        },
+        {
+          label: 'Mudar a cor de um objeto',
+          to: '/tools/change-image-color',
+          description: 'Desloque a tonalidade de um intervalo de cores em vez da sua intensidade.',
+        },
+        {
+          label: 'Ajustar a tonalidade da imagem',
+          to: '/tools/adjust-image-hue',
+          description: 'O controlo Tonalidade geral e as deslocações de tonalidade por gama no painel Cor (HSL).',
+        },
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'Uma conversão ponderada por canal, para quando Saturação -100 é demasiado simples.',
+        },
+        {
+          label: 'Selecionar por cor',
+          to: '/tools/select-by-color',
+          description: 'Aplique a qualquer camada, incluindo esta, uma máscara limitada a uma cor escolhida, com um controlo de tolerância.',
+        },
+      ],
+      embed: {
+        title: 'Alterar a saturação',
+        description: 'Largue aqui uma fotografia. O painel Básico abre no grupo Cor, com Vibração e Saturação lado a lado.',
+      },
     },
     'photo-levels': {
       name: 'Níveis',
+      h1: 'Ajustar os níveis de uma fotografia online',
       tagline: 'Defina o preto de entrada, o branco de entrada, a gama dos meios-tons e o intervalo de saída por canal, com um histograma em direto.',
       metaTitle: 'Ajustar os níveis de uma fotografia online: preto, branco, meios-tons',
       metaDescription: 'Níveis no navegador: pontos de preto e branco de entrada, gama dos meios-tons e limites de saída para RGB, vermelho, verde e azul, com histograma em direto.',
+      ogTitle: 'Ajustar os níveis de uma fotografia online',
+      ogDescription: 'Estique ou comprima o intervalo tonal de uma fotografia, canal a canal, com uma camada Níveis e o respetivo histograma, e exporte a partir dos píxeis originais.',
+      intro: 'Os Níveis são a forma direta de corrigir uma fotografia sem contraste: suba o ponto de preto de entrada até onde o histograma começa, desça o ponto de branco de entrada até onde acaba, e a imagem passa a usar todo o intervalo tonal. O Aperture implementa-os como uma camada na fase tonal em espaço gama, com cinco controlos para cada um de quatro canais, RGB, Vermelho, Verde e Azul: Preto de entrada, Branco de entrada, Meios-tons (um valor de gama de 0,1 a 10), Preto de saída e Branco de saída. Os três canais de cor são aplicados primeiro e o canal RGB por último, pelo que uma correção de dominante por canal e um alongamento global do contraste convivem numa só camada. Por cima dos controlos fica um histograma do resultado atual, que se atualiza a cada alteração, e a camada aceita máscara, opacidade e modo de mistura como qualquer outra.',
+      whatItDoes: [
+        'Adiciona uma camada Níveis com Preto de entrada, Branco de entrada, Meios-tons, Preto de saída e Branco de saída para o canal mestre RGB e, em separado, para Vermelho, Verde e Azul.',
+        'Estica o intervalo de entrada escolhido até ao intervalo de saída escolhido, com uma gama nos meios-tons, e leva às extremidades tudo o que fique fora dos pontos de entrada.',
+        'Aplica primeiro os canais Vermelho, Verde e Azul e depois o canal RGB, pelo que a correção de uma dominante e a do contraste podem ser definidas num só painel.',
+        'Desenha um histograma RGB e de luma em direto, para que os pontos de preto e de branco possam ser colocados nas extremidades reais dos dados.',
+        'Exporta a fotografia corrigida a partir do original em resolução total, com o mesmo mapeamento por canal.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue uma fotografia',
+          description: 'O editor abre com o painel Níveis e o respetivo histograma à frente.',
+        },
+        {
+          title: 'Defina as extremidades',
+          description: 'No canal RGB, arraste o Preto de entrada até onde o histograma começa e o Branco de entrada até onde acaba.',
+        },
+        {
+          title: 'Corrija uma dominante e os meios-tons',
+          description: 'Mude para Vermelho, Verde ou Azul para mover as extremidades de um canal e, depois, defina Meios-tons abaixo de 1 para escurecer ou acima de 1 para aclarar.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha formato, qualidade e tamanho; o servidor processa o original com os mesmos níveis.',
+        },
+      ],
+      advancedDetails: [
+        'Por canal, o mapeamento é t = clamp((v - inBlack) / (inWhite - inBlack), 0, 1), seguido de out = clamp(t ^ (1 / gamma) x (outWhite - outBlack) + outBlack, 0, 1), com o intervalo de entrada limitado a um mínimo de um milionésimo, para que pontos de preto e de branco iguais não possam dividir por zero. Os cinco valores são frações de 0..1, pelo que um ponto de preto de 26 em 8 bits corresponde a 0,102.',
+        'O controlo Meios-tons é um valor de gama: acima de 1 levanta o meio (uma entrada de 0,5 com gama 1,2 passa a 0,5612, cerca de 143 em 255) e abaixo de 1 escurece-o (a gama 0,85 transforma 0,5 em 0,4424, cerca de 113), enquanto o 0 e o 1 se mantêm fixos. É a mesma lei de potência da entrada Gama do painel Efeitos e do controlo Gama da secção Exposição.',
+        'A ordem dentro da camada é fixa: o vermelho, o verde e o azul são mapeados cada um com os seus cinco valores e, depois, o mapeamento mestre é aplicado aos três resultados. Com Meios-tons a 0,85 no canal azul, um alongamento mestre aplicado a seguir vê, portanto, o azul já escurecido.',
+        'Um Preto de saída acima de 0 e um Branco de saída abaixo de 1 comprimem o intervalo em vez de o esticar, e é assim que se obtém um look mate: Preto de saída 0,08 e Branco de saída 0,97 transformam o preto puro em 0,08 (cerca de 20) e o branco puro em 0,97 (cerca de 247), e deixam 0,5 em 0,525.',
+        'O histograma e a pré-visualização vêm da sua GPU (WebGL2), que trabalha sobre uma cópia de 1920 px da fotografia; o ficheiro exportado é processado no nosso servidor a partir do original em resolução total com a mesma fórmula dos níveis, e a pré-visualização e a exportação coincidem dentro de uma pequena tolerância documentada, no máximo alguns níveis de 8 bits, sendo o grão exato.',
+      ],
+      whyItMatters: [
+        'Digitalizações, capturas de ecrã de vídeo e fotografias tiradas com neblina raramente chegam ao preto ou ao branco verdadeiros; colocar as extremidades nos limites do histograma devolve o contraste sem mexer nas cores intermédias.',
+        'As extremidades por canal são a correção de dominante mais direta que existe: uma digitalização cujo canal azul começa em 40 em vez de 0 corrige-se com um único controlo.',
+        'Os limites de saída dão um desvanecimento controlado para impressão ou para um estilo mate, com números que pode repetir na fotografia seguinte.',
+      ],
+      useCases: [
+        {
+          title: 'Recuperar uma digitalização sem contraste',
+          description: 'Preto de entrada 0,1 e Branco de entrada 0,9 no canal RGB esticam para todo o intervalo uma digitalização cujo histograma fica entre 26 e 230.',
+        },
+        {
+          title: 'Remover a dominante de um canal',
+          description: 'Abra o canal Azul e suba o Preto de entrada até o histograma azul começar onde começam o vermelho e o verde.',
+        },
+        {
+          title: 'Look de película mate',
+          description: 'Preto de saída 0,08 e Branco de saída 0,97, opcionalmente com os Meios-tons do azul um pouco mais baixos para uma sombra quente.',
+        },
+        {
+          title: 'Preparar imagens para impressão',
+          description: 'Preto de saída 0,04 e Branco de saída 0,96 mantêm os tons dentro do intervalo que uma máquina de impressão consegue reproduzir.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Esticar uma digitalização sem contraste de 20 MP',
+          body: 'Uma digitalização JPEG de 5400 x 3600 (19,4 MP, 7,2 MB) cujo histograma vai de cerca de 26 a 230. No canal RGB: Preto de entrada 0,1; Branco de entrada 0,9; Meios-tons 1,2; Preto de saída 0; Branco de saída 1. Um píxel em 0,3 passa a ((0,3 - 0,1) / 0,8) ^ (1 / 1,2) = 0,315, cerca de 80; um píxel em 0,5 passa a 0,5612, cerca de 143; um píxel em 0,7 passa a 0,7868, cerca de 201; e 0,1 e 0,9 ficam em 0 e 1. Tudo o que estiver em 0,1 ou abaixo fica cortado a preto. Exportado em JPG com qualidade 92, o ficheiro de 19,4 MP tem cerca de 8,7 MB no Premium ou no Pro; uma exportação de visitante é reduzida para 12 MP, cerca de 5,4 MB.',
+        },
+        {
+          title: 'Correção do azul por canal e um mestre seguro para impressão',
+          body: 'Um JPEG de 4000 x 3000 (12 MP, 4,4 MB) com uma dominante azul nas sombras. Canal azul: Meios-tons 0,85, tudo o resto por omissão. Canal RGB: Preto de entrada 0,05; Branco de entrada 0,95; Preto de saída 0,04; Branco de saída 0,96. Um cinzento neutro de 0,5 passa a (0,5; 0,5; 0,4412), cerca de (128, 128, 112), porque só o canal azul passou pela gama e o alongamento mestre devolve 0,5 a 0,5. Uma sombra de (0,3; 0,25; 0,2) passa a (75, 62, 36). O preto puro fica em 0,04 (10) e o branco puro em 0,96 (245), que é o intervalo de saída que uma impressão consegue reproduzir. A exportação em PNG tem cerca de 30 MB; em JPG com qualidade 92, cerca de 5,4 MB.',
+        },
+      ],
+      whenNotToUse: 'Os Níveis não conseguem dobrar a curva tonal em mais do que um sítio, por isso, para uma curva em S ou para levantar apenas os tons de três quartos, use o painel Curvas. Se a fotografia está subexposta, e não apenas sem contraste, os controlos de Exposição trabalham em luz linear e escalam a imagem como a câmara o teria feito, o que os Níveis, em espaço gama, não fazem. Para uma dominante que vem da iluminação, os controlos de equilíbrio de brancos corrigem-na com dois valores em vez de três canais e, para uma correção com um só controlo, a página Ajustar contraste é mais rápida.',
+      whyMediaManipulator: [
+        'O Aperture aplica os níveis com a mesma fórmula na pré-visualização em GPU, no servidor de exportação e na aplicação para telemóvel, e o histograma sobre o qual define os pontos é calculado a partir do resultado efetivamente processado, e não apenas da imagem de origem.',
+        'Os Níveis ficam numa pilha não destrutiva de 64 camadas com máscaras, pelo que um alongamento tonal pode ser limitado ao céu ou às sombras com um intervalo de luminosidade.',
+        'O projeto é guardado na sua conta quando inicia sessão e a exportação é processada a partir do ficheiro original, pelo que uma digitalização corrigida na pré-visualização de 1920 px é exportada com a sua largura real de 6000 px.',
+      ],
+      privacyNote: 'Os controlos de Níveis são avaliados no seu navegador sobre a fotografia descodificada e sobre o histograma do resultado; o ficheiro só é carregado para uma exportação, uma máscara do motivo ou uma correção, e o servidor mapeia o original com os mesmos pontos extremos e a mesma gama. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Com sessão iniciada, o original e a respetiva pré-visualização são mantidos de acordo com a sua definição de retenção até o projeto ser eliminado.',
+      faq: [
+        {
+          question: 'Qual é a diferença entre Níveis e Curvas?',
+          answer: 'Os Níveis são um alongamento em linha reta com uma única curvatura de gama: cinco números por canal. As Curvas permitem colocar até 16 pontos para qualquer forma monótona. Os Níveis são mais rápidos para os pontos de preto e de branco e para as dominantes; as Curvas servem para moldar o contraste em zonas tonais específicas.',
+        },
+        {
+          question: 'Que canal é aplicado primeiro?',
+          answer: 'Vermelho, Verde e Azul primeiro, cada um com os seus cinco valores, e o canal mestre RGB por último, sobre os canais já corrigidos.',
+        },
+        {
+          question: 'O que acontece aos píxeis mais escuros do que o ponto de preto de entrada?',
+          answer: 'Ficam cortados no valor do preto de saída, porque o valor normalizado é limitado a 0 antes da gama. O histograma mostra-os como um pico na extremidade esquerda, por isso recue o Preto de entrada se esse pico crescer.',
+        },
+        {
+          question: 'Os Meios-tons são o mesmo que o controlo Gama da Exposição?',
+          answer: 'A matemática é a mesma lei de potência, out = in ^ (1 / gamma), mas nos Níveis atua entre o alongamento de entrada e o intervalo de saída de cada canal, e pode ser definida por canal, o que a gama da Exposição não permite.',
+        },
+        {
+          question: 'Posso ler os valores dos controlos como números de 8 bits?',
+          answer: 'Os controlos vão de 0 a 1; multiplique por 255 para obter os habituais valores 0-255. Preto de entrada 0,1 corresponde ao nível 26 e Branco de entrada 0,9 ao nível 230.',
+        },
+        {
+          question: 'Um alongamento dos níveis cria bandas?',
+          answer: 'Esticar uma fonte de 8 bits afasta os seus valores uns dos outros, pelo que um alongamento forte num JPEG sem contraste pode mostrar degraus em gradientes suaves. Mantenha o alongamento moderado ou exporte em PNG, para que os degraus não sejam agravados pela compressão.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O histograma é calculado a partir da pré-visualização processada; um alongamento forte de uma fonte de 8 bits pode revelar falhas nele.',
+          'As digitalizações TIFF e BMP precisam de uma conta para obter uma pré-visualização editável; as exportações acima de 12 megapíxeis precisam do Premium ou do Pro.',
+        ],
+      },
+      related: [
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Modelação tonal livre com até 16 pontos por canal.',
+        },
+        {
+          label: 'Ajustar contraste',
+          to: '/tools/adjust-image-contrast',
+          description: 'Um único controlo de contraste, quando as extremidades já estão bem.',
+        },
+        {
+          label: 'Corrigir exposição',
+          to: '/tools/fix-photo-exposure',
+          description: 'EV, deslocamento e gama em luz linear para uma fotografia subexposta.',
+        },
+        {
+          label: 'Equilíbrio de brancos',
+          to: '/tools/white-balance-photo',
+          description: 'Temperatura e tonalidade para dominantes que vêm da luz e não da digitalização.',
+        },
+        {
+          label: 'Inverter cores',
+          to: '/tools/invert-image-colors',
+          description: 'Inverta primeiro um negativo e depois defina níveis por canal para eliminar a base da película.',
+        },
+        {
+          label: 'Tutorial do Aperture',
+          to: '/tutorials/aperture',
+          description: 'Visita guiada às camadas, ao histograma e à exportação.',
+        },
+      ],
+      embed: {
+        title: 'Ajustar os níveis de uma fotografia',
+        description: 'Largue uma fotografia para abrir o painel Níveis com o respetivo histograma; defina os pontos de preto, de branco e dos meios-tons e exporte.',
+      },
     },
     'photo-curves': {
       name: 'Curvas',
+      h1: 'Ferramenta de curvas online para fotografias',
       tagline: 'Dê forma ao tom e à cor com uma curva arrastável para RGB e para cada canal, até 16 pontos, com conta-gotas.',
       metaTitle: 'Ferramenta de curvas online: curvas RGB e por canal no navegador',
       metaDescription: 'Curvas no navegador: arraste até 16 pontos nas curvas RGB, vermelha, verde e azul, escolha tons com um conta-gotas e exporte em resolução total.',
+      ogTitle: 'Ferramenta de curvas online para fotografias',
+      ogDescription: 'Um verdadeiro painel de curvas: cúbica monótona pelos seus pontos, controlo por canal, conta-gotas, histograma e exportação em tamanho total a partir do original.',
+      intro: 'As Curvas fazem corresponder cada tom de entrada a um tom de saída ao longo de uma linha desenhada por si, e são a ferramenta tonal e de cor mais flexível de qualquer editor. O Aperture dá-lhe quatro curvas, RGB, Vermelho, Verde e Azul, cada uma com 2 a 16 pontos arrastáveis, e um conta-gotas «Escolher um ponto da fotografia» que adiciona um ponto no valor que está sob o cursor na fotografia. A curva que passa pelos pontos é uma cúbica monótona, pelo que nunca vai além dos pontos nem inverte o sentido entre eles, e é amostrada numa tabela de 256 entradas que a GPU e o servidor de exportação leem com interpolação linear. As três curvas de cor são aplicadas primeiro e a curva RGB por último, na fase tonal em espaço gama da pilha de camadas, sob um histograma em direto e com os habituais controlos de máscara, opacidade e modo de mistura na camada.',
+      whatItDoes: [
+        'Adiciona uma camada Curvas com quatro gráficos, RGB, Vermelho, Verde e Azul; arraste pontos no gráfico, adicione até 16 por curva e remova qualquer ponto exceto as extremidades.',
+        'Ajusta uma curva cúbica de Hermite monótona aos pontos, para que uma curva em S se mantenha suave e um degrau íngreme nunca produza uma inversão.',
+        'Amostra cada curva em 256 entradas e aplica primeiro as curvas de cor e, depois, a curva RGB ao resultado.',
+        'Escolhe pontos na fotografia com um conta-gotas, para que um determinado tom de pele ou valor de céu se torne uma pega no gráfico.',
+        'Mostra o resultado no histograma em direto e exporta-o a partir do original em resolução total.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue uma fotografia',
+          description: 'O editor abre com o painel Curvas e o gráfico RGB à frente.',
+        },
+        {
+          title: 'Coloque pontos',
+          description: 'Clique no gráfico ou use o conta-gotas na fotografia para adicionar pontos e, depois, arraste-os para dar forma à curva.',
+        },
+        {
+          title: 'Trabalhe os canais',
+          description: 'Mude para Vermelho, Verde ou Azul para corrigir uma dominante ou para criar uma gradação de cor com curvas opostas.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha formato e tamanho; o servidor constrói as mesmas tabelas e processa o original.',
+        },
+      ],
+      advancedDetails: [
+        'Os pontos têm de ter x estritamente crescente de 0 a 1. Os declives nos pontos seguem o método de Fritsch-Carlson: declives das secantes d entre vizinhos, um declive nas extremidades igual à primeira ou à última secante, declives interiores iguais à média das duas secantes (ou 0 onde as secantes mudam de sinal), e qualquer par de declives cuja razão ao quadrado face à secante exceda 9 é reduzido, para que o segmento não possa ir além dos seus extremos.',
+        'Cada curva é amostrada em 256 valores de x = i / 255 com a base cúbica de Hermite (2t ao cubo - 3t ao quadrado + 1, t ao cubo - 2t ao quadrado + t, e os respetivos complementos) e limitada a 0..1; os valores de x antes do primeiro ponto tomam o y desse ponto e os valores de x depois do último ponto tomam o y deste. O valor de um píxel é então lido da tabela por interpolação linear entre as duas entradas mais próximas, que é o que faz o amostrador linear da GPU.',
+        'Uma curva em S simétrica que passa por (0,25; 0,2) e (0,75; 0,8) transforma 0,4 em 0,3716 e 0,6 em 0,6284, e deixa 0,5 exatamente em 0,5; as suas entradas 127 e 128 na tabela valem 0,4975 e 0,5025, e a amostragem de 0,5 cai a meio caminho entre elas.',
+        'Ordem dentro da camada: as curvas Vermelho, Verde e Azul mapeiam cada uma o seu canal e, depois, a curva RGB mapeia os três resultados. Como o ajuste é monótono, um degrau íngreme de três pontos de (0,4; 0,1) a (0,5; 0,9) atinge um máximo de exatamente 1, sem oscilações, ao passo que uma spline cúbica simples ultrapassaria o 1 e desceria abaixo do 0 junto ao degrau.',
+        'A pré-visualização sobre a qual arrasta a curva é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px; o ficheiro exportado é processado no nosso servidor a partir do original em resolução total com as mesmas tabelas e a mesma interpolação, e os dois coincidem dentro de uma pequena tolerância documentada de, no máximo, alguns níveis de 8 bits (o grão é exato).',
+      ],
+      whyItMatters: [
+        'Uma curva em S acrescenta contraste onde é preciso e protege as extremidades, algo que um controlo de contraste com pivô no cinzento médio não consegue fazer.',
+        'As curvas por canal são a forma precisa da gradação de cor: um azul levantado nas sombras e baixado nos realces é a clássica divisão entre sombras frias e realces quentes, desenhada em vez de aproximada.',
+        'O conta-gotas liga o gráfico a píxeis reais, pelo que corrige o tom em que clicou em vez de adivinhar onde fica no eixo.',
+      ],
+      useCases: [
+        {
+          title: 'Curva em S suave para dar impacto',
+          description: 'Pontos em (0,25; 0,2) e (0,75; 0,8) no RGB: as sombras descem cerca de 13 níveis em 0,25, os realces sobem o mesmo em 0,75 e o cinzento médio fica intacto.',
+        },
+        {
+          title: 'Desvanecimento mate',
+          description: 'Suba o primeiro ponto RGB para y = 0,08, de modo que o preto puro passe a 20 em 255, e adicione (0,3; 0,3) para manter os meios-tons no lugar.',
+        },
+        {
+          title: 'Arrefecer as sombras',
+          description: 'Na curva Azul, adicione (0,25; 0,3); na curva Vermelho, adicione (0,25; 0,22). As sombras deslocam-se para o azul, enquanto os realces se mantêm neutros.',
+        },
+        {
+          title: 'Corrigir um tom específico',
+          description: 'Use «Escolher um ponto da fotografia» num rosto e, depois, arraste esse ponto alguns pontos percentuais para cima ou para baixo; só os tons próximos se alteram.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma curva em S e uma descida no canal azul numa paisagem de 24 MP',
+          body: 'Um JPEG de 6000 x 4000 (24 MP, 10,2 MB). Pontos da curva RGB: (0, 0), (0,25; 0,2), (0,75; 0,8), (1, 1). Pontos da curva Azul: (0, 0), (0,5; 0,45), (1, 1). Um píxel de céu de (0,35; 0,55; 0,85), ou (89, 140, 217): a curva Azul começa por levar 0,85 a 0,8729 e, depois, a curva em S RGB leva os três canais a (0,3104; 0,5648; 0,8729), ou (79, 144, 223), pelo que o céu ganha contraste e perde um pouco de azul nos meios-tons. Só com a curva em S, 0,1 passa a 0,0752 (19), 0,4 passa a 0,3716 (95), 0,6 passa a 0,6284 (160) e 0,9 passa a 0,9248 (236). A exportação em JPG com qualidade 92 tem cerca de 10,8 MB no Premium ou no Pro; como visitante, 12 MP e cerca de 5,4 MB.',
+        },
+        {
+          title: 'Levantamento e efeito mate num retrato de 12 MP',
+          body: 'Um JPEG de 3000 x 4000 (12 MP, 4,6 MB). Primeira camada, pontos RGB (0, 0), (0,5; 0,6), (1, 1): um único ponto médio levantado transforma 0,25 em 0,3125 (80), 0,5 em 0,6 (153), 0,75 em 0,8125 (207) e 0,9 em 0,9232 (235), um aclaramento suave que deixa as extremidades fixas. Segunda camada, pontos RGB (0; 0,08), (0,3; 0,3), (1, 1): o preto puro passa a 0,08 (20), 0,1 passa a 0,1504 (38), 0,3 fica em 0,3 e 0,5 desce ligeiramente para 0,4864 (124), porque o ajuste monótono achata a curva depois do ponto fixado. As duas camadas podem ser anuladas separadamente. A exportação em WebP com qualidade 85 tem cerca de 3,6 MB.',
+        },
+      ],
+      whenNotToUse: 'As Curvas são excessivas quando a fotografia só precisa de um ponto de preto e de branco, que o painel Níveis define com dois controlos e um histograma, ou quando basta uma única alteração global de contraste ou de brilho, que o painel Básico resolve num só movimento. Os problemas de exposição resolvem-se nos controlos de Exposição, já que estes trabalham em luz linear e as curvas não. E, se uma gradação já existe como ficheiro .cube, a página Aplicar um LUT aplica a tabela exata, em vez de uma aproximação desenhada à mão.',
+      whyMediaManipulator: [
+        'O Aperture usa uma spline monótona publicada e uma tabela de 256 entradas tanto na pré-visualização em GPU como no servidor de exportação e na aplicação para telemóvel, pelo que uma curva desenhada uma vez é processada da mesma forma em todo o lado onde o Media Manipulator a mostra.',
+        'As camadas Curvas empilham-se com máscaras, pelo que uma curva em S pode ser limitada a um intervalo de luminosidade ou a uma região pintada a pincel, e uma gradação por canal pode ser aplicada apenas ao fundo com uma máscara do motivo.',
+        'A curva é guardada sob a forma dos seus pontos no documento do projeto, o que mantém um projeto guardado editável mais tarde e torna a exportação independente da resolução da pré-visualização.',
+      ],
+      privacyNote: 'Os pontos da curva são transformados em tabelas de consulta no seu navegador e aplicados aí à fotografia descodificada; o ficheiro só é carregado quando exporta, seleciona um motivo ou corrige, e o servidor reconstrói as mesmas tabelas para o original. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Com uma conta, o original e a respetiva pré-visualização de 1920 px ficam sujeitos à sua definição de retenção até eliminar o projeto.',
+      faq: [
+        {
+          question: 'Quantos pontos pode ter uma curva?',
+          answer: 'Entre 2 e 16 por curva, com os valores de x estritamente crescentes. Os dois pontos das extremidades podem ser movidos na vertical, mas não removidos; qualquer ponto intermédio pode ser arrastado ou eliminado.',
+        },
+        {
+          question: 'Porque é que a curva nunca vai além dos pontos?',
+          answer: 'É uma cúbica monótona de Fritsch-Carlson: os declives em cada ponto são limitados para que um segmento entre dois pontos fique entre os respetivos valores de y. Uma subida íngreme continua a atingir exatamente o seu ponto superior, mas não pode passar além dele, como faria uma spline cúbica livre.',
+        },
+        {
+          question: 'Que curva é aplicada primeiro, a RGB ou as dos canais de cor?',
+          answer: 'Vermelho, Verde e Azul primeiro, cada uma no seu canal, e depois a curva RGB sobre as três saídas. Assim, uma curva em S RGB acrescenta contraste aos canais com a cor já corrigida.',
+        },
+        {
+          question: 'Qual é a precisão da tabela de 256 entradas?',
+          answer: 'Cada entrada da tabela é um valor de vírgula flutuante amostrado em i / 255, e um valor de píxel entre duas entradas é interpolado linearmente, pelo que o erro face à spline exata fica muito abaixo de um nível de 8 bits em qualquer curva suave.',
+        },
+        {
+          question: 'O que faz o conta-gotas?',
+          answer: '«Escolher um ponto da fotografia» adiciona um ponto à curva atual na posição x do valor que está sob o cursor (a luma no RGB, ou o valor desse canal), com y igual a x, pelo que nada muda até o arrastar.',
+        },
+        {
+          question: 'As curvas conseguem corrigir uma dominante de cor?',
+          answer: 'Sim. Encontre um cinzento neutro com o conta-gotas em cada canal e arraste os pontos resultantes até as três saídas coincidirem, ou suba a extremidade de entrada do canal em défice. Para dominantes causadas pela iluminação, o equilíbrio de brancos costuma ser mais rápido.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Cada curva torna-se uma tabela de 256 entradas; curvas íngremes em fontes de 8 bits podem expor falhas no histograma, por isso exporte em PNG quando isso for importante.',
+          'HEIC, HEIF, TIFF e BMP precisam de uma conta para obter uma pré-visualização editável; as exportações acima de 12 megapíxeis precisam do Premium ou do Pro.',
+        ],
+      },
+      related: [
+        {
+          label: 'Níveis',
+          to: '/tools/photo-levels',
+          description: 'Extremidades e gama por canal, com cinco valores, para alongamentos rápidos.',
+        },
+        {
+          label: 'Ajustar contraste',
+          to: '/tools/adjust-image-contrast',
+          description: 'A versão com um só controlo, quando uma curva completa é mais do que precisa.',
+        },
+        {
+          label: 'Divisão de tons',
+          to: '/tools/split-toning',
+          description: 'Duas tonalidades com um controlo de equilíbrio, como atalho para curvas de cor opostas.',
+        },
+        {
+          label: 'Aplicar um LUT',
+          to: '/tools/apply-lut-to-photo',
+          description: 'Carregue uma tabela 3D quando a gradação já é um ficheiro .cube.',
+        },
+        {
+          label: 'Equilíbrio de cores',
+          to: '/tools/color-balance-photo',
+          description: 'Deslocamentos RGB em três bandas com a luminosidade preservada, em vez de curvas desenhadas.',
+        },
+        {
+          label: 'Tutorial do Aperture',
+          to: '/tutorials/aperture',
+          description: 'Como se articulam a pilha, as máscaras e o histórico.',
+        },
+      ],
+      embed: {
+        title: 'Ajustar as curvas de uma fotografia',
+        description: 'Largue uma fotografia para abrir o painel Curvas; arraste pontos nos gráficos RGB ou de cada canal, escolha tons com o conta-gotas e exporte.',
+      },
     },
     'white-balance-photo': {
       name: 'Equilíbrio de brancos',
+      h1: 'Corrigir o equilíbrio de brancos de uma fotografia online',
       tagline: 'Remova uma dominante amarela, azul, verde ou magenta com controlos de Temperatura e Tonalidade que atuam em luz linear sobre os meios-tons.',
       metaTitle: 'Corrigir o equilíbrio de brancos e a dominante de uma fotografia | Aperture',
       metaDescription: 'Corrija uma dominante de cor no navegador. Os controlos de Temperatura e Tonalidade deslocam os meios-tons em luz linear, com pré-visualização em direto e exportação em resolução total.',
+      ogTitle: 'Corrigir o equilíbrio de brancos de uma fotografia online',
+      ogDescription: 'Temperatura e Tonalidade em luz linear, ponderadas para os meios-tons, para que os pretos e os brancos se mantenham neutros. Pré-visualização em direto, exportação em resolução total.',
+      intro: 'Uma dominante de cor é o que se obtém quando a câmara avalia mal a luz: as lâmpadas de tungsténio deixam tudo alaranjado, a sombra aberta deixa tudo azulado e os tubos fluorescentes e alguns painéis LED deixam tudo esverdeado. O grupo Equilíbrio de brancos do painel Básico do Aperture tem os dois controlos que corrigem cada caso: a Temperatura desloca a fotografia entre o azul (valores negativos) e o âmbar (valores positivos), e a Tonalidade desloca-a entre o verde (negativos) e o magenta (positivos). Ambos atuam em luz linear, depois da descodificação sRGB, e ambos são ponderados para os meios-tons em função da luminosidade, pelo que a dominante sai da parede cinzenta, da pele e da toalha de mesa, enquanto as sombras mais profundas e os brancos mais claros ficam praticamente intactos. Antes de começar, o conta-gotas dos painéis Cor (HSL) e Máscaras mostra-lhe o valor real de uma superfície que deveria ser neutra.',
+      whatItDoes: [
+        'Temperatura de -100 a +100: em luz linear, soma ao canal vermelho temperature / 100 vezes uma ponderação de meios-tons e subtrai o mesmo valor ao azul. Os valores negativos arrefecem uma fotografia alaranjada tirada com luz de tungsténio; os positivos aquecem uma fotografia azulada tirada à sombra.',
+        'Tonalidade de -100 a +100: subtrai ao canal verde tint / 100 vezes a mesma ponderação, pelo que um valor positivo elimina uma dominante verde de luz fluorescente e um valor negativo elimina uma dominante magenta.',
+        'A ponderação de meios-tons atinge o máximo de 0,7 quando a luminosidade linear é 0,5 (um valor sRGB de cerca de 188) e desce a zero abaixo de uma luminosidade linear de 0,208 (sRGB 126) e acima de 0,792 (sRGB 230), pelo que as sombras profundas e os quase brancos não se deslocam.',
+        'O resultado é novamente codificado em sRGB e limitado ao intervalo válido, e a camada pode receber uma máscara: um candeeiro de tungsténio numa sala com luz do dia pede uma máscara radial numa camada de arrefecimento, e não uma alteração global.',
+        'Para dominantes que diferem entre as sombras e os realces, a página remete para o painel Equilíbrio de cores, que tem controlos separados de vermelho, verde e azul para as sombras, os meios-tons e os realces.',
+      ],
+      flowSteps: [
+        {
+          title: 'Encontre um neutro',
+          description: 'Abra a fotografia e procure algo que deveria ser cinzento ou branco: papel, uma parede, uma camisa. Os valores dos canais indicam-lhe para que lado vai a dominante.',
+        },
+        {
+          title: 'Defina a Temperatura',
+          description: 'Se, nesse neutro, o vermelho estiver acima do azul, arraste a Temperatura para valores negativos até os dois se igualarem; se o azul estiver mais alto, arraste-a para valores positivos. A ponderação de meios-tons faz a maior parte do trabalho em superfícies à volta de 150 a 220.',
+        },
+        {
+          title: 'Defina a Tonalidade',
+          description: 'Se o verde continuar acima do vermelho e do azul, suba a Tonalidade; se estiver abaixo, baixe-a. Valores pequenos, de 10 a 20, costumam bastar.',
+        },
+        {
+          title: 'Compare e exporte',
+          description: 'Mantenha premida a tecla de barra invertida para comparar com o original e depois exporte. O servidor aplica o mesmo deslocamento em luz linear ao ficheiro em resolução total.',
+        },
+      ],
+      advancedDetails: [
+        'Por píxel: R, G e B são descodificados de sRGB para linear (v / 12,92 abaixo de 0,04045; caso contrário, ((v + 0,055) / 1,055) elevado a 2,4). Luminosidade l = (max + min) / 2 dos canais lineares. Ponderação w = clamp((l - 0,333) vezes 4 + 0,5) vezes clamp((1 - l - 0,333) vezes 4 + 0,5) vezes 0,7.',
+        'Em seguida, R += (temperature / 100) vezes w, G += (-tint / 100) vezes w e B += (-temperature / 100) vezes w, cada um limitado ao intervalo de 0 a 1, e os três canais são novamente codificados em sRGB. É exatamente o equilíbrio de cores dos meios-tons do editor de vídeo Darkroom, reutilizado tal e qual.',
+        'Valores da ponderação: 0 com luminosidade linear 0,1; 0,118 com 0,25; 0,342 com 0,333; 0,7 com 0,5; 0,538 com 0,6; 0,118 com 0,75; 0 com 0,9. Em valores sRGB, o efeito fica confinado a cerca de 126 a 230 e é mais forte perto de 188.',
+        'Cinzento de exemplo: um cinzento sRGB de 188 com Temperatura +40 passa a 229, 188, 130; com -40 passa a 130, 188, 229. O mesmo controlo num cinzento de 128 dá 129, 128, 126, e num de 230 dá 230, 230, 229: fora dos meios-tons, o deslocamento é pequeno de propósito.',
+        'Tonalidade no mesmo cinzento de 188: +30 dá 188, 147, 188 (o verde é retirado, pelo que o píxel parece magenta) e -30 dá 188, 220, 188.',
+        'A pré-visualização é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px; o ficheiro exportado é processado no nosso servidor a partir do original em resolução total, com as mesmas fórmulas, e os dois coincidem dentro de uma pequena tolerância documentada de, no máximo, alguns níveis de 8 bits (o grão é exato); o equilíbrio de brancos, por ser calculado píxel a píxel, coincide ao nível.',
+      ],
+      whyItMatters: [
+        'Uma dominante é a primeira coisa que o espectador nota e a última que consegue identificar; corrigi-la antes de qualquer outro ajuste garante que o trabalho de saturação, contraste e curvas que se segue é feito sobre as cores verdadeiras.',
+        'Trabalhar em luz linear importa aqui porque a luz se mistura de forma aditiva; deslocar diretamente os valores sRGB moveria os tons escuros e os claros em quantidades diferentes para a mesma dominante.',
+        'Ponderar para os meios-tons mantém os pretos pretos e os brancos brancos, que é o aspeto de um equilíbrio de brancos correto: a dominante estava nas superfícies iluminadas, não nos extremos.',
+      ],
+      useCases: [
+        {
+          title: 'Fotografia de interior alaranjada, com lâmpadas',
+          description: 'A Temperatura -35 leva uma parede que mede 210, 170, 120 a 177, 170, 168, quase neutra, enquanto uma sombra com 90, 70, 50 fica intacta, porque a sua luminosidade está abaixo do limiar da ponderação.',
+        },
+        {
+          title: 'Fotografia azulada à sombra ou na neve',
+          description: 'A Temperatura +25 aquece um cinzento à sombra de 150, 160, 180 para 174, 160, 157; numa neve com 200, 210, 235, +50 chega a 218, 210, 219, porque a ponderação perto do branco já está a descer.',
+        },
+        {
+          title: 'Iluminação verde de escritório ou de ginásio',
+          description: 'A Tonalidade +15 leva uma parede de 185, 200, 180 a 185, 183, 180 e elimina o verde fluorescente sem tocar nos canais vermelho e azul.',
+        },
+        {
+          title: 'Luz mista',
+          description: 'Uma sala com luz do dia e um candeeiro de tungsténio: corrija a sala globalmente e depois acrescente uma segunda camada de Equilíbrio de brancos com Temperatura -40, sob uma máscara radial centrada no candeeiro.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Jantar com luz de tungsténio, 12 MP, Temperatura -35',
+          body: 'Um JPEG de 4000 x 3000 (12 MP, 3,9 MB) iluminado por lâmpadas quentes. Uma toalha de mesa branca mede 210, 170, 120, um meio-tom 160, 130, 95, um canto escuro 90, 70, 50 e um guardanapo claro 250, 235, 200. A Temperatura -35 leva a toalha a 177, 170, 168 e o meio-tom a 155, 130, 104, deixa o canto em 90, 70, 50 (a sua luminosidade linear está abaixo do limiar de 0,208) e move o guardanapo apenas para 247, 235, 204. A toalha fica a menos de 9 níveis do neutro; uma Tonalidade de +5 trocaria, se fosse preciso, um pouco de verde por magenta. Exporte em JPG com qualidade 92, cerca de 5,4 MB: uma tarefa normal, dentro do limite para visitantes.',
+        },
+        {
+          title: 'Retrato azulado à sombra, 20 MP, Temperatura +20',
+          body: 'Um JPEG de 5472 x 3648 (20 MP, 7,4 MB) tirado à sombra aberta. Um casaco cinzento mede 150, 160, 180 e uma face 190, 165, 160. A Temperatura +20 leva o casaco a 170, 160, 162 e a face a 210, 165, 131: o casaco fica quase neutro, enquanto a pele aquece visivelmente, porque a sua luminosidade está perto do pico da ponderação. Se no rosto for demasiado, a mesma camada a 60% de opacidade dá um resultado que recua 40% do caminho até ao original. Exportado em WebP com qualidade 90, o ficheiro de 20 MP tem cerca de 6 MB num plano pago, e cerca de 3,6 MB no limite de 12 MP.',
+        },
+      ],
+      whenNotToUse: 'A Temperatura e a Tonalidade só movem os meios-tons, pelo que uma dominante mais forte nas sombras ou nos realces, como as sombras ciano de algumas fotografias subaquáticas, precisa do painel Equilíbrio de cores, com as suas linhas separadas. Se o objetivo for acrescentar um ambiente em vez de remover uma dominante, os painéis Filtro de foto e Divisão de tons foram feitos para isso e mantêm a luminosidade. E se um canal estiver cortado no original, por exemplo um canal vermelho preso a 255 sob uma luz de palco vermelha, nenhum equilíbrio de brancos consegue recuperar aí um neutro, porque a informação se perdeu.',
+      whyMediaManipulator: [
+        'O Aperture aplica o equilíbrio de brancos em luz linear, com uma ponderação de meios-tons documentada, em vez de tingir a imagem inteira por igual, como fazem muitos filtros rápidos.',
+        'A camada pode receber uma máscara de pincel, radial, gradiente, intervalo de luminosidade, intervalo de cores ou motivo, e é assim que se corrige como deve ser uma luz mista.',
+        'A mesma matemática de Temperatura e Tonalidade é executada no editor de vídeo Darkroom deste site, pelo que as fotografias e os vídeos da mesma sessão podem ser igualados pelos números.',
+      ],
+      privacyNote: 'A correção do equilíbrio de brancos desloca o vermelho, o verde e o azul dos meios-tons em luz linear, e esse deslocamento acontece na sua placa gráfica enquanto edita; como visitante, a fotografia fica neste navegador até exportar, selecionar um motivo ou usar Corrigir. A exportação carrega o original uma única vez para que o servidor possa repetir o mesmo deslocamento em cada píxel da resolução total, e o resultado é conservado como o de qualquer outra tarefa. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Nada é partilhado com terceiros.',
+      faq: [
+        {
+          question: 'Porque é que a dominante se mantém nas zonas muito escuras e muito claras?',
+          answer: 'A ponderação de meios-tons é zero abaixo de uma luminosidade linear de cerca de 0,21 e acima de cerca de 0,79. As dominantes costumam estar nos meios-tons iluminados, por isso o resultado é normalmente o correto; quando uma dominante chega às sombras, use o painel Equilíbrio de cores, cuja linha Sombras tem os seus próprios controlos de vermelho, verde e azul.',
+        },
+        {
+          question: 'Que sentido elimina uma dominante amarela ou alaranjada?',
+          answer: 'A Temperatura negativa. Subtrai ao vermelho e soma ao azul em luz linear, pelo que uma parede iluminada a tungsténio com 210, 170, 120 chega a 177, 170, 168 com -35. Se o resultado ficar ligeiramente esverdeado, acrescente alguns pontos de Tonalidade positiva.',
+        },
+        {
+          question: 'Existe equilíbrio de brancos automático ou um conta-gotas para neutros?',
+          answer: 'O look Automático do painel Predefinições acrescenta uma pilha inicial de ajustes que pode depois afinar ou anular. O grupo Equilíbrio de brancos, em si, tem apenas dois controlos; os conta-gotas dos painéis Cor (HSL) e Máscaras leem uma cor da fotografia e são úteis para verificar o que um suposto neutro contém realmente.',
+        },
+        {
+          question: 'Que valor de Temperatura é normal?',
+          answer: 'Entre 15 e 40 para a maioria das dominantes. Com 40, um cinzento médio de 188 move-se 41 níveis no vermelho e 58 no azul, o que já é uma correção forte; os valores perto de 100 servem para colorações criativas, não para correções.',
+        },
+        {
+          question: 'O equilíbrio de brancos altera o brilho?',
+          answer: 'Ligeiramente, porque um canal sobe e outro desce na mesma quantidade linear e os pesos de luma do vermelho e do azul são diferentes: arrefecer um cinzento de 188 com -40 dá 130, 188, 229, cuja luma fica um pouco abaixo da original. A diferença é, no máximo, de alguns níveis, e nenhum canal fica cortado, a não ser que já estivesse perto do limite.',
+        },
+        {
+          question: 'Posso corrigir uma dominante que é diferente no céu e no chão?',
+          answer: 'Sim, com duas camadas: uma camada de Equilíbrio de brancos sob uma máscara de gradiente linear que cubra o céu e outra para o chão, ou uma única camada de Equilíbrio de cores que trate os realces e as sombras separadamente.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O equilíbrio de brancos é aplicado à imagem descodificada, e não aos dados em bruto do sensor, pelo que uma dominante gravada num JPEG com um canal cortado não pode ser totalmente neutralizada nesse canal.',
+          'A descodificação e a codificação em luz linear são feitas píxel a píxel, em vírgula flutuante e sem vizinhança, pelo que o tempo de exportação depende do tamanho do ficheiro e não dos valores dos controlos.',
+        ],
+      },
+      related: [
+        {
+          label: 'Equilíbrio de cores',
+          to: '/tools/color-balance-photo',
+          description: 'Controlo separado do vermelho, do verde e do azul nas sombras, nos meios-tons e nos realces, quando um único deslocamento não chega.',
+        },
+        {
+          label: 'Tingir uma fotografia',
+          to: '/tools/tint-photo',
+          description: 'O painel Filtro de foto, para acrescentar uma cor de propósito em vez de remover uma.',
+        },
+        {
+          label: 'Níveis',
+          to: '/tools/photo-levels',
+          description: 'Pontos de entrada por canal, outra forma de neutralizar uma dominante nos extremos do preto e do branco.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Curvas de Vermelho, Verde e Azul para uma dominante que muda com o brilho.',
+        },
+        {
+          label: 'Saturação da imagem',
+          to: '/tools/image-saturation',
+          description: 'Reforce as cores depois de a dominante desaparecer, não antes.',
+        },
+      ],
+      embed: {
+        title: 'Corrija a dominante de cor',
+        description: 'Largue aqui uma fotografia com uma dominante amarela, azul ou verde. O painel Básico abre no grupo Equilíbrio de brancos.',
+      },
     },
     'black-and-white-photo': {
       name: 'Fotografia a preto e branco',
+      h1: 'Converter uma fotografia para preto e branco online',
       tagline: 'Uma conversão monocromática ponderada por canais com seis controlos de cor, uma curva de película suave e grão fino, aplicada ao abrir e ajustável antes de exportar.',
       metaTitle: 'Converter uma fotografia para preto e branco online | Media Manipulator',
       metaDescription: 'Preto e branco com controlo por cor: seis controlos de canal decidem como o vermelho, amarelo, verde, ciano, azul e magenta passam a cinzento. Aspeto de película aplicado, exportação em tamanho total.',
+      ogTitle: 'Conversor de fotografias para preto e branco | Media Manipulator',
+      ogDescription: 'Seis controlos de canal, uma colorização opcional, uma curva de película e grão. Pré-visualização em direto na sua GPU, exportação processada a partir do original no nosso servidor.',
+      intro: 'Esta página abre o Aperture, o editor de fotografia do Media Manipulator, no painel Preto e branco, com o look «Película a preto e branco» já aplicado como um grupo de três camadas: uma camada de Preto e branco com os pesos de canal predefinidos, uma camada de Curvas com um S suave que passa por (0,25; 0,22) e (0,75; 0,78), e uma camada de Grão com quantidade 20. A camada de Preto e branco é um misturador de canais por tonalidade, e não uma simples dessaturação: o cinzento de cada píxel é uma mistura entre a sua luma e um valor ponderado cujo peso vem dos seis controlos, por predefinição Vermelhos 40, Amarelos 60, Verdes 40, Ciano 60, Azuis 20 e Magentas 80. Baixe os Azuis e o céu escurece; suba os Vermelhos e os lábios e o tijolo clareiam. A curva e o grão são camadas separadas, que pode afinar ou eliminar.',
+      whatItDoes: [
+        'Converte cada píxel para cinzento com seis controlos de canal, de -200 a 300, que definem o brilho de cada família de tonalidades: o mesmo controlo que um filtro colorido dava na película e que um editor de secretária oferece no seu painel de preto e branco.',
+        'Aplica «Película a preto e branco» ao abrir: pesos de canal predefinidos, uma camada de Curvas com os pontos (0, 0), (0,25; 0,22), (0,75; 0,78) e (1, 1), que baixa ligeiramente as sombras e sobe os realces, e uma camada de Grão com quantidade 20, tamanho 1 e aspereza 50.',
+        'Oferece no painel Looks a alternativa «Preto e branco de alto contraste»: Vermelhos 40, Amarelos 40 e Azuis -40, com Contraste +40 e Clareza 25, para um aspeto mais duro, com o céu escuro.',
+        'Acrescenta uma Colorização opcional, com tonalidade e intensidade, para que o cinzento possa tender para o sépia, para o azul de selénio ou para qualquer outra cor, sem uma segunda camada.',
+        'Mantém a conversão como camada: aplique-lhe uma máscara para deixar uma zona a cores, baixe a opacidade para uma dessaturação parcial, reordene-a para baixo de uma camada de Curvas e exporte em resolução total.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'JPG, PNG, WebP, GIF, HEIC, AVIF ou TIFF. O editor abre em Preto e branco, com o look de película já na pilha.',
+        },
+        {
+          title: 'Defina os controlos de canal',
+          description: 'Baixe os Azuis para escurecer o céu, suba os Vermelhos ou os Amarelos para clarear a pele, suba os Verdes para uma folhagem mais clara; o histograma acompanha cada movimento.',
+        },
+        {
+          title: 'Ajuste a curva e o grão',
+          description: 'Edite a camada de Curvas que o look acrescentou, mude a quantidade ou o tamanho do Grão no painel Detalhe, ou elimine qualquer uma das camadas do grupo.',
+        },
+        {
+          title: 'Exporte',
+          description: 'JPG, PNG, WebP, AVIF ou TIFF com a qualidade que escolher; o grão é reproduzido exatamente no servidor, a partir da mesma semente.',
+        },
+      ],
+      advancedDetails: [
+        'Para cada píxel, o editor obtém a saturação HSV S e o valor V, a luma BT.709 L = 0,2126 R + 0,7152 G + 0,0722 B e a tonalidade h. O cinzento é (1 - S) x L + S x (soma, nas seis gamas, de w_i(h) x k_i / 100) x V, em que k_i são os controlos de canal e w_i são os pesos habituais das gamas de tonalidade: 1 até 15 graus do centro da gama, com descida linear até 0 aos 45 graus, com a Largura 30 e a Suavização 30 predefinidas. Um píxel cinzento tem S = 0 e mantém exatamente a sua luma; um vermelho puro totalmente saturado tem S = 1 e passa a Vermelhos/100 x V, ou seja, 0,4 com o valor predefinido, o que corresponde ao nível 102.',
+        'Os controlos podem ultrapassar o intervalo natural: um canal a 300 torna uma tonalidade saturada três vezes o seu valor antes de ser limitada, e um canal negativo puxa-a para baixo de zero e é limitado ao preto; é assim que o «Preto e branco de alto contraste» transforma um céu azul profundo em preto puro.',
+        'A colorização opcional soma a cada canal do cinzento Intensidade da coloração / 100 x 0,25 x (hueToRGB(Tonalidade da coloração) - 0,5), em que hueToRGB dá a cor totalmente saturada dessa tonalidade. Uma coloração quente com tonalidade 40 e intensidade 30, num cinzento médio de 128, produz (137, 131, 118).',
+        'A camada de Curvas do look é uma cúbica monótona de Fritsch-Carlson que passa pelos seus quatro pontos, amostrada numa tabela de consulta de 256 entradas, pelo que 0,25 passa exatamente a 0,22, 0,75 a 0,78 e 0,5 a 0,5. A camada de Grão soma amount / 100 x 0,2 x (noise - 0,5) por píxel, no máximo 0,02, ou cerca de 5 níveis, com quantidade 20, sendo o ruído obtido a partir de um hash da posição do píxel e da semente.',
+        'A pré-visualização no seu ecrã é um processamento WebGL2 de uma cópia de 1920 px, na sua própria GPU; a transferência é processada pelo nosso servidor a partir do original em resolução total, com o mesmo código de canais, curva e grão. As fases de cor coincidem dentro de uma média de 1 e de um máximo de 4 níveis; o hash do grão é partilhado, pelo que o grão coincide exatamente.',
+      ],
+      whyItMatters: [
+        'Uma simples dessaturação transforma um vermelho e um verde com a mesma luma no mesmo cinzento, e uma flor vermelha desaparece no meio das folhas; são os pesos de canal que os separam.',
+        'Os céus, a pele e a folhagem têm cada um a sua família de tonalidades, por isso três controlos bastam para definir as relações tonais da maioria das fotografias.',
+        'O grão e uma curva suave são o que faz uma conversão digital parecer uma prova impressa e não um JPEG cinzento, e aqui são duas camadas que pode desligar.',
+      ],
+      useCases: [
+        {
+          title: 'Retratos',
+          description: 'Suba um pouco os Vermelhos e os Amarelos para uma pele luminosa, baixe os Azuis para que o fundo recue e mantenha o grão para dar textura.',
+        },
+        {
+          title: 'Paisagens com céu',
+          description: 'Azuis a -40 e Ciano a 20 dão o céu escuro de um filtro vermelho na película; subir os Verdes clareia a relva e as árvores contra esse céu.',
+        },
+        {
+          title: 'Arquitetura e rua',
+          description: '«Preto e branco de alto contraste» com Clareza 25 realça os contornos da pedra, do betão e do vidro.',
+        },
+        {
+          title: 'Acervos e documentos',
+          description: 'Os pesos predefinidos, sem a curva, dão uma conversão neutra para digitalizações e reproduções.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um retrato com céu azul: «Película a preto e branco» num JPEG de 24 MP',
+          body: 'Um JPEG de 6000 x 4000 (24 megapíxeis, 11 MB) com os pesos de canal predefinidos. Um píxel de pele (217, 158, 128) tem saturação HSV 0,412, valor 0,85 e luma 0,660; a sua tonalidade de 20,6 graus dá aos Vermelhos um peso de 0,814 e aos Amarelos 0,186, pelo que o termo ponderado é 0,814 x 0,4 + 0,186 x 0,6 = 0,437 e o cinzento é 0,588 x 0,660 + 0,412 x 0,437 x 0,85 = 0,541, nível 138. O píxel do céu (140, 191, 242), com tonalidade 210, saturação 0,421, valor 0,95 e luma 0,722, recebe 0,5 do Ciano, a 0,6, e 0,5 dos Azuis, a 0,2, pelo que o cinzento é 0,579 x 0,722 + 0,421 x 0,4 x 0,95 = 0,578, nível 147. A curva leva depois 0,541 a 0,549 (140) e 0,578 a 0,592 (151), e o grão acrescenta até 5 níveis para cima ou para baixo. Um cartão cinzento a 128 continua a 128 depois de ambas. Exportar os 24 megapíxeis completos exige o plano Premium ou Pro; o JPG com qualidade 92 tem cerca de 10,8 MB.',
+        },
+        {
+          title: 'Escurecer o céu: Azuis -40 e «Preto e branco de alto contraste» numa fotografia de 12 MP',
+          body: 'Um JPEG de 4000 x 3000 (12 megapíxeis, 5 MB). Mudar para «Preto e branco de alto contraste» define Vermelhos 40, Amarelos 40 e Azuis -40, e mantém Verdes 40, Ciano 60 e Magentas 80. O mesmo píxel do céu (140, 191, 242) recebe agora um termo ponderado de 0,5 x 0,6 + 0,5 x -0,4 = 0,1, pelo que o cinzento é 0,579 x 0,722 + 0,421 x 0,1 x 0,95 = 0,458, nível 117 em vez de 147. Um casaco azul profundo com (51, 77, 204), tonalidade 230, tem saturação 0,75 e valor 0,8: 0,25 x 0,315 + 0,75 x -0,4 x 0,8 = -0,161, que é limitado a 0, preto puro. Uma porta vermelha com (204, 51, 51) não é afetada pela mudança: 0,25 x 0,328 + 0,75 x 0,4 x 0,8 = 0,322, nível 82, porque os Vermelhos continuam a 40. O look acrescenta depois Contraste +40 e Clareza 25 como mais duas camadas. A exportação de 12 megapíxeis cabe no limite gratuito e tem cerca de 5,4 MB em JPG com qualidade 92.',
+        },
+      ],
+      whenNotToUse: 'Uma conversão para preto e branco deita fora a tonalidade, por isso, quando o objetivo é manter uma cor e passar o resto a cinzento, a página de cor em destaque conserva a informação de tonalidade e só dessatura as outras gamas. Se a fotografia já é monocromática e está apenas sem contraste, as páginas de curvas, níveis ou contraste mudam os tons sem uma camada de conversão pelo meio. Uma imagem a cores desbotada que precisa de recuperar a cor é trabalho para a saturação ou para a vibração. E um banho sépia ou de cianotipia é uma camada de Filtro de foto ou de divisão de tons por cima desta conversão, e não um substituto dela.',
+      whyMediaManipulator: [
+        'O Aperture converte com seis canais de tonalidade, uma colorização e controlos que vão de -200 a 300, pelo que a conversão é uma decisão sobre cada cor, e não um simples botão de dessaturar.',
+        'O look de película é um grupo de três camadas normais: a curva e o grão continuam editáveis, e Anular remove as três de uma só vez.',
+        'Todos os controlos, os looks e o histórico de anulações são gratuitos, e a exportação em tamanho total é uma tarefa normal; o grão é reproduzido exatamente no servidor, a partir da mesma semente.',
+      ],
+      privacyNote: 'A conversão para preto e branco, as alterações dos controlos de canal e o grão são calculados no seu navegador a partir da fotografia que largou; nada é carregado para isso. Sem sessão iniciada, o projeto fica no IndexedDB deste navegador até exportar, o que é uma tarefa de visitante como qualquer outra. Com sessão iniciada, o original, a sua pré-visualização de 1920 px e a miniatura são guardados com o projeto segundo a sua definição de retenção e desaparecem quando o projeto ou a conta são eliminados. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. São os nossos servidores que fazem o processamento; não há nenhum terceiro envolvido.',
+      faq: [
+        {
+          question: 'Porque não basta pôr a saturação a -100?',
+          answer: 'A Saturação -100 transforma cada píxel na sua luma, pelo que as cores com a mesma luma se fundem. A camada de Preto e branco permite-lhe decidir que o azul fica mais escuro do que o vermelho ou que o amarelo fica mais claro do que o verde, o que separa um céu de uma nuvem e um lábio de uma face.',
+        },
+        {
+          question: 'O que significam os números predefinidos 40, 60, 40, 60, 20, 80?',
+          answer: 'São as percentagens do valor de uma cor saturada que cada família de tonalidades conserva: um vermelho puro passa a 40% do seu valor, um amarelo puro a 60 e um azul puro a 20. Coincidem com os valores predefinidos da maioria dos editores de secretária, pelo que uma conversão feita noutro programa com os mesmos números fica igual aqui.',
+        },
+        {
+          question: 'Posso manter uma parte da fotografia a cores?',
+          answer: 'Dê uma máscara à camada de Preto e branco: um componente Pincel pintado sobre a zona que deve ficar a cores, com Inverter ativado, ou um componente Intervalo de cores definido como Subtrair. As camadas de curva e de grão do look aplicam-se de qualquer forma, a não ser que também lhes aplique uma máscara.',
+        },
+        {
+          question: 'O grão fica igual no ficheiro exportado e no ecrã?',
+          answer: 'Sim, exatamente. O grão é um hash da posição do píxel e da semente, sem números aleatórios, e o servidor usa o mesmo hash sobre os píxeis originais. Como a pré-visualização é uma cópia de 1920 px, o grão no ecrã aparece à escala, mas o grão exportado é calculado por cada píxel original.',
+        },
+        {
+          question: 'Posso exportar um ficheiro verdadeiramente em escala de cinzentos?',
+          answer: 'A exportação grava três canais iguais num ficheiro RGB, no formato que escolher. Um JPG ou WebP de uma imagem a preto e branco comprime bem, porque a crominância está vazia, pelo que o ficheiro fica mais pequeno do que o original a cores com a mesma qualidade.',
+        },
+        {
+          question: 'Como obtenho uma prova sépia em vez de um cinzento neutro?',
+          answer: 'Ative a Colorização no painel Preto e branco e defina a Tonalidade da coloração para cerca de 35 a 40, com uma intensidade de 20 a 30. O cinzento é empurrado para essa tonalidade em intensidade / 100 x 0,25 do caminho entre a cor da tonalidade e o cinzento médio, por isso o efeito mantém-se subtil.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A conversão, a curva e o grão são fases por píxel; o grão exportado é gerado no servidor a partir da mesma semente e coincide bit a bit com a referência.',
+          'As exportações a preto e branco em JPG e WebP são normalmente um terço mais pequenas do que o original a cores com a mesma qualidade, porque os planos de crominância não transportam nada.',
+        ],
+      },
+      related: [
+        {
+          label: 'Cor em destaque',
+          to: '/tools/color-pop',
+          description: 'Monocromático em toda a imagem, exceto numa família de tonalidades.',
+        },
+        {
+          label: 'Tingir uma fotografia',
+          to: '/tools/tint-photo',
+          description: 'Uma camada de Filtro de foto para um sépia mais forte ou qualquer banho de cor sobre o cinzento.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Molde os tons da conversão com até 16 pontos por canal.',
+        },
+        {
+          label: 'Adicionar uma vinheta',
+          to: '/tools/add-vignette',
+          description: 'Uma margem escurecida é a companheira habitual de uma prova a preto e branco.',
+        },
+        {
+          label: 'Divisão de tons',
+          to: '/tools/split-toning',
+          description: 'Duas colorações, uma para as sombras e outra para os realces, sobre o cinzento.',
+        },
+        {
+          label: 'Aumentar a nitidez da fotografia',
+          to: '/tools/sharpen-photo-online',
+          description: 'Máscara de nitidez com limiar, aplicada sobre a luma, para um detalhe monocromático mais nítido.',
+        },
+      ],
+      embed: {
+        title: 'Converta uma fotografia para preto e branco',
+        description: 'Largue uma fotografia para abrir o Aperture com o look «Película a preto e branco» aplicado; ajuste os seis controlos de canal, a curva e o grão, e depois exporte.',
+      },
     },
     'tint-photo': {
       name: 'Tingir uma fotografia',
+      h1: 'Tingir uma fotografia online',
       tagline: 'Coloque uma cor sobre uma fotografia como um filtro numa objetiva: escolha quente, frio, sépia ou qualquer cor personalizada, defina a densidade e mantenha o brilho onde estava.',
       metaTitle: 'Tingir uma fotografia online: quente, sépia ou outra | Media Manipulator',
       metaDescription: 'Adicione um tom de cor a uma fotografia com uma camada de Filtro de foto: quente, frio, sépia, vermelho, verde, azul ou uma cor hex personalizada, densidade de 0 a 100, preservar luminosidade. Exportação em tamanho total.',
+      ogTitle: 'Tingir uma fotografia online | Media Manipulator',
+      ogDescription: 'Uma camada Filtro de foto multiplica a imagem por uma cor e mistura o resultado de acordo com a densidade, com uma opção que mantém a luminância inalterada. Pré-visualização na sua GPU, exportação a partir do original.',
+      intro: 'Esta página abre o Aperture, o editor de fotografias do Media Manipulator, com o painel Filtro de foto em primeiro plano e o filtro Aquecimento carregado com Densidade 25 e Preservar luminosidade ativado. Aqui, um filtro de foto faz o mesmo que um filtro de vidro numa objetiva: cada píxel é multiplicado pela cor do filtro, e o controlo Densidade decide até que ponto o píxel se afasta do original em direção a esse valor filtrado. Com Preservar luminosidade, o resultado é depois reescalado para que a sua luma BT.709 seja igual à do original, o que dá uma coloração sem escurecer a imagem. Seis botões de filtro, Aquecimento, Arrefecimento, Sépia, Vermelho, Verde e Azul, definem a cor, e Cor personalizada aceita qualquer valor hex. Para uma impressão em sépia, coloque-o sobre uma camada Preto e branco.',
+      whatItDoes: [
+        'Ao abrir, carrega uma camada Filtro de foto com a cor Aquecimento #ec8a00 e Densidade 25, e disponibiliza Arrefecimento #0a5dc8, Sépia #ac7a33, Vermelho #e81c1c, Verde #1fb52f, Azul #1c3ee8 e um seletor de Cor personalizada.',
+        'A Densidade vai de 0 a 100: a 0 a camada não faz nada, a 100 cada píxel é totalmente multiplicado pela cor do filtro e, entre os dois extremos, é uma mistura linear.',
+        'Preservar luminosidade, ativado por predefinição, reescala cada píxel tingido para que a sua luma corresponda à do píxel sem coloração, o que mantém a exposição da fotografia e transforma o filtro numa pura alteração de cor.',
+        'Funciona como uma camada, tal como tudo o resto: mascare-a para tingir apenas o céu, baixe a opacidade, defina o modo de mistura como Cor para que nunca toque na luminância e anule em qualquer momento.',
+        'Exporta a fotografia tingida em resolução total a partir dos píxeis originais, em JPG, PNG, WebP, AVIF ou TIFF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'O editor abre no painel Filtro de foto com Aquecimento a 25% de densidade já aplicado como camada.',
+        },
+        {
+          title: 'Escolha a cor',
+          description: 'Escolha Aquecimento, Arrefecimento, Sépia, Vermelho, Verde ou Azul, ou introduza uma cor hex personalizada para um tom de marca.',
+        },
+        {
+          title: 'Defina a densidade',
+          description: 'Arraste o controlo Densidade até a coloração ter a intensidade que pretende, e desative Preservar luminosidade apenas se quiser que o filtro escureça a imagem como faria um verdadeiro filtro de vidro.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha o formato e a qualidade; o servidor aplica a coloração ao original e acrescenta ao nome do ficheiro o sufixo (retouched).',
+        },
+      ],
+      advancedDetails: [
+        'A fórmula por canal é lerp(c, c x f, Density / 100), em que c é o píxel em sRGB 0..1 e f é a cor do filtro na mesma escala; Aquecimento #ec8a00 corresponde a f = (0,9255; 0,5412; 0). Como o filtro multiplica, só pode baixar um canal, e um canal cujo valor no filtro seja 0, o azul em Aquecimento, é multiplicado exatamente por 1 - Density / 100.',
+        'Com Preservar luminosidade, o editor calcula a luma BT.709 do original, L = 0,2126 R + 0,7152 G + 0,0722 B, e a do píxel tingido, multiplica o píxel tingido pela razão entre as duas e depois limita o resultado a 0..1. Um cinzento médio de 0,5 com Aquecimento a Densidade 25 passa a (0,4907; 0,4427; 0,375) antes do reescalamento, com luma 0,448; a razão 1,116 eleva-o para (0,5477; 0,4941; 0,4185), ou seja, os níveis (140, 126, 107).',
+        'Esse limite restringe a preservação perto do branco: um branco puro com Aquecimento a 25% precisaria de um vermelho acima de 1 para manter a luma, pelo que é cortado e exporta como (255, 252, 213), ligeiramente mais escuro do que o original. Por isso, com densidades altas, os realces perdem um pouco de brilho mesmo com a opção ativada.',
+        'Um filtro a 100% de densidade com Preservar luminosidade é uma pura deslocação cromática em direção à cor do filtro, e não um preenchimento uniforme: o píxel mantém a luma original, pelo que um sépia a 100 sobre um cinzento médio dá (172, 122, 51), que continua a ser um meio-tom.',
+        'A pré-visualização que ajusta é desenhada por WebGL2 na sua GPU a partir de uma cópia de 1920 px da fotografia; a transferência é processada no nosso servidor a partir do original, com a mesma multiplicação, a mesma mistura e o mesmo reescalamento da luma, dentro da tolerância documentada para as etapas de cor: um erro médio de, no máximo, 1 nível e um erro máximo de 4 níveis em 255.',
+      ],
+      whyItMatters: [
+        'Uma coloração por multiplicação comporta-se como a luz que atravessa um vidro colorido, pelo que os realces e as sombras ganham a cor em proporção ao seu brilho, em vez de serem pintados por cima.',
+        'Preservar luminosidade separa a questão da cor da questão da exposição, para que possa aquecer uma imagem sem ter de a aclarar depois.',
+        'Uma única camada de coloração unifica um conjunto de fotografias captadas com luzes diferentes, que é a forma habitual de fazer com que uma galeria ou um feed se leiam como uma só série.',
+      ],
+      useCases: [
+        {
+          title: 'Aquecer uma imagem fria',
+          description: 'O céu encoberto e a sombra puxam as fotografias para o azul; Aquecimento entre 20% e 35% devolve a cor do sol sem alterar a exposição.',
+        },
+        {
+          title: 'Impressões em sépia',
+          description: 'Uma camada Preto e branco seguida de Sépia entre 50% e 70%, com Preservar luminosidade ativado, dá a clássica impressão castanha.',
+        },
+        {
+          title: 'A cor da marca em toda a imagem',
+          description: 'Introduza o hex da marca como cor personalizada e mantenha a Densidade baixa, para que as fotografias de produto de uma página partilhem uma mesma dominante.',
+        },
+        {
+          title: 'Arrefecer uma cena noturna',
+          description: 'Arrefecimento entre 30% e 40% puxa uma rua à noite para o azul, enquanto as lâmpadas de sódio mantêm o seu calor relativo.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Aquecer um retrato à sombra: Aquecimento com Densidade 25 num HEIC de 12 MP',
+          body: 'Um HEIC de 4032 x 3024 tirado com um telemóvel (12,2 megapíxeis), que exige uma conta para que o servidor o possa descodificar para a pré-visualização. Com Aquecimento #ec8a00, Densidade 25 e Preservar luminosidade ativado, um cinzento médio de (128, 128, 128) exporta como (140, 126, 107): o canal azul desce para 0,5 x 0,75 = 0,375 antes do reescalamento, a razão de luma 1,116 eleva os outros canais e o resultado mantém a luma 0,5. Um píxel de pele (217, 158, 128) passa a (235, 155, 106); uma zona de céu (140, 191, 242) passa a (155, 191, 205). Com Preservar luminosidade desativado, os mesmos três píxeis exportam como (125, 113, 96), (213, 140, 96) e (138, 169, 182), todos mais escuros. Exportado em JPG com qualidade 92, o ficheiro tem cerca de 5,5 MB e conta como uma tarefa normal.',
+        },
+        {
+          title: 'Uma impressão em sépia: Preto e branco e depois Sépia com Densidade 50 numa digitalização de 45 MP',
+          body: 'Uma digitalização TIFF de 8256 x 5504 (45 megapíxeis, 136 MB), que exige uma conta para abrir e um plano Premium ou Pro para exportar acima de 12 megapíxeis. Uma camada Preto e branco com os pesos predefinidos fica por baixo de um Filtro de foto definido como Sépia #ac7a33, Densidade 50, com Preservar luminosidade ativado. Um cinzento médio de 128 passa a (142, 126, 102): antes do reescalamento era (0,4186; 0,3696; 0,3), com luma 0,375, e a razão 1,333 devolve-o à luma 0,5. Um branco de 255 com Densidade 60 exporta como (255, 250, 189), cortado no vermelho. Sem Preservar luminosidade, o cinzento médio ficaria em (107, 94, 77), uma impressão visivelmente mais escura. Exportado com um tamanho máximo de 64 megapíxeis, o ficheiro mantém os 45 megapíxeis completos; em JPG com qualidade 92 tem cerca de 20 MB e, em WebP, cerca de 13,6 MB, segundo a estimativa de 0,3 MB por megapíxel.',
+        },
+      ],
+      whenNotToUse: 'Um filtro de foto adiciona uma dominante; não é a ferramenta para a remover, porque multiplicar por uma cor não consegue restaurar um canal que a luz retirou, e a página de equilíbrio de brancos faz isso em luz linear com o par temperatura e tonalidade. Quando quiser as sombras de uma cor e os realces de outra, a divisão de tons tem um controlo para cada extremo, mais um equilíbrio entre os dois. Para uma gradação completa a partir de um ficheiro de referência, um LUT .cube no painel LUT reprodu-la numa só camada. A coloração de uma fotografia que também esteja subexposta deve esperar até a exposição estar corrigida, uma vez que o reescalamento da luma preserva o brilho que lá estiver.',
+      whyMediaManipulator: [
+        'O Aperture aplica a coloração como uma camada com densidade, preservação da luminosidade, máscara e modo de mistura, o que é mais do que um botão de sépia de uso único, e continua a funcionar num separador do navegador.',
+        'O campo Cor personalizada aceita qualquer valor hex, pelo que a coloração pode corresponder a uma marca ou a uma imagem de referência, em vez de a um de seis looks fixos.',
+        'Tingir, mascarar e anular não custam nada; a exportação em tamanho total é uma tarefa normal, e a quota diária está indicada na página de preços.',
+      ],
+      privacyNote: 'Um filtro de foto é calculado no seu navegador sobre a fotografia que largou, e a coloração só vai para um servidor quando exportar. Sem sessão iniciada, o projeto fica no IndexedDB deste navegador; a exportação é uma tarefa normal de visitante, processada no nosso próprio servidor. Com sessão iniciada, o original, a respetiva pré-visualização de 1920 px e a miniatura são mantidos com o projeto de acordo com a sua definição de retenção e são removidos com o projeto ou com a conta. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Nenhum terceiro recebe o ficheiro.',
+      faq: [
+        {
+          question: 'Qual é a diferença entre uma coloração e uma alteração do equilíbrio de brancos?',
+          answer: 'O equilíbrio de brancos funciona em luz linear e desloca os meios-tons ao longo dos eixos azul-amarelo e verde-magenta para corrigir a luz com que a fotografia foi captada. Um filtro de foto multiplica por qualquer cor no espaço com gama, com uma densidade, o que é um banho de cor criativo e não uma correção. Use o equilíbrio de brancos para corrigir uma dominante e um filtro para adicionar uma.',
+        },
+        {
+          question: 'Porque é que a fotografia fica mais escura quando desativo Preservar luminosidade?',
+          answer: 'O filtro multiplica cada canal pela cor do filtro, e todos os valores do filtro são, no máximo, 1, pelo que, sem o reescalamento, o píxel tingido só pode ficar igual ou mais escuro. O Aquecimento tem um valor de azul de 0, por isso, com densidade total, o canal azul é completamente removido.',
+        },
+        {
+          question: 'Como faço uma fotografia em sépia?',
+          answer: 'Adicione primeiro uma camada Preto e branco e depois um Filtro de foto com o botão Sépia, com uma densidade entre 50% e 70% e Preservar luminosidade ativado. Um cinzento médio de 128 a 50% passa a (142, 126, 102); a 100% passa a (172, 122, 51).',
+        },
+        {
+          question: 'Posso tingir apenas o céu ou apenas as sombras?',
+          answer: 'Sim. Dê uma máscara à camada Filtro de foto: um Gradiente linear a partir do topo para o céu, ou um Intervalo de luminosidade de 0 a cerca de 0,3 para as sombras. A coloração é então misturada píxel a píxel de acordo com o valor da máscara.',
+        },
+        {
+          question: 'Que cor hex devo usar para um look vintage?',
+          answer: 'O botão Sépia é #ac7a33. Mais quente e mais claro, #d9a66b entre 30% e 40% lembra uma impressão desbotada; um vintage frio é Arrefecimento #0a5dc8 a 15% sobre o look Desvanecido do painel Looks.',
+        },
+        {
+          question: 'A coloração altera um PNG transparente?',
+          answer: 'Apenas os canais de cor. O canal alfa nunca é tocado por nenhum ajuste, pelo que um recorte de produto mantém o fundo transparente e a coloração só aparece nos píxeis visíveis.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Um filtro de foto resume-se a três multiplicações e uma mistura por píxel; uma exportação de 45 megapíxeis é processada em poucos segundos e o tempo vai quase todo para a codificação.',
+          'A saída TIFF mantém 8 bits por canal; a coloração é aplicada antes da codificação, pelo que o TIFF é o resultado processado e não o original mais uma camada.',
+        ],
+      },
+      related: [
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'A conversão a colocar por baixo de um filtro sépia.',
+        },
+        {
+          label: 'Divisão de tons',
+          to: '/tools/split-toning',
+          description: 'Duas tonalidades ao mesmo tempo, uma para as sombras e outra para os realces.',
+        },
+        {
+          label: 'Equilíbrio de brancos',
+          to: '/tools/white-balance-photo',
+          description: 'Corrija uma dominante em luz linear, em vez de adicionar uma.',
+        },
+        {
+          label: 'Equilíbrio de cores',
+          to: '/tools/color-balance-photo',
+          description: 'Empurre o vermelho, o verde e o azul em separado nas sombras, nos meios-tons e nos realces.',
+        },
+        {
+          label: 'Aplicar um LUT',
+          to: '/tools/apply-lut-to-photo',
+          description: 'Carregue um ficheiro .cube para uma gradação de cor completa numa só camada.',
+        },
+      ],
+      embed: {
+        title: 'Tingir uma fotografia',
+        description: 'Largue uma fotografia para abrir o Aperture no painel Filtro de foto com Aquecimento a 25%; escolha outra cor ou um hex personalizado, defina a densidade e exporte.',
+      },
     },
     'color-balance-photo': {
       name: 'Equilíbrio de cores',
+      h1: 'Equilíbrio de cores de uma fotografia online',
       tagline: 'Empurre o vermelho, o verde e o azul em separado nas sombras, nos meios-tons e nos realces para remover uma dominante ou criar um look, com a luminosidade preservada.',
       metaTitle: 'Equilíbrio de cores de uma fotografia online | Media Manipulator',
       metaDescription: 'Nove controlos, vermelho, verde e azul para sombras, meios-tons e realces, com preservar luminosidade. Corrija uma dominante azul ou laranja ou gradue uma fotografia e exporte em tamanho total.',
+      ogTitle: 'Equilíbrio de cores de uma fotografia online | Media Manipulator',
+      ogDescription: 'Sombras, meios-tons e realces recebem, cada um, controlos de vermelho, verde e azul. Ponderados pela luma, com a luminosidade preservada, pré-visualização na sua GPU e exportação a partir do original.',
+      intro: 'Esta página abre o Aperture, o editor de fotografias do Media Manipulator, com o painel Equilíbrio de cores em primeiro plano. O Equilíbrio de cores é uma camada de ajuste no espaço com gama, com três grupos de três controlos, Vermelho, Verde e Azul para Sombras, Meios-tons e Realces, cada um de -100 a 100. Para cada píxel, o editor calcula, a partir da luma, quanto pertence a cada banda tonal, soma a cada canal os três desvios ponderados com um ganho de 0,3 e, com Preservar luminosidade ativado, reescala o píxel para que a luma volte a ser a que era. Isto permite retirar azul das sombras de uma fotografia tirada à sombra, ou levar calor aos realces de um pôr do sol, sem tocar na exposição. É a ferramenta certa quando uma dominante não é uniforme ao longo da gama tonal, onde uma única correção do equilíbrio de brancos não consegue chegar.',
+      whatItDoes: [
+        'Nove controlos, Vermelho, Verde e Azul para cada um dos grupos Sombras, Meios-tons e Realces, de -100 a 100, mais um interruptor Preservar luminosidade, ativado por predefinição.',
+        'Os pesos das sombras e dos realces vêm da luma BT.709 e o peso dos meios-tons vem da luminosidade HSL, pelo que cada píxel recebe uma mistura dos três grupos em vez de uma divisão rígida num limiar.',
+        'Um desvio de 100 num canal com peso total move-o 0,3, ou seja, 77 níveis em 255, pelo que os controlos são suficientemente finos para corrigir uma dominante de poucos níveis e suficientemente fortes para uma gradação azul-petróleo e laranja.',
+        'Preservar luminosidade reescala cada píxel para a luma original depois do desvio, o que mantém o histograma no lugar enquanto a cor se move; desative-o e os controlos passam também a aclarar ou a escurecer.',
+        'A camada aceita uma máscara, opacidade e modo de mistura como qualquer outra, e a exportação processa o original em resolução total com os mesmos pesos.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'JPG, PNG, WebP, GIF, HEIC, AVIF ou TIFF. O editor abre no painel Equilíbrio de cores com os nove controlos a 0.',
+        },
+        {
+          title: 'Encontre a dominante',
+          description: 'Mantenha premida a tecla de barra invertida para comparar com o original e leia o histograma RGB: uma dominante azul vê-se num canal azul situado à direita do vermelho e do verde.',
+        },
+        {
+          title: 'Desloque as bandas',
+          description: 'Baixe o Azul na banda onde está a dominante, normalmente Sombras para a sombra e Meios-tons para luz mista, e acrescente um pouco de Vermelho se a imagem precisar de calor.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha o formato e a qualidade; o servidor aplica a correção ao original e acrescenta ao nome do ficheiro o sufixo (retouched).',
+        },
+      ],
+      advancedDetails: [
+        'O peso das sombras é 1 - smoothstep(0; 0,5; L) e o peso dos realces é smoothstep(0,5; 1; L), em que L é a luma BT.709 0,2126 R + 0,7152 G + 0,0722 B. Um píxel com luma 0,122 tem peso de sombras 0,851 e nenhum peso de realces; um com luma 0,897 tem peso de realces 0,889 e nenhum peso de sombras; com luma 0,5, ambos são 0.',
+        'O peso dos meios-tons é o peso de equilíbrio de cores do Darkroom: sendo l a luminosidade HSL (max + min) / 2, vale clamp((l - 0,333) x 4 + 0,5) x clamp((1 - l - 0,333) x 4 + 0,5) x 0,7, com um pico de 0,7 para l = 0,5, e chega a 0 abaixo de l igual a cerca de 0,21 e acima de l igual a cerca de 0,79. Os três pesos não são obrigados a somar um; um cinzento médio recebe 0,7 dos Meios-tons e nada dos outros dois.',
+        'O desvio de cada canal é 0,3 x (peso das sombras x controlo Sombras + peso dos meios-tons x controlo Meios-tons + peso dos realces x controlo Realces) / 100, somado ao canal e limitado a 0..1. Vermelho +20 nos Meios-tons sobre um cinzento médio de 0,5 dá 0,3 x 0,7 x 0,2 = 0,042, o que leva o vermelho a 0,542, nível 138.',
+        'Com Preservar luminosidade, o píxel deslocado é multiplicado pela luma original a dividir pela luma deslocada e depois limitado. O mesmo Vermelho +20 nos Meios-tons sobre o cinzento médio exporta então como (136, 125, 125): o vermelho sobe e o verde e o azul descem para que a luma fique exatamente em 0,5.',
+        'O Equilíbrio de cores e o Equilíbrio de brancos são operações diferentes: o Equilíbrio de brancos desloca os meios-tons em luz linear ao longo de eixos fixos de temperatura e tonalidade, enquanto esta camada trabalha sobre valores codificados com gama, com nove controlos livres. Empilhe-os quando uma cena tiver luz mista.',
+        'A pré-visualização no ecrã é processada por WebGL2 na sua GPU a partir de uma cópia de 1920 px; o ficheiro exportado é processado no nosso servidor a partir do original, com os mesmos pesos, o mesmo ganho e o mesmo reescalamento da luma, e os dois coincidem dentro da tolerância documentada: um erro médio de, no máximo, 1 nível e um erro máximo de 4 níveis em 8 bits.',
+      ],
+      whyItMatters: [
+        'As dominantes raramente são uniformes: à sombra, as sombras ficam azuis enquanto os realces iluminados pelo sol se mantêm neutros, e só uma correção por banda consegue corrigir uma sem prejudicar a outra.',
+        'Preservar a luminosidade significa que uma correção de cor não se transforma num problema de exposição, pelo que pode fazer a gradação depois de acertar os tons sem que o histograma se mexa.',
+        'Desvios opostos nas sombras e nos realces são a base da maioria dos looks de película e de cinema, e nove controlos exprimem-nos diretamente.',
+      ],
+      useCases: [
+        {
+          title: 'Corrigir a dominante azul da sombra',
+          description: 'Azul -15 nas Sombras, Azul -20 e Vermelho +5 nos Meios-tons e Azul -10 nos Realces neutralizam um retrato feito à sombra, ao ar livre.',
+        },
+        {
+          title: 'Remover o laranja do tungsténio',
+          description: 'Vermelho -15 e Azul +10 nos Meios-tons, com uma versão mais pequena nas Sombras, devolvem uma cena de interior ao neutro.',
+        },
+        {
+          title: 'Gradação azul-petróleo e laranja',
+          description: 'Vermelho -10 e Azul +15 nas Sombras, Vermelho +15, Verde +5 e Azul -10 nos Realces, com os Meios-tons a 0, dão a separação cinematográfica entre a pele e o fundo.',
+        },
+        {
+          title: 'Igualar duas fotografias',
+          description: 'Leia os histogramas de ambas e desloque as bandas de uma até os picos dos seus canais se alinharem com os da outra.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um retrato à sombra: retirar azul de três bandas num JPEG de 24 MP',
+          body: 'Um JPEG de 6000 x 4000 (24 megapíxeis, 11 MB) tirado à sombra de um edifício. Definições: Azul -15 nas Sombras, Vermelho +5 e Azul -20 nos Meios-tons, Azul -10 nos Realces, Preservar luminosidade ativado. Um cartão cinzento na imagem lê (115, 122, 143), luma 0,479, com peso de sombras 0,005, peso de meios-tons 0,7 e peso de realces 0: o vermelho ganha 0,3 x 0,7 x 0,05 = 0,0105, o azul perde 0,3 x (0,005 x 0,15 + 0,7 x 0,20) = 0,0422 e, depois do reescalamento da luma, o cartão exporta como (118, 123, 132), praticamente neutro. Uma camisa branca em (219, 230, 247), luma 0,897, está na banda dos realces com peso 0,889, pelo que o azul desce 0,3 x 0,889 x 0,1 = 0,0267 e exporta como (220, 230, 241). Um casaco escuro em (26, 31, 51), luma 0,122, recebe o controlo das sombras com peso 0,851, o azul desce 0,0383 e exporta como (26, 31, 42). A exportação de 24 megapíxeis exige Premium ou Pro; em JPG com qualidade 92 tem cerca de 10,8 MB.',
+        },
+        {
+          title: 'Vermelho +20 nos Meios-tons sobre um cartão cinzento, com e sem Preservar luminosidade, 6 MP',
+          body: 'Um JPEG de 3000 x 2000 (6 megapíxeis, 2,4 MB) com um cinzento médio de (128, 128, 128), que tem luma 0,5 e luminosidade HSL 0,5, pelo que o seu peso de meios-tons é o valor máximo de 0,7 e os pesos de sombras e de realces são 0. Vermelho +20 nos Meios-tons soma 0,3 x 0,7 x 0,2 = 0,042 ao vermelho. Com Preservar luminosidade desativado, o cartão exporta como (138, 128, 128), luma 0,509, um pouco mais claro. Com a opção ativada, o píxel é multiplicado por 0,5 / 0,509 = 0,982 e exporta como (136, 125, 125), com luma exatamente 0,5. O mesmo +20 colocado nas Sombras ou nos Realces não faz nada a este píxel, porque ambos os pesos são 0 com luma 0,5. A exportação de 6 megapíxeis cabe no limite gratuito; em JPG com qualidade 92 tem cerca de 2,7 MB e, em WebP, cerca de 1,8 MB.',
+        },
+      ],
+      whenNotToUse: 'Quando toda a fotografia está uniformemente demasiado azul ou demasiado laranja, a página de equilíbrio de brancos corrige-a em luz linear com dois controlos e é a solução mais rápida e mais exata; recorra ao equilíbrio de cores apenas quando a dominante for diferente nas sombras e nos realces. Se o objetivo for uma cor criativa nas sombras e outra nos realces, a divisão de tons tem uma tonalidade e uma saturação para cada extremo, mais um equilíbrio, o que é mais simples do que nove controlos. Uma dominante que muda com a posição e não com o brilho, como um candeeiro num dos lados da sala, precisa de uma camada mascarada ou de uma máscara de gradiente nesta camada. E um canal cortado em 0 ou em 255 não se recupera com o equilíbrio de cores.',
+      whyMediaManipulator: [
+        'O Aperture oferece nove controlos ponderados pela luma, com preservação da luminosidade e um histograma RGB em direto, o mesmo controlo que um editor de secretária oferece, numa só camada e no navegador.',
+        'O Equilíbrio de cores pode ficar por baixo ou por cima do Equilíbrio de brancos, das Curvas e dos Níveis, pelo que uma cena com luz mista pode receber uma correção em luz linear e uma gradação no espaço com gama no mesmo projeto.',
+        'Ajustar e pré-visualizar não custam nada; a exportação em resolução total é uma tarefa normal, e a quota diária está na página de preços.',
+      ],
+      privacyNote: 'O equilíbrio de cores é calculado no seu navegador a partir da fotografia que largou; a correção em si nunca sai do seu computador. Sem sessão iniciada, o projeto fica no IndexedDB deste navegador e só é carregado quando exportar, como uma tarefa normal de visitante processada no nosso próprio servidor. Com sessão iniciada, o original, uma pré-visualização de 1920 px e uma miniatura ficam com o projeto de acordo com a sua definição de retenção e são eliminados com o projeto ou com a conta. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Não entregamos ficheiros a terceiros.',
+      faq: [
+        {
+          question: 'Devo usar o equilíbrio de cores ou o equilíbrio de brancos para corrigir uma dominante?',
+          answer: 'Comece pelo Equilíbrio de brancos quando toda a imagem estiver desviada na mesma direção, porque corrige em luz linear com dois controlos. Use o Equilíbrio de cores quando a dominante for diferente nas sombras e nos realces, ou quando o equilíbrio de brancos tiver corrigido os meios-tons e as sombras continuarem azuis.',
+        },
+        {
+          question: 'O que conta exatamente aqui como sombra, meio-tom e realce?',
+          answer: 'O peso das sombras desce de 1 no preto até 0 com luma 0,5, ao longo de uma smoothstep; o dos realces sobe de 0 em 0,5 até 1 no branco; o dos meios-tons atinge o pico de 0,7 com luminosidade 0,5 e chega a 0 perto de 0,21 e de 0,79. Cada píxel é uma mistura, pelo que não há uma fronteira rígida entre as bandas.',
+        },
+        {
+          question: 'Que alteração provoca um valor de 20 num controlo?',
+          answer: 'Com o peso total da sua banda, 20 desloca o canal 0,3 x 0,2 = 0,06, cerca de 15 níveis. Nos Meios-tons, onde o peso máximo é 0,7, o mesmo 20 dá 0,042, cerca de 11 níveis, antes de o reescalamento da luminosidade o redistribuir pelos três canais.',
+        },
+        {
+          question: 'Porque é que baixar o Azul também sobe um pouco o Vermelho e o Verde?',
+          answer: 'É o Preservar luminosidade a funcionar. Baixar o azul faz descer a luma, pelo que o píxel é reescalado para cima até a luma corresponder à original, e os três canais partilham esse fator. Desative a opção para ver o desvio em bruto.',
+        },
+        {
+          question: 'Posso limitar a correção a uma parte da imagem?',
+          answer: 'Dê uma máscara à camada: um Gradiente linear para um céu, um Intervalo de luminosidade para estreitar ainda mais a banda, ou um Pincel. O valor da máscara mistura o píxel original com o píxel corrigido.',
+        },
+        {
+          question: 'É o mesmo que o Equilíbrio de cores do Darkroom?',
+          answer: 'A função de peso dos meios-tons é partilhada com o Darkroom, o nosso editor de vídeo, pelo que um desvio nos meios-tons coincide entre uma fotografia e um fotograma de vídeo. A camada de fotografia acrescenta as bandas das sombras e dos realces e a opção de luminosidade.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O equilíbrio de cores é uma etapa por píxel com três pesos e um reescalamento; o tempo de exportação depende do codificador: alguns segundos para um JPG de 24 megapíxeis.',
+          'A exportação pode remover ou manter os metadados; a etiqueta de equilíbrio de brancos original da câmara fica inalterada em qualquer dos casos, porque são os píxeis que são corrigidos, não as etiquetas.',
+        ],
+      },
+      related: [
+        {
+          label: 'Equilíbrio de brancos',
+          to: '/tools/white-balance-photo',
+          description: 'Temperatura e tonalidade em luz linear para uma dominante uniforme.',
+        },
+        {
+          label: 'Divisão de tons',
+          to: '/tools/split-toning',
+          description: 'Uma tonalidade e uma saturação para as sombras e os realces, em vez de nove controlos de canal.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Curvas por canal quando a dominante varia de uma forma que três bandas não conseguem acompanhar.',
+        },
+        {
+          label: 'Níveis',
+          to: '/tools/photo-levels',
+          description: 'Defina o ponto de preto e o ponto de branco por canal antes de equilibrar os meios-tons.',
+        },
+        {
+          label: 'Tingir uma fotografia',
+          to: '/tools/tint-photo',
+          description: 'Adicione um único banho de cor por densidade, em vez de equilibrar três canais.',
+        },
+        {
+          label: 'Tutorial do editor de fotografias',
+          to: '/tutorials/aperture',
+          description: 'Como as camadas, as máscaras e os looks se articulam no editor.',
+        },
+      ],
+      embed: {
+        title: 'Equilíbrio de cores de uma fotografia',
+        description: 'Largue uma fotografia para abrir o Aperture no painel Equilíbrio de cores: nove controlos para o vermelho, o verde e o azul nas sombras, nos meios-tons e nos realces, com a luminosidade preservada.',
+      },
     },
     'split-toning': {
       name: 'Divisão de tons',
+      h1: 'Divisão de tons online',
       tagline: 'Empurre uma tonalidade para as sombras e outra para os realces, e depois deslize o ponto de equilíbrio entre elas.',
       metaTitle: 'Divisão de tons online: colorir sombras e realces em separado',
       metaDescription: 'Tinja sombras e realces com duas tonalidades diferentes no navegador: controlos de tonalidade, saturação e equilíbrio, antes e depois em direto, exportação em resolução total.',
+      ogTitle: 'Divisão de tons online',
+      ogDescription: 'Dê uma cor à metade escura de uma fotografia e outra à metade clara, com um controlo de equilíbrio que decide onde as duas se encontram. Não destrutivo, exportado em tamanho total.',
+      intro: 'A divisão de tons acrescenta uma dominante de cor aos tons escuros de uma fotografia e uma dominante diferente aos tons claros, e é assim que se constroem as gradações azul-petróleo e laranja, os looks de película com realces quentes e os monocromáticos ao estilo da cianotipia. O Aperture executa-a como uma etapa de cor no espaço com gama, depois da exposição, do tom e do equilíbrio de brancos na pilha de camadas: a luma BT.709 de cada píxel decide quanto recebe da tonalidade das sombras e quanto recebe da tonalidade dos realces, e o controlo Equilíbrio desloca o ponto onde um peso se desvanece e o outro começa a surgir. O ajuste é uma camada entre até 64, pelo que pode baixar a opacidade, limitá-lo com uma máscara ou mudar o modo de mistura para Cor, para que a luminância da imagem nunca seja tocada.',
+      whatItDoes: [
+        'Adiciona uma camada Divisão de tons com os controlos Tonalidade (0-360) e Saturação (0-100) para as Sombras e um segundo par para os Realces, mais um controlo Equilíbrio de -100 a 100.',
+        'Pondera cada píxel pela sua luma: os píxeis escuros recebem a cor das sombras, os píxeis claros recebem a cor dos realces e os cinzentos médios perto do ponto de divisão ficam como estavam.',
+        'Mantém o desvio máximo moderado de propósito, um ganho de 0,25 com saturação total, para que mesmo as definições extremas colorem em vez de repintarem a imagem.',
+        'Mostra o resultado em direto na pré-visualização, com a vista dividida antes/depois e a comparação ao manter premida a tecla de barra invertida, e regista cada alteração dos controlos na lista do Histórico.',
+        'Exporta a fotografia com a divisão de tons a partir dos píxeis originais, no servidor, em JPG, PNG, WebP, AVIF ou TIFF, com o sufixo (retouched) no nome.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue uma fotografia',
+          description: 'O editor abre com o painel Divisão de tons em primeiro plano e a imagem descodificada no navegador.',
+        },
+        {
+          title: 'Escolha as duas tonalidades',
+          description: 'Defina a tonalidade das Sombras e a tonalidade dos Realces e, depois, suba cada controlo Saturação até a dominante ficar visível.',
+        },
+        {
+          title: 'Mova o equilíbrio',
+          description: 'Leve o Equilíbrio para valores negativos para dar à cor dos realces uma parte maior dos meios-tons, e para valores positivos para deixar a cor das sombras subir mais.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha um formato e a qualidade; o servidor processa o original em resolução total e a transferência começa.',
+        },
+      ],
+      advancedDetails: [
+        'A luma L de cada píxel é 0,2126 R + 0,7152 G + 0,0722 B sobre valores codificados em sRGB. O ponto de divisão é e = 0,5 + balance / 100 x 0,25, pelo que Equilíbrio -100 coloca a divisão em 0,25 e Equilíbrio +100 coloca-a em 0,75. O peso das sombras é 1 - smoothstep(0, e, L) e o peso dos realces é smoothstep(e, 1, L), em que smoothstep é a rampa habitual t x t x (3 - 2t).',
+        'Cada tonalidade é convertida numa cor totalmente saturada com o leque padrão de tonalidade para RGB (a tonalidade 220 dá vermelho 0, verde 0,333 e azul 1; a tonalidade 40 dá 1; 0,667; 0). A camada soma então 0,25 x (saturation / 100) x weight x (hueColor - 0,5) a cada canal, para cada extremo, e limita o resultado a 0..1, pelo que um canal se pode mover no máximo 0,125 (cerca de 32 em 255) por extremo, e só onde o peso é 1.',
+        'Como o desvio é hueColor menos 0,5, um tom baixa sempre alguns canais enquanto sobe outros: um tom azul nas sombras baixa ligeiramente o vermelho e o verde enquanto sobe o azul, e é por isso que as sombras tonalizadas parecem coloridas sem ficarem turvas nem mais claras.',
+        'Com Equilíbrio 0, um píxel com luma 0,5 tem ambos os pesos a 0, pelo que um verdadeiro cinzento médio não se altera, por mais altas que sejam as saturações; os dois tons encontram-se sem se sobreporem no ponto de divisão e só se sobrepõem através das rampas suaves de cada lado dele.',
+        'Enquanto afina a divisão de tons, a pré-visualização é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px; o ficheiro exportado é processado no nosso servidor a partir do original em resolução total, com a mesma fórmula de divisão de tons, e a pré-visualização e a exportação coincidem dentro de uma pequena tolerância documentada: no máximo alguns níveis em 8 bits nas etapas de cor, e exatamente no grão.',
+      ],
+      whyItMatters: [
+        'Uma única coloração global empurra tudo na mesma direção, enquanto a divisão de tons mantém as sombras e os realces complementares, e é isso que dá profundidade a uma fotografia graduada em vez de uma simples dominante de cor.',
+        'As impressões de película, os diapositivos em processamento cruzado e a maioria dos looks cinematográficos são, no fundo, gradações de duas tonalidades, e reproduzi-las com dois controlos de tonalidade e um equilíbrio é mais rápido do que pintar máscaras.',
+        'Executá-la como uma camada com opacidade e modo de mistura significa que uma gradação forte pode ser atenuada ao seu gosto meses depois, sem recomeçar a edição.',
+      ],
+      useCases: [
+        {
+          title: 'Retratos azul-petróleo e laranja',
+          description: 'Tonalidade 200 nas sombras com Saturação 50, tonalidade 40 nos realces com Saturação 30: a pele mantém-se quente enquanto o fundo arrefece.',
+        },
+        {
+          title: 'Look de película quente numa fotografia a preto e branco',
+          description: 'Adicione primeiro uma camada Preto e branco e depois puxe as sombras para o castanho e os realces para o creme, para uma impressão em sépia com os tons separados.',
+        },
+        {
+          title: 'Cenas noturnas frias',
+          description: 'Sombras azuis com o Equilíbrio em +30 levam a dominante mais acima, até aos meios-tons, enquanto os candeeiros de rua mantêm um ténue tom âmbar nos realces.',
+        },
+        {
+          title: 'Uniformizar uma série de fotografias',
+          description: 'Guarde a divisão de tons como um look e aplique-o a todas as imagens de um conjunto, para que as cores de uma galeria ou de uma grelha de produtos condigam.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Sombras azuis e realces âmbar num retrato de 24 MP',
+          body: 'Um JPEG de 6000 x 4000 (24 MP, 9,6 MB). Sombras: Tonalidade 220, Saturação 40. Realces: Tonalidade 40, Saturação 30. Equilíbrio 0, pelo que a divisão fica na luma 0,5. Um cinzento de sombra de 0,2 tem um peso de sombras de 0,648 e passa a vermelho 0,1676, verde 0,1892 e azul 0,2324, ou seja, (43, 48, 59) em 8 bits em vez de (51, 51, 51). Um cinzento de realce de 0,85 tem um peso de realces de 0,784 e passa a (224, 219, 209) em vez de (217, 217, 217). O cinzento de 0,5 fica em (128, 128, 128). Exportado em JPG com qualidade 92, o ficheiro tem cerca de 10,8 MB e exige um plano Premium ou Pro para os 24 MP completos; como visitante, é reduzido para 12 MP, cerca de 5,4 MB. Uma tarefa normal.',
+        },
+        {
+          title: 'Azul-petróleo e laranja com o equilíbrio mais alto',
+          body: 'Um JPEG de telemóvel de 4000 x 3000 (12 MP, 4,1 MB). Sombras: Tonalidade 200, Saturação 60. Realces: Tonalidade 50, Saturação 50. Equilíbrio +20 desloca o ponto de divisão para 0,55. Um cinzento de 0,2 tem agora um peso de sombras de 0,6995 e passa a (38, 55, 64); um cinzento de 0,5 ganha um peso de sombras de 0,0233 e desloca-se menos de um nível, para (127, 128, 128); um cinzento de 0,85 tem um peso de realces de 0,7407 e passa a (229, 225, 205). Um píxel de sombra castanho em (0,3; 0,25; 0,2) fica em (66, 67, 61), visivelmente mais frio. A exportação em WebP com qualidade 85 tem cerca de 3,6 MB e cabe no limite de 12 MP para visitantes em tamanho total.',
+        },
+      ],
+      whenNotToUse: 'Dispense a divisão de tons quando a fotografia tem simplesmente uma dominante de cor que quer remover, e não acrescentar: uma correção do equilíbrio de brancos com os controlos Temperatura e Tonalidade, ou o painel Equilíbrio de cores com Preservar luminosidade ativado, corrige uma dominante sem inventar uma segunda tonalidade. Se precisar de uma cor específica em toda a imagem com uma intensidade escolhida, o Filtro de foto da página de coloração é mais simples, e se o look que pretende já existe como ficheiro .cube, a página de LUT aplica-o com exatidão em vez de o aproximar com duas tonalidades.',
+      whyMediaManipulator: [
+        'A divisão de tons do Aperture é uma fórmula documentada com constantes publicadas, pelo que os mesmos controlos dão os mesmos píxeis na pré-visualização do navegador, no servidor de exportação e na aplicação para telemóvel.',
+        'Nada da fotografia sai do seu navegador enquanto afina as tonalidades; só a exportação, a seleção do motivo ou a correção enviam o ficheiro, e uma exportação de visitante é uma tarefa normal com a retenção de visitante.',
+        'A etapa de divisão de tons está na mesma pilha que as máscaras, as curvas e os níveis, pelo que uma gradação de duas tonalidades pode ser limitada ao céu ou a um intervalo de luminosidade em vez de abranger a imagem inteira.',
+      ],
+      privacyNote: 'A divisão de tons é calculada no seu navegador sobre a fotografia descodificada; o ficheiro só é enviado para o nosso servidor quando exporta, seleciona um motivo ou faz uma correção, e nessa altura o original é processado com os mesmos pesos de sombras e de realces. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Com sessão iniciada, o original e a respetiva pré-visualização de 1920 px ficam guardados de acordo com a sua definição de retenção e são eliminados com o projeto.',
+      faq: [
+        {
+          question: 'O que é que o controlo Equilíbrio desloca, ao certo?',
+          answer: 'Desloca o valor de luma onde o peso das sombras chegou a zero e o peso dos realces começa a subir. Equilíbrio 0 coloca esse ponto numa luma de 0,5; cada 100 pontos de Equilíbrio desloca-o 0,25, pelo que +40 o leva a 0,6 e -40 a 0,4.',
+        },
+        {
+          question: 'Porque é que um píxel cinzento médio não muda nada?',
+          answer: 'Com o Equilíbrio a 0, o peso das sombras é 1 - smoothstep(0; 0,5; L) e o peso dos realces é smoothstep(0,5; 1; L). Com L = 0,5, ambas as rampas estão no extremo zero, pelo que não é acrescentada cor nenhuma a um píxel com uma luma exatamente média.',
+        },
+        {
+          question: 'Até que ponto a coloração pode ser forte?',
+          answer: 'A constante de ganho é 0,25, pelo que, com Saturação 100, o maior desvio por canal é 0,25 x 0,5 = 0,125, cerca de 32 níveis em 255, e só onde o peso é totalmente 1. Empilhe duas camadas Divisão de tons se precisar de mais do que isso.',
+        },
+        {
+          question: 'A divisão de tons altera o brilho?',
+          answer: 'Ligeiramente, porque os desvios por canal não somam zero depois da ponderação pela luma. Defina o modo de mistura da camada como Cor se quiser manter exatamente a luminância original e mover apenas a crominância.',
+        },
+        {
+          question: 'Posso tonalizar apenas as sombras?',
+          answer: 'Sim. Deixe a saturação dos Realces a 0 e só o termo das sombras contribui; o valor da tonalidade dos realces é então totalmente ignorado.',
+        },
+        {
+          question: 'Isto funciona numa fotografia a preto e branco?',
+          answer: 'É uma das melhores utilizações. Coloque uma camada Preto e branco por baixo da camada Divisão de tons; os valores de cinzento fornecem os pesos de luma e as duas tonalidades dão a única cor da imagem.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'HEIC, HEIF, TIFF e BMP exigem uma conta para que o servidor possa criar uma cópia de pré-visualização editável; os restantes formatos são descodificados no navegador.',
+          'A exportação está limitada a 12 megapíxeis sem conta e no plano Free; os planos Premium e Pro exportam até 120 megapíxeis.',
+        ],
+      },
+      related: [
+        {
+          label: 'Equilíbrio de cores',
+          to: '/tools/color-balance-photo',
+          description: 'Desvios RGB em três bandas, para sombras, meios-tons e realces, quando quer controlo por canal em vez de tonalidades.',
+        },
+        {
+          label: 'Tingir uma fotografia',
+          to: '/tools/tint-photo',
+          description: 'Uma única cor de filtro de foto, com a densidade escolhida, sobre a imagem inteira.',
+        },
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'Converta para monocromático com seis controlos de canal antes de acrescentar os tons.',
+        },
+        {
+          label: 'Aplicar um LUT',
+          to: '/tools/apply-lut-to-photo',
+          description: 'Carregue uma gradação .cube quando um look já está captado numa tabela 3D.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Dê forma ao contraste com curvas por canal, para acompanhar a divisão de tons.',
+        },
+        {
+          label: 'Tutorial do Aperture',
+          to: '/tutorials/aperture',
+          description: 'A visita guiada ao editor: camadas, máscaras, histórico e exportação.',
+        },
+      ],
+      embed: {
+        title: 'Divisão de tons de uma fotografia',
+        description: 'Largue uma fotografia para abrir o editor no painel Divisão de tons; defina duas tonalidades e um equilíbrio e exporte em tamanho total.',
+      },
     },
     'apply-lut-to-photo': {
       name: 'Aplicar um LUT',
+      h1: 'Aplicar um LUT (.cube) a uma fotografia online',
       tagline: 'Largue um LUT 3D .cube sobre uma fotografia, defina a intensidade e exporte a imagem graduada em resolução total.',
       metaTitle: 'Aplicar um LUT a uma fotografia online: carregue um ficheiro .cube',
       metaDescription: 'Carregue um LUT 3D .cube até ao tamanho 65 e 1 MB, veja a gradação na fotografia de imediato, misture-a com um controlo de intensidade e exporte em tamanho total.',
+      ogTitle: 'Aplicar um LUT a uma fotografia online',
+      ogDescription: 'Use uma tabela de consulta de cores .cube numa fotografia. Consulta trilinear, mistura por intensidade, máscaras e camadas, exportação a partir dos píxeis originais.',
+      intro: 'Um LUT é uma tabela de consulta que faz corresponder cada cor de entrada a uma cor de saída, e o formato .cube é a forma como a maioria dos perfis de câmara, emulações de película e gradações de vídeo são partilhados. O Aperture aceita um ficheiro .cube como camada LUT: a tabela é analisada no navegador, quantizada em bytes, carregada na GPU como textura 3D e amostrada de forma trilinear em cada píxel da pré-visualização de 1920 px, depois das camadas de exposição, curvas ou cor que estejam por baixo na pilha. Um controlo Intensidade mistura o píxel intacto com o píxel consultado. Como o texto do LUT é guardado dentro do documento do projeto, o servidor de exportação lê a mesma tabela e aplica a mesma interpolação ao original em tamanho total, pelo que uma gradação criada para imagens de vídeo chega a uma fotografia de 24 megapíxeis exatamente como pretendido.',
+      whatItDoes: [
+        'Adiciona uma camada LUT: largue um ficheiro .cube ou escolha um, e o painel indica o tamanho do cubo assim que a tabela é analisada.',
+        'Aplica um LUT 3D de qualquer tamanho entre 2 e 65 pontos por eixo, até 1 MB de texto, com interpolação trilinear entre as oito entradas mais próximas da tabela.',
+        'Mistura a cor consultada com a cor de entrada através de um controlo Intensidade de 0 a 1, para que uma gradação cinematográfica pesada possa ser usada a metade da intensidade.',
+        'Empilha-se com todos os outros ajustes: coloque a exposição ou o equilíbrio de brancos por baixo do LUT, para que a tabela receba uma imagem normalizada, e as curvas ou o grão por cima.',
+        'Remove a tabela com um clique, mantém o lugar da camada e regista o carregamento e cada alteração da intensidade no histórico, que pode anular.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue uma fotografia',
+          description: 'O editor abre no painel LUT com a imagem descodificada localmente.',
+        },
+        {
+          title: 'Carregue o ficheiro .cube',
+          description: 'Arraste o LUT para o painel ou escolha-o; a verificação do tamanho e a análise são feitas no navegador.',
+        },
+        {
+          title: 'Defina a intensidade',
+          description: 'Baixe o controlo Intensidade a partir de 1 se a tabela completa for demasiado forte; use a vista dividida antes/depois para comparar.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha um formato, a qualidade e o tamanho; o servidor processa o original com a mesma tabela.',
+        },
+      ],
+      advancedDetails: [
+        'Um ficheiro .cube é texto simples. Uma linha LUT_3D_SIZE N declara a grelha, as linhas opcionais TITLE, DOMAIN_MIN, DOMAIN_MAX e LUT_3D_INPUT_RANGE são ignoradas, as linhas de comentário começam por # e seguem-se N x N x N linhas de três valores de vírgula flutuante, com o vermelho a variar mais depressa, depois o verde e depois o azul. Um cubo de tamanho 33 tem, portanto, 35 937 linhas e um cubo de tamanho 65 tem 274 625.',
+        'O analisador aceita um cabeçalho de 2 a 65; os ficheiros que declaram LUT_1D_SIZE são recusados, porque só são suportadas tabelas 3D. O texto está limitado a 1 MB (1 048 576 bytes) e, como uma tabela de tamanho 33 com valores de seis casas decimais já tem cerca de 970 KB, 33 é a maior grelha habitual que cabe; um ficheiro de tamanho 65 teria cerca de 7 MB e é recusado por ser demasiado grande antes de ser analisado.',
+        'Cada valor da tabela é quantizado num byte, round(value x 255) limitado a 0..255, para que a tabela possa ser carregada como uma textura 3D RGB8. Um valor de 0,5 passa a 128/255 = 0,50196; esta é a única perda de precisão e fica abaixo da tolerância de exportação em 8 bits.',
+        'A consulta é trilinear: a cor de entrada é escalada para 0..N-1 em cada eixo, o índice inferior da célula é floor(value) limitado a N-2, e o resultado é uma interpolação lerp ao longo do vermelho, depois do verde e depois do azul, entre as oito entradas circundantes. A saída é então lerp(input, lookup, intensity), pelo que Intensidade 0,6 contribui com 60% do desvio da tabela.',
+        'A pré-visualização graduada é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px da fotografia, e o ficheiro exportado é processado no nosso servidor a partir do original em resolução total, com a mesma tabela e a mesma fórmula trilinear; os dois coincidem dentro de uma pequena tolerância documentada de, no máximo, alguns níveis em 8 bits, e o grão é exato.',
+      ],
+      whyItMatters: [
+        'Os LUT são o formato de troca da gradação de cor: um look criado num editor de vídeo, a conversão de log para ecrã de um fabricante de câmaras ou um pacote de película comprado podem ser usados em fotografias sem os reconstruir controlo a controlo.',
+        'Uma tabela 3D consegue exprimir transformações de cor que nenhuma combinação de controlos simples reproduz, como alterações de saturação que dependem da tonalidade e só afetam os laranjas.',
+        'A mistura por intensidade e as máscaras transformam uma tabela fixa numa tabela ajustável, e essa é a diferença entre um filtro e uma edição.',
+      ],
+      useCases: [
+        {
+          title: 'Igualar fotografias a imagens de vídeo graduadas',
+          description: 'Aplique o mesmo .cube usado num projeto de vídeo às fotografias dos bastidores, para que as miniaturas e as fotografias partilhem a mesma gradação.',
+        },
+        {
+          title: 'Pacotes de emulação de película',
+          description: 'Carregue um LUT de emulação, comprado ou gratuito, e defina a Intensidade em 0,6 para uma versão mais subtil do que a tabela completa.',
+        },
+        {
+          title: 'Conversões de perfis de câmara',
+          description: 'Use um LUT de visualização fornecido pelo fabricante numa exportação plana e de baixo contraste feita com o perfil neutro de uma câmara.',
+        },
+        {
+          title: 'Conjuntos coerentes para clientes',
+          description: 'Guarde a camada LUT como look e aplique-a em lote ao resto da sessão, 3 fotografias de cada vez no plano Free e até 25 no Pro.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Um LUT quente de tamanho 33 com intensidade total e com 0,6',
+          body: 'Um JPEG de 5472 x 3648 (20 MP, 8,3 MB) e um .cube de tamanho 33 com cerca de 970 KB, cuja tabela multiplica o vermelho por 1,08 e o azul por 0,92. Um cinzento médio de 0,5 dá, na consulta, vermelho 0,5412, verde 0,502 e azul 0,4588, ou seja, (138, 128, 117); o canal verde lê 0,502 e não 0,5 porque 0,5 foi guardado como o byte 128. Com Intensidade 0,6, o mesmo cinzento fica em (134, 128, 121). Um tom de pele de (0,75; 0,6; 0,45) passa a (207, 153, 106) com intensidade total e a (201, 153, 109) com 0,6. Exportado em PNG, o ficheiro de 20 MP tem cerca de 50 MB; em WebP com qualidade 90, cerca de 6 MB; ambos exigem Premium ou Pro, por estarem acima do limite de 12 MP.',
+        },
+        {
+          title: 'Um cubo identidade de tamanho 2 num píxel de céu',
+          body: 'O LUT válido mais pequeno tem LUT_3D_SIZE 2 e 8 linhas; escrito com as cores dos cantos pela ordem com o vermelho a variar mais depressa (0 0 0, 1 0 0, 0 1 0, 1 1 0, 0 0 1, 1 0 1, 0 1 1, 1 1 1), é uma tabela identidade. Um píxel de céu de (0,3; 0,6; 0,9) devolve exatamente (0,3; 0,6; 0,9), porque a interpolação trilinear entre os 8 cantos é linear em cada canal e os bytes dos cantos, 0 e 255, são exatos. Trocar a segunda e a quinta linhas transforma-o numa troca dos canais vermelho e azul. Um JPEG de 4000 x 3000 (12 MP) exporta em tamanho total dentro do limite para visitantes, com cerca de 5,4 MB com qualidade 92, como uma tarefa normal.',
+        },
+      ],
+      whenNotToUse: 'Não recorra a um LUT quando o problema é um mapeamento de brilho por canal, já que o painel Curvas faz isso com até 16 pontos editáveis e sem nenhum ficheiro para gerir, nem quando só quer tonalizar as sombras e os realces, o que a página de divisão de tons faz com dois controlos de tonalidade. Um LUT de log para ecrã aplicado a um JPEG já preparado para ecrã arruína o contraste; use antes o painel Básico. E se a sua tabela tiver mais de 1 MB ou for um LUT 1D, tem de ser convertida noutro sítio primeiro.',
+      whyMediaManipulator: [
+        'O Aperture reutiliza o mesmo analisador de .cube e a mesma consulta trilinear que o Darkroom usa para vídeo, pelo que uma gradação acertada em imagens de vídeo no Media Manipulator e aplicada aqui a uma fotografia produz as mesmas cores.',
+        'O LUT é aplicado dentro de uma pilha não destrutiva com máscaras, pelo que uma tabela cinematográfica pode ficar confinada ao fundo enquanto uma máscara do motivo deixa a pele intacta.',
+        'O texto da tabela viaja com o documento do projeto, o que significa que um projeto guardado volta a abrir com a gradação intacta e que a exportação nunca depende de o ficheiro ainda estar no seu disco.',
+      ],
+      privacyNote: 'O texto .cube é analisado no seu navegador e guardado no documento do projeto; a fotografia em si só é carregada quando exporta, seleciona um motivo ou faz uma correção, e o servidor aplica a mesma tabela ao original. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Os projetos com sessão iniciada mantêm o original e a respetiva pré-visualização de 1920 px de acordo com a sua definição de retenção, até o projeto ou a conta serem eliminados.',
+      faq: [
+        {
+          question: 'O que é um ficheiro .cube?',
+          answer: 'Um ficheiro de texto no formato Adobe Cube: uma linha LUT_3D_SIZE com o tamanho N da grelha, seguida de um número de linhas igual a N ao cubo, cada uma com três valores de saída entre 0 e 1, ordenadas com o vermelho a variar mais depressa. Cada linha é a cor de saída de uma cor de entrada da grelha; as cores entre os pontos da grelha são interpoladas.',
+        },
+        {
+          question: 'Que tamanhos de LUT e de ficheiro são aceites?',
+          answer: 'Um LUT_3D_SIZE de 2 a 65 e um ficheiro com 1 MB no máximo. Na prática, o limite de 1 MB faz com que um cubo de tamanho 33 (35 937 linhas) seja a maior grelha habitual que carrega; o tamanho 17 (cerca de 130 KB) e o tamanho 25 carregam com folga.',
+        },
+        {
+          question: 'Porque é que um LUT 1D não carrega?',
+          answer: 'Só são suportadas tabelas 3D. Um ficheiro que declare LUT_1D_SIZE é recusado com a mensagem de ficheiro inválido; converta-o num cubo 3D na ferramenta que o criou, ou reconstrua a transformação por canal com o painel Curvas, que faz o mesmo trabalho que as tabelas 1D.',
+        },
+        {
+          question: 'O LUT espera uma imagem em log ou uma imagem normal?',
+          answer: 'Depende do LUT. As tabelas de log para ecrã das câmaras esperam imagens em log, planas, e aplicar uma delas a um JPEG normal esmaga o contraste. As tabelas de look criadas para imagens de ecrã são as adequadas para fotografias comuns. O controlo Intensidade não resolve um LUT com o espaço de entrada errado.',
+        },
+        {
+          question: 'As cores são interpoladas ou ajustadas à grelha?',
+          answer: 'São interpoladas. Cada canal da saída é uma mistura trilinear das oito entradas da grelha em torno da cor de entrada, pelo que uma tabela de tamanho 17 continua a produzir gradientes suaves em vez de degraus visíveis.',
+        },
+        {
+          question: 'O LUT é enviado a terceiros?',
+          answer: 'Não. A tabela é mantida no documento do projeto, analisada no navegador e lida pelo nosso próprio servidor de exportação; nada do ficheiro nem da fotografia é partilhado com mais ninguém.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A tabela .cube é quantizada em 8 bits por entrada e amostrada de forma trilinear; os LUT 1D e as tabelas com mais de 1 MB são recusados.',
+          'As fotografias HEIC, HEIF, TIFF e BMP exigem uma conta para obter uma pré-visualização editável; exportar acima de 12 megapíxeis exige Premium ou Pro.',
+        ],
+      },
+      related: [
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'As curvas por canal fazem o que um LUT 1D faria, com até 16 pontos.',
+        },
+        {
+          label: 'Divisão de tons',
+          to: '/tools/split-toning',
+          description: 'Crie uma gradação de duas tonalidades com controlos quando não tem uma tabela.',
+        },
+        {
+          label: 'Mudar a cor de um objeto',
+          to: '/tools/change-image-color',
+          description: 'Tonalidade, saturação e luminosidade por intervalo de cor, para deslocações precisas.',
+        },
+        {
+          label: 'Corrigir exposição',
+          to: '/tools/fix-photo-exposure',
+          description: 'Normalize a exposição por baixo do LUT, para que a tabela receba o brilho que espera.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza ainda mais o ficheiro exportado para a web depois de terminada a gradação.',
+        },
+      ],
+      embed: {
+        title: 'Aplicar um LUT .cube',
+        description: 'Largue uma fotografia para abrir o painel LUT e, depois, largue nele um ficheiro .cube; defina a intensidade e exporte.',
+      },
     },
     'invert-image-colors': {
       name: 'Inverter cores',
+      h1: 'Inverter as cores de uma imagem online',
       tagline: 'Passe cada píxel ao respetivo negativo, como uma camada não destrutiva que pode mascarar, misturar ou anular.',
       metaTitle: 'Inverter as cores de uma imagem online: negativo de uma fotografia',
       metaDescription: 'Inverta uma fotografia para o negativo no navegador com um clique. Cada canal passa a ser 1 menos o seu valor; mascare, empilhe e exporte em resolução total.',
+      ogTitle: 'Inverter as cores de uma imagem online',
+      ogDescription: 'Transforme uma fotografia no seu negativo, ou um negativo digitalizado num positivo, com uma camada de inversão que pode ser mascarada e misturada. Exportação em tamanho total.',
+      intro: 'Inverter uma imagem substitui cada cor pela sua oposta: o preto passa a branco, um céu azul profundo passa a um laranja quente e um negativo de película digitalizado passa a um positivo que se pode ver. No Aperture, é a opção Inverter do painel Efeitos, uma camada de ajuste na etapa da pilha em espaço com gama que calcula 1 menos cada canal do píxel codificado em sRGB. Como é uma camada e não um filtro destrutivo, pode mascará-la numa região, baixar a opacidade para 50% para obter uma meia inversão solarizada, definir o modo de mistura como Luminosidade para inverter os tons mantendo as tonalidades, ou empilhá-la por baixo de Níveis e Curvas para concluir a conversão de um negativo. O mesmo painel inclui Posterizar, Limiar e Gama, que se combinam naturalmente com uma inversão.',
+      whatItDoes: [
+        'Adiciona uma camada Inverter a partir do painel Efeitos, que transforma cada canal em 1 menos o seu valor e converte a fotografia no seu negativo exato.',
+        'Aceita uma máscara, para que apenas uma área selecionada, um intervalo de luminosidade ou um intervalo de cores seja invertido, enquanto o resto fica como foi captado.',
+        'Suporta opacidade e os modos de mistura Normal, Luminosidade e Cor, o que permite inversões parciais, só dos tons ou só das tonalidades.',
+        'Empilha-se com Níveis, Curvas e as outras opções de Efeitos, para que uma digitalização de película invertida possa ser corrigida em cor no mesmo projeto.',
+        'Exporta o resultado invertido a partir do original em resolução total, em JPG, PNG, WebP, AVIF ou TIFF, com os metadados mantidos ou removidos.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue uma fotografia',
+          description: 'O editor abre no painel Efeitos com a imagem descodificada no navegador.',
+        },
+        {
+          title: 'Adicione Inverter',
+          description: 'Escolha Inverter no painel Efeitos; a pré-visualização passa de imediato para o negativo.',
+        },
+        {
+          title: 'Afine',
+          description: 'Se quiser, adicione uma máscara, baixe a opacidade ou empilhe Níveis e Curvas por cima para corrigir uma digitalização de película.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha um formato e o tamanho; o servidor processa o original com a mesma inversão.',
+        },
+      ],
+      advancedDetails: [
+        'A fórmula é out = 1 - c para cada um dos canais vermelho, verde e azul, sobre valores codificados em sRGB entre 0 e 1; não há termo de luma, nem alteração de gama, nem nada a limitar, porque a entrada já está dentro do intervalo. Em 8 bits, um valor v passa a 255 - v.',
+        'Inverter duas vezes devolve exatamente o original no processamento em vírgula flutuante, já que 1 - (1 - c) = c, e com uma diferença de arredondamento no ficheiro exportado: o servidor processa em float64 as imagens até 4 megapíxeis e em float32 acima disso, pelo que uma dupla inversão difere do original em, no máximo, um nível em 8 bits depois da codificação.',
+        'Uma opacidade da camada abaixo de 100% mistura a entrada com o negativo, pelo que 50% de opacidade leva todos os píxeis para o cinzento 0,5: um valor de 0,2 passa a 0,5, e um de 0,8 também. O modo de mistura Luminosidade mantém a tonalidade e a crominância originais e aproveita apenas a luma invertida; o modo Cor faz o contrário.',
+        'Nas digitalizações de película, a ordem importa: a máscara laranja de um negativo a cores é uma dominante global, pelo que primeiro uma camada Inverter, depois Níveis com os pontos de preto e de branco de entrada por canal definidos a partir do histograma e, por fim, Curvas dão a conversão padrão sem uma segunda passagem.',
+        'A sua GPU (WebGL2) desenha a pré-visualização invertida a partir de uma cópia de 1920 px da fotografia; na exportação, o nosso servidor processa o original em resolução total com a mesma subtração, e os dois resultados coincidem dentro de uma pequena tolerância documentada: no máximo alguns níveis em 8 bits nas etapas de cor, e exatamente no grão.',
+      ],
+      whyItMatters: [
+        'Um negativo a cores digitalizado ou fotografado é ilegível até ser invertido; fazê-lo como camada deixa a correção da dominante e a inversão editáveis em separado.',
+        'Desenhos de linhas, plantas e diagramas invertidos leem-se melhor sobre fundos escuros, e um negativo com um clique é o primeiro passo para uma versão branco sobre preto.',
+        'As inversões parciais e mascaradas são uma ferramenta de design: um contorno solarizado, um motivo invertido sobre um fundo intacto, ou uma inversão só dos tons que mantém as cores.',
+      ],
+      useCases: [
+        {
+          title: 'Converter um negativo de película fotografado',
+          description: 'Inverta a imagem, defina depois o preto e o branco de entrada por canal em Níveis para remover a base laranja e termine com uma curva.',
+        },
+        {
+          title: 'Versões de diagramas para modo escuro',
+          description: 'Inverta um gráfico ou um esboço com fundo branco para um diapositivo escuro e aplique depois um limiar se a digitalização for cinzenta em vez de preta.',
+        },
+        {
+          title: 'Efeitos de solarização',
+          description: 'Inverta com 50% de opacidade, ou adicione uma máscara de luminosidade para que só os realces se invertam, para um look ao estilo Sabattier.',
+        },
+        {
+          title: 'Procurar emendas numa montagem',
+          description: 'Uma camada invertida temporária torna mais fáceis de ver as diferenças de brilho ao longo de um contorno colado; elimine-a antes de exportar.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'De uma digitalização de negativo de 3000 x 2000 a um positivo',
+          body: 'Uma digitalização TIFF de 3000 x 2000 (6 MP, cerca de 18 MB) aberta com uma conta. Inverter transforma um píxel da base da película de (0,93; 0,08; 0,12) em (0,07; 0,92; 0,88), ou seja, (18, 235, 224), a dominante azul-ciano que qualquer negativo a cores invertido apresenta. Uma camada Níveis por cima, com preto de entrada 0,06 e branco de entrada 0,86 no canal principal, estica então um valor de 0,3 para 0,3 e um valor de 0,7 para 0,8, pelo que a dominante se elimina definindo em separado, a partir do histograma, os pontos de entrada do vermelho, do verde e do azul. A exportação em PNG tem cerca de 15 MB; em JPG com qualidade 92, cerca de 2,7 MB. A imagem inteira fica abaixo do limite de 12 MP.',
+        },
+        {
+          title: 'Uma inversão a meia intensidade para um cartaz solarizado',
+          body: 'Um JPEG de 4000 x 3000 (12 MP, 4,5 MB). Camada Inverter com 50% de opacidade: um valor de 0,2 mistura-se com o seu negativo 0,8 e dá 0,5, um valor de 0,8 mistura-se com 0,2 e dá 0,5, e toda a fotografia converge para o cinzento médio, que é o achatamento solarizado clássico. A 100%, o cinzento escuro (51, 51, 51) passa a (204, 204, 204). Adicione por cima uma camada Limiar com nível 0,5: um píxel de céu com luma 0,529 antes da inversão passa a branco, e tudo o que for mais escuro passa a preto. A exportação em WebP com qualidade 85 tem cerca de 3,6 MB e conta como uma tarefa normal.',
+        },
+      ],
+      whenNotToUse: 'Inverter é a ferramenta errada quando uma fotografia parece apenas demasiado escura ou tem uma dominante de cor; corrija a exposição com o painel Básico e as dominantes com o equilíbrio de brancos ou o equilíbrio de cores. Uma conversão para preto e branco com controlos por canal dá muito mais controlo sobre a tonalidade do que inverter uma imagem dessaturada e, para diagramas que devam ficar a branco sobre preto com contornos nítidos, uma camada Limiar depois da inversão costuma fazer mais trabalho do que a própria inversão.',
+      whyMediaManipulator: [
+        'O Aperture mantém a inversão não destrutiva, com anulação, histórico e a vista do original ao manter premido, pelo que a conversão de um negativo pode ser afinada ao longo de várias sessões num projeto guardado.',
+        'O painel Efeitos está ao lado de Níveis e Curvas na mesma pilha, que é exatamente a combinação de que a conversão de uma digitalização de película precisa, sem idas e voltas entre ferramentas diferentes.',
+        'Uma exportação invertida é processada a partir dos píxeis originais no nosso próprio servidor, nunca através de um serviço de terceiros, e uma exportação de visitante custa uma tarefa normal.',
+      ],
+      privacyNote: 'A inversão é uma única subtração por canal calculada no seu navegador; a fotografia só é carregada quando exporta, seleciona um motivo ou faz uma correção, e nessa altura o nosso servidor inverte o original da mesma forma. Os ficheiros são mantidos 24 horas para visitantes; com uma conta gratuita escolhe entre 24 horas e 2 anos. Com uma conta, o original, a respetiva pré-visualização e a miniatura ficam guardados de acordo com a sua definição de retenção até eliminar o projeto.',
+      faq: [
+        {
+          question: 'Inverter é o mesmo que criar um negativo?',
+          answer: 'Sim. Cada canal passa a 1 menos o seu valor, que é exatamente o que um negativo é: em 8 bits, (51, 51, 51) passa a (204, 204, 204), e a cor do céu (89, 140, 217) passa a um laranja quente (166, 115, 38).',
+        },
+        {
+          question: 'Se inverter duas vezes, volto a ter o original?',
+          answer: 'Exatamente, na pré-visualização e no processamento em vírgula flutuante, porque 1 - (1 - c) é c. O ficheiro exportado pode diferir do original em, no máximo, um nível em 8 bits depois da nova codificação, e uma exportação JPG com perdas acrescenta por cima o seu próprio ruído de compressão.',
+        },
+        {
+          question: 'Posso inverter apenas parte de uma fotografia?',
+          answer: 'Adicione uma máscara à camada Inverter: um pincel, um gradiente, uma máscara radial, um intervalo de luminosidade, um intervalo de cores ou uma máscara do motivo funcionam todos, e a própria máscara pode ser suavizada e invertida.',
+        },
+        {
+          question: 'Porque é que o meu negativo invertido continua a parecer laranja ou azul?',
+          answer: 'A película negativa a cores tem uma base laranja que, invertida, dá uma dominante azul. Adicione uma camada Níveis por cima da inversão e defina os pontos de preto e de branco de entrada por canal a partir do histograma; isso neutraliza a base sem afetar a inversão.',
+        },
+        {
+          question: 'Que mais existe no painel Efeitos?',
+          answer: 'Posterizar (2 a 255 níveis por canal), Limiar (preto ou branco consoante a luma, num nível escolhido) e Gama (uma curva de potência de 0,1 a 10). São camadas separadas e podem ser empilhadas com Inverter por qualquer ordem.',
+        },
+        {
+          question: 'A inversão altera a transparência?',
+          answer: 'Não. O canal alfa de um PNG ou de um WebP não é tocado; só o vermelho, o verde e o azul são invertidos, pelo que um fundo transparente continua transparente.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O canal alfa é preservado; só os três canais de cor são invertidos.',
+          'As digitalizações TIFF e os ficheiros BMP exigem uma conta para obter uma cópia de pré-visualização editável; as digitalizações JPG e PNG são descodificadas no navegador.',
+        ],
+      },
+      related: [
+        {
+          label: 'Posterizar',
+          to: '/tools/posterize-image',
+          description: 'Reduza cada canal a poucos níveis, no mesmo painel Efeitos.',
+        },
+        {
+          label: 'Níveis',
+          to: '/tools/photo-levels',
+          description: 'Defina os pontos de preto e de branco por canal depois de inverter uma digitalização de película.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Termine a conversão de um negativo com uma curva de contraste.',
+        },
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'Converta para monocromático antes ou depois de inverter, para obter um negativo cinzento.',
+        },
+        {
+          label: 'Remover metadados EXIF de imagens',
+          to: '/tools/remove-exif-metadata',
+          description: 'Elimine os dados da câmara do ficheiro exportado se o for partilhar.',
+        },
+      ],
+      embed: {
+        title: 'Inverter uma fotografia',
+        description: 'Largue uma fotografia para abrir o painel Efeitos; adicione Inverter para obter um negativo instantâneo e exporte.',
+      },
     },
     'posterize-image': {
       name: 'Posterizar',
+      h1: 'Posterizar uma imagem online',
       tagline: 'Reduza cada canal a um número escolhido de níveis para uma cor plana ao estilo de cartaz, com degraus tonais marcados.',
       metaTitle: 'Posterizar uma imagem online: de 2 a 255 níveis por canal',
       metaDescription: 'Posterize uma fotografia no navegador ajustando cada canal a 2-255 níveis. Veja as bandas em direto, combine com preto e branco e exporte em tamanho total.',
+      ogTitle: 'Posterizar uma imagem online',
+      ogDescription: 'Reduza uma fotografia a bandas de cor planas com uma camada Posterizar. Cálculo exato dos níveis, máscaras, anulação e exportação em resolução total.',
+      intro: 'A posterização quantiza cada canal de cor num pequeno conjunto de valores igualmente espaçados, pelo que os gradientes suaves se transformam em bandas planas e a fotografia começa a parecer uma serigrafia. No Aperture, é a entrada Posterizar do painel Efeitos, com um único controlo Níveis de 2 a 255 (4 por omissão), aplicada como uma camada em espaço gama depois das fases de tom e de cor da pilha. O número de níveis é a quantidade de valores distintos que cada canal pode assumir: 2 dá preto ou branco puro por canal, o que perfaz oito cores possíveis no total, e 4 dá 64. Como se trata de uma camada de ajuste, pode posterizar apenas uma região mascarada, manter as tonalidades com o modo de mistura Cor ou colocar por baixo uma camada Preto e branco para obter um cartaz clássico a dois ou três tons.',
+      whatItDoes: [
+        'Adiciona uma camada Posterizar com um único controlo Níveis: 2 produz 8 cores possíveis, 4 produz 64 e 8 produz 512, sempre com espaçamento igual.',
+        'Ajusta cada canal, de forma independente, ao nível permitido mais próximo, pelo que o vermelho, o verde e o azul de um píxel podem cair em degraus diferentes.',
+        'Pré-visualiza as bandas de imediato na cópia de 1920 px e no histograma, onde os picos mostram exatamente que níveis estão a ser usados.',
+        'Funciona com máscaras, opacidade e modos de mistura, e empilha-se com Preto e branco, Limiar, Curvas e as restantes camadas.',
+        'Exporta a imagem quantizada a partir da resolução original em PNG, para cores planas exatas, ou em JPG, WebP, AVIF e TIFF.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue uma fotografia',
+          description: 'O editor abre no painel Efeitos, com a imagem descodificada localmente.',
+        },
+        {
+          title: 'Adicione Posterizar',
+          description: 'Escolha Posterizar e defina o controlo Níveis; entre 3 e 6 obtém o efeito de cartaz mais marcado.',
+        },
+        {
+          title: 'Molde primeiro os tons',
+          description: 'Adicione Preto e branco ou Curvas por baixo da camada Posterizar para decidir onde caem os limites das bandas.',
+        },
+        {
+          title: 'Exporte',
+          description: 'O PNG mantém as cores planas exatas ao byte; um JPG de alta qualidade fica mais pequeno.',
+        },
+      ],
+      advancedDetails: [
+        'Com o controlo Níveis de Posterizar no valor escolhido, o código usa n = levels - 1 como número de degraus e calcula floor(clamp(v, 0, 1) x n + 0,5) / n por canal. As saídas permitidas são 0, 1/n, 2/n, ... 1, pelo que existem exatamente levels valores distintos por canal, incluindo o preto e o branco.',
+        'O + 0,5 antes do floor transforma-o num arredondamento ao valor mais próximo: com 4 níveis (n = 3), um valor de 0,45 passa a floor(1,85) / 3 = 0,3333 e 0,5 passa a floor(2,0) / 3 = 0,6667, pelo que, na entrada, a fronteira entre a primeira e a segunda banda fica em 0,5 e entre a segunda e a terceira em 0,8333.',
+        'Com 2 níveis, a posterização é um limiar por canal em 0,5, e não um limiar de luma: um píxel de (0,35; 0,55; 0,85) passa a (0, 1, 1), ciano, ao passo que a camada Limiar usa a luma BT.709 e daria branco para o mesmo píxel. Com 255 níveis, é uma identidade numa entrada de 8 bits.',
+        'Cada canal é quantizado por si, pelo que um gradiente cinzento produz bandas cinzentas, mas um gradiente colorido produz bandas cuja tonalidade muda em cada degrau em que apenas um canal atravessa uma fronteira; para o evitar, adicione por baixo uma camada Preto e branco, ou use o modo de mistura Cor para manter as tonalidades originais.',
+        'A pré-visualização com bandas é desenhada pela sua GPU (WebGL2) a partir de uma cópia de 1920 px; o ficheiro exportado é processado no nosso servidor a partir do original em resolução total com a mesma fórmula de arredondamento, e os dois coincidem dentro de uma pequena tolerância documentada de, no máximo, alguns níveis de 8 bits (o grão é exato).',
+      ],
+      whyItMatters: [
+        'A posterização é a base dos looks de serigrafia, risografia e pop art, e conhecer os limites exatos das bandas permite colocá-los com uma curva em vez de os adivinhar.',
+        'Reduzir uma imagem a um punhado de cores planas é também um passo prático antes da vetorização ou do corte de um estêncil.',
+        'Como camada, é reversível e pode ser mascarada, pelo que um tratamento de cartaz pode ser aplicado ao fundo enquanto o motivo mantém toda a gama tonal.',
+      ],
+      useCases: [
+        {
+          title: 'Retratos pop art',
+          description: 'Preto e branco por baixo, Posterizar com 3 níveis por cima e, depois, Divisão de tons para colorir as duas ou três bandas resultantes.',
+        },
+        {
+          title: 'Preparação de estêncil e de serigrafia',
+          description: 'Com 2 níveis, uma imagem monocromática dá uma separação limpa a preto e branco, com o corte em 0,5 por canal.',
+        },
+        {
+          title: 'Cor de jogo retro ou de pixel art',
+          description: 'Com 4 a 6 níveis, uma fotografia redimensionada aproxima-se de uma paleta limitada e mantém as tonalidades do original.',
+        },
+        {
+          title: 'Evidenciar a estrutura tonal',
+          description: 'Uma camada temporária com 6 níveis torna evidentes as zonas de uma paisagem enquanto ajusta as Curvas; elimine-a antes de exportar.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Quatro níveis numa paisagem de 12 MP',
+          body: 'Um JPEG de 4000 x 3000 (12 MP, 4,8 MB) com Posterizar em 4 níveis, ou seja, n = 3. Um píxel de céu de (0,35; 0,55; 0,85), ou (89, 140, 217), passa a (0,333; 0,667; 1), ou (85, 170, 255). Um cinzento médio de 0,5 arredonda para cima, para 0,667, porque floor(1,5 + 0,5) = 2, enquanto 0,45 arredonda para baixo, para 0,333. Um valor de sombra de 0,1 passa a 0 e um realce de 0,9 passa a 1. O histograma mostra quatro picos por canal. Exportada em PNG, a imagem plana tem cerca de 12 a 15 MB, em vez dos 30 MB que uma fotografia normal desse tamanho teria; em WebP com qualidade 100, cerca de 2 MB. Uma tarefa normal, dentro do limite para visitantes.',
+        },
+        {
+          title: 'Seis níveis na pele, depois dois',
+          body: 'Um retrato de 3000 x 4000 (12 MP, 5,1 MB). Com 6 níveis (n = 5), um tom de pele de (0,78; 0,6; 0,5) passa a (0,8; 0,6; 0,6), ou (204, 153, 153); o canal azul sobe de 128 para 153 porque 0,5 x 5 + 0,5 = 3,0, que o floor deixa em 3. Passar o controlo para 2 níveis (n = 1) dá (1, 1, 1), branco, já que todos os canais estão acima de 0,5, enquanto uma sombra de (0,3; 0,25; 0,2) passa a (0, 0, 0). Com uma camada Preto e branco por baixo, na mistura de canais por omissão, o mesmo corte com 2 níveis produz um estêncil limpo a dois tons. A exportação em PNG tem cerca de 8 MB.',
+        },
+      ],
+      whenNotToUse: 'Posterizar é um efeito gráfico, não uma correção: se uma fotografia tem bandas que quer eliminar, isto acrescenta ainda mais, e o caminho certo é a redução de ruído ou um ajuste suave de Curvas. Para um recorte puro a preto e branco em função do brilho, use a camada Limiar, que avalia a luma em vez de cada canal. Se o objetivo é ter menos cores para obter um ficheiro mais pequeno, a ferramenta Comprimir imagem reduz o tamanho sem degraus visíveis, e um redimensionamento faz mais por uma miniatura do que um corte na paleta.',
+      whyMediaManipulator: [
+        'O Aperture documenta a fórmula exata de quantização, pelo que as bandas que vê na pré-visualização são as mesmas que o servidor de exportação produz a partir do original em resolução total.',
+        'A camada Posterizar pode ser mascarada com seis tipos de máscara, incluindo uma máscara do motivo gerada na nossa própria GPU, pelo que um efeito de cartaz pode rodear uma pessoa sem lhe tocar no rosto.',
+        'Uma exportação em PNG mantém as cores planas exatas e o projeto continua editável, pelo que passar mais tarde de 4 para 5 níveis é um simples movimento do controlo, e não um trabalho refeito de raiz.',
+      ],
+      privacyNote: 'A posterização é um arredondamento por canal feito no seu navegador sobre a fotografia descodificada; nada é carregado até exportar, selecionar um motivo ou corrigir, altura em que o servidor quantiza o original com o mesmo número de degraus. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Com sessão iniciada, o original e a respetiva pré-visualização de 1920 px ficam sujeitos à sua definição de retenção até o projeto ser eliminado.',
+      faq: [
+        {
+          question: 'O que significa exatamente o número de níveis?',
+          answer: 'É a quantidade de valores distintos que cada canal pode assumir, incluindo 0 e 1. Com 4 níveis, cada canal pode ter 0; 0,333; 0,667 e 1, pelo que um píxel pode ser uma de 4 x 4 x 4 = 64 cores.',
+        },
+        {
+          question: 'Onde ficam os limites das bandas?',
+          answer: 'A meio caminho entre níveis adjacentes, porque o arredondamento é floor(v x n + 0,5) / n, com n = levels - 1. Com 4 níveis, os cortes na entrada ficam em 0,1667; 0,5 e 0,8333; com 3 níveis, em 0,25 e 0,75.',
+        },
+        {
+          question: 'Porque é que as cores mudam nas arestas das bandas?',
+          answer: 'Cada canal arredonda separadamente, pelo que, ao longo de um gradiente, o canal vermelho pode dar o salto antes do verde e a tonalidade muda por instantes. Coloque uma camada Preto e branco por baixo da camada Posterizar, ou defina o modo de mistura da camada Posterizar como Luminosidade, para manter as tonalidades estáveis.',
+        },
+        {
+          question: 'Qual é a diferença entre Posterizar com 2 níveis e Limiar?',
+          answer: 'Posterizar com 2 níveis corta cada canal em 0,5 e pode produzir qualquer uma de 8 cores; o Limiar compara a luma com um nível escolhido e produz apenas preto ou branco.',
+        },
+        {
+          question: '255 níveis alteram alguma coisa?',
+          answer: 'Não numa fotografia de 8 bits: com n = 254, os degraus permitidos estão a 1/254 uns dos outros, o que arredonda de volta para o mesmo valor de 8 bits com uma diferença de um nível, no máximo; na prática, não faz nada e só serve como ponto de partida para o controlo.',
+        },
+        {
+          question: 'Que formato de exportação mantém as bandas exatas?',
+          answer: 'O PNG, por ser sem perdas; o JPG, em qualidades mais baixas, suaviza as arestas duras das bandas com halos de compressão. O WebP com qualidade 100 ou o AVIF com qualidade alta são bons compromissos quando o tamanho importa.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'As cores planas posterizadas comprimem-se muito bem em PNG; a estimativa de 2,5 MB por megapíxel para fotografias desce para perto do valor de 1,0 MB dos gráficos planos.',
+          'As exportações de visitantes e do plano Free estão limitadas a 12 megapíxeis; HEIC, TIFF e BMP precisam de uma conta para obter uma pré-visualização editável.',
+        ],
+      },
+      related: [
+        {
+          label: 'Inverter cores',
+          to: '/tools/invert-image-colors',
+          description: 'A outra entrada do painel Efeitos: passe a fotografia ao respetivo negativo.',
+        },
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'Converta primeiro, para que a posterização produza bandas cinzentas limpas.',
+        },
+        {
+          label: 'Curvas',
+          to: '/tools/photo-curves',
+          description: 'Desloque os tons através dos limites das bandas antes de quantizar.',
+        },
+        {
+          label: 'Cor em destaque',
+          to: '/tools/color-pop',
+          description: 'Mantenha uma cor e passe o resto a cinzento, para outro look gráfico.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Reduza uma imagem posterizada para o tamanho de uma miniatura ou de um ícone.',
+        },
+      ],
+      embed: {
+        title: 'Posterizar uma fotografia',
+        description: 'Largue uma fotografia para abrir o painel Efeitos; adicione Posterizar, defina o número de níveis e exporte.',
+      },
     },
     'reduce-image-noise': {
       name: 'Reduzir o ruído da imagem',
+      h1: 'Reduzir o ruído de uma fotografia online',
       tagline: 'Redução de ruído de luminância e de cor em separado, com pré-visualização em direto, e exportação em resolução total.',
       metaTitle: 'Reduzir o ruído de uma fotografia online: luminância e cor',
       metaDescription: 'Reduza o ruído de uma fotografia granulada de ISO alto no navegador: um filtro bilateral na luminância e um gaussiano na cor, avaliados com zoom a 100% e exportados em resolução total.',
+      ogTitle: 'Reduzir o ruído de uma fotografia online',
+      ogDescription: 'Dois controlos, Luminância e Cor, removem o salpicado de fotografias com ISO alto sem lhes dar um aspeto de plástico. Pré-visualização em direto, exportação em resolução total, sem IA de terceiros.',
+      intro: 'No Aperture, a redução de ruído é uma camada do painel Detalhe com dois controlos, Luminância e Cor, cada um de 0 a 100. Ambos trabalham no espaço de cor Lab: o ruído de luminância é suavizado com um filtro bilateral que respeita as arestas no canal L, enquanto as manchas de cor são suavizadas com uma simples desfocagem gaussiana nos canais a e b, e é por isso que pode ser muito mais agressivo na Cor do que na Luminância antes de a imagem parecer mole. A camada está na mesma pilha não destrutiva que qualquer outro ajuste, pelo que pode limitá-la às sombras com uma máscara de intervalo de luminosidade, baixar a sua opacidade ou retirá-la mais tarde. A pré-visualização atualiza-se enquanto arrasta; o ficheiro exportado é processado a partir dos píxeis originais com a mesma aritmética. Use o botão «Avaliar a 100%» antes de decidir, porque o ruído é invisível com o zoom ajustado ao ecrã.',
+      whatItDoes: [
+        'Suaviza o ruído de luminância com um filtro bilateral de 9 por 9 no canal de luminosidade do Lab, pelo que as arestas acima do limiar de intervalo são preservadas, enquanto as zonas planas se uniformizam.',
+        'Suaviza o ruído de cor com um filtro gaussiano separável nos canais a e b do Lab, eliminando o salpicado roxo e verde que o ISO alto deixa nas sombras.',
+        'Mantém os dois tipos de ruído independentes: Cor a 60 com Luminância a 0 limpa as manchas de crominância e deixa intacta toda a textura semelhante a grão.',
+        'Fica numa camada de ajuste com opacidade, modo de mistura e máscara opcional, pelo que pode reduzir o ruído apenas no céu ou apenas nas sombras.',
+        'Processa a exportação a partir do ficheiro original no nosso servidor com as mesmas fórmulas, em resolução total, e não a partir da pré-visualização no ecrã.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'JPG, PNG, WebP, GIF, HEIC, HEIF, AVIF, TIFF ou BMP. O painel Detalhe abre à frente, com a Redução de ruído visível.',
+        },
+        {
+          title: 'Faça zoom a 100%',
+          description: 'Prima «Avaliar a 100%» para que cada píxel da imagem corresponda a um píxel do ecrã. Com a imagem ajustada à janela, o ruído dilui-se e qualquer definição parece boa.',
+        },
+        {
+          title: 'Defina a Cor e depois a Luminância',
+          description: 'Suba a Cor até o salpicado colorido desaparecer, normalmente entre 40 e 70. Depois, suba a Luminância só até onde o grão o incomodar; entre 20 e 40 mantém a textura.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha JPG, PNG, WebP, AVIF ou TIFF e uma qualidade. O servidor reduz o ruído do original e codifica o ficheiro; o original nunca é modificado.',
+        },
+      ],
+      advancedDetails: [
+        'Luminância: a imagem é convertida para CIE Lab (D65) e o L é escalado para 0..1. É aplicado um filtro bilateral com uma janela fixa de 9 por 9 (raio de 4 píxeis, com os píxeis das margens replicados), com sigma espacial 2 + 6 l e sigma de intervalo max(0,2 l; 0,001), em que l é o valor do controlo Luminância dividido por 100. Com Luminância 50, isso dá um sigma espacial de 5 px e um sigma de intervalo de 0,1, ou seja, 10 unidades de luminosidade Lab; com 100, o sigma espacial é de 8 px e o sigma de intervalo de 0,2.',
+        'Cor: os canais a e b do Lab são desfocados com um gaussiano separável cujo sigma é de 6 c píxeis, sendo c o valor do controlo Cor dividido por 100, pelo que Cor 50 corresponde a um sigma de 3 px e Cor 100 a um sigma de 6 px. Os coeficientes do filtro vão de menos ceil(3 sigma) a mais ceil(3 sigma), normalizados em float64, com os píxeis das margens replicados.',
+        'Os canais L, a e b filtrados são convertidos de volta para sRGB com a matriz inversa padrão e o resultado é limitado a 0..1. Como a janela e os sigmas estão em píxeis, o mesmo valor do controlo suaviza uma parte maior de uma pré-visualização de 1920 px do que de um original de 6000 px; avalie o resultado com zoom a 100% e conte com uma exportação ligeiramente menos suavizada do que a pré-visualização ajustada ao ecrã.',
+        'Uma Luminância de 0 salta por completo a passagem bilateral e uma Cor de 0 salta o gaussiano, pelo que uma camada com ambos a 0 é uma verdadeira identidade, e não uma desfocagem muito fraca.',
+        'A pré-visualização é desenhada na sua GPU em WebGL2 a partir de uma cópia de 1920 px da fotografia, o ficheiro exportado é processado no nosso servidor a partir do original em resolução total com as mesmas fórmulas, e os dois coincidem dentro de uma tolerância documentada: a redução de ruído tem a tolerância mais larga da política de paridade do Aperture, um erro médio de, no máximo, 3 níveis de 8 bits e um máximo de 12, enquanto os ajustes de cor estão sujeitos a uma média de 1 e o grão é exato ao bit.',
+      ],
+      whyItMatters: [
+        'O ruído de ISO alto é sobretudo salpicado de crominância, e a crominância pode ser fortemente desfocada sem perda de nitidez visível, pelo que tratar os dois canais em separado dá um resultado mais limpo do que um único controlo combinado.',
+        'Um filtro bilateral mantém as arestas onde a diferença de luminosidade excede o sigma de intervalo, e é isso que impede que um rosto sem ruído se transforme numa mancha com aspeto de cera.',
+        'Como a camada é não destrutiva, pode comparar recortes a 100% mantendo premida a tecla de barra invertida e recuar antes que algo fique gravado no ficheiro.',
+      ],
+      useCases: [
+        {
+          title: 'Concertos e fotografias noturnas a ISO 6400',
+          description: 'Cor 60 remove as manchas magenta e verdes nos pretos; Luminância 30 acalma o grão sem apagar o fumo do palco.',
+        },
+        {
+          title: 'Recuperação de sombras depois de uma subida forte da Exposição',
+          description: 'Levantar as sombras em 2 EV amplifica o ruído que estava escondido. Adicione a redução de ruído por cima da camada de exposição e aplique-lhe uma máscara de intervalo de luminosidade nos tons escuros.',
+        },
+        {
+          title: 'Provas antigas digitalizadas',
+          description: 'O ruído do digitalizador é fino e sobretudo de luminância. Luminância 40 com uma passagem de Cor a 20, sem raio a definir, costuma bastar; depois, mantenha a Textura a 0.',
+        },
+        {
+          title: 'Fotografias de produto sobre fundo escuro',
+          description: 'Reduza o ruído apenas no fundo com uma máscara de intervalo de cores sobre o fundo, para que as arestas do produto mantenham todos os píxeis de detalhe.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'JPG de concerto a ISO 6400, 6000 x 4000, 24 MP, 11,4 MB',
+          body: 'Cor 50, Luminância 50. Numa zona cinzenta plana com ruído de cerca de 6 níveis de desvio-padrão, tanto na luminosidade como na crominância, a passagem de Luminância (sigma espacial de 5 px, sigma de intervalo de 10 unidades L) reduz o desvio da luminosidade para cerca de 0,7 níveis e a passagem de Cor (sigma de 3 px) reduz o desvio da crominância para cerca de 0,4 níveis. Exportado em JPG com qualidade 92 no limite de 12 MP para visitantes, o ficheiro tem cerca de 5,4 MB; com sessão iniciada no Premium, nos 24 MP completos, tem cerca de 10,8 MB. Uma tarefa normal.',
+        },
+        {
+          title: 'Fotografia de telemóvel de 4032 x 3024 com sombras levantadas, 12,2 MP, 4,6 MB',
+          body: 'Exposição +1,5 EV e, depois, redução de ruído com Luminância 30 e Cor 60, com uma máscara de intervalo de luminosidade de 0 a 0,3. Com Luminância 30, o filtro bilateral usa um sigma espacial de 3,8 px e um sigma de intervalo de 0,06 (6 unidades L); a mesma zona com ruído desce de cerca de 6 níveis de desvio da luminosidade para cerca de 1,1, enquanto uma aresta de 20 níveis fica intacta, porque excede o sigma de intervalo em mais de 3 vezes. Cor 60 corresponde a um gaussiano de 3,6 px em a e b. A exportação em WebP com qualidade 85 tem cerca de 3,7 MB.',
+        },
+      ],
+      whenNotToUse: 'Não use a redução de ruído numa fotografia que, na verdade, é nítida, mas foi guardada com uma qualidade JPG muito baixa: os artefactos de compressão em blocos de 8 por 8 não são ruído, e o filtro bilateral preserva as suas arestas em vez de os remover. Volte a codificar a partir do original, se o tiver. Se o problema é desfocagem de movimento ou uma falha de focagem, nenhuma suavização ajuda; para uma ligeira falta de nitidez, experimente a página Aumentar a nitidez da fotografia. Para um look de película deliberadamente granulado, o que quer é adicionar grão, não removê-lo, e os controlos de Grão do mesmo painel Detalhe fazem isso com uma exportação exata ao bit.',
+      whyMediaManipulator: [
+        'As duas passagens são fórmulas documentadas com constantes reais, não uma caixa negra, pelo que o resultado é previsível de uma fotografia para a seguinte.',
+        'A redução de ruído corre na sua GPU para a pré-visualização e nos nossos próprios servidores para a exportação; nenhum serviço de IA de terceiros vê alguma vez a fotografia.',
+        'A camada de redução de ruído empilha-se com máscaras, nitidez e grão num só projeto, pelo que não tem de passar o ficheiro por três ferramentas diferentes, cada uma com uma única função.',
+      ],
+      privacyNote: 'A redução de ruído é um filtro de píxeis puro e não precisa de nenhum serviço de IA: sem sessão iniciada, a fotografia fica no seu navegador até a exportar, e essa exportação é guardada como qualquer tarefa de visitante. Com sessão iniciada, o original e a respetiva pré-visualização de 1920 px ficam sujeitos à sua definição de retenção e são eliminados com o projeto. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Nada é enviado a terceiros.',
+      faq: [
+        {
+          question: 'Porque é que a fotografia parece limpa na pré-visualização, mas ainda um pouco ruidosa depois de exportar?',
+          answer: 'A janela do filtro mede-se em píxeis. Na pré-visualização de 1920 px, uma janela de 9 por 9 cobre uma fração maior do enquadramento do que no original em tamanho total, pelo que a exportação suaviza relativamente menos. Avalie com zoom a 100%, que mostra a escala real dos píxeis.',
+        },
+        {
+          question: 'Qual é a diferença entre os controlos Luminância e Cor?',
+          answer: 'A Luminância aplica um filtro bilateral ao canal de luminosidade do Lab e preserva as arestas; a Cor aplica um gaussiano aos canais a e b do Lab e só afeta o salpicado de tonalidade e de saturação. A Cor pode normalmente ir muito mais alto do que a Luminância.',
+        },
+        {
+          question: 'Isto é redução de ruído com IA?',
+          answer: 'Não. É um par determinístico de filtros, bilateral e gaussiano, que não custa nada por utilização e corre instantaneamente na pré-visualização. As únicas tarefas de IA do editor são Selecionar motivo e Corrigir.',
+        },
+        {
+          question: 'Posso reduzir o ruído só nas sombras?',
+          answer: 'Sim. Dê à camada de redução de ruído uma máscara Intervalo de luminosidade, defina «Do brilho» em 0 e «Até ao brilho» em cerca de 0,35, com alguma suavização, e os meios-tons e os realces mantêm todo o detalhe.',
+        },
+        {
+          question: 'A redução de ruído altera as cores?',
+          answer: 'A ida e volta pelo Lab é exata a bem menos de um nível de 8 bits nas zonas planas. Valores fortes de Cor podem dessaturar pequenos pormenores coloridos, como luzes decorativas ao longe, porque são misturados com o que os rodeia.',
+        },
+        {
+          question: 'Devo aplicar nitidez antes ou depois de reduzir o ruído?',
+          answer: 'Coloque a camada Nitidez por cima da camada de redução de ruído, para que a máscara de nitidez veja a imagem já suavizada; aplicar a nitidez primeiro amplificaria o grão que a redução de ruído teria depois de remover.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'HEIC, HEIF, TIFF e BMP precisam de uma conta para que o servidor possa criar uma cópia de pré-visualização descodificável; os outros formatos abrem diretamente no navegador.',
+          'Sem conta, as exportações estão limitadas a 12 megapíxeis; o Premium e o Pro exportam até 120 megapíxeis.',
+        ],
+      },
+      related: [
+        {
+          label: 'Aumentar a nitidez da fotografia',
+          to: '/tools/sharpen-photo-online',
+          description: 'Recupere a nitidez depois de reduzir o ruído, com quantidade, raio e limiar no canal de luma.',
+        },
+        {
+          label: 'Corrigir exposição',
+          to: '/tools/fix-photo-exposure',
+          description: 'Levantar as sombras revela o ruído que esta página remove; as duas camadas empilham-se.',
+        },
+        {
+          label: 'Adicionar uma vinheta',
+          to: '/tools/add-vignette',
+          description: 'Escureça os cantos ruidosos de uma fotografia noturna em vez de os suavizar.',
+        },
+        {
+          label: 'Selecionar por cor',
+          to: '/tools/select-by-color',
+          description: 'Limite a camada de redução de ruído a uma cor de fundo com uma máscara, para que o motivo se mantenha nítido.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'O ruído custa bytes; um JPG sem ruído fica bem mais pequeno depois de comprimido.',
+        },
+        {
+          label: 'Guia do editor',
+          to: '/tutorials/aperture',
+          description: 'Como se articulam as camadas, as máscaras e o painel Histórico.',
+        },
+      ],
+      embed: {
+        title: 'Reduzir o ruído de uma fotografia',
+        description: 'Largue uma fotografia para a abrir com o painel Detalhe à frente; defina a Cor e a Luminância com zoom a 100%.',
+      },
     },
     'add-vignette': {
       name: 'Adicionar uma vinheta',
-      tagline: 'Escureça ou aclare os cantos de uma fotografia com ponto médio, arredondamento, suavização e proteção de realces.',
+      h1: 'Adicionar ou remover uma vinheta online',
+      tagline: 'Escureça ou aclare os cantos de uma fotografia com ponto médio, arredondamento, esbatimento e proteção de realces.',
       metaTitle: 'Adicionar ou remover uma vinheta online: ponto médio, arredondamento',
       metaDescription: 'Adicione uma vinheta escura ou clara a uma fotografia no navegador, ou anule a vinheta da objetiva com um valor positivo. Cinco controlos, pré-visualização em direto e exportação em resolução total.',
+      ogTitle: 'Adicionar ou remover uma vinheta online',
+      ogDescription: 'Uma quantidade negativa escurece os cantos; uma positiva aclara-os para eliminar a queda de luz da objetiva. Dê-lhe forma com o ponto médio, o arredondamento e o esbatimento, proteja os realces e exporte em tamanho total.',
+      intro: 'A secção Vinheta do painel Detalhe do Aperture multiplica cada píxel por um fator que depende da distância a que se encontra do centro do enquadramento. A Quantidade vai de -100 a 100: os valores negativos escurecem as margens, no clássico efeito que conduz o olhar para dentro, e os positivos aclaram-nas, que é como se anula a queda de luz natural de uma objetiva na abertura máxima. O Ponto médio define onde o efeito começa, o Esbatimento a suavidade com que aumenta, o Arredondamento se a forma segue o enquadramento retangular ou um círculo, e os Realces protegem os píxeis claros de serem escurecidos. É uma camada de detalhe como qualquer outra, pelo que pode ser mascarada, atenuada com a opacidade e anulada. A pré-visualização na sua GPU e a exportação no servidor usam a mesma métrica de distância e a mesma rampa smoothstep.',
+      whatItDoes: [
+        'Escurece as margens com uma Quantidade negativa ou aclara-as com uma positiva, multiplicando cada píxel por 1 + amount/100 vezes o fator de distância no enquadramento.',
+        'Começa o efeito no Ponto médio e fá-lo crescer ao longo da largura do Esbatimento com um smoothstep, pelo que nunca surge um anel visível.',
+        'Dá forma à queda com o Arredondamento: -100 segue o retângulo do enquadramento, 0 fica a meio caminho e 100 é uma verdadeira elipse inscrita no enquadramento.',
+        'Protege os píxeis claros ao escurecer: com Realces a 50, um píxel com luma 0,9 é escurecido apenas 55% do que seria um píxel preto.',
+        'Exporta a partir do original em resolução total com as coordenadas normalizadas do enquadramento, pelo que a vinheta fica no mesmo sítio no ficheiro de 24 MP e na pré-visualização.',
+      ],
+      flowSteps: [
+        {
+          title: 'Abra a fotografia',
+          description: 'Largue um JPG, PNG, WebP, HEIC ou outra fotografia; o painel Detalhe abre com os controlos de Vinheta visíveis.',
+        },
+        {
+          title: 'Escolha uma direção',
+          description: 'Arraste a Quantidade para cerca de -30 para um escurecimento subtil, ou para +20 a +40 para levantar cantos que uma objetiva escureceu.',
+        },
+        {
+          title: 'Dê-lhe forma',
+          description: 'Baixe o Ponto médio para puxar o efeito para dentro, suba o Esbatimento para suavizar a transição e defina o Arredondamento em 100 para obter uma forma circular num enquadramento largo.',
+        },
+        {
+          title: 'Proteja e exporte',
+          description: 'Suba os Realces para que os céus claros mantenham o brilho, confirme com a tecla de barra invertida e exporte em JPG, PNG, WebP, AVIF ou TIFF.',
+        },
+      ],
+      advancedDetails: [
+        'Cada píxel recebe coordenadas normalizadas nx e ny de -1 a 1 ao longo do enquadramento (com os centros dos píxeis em +0,5). São calculadas duas distâncias: a métrica do retângulo, max(|nx|, |ny|), e a métrica do círculo, a distância euclidiana ao centro em píxeis dividida por metade da diagonal. São misturadas com um peso de (roundness + 100)/200 no círculo, pelo que Arredondamento -100 é retângulo puro, 0 é uma mistura 50/50 e 100 é círculo puro. Todas as métricas valem 0 no centro e exatamente 1 nos quatro cantos.',
+        'O fator v é smoothstep(midpoint/100, midpoint/100 + feather/100, d): 0 até a distância atingir o ponto médio e 1 quando atinge o ponto médio mais o esbatimento, com a transição cúbica 3t ao quadrado menos 2t ao cubo entre os dois. Com os valores por omissão, Ponto médio 50 e Esbatimento 50, um píxel a meio caminho de um canto tem v = 0, um píxel a três quartos do caminho tem v = 0,5 e um píxel em d = 0,9 tem v = 0,896.',
+        'O píxel é multiplicado por k = 1 + amount/100 vezes v vezes prot, em que prot = 1 - highlights/100 vezes a luma BT.709 do píxel quando a Quantidade é negativa, e 1 quando é positiva; depois, o resultado é limitado a 0..1. Por isso, aclarar corta os valores altos: com Quantidade +30 num canto, um píxel em 0,8 (204) passa a 1,0 (255).',
+        'Num enquadramento de 6000 x 4000 com Arredondamento 0, o meio da aresta longa fica em d = 0,916 e o meio da aresta curta em d = 0,777; com Arredondamento 100, esses valores passam a 0,832 e 0,555, pelo que, num enquadramento 3:2, uma vinheta circular deixa as margens superior e inferior visivelmente mais claras do que as laterais.',
+        'A pré-visualização do Aperture é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px, a exportação é processada no nosso servidor a partir do original em resolução total com as mesmas fórmulas, e as duas coincidem dentro de uma pequena tolerância documentada; para a vinheta, é um erro médio de, no máximo, um nível de 8 bits, já que a distância é calculada em unidades normalizadas do enquadramento e não depende do número de píxeis.',
+      ],
+      whyItMatters: [
+        'Uma vinheta que começa no ponto médio certo lê-se como luz, e não como efeito; uma que começa demasiado perto do centro parece um túnel.',
+        'A queda de luz das objetivas fixas luminosas pode chegar a um stop inteiro nos cantos, e uma Quantidade positiva com um Esbatimento largo elimina-a sem mexer no centro.',
+        'A proteção de realces impede que uma vinheta de escurecimento suje um céu claro ou um vestido branco nos cantos.',
+      ],
+      useCases: [
+        {
+          title: 'Retratos com um fundo carregado',
+          description: 'Quantidade -35, Ponto médio 40, Esbatimento 60 e Arredondamento 60 atraem a atenção para o rosto sem um anel escuro evidente.',
+        },
+        {
+          title: 'Corrigir uma objetiva de 35mm na abertura máxima',
+          description: 'Quantidade +25, Ponto médio 30, Esbatimento 70 e Arredondamento 100 levantam os cantos cerca de um terço de stop e uniformizam o céu.',
+        },
+        {
+          title: 'Fotografias de produto sobre branco',
+          description: 'Uma ligeira vinheta negativa com Realces a 80 mantém branco o fundo branco e, ao mesmo tempo, assenta subtilmente o objeto na imagem.',
+        },
+        {
+          title: 'Recortes quadrados para redes sociais',
+          description: 'Defina primeiro o recorte em Geometria; a vinheta é calculada sobre o enquadramento recortado, pelo que os cantos continuam nos cantos.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Escurecer um retrato de 6000 x 4000, JPG de 24 MP, 9,8 MB',
+          body: 'Quantidade -40, Ponto médio 50, Esbatimento 50, Arredondamento 0, Realces 0. No canto (d = 1, v = 1), o fator é 1 - 0,40 = 0,60, pelo que um cinzento médio de 128 passa a 77. No meio da aresta longa, d = 0,916 e v = 0,925, e um 128 passa a cerca de 81. A três quartos do caminho, v = 0,5 e 128 passa a 102; dentro de d = 0,5, nada muda. Exportado em JPG com qualidade 92 no limite de 12 MP para visitantes: cerca de 5,4 MB, uma tarefa normal.',
+        },
+        {
+          title: 'Levantar a queda de luz da objetiva numa paisagem de 4000 x 6000, 24 MP, conta Premium',
+          body: 'Quantidade +30, Ponto médio 30, Esbatimento 70, Arredondamento 100. Nos cantos, v = 1 e o fator é 1,30, pelo que um céu de canto a 160 passa a 208 e tudo o que estiver acima de 196 fica cortado em 255. A meio caminho de um canto, d = 0,5, v = smoothstep(0,3; 1,0; 0,5) = 0,198, e um 160 passa a cerca de 170. Com uma exportação WebP de 24 MP com qualidade 90, o ficheiro tem cerca de 7,2 MB.',
+        },
+      ],
+      whenNotToUse: 'Dispense a vinheta quando o motivo está na margem do enquadramento, já que qualquer escurecimento centrado o vai escurecer; em vez disso, use um Ajuste local com uma máscara radial colocada sobre o motivo. Não use uma Quantidade positiva para aclarar uma fotografia subexposta inteira: só levanta os cantos e corta os píxeis claros em 255, enquanto o controlo Exposição sobe tudo por igual. Para uma moldura sólida ou um rebordo à volta da imagem, a vinheta é de todo a ferramenta errada, porque a sua rampa é sempre suave; recorte para a proporção que pretende e acrescente o rebordo num programa de paginação.',
+      whyMediaManipulator: [
+        'A forma, a rampa e a proteção estão todas documentadas com as constantes exatas, pelo que uma definição de que goste pode ser guardada como um look e ficará idêntica na fotografia seguinte.',
+        'Como a vinheta é uma camada, pode ser misturada no modo Luminosidade para evitar qualquer desvio de cor nas margens escurecidas.',
+        'A exportação é processada a partir do original, até 120 MP no Pro, com as mesmas coordenadas normalizadas, e não esticada a partir da pré-visualização no ecrã.',
+      ],
+      privacyNote: 'Uma vinheta é calculada apenas a partir das coordenadas do enquadramento e dos valores dos píxeis, sem qualquer etapa de IA. Sem conta, a fotografia e o escurecimento das margens nunca saem do seu navegador até exportar, e a exportação é então uma tarefa de visitante como outra qualquer. Com conta, o original e a respetiva pré-visualização de 1920 px ficam no nosso servidor de acordo com a sua definição de retenção. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Nenhum terceiro está envolvido.',
+      faq: [
+        {
+          question: 'Como removo a vinheta que a objetiva deixou na minha fotografia?',
+          answer: 'Use uma Quantidade positiva. A queda de luz da objetiva é aproximadamente circular e chega aos cantos, por isso Arredondamento 100, Ponto médio entre 20 e 35 e Esbatimento entre 60 e 80, com Quantidade entre +15 e +40, costumam anulá-la. Atenção aos cantos claros, já que o aclaramento corta em 255.',
+        },
+        {
+          question: 'Porque é que a vinheta parece redonda na pré-visualização, mas chega primeiro às laterais na exportação?',
+          answer: 'Não chega; a distância é normalizada ao enquadramento em ambas. O que muda a forma é o Arredondamento: a -100, segue o retângulo e as margens laterais escurecem primeiro; a 100, é uma elipse inscrita.',
+        },
+        {
+          question: 'O que fazem exatamente os Realces?',
+          answer: 'Quando a Quantidade é negativa, o escurecimento de cada píxel é multiplicado por 1 - highlights/100 vezes a sua luma. Com Realces a 100, um píxel branco puro não é escurecido de todo e um cinzento médio é escurecido metade. Não tem efeito quando a Quantidade é positiva.',
+        },
+        {
+          question: 'A vinheta acompanha o recorte?',
+          answer: 'Sim. A geometria, incluindo o recorte e o endireitamento, é aplicada antes de qualquer camada, pelo que o centro e os cantos são os do enquadramento recortado, e não os do ficheiro original.',
+        },
+        {
+          question: 'Posso descentrar a vinheta?',
+          answer: 'Não com os controlos de Vinheta, que estão sempre centrados. Para um escurecimento descentrado, adicione um Ajuste local com uma máscara Radial, inverta-a e baixe a Exposição; a máscara radial tem centro, tamanho e rotação arrastáveis.',
+        },
+        {
+          question: 'Uma vinheta escura altera as cores nos cantos?',
+          answer: 'A multiplicação escala o R, o G e o B por igual, pelo que a tonalidade não muda, embora um canto escuro possa parecer ligeiramente mais saturado. Defina a mistura da camada como Luminosidade se quiser a crominância exatamente como estava.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A vinheta é calculada em coordenadas normalizadas do enquadramento, pelo que é idêntica em qualquer tamanho de exportação, de 12 a 120 megapíxeis.',
+          'As exportações PNG mantêm a transparência; um canto transparente deixado por uma rotação é multiplicado como qualquer outro píxel, mas continua transparente.',
+        ],
+      },
+      related: [
+        {
+          label: 'Corrigir exposição',
+          to: '/tools/fix-photo-exposure',
+          description: 'Equilibre o brilho geral antes de decidir quanto devem escurecer as margens.',
+        },
+        {
+          label: 'Endireitar fotografia',
+          to: '/tools/straighten-photo',
+          description: 'Endireite e recorte primeiro; a vinheta é calculada sobre o enquadramento final.',
+        },
+        {
+          label: 'Divisão de tons',
+          to: '/tools/split-toning',
+          description: 'Um tom quente nos realces e frio nas sombras combina bem com um escurecimento suave das margens.',
+        },
+        {
+          label: 'Fotografia a preto e branco',
+          to: '/tools/black-and-white-photo',
+          description: 'As provas monocromáticas clássicas tinham quase sempre um escurecimento das margens como este.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Redimensione depois de exportar quando precisar de um tamanho em píxeis específico para um site.',
+        },
+      ],
+      embed: {
+        title: 'Adicionar ou remover uma vinheta',
+        description: 'Largue uma fotografia para abrir o painel Detalhe; arraste a Quantidade para valores negativos para escurecer as margens ou para valores positivos para as aclarar.',
+      },
     },
     'sharpen-photo-online': {
       name: 'Aumentar a nitidez da fotografia',
+      h1: 'Aumentar a nitidez de uma fotografia online',
       tagline: 'Máscara de nitidez com quantidade, raio e limiar na luma, mais Clareza e Textura, avaliada a 100%.',
       metaTitle: 'Aumentar a nitidez de uma fotografia online: quantidade, raio, limiar',
       metaDescription: 'Aumente a nitidez de uma fotografia no navegador com uma máscara de nitidez a sério: quantidade 0-500, raio 0,1-50 px, limiar 0-255, mais Clareza e Textura. Pré-visualização em direto e exportação em resolução total.',
+      ogTitle: 'Aumentar a nitidez de uma fotografia online',
+      ogDescription: 'Quantidade, raio e limiar como num editor de computador, um botão Avaliar a 100%, e Clareza e Textura para os meios-tons e o detalhe fino. Gerado em resolução total na exportação.',
+      intro: 'A secção Nitidez do painel Detalhe do Aperture é uma máscara de nitidez clássica calculada apenas na luma: a luminosidade de cada píxel é comparada com uma cópia com desfocagem gaussiana, e a diferença, multiplicada pela Quantidade, é somada de volta aos três canais. O Raio define o sigma da desfocagem em píxeis, o que decide se está a realçar a textura fina ou a reforçar contornos largos, e o Limiar ignora as diferenças inferiores a um certo número de níveis de 8 bits, para que a pele lisa e o céu não fiquem ásperos. Dois controlos complementares usam o mesmo motor com raios fixos: a Clareza, a 2% do lado maior e ponderada para os meios-tons, e a Textura, a 0,3% para o detalhe fino. Tudo é pré-visualizado em direto na sua GPU e exportado a partir do original em resolução total.',
+      whatItDoes: [
+        'Aplica uma máscara de nitidez na luma: a diferença entre a luminosidade do píxel e uma desfocagem gaussiana com o raio indicado em píxeis é multiplicada por Quantidade/100 e somada a R, G e B.',
+        'Permite manter intactas as zonas lisas com o Limiar: com Limiar 8, uma diferença de 8 níveis ou menos é ignorada, pelo que o ruído do céu não ganha nitidez.',
+        'Acrescenta a Clareza, um reforço de nitidez ponderado para os meios-tons com um raio grande (2% do lado maior) para dar impacto, e a Textura, um reforço de raio fino (0,3%, no mínimo 1,5 px) para o detalhe das superfícies; ambos vão de -100 a 100, pelo que os valores negativos suavizam.',
+        'Inclui um botão Avaliar a 100% que põe a tela a um píxel da imagem por cada píxel do ecrã, o único zoom em que a nitidez pode ser avaliada.',
+        'Exporta a partir do original no nosso servidor com os mesmos coeficientes gaussianos e o mesmo ganho, por isso um raio de 1 px corresponde a 1 px do ficheiro em tamanho total.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'O painel Detalhe abre em primeiro plano. Prima Avaliar a 100% logo de início.',
+        },
+        {
+          title: 'Escolha um raio',
+          description: 'Use 0,6 a 1,0 px para o detalhe fino num ficheiro de 24 MP, e 1,5 a 2,5 para uma objetiva pouco nítida ou uma exportação pequena para a web. Raios maiores criam halos visíveis.',
+        },
+        {
+          title: 'Suba a Quantidade e defina o Limiar',
+          description: 'Uma Quantidade de 80 a 150 é o habitual. Suba o Limiar para 4 a 10 se a pele ou o céu começarem a parecer granulosos.',
+        },
+        {
+          title: 'Exporte',
+          description: 'Escolha o formato e o tamanho. O servidor aplica a nitidez ao original em resolução total; reduzir o tamanho depois suaviza-o um pouco, por isso aplique um pouco mais de nitidez para saídas pequenas.',
+        },
+      ],
+      advancedDetails: [
+        'A luma L segue a BT.709: 0,2126 R + 0,7152 G + 0,0722 B dos valores codificados em sRGB. A desfocagem é uma gaussiana separável com sigma igual ao Raio, com coeficientes de menos ceil(3 sigma) a mais ceil(3 sigma), normalizados em float64 e com os píxeis da margem replicados. A diferença d = L - blur(L) é anulada onde |d| não é maior do que Limiar/255; depois, shift = Quantidade/100 vezes d é somado a cada um dos canais R, G e B, e o resultado é limitado a 0..1.',
+        'Num degrau de 0,3 (77) para 0,7 (179), a Quantidade 100 com Raio 1 transforma os dois píxeis mais próximos do contorno em 46 e 209, e o par seguinte em 71 e 184. Com Raio 2 e a mesma quantidade obtém-se 36 e 219, com um halo de três píxeis de largura (66, 54, 36 no lado escuro). A Quantidade 150 com Raio 1 dá 31 e 224.',
+        'A Clareza é a mesma máscara de nitidez com sigma igual a 0,02 vezes o lado maior (120 px num ficheiro de 6000 px), ganho de Quantidade/100 vezes 0,6 e um peso de meios-tons W = 1 - |2L - 1|, que vale 1 no cinzento médio e 0 no preto e no branco. A Textura usa sigma max(1,5; 0,003 vezes o lado maior), ou seja, 18 px num ficheiro de 6000 px, ganho de Quantidade/100 vezes 0,5, sem peso nem limiar.',
+        'Como os raios da Clareza e da Textura são uma fração do lado maior, acompanham a escala da imagem, pelo que a pré-visualização de 1920 px e a exportação em tamanho total coincidem; o raio da Nitidez está em píxeis absolutos e a pré-visualização mostra-o à escala da cópia reduzida, e é por isso que existe o botão Avaliar a 100%.',
+        'O Aperture desenha a pré-visualização na sua GPU (WebGL2) a partir de uma cópia de 1920 px, gera a exportação no nosso servidor a partir do original em resolução total com as mesmas fórmulas e mantém as duas dentro de uma pequena tolerância documentada: para a nitidez e as outras operações de convolução, um erro médio de no máximo 1,5 níveis de 8 bits e um máximo de 8, com as operações de cor numa média de 1 e o grão exato.',
+      ],
+      whyItMatters: [
+        'Um reforço de nitidez com um único controlo não consegue separar o detalhe fino do contraste dos contornos; são o raio e o limiar que mantêm o cabelo nítido enquanto a pele continua lisa.',
+        'Aplicar a nitidez apenas na luma evita as franjas coloridas que uma máscara de nitidez em RGB produz ao longo dos contornos de alto contraste.',
+        'Avaliar a 100% evita o erro mais comum: exagerar a nitidez numa pré-visualização ajustada ao ecrã que o navegador já estava a reduzir.',
+      ],
+      useCases: [
+        {
+          title: 'Nitidez de saída para a web',
+          description: 'Exporte com 2048 px de largura e use Quantidade 120, Raio 0,7 e Limiar 2 para compensar a suavização causada pela redução.',
+        },
+        {
+          title: 'Uma objetiva ligeiramente macia ou um foco falhado',
+          description: 'Raio 1,8 e Quantidade 90 recuperam o contraste aparente dos contornos num ficheiro de 24 MP; acima de Raio 2,5, os halos denunciam o truque.',
+        },
+        {
+          title: 'Retratos',
+          description: 'Limiar 10 com Quantidade 100 e Raio 1 dá nitidez aos olhos, às pestanas e ao cabelo, enquanto uma ondulação de 10 níveis no tom de pele fica intacta.',
+        },
+        {
+          title: 'Arquitetura e paisagens',
+          description: 'Clareza 25 para dar impacto aos meios-tons, mais Textura 30 para a pedra e a folhagem, e depois uma Nitidez ligeira com Raio 0,8.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Nitidez de saída numa paisagem de 6000 x 4000, 24 MP, JPG de 10,8 MB',
+          body: 'Nitidez com Quantidade 100, Raio 1 e Limiar 0, exportada a 24 MP numa conta Premium. Ao longo de um contorno 77/179, os dois píxeis mais próximos passam a 46 e 209, o par seguinte a 71 e 184, e os píxeis a três de distância mudam menos de um nível. Acrescentar Clareza 25 aplica uma máscara de nitidez com sigma de 120 px e ganho de 0,15, ponderada para os meios-tons; um píxel cinzento médio 0,1 acima da sua vizinhança alargada sobe 0,015, cerca de 4 níveis. Um JPG com qualidade 92 fica com cerca de 11,3 MB, 5% mais do que o ficheiro sem nitidez.',
+        },
+        {
+          title: 'Retrato de telemóvel com 4032 x 3024, 12,2 MP, HEIC de 3,9 MB, com sessão iniciada',
+          body: 'Quantidade 120, Raio 0,8, Limiar 8. Uma ondulação de 2 níveis na maçã do rosto (130, 126, 130, 126) fica abaixo do limiar e mantém-se exatamente como estava; com Limiar 0, os mesmos píxeis passariam a cerca de 131 e 124. Num contorno de pestana de 89 contra 149, os dois píxeis mais próximos são empurrados para 71 e 167, 18 níveis em cada sentido. Uma tarefa normal para a exportação WebP com qualidade 90, cerca de 3,1 MB.',
+        },
+      ],
+      whenNotToUse: 'Não aplique nitidez sem limiar a uma fotografia que já tem ruído ou uma forte compressão JPG, porque a máscara de nitidez amplifica o grão e as arestas dos blocos antes de chegar ao detalhe real; reduza primeiro o ruído ou suba o Limiar. Uma verdadeira desfocagem de movimento ou um foco muito falhado não se desfazem com nenhuma máscara de nitidez, que apenas aumenta o contraste em contornos que já existem; um raio acima de 3 px só pinta halos. Se só precisa de um reforço rápido e uniforme da nitidez numa imagem pequena, a ferramenta de passagem única Aumentar a nitidez da imagem do Media Manipulator é mais rápida e dispensa uma sessão no editor.',
+      whyMediaManipulator: [
+        'O Aperture dá-lhe os três controlos reais da máscara de nitidez e documenta a respetiva fórmula, em vez de um único controlo de intensidade com definições escondidas.',
+        'A camada de nitidez fica por cima da redução de ruído, sob uma máscara se quiser, com o resultado pré-visualizado de imediato na sua própria GPU.',
+        'As exportações são geradas em resolução total, até 120 MP no Pro, por isso o raio que afinou a 100% é o raio do ficheiro entregue.',
+      ],
+      privacyNote: 'Aplicar nitidez é uma convolução local e nunca chama um serviço de IA. Sem conta, a sua fotografia e as definições de nitidez ficam neste navegador até exportar; nesse momento, o ficheiro é carregado só para essa renderização, como tarefa de visitante. Com conta, o original, a pré-visualização de 1920 px e a miniatura ficam no nosso servidor de acordo com a sua definição de retenção e desaparecem quando o projeto for eliminado. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Nada é partilhado com terceiros.',
+      faq: [
+        {
+          question: 'Que raio devo usar para dar nitidez a uma fotografia de 24 MP?',
+          answer: 'Para o detalhe fino visto em tamanho total, 0,6 a 1,0 px. Para uma imagem que vai ser reduzida a alguns milhares de píxeis, aplique antes a nitidez a pensar na saída: exporte nesse tamanho e use 0,5 a 0,8 px com uma quantidade mais alta.',
+        },
+        {
+          question: 'O que faz o Limiar no aumento de nitidez?',
+          answer: 'Anula a diferença de luma sempre que |L - blur(L)| não é maior do que threshold/255. Com Limiar 8, uma ondulação de 2 níveis num céu fica em 130/126 em vez de passar a 131/124, enquanto um contorno de 100 níveis ganha nitidez por inteiro.',
+        },
+        {
+          question: 'Em que é que isto difere da ferramenta Aumentar a nitidez da imagem do Media Manipulator?',
+          answer: 'Essa página é um filtro do ImageMagick de passagem única, com uma intensidade fixa. Esta é uma camada com Quantidade, Raio e Limiar, pré-visualização em direto a 100%, Clareza e Textura ao lado, e máscaras para poder dar nitidez apenas aos olhos.',
+        },
+        {
+          question: 'Porque é que a nitidez acrescenta contornos coloridos noutros editores, mas não aqui?',
+          answer: 'Uma máscara de nitidez em RGB reforça cada canal em separado, o que exagera a aberração cromática. Aqui, a diferença é calculada na luma BT.709 e o mesmo desvio é somado a R, G e B, pelo que a tonalidade ao longo do contorno se mantém.',
+        },
+        {
+          question: 'Clareza ou Nitidez: qual escolher?',
+          answer: 'A Nitidez trabalha com um raio de poucos píxeis e atua nos contornos; a Clareza trabalha a 2% do lado maior, ponderada para os meios-tons, e aumenta o contraste local em formas inteiras. A maioria das fotografias pede um pouco de ambas, com a Textura para as superfícies finas.',
+        },
+        {
+          question: 'A nitidez torna o ficheiro maior?',
+          answer: 'Sim, um pouco. Os contornos mais nítidos têm mais conteúdo de alta frequência para o codificador JPG preservar; conte com cerca de 5 a 10% mais bytes com a mesma qualidade.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O raio está em píxeis do ficheiro exportado; quando limita a exportação a 12 MP, o servidor reduz o resultado depois de aplicar a nitidez.',
+          'A exportação TIFF ocupa cerca de 3 MB por megapíxel e preserva todos os níveis da nitidez, sem os artefactos em anel da compressão JPG.',
+        ],
+      },
+      related: [
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Os contornos nítidos custam bytes; volte a verificar o tamanho do ficheiro depois de exportar.',
+        },
+        {
+          label: 'Reduzir o ruído da imagem',
+          to: '/tools/reduce-image-noise',
+          description: 'Reduza primeiro o ruído e aplique a nitidez por cima, para que o grão não seja amplificado.',
+        },
+        {
+          label: 'Ajustar contraste',
+          to: '/tools/adjust-image-contrast',
+          description: 'O contraste global e a Clareza resolvem problemas diferentes; compare-os lado a lado.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Reduzir o tamanho suaviza; aplique um pouco mais de nitidez quando o destino é pequeno.',
+        },
+        {
+          label: 'Remover imperfeições',
+          to: '/tools/remove-blemishes',
+          description: 'Use Corrigir nas manchas antes de aplicar nitidez, para que não fiquem realçadas.',
+        },
+        {
+          label: 'Guia do editor',
+          to: '/tutorials/aperture',
+          description: 'Painéis, camadas, máscaras e atalhos de teclado num só lugar.',
+        },
+      ],
+      embed: {
+        title: 'Aumentar a nitidez de uma fotografia',
+        description: 'Largue uma fotografia para abrir o painel Detalhe; prima Avaliar a 100% e defina a Quantidade, o Raio e o Limiar.',
+      },
     },
     'straighten-photo': {
       name: 'Endireitar fotografia',
+      h1: 'Endireitar uma fotografia torta online',
       tagline: 'Corrija um horizonte inclinado por ângulo ou desenhando uma linha, e depois recorte automaticamente para o maior retângulo.',
       metaTitle: 'Endireitar uma fotografia torta online: corrigir um horizonte inclinado',
       metaDescription: 'Nivele um horizonte inclinado no navegador: escreva um ângulo ou desenhe uma linha sobre o horizonte, recorte automaticamente para o maior retângulo interior e exporte em resolução total.',
+      ogTitle: 'Endireitar uma fotografia torta online',
+      ogDescription: 'Desenhe uma linha ao longo do horizonte e a rotação é definida automaticamente. O recorte automático mantém o maior retângulo, ou então preencha os cantos com transparência, com a margem ou com uma cor.',
+      intro: 'O Endireitar fica no painel Geometria do Aperture e é aplicado aos píxeis de origem antes de qualquer camada de ajuste. Pode escrever um ângulo em graus ou premir Desenhar uma linha e arrastar ao longo de algo que deveria estar nivelado ou na vertical; o editor calcula a inclinação da sua linha, coloca-a no intervalo de -45 a 45 graus e define a rotação que a anula. A rotação é uma única reamostragem bilinear por mapeamento inverso, pelo que cada píxel é amostrado exatamente uma vez. Por predefinição, o enquadramento é recortado automaticamente para o maior retângulo com a proporção original que contém apenas píxeis reais; desative essa opção e os cantos passam a ser preenchidos com transparência, com a margem esticada ou com uma cor à sua escolha. O recorte, as inversões e a perspetiva partilham essa mesma reamostragem única.',
+      whatItDoes: [
+        'Roda a imagem com qualquer ângulo de -360 a 360 graus numa única reamostragem bilinear dos píxeis originais; os passos de 90 e 180 graus são cópias exatas.',
+        'Define o ângulo a partir de uma linha que desenha: a inclinação da linha é reduzida ao intervalo (-45, 45] graus e subtraída, por isso tanto serve uma linha ao longo do horizonte como uma ao longo do aro de uma porta.',
+        'Recorta automaticamente para o maior retângulo centrado com a proporção original cujo perímetro inteiro cai dentro da imagem rodada, encontrado por uma pesquisa binária de 30 passos.',
+        'Preenche os cantos vazios com transparência, com o píxel da margem prolongado ou com uma cor sólida, quando prefere manter todo o enquadramento rodado.',
+        'Mantém as máscaras alinhadas: cada máscara é guardada no espaço endireitado e recortado, e a exportação aplica a mesma geometria ao original.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'O painel Geometria abre em primeiro plano, com a secção Endireitar e o botão Desenhar uma linha.',
+        },
+        {
+          title: 'Desenhe ao longo do horizonte',
+          description: 'Clique em Desenhar uma linha e arraste de uma ponta do horizonte à outra; um arrasto com menos de 8 px é ignorado. O campo do ângulo é atualizado.',
+        },
+        {
+          title: 'Verifique o recorte',
+          description: 'O Recorte automático para o maior retângulo está ativo por predefinição. Desative-o e escolha um preenchimento se quiser manter os cantos.',
+        },
+        {
+          title: 'Exporte',
+          description: 'O servidor roda e recorta o original em resolução total e codifica-o em JPG, PNG, WebP, AVIF ou TIFF.',
+        },
+      ],
+      advancedDetails: [
+        'A tela rodada cresce até à caixa delimitadora da imagem rodada: largura |w cos| + |h sin| e altura |w sin| + |h cos|, arredondadas. Uma fotografia de 6000 x 4000 rodada 2,5 graus tem uma tela de 6169 x 4258. O centro de cada píxel de saída é levado de volta, através do recorte, da homografia de perspetiva, das inversões e da rotação inversa, até uma coordenada contínua da origem, e é amostrado bilinearmente a partir dos seus quatro vizinhos; as coordenadas fora da origem recebem o preenchimento.',
+        'O recorte automático procura a maior escala s de um retângulo centrado com a proporção pedida tal que os 100 pontos de amostragem ao longo do seu perímetro (25 por lado) caiam todos dentro da origem, através de uma pesquisa binária em s com 30 iterações. Para 2,5 graus em 6000 x 4000, isso dá um recorte de 88,44% da tela em cada direção, 5456 x 3766 píxeis, 20,55 MP, que conserva 85,6% dos píxeis originais. A 1,2 graus conserva 92,5% e a 5 graus cerca de 79%.',
+        'Desenhar uma linha: o ângulo da linha em coordenadas de ecrã (com o y para baixo) é atan2(dy, dx) em graus, reduzido por múltiplos de 90 ao intervalo (-45, 45], e o seu simétrico é somado à rotação atual, arredondado a 0,01 grau. Uma linha de (200, 1080) a (1800, 1020) numa pré-visualização de 1920 px corresponde a uma inclinação de 2,15 graus e define a rotação como +2,15.',
+        'Preenchimento: Transparente escreve RGBA 0 fora da origem (o PNG e o WebP mantêm-no; o JPG mostra-o a preto), Esticar a margem prende a amostra ao texel da margem mais próximo e Cor escreve um #rrggbb opaco. A interpolação bilinear também é aplicada ao canal alfa, pelo que um preenchimento transparente tem uma orla suave de um píxel.',
+        'O Aperture faz a pré-visualização na sua GPU (WebGL2) a partir de uma cópia de 1920 px, gera a exportação no nosso servidor a partir do original em resolução total com as mesmas fórmulas, e as duas coincidem dentro de uma pequena tolerância documentada: para a geometria, um máximo de 2 níveis de 8 bits no interior, excluindo uma orla de 2 px, porque as posições das amostras bilineares diferem ligeiramente entre as duas escalas; as operações de cor ficam numa média de 1 nível e o grão é exato.',
+      ],
+      whyItMatters: [
+        'Um horizonte inclinado nem que seja um grau nota-se numa fotografia de mar ou de lago, e é a primeira coisa em que quem a vê repara.',
+        'Desenhar a linha é mais rápido e mais preciso do que mexer num controlo de deslize, porque o editor mede a inclinação em vez de ter de a estimar a olho.',
+        'Saber quantos píxeis o recorte custa permite decidir, antes de exportar, entre um recorte automático justo e um canto preenchido.',
+      ],
+      useCases: [
+        {
+          title: 'Paisagens marinhas e pores do sol',
+          description: 'Desenhe ao longo da linha de água. Uma correção de 1,5 graus num enquadramento de 24 MP conserva 92,6% dos píxeis.',
+        },
+        {
+          title: 'Edifícios e portas',
+          description: 'Desenhe antes ao longo de um contorno vertical; o ângulo é reduzido ao mesmo intervalo de -45 a 45, por isso as verticais funcionam tão bem como os horizontes.',
+        },
+        {
+          title: 'Documentos e provas impressas digitalizados',
+          description: 'Desenhe ao longo da margem do papel, use Esticar a margem como preenchimento e exporte em PNG para que nada seja recomprimido.',
+        },
+        {
+          title: 'Fotografias de telemóvel tiradas à pressa',
+          description: 'Uma correção de 2 graus numa fotografia de 4032 x 3024 custa cerca de 9% dos píxeis e ainda deixa 11 MP.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma paisagem marinha de 6000 x 4000 inclinada 2,5 graus, 24 MP, JPG de 10,8 MB',
+          body: 'Desenhar uma linha ao longo do horizonte define a rotação em 2,5 graus. A tela rodada tem 6169 x 4258; o recorte automático conserva um retângulo centrado com 88,44% de cada lado, 5456 x 3766 píxeis, 20,55 MP, ou seja, 85,6% dos píxeis originais. Exportado em JPG com qualidade 92 no tamanho total numa conta Premium, o ficheiro tem cerca de 9,2 MB; com o limite de 12 MP para visitantes, é reduzido e fica com cerca de 5,4 MB. Uma tarefa normal.',
+        },
+        {
+          title: 'Uma fotografia de telemóvel de 4032 x 3024 inclinada 1,8 graus, 12,2 MP, 4,4 MB',
+          body: 'Ângulo escrito: 1,8. Tela de 4125 x 3149; o recorte automático conserva 92,28% de cada lado, 3807 x 2906 píxeis, 11,06 MP, ou seja, 90,7% do original. Com o recorte automático desligado e o Preenchimento em Transparente, a exportação é a tela completa de 4125 x 3149 com quatro pequenos triângulos transparentes nos cantos, cada um com cerca de 130 px de altura no ponto mais largo, e tem de sair em PNG (cerca de 28 MB) ou em WebP (cerca de 3,9 MB com qualidade 90) para os manter.',
+        },
+      ],
+      whenNotToUse: 'Não use o Endireitar quando as linhas da fotografia convergem em vez de estarem inclinadas: um edifício que tomba para trás porque a câmara apontava para cima precisa da ferramenta de perspetiva de quatro cantos, e rodá-lo só troca uma parede inclinada por outra. Para uma simples rotação de 90 graus, use os botões Rodar 90 graus, que copiam os píxeis exatamente, sem reamostragem. Se só precisa de aplicar a etiqueta de orientação EXIF para que o ficheiro apareça na posição certa, uma ferramenta de redimensionamento ou de metadados trata disso sem abrir um projeto no editor.',
+      whyMediaManipulator: [
+        'Endireitar, recortar, inverter e corrigir a perspetiva cabem numa única reamostragem, por isso uma fotografia endireitada não é suavizada duas vezes.',
+        'A fração do recorte é calculada a partir da geometria, não adivinhada, e o tamanho da exportação é mostrado antes de gastar uma tarefa normal.',
+        'As máscaras e as correções acompanham a geometria, por isso pode endireitar depois do retoque sem refazer o trabalho das máscaras.',
+      ],
+      privacyNote: 'Endireitar é pura geometria aplicada aos seus próprios píxeis: nenhum modelo, nenhum serviço de terceiros. Sem sessão iniciada, a pré-visualização rodada é calculada no seu navegador e nada é carregado até exportar, o que constitui uma tarefa de visitante normal. Com sessão iniciada, o original e a pré-visualização de 1920 px ficam no nosso servidor de acordo com a sua definição de retenção e são removidos com o projeto. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Quanto da fotografia perco ao endireitar?',
+          answer: 'Depende do ângulo e da proporção. Num enquadramento 3:2, 1 grau conserva cerca de 95% dos píxeis, 2,5 graus cerca de 86% e 5 graus cerca de 79%, com o recorte automático a manter a proporção original.',
+        },
+        {
+          question: 'Posso manter os cantos em vez de recortar?',
+          answer: 'Sim. Desative o Recorte automático para o maior retângulo e escolha um preenchimento: Transparente para uma saída PNG ou WebP, Esticar a margem para prolongar os píxeis da margem para fora, ou Cor para um preenchimento sólido.',
+        },
+        {
+          question: 'Rodar com um ângulo pequeno desfoca a fotografia?',
+          answer: 'Uma única reamostragem bilinear suaviza muito ligeiramente, mais ou menos o mesmo que uma deslocação de meio píxel. O editor nunca reamostra duas vezes para endireitar e recortar, e as rotações de 90 e 180 graus são exatas.',
+        },
+        {
+          question: 'Para que lado é a rotação positiva?',
+          answer: 'Os ângulos positivos rodam no sentido dos ponteiros do relógio no ecrã. Desenhar uma linha que desce para a direita produz uma correção positiva que levanta o lado direito.',
+        },
+        {
+          question: 'Posso endireitar a partir de uma linha vertical em vez do horizonte?',
+          answer: 'Sim. Qualquer linha a menos de 45 graus da vertical é tratada como algo que deveria estar na vertical, por isso um candeeiro de rua ou a aresta de uma porta definem a mesma rotação que um horizonte definiria.',
+        },
+        {
+          question: 'O que acontece a uma máscara que pintei antes de endireitar?',
+          answer: 'As máscaras vivem no enquadramento corrigido. Alterar o recorte volta a mapear todas as coordenadas das máscaras e reamostra as pinceladas no novo espaço, na mesma edição, por isso o ajuste continua sobre o mesmo conteúdo da imagem.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'Um preenchimento transparente dos cantos só sobrevive em PNG, WebP, AVIF e TIFF; o JPG não tem canal alfa e mostra o preenchimento a preto.',
+          'A caixa de diálogo de exportação mostra o tamanho depois do recorte; o limite de 12 MP para visitantes aplica-se a esse tamanho, não ao original.',
+        ],
+      },
+      related: [
+        {
+          label: 'Corrigir perspetiva',
+          to: '/tools/fix-perspective-photo',
+          description: 'As verticais convergentes precisam da ferramenta de quatro cantos, não de uma rotação.',
+        },
+        {
+          label: 'Adicionar uma vinheta',
+          to: '/tools/add-vignette',
+          description: 'A vinheta é calculada sobre o enquadramento já endireitado e recortado.',
+        },
+        {
+          label: 'Redimensionar imagem',
+          to: '/tools/image-resizer',
+          description: 'Leve depois o resultado recortado a um tamanho exato em píxeis.',
+        },
+        {
+          label: 'Remover metadados EXIF de imagens',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retire a etiqueta de orientação e os dados de localização do ficheiro exportado.',
+        },
+        {
+          label: 'Guia do editor',
+          to: '/tutorials/aperture',
+          description: 'Onde fica a Geometria no processamento e como as máscaras a acompanham.',
+        },
+      ],
+      embed: {
+        title: 'Endireitar uma fotografia torta',
+        description: 'Largue uma fotografia para abrir o painel Geometria; escreva um ângulo ou desenhe uma linha ao longo do horizonte.',
+      },
     },
     'fix-perspective-photo': {
       name: 'Corrigir perspetiva',
+      h1: 'Corrigir a perspetiva de uma fotografia online',
       tagline: 'Arraste quatro cantos para corrigir o efeito trapézio e as verticais convergentes, e depois recorte automaticamente o resultado.',
       metaTitle: 'Corrigir a perspetiva de uma fotografia online: correção trapezoidal',
       metaDescription: 'Corrija verticais convergentes e distorção trapezoidal no navegador arrastando quatro cantos. Mapa projetivo, reamostragem bilinear, recorte automático e exportação em resolução total.',
+      ogTitle: 'Corrigir a perspetiva de uma fotografia online',
+      ogDescription: 'Endireite edifícios inclinados e documentos tortos com uma ferramenta de perspetiva de quatro cantos, uma única reamostragem bilinear e um recorte automático para o maior retângulo limpo.',
+      intro: 'A correção de perspetiva no painel Geometria do Aperture é uma transformação projetiva de quatro cantos. Prima «Arraste os cantos» e puxe cada canto do enquadramento para fora ou para dentro; o editor constrói a homografia que mapeia o quadrado unitário no seu quadrilátero (a construção de Heckbert) e faz passar cada píxel de saída pelo mapeamento inverso, amostrando a origem bilinearmente. Como é um verdadeiro mapa projetivo e não um simples esticamento, as verticais convergentes de um edifício fotografado da rua ficam paralelas, enquanto as linhas retas continuam retas. Perspetiva, rotação, inversões e recorte são todos aplicados numa única reamostragem, antes de qualquer camada de ajuste. Com o Recorte automático para o maior retângulo ativo, o enquadramento é aparado até ao maior retângulo limpo com a proporção original; desativado, os cantos esticados são preenchidos com transparência, com a margem ou com uma cor.',
+      whatItDoes: [
+        'Mapeia o enquadramento através de uma transformação projetiva definida por quatro deslocamentos de canto, cada um limitado a metade do enquadramento, para que um canto nunca possa ultrapassar o centro.',
+        'Corrige o efeito trapézio em qualquer dos eixos: puxe os cantos superiores para fora para corrigir verticais que convergem para cima, ou os cantos laterais para pôr em esquadro um documento fotografado de viés.',
+        'Reamostra uma única vez, de forma bilinear, a partir dos píxeis originais, para o recorte, a perspetiva, a inversão e a rotação em conjunto, pelo que a imagem corrigida não é suavizada por passagens repetidas.',
+        'Recorta automaticamente para o maior retângulo centrado cujo perímetro inteiro amostra píxeis reais, ou mantém a tela completa com o preenchimento que escolher.',
+        'Exporta o original corrigido em resolução total no nosso servidor, com os mesmos coeficientes de homografia usados na pré-visualização.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'O painel Geometria abre com a secção Perspetiva; prima «Arraste os cantos».',
+        },
+        {
+          title: 'Puxe os cantos',
+          description: 'Para um edifício que tomba para trás, arraste o canto superior esquerdo para a esquerda e o canto superior direito para a direita até as verticais parecerem paralelas. Arraste poucos pontos percentuais de cada vez.',
+        },
+        {
+          title: 'Decida o recorte',
+          description: 'O recorte automático apara até ao maior retângulo. Desative-o e escolha Transparente, Esticar a margem ou Cor para manter a tela completa.',
+        },
+        {
+          title: 'Exporte',
+          description: 'JPG, PNG, WebP, AVIF ou TIFF, gerado a partir do original. Use Repor perspetiva em qualquer altura para voltar a ter os deslocamentos a zero.',
+        },
+      ],
+      advancedDetails: [
+        'Cada canto guarda um deslocamento (x, y) em unidades do tamanho da tela depois da rotação, pelo que tl = (-0,06; 0) significa que o canto superior esquerdo foi movido para fora em 6% da largura. Os quatro pontos de destino, tl, tr = (1 + x, y), br = (1 + x, 1 + y) e bl = (x, 1 + y), definem um quadrilátero, e o quadrado unitário é mapeado nele com a homografia de oito coeficientes x = (a u + b v + c) / (g u + h v + 1), y = (d u + e v + f) / (g u + h v + 1), calculada com a forma fechada de Heckbert; um paralelogramo (termos projetivos nulos) reduz-se ao caso afim.',
+        'Para um retrato de 4000 x 6000 com tl.x = -0,06 e tr.x = +0,06, os coeficientes são a = 1,12, b = 0,06, c = -0,06, e = 1,12, h = 0,12, e todos os outros valem 0: a linha de cima da saída amostra uma linha da origem 12% mais larga do que ela própria, pelo que as verticais que convergiam 12% da largura do enquadramento ficam paralelas.',
+        'O centro de cada píxel de saída passa pela homografia, depois pelas inversões e pela rotação inversa, até uma coordenada contínua da origem, e é interpolado bilinearmente a partir dos seus quatro vizinhos; as amostras fora da origem recebem o preenchimento, e o canal alfa é interpolado da mesma forma, pelo que um preenchimento transparente tem uma orla suave de um píxel.',
+        'O recorte automático executa uma pesquisa binária de 30 passos pelo maior retângulo centrado com a proporção da tela cujas 100 amostras do perímetro caem todas dentro da origem. Para a correção de 6% acima, conserva 89,83% de cada lado, 3593 x 5390 píxeis, 80,7% do original de 24 MP; uma correção de 10% conserva 71,6%. Puxar os cantos para dentro não exige recorte nenhum, porque cada píxel de saída é mapeado dentro da origem.',
+        'A pré-visualização do Aperture é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px, a exportação é gerada no nosso servidor a partir do original em resolução total com as mesmas fórmulas, e as duas coincidem dentro de uma pequena tolerância documentada; para a geometria, isso significa um máximo de 2 níveis de 8 bits no interior, excluindo uma orla de 2 px, enquanto as operações de cor ficam numa média de 1 nível e o grão é exato.',
+      ],
+      whyItMatters: [
+        'As verticais convergentes fazem um edifício parecer que está a cair para trás; uma correção projetiva é a única transformação que as corrige mantendo as linhas retas.',
+        'Um documento ou um quadro branco fotografado de lado torna-se um retângulo legível assim que os quatro cantos voltam a ficar em esquadro.',
+        'Ver logo de início quanto custa o recorte permite fotografar ou recortar com margem suficiente, em vez de descobrir um telhado cortado depois de exportar.',
+      ],
+      useCases: [
+        {
+          title: 'Arquitetura fotografada da rua',
+          description: 'Puxe os cantos superiores para fora 4 a 8% até as colunas de janelas ficarem paralelas; conte conservar 80 a 90% dos píxeis.',
+        },
+        {
+          title: 'Quadros brancos e cartazes',
+          description: 'Arraste cada canto do enquadramento até ao canto do quadro; desative o recorte automático e recorte depois manualmente pelos limites do quadro.',
+        },
+        {
+          title: 'Interiores com uma grande angular',
+          description: 'Pequenas correções de 2 a 3% nos cantos superiores endireitam os aros das portas sem o aspeto esticado de uma correção grande.',
+        },
+        {
+          title: 'Fotografias de produto em estúdio',
+          description: 'Ponha em esquadro uma caixa fotografada ligeiramente de cima, para que a face da frente seja um retângulo verdadeiro antes de recortar o fundo.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Uma torre de escritórios inclinada, retrato de 4000 x 6000, 24 MP, JPG de 12,1 MB',
+          body: 'Canto superior esquerdo arrastado para x = -0,06, canto superior direito para x = +0,06, cantos inferiores intactos. A homografia é a = 1,12, b = 0,06, c = -0,06, e = 1,12, h = 0,12. O recorte automático conserva 89,83% de cada lado: 3593 x 5390 píxeis, 19,4 MP, 80,7% do original. Numa conta Premium, a exportação JPG com qualidade 92 tem cerca de 8,7 MB; uma exportação de visitante é reduzida para 12 MP, cerca de 5,4 MB. Uma tarefa normal.',
+        },
+        {
+          title: 'Um quadro branco fotografado da esquerda, JPG de telemóvel de 4032 x 3024, 12,2 MP',
+          body: 'Superior esquerdo x = -0,05, superior direito x = +0,05, inferior esquerdo y = +0,02 e inferior direito y = -0,02 para pôr o quadro em esquadro. Os coeficientes resultam em a = 1,10, b = 0,073, c = -0,05, e = 1,146, h = 0,146. O recorte automático conserva 90,95% por lado, 3667 x 2750 píxeis, 10,1 MP, 82,7% do enquadramento. Exportado em PNG para manter nítido o texto escrito a marcador, a cerca de 2,5 MB por megapíxel, dá à volta de 25 MB; em WebP com qualidade 90, cerca de 3,1 MB.',
+        },
+      ],
+      whenNotToUse: 'Não recorra à ferramenta de perspetiva quando uma linha está curva em vez de convergir: a distorção em barril de uma grande angular precisa de uma correção radial que este editor não oferece, e um mapa projetivo deixa a curva onde está. Uma simples inclinação é uma rotação e pertence ao Endireitar, que custa menos píxeis. Correções muito grandes, acima de cerca de 15% do enquadramento, esticam tanto a margem mais distante que o detalhe fica macio e o recorte retira um terço da imagem; sempre que possível, volte a fotografar de mais longe com uma distância focal maior.',
+      whyMediaManipulator: [
+        'O mapa é uma homografia projetiva documentada, por isso o resultado é geometria exata e não uma deformação aproximada por uma malha.',
+        'A perspetiva partilha uma única reamostragem bilinear com o endireitamento, a inversão e o recorte, o que conta quando uma fotografia precisa ao mesmo tempo de corrigir a inclinação e o efeito trapézio.',
+        'O original corrigido é exportado em resolução total, até 120 MP no Pro, com a pré-visualização mantida dentro de uma tolerância documentada.',
+      ],
+      privacyNote: 'Corrigir a perspetiva é aritmética sobre coordenadas e não usa nenhum modelo de IA nem nenhum serviço externo. Sem conta, a pré-visualização corrigida existe apenas no seu navegador até exportar, e esse carregamento é guardado como qualquer tarefa de visitante. Com conta, o original, a pré-visualização de 1920 px e a miniatura ficam no nosso servidor de acordo com a sua definição de retenção e são eliminados com o projeto. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos.',
+      faq: [
+        {
+          question: 'Até onde posso arrastar um canto?',
+          answer: 'Cada deslocamento de canto está limitado a mais ou menos metade do tamanho da tela em cada eixo, por isso um canto pode aproximar-se do centro do enquadramento, mas nunca ultrapassá-lo. De qualquer forma, as correções acima de cerca de 15% costumam parecer esticadas.',
+        },
+        {
+          question: 'Porque é que o recorte automático tira tanto quando corrijo um edifício alto?',
+          answer: 'Puxar os cantos superiores para fora significa que o topo da saída tem de amostrar uma faixa da origem mais larga do que a que existe, por isso os lados têm de ser aparados até todo o perímetro assentar em píxeis reais. Um puxão de 6% num retrato 3:2 conserva cerca de 81% dos píxeis.',
+        },
+        {
+          question: 'Posso combinar a perspetiva com o endireitamento?',
+          answer: 'Sim. A rotação é aplicada primeiro, depois os deslocamentos de perspetiva são interpretados na tela rodada, e ambos passam por uma única reamostragem bilinear; por isso, desenhe primeiro a linha do horizonte e depois ponha as verticais em esquadro.',
+        },
+        {
+          question: 'É o mesmo que corrigir a distorção da objetiva?',
+          answer: 'Não. A distorção em barril e em almofada curva as linhas retas e precisa de um modelo radial. A ferramenta de perspetiva só trata linhas convergentes; uma linha curva continua curva depois dela.',
+        },
+        {
+          question: 'O que faz Repor perspetiva?',
+          answer: 'Volta a pôr a zero os quatro deslocamentos de canto e remove a homografia, deixando como estão a rotação, a inversão e o recorte que tenha definido. O botão fica desativado enquanto os deslocamentos já estiverem a zero.',
+        },
+        {
+          question: 'A fotografia corrigida vai ficar desfocada?',
+          answer: 'As zonas esticadas são interpoladas e perdem um pouco de nitidez, mais ou menos em proporção ao esticamento; uma correção de 6% mal se nota com zoom a 100%. Uma camada de Nitidez ligeira por cima repõe o contraste dos contornos.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'O preenchimento transparente dos cantos exige PNG, WebP, AVIF ou TIFF; uma exportação JPG mostra o preenchimento a preto.',
+          'É o tamanho de saída depois do recorte automático que conta para o limite de 12 MP dos visitantes e para os limites de 24, 64 e 120 MP dos planos.',
+        ],
+      },
+      related: [
+        {
+          label: 'Endireitar fotografia',
+          to: '/tools/straighten-photo',
+          description: 'Um horizonte inclinado resolve-se com uma rotação; não é um problema de perspetiva.',
+        },
+        {
+          label: 'Aumentar a nitidez da fotografia',
+          to: '/tools/sharpen-photo-online',
+          description: 'Reponha o contraste dos contornos nas partes esticadas do enquadramento corrigido.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Ponha em esquadro uma fotografia de produto e depois recorte-a.',
+        },
+        {
+          label: 'Comprimir imagem',
+          to: '/tools/compress-image',
+          description: 'Reduza o ficheiro exportado para um anúncio ou um diapositivo.',
+        },
+        {
+          label: 'Guia do editor',
+          to: '/tutorials/aperture',
+          description: 'Como a geometria, as máscaras e as camadas se ordenam no processamento.',
+        },
+      ],
+      embed: {
+        title: 'Corrigir a perspetiva de uma fotografia',
+        description: 'Largue uma fotografia para abrir o painel Geometria; prima «Arraste os cantos» e ponha as linhas em esquadro.',
+      },
     },
     'remove-blemishes': {
       name: 'Remover imperfeições',
+      h1: 'Remover imperfeições e manchas de uma fotografia online',
       tagline: 'Pinte sobre as manchas, prima Corrigir e deixe um modelo de preenchimento na nossa GPU completá-las a partir da pele em redor.',
       metaTitle: 'Remover imperfeições e manchas de uma fotografia online: Corrigir',
-      metaDescription: 'Pinte sobre borbulhas, manchas de pó e marcas soltas, prima Corrigir e um modelo de preenchimento na nossa própria GPU completa-as. Uma operação de IA por pressão, reembolsada se falhar, exportação em resolução total.',
+      metaDescription: 'Pinte sobre borbulhas, manchas de pó e marcas soltas, prima Corrigir e um modelo de preenchimento na nossa própria GPU completa-as. Uma tarefa de IA por pressão, reembolsada se falhar, exportação em resolução total.',
+      ogTitle: 'Remover imperfeições de uma fotografia online',
+      ogDescription: 'Marque as manchas com um pincel, prima Corrigir uma vez e o modelo de preenchimento LaMa na nossa GPU completa cada mancha a partir do que a rodeia. Não destrutivo, com o ficheiro original intacto.',
+      intro: 'O painel Corrigir do Aperture é a única ferramenta desta página que usa um modelo: pinte sobre cada mancha com o Pincel de manchas, prima Corrigir, e a máscara pintada e a imagem atual são enviadas para o nosso próprio servidor com GPU, onde o modelo de preenchimento LaMa reconstrói os píxeis cobertos a partir do que os rodeia. Uma pressão, com qualquer número de manchas marcadas, é uma tarefa de IA; é reembolsada se o processamento falhar e, num projeto guardado, uma repetição idêntica da mesma máscara sobre a mesma base é devolvida como resultado já em cache, sem custo. A imagem corrigida passa a ser a nova base de onde partem todas as camadas de ajuste, máscaras e exportações seguintes, enquanto o seu ficheiro original nunca é modificado. Pele, pó no sensor, um cabelo solto sobre um fundo e pequenos letreiros corrigem-se todos da mesma forma.',
+      whatItDoes: [
+        'Pinta uma máscara de manchas com um pincel de dureza 80, em qualquer tamanho; tanto pontos como traços curtos funcionam, e Limpar manchas esvazia a máscara antes de premir Corrigir.',
+        'Envia a máscara com a imagem atual para a nossa GPU, onde o modelo de preenchimento LaMa reconstrói cada zona mascarada a partir da textura em redor, numa só tarefa para todas as manchas marcadas.',
+        'Cobra uma tarefa de IA por cada vez que prime Corrigir, independentemente de quantas manchas marcou, reembolsa-a quando o processamento falha e devolve um resultado já em cache, sem custo, para uma repetição idêntica num projeto guardado.',
+        'Faz do resultado corrigido a nova base da pilha, para que a nitidez, a cor e as máscaras aplicadas depois vejam a pele limpa, e o painel Histórico pode recuar até antes da correção.',
+        'Deixa o ficheiro original intacto: a exportação gera a base corrigida em resolução total e escreve um novo ficheiro com o sufixo (retouched) no nome.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia',
+          description: 'O painel Corrigir abre com o Pincel de manchas ativo. Aumente o zoom até cada imperfeição ocupar algumas dezenas de píxeis do ecrã.',
+        },
+        {
+          title: 'Marque as manchas',
+          description: 'Clique ou arraste sobre cada imperfeição com um pincel ligeiramente maior do que a mancha. O painel atualiza a contagem de Manchas marcadas à medida que avança.',
+        },
+        {
+          title: 'Prima Corrigir',
+          description: 'A máscara é carregada com a imagem e a tarefa é executada na nossa GPU; pode demorar até um minuto. O contador Correções aplicadas sobe quando o resultado chega.',
+        },
+        {
+          title: 'Continue a editar e exporte',
+          description: 'Faça mais passagens se for preciso e depois ajuste o tom, aplique nitidez e exporte. Anular ou o painel Histórico revertem uma correção.',
+        },
+      ],
+      advancedDetails: [
+        'O pincel pinta uma imagem rasterizada no espaço com a geometria corrigida que vê no ecrã e mapeia cada pincelada de volta, através do recorte, da perspetiva, das inversões e da rotação, para coordenadas de píxeis da origem, pelo que a máscara coincide com os píxeis da base mesmo numa fotografia endireitada e recortada. Cada pincelada é aplicada com dureza 80 e fluxo 100; a máscara carregada é branca onde o alfa ultrapassa 0,05 e preta no resto, com o tamanho da base atual.',
+        'Cada pressão em Corrigir é uma tarefa: num projeto guardado, é POST /api/photo/projects/:id/heal com a máscara e o hash da base atual; sem sessão iniciada, é a rota sem estado /api/photo/heal, com a fotografia e a máscara carregadas só para essa tarefa. O servidor executa o modelo LaMa sobre a base atual e guarda o resultado como uma nova base cujo nome é o SHA-256 do hash da base anterior e do resumo da máscara, por isso a mesma máscara sobre a mesma base é reconhecida e devolvida como resultado já em cache, sem gastar outra tarefa de IA.',
+        'O documento regista cada correção como uma entrada com a referência da máscara e a referência da nova base; todos os renderizadores (a pré-visualização WebGL, a exportação no servidor e a aplicação em lote) partem da base mais recente e não do original. Remover a entrada no histórico repõe a base anterior.',
+        'O painel Olhos vermelhos é separado: clique num olho, é colocada uma pequena máscara circular (raio predefinido de 2% do lado maior) e, dentro dela, o canal vermelho é substituído por min(r, (g + b)/2), pelo que uma pupila em (200, 40, 40) passa a (40, 40, 40). É matemática de cor comum, píxel a píxel, sem nenhuma tarefa de IA.',
+        'Tudo o que não seja a correção em si segue a política de paridade do Aperture: a pré-visualização é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px, o ficheiro exportado é gerado no nosso servidor a partir do original (aqui, a base corrigida) em resolução total com as mesmas fórmulas, e os dois coincidem dentro de uma pequena tolerância documentada de, no máximo, alguns níveis de 8 bits, exata para o grão. Os píxeis corrigidos propriamente ditos são produzidos uma única vez, no servidor, e a pré-visualização mostra uma cópia reduzida desse mesmo resultado.',
+      ],
+      whyItMatters: [
+        'O preenchimento completa uma mancha com uma textura plausível tirada da vizinhança, o que parece natural na pele e no tecido, onde uma desfocagem ou um carimbo de clonagem deixam uma zona esborratada.',
+        'Marcar muitas manchas e premir uma só vez mantém o custo numa única tarefa de IA e numa única espera.',
+        'Como a correção passa a ser uma base e não uma edição destrutiva, uma pressão errada resolve-se com um único Anular e o ficheiro original fica intacto.',
+      ],
+      useCases: [
+        {
+          title: 'Limpeza da pele em retratos',
+          description: 'Marque borbulhas, pequenas cicatrizes e cabelos soltos com um pincel de cerca de 1,5 vezes o tamanho da mancha e prima Corrigir uma vez para o rosto inteiro.',
+        },
+        {
+          title: 'Pó do sensor em céus',
+          description: 'Faça zoom a 100%, marque com um ponto cada sombra de pó, corrija uma vez, e o gradiente suave do céu é reconstruído sem bandas.',
+        },
+        {
+          title: 'Fotografias de produto',
+          description: 'Remova cotão e dedadas de um fundo antes de recortar o motivo, para que o contorno fique limpo.',
+        },
+        {
+          title: 'Provas impressas digitalizadas',
+          description: 'Pinte sobre os riscos e as manchas do vidro do digitalizador; as linhas finas corrigem-se bem quando o pincel as cobre com uma pequena margem.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Retrato de rosto, 6000 x 4000, 24 MP, JPG de 10,8 MB, sem sessão iniciada',
+          body: '7 imperfeições marcadas com um pincel de 40 px e 2 cabelos soltos com traços de 12 px, seguidos de uma pressão em Corrigir: 1 tarefa de IA, com a fotografia e a máscara carregadas só para essa tarefa e o resultado de volta em menos de um minuto. A base corrigida substitui o original durante o resto da sessão. Exportado em JPG com qualidade 92 no limite de 12 MP para visitantes, cerca de 5,4 MB, 1 tarefa normal. Premir Corrigir outra vez sem alterar a máscara volta a executar a tarefa, por ser um visitante; num projeto guardado, a mesma pressão daria um resultado já em cache, gratuito.',
+        },
+        {
+          title: 'Céu com pó do sensor, 4032 x 3024, 12,2 MP, conta Premium',
+          body: 'Passagem 1: 11 sombras de pó marcadas com zoom a 100%, Corrigir premido, 1 tarefa de IA. Passagem 2: mais 3 encontradas depois de reduzir a Exposição em 0,5 EV, Corrigir premido de novo, uma segunda tarefa de IA sobre a nova base. Anular a passagem 2 e premir Corrigir com a mesma máscara de 3 manchas devolve um resultado já em cache, sem custo. Exportação nos 12,2 MP completos em WebP com qualidade 90, cerca de 3,7 MB, 1 tarefa normal.',
+        },
+      ],
+      whenNotToUse: 'O Corrigir serve para manchas e pequenas marcas, não para remover uma pessoa inteira ou um objeto grande: uma máscara que cobre uma área extensa dá ao modelo muito pouco contexto e o preenchimento fica desfocado ou repetitivo, e a ferramenta Remover objeto de uma fotografia do Media Manipulator foi feita precisamente para esse trabalho. Não o use para suavizar a textura da pele em geral; use a redução de ruído ou um valor negativo de Textura, que são gratuitos e reversíveis. Grandes áreas de pele com um padrão forte, como as sardas, corrigem-se de forma irregular, por isso marque apenas a imperfeição e mantenha uma pequena margem.',
+      whyMediaManipulator: [
+        'O Aperture executa o modelo de preenchimento em servidores que nós próprios operamos, por isso a sua fotografia nunca é entregue a um fornecedor externo de IA.',
+        'Uma correção falhada é reembolsada e uma correção idêntica repetida é gratuita, por isso experimentar com a máscara não gasta tarefas.',
+        'A base corrigida alimenta a mesma pilha não destrutiva que qualquer outro ajuste, com histórico, máscaras e exportação em resolução total.',
+      ],
+      privacyNote: 'O Corrigir é o único passo desta página que sai do navegador antes da exportação: quando prime Corrigir, a imagem atual e a máscara pintada são carregadas e o modelo LaMa é executado na nossa própria GPU. Sem sessão iniciada, esse carregamento existe só para essa tarefa e é guardado como qualquer tarefa de visitante; o projeto em si fica neste navegador. Com sessão iniciada, a base corrigida é guardada com o projeto de acordo com a sua definição de retenção e eliminada com ele. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Não intervém nenhum serviço de IA de terceiros.',
+      faq: [
+        {
+          question: 'Cada mancha é uma tarefa de IA separada?',
+          answer: 'Não. Uma pressão em Corrigir é uma tarefa de IA, seja qual for o número de manchas que pintou, e é por isso que o painel conta as manchas e lhe permite marcar tudo primeiro.',
+        },
+        {
+          question: 'O que acontece se a correção falhar?',
+          answer: 'Nada muda na fotografia, o painel indica que a correção não terminou e a tarefa de IA é reembolsada. Pode premir Corrigir outra vez com a mesma máscara.',
+        },
+        {
+          question: 'Posso corrigir uma imperfeição numa fotografia que endireitei ou recortei?',
+          answer: 'Sim. As pinceladas são pintadas na vista corrigida e mapeadas de volta, através da geometria, para coordenadas da origem, por isso a máscara cai nos píxeis certos da base.',
+        },
+        {
+          question: 'A correção altera o ficheiro original?',
+          answer: 'Nunca. O resultado é guardado como uma nova base dentro do projeto e a exportação escreve um ficheiro separado com o sufixo (retouched). Remover a correção no histórico faz voltar à base anterior.',
+        },
+        {
+          question: 'Que tamanho deve ter o pincel?',
+          answer: 'Ligeiramente maior do que a mancha, com uma margem de alguns píxeis, para que o modelo não vá buscar amostras ao próprio contorno da imperfeição. Máscaras demasiado grandes em zonas com textura custam mais a ficar naturais.',
+        },
+        {
+          question: 'A remoção de olhos vermelhos faz parte do Corrigir?',
+          answer: 'Tem o seu próprio painel e não precisa de IA. Clicar num olho coloca uma pequena máscara circular e, dentro dela, define o vermelho como o menor valor entre ele próprio e a média do verde e do azul.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A máscara de correção tem de ter o tamanho da base atual; o editor cria-a automaticamente nesse tamanho.',
+          'Cada pressão em Corrigir é uma tarefa de IA; as exportações são tarefas normais. As quotas diárias estão na página de preços.',
+        ],
+      },
+      related: [
+        {
+          label: 'Aumentar a nitidez da fotografia',
+          to: '/tools/sharpen-photo-online',
+          description: 'Aplique nitidez depois de corrigir, para que as manchas não sejam realçadas primeiro.',
+        },
+        {
+          label: 'Reduzir o ruído da imagem',
+          to: '/tools/reduce-image-noise',
+          description: 'Suavize o grão da pele depois de as manchas desaparecerem.',
+        },
+        {
+          label: 'Selecionar por cor',
+          to: '/tools/select-by-color',
+          description: 'Uniformize o tom de pele numa seleção por intervalo de cores depois de corrigir as imperfeições.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Recorte o motivo depois de limpar o fundo.',
+        },
+        {
+          label: 'Remover metadados EXIF de imagens',
+          to: '/tools/remove-exif-metadata',
+          description: 'Retire os dados de localização antes de partilhar o retrato retocado.',
+        },
+        {
+          label: 'Guia do editor',
+          to: '/tutorials/aperture',
+          description: 'O Corrigir, o histórico e as bases explicados a par do resto do editor.',
+        },
+      ],
+      embed: {
+        title: 'Remover imperfeições e manchas',
+        description: 'Largue uma fotografia para abrir o painel Corrigir; pinte sobre cada mancha e depois prima Corrigir uma vez.',
+      },
     },
     'select-by-color': {
       name: 'Selecionar por cor',
+      h1: 'Selecionar por cor numa fotografia online',
       tagline: 'Escolha uma cor com o conta-gotas, alargue o intervalo com a tolerância e ajuste apenas essa seleção.',
       metaTitle: 'Selecionar por cor numa fotografia online: máscara de intervalo de cores',
       metaDescription: 'Crie uma máscara de intervalo de cores no navegador: conta-gotas, Shift+clique para adicionar até 8 cores, tolerância medida em distância de cor Lab, suavização e inversão, e ajuste apenas a seleção.',
+      ogTitle: 'Selecionar por cor numa fotografia online',
+      ogDescription: 'Uma máscara de intervalo de cores como o comando Intervalo de cores de um editor de computador: conta-gotas, até 8 cores amostradas, tolerância por distância Lab, suavização, inversão e vista de sobreposição. Depois, ajuste apenas o que selecionou.',
+      intro: 'O Intervalo de cores é um dos seis tipos de máscara do painel Máscaras do Aperture, e é a forma de selecionar por cor: dê uma máscara a qualquer camada de ajuste, adicione um componente Intervalo de cores, clique numa cor da fotografia com o conta-gotas, e todos os píxeis cuja cor esteja próxima dela ficam selecionados. A proximidade é medida como a distância CIE Lab entre o píxel e a cor amostrada, e a Tolerância define até onde essa distância pode chegar. Shift+clique adiciona mais cores de amostra, até 8, e a seleção fica com a correspondência mais forte. A Suavização da máscara esbate o contorno, Inverter inverte-o, a Intensidade da máscara dimensiona-o e a Vista da máscara mostra-o como uma sobreposição vermelha ou isolado. A máscara é calculada a partir da fotografia de origem e pré-visualizada de imediato; a exportação aplica a mesma máscara ao original.',
+      whatItDoes: [
+        'Amostra uma cor da fotografia com um conta-gotas e seleciona os píxeis pela sua distância de cor Lab a essa cor, o que reflete quão diferentes as cores parecem e não quão diferentes são os números RGB.',
+        'Adiciona até 8 cores-alvo com Shift+clique e fica com o peso máximo entre todas, por isso um céu com dois azuis ou um casaco com realces e sombras é selecionado como um todo.',
+        'Ajusta o raio da seleção com a Tolerância, de 0 a 100, que corresponde a uma distância Lab de 0 a 60, com uma transição suave na metade exterior do raio.',
+        'Combina-se com outros componentes de máscara por Adicionar, Subtrair ou Intersetar, e depois aplica a Suavização da máscara, Inverter e a Intensidade da máscara ao resultado combinado.',
+        'Pode controlar qualquer ajuste: um Ajuste local para exposição, tom e saturação, uma camada HSL para deslocar a tonalidade, Níveis, Curvas ou uma conversão para preto e branco limitada à seleção.',
+      ],
+      flowSteps: [
+        {
+          title: 'Largue a fotografia e escolha um ajuste',
+          description: 'O painel Máscaras abre. Adicione um Ajuste local, ou selecione uma camada existente e adicione-lhe uma máscara.',
+        },
+        {
+          title: 'Adicione um Intervalo de cores e clique',
+          description: 'Escolha Intervalo de cores, prima Escolher uma cor e clique na cor que pretende. Faça Shift+clique para adicionar até 8 cores.',
+        },
+        {
+          title: 'Afine a tolerância e veja a máscara',
+          description: 'Ponha a Vista da máscara em Sobreposição e suba a Tolerância até toda a zona ficar vermelha; adicione um componente Subtrair se a seleção transbordar.',
+        },
+        {
+          title: 'Ajuste e exporte',
+          description: 'Defina os controlos da camada; só a seleção muda. Exporte em JPG, PNG, WebP, AVIF ou TIFF, gerado a partir do original.',
+        },
+      ],
+      advancedDetails: [
+        'Cada cor-alvo e cada píxel de origem são convertidos de sRGB para CIE Lab (D65, matriz padrão, com o segmento linear 216/24389). A distância é o Delta E 76, a distância euclidiana sobre os canais L, a e b. Com a Tolerância f, o raio é R = f/100 vezes 60 unidades Lab, e o peso é 1 - smoothstep(0,5 R; R; Delta E): seleção total dentro de metade do raio e uma transição cúbica até zero no próprio raio. Com vários alvos, o píxel fica com o peso máximo; sem nenhum alvo, o componente vale 0.',
+        'Um céu amostrado em sRGB (92, 150, 214), Lab (60,7; -0,2; -38,4), com Tolerância 20 (R = 12), seleciona uma zona mais clara do mesmo céu em (110, 165, 222), Delta E 7,1, com peso 0,91, e rejeita por completo um azul mais profundo em (60, 120, 200), Delta E 15,6. Com Tolerância 40 (R = 24), o azul mais profundo é incluído com peso 0,78, enquanto uma nuvem em (235, 238, 240), Delta E 49,8, e um verde de folha, Delta E 83,8, continuam a 0 mesmo com Tolerância 60.',
+        'Os componentes combinam-se da esquerda para a direita: Adicionar é max(m, value), Subtrair é min(m, 1 - value) e Intersetar é min(m, value). A máscara combinada é depois desfocada com uma gaussiana cujo sigma é feather/100 vezes 0,05 vezes o lado maior, ou seja, 30 px com Suavização da máscara 10 numa fotografia de 6000 px; a seguir é invertida, se Inverter estiver ativo, e multiplicada pela Intensidade da máscara, limitada a 0..1. A saída da camada é lerp(input, adjusted, mask).',
+        'O intervalo de cores lê a fotografia de origem com a geometria corrigida, e não a saída das camadas anteriores, por isso uma seleção não muda quando edita as camadas abaixo dela, e as mesmas cores amostradas selecionam os mesmos píxeis na pré-visualização e na renderização do servidor.',
+        'A pré-visualização do Aperture é desenhada na sua GPU (WebGL2) a partir de uma cópia de 1920 px, o ficheiro exportado é gerado no nosso servidor a partir do original em resolução total com as mesmas fórmulas, e os dois coincidem dentro de uma pequena tolerância documentada: as operações de cor, como o ajuste sob esta máscara, ficam com um erro médio de no máximo um nível de 8 bits, um percentil 99 de 2 e um máximo de 4, e o grão é exato ao bit.',
+      ],
+      whyItMatters: [
+        'Selecionar pela distância de cor percetual apanha um céu ou uma peça de roupa por inteiro, incluindo as partes mais claras e mais escuras, onde uma tolerância em RGB pararia na primeira mudança de sombreado.',
+        'Funcionar como máscara, e não como uma seleção feita uma única vez, significa que a seleção pode ser afinada depois de aplicado o ajuste e reutilizada por outras camadas.',
+        'A vista de sobreposição torna evidente o que transborda antes de se comprometer, para não ter de adivinhar a partir do resultado.',
+      ],
+      useCases: [
+        {
+          title: 'Carregar o azul de um céu sem tocar nas nuvens',
+          description: 'Amostre o azul, Tolerância 35, depois um Ajuste local com Exposição -0,4 e Saturação +15; as nuvens, a um Delta E de cerca de 50, ficam de fora.',
+        },
+        {
+          title: 'Mudar a cor de um produto',
+          description: 'Amostre a camisa, faça Shift+clique na sombra e no realce dela, e depois use uma camada HSL com a Tonalidade deslocada; o fundo fica intacto.',
+        },
+        {
+          title: 'Uniformizar o tom de pele',
+          description: 'Amostre um tom médio de pele com Tolerância 25 e Suavização da máscara 6, e depois reduza ligeiramente a Saturação e suba as Sombras na seleção.',
+        },
+        {
+          title: 'Tudo a cinzento exceto uma cor',
+          description: 'Selecione a cor, inverta a máscara e adicione uma camada Preto e branco com essa máscara, para que só a cor selecionada se mantenha.',
+        },
+      ],
+      workedExamples: [
+        {
+          title: 'Carregar o azul de um céu, paisagem de 6000 x 4000, 24 MP, JPG de 10,4 MB',
+          body: 'Céu amostrado em (92, 150, 214), Tolerância 40, R = 24 unidades Lab. Uma zona mais clara a Delta E 7,1 recebe peso 1,0, um azul mais profundo a Delta E 15,6 recebe 0,78 e as nuvens a Delta E 49,8 recebem 0. Uma Suavização da máscara de 5 corresponde a uma gaussiana de 15 px no lado de 6000 px. Um Ajuste local com Exposição -0,5 EV escurece o céu totalmente selecionado de (92, 150, 214) para (78, 128, 183), e o azul mais profundo, com peso 0,78, recebe 78% dessa alteração. A exportação JPG com qualidade 92 a 12 MP, como visitante, tem cerca de 5,4 MB.',
+        },
+        {
+          title: 'Mudar a cor de um casaco, retrato de 4000 x 6000, 24 MP, conta Pro',
+          body: 'Três amostras por Shift+clique: o vermelho iluminado (190, 40, 50), a sombra (120, 20, 30) e o realce (230, 110, 115), Tolerância 30, R = 18. A máscara fica com o peso máximo das três, por isso o casaco inteiro dá 1,0, enquanto a pele em (214, 170, 140) está a um Delta E de 37 da amostra mais próxima e fica a 0. Os lábios em (200, 90, 100) estão a apenas um Delta E de 9,6 da amostra do realce e seriam apanhados, por isso um componente de pincel em modo Subtrair sobre a boca retira-os. Uma camada HSL com a máscara desloca depois os vermelhos +150 graus de tonalidade, e o casaco passa a azul-petróleo. Exportado nos 24 MP completos em PNG, cerca de 60 MB, ou em AVIF, cerca de 4,8 MB.',
+        },
+      ],
+      whenNotToUse: 'Uma seleção por intervalo de cores é a ferramenta errada quando o motivo partilha as cores com o fundo, como uma pessoa de camisa verde sobre a relva; use antes Selecionar motivo, a máscara de IA, ou um pincel. Também tem dificuldades em fotografias em tons de cinzento ou muito dessaturadas, em que cada píxel fica a poucas unidades Lab de todos os outros e a tolerância não os consegue separar; aí, uma máscara de Intervalo de luminosidade funciona melhor. Se quer deslocar uma tonalidade em toda a fotografia, os intervalos HSL da página Mudar a cor de um objeto já fazem isso sem máscara nenhuma.',
+      whyMediaManipulator: [
+        'A máscara é uma distância Lab documentada, com um raio e uma transição declarados, por isso a mesma tolerância dá a mesma seleção na fotografia seguinte.',
+        'Uma máscara de intervalo de cores é gratuita de calcular e pré-visualizada em tempo real na sua GPU; só a máscara de motivo gasta uma tarefa de IA.',
+        'As máscaras podem ser partilhadas entre camadas e combinadas com gradientes, pincéis e intervalos de luminosidade numa só pilha, e depois exportadas em resolução total.',
+      ],
+      privacyNote: 'Uma máscara de intervalo de cores é calculada a partir dos seus próprios píxeis no espaço Lab e não precisa de nenhuma chamada ao servidor. Sem sessão iniciada, a fotografia, as cores amostradas e todas as máscaras ficam neste navegador até exportar, o que carrega o ficheiro só para essa renderização, como tarefa de visitante. Com sessão iniciada, o original, a pré-visualização de 1920 px e a miniatura são guardados com o projeto de acordo com a sua definição de retenção e eliminados com ele. Os ficheiros são guardados 24 horas para visitantes; com uma conta gratuita, escolhe entre 24 horas e 2 anos. Nada é enviado a terceiros.',
+      faq: [
+        {
+          question: 'Como é medida a tolerância?',
+          answer: 'Como uma distância CIE Lab Delta E 76. A Tolerância 100 corresponde a um raio de 60 unidades Lab; um píxel dentro de metade do raio fica totalmente selecionado e a seleção desvanece-se até zero no raio completo, com um smoothstep.',
+        },
+        {
+          question: 'Quantas cores posso amostrar para uma seleção?',
+          answer: 'Até 8 por componente Intervalo de cores, adicionadas com Shift+clique. Cada píxel fica com a correspondência mais forte entre elas, e pode adicionar um segundo componente se precisar de mais.',
+        },
+        {
+          question: 'Posso retirar parte da seleção?',
+          answer: 'Sim. Adicione outro componente no modo Subtrair, por exemplo um pincel sobre o que transbordou ou um segundo intervalo de cores amostrado na cor indesejada, e essa parte é retirada com min(m, 1 - value).',
+        },
+        {
+          question: 'Porque é que a seleção inclui sombras com outro brilho?',
+          answer: 'A distância Lab conta a luminosidade além da tonalidade, por isso uma sombra da mesma tonalidade 20 unidades L mais escura fica a cerca de Delta E 20. Baixe a tolerância ou intersete com um Intervalo de luminosidade para restringir o brilho.',
+        },
+        {
+          question: 'Posso ver a máscara isolada?',
+          answer: 'Ponha a Vista da máscara em Só máscara para a ver em tons de cinzento, ou em Sobreposição para a ver a vermelho sobre a fotografia. A tecla M alterna entre as vistas enquanto houver uma máscara selecionada.',
+        },
+        {
+          question: 'A seleção muda quando edito outras camadas?',
+          answer: 'Não. O Intervalo de cores lê a fotografia de origem depois da geometria, nunca a saída das camadas abaixo, por isso ajustar a exposição por baixo não desloca a máscara.',
+        },
+      ],
+      supportedFormats: {
+        processingNotes: [
+          'A máscara é paramétrica (cores amostradas, tolerância, suavização) e é gerada de novo sobre o original na exportação, por isso não acrescenta nada ao tamanho do projeto.',
+          'Os JPG muito comprimidos têm crominância em blocos, o que pode dar um contorno de seleção irregular; um pouco de Suavização da máscara disfarça-o.',
+        ],
+      },
+      related: [
+        {
+          label: 'Mudar a cor de um objeto',
+          to: '/tools/change-image-color',
+          description: 'Tonalidade, saturação e luminosidade por intervalo de cores, com ou sem máscara.',
+        },
+        {
+          label: 'Cor em destaque',
+          to: '/tools/color-pop',
+          description: 'Mantenha uma cor e passe o resto a cinzento com um look incorporado.',
+        },
+        {
+          label: 'Saturação da imagem',
+          to: '/tools/image-saturation',
+          description: 'Vibração e saturação, que pode limitar à seleção.',
+        },
+        {
+          label: 'Remover fundo de imagem',
+          to: '/tools/remove-background-from-image',
+          description: 'Para recortar um motivo, a máscara de motivo por IA é melhor do que a seleção por cor.',
+        },
+        {
+          label: 'Remover imperfeições',
+          to: '/tools/remove-blemishes',
+          description: 'Use Corrigir nas manchas antes de uniformizar uma seleção do tom de pele.',
+        },
+        {
+          label: 'Guia do editor',
+          to: '/tutorials/aperture',
+          description: 'Os seis tipos de máscara e a forma como se combinam.',
+        },
+      ],
+      embed: {
+        title: 'Selecionar por cor',
+        description: 'Largue uma fotografia para abrir o painel Máscaras; adicione um Intervalo de cores, clique numa cor e ajuste apenas a seleção.',
+      },
     },
   },
 } as const;
