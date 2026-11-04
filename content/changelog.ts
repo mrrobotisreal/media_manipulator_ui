@@ -23,6 +23,14 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM93: full tool-page bodies in the remaining seven languages.
+  {
+    id: '2026-11-04-tool-pages-all-languages',
+    date: '2026-11-04',
+    title: 'Every tool page now reads in full in all 18 languages',
+    body: 'The tool pages in Japanese, Chinese (Simplified), Chinese (Traditional), Korean, Arabic, Hindi and Vietnamese used to show a translated title over English text. All 98 tool pages are now translated in full in those seven languages too, as they already were in the ten from the previous update: the introduction, the steps, the technical details, the worked examples, the use cases, the privacy note, the FAQ and the related-tool links. The Aperture photo pages are being translated separately. These translations were written with an AI model; native-speaker review is ongoing, and only reviewed languages are offered to search engines.',
+    tags: ['improved'],
+  },
   // MM93: full tool-page bodies in the first ten non-English languages.
   {
     id: '2026-11-03-tool-pages-ten-languages',
