@@ -211,7 +211,7 @@ const PAGES: PhotoPageBody[] = [
     ogDescription:
       'Turn a photo into its negative, or a scanned negative into a positive, with an invert layer that can be masked and blended. Full-size export.',
     intro:
-      `Inverting an image replaces every color with its opposite: black becomes white, a deep blue sky becomes a warm orange, and a scanned film negative becomes a viewable positive. In ${PHOTO_BRAND} this is the Invert entry of the Effects panel, an adjustment layer in the gamma-space stage of the stack that computes 1 minus each channel of the sRGB-encoded pixel. Because it is a layer rather than a destructive filter, you can mask it to a region, drop its opacity to 50 percent for a solarized half-inversion, set its blend mode to luminosity to flip tones while keeping hues, or stack it below Levels and Curves to finish a negative conversion. The same panel holds Posterize, Threshold and Gamma, which combine naturally with an inversion.`,
+      `Inverting an image replaces every color with its opposite: black becomes white, a deep blue sky becomes a warm orange, and a scanned film negative becomes a viewable positive. In ${PHOTO_BRAND} this is the Invert entry of the Effects panel, an adjustment layer in the gamma-space stage of the stack that computes 1 minus each channel of the sRGB-encoded pixel. Because it is a layer rather than a destructive filter, you can mask it to a region, lower its opacity for a partial inversion (at exactly 50 percent every pixel lands on mid-gray), set its blend mode to luminosity to flip tones while keeping hues, or stack it below Levels and Curves to finish a negative conversion. The same panel holds Posterize, Threshold and Gamma, which combine naturally with an inversion.`,
     whatItDoes: [
       'Adds an Invert layer from the Effects panel that maps each channel to 1 minus its value, turning the photo into its exact negative.',
       'Accepts a mask so only a selected area, a luminosity range or a color range is inverted while the rest stays as shot.',
@@ -240,7 +240,7 @@ const PAGES: PhotoPageBody[] = [
     useCases: [
       { title: 'Convert a photographed film negative', description: 'Invert the frame, then set input black and white per channel in Levels to remove the orange base, and finish with a curve.' },
       { title: 'Dark-mode versions of diagrams', description: 'Invert a white-background chart or sketch for a dark slide, then threshold it if the scan is gray rather than black.' },
-      { title: 'Solarization effects', description: 'Invert at 50 percent opacity, or add a luminosity mask so only the highlights flip, for a Sabattier-style look.' },
+      { title: 'Solarization effects', description: 'Add a luminosity mask so only the highlights flip, for a Sabattier-style look; a plain 50 percent opacity would turn the whole frame mid-gray instead.' },
       { title: 'Checking a composite for seams', description: 'A temporary inverted layer makes brightness mismatches along a pasted edge easier to see; delete it before export.' },
     ],
     whyMediaManipulator: [
@@ -279,12 +279,12 @@ const PAGES: PhotoPageBody[] = [
       {
         title: 'A 3000 x 2000 negative scan to positive',
         body:
-          'A 3000 x 2000 TIFF scan (6 MP, about 18 MB) opened with an account. Invert turns a film-base pixel of (0.93, 0.08, 0.12) into (0.07, 0.92, 0.88), or (18, 235, 224), the blue-cyan cast every inverted color negative shows. A Levels layer above it with input black 0.06 and input white 0.86 on the master channel then stretches a 0.3 value to 0.3 and a 0.7 value to 0.8, so the cast is cleared by setting the red, green and blue input points separately from the histogram. Export as PNG is about 15 MB; as JPG at quality 92 about 2.7 MB. The whole frame is under the 12 MP cap.',
+          'A 3000 x 2000 TIFF scan (6 MP, about 18 MB) opened with an account. Invert turns a film-base pixel of (0.93, 0.08, 0.12) into (0.07, 0.92, 0.88), or (18, 235, 224), the blue-cyan cast every inverted color negative shows. A Levels layer above it with input black 0.06 and input white 0.86 on the master channel only stretches the contrast, a 0.3 value to 0.3 and a 0.7 value to 0.8, and leaves the cast; the cast is cleared by setting the red, green and blue input points separately from the histogram. Export as PNG is about 15 MB; as JPG at quality 92 about 2.7 MB. The whole frame is under the 12 MP cap.',
       },
       {
-        title: 'A half-strength inversion for a solarized poster',
+        title: 'Half and full inversions for a poster',
         body:
-          'A 4000 x 3000 JPEG (12 MP, 4.5 MB). Invert layer at 50 percent opacity: a value of 0.2 blends with its negative 0.8 to 0.5, a value of 0.8 blends with 0.2 to 0.5, and the whole photo collapses toward mid-gray, which is the classic solarized flattening. At 100 percent the dark gray (51, 51, 51) becomes (204, 204, 204). Add a Threshold layer at level 0.5 above it: a sky pixel with luma 0.529 before inversion becomes white, everything darker becomes black. WebP export at quality 85 is about 3.6 MB and is one everyday operation.',
+          'A 4000 x 3000 JPEG (12 MP, 4.5 MB). Invert layer at 50 percent opacity: a value of 0.2 blends with its negative 0.8 to 0.5, a value of 0.8 blends with 0.2 to 0.5, and every pixel lands on exactly mid-gray, so a half-strength inversion on its own erases the picture. At 100 percent the dark gray (51, 51, 51) becomes (204, 204, 204). Add a Threshold layer at level 0.5 above a full-strength Invert: a sky pixel with luma 0.529 before inversion has luma 0.471 after it and becomes black, while everything that was darker than 0.5 becomes white. WebP export at quality 85 is about 3.6 MB and is one everyday operation.',
       },
     ],
     whenNotToUse:
@@ -308,7 +308,7 @@ const PAGES: PhotoPageBody[] = [
     ogDescription:
       'Reduce a photo to flat bands of color with a posterize layer. Exact level math, masks, undo, full-resolution export.',
     intro:
-      `Posterizing quantizes each color channel to a small set of evenly spaced values, so smooth gradients become flat bands and a photo starts to look like a screen print. In ${PHOTO_BRAND} it is the Posterize entry of the Effects panel with a single Levels slider from 2 to 255 (default 4), applied as a gamma-space layer after the tonal and color stages of the stack. Levels is the number of distinct values each channel can take, so 2 gives pure black-or-white per channel, which is eight possible colors in total, and 4 gives 64. Because it is an adjustment layer, you can posterize a masked region only, keep the hues with the color blend mode, or put a Black & white layer below it for a classic two-tone or three-tone poster.`,
+      `Posterizing quantizes each color channel to a small set of evenly spaced values, so smooth gradients become flat bands and a photo starts to look like a screen print. In ${PHOTO_BRAND} it is the Posterize entry of the Effects panel with a single Levels slider from 2 to 255 (default 4), applied as a gamma-space layer after the tonal and color stages of the stack. Levels is the number of distinct values each channel can take, so 2 gives pure black-or-white per channel, which is eight possible colors in total, and 4 gives 64. Because it is an adjustment layer, you can posterize a masked region only, keep the original hues with the luminosity blend mode, or put a Black & white layer below it for a classic two-tone or three-tone poster.`,
     whatItDoes: [
       'Adds a Posterize layer with one Levels slider; 2 produces 8 possible colors, 4 produces 64, 8 produces 512, each with equal spacing.',
       'Snaps each channel independently to the nearest allowed level, so a pixel\'s red, green and blue can land on different steps.',
@@ -324,9 +324,9 @@ const PAGES: PhotoPageBody[] = [
     ],
     advancedDetails: [
       'With Levels set to the slider value, the code uses n = levels - 1 as the number of steps and computes floor(clamp(v, 0, 1) x n + 0.5) / n per channel. The allowed outputs are 0, 1/n, 2/n, ... 1, so there are exactly levels distinct values per channel including both black and white.',
-      'The + 0.5 before the floor makes it a round-to-nearest: with Levels 4 (n = 3) a value of 0.45 maps to floor(1.85) / 3 = 0.3333 and 0.5 maps to floor(2.0) / 3 = 0.6667, so the boundary between the first and second band is at 0.5 and between the second and third at 0.8333 in the input.',
+      'The + 0.5 before the floor makes it a round-to-nearest: with Levels 4 (n = 3) a value of 0.45 maps to floor(1.85) / 3 = 0.3333 and 0.5 maps to floor(2.0) / 3 = 0.6667, so the boundary between the second and third band is at 0.5 in the input, with the other two at 0.1667 and 0.8333.',
       'Levels 2 is a per-channel threshold at 0.5, not a luma threshold: a pixel of (0.35, 0.55, 0.85) becomes (0, 1, 1), cyan, whereas the Threshold layer uses the BT.709 luma and would output white for the same pixel. Levels 255 is an identity on 8-bit input.',
-      'Each channel is quantized on its own, so a gray gradient produces gray bands, but a colored gradient produces bands whose hue shifts at every step where only one channel crosses a boundary; add a Black & white layer below to avoid that, or use the color blend mode to keep the original hues.',
+      'Each channel is quantized on its own, so a gray gradient produces gray bands, but a colored gradient produces bands whose hue shifts at every step where only one channel crosses a boundary; add a Black & white layer below to avoid that, or use the luminosity blend mode to keep the original hues.',
       'The banded preview is drawn by your GPU (WebGL2) from a 1920 px copy; the exported file is rendered on our server from the original at full resolution using the same rounding formula, and the two agree within a small documented tolerance of at most a few 8-bit levels (grain is exact).',
     ],
     whyItMatters: [
@@ -346,7 +346,7 @@ const PAGES: PhotoPageBody[] = [
       'A PNG export keeps the flat colors exact and the project stays editable, so changing from 4 to 5 levels later is a slider move, not a redo.',
     ],
     privacyNote:
-      `Posterizing is a per-channel rounding done in your browser on the decoded photo; nothing is uploaded until you export, select a subject or heal, when the server quantizes the original with the same step count. ${RETENTION_PROMISE}. Signed in, the original and its 1920 px preview remain under your retention setting until the project is deleted.`,
+      `Posterizing is a per-channel rounding done in your browser on the decoded photo; nothing is uploaded until you export, select a subject or heal, and on export the server quantizes the original with the same step count. ${RETENTION_PROMISE}. Signed in, the original and its 1920 px preview remain under your retention setting until the project is deleted.`,
     faq: [
       { question: 'What does the Levels number mean exactly?', answer: 'It is the count of distinct values each channel can take, including 0 and 1. Levels 4 allows 0, 0.333, 0.667 and 1 per channel, so a pixel can be one of 4 x 4 x 4 = 64 colors.' },
       { question: 'Where do the band boundaries fall?', answer: 'Halfway between adjacent levels, because the rounding is floor(v x n + 0.5) / n with n = levels - 1. For Levels 4 the input cutoffs are 0.1667, 0.5 and 0.8333; for Levels 3 they are 0.25 and 0.75.' },
@@ -381,7 +381,7 @@ const PAGES: PhotoPageBody[] = [
       {
         title: 'Six levels on skin, then two',
         body:
-          'A 3000 x 4000 portrait (12 MP, 5.1 MB). At Levels 6 (n = 5) a skin tone of (0.78, 0.6, 0.5) becomes (0.8, 0.6, 0.6), or (204, 153, 153); the blue channel climbs from 128 to 153 because 0.5 x 5 + 0.5 = 3.0 floors to 3. Changing the slider to Levels 2 (n = 1) gives (1, 1, 1), white, since every channel is above 0.5, while a shadow of (0.3, 0.25, 0.2) becomes (0, 0, 0). With a Black & white layer below at the default channel mix, the same Levels 2 cut produces a clean two-tone stencil. PNG export is about 8 MB.',
+          'A 3000 x 4000 portrait (12 MP, 5.1 MB). At Levels 6 (n = 5) a skin tone of (0.78, 0.6, 0.5) becomes (0.8, 0.6, 0.6), or (204, 153, 153); the blue channel climbs from 128 to 153 because 0.5 x 5 + 0.5 = 3.0 floors to 3. Changing the slider to Levels 2 (n = 1) gives (1, 1, 1), white, since every channel is at or above 0.5 and rounds up, while a shadow of (0.3, 0.25, 0.2) becomes (0, 0, 0). With a Black & white layer below at the default channel mix, the same Levels 2 cut produces a clean two-tone stencil. PNG export is about 8 MB.',
       },
     ],
     whenNotToUse:
@@ -440,7 +440,7 @@ const PAGES: PhotoPageBody[] = [
     whyMediaManipulator: [
       `${PHOTO_BRAND} applies levels with the same formula on the GPU preview, the export server and the phone app, and the histogram you set the points against is computed from the actual rendered result, not from the source alone.`,
       'Levels sits in a 64-layer non-destructive stack with masks, so a tonal stretch can be limited to the sky or the shadows with a luminosity range.',
-      'The project saves to your account on sign-in and the export is rendered from the original file, so a scan corrected at 1920 px preview size exports at its real 6000 px width.',
+      'The project saves to your account on sign-in and the export is rendered from the original file, so a scan corrected at 1920 px preview size exports at its real 5400 px width.',
     ],
     privacyNote:
       `Levels sliders are evaluated in your browser on the decoded photo and on the histogram of the result; the file is uploaded only for an export, a subject mask or a heal, and the server maps the original with the same end points and gamma. ${RETENTION_PROMISE}. Signed in, the original and its preview are kept under your retention setting until the project is deleted.`,
@@ -472,7 +472,7 @@ const PAGES: PhotoPageBody[] = [
     },
     workedExamples: [
       {
-        title: 'Stretching a flat 20 MP scan',
+        title: 'Stretching a flat 19.4 MP scan',
         body:
           'A 5400 x 3600 JPEG scan (19.4 MP, 7.2 MB) whose histogram runs from about 26 to 230. On the RGB channel: Input black 0.1, Input white 0.9, Midtones 1.2, Output black 0, Output white 1. A pixel at 0.3 becomes ((0.3 - 0.1) / 0.8) ^ (1 / 1.2) = 0.315, about 80; a 0.5 pixel becomes 0.5612, about 143; a 0.7 pixel becomes 0.7868, about 201; and 0.1 and 0.9 land on 0 and 1. Everything at or below 0.1 clips to black. Exported as JPG at quality 92 the 19.4 MP file is about 8.7 MB on Premium or Pro; a guest export is downscaled to 12 MP, about 5.4 MB.',
       },
