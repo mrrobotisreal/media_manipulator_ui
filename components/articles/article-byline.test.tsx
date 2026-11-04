@@ -41,11 +41,13 @@ describe('MM85 tutorial byline and screenshot slot', () => {
       expect(html).not.toContain('articleMeta');
       expect(html).not.toContain('{{');
     }
-    for (const k of ['audioGettingStarted', 'videoGettingStarted', 'imageGettingStarted', 'aiFrameInterpolation', 'motion'] as const) {
+    for (const k of ['audioGettingStarted', 'videoGettingStarted', 'imageGettingStarted', 'aiFrameInterpolation', 'motion', 'aperture'] as const) {
       const html = renderToStaticMarkup(<TutorialScreenshot k={k} locale={code} />);
       expect(html).toMatch(/role="img" aria-label="[^"]{20,}"/);
       expect(html).toContain('<figcaption');
       expect(html).not.toContain('articleMeta');
+      // Regression (2026-11-04): the Aperture slot rendered a literal "{{brand}}" in every locale.
+      expect(html, `${code} ${k}`).not.toContain('{{');
     }
   });
 

@@ -5,6 +5,7 @@ import { TUTORIAL_DATES, type TutorialPath } from '@/content/pageDates';
 import { localizeHref } from '@/i18n/locales';
 import { getServerT } from '@/lib/i18n/server';
 import { FOUNDER_NAME } from '@/lib/seo';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 
 /**
  * MM85: the byline under a tutorial's H1: the founder's photo and name (linked
@@ -57,7 +58,9 @@ export type ScreenshotKey = 'audioGettingStarted' | 'videoGettingStarted' | 'ima
 
 export function TutorialScreenshot({ k, locale, src }: { k: ScreenshotKey; locale?: string; src?: string }) {
   const t = getServerT('interface', locale ?? 'en-US');
-  const alt = t(`articleMeta.screenshots.${k}.alt`);
+  // MM100: the Aperture strings interpolate the brand ({{brand}}); other keys ignore it.
+  const brand = { values: { brand: PHOTO_BRAND } };
+  const alt = t(`articleMeta.screenshots.${k}.alt`, brand);
   return (
     <figure className="not-prose my-6" data-testid="tutorial-screenshot" data-screenshot={k}>
       {src ? (
@@ -71,7 +74,7 @@ export function TutorialScreenshot({ k, locale, src }: { k: ScreenshotKey; local
           {alt}
         </div>
       )}
-      <figcaption className="mt-2 text-center text-sm text-muted-foreground">{t(`articleMeta.screenshots.${k}.caption`)}</figcaption>
+      <figcaption className="mt-2 text-center text-sm text-muted-foreground">{t(`articleMeta.screenshots.${k}.caption`, brand)}</figcaption>
     </figure>
   );
 }
