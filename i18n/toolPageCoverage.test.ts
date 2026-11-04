@@ -106,7 +106,7 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
     const pinned: Record<string, number> = {
       "uk-UA": 0, "ru-RU": 0, "de-DE": 0,
       "he-IL": 0, "es-ES": 0, "es-MX": 0, "fr-FR": 0, "it-IT": 0, "pt-BR": 0, "pt-PT": 0,
-      "ja-JP": 25, "zh-CN": 25, "zh-TW": 25, "ko-KR": 25, "ar-SA": 25, "hi-IN": 123, "vi-VN": 123,
+      "ja-JP": 25, "zh-CN": 25, "zh-TW": 25, "ko-KR": 25, "ar-SA": 25, "hi-IN": 25, "vi-VN": 123,
     };
     const rows: string[] = [];
     for (const l of nonEnglish) {
