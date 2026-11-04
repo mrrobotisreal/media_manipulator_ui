@@ -12812,7 +12812,7 @@ const deToolPages = {
         'Deckt globale Tonwerte und Farben in den Bedienfeldern „Grundeinstellungen“, „Gradationskurven“, „Tonwertkorrektur“, „Farbe (HSL)“, „Farbbalance“, „Schwarzweiß“, „Kanalmixer“, „Fotofilter“, „Teiltonung“, „LUT“ und „Effekte“ ab, mit Reglern, deren Wertebereiche denen eines Desktop-Editors entsprechen.',
         'Beschränkt jede Ebene auf einen Teil des Bildes: mit einer Verlaufsmaske, einer Radialmaske, einem gemalten Pinselstrich, einem Luminanzbereich, einem mit der Pipette gewählten Farbbereich oder einer KI-Motivmaske, kombiniert durch „Hinzufügen“, „Subtrahieren“ oder „Schnittmenge“.',
         'Repariert Pixel mit dem Werkzeug „Reparieren“ (Flecken übermalen, auf „Reparieren“ drücken, und ein Inpainting-Modell füllt sie auf unserer GPU), der Korrektur „Rote Augen“ sowie dem Bedienfeld „Geometrie“ für Zuschneiden, Begradigen, Drehen, Spiegeln und Perspektivkorrektur über vier Ecken.',
-        'Speichert Looks und wendet sie erneut an: 18 integrierte Voreinstellungen plus „Automatisch“, Ihre eigenen Voreinstellungen, in diesem Browser gespeichert oder als JSON exportiert, und mit einem kostenpflichtigen Tarif derselbe Stapel, angewendet auf eine ganze Reihe weiterer Fotos.',
+        'Speichert Looks und wendet sie erneut an: 18 integrierte Voreinstellungen plus „Automatisch“, Ihre eigenen Voreinstellungen, in diesem Browser gespeichert oder als JSON exportiert, und, sobald Sie angemeldet sind, in jedem Tarif derselbe Stapel, angewendet auf eine ganze Reihe weiterer Fotos.',
       ],
       flowSteps: [
         {
@@ -13024,7 +13024,7 @@ const deToolPages = {
           body: 'Ein TIFF-Scan mit 3000 x 2000 (6 MP, 36 MB, angemeldet geöffnet) mit Tonwerten bei 20, 60, 128 und 200. „Helligkeit“ +30 verschiebt sie auf 58, 98, 166 und 238 und addiert überall ungefähr dieselben 38 Stufen, sodass der schwarze Rand grau wird. „Belichtung“ +1,2 EV verschiebt sie stattdessen auf 34, 91, 187 und 255, hält den Rand nahe Schwarz, lässt aber den hellsten Ton ausfressen. Ein Mittelweg aus „Belichtung“ +1 EV mit „Schwarz“ +20 in der Gruppe „Tonwerte“ macht aus 20, 60, 128 und 200 die Werte 35, 85, 176 und 255. Als PNG exportiert ist das Ergebnis mit 6 MP etwa 15 MB groß, als WebP mit Qualität 90 etwa 1,8 MB.',
         },
       ],
-      whenNotToUse: 'Wenn das Foto hell genug ist, aber matt wirkt, müssen Sie es gar nicht aufhellen; die Kontrastseite oder eine Kurve ist dann die richtige Lösung, und mehr Belichtung drückt nur die Lichter ins Weiß. Ein Foto, dessen Tiefen massiv schwarz und ohne jede Zeichnung sind, lässt sich mit keinem Regler retten, weil ein 8-Bit-JPEG unterhalb von null nichts speichert. Und bei einem Foto, das nur in den Ecken dunkel ist, ist der Regler „Vignette“ mit negativer Stärke eine sauberere, zum Rand hin gewichtete Aufhellung als eine globale Belichtungsänderung.',
+      whenNotToUse: 'Wenn das Foto hell genug ist, aber matt wirkt, müssen Sie es gar nicht aufhellen; die Kontrastseite oder eine Kurve ist dann die richtige Lösung, und mehr Belichtung drückt nur die Lichter ins Weiß. Ein Foto, dessen Tiefen massiv schwarz und ohne jede Zeichnung sind, lässt sich mit keinem Regler retten, weil ein 8-Bit-JPEG unterhalb von null nichts speichert. Und bei einem Foto, das nur in den Ecken dunkel ist, ist der Regler „Vignette“ mit positiver Stärke eine sauberere, zum Rand hin gewichtete Aufhellung als eine globale Belichtungsänderung.',
       whyMediaManipulator: [
         'Aperture bietet Ihnen alle drei Werkzeuge zum Aufhellen als separate Ebenen statt eines einzigen Helligkeitsreglers, und jede Ebene lässt sich mit einer Maske begrenzen.',
         'Die Formeln sind in der Vorschau, im Export und in der mobilen App identisch, und der Server wird bei jedem Deployment mit Referenz-Renderings abgeglichen.',
@@ -13313,10 +13313,10 @@ const deToolPages = {
         },
         {
           title: 'Unterbelichtetes Konzertfoto mit 12 MP bei +1,5 EV und „Lichter“ -40',
-          body: 'Ein JPEG mit 4000 x 3000 (12 MP, 3,8 MB) mit Publikumstönen bei 20 und 60, einem Gesicht bei 128 und Bühnenlichtern bei 180 und 200. „Belichtung“ +1,5 EV ergibt 38, 100, 205, 255 und 255: Beide Bühnenlichter fressen aus. Mit „Lichter“ -40 darüber ergeben sich 38, 100, 186, 229 und 229, die Bühnenlichter liegen also wieder unter Weiß, sind aber, weil sie im Belichtungsschritt abgeschnitten wurden, am Ende identisch. Senkt man die Belichtung stattdessen auf +1,2 EV und nutzt eine Ebene „Tonwerte“ mit „Tiefen“ +40, ergeben sich 56, 100 und 187 für die drei dunklen Töne, und die Bühnenlichter bleiben voneinander getrennt. Export als AVIF mit Qualität 80: etwa 2,4 MB, ein Standardauftrag.',
+          body: 'Ein JPEG mit 4000 x 3000 (12 MP, 3,8 MB) mit Publikumstönen bei 20 und 60, einem Gesicht bei 128 und Bühnenlichtern bei 180 und 200. „Belichtung“ +1,5 EV ergibt 38, 100, 205, 255 und 255: Beide Bühnenlichter fressen aus. Mit „Lichter“ -40 darüber ergeben sich 38, 100, 186, 229 und 229, die Bühnenlichter liegen also wieder unter Weiß, sind aber, weil sie im Belichtungsschritt abgeschnitten wurden, am Ende identisch. Senkt man die Belichtung stattdessen auf +1,2 EV und nutzt eine Ebene „Tonwerte“ mit „Tiefen“ +40, ergeben sich 56, 100 und 187 für die drei dunklen Töne, aber beide Bühnenlichter fressen weiterhin bei 255 aus; erst eine Belichtung von etwa +0,75 EV hält sie auseinander, bei 227 und 252. Export als AVIF mit Qualität 80: etwa 2,4 MB, ein Standardauftrag.',
         },
       ],
-      whenNotToUse: 'Wenn das einzige Problem ein leicht flaues oder mattes Foto ist, das weder zu hell noch zu dunkel ist, sind Sie hier falsch: Das Kontrastwerkzeug oder eine Kurve erreicht mit weniger Aufwand mehr. Wenn das Foto so stark überbelichtet ist, dass Gesichter oder Himmel massiv weiß sind, bringt kein Regler die Zeichnung zurück, weil das JPEG sie nie gespeichert hat; das Werkzeug „Reparieren“ kann kleine ausgefressene Stellen flicken, aber ein ausgefressener Himmel braucht ein anderes Foto. Und wenn das Belichtungsproblem auf die Ränder beschränkt ist, ist eine Vignette mit negativer Stärke einfacher als eine maskierte Belichtungsebene.',
+      whenNotToUse: 'Wenn das einzige Problem ein leicht flaues oder mattes Foto ist, das weder zu hell noch zu dunkel ist, sind Sie hier falsch: Das Kontrastwerkzeug oder eine Kurve erreicht mit weniger Aufwand mehr. Wenn das Foto so stark überbelichtet ist, dass Gesichter oder Himmel massiv weiß sind, bringt kein Regler die Zeichnung zurück, weil das JPEG sie nie gespeichert hat; das Werkzeug „Reparieren“ kann kleine ausgefressene Stellen flicken, aber ein ausgefressener Himmel braucht ein anderes Foto. Und wenn das Belichtungsproblem auf die Ränder beschränkt ist, ist eine Vignette mit positiver Stärke einfacher als eine maskierte Belichtungsebene.',
       whyMediaManipulator: [
         'Belichtung und Wiederherstellung sind getrennte Ebenen mit getrennten Masken, was ein einzelner Helligkeitsregler in einem Schnellkorrektur-Werkzeug nicht leisten kann.',
         'Aperture zeigt die ganze Zeit ein RGB-Histogramm statt nur in einem Exportdialog, sodass Sie die Belichtung anhand der Daten korrigieren und nicht anhand Ihres Monitors.',
@@ -13384,7 +13384,7 @@ const deToolPages = {
         {
           label: 'Vignette hinzufügen',
           to: '/tools/add-vignette',
-          description: 'Eine negative Vignettenstärke hellt die Ecken auf, wenn nur die Ränder dunkel sind.',
+          description: 'Eine positive Vignettenstärke hellt die Ecken auf, wenn nur die Ränder dunkel sind.',
         },
       ],
       embed: {
@@ -13609,11 +13609,11 @@ const deToolPages = {
       workedExamples: [
         {
           title: 'Rotes Auto zu Grün: „Toleranz“ 60 und Farbton +120 unter „Alle Farben“ bei einem 20-MP-JPEG',
-          body: 'Ein Anzeigenfoto mit 5472 x 3648 Pixeln (20 Megapixel, 9 MB). Ein Klick auf die Tür nimmt (204, 26, 31) auf, Lab (43,8; 64,9; 45,5). Ein Blech im Schatten mit (153, 20, 26) liegt bei dE 20,6 davon, ein sonnenbeschienenes Glanzlicht mit (242, 89, 84) bei dE 19,6. Bei „Toleranz“ 40 ist der Radius 24, und diese beiden erreichen nur 0,199 und 0,303, was ein fleckiges Auto ergibt; bei „Toleranz“ 60 ist der Radius 36, und sie erreichen 0,945 und 0,977. Eine Ziegelwand hinter dem Auto mit (166, 77, 56) liegt bei dE 33,8 und erreicht 0,043, Asphalt mit (89, 89, 92) liegt bei dE 79,9 und erreicht 0. Mit Farbton +120 unter „Alle Farben“ wird das Schattenpixel zu (26, 153, 20) umgefärbt und mit 0,945 zu (33, 146, 21) überblendet; das Glanzlicht wird zu (84, 242, 89), mit 0,977 überblendet zu (88, 239, 89). Der Export als JPG mit Qualität 92 ist nach der Schätzung von 0,45 MB pro Megapixel etwa 9 MB groß und erfordert für die vollen 20 Megapixel Premium oder Pro; die Grenze im kostenlosen Tarif liegt bei 12.',
+          body: 'Ein Anzeigenfoto mit 5472 x 3648 Pixeln (20 Megapixel, 9 MB). Ein Klick auf die Tür nimmt (204, 26, 31) auf, Lab (43,8; 64,9; 45,5). Ein Blech im Schatten mit (153, 20, 26) liegt bei dE 20,7 davon, ein sonnenbeschienenes Glanzlicht mit (242, 89, 84) bei dE 19,6. Bei „Toleranz“ 40 ist der Radius 24, und diese beiden erreichen nur 0,187 und 0,309, was ein fleckiges Auto ergibt; bei „Toleranz“ 60 ist der Radius 36, und sie erreichen 0,940 und 0,979. Eine Ziegelwand hinter dem Auto mit (166, 77, 56) liegt bei dE 33,8 und erreicht 0,041, Asphalt mit (89, 89, 92) liegt bei dE 80,0 und erreicht 0. Mit Farbton +120 unter „Alle Farben“ wird das Schattenpixel zu (26, 153, 20) umgefärbt und mit 0,940 zu (34, 145, 20) überblendet; das Glanzlicht wird zu (84, 242, 89), mit 0,979 überblendet zu (87, 239, 89). Der Export als JPG mit Qualität 92 ist nach der Schätzung von 0,45 MB pro Megapixel etwa 9 MB groß und erfordert für die vollen 20 Megapixel Premium oder Pro; die Grenze im kostenlosen Tarif liegt bei 12.',
         },
         {
           title: 'Gelbe Jacke zu Blau: Verschiebung in „Gelbtöne“ oder Maske bei einem 12-MP-Smartphonefoto',
-          body: 'Ein HEIC mit 4032 x 3024 Pixeln von einem Smartphone (12,2 Megapixel). Das Jackenpixel (242, 204, 38) hat Farbton 48,75, Sättigung 0,89 und Helligkeit 0,55. Zwei Wege ergeben dieselbe Jacke. Erster Weg: Farbton +190 in „Gelbtöne“ ohne Maske; bei einem Abstand von 11,25 Grad zur Gelbtöne-Mitte ist das Gewicht 1, der Farbton wird zu 238,75, und das Pixel wird als (38, 43, 242) exportiert, aber ein gelbes Verkehrsschild im Hintergrund wird ebenfalls blau. Zweiter Weg: eine Komponente „Farbbereich“, auf der Jacke aufgenommen, mit „Toleranz“ 50 (Radius 30), als Schnittmenge mit einer Komponente „Pinsel“, die über die Jacke gemalt ist, und Farbton +190 unter „Alle Farben“; das Schild erreicht 0, weil der Pinsel es ausschließt, und das Jackenpixel wird als dasselbe (38, 43, 242) exportiert. Der Export bei Qualität 92 ist etwa 5,5 MB groß; das HEIC-Original selbst erfordert ein Konto, damit der Server es für die Vorschau dekodieren kann.',
+          body: 'Ein HEIC mit 4032 x 3024 Pixeln von einem Smartphone (12,2 Megapixel). Das Jackenpixel (242, 204, 38) hat Farbton 48,8, Sättigung 0,89 und Helligkeit 0,55. Zwei Wege ergeben dieselbe Jacke. Erster Weg: Farbton -170 in „Gelbtöne“ ohne Maske; bei einem Abstand von 11,2 Grad zur Gelbtöne-Mitte ist das Gewicht 1, der Farbton wird zu 238,8, und das Pixel wird als (38, 42, 242) exportiert, aber ein gelbes Verkehrsschild im Hintergrund wird ebenfalls blau. Zweiter Weg: eine Komponente „Farbbereich“, auf der Jacke aufgenommen, mit „Toleranz“ 50 (Radius 30), als Schnittmenge mit einer Komponente „Pinsel“, die über die Jacke gemalt ist, und Farbton -170 unter „Alle Farben“; das Schild erreicht 0, weil der Pinsel es ausschließt, und das Jackenpixel wird als dasselbe (38, 42, 242) exportiert. Der Export bei Qualität 92 ist etwa 5,5 MB groß; das HEIC-Original selbst erfordert ein Konto, damit der Server es für die Vorschau dekodieren kann.',
         },
       ],
       whenNotToUse: 'Eine Farbauswahl kann zwei gleichfarbige Objekte im selben Licht nicht trennen; das ist eine Aufgabe für eine Pinsel- oder Radialmaske oder für „Motiv auswählen“, wenn das Objekt das Hauptmotiv des Bildes ist. Sie kann keine Farbe erzeugen, die kein Farbton ist: Weiß, Schwarz und Metallic-Lackierungen brauchen eine Änderung von Sättigung und Helligkeit statt einer Drehung, und sie kann weder Muster noch Material einer Oberfläche ändern. Hat das ganze Foto einen Stich statt nur ein Objekt, nutzen Sie stattdessen die Seiten zu Weißabgleich oder Farbbalance, und soll das Objekt auf transparentem Hintergrund freigestellt werden, nutzen Sie den Hintergrundentferner.',
@@ -13780,7 +13780,7 @@ const deToolPages = {
         },
         {
           question: 'Warum behalten Gesichter etwas Farbe, wenn die Rottöne behalten werden?',
-          answer: 'Haut liegt um Farbton 20, innerhalb des Bereichs „Rottöne“, daher behält der Look sie absichtlich. Ein Pixel mit (217, 158, 128) verliert nur etwa 12 % seiner Sättigung. Verringern Sie die „Breite“ der Rottöne oder fügen Sie über dem Gesicht eine Pinselmaske im Modus „Subtrahieren“ hinzu, wenn die Haut grau werden soll.',
+          answer: 'Haut liegt um Farbton 20, innerhalb des Bereichs „Rottöne“, daher behält der Look sie absichtlich. Ein Pixel mit (217, 158, 128) verliert nur etwa 11 % seiner Sättigung. Verringern Sie die „Breite“ der Rottöne oder fügen Sie über dem Gesicht eine Pinselmaske im Modus „Subtrahieren“ hinzu, wenn die Haut grau werden soll.',
         },
         {
           question: 'Kann ich zwei Farben gleichzeitig behalten?',
@@ -13846,7 +13846,7 @@ const deToolPages = {
         '„Dynamik“ von -100 bis +100: eine sättigungsabhängige Verstärkung oder Abschwächung. Bei positivem Wert ist der Faktor 1 + v mal (1 - Spanne), sodass eine gedämpfte Farbe mit einer Kanalspanne von 0,08 fast die volle Verstärkung erhält, während eine kräftige Farbe mit einer Spanne von 0,63 etwa ein Drittel davon bekommt.',
         '„Sättigung“ von -100 bis +100: Jeder Kanal entfernt sich um den Faktor 1 + Sättigung / 100 von der Luma des Pixels nach BT.709 (oder nähert sich ihr); -100 ist eine perfekte Graustufenumwandlung mit den Gewichten 0,2126, 0,7152, 0,0722.',
         'Beide Regler liegen in einer gemeinsamen Ebene „Dynamik / Sättigung“, sodass eine Deckkraft, eine Füllmethode und eine Maske für beide gelten; fügen Sie eine zweite Ebene hinzu, wenn Sie für jeden Regler eine andere Maske möchten.',
-        'Der Hautschutz ergibt sich von selbst aus der Dynamik-Formel: Ein typischer Hautton hat eine Kanalspanne von etwa 0,3, sodass „Dynamik“ +50 etwa 35 % der Sättigung hinzufügt, die derselbe Wert einem fast neutralen Grau hinzufügt.',
+        'Der Hautschutz ergibt sich von selbst aus der Dynamik-Formel: Ein typischer Hautton hat eine Kanalspanne von etwa 0,3, sodass „Dynamik“ +50 ihm etwa 70 % der Sättigungsanhebung gibt, die derselbe Wert einem fast neutralen Grau gibt.',
         'Für die Steuerung einzelner Farben verweist dieselbe Seite auf das Bedienfeld „Farbe (HSL)“, in dem jeder der sechs Farbtonbereiche einen eigenen Regler „Sättigung“ mit „Breite“ und „Weiche Kante“ hat.',
       ],
       flowSteps: [
@@ -13905,7 +13905,7 @@ const deToolPages = {
         },
         {
           title: 'Ein Straßenfoto mit 12 MP auf zwei Arten entsättigen',
-          body: 'Ein JPEG mit 4000 x 3000 (12 MP, 4,5 MB) mit einer neonpinken Leuchtreklame bei 255, 40, 180, einer Holztür bei 160, 120, 80 und einem blauen Auto bei 90, 150, 230. „Sättigung“ -30 ergibt 207, 57, 155, dann 150, 122, 94, dann 132, 150, 186: Jede Farbe verliert 30 % ihres Abstands zu Grau. „Dynamik“ -40 ergibt stattdessen 130, 73, 110 für die Reklame (Faktor 0,26), 136, 117, 98 für die Tür (Faktor 0,47) und, mit dem Auto irgendwo dazwischen, ein Ergebnis, bei dem die lauteste Farbe am stärksten gezähmt wurde. „Sättigung“ -100 würde alle drei zu flachen Grautönen von 100, 125 und 143 machen. Als WebP mit Qualität 88 exportiert: etwa 3,6 MB.',
+          body: 'Ein JPEG mit 4000 x 3000 (12 MP, 4,5 MB) mit einer neonpinken Leuchtreklame bei 255, 40, 180, einer Holztür bei 160, 120, 80 und einem blauen Auto bei 90, 150, 230. „Sättigung“ -30 ergibt 207, 57, 155, dann 150, 122, 94, dann 106, 148, 204: Jede Farbe verliert 30 % ihres Abstands zu Grau. „Dynamik“ -40 ergibt stattdessen 130, 73, 110 für die Reklame (Faktor 0,26), 136, 117, 98 für die Tür (Faktor 0,47) und, mit dem Auto irgendwo dazwischen, ein Ergebnis, bei dem die lauteste Farbe am stärksten gezähmt wurde. „Sättigung“ -100 würde alle drei zu flachen Grautönen von 96, 126 und 143 machen. Als WebP mit Qualität 88 exportiert: etwa 3,6 MB.',
         },
       ],
       whenNotToUse: 'Diese Seite ändert die Stärke aller Farben auf einmal und ist daher das falsche Werkzeug, wenn nur eine Farbe das Problem ist: Ein Himmel, der mehr Blau braucht, oder ein Gesicht, das weniger Rot braucht, gehört in das Bedienfeld „Farbe (HSL)“, in dem jeder Farbtonbereich eine eigene Sättigung hat. Wenn Sie ein Foto möchten, das bis auf ein Objekt grau ist, erledigen das bereits die Voreinstellungen „Farbakzent“. Und wenn die Farben eher falsch als schwach wirken, beginnen Sie mit dem Weißabgleich; ein Foto mit Farbstich zu sättigen, verstärkt nur den Farbstich.',
@@ -14045,7 +14045,7 @@ const deToolPages = {
       ],
       workedExamples: [
         {
-          title: 'Einen flauen Scan mit 20 MP spreizen',
+          title: 'Einen flauen Scan mit 19,4 MP spreizen',
           body: 'Ein JPEG-Scan mit 5400 x 3600 (19,4 MP, 7,2 MB), dessen Histogramm etwa von 26 bis 230 reicht. Im RGB-Kanal: „Eingabe Schwarz“ 0,1, „Eingabe Weiß“ 0,9, „Mitteltöne“ 1,2, „Ausgabe Schwarz“ 0, „Ausgabe Weiß“ 1. Ein Pixel bei 0,3 wird zu ((0,3 - 0,1) / 0,8) ^ (1 / 1,2) = 0,315, etwa 80; ein Pixel bei 0,5 wird zu 0,5612, etwa 143; ein Pixel bei 0,7 wird zu 0,7868, etwa 201; und 0,1 und 0,9 landen auf 0 und 1. Alles bei oder unter 0,1 wird auf Schwarz beschnitten. Als JPG mit Qualität 92 exportiert ist die Datei mit 19,4 MP unter Premium oder Pro etwa 8,7 MB groß; ein Gastexport wird auf 12 MP verkleinert, etwa 5,4 MB.',
         },
         {
@@ -14057,7 +14057,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Aperture wendet die Tonwertkorrektur mit derselben Formel in der GPU-Vorschau, auf dem Exportserver und in der Handy-App an, und das Histogramm, an dem Sie die Punkte setzen, wird aus dem tatsächlich gerenderten Ergebnis berechnet, nicht nur aus der Quelle.',
         'Die Tonwertkorrektur liegt in einem nicht-destruktiven Stapel mit 64 Ebenen und Masken, sodass sich eine Tonwertspreizung mit einem Luminanzbereich auf den Himmel oder die Tiefen begrenzen lässt.',
-        'Das Projekt wird bei der Anmeldung in Ihrem Konto gespeichert und der Export aus der Originaldatei gerendert, sodass ein Scan, der in der Vorschaugröße von 1920 px korrigiert wurde, in seiner echten Breite von 6000 px exportiert wird.',
+        'Das Projekt wird bei der Anmeldung in Ihrem Konto gespeichert und der Export aus der Originaldatei gerendert, sodass ein Scan, der in der Vorschaugröße von 1920 px korrigiert wurde, in seiner echten Breite von 5400 px exportiert wird.',
       ],
       privacyNote: 'Die Regler der Tonwertkorrektur werden in Ihrem Browser am dekodierten Foto und am Histogramm des Ergebnisses ausgewertet; die Datei wird nur für einen Export, eine Motivmaske oder eine Reparatur hochgeladen, und der Server bildet das Original mit denselben Endpunkten und demselben Gamma ab. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Wenn Sie angemeldet sind, werden das Original und seine Vorschau gemäß Ihrer Aufbewahrungseinstellung aufbewahrt, bis das Projekt gelöscht wird.',
       faq: [
@@ -14316,7 +14316,7 @@ const deToolPages = {
       advancedDetails: [
         'Pro Pixel: R, G, B von sRGB nach linear dekodieren (v / 12,92 unter 0,04045, sonst ((v + 0,055) / 1,055) hoch 2,4). Helligkeit l = (max + min) / 2 der linearen Kanäle. Gewicht w = clamp((l - 0,333) mal 4 + 0,5) mal clamp((1 - l - 0,333) mal 4 + 0,5) mal 0,7.',
         'Dann R += (Temperatur / 100) mal w, G += (-Farbton / 100) mal w, B += (-Temperatur / 100) mal w, jeweils auf 0 bis 1 begrenzt, und die drei Kanäle werden zurück nach sRGB kodiert. Das ist exakt die Mittelton-Farbbalance des Videoeditors Darkroom, unverändert übernommen.',
-        'Gewichtswerte: 0 bei linearer Helligkeit 0,1; 0,118 bei 0,25; 0,342 bei 0,333; 0,7 bei 0,5; 0,538 bei 0,6; 0,118 bei 0,75; 0 bei 0,9. In sRGB-Werten bleibt der Effekt grob auf 126 bis 230 beschränkt und ist um 188 am stärksten.',
+        'Gewichtswerte: 0 bei linearer Helligkeit 0,1; 0,118 bei 0,25; 0,35 bei 0,333; 0,7 bei 0,5; 0,538 bei 0,6; 0,118 bei 0,75; 0 bei 0,9. In sRGB-Werten bleibt der Effekt grob auf 126 bis 230 beschränkt und ist um 188 am stärksten.',
         'Rechenbeispiel Grau: Ein sRGB-Grau von 188 wird bei „Temperatur“ +40 zu (229, 188, 130), bei -40 zu (130, 188, 229). Derselbe Regler ergibt bei einem Grau von 128 den Wert (129, 128, 126) und bei 230 den Wert (230, 230, 229): Außerhalb der Mitteltöne ist die Verschiebung absichtlich klein.',
         '„Farbton“ auf demselben Grau von 188: +30 ergibt (188, 147, 188) (Grün entfernt, das Pixel wirkt also magenta), -30 ergibt (188, 220, 188).',
         'Die Vorschau wird auf Ihrer GPU (WebGL2) aus einer 1920-px-Kopie gezeichnet; die exportierte Datei rendert unser Server mit denselben Formeln aus dem Original in voller Auflösung, und beide stimmen innerhalb einer kleinen dokumentierten Toleranz von höchstens einigen 8-Bit-Stufen überein (die Körnung sogar exakt); der Weißabgleich wirkt pro Pixel und stimmt daher auf die Stufe genau überein.',
@@ -14492,11 +14492,11 @@ const deToolPages = {
       workedExamples: [
         {
           title: 'Ein Porträt mit blauem Himmel: „Schwarzweißfilm“ bei einem 24-MP-JPEG',
-          body: 'Ein JPEG mit 6000 x 4000 Pixeln (24 Megapixel, 11 MB) mit den Standard-Kanalgewichten. Ein Hautpixel (217, 158, 128) hat HSV-Sättigung 0,412, Wert 0,85 und Luma 0,660; sein Farbton von 20,6 Grad gibt „Rottöne“ ein Gewicht von 0,814 und „Gelbtöne“ 0,186, der gewichtete Term ist also 0,814 x 0,4 + 0,186 x 0,6 = 0,437, und das Grau ist 0,588 x 0,660 + 0,412 x 0,437 x 0,85 = 0,541, Stufe 138. Das Himmelspixel (140, 191, 242), Farbton 210, Sättigung 0,421, Wert 0,95, Luma 0,722, erhält 0,5 von „Cyantöne“ bei 0,6 und 0,5 von „Blautöne“ bei 0,2, das Grau ist also 0,579 x 0,722 + 0,421 x 0,4 x 0,95 = 0,578, Stufe 147. Die Kurve bildet dann 0,541 auf 0,549 (140) und 0,578 auf 0,592 (151) ab, und die Körnung fügt bis zu 5 Stufen in jede Richtung hinzu. Eine Graukarte bei 128 bleibt durch beide hindurch bei 128. Der Export aller 24 Megapixel erfordert Premium oder Pro; das JPG bei Qualität 92 ist etwa 10,8 MB groß.',
+          body: 'Ein JPEG mit 6000 x 4000 Pixeln (24 Megapixel, 11 MB) mit den Standard-Kanalgewichten. Ein Hautpixel (217, 158, 128) hat HSV-Sättigung 0,410, Wert 0,851 und Luma 0,660; sein Farbton von 20,2 Grad gibt „Rottöne“ ein Gewicht von 0,826 und „Gelbtöne“ 0,174, der gewichtete Term ist also 0,826 x 0,4 + 0,174 x 0,6 = 0,435, und das Grau ist 0,590 x 0,660 + 0,410 x 0,435 x 0,851 = 0,541, Stufe 138. Das Himmelspixel (140, 191, 242), Farbton 210, Sättigung 0,421, Wert 0,95, Luma 0,721, erhält 0,5 von „Cyantöne“ bei 0,6 und 0,5 von „Blautöne“ bei 0,2, das Grau ist also 0,579 x 0,721 + 0,421 x 0,4 x 0,95 = 0,577, Stufe 147. Die Kurve bildet dann 0,541 auf 0,549 (140) und 0,577 auf 0,590 (151) ab, und die Körnung fügt bis zu 5 Stufen in jede Richtung hinzu. Eine Graukarte bei 128 bleibt durch beide hindurch bei 128. Der Export aller 24 Megapixel erfordert Premium oder Pro; das JPG bei Qualität 92 ist etwa 10,8 MB groß.',
         },
         {
           title: 'Den Himmel abdunkeln: „Blautöne“ -40 und „Schwarzweiß mit hohem Kontrast“ bei einem 12-MP-Foto',
-          body: 'Ein JPEG mit 4000 x 3000 Pixeln (12 Megapixel, 5 MB). Der Wechsel zu „Schwarzweiß mit hohem Kontrast“ setzt „Rottöne“ 40, „Gelbtöne“ 40, „Blautöne“ -40 und behält „Grüntöne“ 40, „Cyantöne“ 60, „Magentatöne“ 80. Dasselbe Himmelspixel (140, 191, 242) erhält nun einen gewichteten Term von 0,5 x 0,6 + 0,5 x -0,4 = 0,1, das Grau ist also 0,579 x 0,722 + 0,421 x 0,1 x 0,95 = 0,458, Stufe 117 statt 147. Eine tiefblaue Jacke mit (51, 77, 204), Farbton 230, hat Sättigung 0,75 und Wert 0,8: 0,25 x 0,315 + 0,75 x -0,4 x 0,8 = -0,161, was auf 0 begrenzt wird, reines Schwarz. Eine rote Tür mit (204, 51, 51) bleibt vom Wechsel unberührt bei 0,25 x 0,328 + 0,75 x 0,4 x 0,8 = 0,322, Stufe 82, weil „Rottöne“ weiterhin bei 40 steht. Der Look fügt dann „Kontrast“ +40 und „Klarheit“ 25 als zwei weitere Ebenen hinzu. Der Export mit 12 Megapixeln passt in die Grenze des kostenlosen Tarifs und ist als JPG bei Qualität 92 etwa 5,4 MB groß.',
+          body: 'Ein JPEG mit 4000 x 3000 Pixeln (12 Megapixel, 5 MB). Der Wechsel zu „Schwarzweiß mit hohem Kontrast“ setzt „Rottöne“ 40, „Gelbtöne“ 40, „Blautöne“ -40 und behält „Grüntöne“ 40, „Cyantöne“ 60, „Magentatöne“ 80. Dasselbe Himmelspixel (140, 191, 242) erhält nun einen gewichteten Term von 0,5 x 0,6 + 0,5 x -0,4 = 0,1, das Grau ist also 0,579 x 0,721 + 0,421 x 0,1 x 0,95 = 0,457, Stufe 117 statt 147. Eine tiefblaue Jacke mit (51, 77, 204), Farbton 230, hat Sättigung 0,75 und Wert 0,8: 0,25 x 0,315 + 0,75 x -0,4 x 0,8 = -0,161, was auf 0 begrenzt wird, reines Schwarz. Eine rote Tür mit (204, 51, 51) bleibt vom Wechsel unberührt bei 0,25 x 0,328 + 0,75 x 0,4 x 0,8 = 0,322, Stufe 82, weil „Rottöne“ weiterhin bei 40 steht. Der Look fügt dann „Kontrast“ +40 und „Klarheit“ 25 als zwei weitere Ebenen hinzu. Der Export mit 12 Megapixeln passt in die Grenze des kostenlosen Tarifs und ist als JPG bei Qualität 92 etwa 5,4 MB groß.',
         },
       ],
       whenNotToUse: 'Eine Schwarzweiß-Umwandlung verwirft den Farbton; soll eine Farbe bleiben und der Rest grau werden, behält die Farbakzent-Seite die Farbtoninformation und entsättigt nur die anderen Bereiche. Ist das Foto bereits monochrom und nur flau, ändern die Seiten zu Gradationskurven, Tonwertkorrektur oder Kontrast seine Tonwerte, ohne dass eine Umwandlungsebene im Weg ist. Ein verblasstes Farbbild, das seine Farbe zurückbraucht, ist ein Fall für Sättigung oder Dynamik. Und ein Sepia- oder Cyanotypie-Ton ist eine Ebene „Fotofilter“ oder „Teiltonung“ über dieser Umwandlung, kein Ersatz dafür.',
@@ -14646,7 +14646,7 @@ const deToolPages = {
         },
         {
           title: 'Ein Sepiadruck: „Schwarzweiß“, dann „Sepia“ bei Dichte 50 auf einem 45-MP-Scan',
-          body: 'Ein TIFF-Scan mit 8256 x 5504 Pixeln (45 Megapixel, 136 MB), für den Sie zum Öffnen ein Konto und für einen Export über 12 Megapixel einen Premium- oder Pro-Tarif benötigen. Eine „Schwarzweiß“-Ebene mit Standardgewichtung liegt unter einem Fotofilter, eingestellt auf „Sepia“ #ac7a33, „Dichte“ 50 und „Luminanz erhalten“. Ein mittleres Grau von 128 wird zu (142, 126, 102): Vor dem Zurückskalieren war es (0,4186; 0,3696; 0,3) mit Luma 0,375, und das Verhältnis 1,333 bringt es auf Luma 0,5 zurück. Ein Weiß von 255 wird bei Dichte 60 als (255, 250, 189) exportiert, im Rotkanal begrenzt. Ohne „Luminanz erhalten“ läge das mittlere Grau bei (107, 94, 77), ein sichtbar dunklerer Abzug. Mit 64 Megapixel als maximaler Größe exportiert, hat die Datei die vollen 45 Megapixel; als JPG mit Qualität 92 sind es etwa 20 MB, als WebP nach der Schätzung von 0,3 MB pro Megapixel etwa 13,6 MB.',
+          body: 'Ein TIFF-Scan mit 8256 x 5504 Pixeln (45 Megapixel, 136 MB), für den Sie zum Öffnen ein Konto und für einen Export über 12 Megapixel einen Premium- oder Pro-Tarif benötigen. Eine „Schwarzweiß“-Ebene mit Standardgewichtung liegt unter einem Fotofilter, eingestellt auf „Sepia“ #ac7a33, „Dichte“ 50 und „Luminanz erhalten“. Ein mittleres Grau von 128 wird zu (142, 126, 102): Vor dem Zurückskalieren war es (0,4186; 0,3696; 0,3) mit Luma 0,375, und das Verhältnis 1,333 bringt es auf Luma 0,5 zurück. Ein Weiß von 255 wird als (255, 251, 204) exportiert, im Rotkanal begrenzt. Ohne „Luminanz erhalten“ läge das mittlere Grau bei (107, 94, 77), ein sichtbar dunklerer Abzug. Mit 64 Megapixel als maximaler Größe exportiert, hat die Datei die vollen 45 Megapixel; als JPG mit Qualität 92 sind es etwa 20 MB, als WebP nach der Schätzung von 0,3 MB pro Megapixel etwa 13,6 MB.',
         },
       ],
       whenNotToUse: 'Ein Fotofilter fügt einen Farbstich hinzu; zum Entfernen eines Farbstichs ist er nicht das richtige Werkzeug, denn die Multiplikation mit einer Farbe kann keinen Kanal wiederherstellen, den das Licht weggenommen hat, und die Seite zum Weißabgleich erledigt das in linearem Licht mit einem Reglerpaar aus Temperatur und Farbton. Wenn die Tiefen eine Farbe und die Lichter eine andere bekommen sollen, bietet die Teiltonung einen Regler für jedes Ende und dazu eine Balance zwischen beiden. Für ein vollständiges Grading aus einer Referenzdatei reproduziert eine .cube-LUT im Bedienfeld „LUT“ das Ergebnis in einer einzigen Ebene. Ein Foto, das zusätzlich unterbelichtet ist, sollten Sie erst tönen, wenn die Belichtung korrigiert ist, da die Luma-Skalierung die vorhandene Helligkeit beibehält, wie sie ist.',
@@ -15174,7 +15174,7 @@ const deToolPages = {
       metaDescription: 'Kehren Sie ein Foto im Browser mit einem Klick in sein Negativ um. Jeder Kanal wird zu 1 minus seinem Wert; maskieren, stapeln und in voller Auflösung exportieren.',
       ogTitle: 'Bildfarben online umkehren',
       ogDescription: 'Verwandeln Sie ein Foto in sein Negativ oder ein eingescanntes Negativ in ein Positiv, mit einer Umkehrebene, die sich maskieren und überblenden lässt. Export in voller Größe.',
-      intro: 'Beim Umkehren eines Bildes wird jede Farbe durch ihr Gegenteil ersetzt: Schwarz wird zu Weiß, ein tiefblauer Himmel zu einem warmen Orange und ein eingescanntes Filmnegativ zu einem betrachtbaren Positiv. In Aperture ist das der Eintrag „Umkehren“ im Bedienfeld „Effekte“, eine Einstellungsebene im Gammaraum-Abschnitt des Stapels, die für jeden Kanal des sRGB-kodierten Pixels 1 minus dessen Wert berechnet. Da es sich um eine Ebene statt um einen destruktiven Filter handelt, können Sie sie auf einen Bereich maskieren, ihre Deckkraft für eine solarisierte halbe Umkehrung auf 50 % senken, ihre Füllmethode auf „Luminanz“ stellen, um die Tonwerte umzukehren und die Farbtöne zu behalten, oder sie unter „Tonwertkorrektur“ und „Gradationskurven“ stapeln, um eine Negativumwandlung abzuschließen. Dasselbe Bedienfeld enthält „Tonwerttrennung“, „Schwellenwert“ und „Gamma“, die sich ganz natürlich mit einer Umkehrung kombinieren lassen.',
+      intro: 'Beim Umkehren eines Bildes wird jede Farbe durch ihr Gegenteil ersetzt: Schwarz wird zu Weiß, ein tiefblauer Himmel zu einem warmen Orange und ein eingescanntes Filmnegativ zu einem betrachtbaren Positiv. In Aperture ist das der Eintrag „Umkehren“ im Bedienfeld „Effekte“, eine Einstellungsebene im Gammaraum-Abschnitt des Stapels, die für jeden Kanal des sRGB-kodierten Pixels 1 minus dessen Wert berechnet. Da es sich um eine Ebene statt um einen destruktiven Filter handelt, können Sie sie auf einen Bereich maskieren, ihre Deckkraft für eine teilweise Umkehrung senken (bei genau 50 % landet jedes Pixel auf Mittelgrau), ihre Füllmethode auf „Luminanz“ stellen, um die Tonwerte umzukehren und die Farbtöne zu behalten, oder sie unter „Tonwertkorrektur“ und „Gradationskurven“ stapeln, um eine Negativumwandlung abzuschließen. Dasselbe Bedienfeld enthält „Tonwerttrennung“, „Schwellenwert“ und „Gamma“, die sich ganz natürlich mit einer Umkehrung kombinieren lassen.',
       whatItDoes: [
         'Fügt aus dem Bedienfeld „Effekte“ eine Ebene „Umkehren“ hinzu, die jeden Kanal auf 1 minus seinen Wert abbildet und das Foto in sein exaktes Negativ verwandelt.',
         'Akzeptiert eine Maske, sodass nur ein ausgewählter Bereich, ein Luminanzbereich oder ein Farbbereich umgekehrt wird, während der Rest so bleibt, wie er aufgenommen wurde.',
@@ -15223,7 +15223,7 @@ const deToolPages = {
         },
         {
           title: 'Solarisationseffekte',
-          description: 'Kehren Sie mit 50 % Deckkraft um oder fügen Sie eine Luminanzmaske hinzu, sodass nur die Lichter umkippen, für einen Look im Stil des Sabattier-Effekts.',
+          description: 'Fügen Sie eine Luminanzmaske hinzu, sodass nur die Lichter umkippen, für einen Look im Stil des Sabattier-Effekts; eine bloße Deckkraft von 50 % würde stattdessen das ganze Bild mittelgrau machen.',
         },
         {
           title: 'Eine Montage auf Nahtstellen prüfen',
@@ -15233,11 +15233,11 @@ const deToolPages = {
       workedExamples: [
         {
           title: 'Ein Negativscan mit 3000 x 2000 Pixeln wird zum Positiv',
-          body: 'Ein TIFF-Scan mit 3000 x 2000 Pixeln (6 MP, etwa 18 MB), mit einem Konto geöffnet. „Umkehren“ verwandelt ein Pixel der Filmbasis von (0,93; 0,08; 0,12) in (0,07; 0,92; 0,88), also (18, 235, 224), den blau-cyanfarbenen Stich, den jedes umgekehrte Farbnegativ zeigt. Eine Ebene „Tonwertkorrektur“ darüber mit „Eingabe Schwarz“ 0,06 und „Eingabe Weiß“ 0,86 auf dem Gesamtkanal streckt dann einen Wert von 0,3 auf 0,3 und einen Wert von 0,7 auf 0,8; der Farbstich wird also beseitigt, indem die Eingabepunkte für Rot, Grün und Blau getrennt anhand des Histogramms gesetzt werden. Der Export als PNG ist etwa 15 MB groß, als JPG mit Qualität 92 etwa 2,7 MB. Das ganze Bild liegt unter der Grenze von 12 MP.',
+          body: 'Ein TIFF-Scan mit 3000 x 2000 Pixeln (6 MP, etwa 18 MB), mit einem Konto geöffnet. „Umkehren“ verwandelt ein Pixel der Filmbasis von (0,93; 0,08; 0,12) in (0,07; 0,92; 0,88), also (18, 235, 224), den blau-cyanfarbenen Stich, den jedes umgekehrte Farbnegativ zeigt. Eine Ebene „Tonwertkorrektur“ darüber mit „Eingabe Schwarz“ 0,06 und „Eingabe Weiß“ 0,86 auf dem Gesamtkanal streckt nur den Kontrast, einen Wert von 0,3 auf 0,3 und einen Wert von 0,7 auf 0,8, und lässt den Farbstich bestehen; der Farbstich wird beseitigt, indem die Eingabepunkte für Rot, Grün und Blau getrennt anhand des Histogramms gesetzt werden. Der Export als PNG ist etwa 15 MB groß, als JPG mit Qualität 92 etwa 2,7 MB. Das ganze Bild liegt unter der Grenze von 12 MP.',
         },
         {
-          title: 'Eine Umkehrung mit halber Stärke für ein solarisiertes Poster',
-          body: 'Ein JPEG mit 4000 x 3000 Pixeln (12 MP, 4,5 MB). Ebene „Umkehren“ mit 50 % Deckkraft: Ein Wert von 0,2 mischt sich mit seinem Negativ 0,8 zu 0,5, ein Wert von 0,8 mit 0,2 zu 0,5, und das ganze Foto fällt in Richtung Mittelgrau zusammen; das ist die klassische solarisierte Verflachung. Bei 100 % wird das dunkle Grau (51, 51, 51) zu (204, 204, 204). Fügen Sie darüber eine Ebene „Schwellenwert“ mit Stufe 0,5 hinzu: Ein Himmelspixel mit Luma 0,529 vor der Umkehrung wird weiß, alles Dunklere wird schwarz. Der WebP-Export mit Qualität 85 ist etwa 3,6 MB groß und zählt als ein Standardauftrag.',
+          title: 'Umkehrungen mit halber und voller Stärke für ein Poster',
+          body: 'Ein JPEG mit 4000 x 3000 Pixeln (12 MP, 4,5 MB). Ebene „Umkehren“ mit 50 % Deckkraft: Ein Wert von 0,2 mischt sich mit seinem Negativ 0,8 zu 0,5, ein Wert von 0,8 mit 0,2 zu 0,5, und jedes Pixel landet auf genau Mittelgrau, sodass eine Umkehrung mit halber Stärke allein das Bild auslöscht. Bei 100 % wird das dunkle Grau (51, 51, 51) zu (204, 204, 204). Fügen Sie über einer Ebene „Umkehren“ mit voller Stärke eine Ebene „Schwellenwert“ mit Stufe 0,5 hinzu: Ein Himmelspixel mit Luma 0,529 vor der Umkehrung hat danach Luma 0,471 und wird schwarz, während alles, was dunkler als 0,5 war, weiß wird. Der WebP-Export mit Qualität 85 ist etwa 3,6 MB groß und zählt als ein Standardauftrag.',
         },
       ],
       whenNotToUse: 'Umkehren ist das falsche Werkzeug, wenn ein Foto nur zu dunkel wirkt oder einen Farbstich hat; korrigieren Sie die Belichtung stattdessen im Bedienfeld „Grundeinstellungen“ und Farbstiche mit dem Weißabgleich oder der Farbbalance. Eine Schwarzweißumwandlung mit Kanalreglern bietet weit mehr Kontrolle über die Tonwerte als das Umkehren eines entsättigten Bildes, und bei Diagrammen, die weiß auf schwarz mit klaren Kanten erscheinen sollen, leistet eine Ebene „Schwellenwert“ nach der Umkehrung meist mehr als die Umkehrung selbst.',
@@ -15319,7 +15319,7 @@ const deToolPages = {
       metaDescription: 'Posterisieren Sie ein Foto im Browser, indem Sie jeden Kanal auf 2-255 Stufen setzen. Sehen Sie die Bänder live, kombinieren Sie mit Schwarzweiß und exportieren Sie in voller Größe.',
       ogTitle: 'Bild online posterisieren',
       ogDescription: 'Reduzieren Sie ein Foto mit einer Ebene „Tonwerttrennung“ auf flache Farbbänder. Exakte Stufenberechnung, Masken, Rückgängig, Export in voller Auflösung.',
-      intro: 'Beim Posterisieren wird jeder Farbkanal auf eine kleine Menge gleichmäßig verteilter Werte quantisiert, sodass weiche Verläufe zu flachen Bändern werden und ein Foto wie ein Siebdruck aussieht. In Aperture ist das der Eintrag „Tonwerttrennung“ im Bedienfeld „Effekte“ mit einem einzigen Regler „Stufen“ von 2 bis 255 (Standard 4), angewendet als Ebene im Gamma-Raum nach den Tonwert- und Farbphasen des Stapels. „Stufen“ gibt hier die Anzahl unterschiedlicher Werte an, die jeder Kanal annehmen kann: 2 ergibt pro Kanal reines Schwarz oder Weiß, insgesamt also acht mögliche Farben, und 4 ergibt 64. Da es sich um eine Einstellungsebene handelt, können Sie nur einen maskierten Bereich posterisieren, mit der Füllmethode „Farbe“ die Farbtöne behalten oder eine Ebene „Schwarzweiß“ darunterlegen, um ein klassisches Zwei- oder Dreitonplakat zu erhalten.',
+      intro: 'Beim Posterisieren wird jeder Farbkanal auf eine kleine Menge gleichmäßig verteilter Werte quantisiert, sodass weiche Verläufe zu flachen Bändern werden und ein Foto wie ein Siebdruck aussieht. In Aperture ist das der Eintrag „Tonwerttrennung“ im Bedienfeld „Effekte“ mit einem einzigen Regler „Stufen“ von 2 bis 255 (Standard 4), angewendet als Ebene im Gamma-Raum nach den Tonwert- und Farbphasen des Stapels. „Stufen“ gibt hier die Anzahl unterschiedlicher Werte an, die jeder Kanal annehmen kann: 2 ergibt pro Kanal reines Schwarz oder Weiß, insgesamt also acht mögliche Farben, und 4 ergibt 64. Da es sich um eine Einstellungsebene handelt, können Sie nur einen maskierten Bereich posterisieren, mit der Füllmethode „Luminanz“ die ursprünglichen Farbtöne behalten oder eine Ebene „Schwarzweiß“ darunterlegen, um ein klassisches Zwei- oder Dreitonplakat zu erhalten.',
       whatItDoes: [
         'Fügt eine Ebene „Tonwerttrennung“ mit einem einzigen Regler „Stufen“ hinzu; 2 ergibt 8 mögliche Farben, 4 ergibt 64 und 8 ergibt 512, jeweils mit gleichmäßigen Abständen.',
         'Rastet jeden Kanal unabhängig auf die nächste zulässige Stufe ein, sodass Rot, Grün und Blau eines Pixels auf unterschiedlichen Stufen landen können.',
@@ -15347,9 +15347,9 @@ const deToolPages = {
       ],
       advancedDetails: [
         'Aus dem Wert des Reglers „Stufen“ bildet der Code n = levels - 1, die Anzahl der Schritte, und berechnet pro Kanal floor(clamp(v, 0, 1) x n + 0,5) / n. Die zulässigen Ausgabewerte sind 0, 1/n, 2/n, ... 1, es gibt pro Kanal also genau so viele unterschiedliche Werte wie eingestellte Stufen, Schwarz und Weiß eingeschlossen.',
-        'Das + 0,5 vor floor macht daraus ein Runden auf den nächsten Wert: Bei „Stufen“ 4 (n = 3) wird ein Wert von 0,45 zu floor(1,85) / 3 = 0,3333 und 0,5 zu floor(2,0) / 3 = 0,6667; in der Eingabe liegt die Grenze zwischen erstem und zweitem Band also bei 0,5 und die zwischen zweitem und drittem bei 0,8333.',
+        'Das + 0,5 vor floor macht daraus ein Runden auf den nächsten Wert: Bei „Stufen“ 4 (n = 3) wird ein Wert von 0,45 zu floor(1,85) / 3 = 0,3333 und 0,5 zu floor(2,0) / 3 = 0,6667; in der Eingabe liegt die Grenze zwischen zweitem und drittem Band also bei 0,5, die beiden anderen bei 0,1667 und 0,8333.',
         '„Stufen“ 2 ist ein Schwellenwert pro Kanal bei 0,5, kein Luma-Schwellenwert: Ein Pixel mit (0,35; 0,55; 0,85) wird zu (0, 1, 1), also Cyan, während die Ebene „Schwellenwert“ die BT.709-Luma verwendet und für dasselbe Pixel Weiß ausgeben würde. „Stufen“ 255 lässt eine 8-Bit-Eingabe unverändert.',
-        'Jeder Kanal wird für sich quantisiert: Ein grauer Verlauf ergibt graue Bänder, ein farbiger Verlauf dagegen Bänder, deren Farbton sich an jeder Stufe verschiebt, an der nur ein Kanal eine Grenze überschreitet. Legen Sie eine Ebene „Schwarzweiß“ darunter, um das zu vermeiden, oder verwenden Sie die Füllmethode „Farbe“, um die ursprünglichen Farbtöne zu behalten.',
+        'Jeder Kanal wird für sich quantisiert: Ein grauer Verlauf ergibt graue Bänder, ein farbiger Verlauf dagegen Bänder, deren Farbton sich an jeder Stufe verschiebt, an der nur ein Kanal eine Grenze überschreitet. Legen Sie eine Ebene „Schwarzweiß“ darunter, um das zu vermeiden, oder verwenden Sie die Füllmethode „Luminanz“, um die ursprünglichen Farbtöne zu behalten.',
         'Die gebänderte Vorschau zeichnet Ihre GPU (WebGL2) aus einer Kopie mit 1920 px; die exportierte Datei rendert unser Server aus dem Original in voller Auflösung mit derselben Rundungsformel, und beide stimmen innerhalb einer kleinen dokumentierten Toleranz von höchstens einigen 8-Bit-Stufen überein (die Körnung ist exakt).',
       ],
       whyItMatters: [
@@ -15382,7 +15382,7 @@ const deToolPages = {
         },
         {
           title: 'Sechs Stufen auf Haut, dann zwei',
-          body: 'Ein Porträt mit 3000 x 4000 (12 MP, 5,1 MB). Bei „Stufen“ 6 (n = 5) wird ein Hautton von (0,78; 0,6; 0,5) zu (0,8; 0,6; 0,6), also (204, 153, 153); der Blaukanal steigt von 128 auf 153, weil 0,5 x 5 + 0,5 = 3,0 auf 3 abgerundet wird. Stellen Sie den Regler auf „Stufen“ 2 (n = 1), ergibt sich (1, 1, 1), also Weiß, da jeder Kanal über 0,5 liegt, während ein Schatten von (0,3; 0,25; 0,2) zu (0, 0, 0) wird. Mit einer Ebene „Schwarzweiß“ darunter bei der Standard-Kanalmischung erzeugt derselbe Schnitt bei „Stufen“ 2 eine saubere zweitonige Schablone. Der PNG-Export ist etwa 8 MB groß.',
+          body: 'Ein Porträt mit 3000 x 4000 (12 MP, 5,1 MB). Bei „Stufen“ 6 (n = 5) wird ein Hautton von (0,78; 0,6; 0,5) zu (0,8; 0,6; 0,6), also (204, 153, 153); der Blaukanal steigt von 128 auf 153, weil 0,5 x 5 + 0,5 = 3,0 auf 3 abgerundet wird. Stellen Sie den Regler auf „Stufen“ 2 (n = 1), ergibt sich (1, 1, 1), also Weiß, da jeder Kanal bei oder über 0,5 liegt und aufgerundet wird, während ein Schatten von (0,3; 0,25; 0,2) zu (0, 0, 0) wird. Mit einer Ebene „Schwarzweiß“ darunter bei der Standard-Kanalmischung erzeugt derselbe Schnitt bei „Stufen“ 2 eine saubere zweitonige Schablone. Der PNG-Export ist etwa 8 MB groß.',
         },
       ],
       whenNotToUse: 'Die Tonwerttrennung ist ein grafischer Effekt, keine Korrektur: Zeigt ein Foto Tonwertabrisse, die Sie beseitigen möchten, fügt sie noch mehr hinzu; die Rauschreduzierung oder eine behutsame Anpassung mit „Gradationskurven“ ist hier der richtige Weg. Für eine reine Schwarzweißfreistellung nach Helligkeit verwenden Sie die Ebene „Schwellenwert“, die die Luma statt jedes einzelnen Kanals bewertet. Wenn das Ziel weniger Farben für eine kleinere Datei sind, verkleinert das Tool „Bild komprimieren“ die Datei ohne sichtbare Stufen, und für ein Vorschaubild bringt eine Größenänderung mehr als eine reduzierte Palette.',
@@ -15391,7 +15391,7 @@ const deToolPages = {
         'Die Ebene „Tonwerttrennung“ lässt sich mit sechs Maskenarten maskieren, darunter eine Motivmaske von unserer eigenen GPU, sodass ein Plakateffekt eine Person umgeben kann, ohne ihr Gesicht zu berühren.',
         'Ein PNG-Export behält die Flächenfarben exakt bei, und das Projekt bleibt bearbeitbar: Der Wechsel von 4 auf 5 Stufen ist später eine Reglerbewegung, keine Neubearbeitung.',
       ],
-      privacyNote: 'Die Tonwerttrennung ist ein Runden pro Kanal, das in Ihrem Browser am dekodierten Foto stattfindet; hochgeladen wird erst, wenn Sie exportieren, „Motiv auswählen“ verwenden oder „Reparieren“ nutzen, und dann quantisiert der Server das Original mit derselben Stufenzahl. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Wenn Sie angemeldet sind, bleiben das Original und seine Vorschau mit 1920 px gemäß Ihrer Aufbewahrungseinstellung erhalten, bis das Projekt gelöscht wird.',
+      privacyNote: 'Die Tonwerttrennung ist ein Runden pro Kanal, das in Ihrem Browser am dekodierten Foto stattfindet; hochgeladen wird erst, wenn Sie exportieren, „Motiv auswählen“ verwenden oder „Reparieren“ nutzen, und beim Export quantisiert der Server das Original mit derselben Stufenzahl. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Wenn Sie angemeldet sind, bleiben das Original und seine Vorschau mit 1920 px gemäß Ihrer Aufbewahrungseinstellung erhalten, bis das Projekt gelöscht wird.',
       faq: [
         {
           question: 'Was bedeutet die Zahl beim Regler „Stufen“ genau?',
@@ -15513,7 +15513,7 @@ const deToolPages = {
         },
         {
           title: 'Alte gescannte Abzüge',
-          description: 'Scannerrauschen ist fein und überwiegend Luminanzrauschen. „Luminanz“ 40 mit einem radiusfreien Farbdurchgang von 20 reicht meist aus; lassen Sie „Struktur“ danach auf 0.',
+          description: 'Scannerrauschen ist fein und überwiegend Luminanzrauschen. „Luminanz“ 40 mit einem leichten Farbdurchgang von 20, einem Gauß-Filter mit 1,2 px, reicht meist aus; lassen Sie „Struktur“ danach auf 0.',
         },
         {
           title: 'Produktfotos vor dunklem Hintergrund',
@@ -15548,7 +15548,7 @@ const deToolPages = {
         },
         {
           question: 'Ist das eine KI-Entrauschung?',
-          answer: 'Nein. Es ist ein deterministisches Filterpaar aus bilateralem Filter und Gauß-Filter, das pro Nutzung nichts kostet und sofort in der Vorschau läuft. Die einzigen KI-Aufträge im Editor sind „Motiv auswählen“ und „Reparieren“.',
+          answer: 'Nein. Es ist ein deterministisches Filterpaar aus bilateralem Filter und Gauß-Filter, das pro Nutzung nichts kostet und sofort in der Vorschau läuft. Die einzigen Schritte im Editor, die ein KI-Modell verwenden, sind „Motiv auswählen“ und „Reparieren“.',
         },
         {
           question: 'Kann ich nur die Tiefen entrauschen?',
@@ -15618,7 +15618,7 @@ const deToolPages = {
       whatItDoes: [
         'Dunkelt die Ränder mit negativer „Stärke“ ab oder hellt sie mit positiver auf, indem jedes Pixel mit 1 + amount/100 mal dem Abstandsfaktor im Bildrahmen multipliziert wird.',
         'Lässt den Effekt beim „Mittelpunkt“ beginnen und über die Breite von „Weiche Kante“ per Smoothstep ansteigen, sodass nie ein sichtbarer Ring entsteht.',
-        'Formt den Abfall mit „Rundheit“: -100 folgt dem Rechteck des Bildrahmens, 0 liegt genau dazwischen, 100 ist eine echte, in den Rahmen eingeschriebene Ellipse.',
+        'Formt den Abfall mit „Rundheit“: -100 folgt dem Rechteck des Bildrahmens, 0 liegt genau dazwischen, 100 ist ein echter, auf den Rahmen zentrierter Kreis, der die vier Ecken erreicht.',
         'Schützt beim Abdunkeln helle Pixel: Bei „Lichter“ 50 wird ein Pixel mit Luma 0,9 nur zu 55 Prozent so stark abgedunkelt wie ein schwarzes.',
         'Exportiert aus dem Original in voller Auflösung mit normierten Rahmenkoordinaten, sodass die Vignette in der Datei mit 24 MP an derselben Stelle landet wie in der Vorschau.',
       ],
@@ -15644,7 +15644,7 @@ const deToolPages = {
         'Jedes Pixel erhält normierte Koordinaten nx und ny von -1 bis 1 über den Bildrahmen (Pixelmitten bei +0,5). Zwei Abstände werden berechnet: die Rechteckmetrik max(|nx|, |ny|) und die Kreismetrik, also der euklidische Abstand von der Mitte in Pixeln geteilt durch die halbe Diagonale. Sie werden mit dem Gewicht (roundness + 100)/200 zugunsten des Kreises gemischt, sodass „Rundheit“ -100 ein reines Rechteck ist, 0 eine Mischung 50/50 und 100 ein reiner Kreis. Jede Metrik ist in der Mitte 0 und an den vier Ecken genau 1.',
         'Der Faktor v ist smoothstep(midpoint/100, midpoint/100 + feather/100, d): 0, bis der Abstand den Mittelpunkt erreicht, 1, sobald er Mittelpunkt plus weiche Kante erreicht, mit dem kubischen Übergang 3t hoch zwei minus 2t hoch drei dazwischen. Bei den Standardwerten „Mittelpunkt“ 50 und „Weiche Kante“ 50 hat ein Pixel auf halbem Weg zu einer Ecke v = 0, ein Pixel bei drei Vierteln des Weges v = 0,5 und ein Pixel bei d = 0,9 den Wert v = 0,896.',
         'Das Pixel wird mit k = 1 + amount/100 mal v mal prot multipliziert, wobei prot = 1 - highlights/100 mal die BT.709-Luma des Pixels ist, wenn „Stärke“ negativ ist, und 1, wenn sie positiv ist; danach wird auf 0..1 begrenzt. Aufhellen beschneidet daher: Mit „Stärke“ +30 an einer Ecke wird ein Pixel bei 0,8 (204) zu 1,0 (255).',
-        'Bei einem Bildrahmen von 6000 x 4000 mit „Rundheit“ 0 liegt die Mitte der langen Kante bei d = 0,916 und die Mitte der kurzen Kante bei d = 0,777; mit „Rundheit“ 100 werden daraus 0,832 und 0,555, sodass eine kreisrunde Vignette bei einem 3:2-Rahmen die obere und untere Kante deutlich heller lässt als die Seiten.',
+        'Bei einem Bildrahmen von 6000 x 4000 mit „Rundheit“ 0 liegt die Mitte einer kurzen Seite bei d = 0,916 und die Mitte einer langen Kante bei d = 0,777; mit „Rundheit“ 100 werden daraus 0,832 und 0,555, sodass eine kreisrunde Vignette bei einem 3:2-Rahmen die obere und untere Kante deutlich heller lässt als die Seiten.',
         'Die Vorschau von Aperture wird auf Ihrer GPU (WebGL2) aus einer Kopie mit 1920 px gezeichnet, der Export wird auf unserem Server aus dem Original in voller Auflösung mit denselben Formeln gerendert, und beide stimmen innerhalb einer kleinen dokumentierten Toleranz überein; für die Vignette ist das ein mittlerer Fehler von höchstens einer 8-Bit-Stufe, da der Abstand in normierten Rahmeneinheiten berechnet wird und nicht von der Pixelzahl abhängt.',
       ],
       whyItMatters: [
@@ -15659,7 +15659,7 @@ const deToolPages = {
         },
         {
           title: 'Ein offenblendiges 35-mm-Objektiv korrigieren',
-          description: '„Stärke“ +25, „Mittelpunkt“ 30, „Weiche Kante“ 70, „Rundheit“ 100 hellt die Ecken um etwa eine Drittelblendenstufe auf und gleicht den Himmel aus.',
+          description: '„Stärke“ +25, „Mittelpunkt“ 30, „Weiche Kante“ 70, „Rundheit“ 100 hebt die Werte in den Ecken um bis zu 25 % an und gleicht den Himmel aus.',
         },
         {
           title: 'Produktfotos auf Weiß',
@@ -15673,7 +15673,7 @@ const deToolPages = {
       workedExamples: [
         {
           title: 'Ein Porträt mit 6000 x 4000 abdunkeln, JPG mit 24 MP, 9,8 MB',
-          body: '„Stärke“ -40, „Mittelpunkt“ 50, „Weiche Kante“ 50, „Rundheit“ 0, „Lichter“ 0. In der Ecke (d = 1, v = 1) beträgt der Faktor 1 - 0,40 = 0,60, ein mittleres Grau von 128 wird also zu 77. In der Mitte der langen Kante, bei d = 0,916 und v = 0,925, wird eine 128 zu etwa 81. Bei drei Vierteln des Weges nach außen, v = 0,5, wird 128 zu 102; innerhalb von d = 0,5 ändert sich nichts. Als JPG mit Qualität 92 beim Gastlimit von 12 MP exportiert: etwa 5,4 MB, ein Standardauftrag.',
+          body: '„Stärke“ -40, „Mittelpunkt“ 50, „Weiche Kante“ 50, „Rundheit“ 0, „Lichter“ 0. In der Ecke (d = 1, v = 1) beträgt der Faktor 1 - 0,40 = 0,60, ein mittleres Grau von 128 wird also zu 77. In der Mitte einer kurzen Seite, bei d = 0,916 und v = 0,925, wird eine 128 zu etwa 81. Bei drei Vierteln des Weges nach außen, v = 0,5, wird 128 zu 102; innerhalb von d = 0,5 ändert sich nichts. Als JPG mit Qualität 92 beim Gastlimit von 12 MP exportiert: etwa 5,4 MB, ein Standardauftrag.',
         },
         {
           title: 'Randlichtabfall auf einer Landschaft mit 4000 x 6000 aufhellen, 24 MP, Premium-Konto',
@@ -15684,7 +15684,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Form, Übergang und Schutz sind alle mit ihren exakten Konstanten dokumentiert, sodass sich eine Einstellung, die Ihnen gefällt, als Look speichern lässt und beim nächsten Foto identisch wirkt.',
         'Da die Vignette eine Ebene ist, lässt sie sich mit der Füllmethode „Luminanz“ verrechnen, um jede Farbverschiebung in den abgedunkelten Rändern zu vermeiden.',
-        'Der Export wird unter Pro mit bis zu 120 MP aus dem Original gerendert, mit denselben normierten Koordinaten, und nicht aus der Bildschirmvorschau hochgerechnet.',
+        'Der Export wird unter Premium und Pro mit bis zu 120 MP aus dem Original gerendert, mit denselben normierten Koordinaten, und nicht aus der Bildschirmvorschau hochgerechnet.',
       ],
       privacyNote: 'Eine Vignette wird allein aus Rahmenkoordinaten und Pixelwerten berechnet, ohne KI-Schritt. Ohne Konto verlassen das Foto und seine Randabdunklung Ihren Browser nicht, bis Sie exportieren, und der Export ist dann ein normaler Gastauftrag. Mit einem Konto bleiben das Original und seine Vorschau mit 1920 px gemäß Ihrer Aufbewahrungseinstellung auf unserem Server. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Dritte sind nicht beteiligt.',
       faq: [
@@ -15694,7 +15694,7 @@ const deToolPages = {
         },
         {
           question: 'Warum wirkt die Vignette in der Vorschau rund, erreicht beim Export aber zuerst die Seiten?',
-          answer: 'Das tut sie nicht; der Abstand ist in beiden Fällen auf den Bildrahmen normiert. Was die Form ändert, ist „Rundheit“: Bei -100 folgt sie dem Rechteck, und die Seitenkanten werden zuerst dunkler, bei 100 ist sie eine eingeschriebene Ellipse.',
+          answer: 'Das tut sie nicht; der Abstand ist in beiden Fällen auf den Bildrahmen normiert. Was die Form ändert, ist „Rundheit“: Bei -100 folgt sie dem Rechteck, und die Seitenkanten werden zuerst dunkler, bei 100 ist sie ein auf den Rahmen zentrierter Kreis.',
         },
         {
           question: 'Was genau bewirkt „Lichter“?',
@@ -15829,7 +15829,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Aperture bietet Ihnen die drei echten Regler der Unscharfmaskierung und dokumentiert ihre Formel, statt eines einzigen Stärkereglers mit versteckten Einstellungen.',
         'Die Schärfungsebene liegt über der Rauschreduzierung, auf Wunsch unter einer Maske, und das Ergebnis erscheint sofort in der Vorschau auf Ihrer eigenen GPU.',
-        'Exporte werden in voller Auflösung bis 120 MP im Pro-Tarif gerendert, sodass der Radius, den Sie bei 100 % abgestimmt haben, auch der Radius in der ausgelieferten Datei ist.',
+        'Exporte werden in voller Auflösung bis 120 MP in den Tarifen Premium und Pro gerendert, sodass der Radius, den Sie bei 100 % abgestimmt haben, auch der Radius in der ausgelieferten Datei ist.',
       ],
       privacyNote: 'Schärfen ist eine lokale Faltung und ruft nie einen KI-Dienst auf. Ohne Konto bleiben Ihr Foto und seine Schärfungseinstellungen in diesem Browser, bis Sie exportieren; dann wird die Datei für dieses eine Rendering als Gastauftrag hochgeladen. Mit Konto bleiben das Original, seine 1920-px-Vorschau und die Miniaturansicht gemäß Ihrer Aufbewahrungseinstellung auf unserem Server und werden mit dem Projekt gelöscht. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Nichts wird an Dritte weitergegeben.',
       faq: [
@@ -15909,11 +15909,11 @@ const deToolPages = {
       metaDescription: 'Richten Sie einen schiefen Horizont im Browser aus: Winkel eingeben oder Linie entlang des Horizonts zeichnen, automatisch auf das größte innere Rechteck zuschneiden und in voller Auflösung exportieren.',
       ogTitle: 'Schiefes Foto online begradigen',
       ogDescription: 'Zeichnen Sie eine Linie entlang des Horizonts, und die Drehung wird automatisch eingestellt. Der automatische Zuschnitt behält das größte Rechteck, oder Sie füllen die Ecken mit Transparenz, dem Rand oder einer Farbe.',
-      intro: '„Begradigen“ befindet sich im Bedienfeld „Geometrie“ von Aperture und wird vor jeder Einstellungsebene auf die Quellpixel angewendet. Sie können einen Winkel in Grad eingeben oder auf „Linie zeichnen“ drücken und an etwas entlangziehen, das waagerecht oder senkrecht sein sollte; der Editor berechnet die Neigung Ihrer Linie, faltet sie in den Bereich von -45 bis 45 Grad und setzt die Drehung so, dass sie diese Neigung aufhebt. Die Drehung ist eine einzige, invers abgebildete bilineare Neuberechnung, jedes Pixel wird also genau einmal abgetastet. Standardmäßig wird der Rahmen automatisch auf das größte Rechteck mit dem ursprünglichen Seitenverhältnis zugeschnitten, das nur echte Pixel enthält; schalten Sie das aus, werden die Ecken mit Transparenz, dem gedehnten Rand oder einer Farbe Ihrer Wahl gefüllt. Zuschnitt, Spiegelungen und Perspektive teilen sich dieselbe einzige Neuberechnung.',
+      intro: '„Begradigen“ befindet sich im Bedienfeld „Geometrie“ von Aperture und wird vor jeder Einstellungsebene auf die Quellpixel angewendet. Sie können einen Winkel in Grad eingeben oder auf „Linie zeichnen“ drücken und an etwas entlangziehen, das waagerecht oder senkrecht sein sollte; der Editor berechnet die Neigung Ihrer Linie, faltet sie in den Bereich von -45 bis 45 Grad und setzt die Drehung so, dass sie diese Neigung aufhebt. Die Drehung ist eine einzige, invers abgebildete bilineare Neuberechnung, jedes Pixel wird also genau einmal abgetastet. Standardmäßig wird der Rahmen automatisch auf das größte zentrierte Rechteck in den Proportionen der gedrehten Arbeitsfläche zugeschnitten, das nur echte Pixel enthält; schalten Sie das aus, werden die Ecken mit Transparenz, dem gedehnten Rand oder einer Farbe Ihrer Wahl gefüllt. Zuschnitt, Spiegelungen und Perspektive teilen sich dieselbe einzige Neuberechnung.',
       whatItDoes: [
         'Dreht um jeden Winkel von -360 bis 360 Grad mit einer einzigen bilinearen Neuberechnung der Originalpixel; Schritte von 90 und 180 Grad sind exakte Kopien.',
         'Bestimmt den Winkel aus einer gezeichneten Linie: Die Neigung der Linie wird in (-45, 45] Grad gefaltet und abgezogen, sodass eine Linie entlang eines Horizonts ebenso funktioniert wie entlang eines Türrahmens.',
-        'Schneidet automatisch auf das größte zentrierte Rechteck mit dem ursprünglichen Seitenverhältnis zu, dessen gesamter Umfang innerhalb der gedrehten Quelle liegt, ermittelt durch eine binäre Suche in 30 Schritten.',
+        'Schneidet automatisch auf das größte zentrierte Rechteck in den Proportionen der gedrehten Arbeitsfläche zu, dessen gesamter Umfang innerhalb der gedrehten Quelle liegt, ermittelt durch eine binäre Suche in 30 Schritten.',
         'Füllt leere Ecken mit Transparenz, dem begrenzten Randpixel oder einer Volltonfarbe, wenn Sie lieber den gesamten gedrehten Rahmen behalten möchten.',
         'Hält Masken deckungsgleich: Jede Maske wird im begradigten, zugeschnittenen Raum gespeichert, und der Export rendert dieselbe Geometrie auf dem Original.',
       ],
@@ -15937,7 +15937,7 @@ const deToolPages = {
       ],
       advancedDetails: [
         'Die gedrehte Arbeitsfläche wächst auf den umschließenden Rahmen der gedrehten Quelle: Breite |w cos| + |h sin|, Höhe |w sin| + |h cos|, gerundet. Ein um 2,5 Grad gedrehtes Foto mit 6000 x 4000 hat eine Arbeitsfläche von 6169 x 4258. Jeder Mittelpunkt eines Ausgabepixels wird durch den Zuschnitt, die Perspektiv-Homografie, die Spiegelungen und die inverse Drehung auf eine kontinuierliche Quellkoordinate zurückgerechnet und bilinear aus seinen vier Nachbarn abgetastet; Koordinaten außerhalb der Quelle erhalten die Füllung.',
-        'Der automatische Zuschnitt sucht den größten Maßstab s eines zentrierten Rechtecks mit dem gewünschten Seitenverhältnis, bei dem alle 100 Abtastpunkte entlang seines Umfangs (25 pro Seite) innerhalb der Quelle liegen, per binärer Suche über s mit 30 Iterationen. Bei 2,5 Grad und 6000 x 4000 ergibt das einen Zuschnitt von 88,44 % der Arbeitsfläche in jeder Richtung, 5456 x 3766 Pixel, 20,55 MP, wobei 85,6 % der Originalpixel erhalten bleiben. Bei 1,2 Grad bleiben 92,5 % erhalten, bei 5 Grad etwa 79 %.',
+        'Der automatische Zuschnitt sucht den größten Maßstab s eines zentrierten Rechtecks mit dem Seitenverhältnis der Arbeitsfläche, bei dem alle 100 Abtastpunkte entlang seines Umfangs (25 pro Seite) innerhalb der Quelle liegen, per binärer Suche über s mit 30 Iterationen. Bei 2,5 Grad und 6000 x 4000 ergibt das einen Zuschnitt von 88,44 % der Arbeitsfläche in jeder Richtung, 5456 x 3766 Pixel (1,45:1, die Proportionen der Arbeitsfläche), 20,55 MP, wobei 85,6 % der Originalpixel erhalten bleiben. Bei 1,2 Grad bleiben 92,5 % erhalten, bei 5 Grad etwa 75 %.',
         '„Linie zeichnen“: Der Winkel der Linie in Bildschirmkoordinaten (y nach unten) ist atan2(dy, dx) in Grad, wird um Vielfache von 90 in (-45, 45] reduziert, und sein Negativ wird zur aktuellen Drehung addiert, auf 0,01 Grad gerundet. Eine Linie von (200, 1080) nach (1800, 1020) in einer 1920-px-Vorschau entspricht einer Neigung von 2,15 Grad und setzt die Drehung auf +2,15.',
         'Füllung: „Transparent“ schreibt RGBA 0 außerhalb der Quelle (PNG und WebP behalten das; JPG zeigt es als Schwarz), „Rand dehnen“ begrenzt die Abtastung auf das nächstgelegene Randtexel, und „Farbe“ schreibt ein deckendes #rrggbb. Die bilineare Interpolation wird auch auf den Alphakanal angewendet, sodass eine transparente Füllung einen weichen Rand von einem Pixel hat.',
         'Aperture zeigt die Vorschau auf Ihrer GPU (WebGL2) aus einer 1920-px-Kopie an, rendert den Export auf unserem Server aus dem Original in voller Auflösung mit denselben Formeln, und beide stimmen innerhalb einer kleinen dokumentierten Toleranz überein: Für die Geometrie sind das höchstens 2 8-Bit-Stufen im Bildinneren, ohne einen 2 px breiten Rand, da sich die bilinearen Abtastpositionen bei den beiden Maßstäben leicht unterscheiden; Farboperationen werden auf einen Mittelwert von 1 Stufe gehalten, und die Körnung ist exakt.',
@@ -15950,7 +15950,7 @@ const deToolPages = {
       useCases: [
         {
           title: 'Meereslandschaften und Sonnenuntergänge',
-          description: 'Zeichnen Sie entlang der Wasserlinie. Eine Korrektur um 1,5 Grad bei einem 24-MP-Bild behält 92,6 % der Pixel.',
+          description: 'Zeichnen Sie entlang der Wasserlinie. Eine Korrektur um 1,5 Grad bei einem 24-MP-Bild behält 90,8 % der Pixel.',
         },
         {
           title: 'Gebäude und Türen',
@@ -15962,7 +15962,7 @@ const deToolPages = {
         },
         {
           title: 'Hastig aufgenommene Handyfotos',
-          description: 'Eine Korrektur um 2 Grad bei einer Aufnahme mit 4032 x 3024 kostet etwa 9 % der Pixel und lässt immer noch 11 MP übrig.',
+          description: 'Eine Korrektur um 2 Grad bei einer Aufnahme mit 4032 x 3024 kostet etwa 10 % der Pixel und lässt immer noch 11 MP übrig.',
         },
       ],
       workedExamples: [
@@ -15985,7 +15985,7 @@ const deToolPages = {
       faq: [
         {
           question: 'Wie viel vom Foto verliere ich beim Begradigen?',
-          answer: 'Das hängt vom Winkel und vom Seitenverhältnis ab. Bei einem 3:2-Bild behält 1 Grad etwa 95 % der Pixel, 2,5 Grad etwa 86 % und 5 Grad etwa 79 %, wobei der automatische Zuschnitt das ursprüngliche Seitenverhältnis beibehält.',
+          answer: 'Das hängt vom Winkel und vom Seitenverhältnis ab. Bei einem 3:2-Bild behält 1 Grad etwa 94 % der Pixel, 2,5 Grad etwa 86 % und 5 Grad etwa 75 %, wobei der automatische Zuschnitt die Proportionen der gedrehten Arbeitsfläche beibehält.',
         },
         {
           question: 'Kann ich die Ecken behalten, statt zuzuschneiden?',
@@ -16124,7 +16124,7 @@ const deToolPages = {
       whyMediaManipulator: [
         'Die Abbildung ist eine dokumentierte projektive Homografie, das Ergebnis ist also exakte Geometrie statt einer mit einem Gitternetz angenäherten Verzerrung.',
         'Die Perspektive teilt sich eine bilineare Neuberechnung mit Begradigen, Spiegeln und Zuschneiden, was wichtig ist, wenn ein Foto sowohl eine Schräglagen- als auch eine Trapezkorrektur braucht.',
-        'Das korrigierte Original wird in voller Auflösung exportiert, bis 120 MP im Pro-Tarif, wobei die Vorschau innerhalb einer dokumentierten Toleranz bleibt.',
+        'Das korrigierte Original wird in voller Auflösung exportiert, bis 120 MP in den Tarifen Premium und Pro, wobei die Vorschau innerhalb einer dokumentierten Toleranz bleibt.',
       ],
       privacyNote: 'Eine Perspektivkorrektur ist Arithmetik mit Koordinaten und verwendet weder ein KI-Modell noch einen externen Dienst. Ohne Konto existiert die korrigierte Vorschau nur in Ihrem Browser, bis Sie exportieren, und dieser Upload wird wie jeder Gastauftrag aufbewahrt. Mit Konto bleiben das Original, seine 1920-px-Vorschau und die Miniaturansicht gemäß Ihrer Aufbewahrungseinstellung auf unserem Server und werden mit dem Projekt gelöscht. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre.',
       faq: [
@@ -16418,7 +16418,7 @@ const deToolPages = {
       whenNotToUse: 'Eine Farbbereichsauswahl ist das falsche Werkzeug, wenn das Motiv seine Farben mit dem Hintergrund teilt, etwa eine Person in grünem Hemd auf einer Wiese; verwenden Sie stattdessen „Motiv auswählen“, die KI-Maske, oder einen Pinsel. Sie tut sich auch bei Graustufen- oder stark entsättigten Fotos schwer, in denen jedes Pixel nur wenige Lab-Einheiten von jedem anderen entfernt liegt und die Toleranz sie nicht trennen kann; dort eignet sich eine Maske „Luminanzbereich“ besser. Wenn Sie einen Farbton im gesamten Foto verschieben möchten, erledigen das die HSL-Bereiche auf der Seite „Objektfarbe ändern“ bereits ganz ohne Maske.',
       whyMediaManipulator: [
         'Die Maske ist ein dokumentierter Lab-Abstand mit angegebenem Radius und Abfall, sodass dieselbe Toleranz beim nächsten Foto dieselbe Auswahl bedeutet.',
-        'Eine Farbbereichsmaske kostet bei der Berechnung nichts und wird in Echtzeit auf Ihrer GPU angezeigt; nur die Motivmaske verbraucht einen KI-Auftrag.',
+        'Eine Farbbereichsmaske kostet bei der Berechnung nichts und wird in Echtzeit auf Ihrer GPU angezeigt; nur „Motiv auswählen“ lädt das Foto hoch, als ein Standardauftrag.',
         'Masken lassen sich zwischen Ebenen teilen und in einem Stapel mit Verläufen, Pinseln und Luminanzbereichen kombinieren und dann in voller Auflösung exportieren.',
       ],
       privacyNote: 'Eine Farbbereichsmaske wird aus Ihren eigenen Pixeln im Lab-Farbraum berechnet und braucht keinen Serveraufruf. Ohne Anmeldung bleiben das Foto, die aufgenommenen Farben und jede Maske in diesem Browser, bis Sie exportieren; dabei wird die Datei für dieses eine Rendering als Gastauftrag hochgeladen. Wenn Sie angemeldet sind, werden das Original, seine 1920-px-Vorschau und die Miniaturansicht gemäß Ihrer Aufbewahrungseinstellung mit dem Projekt gespeichert und mit ihm gelöscht. Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Nichts wird an Dritte weitergegeben.',
