@@ -82,6 +82,10 @@ The static localized route `app/(localized)/[lang]/tools/aperture/page.tsx` (exc
 One of the 24 data-driven `[slug]` pages in `content/photo/` (`pages-a..d.ts`, English prose by Fable 5.1, wiring in `content/photo/index.ts`: `embed.preset = { kind: 'photo', panel, preset? }`). They are `PHOTO_PENDING_SLUGS` in `content/reviewAllowlist.ts`: in `REVIEW_CATALOG_SLUGS` (listed, linked, held to the MM84 copy bar by `scripts/check-photo-bodies.ts` and `content/toolCopy.test.ts`) but `noindex` until Mitch moves approved slugs into `REVIEW_INDEXED_TOOL_SLUGS`. Each shows the same drop zone with its panel (and look) in front. Non-English locales render the English body (`noindex`) until MM102-`<prefix>`.
 _Avoid_: "SEO pages", "tool pages for the editor" (the editor is `/photo/*`).
 
+**Medi knowledge export** (`npm run export:medi`, MM105):
+`lib/assistant/knowledgeExport.ts` builds Medi's corpus from the registries (`PRIMARY_TOOL_PAGES`, `ROUTE_SEO_MAP`, the page copy shards, `effectRegistry.ts`, `STUDIO_V3_RANGES`, `animators.ts`, `LAYER_PARAMS`, built-in looks, shortcuts, the 18 locales' names) and `scripts/export-medi.ts` writes it into `../media_manipulator_api/internal/assistant/knowledge/`, deleting stale files. Never hand-edit the output; run the export after a tool page, editor parameter or locale change and commit it in the API repo. Plan numbers are never exported (sentences stating a price or per-plan limit become a pointer to the live block); `knowledgeExport.test.ts` checks shape, registry coverage, numbers, size and freshness against the sibling API checkout.
+_Avoid_: "Medi's prompt" for the corpus (the API assembles the prompt per request).
+
 **Photo hand-off** (`lib/photo/handoff.ts`):
 How a tool page's drop zone passes the chosen photo to the unlocalized editor route: the bytes wait in IndexedDB `mm-photo-handoff` (one record, 10 minutes), the browser goes to `/photo/new?handoff=1&panel=<id>&preset=<id>`, and `components/photo/editor.tsx` takes it once, opens the photo and then opens the panel and applies the built-in look. When storage is unavailable the page falls back to the bare `/photo/new` link.
 
