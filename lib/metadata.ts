@@ -25,6 +25,7 @@ import { getSeoOverride } from '@/lib/seoOverrides';
 import { defaultLocale, isIndexableLocale, localizeHref, reviewedLocales } from '@/i18n/locales';
 import { TRANSLATOR_ROBOTS, translatorRobots } from '@/lib/translator/mode';
 import { fullyCoveredLocaleCodes, getLocalizedToolBySlug, localeBodyCoverage, toolOverrideOg } from '@/i18n/toolPageContent';
+import { isLocaleIndexHeld } from '@/content/localeIndexHold';
 import { isReviewIndexedToolSlug } from '@/content/reviewAllowlist';
 import { TOOL_PAGES } from '@/content/toolPages';
 
@@ -120,6 +121,7 @@ export function isToolPageIndexable(slug: string, locale: string): boolean {
   const tool = TOOL_PAGES.find((t) => t.slug === slug);
   if (!tool || tool.aliasOf || !isReviewIndexedToolSlug(slug)) return false;
   if (locale === defaultLocale) return true;
+  if (isLocaleIndexHeld(slug)) return false; // content/localeIndexHold.ts (AdSense review hold)
   return isIndexableLocale(locale) && localeBodyCoverage(slug, locale).complete;
 }
 

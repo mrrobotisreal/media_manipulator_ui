@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { isLocaleIndexHeld } from '@/content/localeIndexHold';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { tiersFixture } from '@/lib/billing/test-utils';
@@ -81,10 +82,11 @@ describe('/tools/aperture page (MM100)', () => {
     expect(await render('en')).not.toContain('data-testid="ad"');
   });
 
-  it('is indexable only in reviewed locales that cover the whole body', async () => {
+  it('is indexable only in reviewed locales that cover the whole body (and not while the locale index hold is on)', async () => {
     for (const l of locales) {
       const meta = await generateMetadata({ params: Promise.resolve({ lang: l.prefix }) });
-      const indexable = l.code === 'en-US' || (l.translated && l.reviewed && localeBodyCoverage('aperture', l.code).complete);
+      // content/localeIndexHold.ts (Mitch, 2026-11-04): translated landings stay noindex during the AdSense review.
+      const indexable = l.code === 'en-US' || (!isLocaleIndexHeld('aperture') && l.translated && l.reviewed && localeBodyCoverage('aperture', l.code).complete);
       expect(meta.robots, l.code).toEqual({ index: indexable, follow: true });
     }
   });
