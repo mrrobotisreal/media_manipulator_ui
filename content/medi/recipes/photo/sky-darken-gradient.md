@@ -1,0 +1,33 @@
+---
+id: "sky-darken-gradient"
+editor: "photo"
+title: "Darken a bright sky with a graduated filter"
+intents: ["the sky is too bright", "darken the sky", "bring back the clouds", "graduated filter", "balance sky and ground"]
+difficulty: "intermediate"
+ops_example: true
+tools: ["fix-photo-exposure", "adjust-image-contrast"]
+---
+
+## When to use
+
+Landscapes where the ground is right but the sky is too light.
+
+## What a pro does and why
+
+A graduated neutral-density filter darkens only the top. A gradient mask from the horizon (effect 0) to the top (effect 1) on an exposure layer does the same, with a little dehaze to bring cloud texture back. Put the `from` point on the horizon line read from the frame.
+
+## Ops
+
+```json
+{
+  "summary": "Darken the sky",
+  "ops": [
+    {"op": "add_layer", "type": "exposure", "params": {"ev": -0.8}, "name": "Sky", "mask": {"components": [{"kind": "gradient", "from": {"x": 0.5, "y": 0.55}, "to": {"x": 0.5, "y": 0.1}, "feather": 0.2}]}},
+    {"op": "add_layer", "type": "dehaze", "params": {"amount": 15}, "mask": {"components": [{"kind": "gradient", "from": {"x": 0.5, "y": 0.55}, "to": {"x": 0.5, "y": 0.1}, "feather": 0.2}]}}
+  ]
+}
+```
+
+## How to adjust
+
+Visible band: raise `feather` to 0.4. Horizon is tilted: move the points so the line follows it. Buildings or mountains go dark too: add a luminosity component (`lo` 0.6) with mode intersect so only bright areas change.

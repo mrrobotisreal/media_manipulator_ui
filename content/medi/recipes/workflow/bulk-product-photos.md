@@ -1,0 +1,25 @@
+---
+id: "bulk-product-photos"
+editor: "workflow"
+title: "Clean product photos in bulk"
+intents: ["edit many product photos", "batch edit for my shop", "same look on all product images", "prepare photos for amazon", "bulk product photo editing"]
+difficulty: "intermediate"
+ops_example: false
+tools: ["remove-background-from-image", "image-resizer", "compress-image", "aperture"]
+---
+
+## When to use
+
+A shop owner has many product shots that need the same treatment.
+
+## What a pro does and why
+
+Consistency sells: same background, same size, same brightness. Remove backgrounds (or whiten them), apply the same Aperture adjustments to every photo with batch apply, resize to the marketplace size and compress.
+
+## Ops
+
+Steps: 1) Edit one photo in Aperture with the white-background recipe and save it as a preset. 2) Use batch apply in Aperture for the rest (batch size depends on the plan). 3) For busy backgrounds use the background-removal tool. 4) Resize (e.g. 2000×2000) and compress for upload.
+
+## How to adjust
+
+Colours differ between photos: fix white balance per photo before batch apply.

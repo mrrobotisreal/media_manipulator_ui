@@ -1,0 +1,32 @@
+---
+id: "keep-one-colour"
+editor: "photo"
+title: "Keep one exact colour (custom hue)"
+intents: ["keep only the teal", "black and white except this colour", "keep the turquoise sign", "grey except one colour", "selective colour custom"]
+difficulty: "intermediate"
+ops_example: true
+tools: ["color-pop", "change-image-color", "select-by-color"]
+---
+
+## When to use
+
+The colour to keep is between the named ranges (teal, turquoise, coral, a brand colour).
+
+## What a pro does and why
+
+A named range is 60 degrees wide; an in-between hue needs a custom centre. Read the hue from the preview frame (0 red, 30 orange, 60 yellow, 120 green, 180 cyan, 210 azure, 240 blue, 300 magenta) and keep a width of 30 to 50 degrees.
+
+## Ops
+
+```json
+{
+  "summary": "Grey except one hue",
+  "ops": [
+    {"op": "grey_except", "ranges": [{"hue": 185, "width": 40}]}
+  ]
+}
+```
+
+## How to adjust
+
+Edges of the object turn grey: widen to 60. Unwanted areas stay coloured: narrow to 25 or add a colour-range mask. Not sure of the hue: ask the user to name the object and use the frame.

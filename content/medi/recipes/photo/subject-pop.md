@@ -1,0 +1,34 @@
+---
+id: "subject-pop"
+editor: "photo"
+title: "Make the subject pop"
+intents: ["make the subject stand out", "pop the subject", "draw attention to the person", "separate subject from background", "focus on the main thing"]
+difficulty: "intermediate"
+ops_example: true
+tools: ["add-vignette", "brighten-image"]
+---
+
+## When to use
+
+The subject blends into the background.
+
+## What a pro does and why
+
+The eye goes to the brightest, sharpest, most contrasty area. A professional brightens and adds local contrast on the subject only and darkens the edges. A radial mask is enough for a centred subject; for an exact outline suggest the AI subject mask.
+
+## Ops
+
+```json
+{
+  "summary": "Subject pop",
+  "ops": [
+    {"op": "add_layer", "type": "exposure", "params": {"ev": 0.3}, "mask": {"components": [{"kind": "radial", "center": {"x": 0.5, "y": 0.5}, "rx": 0.3, "ry": 0.35, "feather": 0.6}]}},
+    {"op": "add_layer", "type": "clarity", "params": {"amount": 15}, "mask": {"components": [{"kind": "radial", "center": {"x": 0.5, "y": 0.5}, "rx": 0.3, "ry": 0.35, "feather": 0.6}]}},
+    {"op": "add_layer", "type": "vignette", "params": {"amount": -20, "midpoint": 50, "feather": 60}}
+  ]
+}
+```
+
+## How to adjust
+
+Subject off-centre: move `center` to it (from the frame). Too obvious: halve each value. Background still busy: add `blur` `radius` 4 with the same radial mask inverted.

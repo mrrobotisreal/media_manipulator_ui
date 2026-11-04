@@ -1,0 +1,32 @@
+---
+id: "grey-except-red"
+editor: "photo"
+title: "Everything grey except the reds"
+intents: ["make everything grey except the red", "black and white except the red jacket", "keep only the red", "colour splash red", "selective colour red"]
+difficulty: "basic"
+ops_example: true
+tools: ["color-pop", "select-by-color"]
+---
+
+## When to use
+
+One coloured object should stay in colour while the rest goes black and white (the red coat, a red car, red lipstick).
+
+## What a pro does and why
+
+The cleanest result desaturates every hue range except the one to keep, with feathered range edges so the transition is smooth. `grey_except` does exactly that on an HSL layer. Built-in looks exist for each primary: `color-pop-red`, `color-pop-yellow`, `color-pop-green`, `color-pop-cyan`, `color-pop-blue`, `color-pop-magenta`. If skin or a background object of the same colour also stays coloured, a professional adds a mask (or suggests the AI subject mask) so only the object keeps its colour.
+
+## Ops
+
+```json
+{
+  "summary": "Grey except red",
+  "ops": [
+    {"op": "grey_except", "ranges": ["red"]}
+  ]
+}
+```
+
+## How to adjust
+
+Orange parts of the object went grey: add `"orange"` to the ranges. Skin stays pinkish: suggest `subject_mask` on the object and invert. Make the red pop more: add `vibranceSaturation` with `vibrance` 20.

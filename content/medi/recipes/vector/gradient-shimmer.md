@@ -1,0 +1,35 @@
+---
+id: "gradient-shimmer"
+editor: "vector"
+title: "Gradient shimmer"
+intents: ["shimmer effect", "animated gradient", "shine across the text", "gradient moves", "glossy sweep"]
+difficulty: "intermediate"
+ops_example: true
+tools: ["motion"]
+---
+
+## When to use
+
+Buttons, logos and premium-feeling text.
+
+## What a pro does and why
+
+Animate a gradient's stop offsets so a lighter band moves across, over 1.2 to 2 s with ease-in-out, then loop. The `gradient` animator keys the stops of the layer's gradient fill.
+
+## Ops
+
+```json
+{
+  "summary": "Gradient shimmer",
+  "ops": [
+    {"op": "apply_animator", "layerIds": ["LAYER_ID"], "animator": "gradient", "span": {"start": 0, "end": 1600, "easing": "easeBoth"}},
+    {"op": "set_loop", "loop": true}
+  ]
+}
+```
+
+The layer needs a gradient fill first; if it has a flat colour, explain how to switch the fill to a gradient in the inspector.
+
+## How to adjust
+
+Too fast: end 2400. Subtler: make the light stop only slightly lighter than the base.
