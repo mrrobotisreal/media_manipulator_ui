@@ -563,16 +563,16 @@
               "kinds": "Há seis tipos de máscara: Gradiente linear para um céu ou um chão, Radial para um foco em redor de um ponto, Pincel para pintar à mão com tamanho ajustável e um interruptor de apagar, Intervalo de luminosidade apenas para as partes claras ou escuras, Intervalo de cores para os píxeis de uma cor escolhida e Selecionar motivo.",
               "combine": "Uma máscara pode ter vários componentes, e cada um é definido como Adicionar, Subtrair ou Intersetar. Uma receita comum é um Gradiente linear sobre o céu com um Pincel em Subtrair que protege um edifício que entra nessa zona. A Suavização da máscara suaviza o limite, a Intensidade da máscara dimensiona o conjunto e Inverter vira-o do avesso.",
               "colorRange": "O Intervalo de cores usa a mesma ideia de conta-gotas do painel HSL: escolha uma cor, clique com Shift para adicionar até mais oito e aumente a Tolerância para incluir tons próximos. É uma forma rápida de escurecer apenas um céu azul ou aquecer apenas os tons de pele sem pintar nada.",
-              "subject": "Selecionar motivo pede à nossa GPU que encontre a pessoa ou o objeto principal e devolve uma máscara de limite suave em poucos segundos. É o único tipo de máscara que carrega a fotografia e conta como uma operação normal do seu plano; uma repetição idêntica é um acerto de cache gratuito. Todos os outros tipos de máscara são calculados no seu navegador e não custam nada."
+              "subject": "Selecionar motivo pede à nossa GPU que encontre a pessoa ou o objeto principal e devolve uma máscara de limite suave em poucos segundos. É o único tipo de máscara que carrega a fotografia e conta como uma tarefa normal do seu plano; uma repetição idêntica é servida a partir da cache, sem custos. Todos os outros tipos de máscara são calculados no seu navegador e não custam nada."
             }
           },
           "heal": {
             "title": "5. Corrija manchas e imperfeições",
-            "body": "O pó num sensor, um borbulhão, um fio solto ou um pouco de lixo podem passar pelo painel Corrigir. Ao contrário dos controlos deslizantes, a correção é um passo generativo: o nosso servidor preenche a zona pintada com píxeis novos que condizem com o que a rodeia. Mesmo assim, fica na sua pilha de camadas e no seu histórico, por isso pode anulá-la ou manter premida a barra invertida para comparar com o original, mas é a única ferramenta deste guia que custa uma operação de IA.",
+            "body": "O pó num sensor, um borbulhão, um fio solto ou um pouco de lixo podem passar pelo painel Corrigir. Ao contrário dos controlos deslizantes, a correção é um passo generativo: o nosso servidor preenche a zona pintada com píxeis novos que condizem com o que a rodeia. Mesmo assim, fica na sua pilha de camadas e no seu histórico, por isso pode anulá-la ou manter premida a barra invertida para comparar com o original, mas é a única ferramenta deste guia que custa uma tarefa de IA.",
             "bullets": {
               "paint": "Escolha o Pincel de manchas e pinte sobre cada marca que quer eliminar. Faça o toque um pouco maior do que a própria mancha, para que o preenchimento tenha textura limpa com que se fundir. O painel conta as manchas que marcou, e Limpar manchas recomeça se mudar de ideias antes de premir Corrigir.",
               "press": "Prima Corrigir quando as manchas estiverem marcadas. A fotografia e a zona pintada seguem para a nossa GPU, onde o modelo de preenchimento LaMa completa as zonas marcadas; isto pode demorar até um minuto num ficheiro grande. Quando regressa, o resultado é aplicado como um passo do seu histórico, com Anular disponível.",
-              "cost": "Cada pressão em Corrigir é uma operação de IA do seu plano, independentemente de quantas manchas tenha pintado, por isso marque tudo primeiro e prima uma só vez. O limite diário de cada plano consta da página de preços. Pintar manchas, limpá-las e anular uma correção não custam nada.",
+              "cost": "Cada pressão em Corrigir é uma tarefa de IA do seu plano, independentemente de quantas manchas tenha pintado, por isso marque tudo primeiro e prima uma só vez. A quota diária de cada plano consta da página de preços. Pintar manchas, limpá-las e anular uma correção não custam nada.",
               "base": "A correção fica na sua pilha de camadas como tudo o resto, por isso as camadas de cor e de tom que adicionar depois aplicam-se ao resultado corrigido, e Anular ou o painel Histórico retiram-na. Para os olhos vermelhos em retratos com flash, existe um painel Olhos vermelhos separado que não usa IA."
             }
           },
@@ -583,7 +583,7 @@
               "format": "Escolha JPG, PNG, WebP, AVIF ou TIFF, defina a Qualidade de 1 a 100 onde se aplique e decida se quer Manter ou Remover os metadados. Remover elimina o bloco EXIF, incluindo as definições da câmara e qualquer localização GPS, o que costuma ser o pretendido antes de publicar uma fotografia.",
               "size": "Tamanho máximo oferece Original, 12, 24, 64 e 120 megapíxeis. A caixa de diálogo estima o tamanho do ficheiro para a sua escolha: um JPG com qualidade 92 pesa cerca de 0,45 MB por megapíxel, pelo que uma fotografia de 6000 x 4000 a 24 MP fica perto de 10,8 MB, enquanto o WebP ronda os 0,3 MB e o AVIF os 0,2 MB por megapíxel.",
               "server": "As exportações até 12 MP estão disponíveis para visitantes e no plano Free, por isso um original maior é exportado a 12 MP. O Premium e o Pro exportam até 120 MP. A tarefa corre no nosso servidor, que gera a imagem com NumPy e OpenCV, a codifica com ImageMagick e disponibiliza o ficheiro para transferência quando termina.",
-              "cost": "Uma exportação é uma operação normal do seu plano, e pode voltar a executar Exportar com outras definições, por exemplo um TIFF em tamanho total para impressão e um WebP de 12 MP para a web. A pré-visualização, todos os controlos deslizantes, todas as máscaras sem IA, os looks e anular são gratuitos e ilimitados."
+              "cost": "Uma exportação é uma tarefa normal do seu plano, e pode voltar a executar Exportar com outras definições, por exemplo um TIFF em tamanho total para impressão e um WebP de 12 MP para a web. A pré-visualização, todos os controlos deslizantes, todas as máscaras sem IA, os looks e anular são gratuitos e ilimitados."
             }
           },
           "presets": {
@@ -603,7 +603,7 @@
               "limit": "Aplicar a mais fotografias só está disponível com sessão iniciada; a caixa de diálogo pede aos visitantes que iniciem sessão. O plano Free aplica as edições a um máximo de 3 fotografias de cada vez, o Premium a 10 e o Pro a 25. Se escolher mais do que o seu plano permite, os ficheiros a mais ficam de fora, e a caixa de diálogo indica quantos.",
               "run": "Cada fotografia escolhida é primeiro criada como um projeto próprio na sua conta, uma após outra, de modo que os originais e as respetivas edições ficam guardados como qualquer outro projeto. Depois, uma única tarefa em lote gera-as todas no servidor, e a caixa de diálogo mostra cada fotografia a passar de A preparar para A processar com uma percentagem e para Concluído.",
               "zip": "Quando as gerações terminarem, prima Transferir como ZIP. O ZIP é montado no seu navegador a partir dos ficheiros concluídos, por isso nada mais é carregado e fica com um único ficheiro para guardar em vez de uma dúzia de transferências separadas. Se não for possível adicionar um ficheiro, a caixa de diálogo indica quantos faltam.",
-              "retry": "Se uma fotografia falhar, as outras não ficam retidas. A caixa de diálogo mostra quantas falharam e oferece um botão Repetir apenas para esses ficheiros, e o ZIP pode ser montado de novo quando terminarem. As exportações contam como operações normais do seu plano, por isso consulte a página de preços antes de executar um lote grande."
+              "retry": "Se uma fotografia falhar, as outras não ficam retidas. A caixa de diálogo mostra quantas falharam e oferece um botão Repetir apenas para esses ficheiros, e o ZIP pode ser montado de novo quando terminarem. As exportações contam como tarefas normais do seu plano, por isso consulte a página de preços antes de executar um lote grande."
             }
           },
           "cta": {
@@ -2749,7 +2749,7 @@
     "plans": {
       "title": "Projetos, tamanho de exportação e lotes por plano",
       "intro": "A edição, todos os ajustes, as máscaras e os looks são gratuitos em todos os planos. O que muda com o plano é quantos projetos pode guardar, o tamanho máximo de uma exportação e quantas fotografias pode editar num único lote. Estes números vêm diretamente dos nossos servidores, por isso estão sempre atualizados.",
-      "caption": "Limites do {{brand}} por plano",
+      "caption": "Quotas do {{brand}} por plano",
       "feature": "Funcionalidade",
       "rows": {
         "projects": "Projetos guardados",
@@ -2763,7 +2763,7 @@
         "notAvailable": "Não disponível"
       },
       "costNote": "Cada exportação conta como uma tarefa normal e cada correção como uma tarefa de IA. Pré-visualizar, ajustar, as máscaras e os looks não custam nada.",
-      "unavailable": "Não foi possível carregar a tabela de planos neste momento. A página de preços indica o limite de cada plano.",
+      "unavailable": "Não foi possível carregar a tabela de planos neste momento. A página de preços indica a quota de cada plano.",
       "seePlans": "Comparar todos os planos"
     }
   },
