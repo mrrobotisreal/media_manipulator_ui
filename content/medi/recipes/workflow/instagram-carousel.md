@@ -1,0 +1,25 @@
+---
+id: "instagram-carousel"
+editor: "workflow"
+title: "Prepare photos for an Instagram post or carousel"
+intents: ["prepare photos for instagram", "instagram carousel", "what size for instagram", "crop for instagram feed", "post photos to instagram"]
+difficulty: "basic"
+ops_example: false
+tools: ["aperture", "crop-image", "image-resizer"]
+---
+
+## When to use
+
+Posting one or more photos to the Instagram feed.
+
+## What a pro does and why
+
+The feed shows 4:5 portrait largest; carousels should share one aspect and one look so swiping feels consistent.
+
+## Ops
+
+Steps: 1) Edit the first photo in Aperture and save the look as a preset. 2) Apply it to the others. 3) Crop every photo to 4:5 (straighten-and-crop recipe). 4) Export JPG at 1080×1350.
+
+## How to adjust
+
+Landscape photos: 1.91:1 crops show smaller; 4:5 is usually better.

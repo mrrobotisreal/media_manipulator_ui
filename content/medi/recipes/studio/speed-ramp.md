@@ -1,0 +1,36 @@
+---
+id: "speed-ramp"
+editor: "studio"
+title: "Speed ramp and slow motion"
+intents: ["slow motion", "speed it up", "time lapse feel", "speed ramp", "make this part slower"]
+difficulty: "intermediate"
+ops_example: true
+tools: ["change-video-speed"]
+---
+
+## When to use
+
+Action moments, reveals, long boring stretches.
+
+## What a pro does and why
+
+Speed in Darkroom is set per clip, so a ramp is made by splitting at the moment and slowing only the middle part (0.4 to 0.5×). Slow motion looks smooth only when the source has a high frame rate; otherwise suggest the AI frame interpolation tool. Speeding up 2 to 4× compresses boring parts; keep pitch for speech.
+
+## Ops
+
+```json
+{
+  "summary": "Slow-motion moment",
+  "ops": [
+    {"op": "split", "clipId": "CLIP_ID", "at": 6.0},
+    {"op": "split", "clipId": "NEW_CLIP_ID", "at": 8.0},
+    {"op": "set_speed", "clipId": "NEW_CLIP_ID", "speed": 0.5, "maintainPitch": true}
+  ]
+}
+```
+
+After a split the digest gives the new clip id; in a single turn split first, then ask for the id with the verify step, or set speed on the clip the user selected.
+
+## How to adjust
+
+Choppy: suggest frame interpolation for that section. Too slow: 0.7. Fast-forward: speed 2 to 4.
