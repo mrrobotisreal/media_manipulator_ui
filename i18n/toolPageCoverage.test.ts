@@ -105,7 +105,7 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
     expect(nonAlias).toHaveLength(98 + 25); // MM100 adds the 25 Aperture pages (English bodies until MM102-<prefix>)
     const pinned: Record<string, number> = {
       "uk-UA": 0, "ru-RU": 0, "de-DE": 0,
-      "he-IL": 25, "es-ES": 25, "es-MX": 25, "fr-FR": 25, "it-IT": 25, "pt-BR": 25, "pt-PT": 25,
+      "he-IL": 25, "es-ES": 25, "es-MX": 0, "fr-FR": 25, "it-IT": 25, "pt-BR": 25, "pt-PT": 25,
       "ja-JP": 25, "zh-CN": 25, "zh-TW": 25, "ko-KR": 25, "ar-SA": 123, "hi-IN": 123, "vi-VN": 123,
     };
     const rows: string[] = [];
