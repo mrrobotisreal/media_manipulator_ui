@@ -1,0 +1,32 @@
+---
+id: "title-card"
+editor: "studio"
+title: "Opening title card"
+intents: ["add a title at the start", "opening title", "big title over the video", "intro text", "video title screen"]
+difficulty: "basic"
+ops_example: true
+tools: ["content-studio"]
+---
+
+## When to use
+
+The first seconds of a video.
+
+## What a pro does and why
+
+An opening title is short, centred and large, in a display or serif font, on screen 2 to 4 s with a fade in and out. Over footage it needs either a dark background bar or a shadow to stay readable.
+
+## Ops
+
+```json
+{
+  "summary": "Opening title",
+  "ops": [
+    {"op": "add_title", "template": "title", "lines": ["Summer in Lisbon"], "start": 0, "duration": 3, "style": {"fontFamily": "Playfair Display", "fontSizePx": 120, "fontWeight": 700, "fillColor": "#FFFFFF"}, "animateIn": "fade", "animateOut": "fade"}
+  ]
+}
+```
+
+## How to adjust
+
+Unreadable: add style `backgroundColor` "#000000" with `backgroundOpacity` 0.4. More modern: `Bebas Neue`. Longer: duration 4.
