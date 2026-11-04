@@ -27,16 +27,19 @@ const problems: string[] = [];
 const fail = (slug: string, path: string, msg: string) => problems.push(`${slug} ${path}: ${msg}`);
 
 /**
- * Digit runs, as a sorted multiset. Hebrew writes "2 years" with the dual noun
- * ("שנתיים"), so the 2 is spelled, not dropped: count the dual as a 2 (MM93).
+ * Digit runs, as a sorted multiset. Hebrew and Arabic write "2 years" with the
+ * dual noun ("שנתיים", "سنتين"), so the 2 is spelled, not dropped: count the
+ * dual as a 2 (MM93).
  */
 // A one-letter prefix (ל/ב/מ/ו/ה/כ/ש) may be attached: לשנתיים, בשעתיים.
 const HE_DUAL = /(?<![\u0590-\u05ff]{2})(שנתיים|יומיים|שעתיים|חודשיים)(?![\u0590-\u05ff])/g;
+// Arabic: nominative -ان or oblique -ين, with an optional و/ف/ب/ل/ك and/or ال prefix: وسنتين, للسنتين.
+const AR_DUAL = /(?<![\u0621-\u064a])(?:[وفبلك])?(?:ال|ل)?(سنت|ساعت|يوم|شهر|دقيقت|ثانيت|أسبوع)(?:ين|ان)(?![\u0621-\u064a])/g;
 const digits = (s: string) => (s.match(/\d+/g) ?? []).sort().join(' ');
-/** Compare digit multisets; a Hebrew dual noun stands in for a "2" or a spelled "two" in the English. */
+/** Compare digit multisets; a Hebrew or Arabic dual noun stands in for a "2" or a spelled "two" in the English. */
 const digitsMatch = (en: string, tr: string) => {
   if (digits(en) === digits(tr)) return true;
-  const duals = (tr.match(HE_DUAL) ?? []).length;
+  const duals = (tr.match(HE_DUAL) ?? []).length + (tr.match(AR_DUAL) ?? []).length;
   if (!duals) return false;
   const enTwos = (en.match(/\b(2|two)\b/gi) ?? []).length;
   if (enTwos < duals) return false;
