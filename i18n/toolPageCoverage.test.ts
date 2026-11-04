@@ -104,7 +104,7 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
     const nonAlias = TOOL_PAGES.filter((t) => !t.aliasOf).map((t) => t.slug);
     expect(nonAlias).toHaveLength(98 + 25); // MM100 adds the 25 Aperture pages (English bodies until MM102-<prefix>)
     const pinned: Record<string, number> = {
-      "uk-UA": 25, "ru-RU": 25, "de-DE": 25,
+      "uk-UA": 25, "ru-RU": 0, "de-DE": 25,
       "he-IL": 25, "es-ES": 25, "es-MX": 25, "fr-FR": 25, "it-IT": 25, "pt-BR": 25, "pt-PT": 25,
       "ja-JP": 25, "zh-CN": 25, "zh-TW": 123, "ko-KR": 123, "ar-SA": 123, "hi-IN": 123, "vi-VN": 123,
     };
@@ -119,13 +119,16 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
   });
 
   it("MM86 S3: uk-UA, ru-RU and de-DE fully cover all 24 copy-bar pages (an English edit must be translated too)", () => {
-    for (const code of ["uk-UA", "ru-RU", "de-DE"]) {
-      // MM100: the Aperture pages have English bodies until MM102-uk/ru/de.
-      const gaps = REVIEW_CATALOG_SLUGS.filter((slug) => !APERTURE_SLUGS.has(slug) && !localeBodyCoverage(slug, code).complete);
+    // MM100: the Aperture pages have English bodies until MM102-uk/ru/de; a locale joins this set when its MM102 lands.
+    const MM102_DONE = new Set<string>(["ru-RU"]);
+    const reviewed = ["uk-UA", "ru-RU", "de-DE"];
+    for (const code of reviewed) {
+      const gaps = REVIEW_CATALOG_SLUGS.filter((slug) => (MM102_DONE.has(code) || !APERTURE_SLUGS.has(slug)) && !localeBodyCoverage(slug, code).complete);
       expect(gaps, code).toEqual([]);
     }
     for (const slug of REVIEW_INDEXED_TOOL_SLUGS) {
-      expect(fullyCoveredLocaleCodes(slug), slug).toEqual(APERTURE_SLUGS.has(slug) ? ["en-US"] : ["en-US", "uk-UA", "ru-RU", "de-DE"]);
+      const covering = reviewed.filter((code) => !APERTURE_SLUGS.has(slug) || MM102_DONE.has(code));
+      expect(fullyCoveredLocaleCodes(slug), slug).toEqual(["en-US", ...covering]);
     }
   });
 
