@@ -794,7 +794,7 @@ function vectorDocs(): Array<[string, string]> {
       '- Lottie JSON (`lottie`): for apps and the web (LottieFiles); some effects do not carry over and are listed after export.',
       '- React component (`react_tsx`), JavaScript or TypeScript module (`js_ts`), Flutter widget (`flutter`).',
       '- GIF (`gif`), PNG sequence (`png_sequence`), MP4 (`mp4`) and WebM (`webm`), encoded in the browser.',
-      `Counted formats: ${VECTOR_EXPORT_FORMATS.filter((f) => f !== 'import_lottie').join(', ')}. Which formats a plan includes and how many animated exports a day it allows are live numbers (quote only from the live plan block).`,
+      `Counted formats: ${VECTOR_EXPORT_FORMATS.filter((f) => f !== 'import_lottie').join(', ')}. Which formats each plan includes and its daily allowance of animated exports are live numbers (quote only from the live plan block).`,
       'By destination: website hero → animated SVG or Lottie; app → Lottie or React/Flutter; social post → MP4; chat/README → GIF.',
     ], ['export', 'svg', 'animated svg', 'lottie', 'json', 'react', 'tsx', 'javascript', 'typescript', 'flutter', 'dart', 'gif', 'mp4', 'webm', 'png sequence', 'video', 'download']),
   );
