@@ -770,5 +770,8 @@
     "aiOpsUnlimited": "Không giới hạn tác vụ AI mỗi ngày",
     "fileSize": "Tệp tối đa {{value}}",
     "compare": "So sánh tất cả các gói"
+  },
+  "mediGuideButton": {
+    "label": "Hỏi {{brand}}, hướng dẫn viên của Media Manipulator"
   }
 }

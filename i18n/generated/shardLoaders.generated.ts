@@ -98,3 +98,25 @@ export const SHARD_LOADERS: Record<string, () => Promise<[ShardModule, ShardModu
       import("../locales/vi-vn/interface/panels.json"),
     ]),
 };
+
+/** MM107: Medi's shard per locale, for `ensureAssistantShard()`. */
+export const ASSISTANT_SHARD_LOADERS: Record<string, () => Promise<ShardModule>> = {
+  "en-US": () => import("../locales/en-us/interface/assistant.json"),
+  "uk-UA": () => import("../locales/uk-ua/interface/assistant.json"),
+  "ru-RU": () => import("../locales/ru-ru/interface/assistant.json"),
+  "he-IL": () => import("../locales/he-il/interface/assistant.json"),
+  "de-DE": () => import("../locales/de-de/interface/assistant.json"),
+  "es-ES": () => import("../locales/es-es/interface/assistant.json"),
+  "es-MX": () => import("../locales/es-mx/interface/assistant.json"),
+  "fr-FR": () => import("../locales/fr-fr/interface/assistant.json"),
+  "it-IT": () => import("../locales/it-it/interface/assistant.json"),
+  "ja-JP": () => import("../locales/ja-jp/interface/assistant.json"),
+  "zh-CN": () => import("../locales/zh-cn/interface/assistant.json"),
+  "zh-TW": () => import("../locales/zh-tw/interface/assistant.json"),
+  "ko-KR": () => import("../locales/ko-kr/interface/assistant.json"),
+  "ar-SA": () => import("../locales/ar-sa/interface/assistant.json"),
+  "hi-IN": () => import("../locales/hi-in/interface/assistant.json"),
+  "pt-PT": () => import("../locales/pt-pt/interface/assistant.json"),
+  "pt-BR": () => import("../locales/pt-br/interface/assistant.json"),
+  "vi-VN": () => import("../locales/vi-vn/interface/assistant.json"),
+};

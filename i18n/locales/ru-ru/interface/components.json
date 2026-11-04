@@ -777,5 +777,8 @@
     "aiOpsUnlimited": "Неограниченно ИИ-задач в день",
     "fileSize": "Файлы до {{value}}",
     "compare": "Сравнить все тарифы"
+  },
+  "mediGuideButton": {
+    "label": "Спросить {{brand}}, гида Media Manipulator"
   }
 }

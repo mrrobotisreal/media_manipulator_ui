@@ -191,6 +191,23 @@ export const EVENTS = {
   PHOTO_PRESET_SAVED: 'photo_preset_saved',
   PHOTO_PRESETS_MIGRATED: 'photo_presets_migrated',
 
+  // --- Medi (code name assistant, MM107) --------------------------------------
+  // One vocabulary for the guide and the three copilots: every event carries
+  // `surface` (guide | studio | vector | photo). MM107 wires the guide; the copilot
+  // events are declared now and wired by MM108 (Aperture), MM109, MM110. Server twin:
+  // server_assistant_turn_counted (Go catalogs only, like every server_* name).
+  ASSISTANT_OPENED: 'assistant_opened',
+  ASSISTANT_MESSAGE_SENT: 'assistant_message_sent',
+  ASSISTANT_RESPONSE_COMPLETED: 'assistant_response_completed',
+  ASSISTANT_RESPONSE_FAILED: 'assistant_response_failed',
+  ASSISTANT_EDITS_APPLIED: 'assistant_edits_applied',
+  ASSISTANT_EDITS_REJECTED: 'assistant_edits_rejected',
+  ASSISTANT_EDITS_UNDONE: 'assistant_edits_undone',
+  ASSISTANT_ACTION_CLICKED: 'assistant_action_clicked',
+  ASSISTANT_LINK_CLICKED: 'assistant_link_clicked',
+  ASSISTANT_FEEDBACK_GIVEN: 'assistant_feedback_given',
+  ASSISTANT_LIMIT_HIT: 'assistant_limit_hit',
+
   // --- Video / audio summary (MM75) -----------------------------------------
   // One per completed summary job, from the summarize panel. The server twin is the
   // ordinary server_job_* lifecycle with tool `video_summary` (MM74), not a new event.
@@ -360,6 +377,19 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   photo_export_completed: PRIORITY_HIGH,
   photo_export_failed: PRIORITY_HIGH,
   photo_export_gated: PRIORITY_HIGH,
+
+  // Medi (MM107)
+  assistant_opened: PRIORITY_HIGH,
+  assistant_message_sent: PRIORITY_HIGH,
+  assistant_response_completed: PRIORITY_NORMAL,
+  assistant_response_failed: PRIORITY_HIGH,
+  assistant_edits_applied: PRIORITY_HIGH,
+  assistant_edits_rejected: PRIORITY_NORMAL,
+  assistant_edits_undone: PRIORITY_HIGH,
+  assistant_action_clicked: PRIORITY_NORMAL,
+  assistant_link_clicked: PRIORITY_NORMAL,
+  assistant_feedback_given: PRIORITY_NORMAL,
+  assistant_limit_hit: PRIORITY_CRITICAL,
 
   // Video / audio summary (MM75)
   summary_generated: PRIORITY_HIGH,
@@ -1261,6 +1291,94 @@ export interface VoiceGeneratedProps {
   source: VoiceSourceProp;
 }
 
+// --- Medi (MM107) ------------------------------------------------------------
+// Enums, counts and buckets only: never message text, an answer, a digest, a
+// frame, a doc id or a URL (design MEDI_ASSISTANT.md §14).
+
+/** Where Medi runs: the site guide or an editor's copilot (code names). */
+export type AssistantSurfaceProp = 'guide' | 'studio' | 'vector' | 'photo';
+export type AssistantEntryProp = 'button' | 'shortcut' | 'chip' | 'limit_sheet';
+export type AssistantTurnIndexBucket = '1' | '2-3' | '4-10' | '11+';
+export type AssistantModelTierProp = 'guide' | 'copilot' | 'plan';
+export type AssistantLatencyBucket = '<1s' | '1-3s' | '3-10s' | '10-30s' | '30s+';
+export type AssistantOutcomeProp = 'text' | 'edits' | 'action' | 'ask' | 'static' | 'out_of_scope';
+export type AssistantFailReasonProp =
+  | 'upstream'
+  | 'timeout'
+  | 'paused'
+  | 'limit'
+  | 'invalid_ops'
+  | 'rate_limited'
+  | 'sign_in'
+  | 'aborted'
+  | 'error';
+export type AssistantRejectReasonProp = 'validation' | 'unknown_id' | 'locked';
+export type AssistantUndoBucket = '<10s' | '10-60s' | '60-300s' | '300s+';
+export type AssistantActionKindProp =
+  | 'navigate'
+  | 'open_tool'
+  | 'generate_captions'
+  | 'subject_mask'
+  | 'heal'
+  | 'voiceover'
+  | 'derive_audio'
+  | 'export';
+export type AssistantLinkTargetProp = 'tool' | 'page' | 'editor' | 'pricing';
+
+export interface AssistantOpenedProps {
+  surface: AssistantSurfaceProp;
+  entry: AssistantEntryProp;
+}
+export interface AssistantMessageSentProps {
+  surface: AssistantSurfaceProp;
+  has_frame: boolean;
+  turn_index_bucket: AssistantTurnIndexBucket;
+  plan: boolean;
+}
+export interface AssistantResponseCompletedProps {
+  surface: AssistantSurfaceProp;
+  model_tier: AssistantModelTierProp;
+  latency_bucket: AssistantLatencyBucket;
+  /** Server tool rounds seen on the stream (0-4). */
+  tool_rounds: number;
+  outcome: AssistantOutcomeProp;
+}
+export interface AssistantResponseFailedProps {
+  surface: AssistantSurfaceProp;
+  reason: AssistantFailReasonProp;
+}
+export interface AssistantEditsAppliedProps {
+  surface: AssistantSurfaceProp;
+  op_count: number;
+  /** Distinct op names, comma-joined, at most 8 (closed per-editor vocabulary). */
+  op_kinds: string;
+  round: 1 | 2;
+}
+export interface AssistantEditsRejectedProps {
+  surface: AssistantSurfaceProp;
+  reason: AssistantRejectReasonProp;
+}
+export interface AssistantEditsUndoneProps {
+  surface: AssistantSurfaceProp;
+  within_seconds_bucket: AssistantUndoBucket;
+}
+export interface AssistantActionClickedProps {
+  surface: AssistantSurfaceProp;
+  kind: AssistantActionKindProp;
+}
+export interface AssistantLinkClickedProps {
+  surface: AssistantSurfaceProp;
+  target_kind: AssistantLinkTargetProp;
+}
+export interface AssistantFeedbackGivenProps {
+  surface: AssistantSurfaceProp;
+  rating: 'up' | 'down';
+}
+export interface AssistantLimitHitProps {
+  surface: AssistantSurfaceProp;
+  tier: Tier;
+}
+
 /** The contact form's subject select (the API's closed vocabulary). */
 export type ContactSubjectProp = 'bug' | 'billing' | 'privacy' | 'press' | 'other';
 
@@ -1412,6 +1530,18 @@ export interface EventPropsMap {
   photo_export_completed: PhotoExportCompletedProps;
   photo_export_failed: PhotoExportFailedProps;
   photo_export_gated: PhotoExportGatedProps;
+
+  assistant_opened: AssistantOpenedProps;
+  assistant_message_sent: AssistantMessageSentProps;
+  assistant_response_completed: AssistantResponseCompletedProps;
+  assistant_response_failed: AssistantResponseFailedProps;
+  assistant_edits_applied: AssistantEditsAppliedProps;
+  assistant_edits_rejected: AssistantEditsRejectedProps;
+  assistant_edits_undone: AssistantEditsUndoneProps;
+  assistant_action_clicked: AssistantActionClickedProps;
+  assistant_link_clicked: AssistantLinkClickedProps;
+  assistant_feedback_given: AssistantFeedbackGivenProps;
+  assistant_limit_hit: AssistantLimitHitProps;
 
   summary_generated: SummaryGeneratedProps;
 

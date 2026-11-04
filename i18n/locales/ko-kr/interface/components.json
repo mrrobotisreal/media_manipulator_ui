@@ -770,5 +770,8 @@
     "aiOpsUnlimited": "하루 AI 작업 횟수 무제한",
     "fileSize": "최대 {{value}} 파일",
     "compare": "모든 요금제 비교"
+  },
+  "mediGuideButton": {
+    "label": "Media Manipulator 가이드 {{brand}}에게 물어보기"
   }
 }

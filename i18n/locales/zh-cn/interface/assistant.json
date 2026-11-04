@@ -1,0 +1,54 @@
+{
+  "assistant": {
+    "guide": {
+      "open": "问问{{brand}}",
+      "openLabel": "问问{{brand}}——Media Manipulator指南",
+      "title": "{{brand}}",
+      "subtitle": "每个工具和编辑器的使用指南",
+      "close": "关闭",
+      "newChat": "新对话",
+      "history": "你的对话",
+      "historyEmpty": "你与指南的对话会显示在这里。",
+      "historyBack": "返回对话",
+      "historyLoadFailed": "无法加载你的对话，请重试。",
+      "untitled": "未命名对话",
+      "deleteChat": "删除此对话",
+      "welcome": "你好，我是{{brand}}。你可以问我该用哪个工具、网站上的某项内容在哪里，或者如何编辑视频、照片、声音或动画。",
+      "placeholder": "关于Media Manipulator的任何问题，都可以问{{brand}}…",
+      "send": "发送",
+      "stop": "停止",
+      "thinking": "正在思考…",
+      "searching": "正在查阅帮助页面…",
+      "stopped": "已停止。",
+      "disclaimer": "{{brand}}是AI，可能会出错。为了回答你，你的消息会发送给我们的AI服务商。",
+      "privacyLink": "隐私",
+      "starters": {
+        "whichTool": "我需要用哪个工具？",
+        "gif": "把视频做成GIF",
+        "premium": "Premium包含什么？",
+        "photoPro": "像专业人士一样编辑照片"
+      },
+      "copilotTeaser": "在编辑器中，我可以替你完成编辑。",
+      "openEditor": "打开{{editor}}",
+      "resting": "我今天先休息了。这些页面应该能帮到你：",
+      "helpful": "有帮助",
+      "notHelpful": "没有帮助",
+      "thanks": "感谢你的反馈。",
+      "feedbackSignedOut": "登录后即可评价回答。"
+    },
+    "errors": {
+      "upstream": "{{brand}}暂时无法回答，请重试。",
+      "rateLimited": "短时间内提问太多了。请稍等一分钟再试。",
+      "paused": "{{brand}}已达到今天的上限，将休息到UTC午夜。",
+      "limit": "你今天的{{brand}}编辑次数已用完。",
+      "signIn": "登录后即可在编辑器中使用{{brand}}。",
+      "unavailable": "{{brand}}目前不可用。",
+      "generic": "出了点问题，请重试。"
+    },
+    "editors": {
+      "studio": "Darkroom",
+      "vector": "Motion",
+      "photo": "Aperture"
+    }
+  }
+}

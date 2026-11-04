@@ -1,0 +1,54 @@
+{
+  "assistant": {
+    "guide": {
+      "open": "Pregunta a {{brand}}",
+      "openLabel": "Pregunta a {{brand}}, la guía de Media Manipulator",
+      "title": "{{brand}}",
+      "subtitle": "Tu guía para cada herramienta y cada editor",
+      "close": "Cerrar",
+      "newChat": "Nuevo chat",
+      "history": "Tus chats",
+      "historyEmpty": "Tus chats con la guía aparecen aquí.",
+      "historyBack": "Volver al chat",
+      "historyLoadFailed": "No se han podido cargar tus chats. Inténtalo de nuevo.",
+      "untitled": "Chat sin título",
+      "deleteChat": "Eliminar este chat",
+      "welcome": "Hola, soy {{brand}}. Pregúntame qué herramienta usar, dónde encontrar algo en el sitio o cómo editar un vídeo, una foto, un sonido o una animación.",
+      "placeholder": "Pregunta a {{brand}} lo que quieras sobre Media Manipulator…",
+      "send": "Enviar",
+      "stop": "Detener",
+      "thinking": "Pensando…",
+      "searching": "Buscando en las páginas de ayuda…",
+      "stopped": "Detenido.",
+      "disclaimer": "{{brand}} es una IA y puede cometer errores. Tus mensajes se envían a nuestro proveedor de IA para poder responderte.",
+      "privacyLink": "Privacidad",
+      "starters": {
+        "whichTool": "¿Qué herramienta necesito?",
+        "gif": "Crear un GIF a partir de un vídeo",
+        "premium": "¿Qué incluye Premium?",
+        "photoPro": "Editar una foto como un profesional"
+      },
+      "copilotTeaser": "Dentro del editor, puedo hacer ediciones por ti.",
+      "openEditor": "Abrir {{editor}}",
+      "resting": "Hoy estoy descansando. Estas páginas deberían ayudarte:",
+      "helpful": "Útil",
+      "notHelpful": "No es útil",
+      "thanks": "Gracias por tu opinión.",
+      "feedbackSignedOut": "Inicia sesión para valorar las respuestas."
+    },
+    "errors": {
+      "upstream": "{{brand}} no ha podido responder ahora mismo. Inténtalo de nuevo.",
+      "rateLimited": "Son muchas preguntas en poco tiempo. Espera un minuto e inténtalo de nuevo.",
+      "paused": "{{brand}} ha alcanzado el límite de hoy y descansa hasta la medianoche UTC.",
+      "limit": "Has usado las ediciones de {{brand}} de hoy.",
+      "signIn": "Inicia sesión para usar {{brand}} en los editores.",
+      "unavailable": "{{brand}} no está disponible en este momento.",
+      "generic": "Algo ha salido mal. Inténtalo de nuevo."
+    },
+    "editors": {
+      "studio": "Darkroom",
+      "vector": "Motion",
+      "photo": "Aperture"
+    }
+  }
+}

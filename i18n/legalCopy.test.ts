@@ -72,8 +72,8 @@ describe("legal retention copy", () => {
         expect(pages.legalCommon.effectiveDate).toMatch(/24/);
         // MM48: Motion was added on 2026-10-26 (MM40's Pro update was the 25th); MM78's
         // voices update is 2026-10-28, and its note keeps the 2026-10-26 one.
-        expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03"); // MM100 bumped it from the 1st
-        expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-03");
+        expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-04"); // MM107 bumped it from the 3rd (MM100 from the 1st)
+        expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-04");
         expect(pages.legalCommon.whatChangedBody).toMatch(/2026-10-26/);
       });
 
@@ -359,8 +359,8 @@ describe("MM78 voices legal copy", () => {
       expect(pages.termsOfService.sections[0].bullets?.[9]).toContain("8.11");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Chatterbox");
       expect(pages.privacyPolicy.sections[3].afterBullets?.[1]).toContain("Qwen3-TTS");
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03"); // MM100
-      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-03");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-04"); // MM107 (MM100 set the 3rd)
+      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-04");
       expect(pages.legalCommon.whatChangedBody).toContain("1.10");
       expect(pages.legalCommon.whatChangedBody).toContain("8.11");
       // The consent sentence in the Terms is the one the checkbox shows.
@@ -452,7 +452,7 @@ describe("MM87 advertising disclosures", () => {
       expect(pages.pricing.faq.a3).toMatch(/Pro/);
       expect(sentences(pages.pricing.faq.a3)).toBe(sentences(enA3));
 
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03"); // MM100 (MA09 set it to the 1st)
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-04"); // MM107 (MM100 the 3rd, MA09 the 1st)
       const note = pages.legalCommon.whatChangedBody;
       for (const s of ["5.1", "1.5", "8.9", "aboutads.info", "youronlinechoices.eu", "ads.txt"]) expect(note).toContain(s);
       // The earlier 2026-10-28 voices note is kept after the new one.
@@ -481,7 +481,7 @@ describe("MM85 contact-form legal copy", () => {
     it(`${code}: §1.11 after §1.10, §16 points to the form, the what-changed note leads with it`, () => {
       const pages = load(code);
       const subs = pages.privacyPolicy.sections[0].subsections ?? [];
-      expect(subs).toHaveLength(12);
+      expect(subs.length).toBeGreaterThanOrEqual(12); // MM107 added 1.13
       expect(subs[10].title).toMatch(/^1\.11 /);
       expect(subs[10].paragraphs).toHaveLength(2);
       expect(flatten(subs[10])).toContain("Resend");
@@ -516,7 +516,7 @@ describe("MA09 Sign in with Apple legal copy", () => {
       expect(pages.privacyPolicy.sections[7].bullets?.some((b) => /Apple/.test(b))).toBe(true);
       expect(pages.termsOfService.sections[8].paragraphs?.[1]).toMatch(/Apple/);
       expect(pages.legalCommon.whatChangedBody).toMatch(/Apple/);
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-04");
       expect(pages.legalCommon.whatChangedBody).toMatch(/1\.7/);
     });
   }
@@ -554,7 +554,7 @@ describe("MM100 Aperture legal copy", () => {
     it(`${code}: §1.12, the §1 bullet, §13, §3 / §3.3 / §3.4 and §4 name Aperture; the note leads with it`, () => {
       const pages = load(code);
       const sub = pages.privacyPolicy.sections[0].subsections ?? [];
-      expect(sub).toHaveLength(12);
+      expect(sub.length).toBeGreaterThanOrEqual(12); // MM107 added 1.13
       expect(sub[11].title).toMatch(/^1\.12 /);
       expect(sub[11].title).toContain("Aperture");
       expect(sub[11].paragraphs).toHaveLength(3);
@@ -571,8 +571,8 @@ describe("MM100 Aperture legal copy", () => {
       expect(pages.termsOfService.sections[12].paragraphs?.[6]).toContain("Aperture");
       expect(pages.legalCommon.whatChangedBody).toContain("Aperture");
       expect(pages.legalCommon.whatChangedBody).toContain("1.12");
-      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-03");
-      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-03");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-04");
+      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-04");
       // Same day in every locale.
       expect(legalDay(pages.legalCommon.lastUpdated)).toBe(legalDay(en.legalCommon.lastUpdated));
     });
@@ -625,6 +625,85 @@ describe("MA26 mobile app legal sections", () => {
       expect(pages.termsOfService.sections[24].title).toMatch(/^25\./);
       expect(pages.legalCommon.whatChangedBody).toMatch(/\b17\b/);
       expect(flatten(pages.privacyPolicy.sections[16])).toContain("https://www.media-manipulator.com/delete-account");
+    });
+  }
+});
+
+// MM107: Medi (Privacy §1.13, the §4 exception, the §8 processors bullet, Terms §6) and the
+// 2026-11-04 dates, in every locale; the assistant shard exists everywhere with every key.
+describe("MM107 Medi legal copy", () => {
+  it("en-us says what goes where, and nothing stronger than the providers promise", () => {
+    const sub = flatten(en.privacyPolicy.sections[0].subsections?.[12]);
+    for (const fact of [
+      "1.13 Medi, the AI Assistant",
+      "OpenRouter, Inc.",
+      "Anthropic",
+      "at most 1024 pixels",
+      "Medi does not send your original files",
+      "only to Anthropic",
+      "excludes providers that collect user data",
+      "OpenRouter states that it does not use your inputs or outputs to train models",
+      "within 30 days",
+      "follow the retention period you choose",
+      "included in your data export",
+      "deleted with your account",
+      "we do not store your conversation",
+      "Preview images are never stored by us",
+      "kept for 13 months",
+      "can be wrong",
+    ]) {
+      expect(sub).toContain(fact);
+    }
+    // Never claim zero retention or that the providers never store anything.
+    expect(sub).not.toMatch(/zero (data )?retention|never (store|keep)s? (any|your) (data|messages)/i);
+    expect(en.privacyPolicy.sections[3].afterBullets?.at(-1)).toContain("Medi");
+    expect(en.privacyPolicy.sections[7].bullets?.[7]).toContain("OpenRouter, Inc. and Anthropic");
+    expect(en.termsOfService.sections[5].afterBullets?.at(-1)).toContain("can be wrong");
+    expect(en.legalCommon.whatChangedBody.startsWith("We added Medi")).toBe(true);
+  });
+
+  for (const { code } of locales) {
+    it(`${code}: §1.13, §4, §8, Terms §6 and the 2026-11-04 dates`, () => {
+      const pages = load(code);
+      const sub = pages.privacyPolicy.sections[0].subsections ?? [];
+      expect(sub).toHaveLength(13);
+      expect(sub[12].title).toMatch(/^1\.13 /);
+      expect(sub[12].title).toContain("Medi");
+      expect(sub[12].paragraphs).toHaveLength(4);
+      const text = flatten(sub[12]);
+      for (const k of ["OpenRouter", "Anthropic", "1024", "30", "13"]) expect(text).toContain(k);
+      expect(pages.privacyPolicy.sections[3].afterBullets?.at(-1)).toContain("Medi");
+      expect(pages.privacyPolicy.sections[7].bullets).toHaveLength(12);
+      expect(pages.privacyPolicy.sections[7].bullets?.[7]).toContain("Anthropic");
+      expect(pages.termsOfService.sections[5].afterBullets?.at(-1)).toContain("Medi");
+      expect(pages.legalCommon.whatChangedBody).toContain("Medi");
+      expect(pages.legalCommon.whatChangedBody).toContain("1.13");
+      expect(legalDay(pages.legalCommon.lastUpdated)).toBe("2026-11-04");
+      expect(legalDay(pages.legalCommon.whatChangedTitle)).toBe("2026-11-04");
+      if (code.toLowerCase() === "en-us") return;
+      expect(flatten(sub[12])).not.toBe(flatten(en.privacyPolicy.sections[0].subsections?.[12]));
+      expect(pages.termsOfService.sections[5].afterBullets?.at(-1)).not.toBe(en.termsOfService.sections[5].afterBullets?.at(-1));
+    });
+  }
+});
+
+describe("MM107 Medi UI shard", () => {
+  const shard = (code: string) =>
+    JSON.parse(readFileSync(join(__dirname, "locales", code.toLowerCase(), "interface", "assistant.json"), "utf8"));
+  const keys = (o: unknown, p = ""): string[] =>
+    o && typeof o === "object" ? Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => keys(v, p ? `${p}.${k}` : k)) : [p];
+  const get = (o: unknown, path: string): unknown => path.split(".").reduce<unknown>((a, k) => (a as Record<string, unknown>)?.[k], o);
+  const enShard = shard("en-US");
+  for (const { code } of locales) {
+    it(`${code}: assistant.json has every key, no English left (brand names aside)`, () => {
+      const s = shard(code);
+      expect(keys(s).sort()).toEqual(keys(enShard).sort());
+      if (code.toLowerCase() === "en-us") return;
+      for (const k of keys(enShard)) {
+        if (k.startsWith("assistant.editors.")) continue;
+        if (!String(get(enShard, k)).replace(/\{\{\s*\w+\s*\}\}/g, "").trim()) continue; // placeholder-only (the title)
+        expect(get(s, k), `${code} ${k}`).not.toBe(get(enShard, k));
+      }
     });
   }
 });

@@ -773,5 +773,8 @@
     "aiOpsUnlimited": "Tarefas de IA ilimitadas por dia",
     "fileSize": "Ficheiros até {{value}}",
     "compare": "Comparar todos os planos"
+  },
+  "mediGuideButton": {
+    "label": "Perguntar ao {{brand}}, o guia do Media Manipulator"
   }
 }

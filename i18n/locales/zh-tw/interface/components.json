@@ -770,5 +770,8 @@
     "aiOpsUnlimited": "每天無限個 AI 工作",
     "fileSize": "檔案最大 {{value}}",
     "compare": "比較所有方案"
+  },
+  "mediGuideButton": {
+    "label": "詢問 Media Manipulator 嚮導 {{brand}}"
   }
 }

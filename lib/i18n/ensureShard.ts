@@ -1,6 +1,6 @@
 import { getBrowserI18n } from '@/i18n';
 import { defaultLanguage } from '@/i18n/resources';
-import { SHARD_LOADERS } from '@/i18n/generated/shardLoaders.generated';
+import { ASSISTANT_SHARD_LOADERS, SHARD_LOADERS } from '@/i18n/generated/shardLoaders.generated';
 
 /**
  * Lazily merges the tool-surface translation shards into the live i18next
@@ -112,6 +112,48 @@ export function ensureToolShards(): Promise<void> {
  */
 export function withToolShards<T>(load: () => Promise<T>): Promise<T> {
   return ensureToolShards().then(load);
+}
+
+/**
+ * MM107: merges Medi's `interface/assistant.json` for the active language (and each language
+ * switched to afterwards). Call from the dynamic import of the guide sheet or a copilot panel,
+ * like `withToolShards`. Idempotent per language.
+ */
+const assistantPending = new Map<string, Promise<void>>();
+let assistantListenerBound = false;
+
+function ensureAssistantForLanguage(language: string): Promise<void> {
+  const lang = language && ASSISTANT_SHARD_LOADERS[language] ? language : defaultLanguage;
+  const existing = assistantPending.get(lang);
+  if (existing) return existing;
+  const pending = ASSISTANT_SHARD_LOADERS[lang]()
+    .then((mod) => {
+      getBrowserI18n().addResourceBundle(lang, 'interface', mod.default, true, true);
+    })
+    .catch((error) => {
+      assistantPending.delete(lang);
+      throw error;
+    });
+  assistantPending.set(lang, pending);
+  return pending;
+}
+
+export function ensureAssistantShard(): Promise<void> {
+  const i18n = getBrowserI18n();
+  if (!assistantListenerBound) {
+    assistantListenerBound = true;
+    i18n.on('languageChanged', (lng: string) => {
+      void ensureAssistantForLanguage(lng).catch(() => {});
+    });
+  }
+  const lang = i18n.language || defaultLanguage;
+  // English is the fallback language: load it too so a missing key never shows a raw key.
+  return Promise.all([ensureAssistantForLanguage(lang), lang === defaultLanguage ? null : ensureAssistantForLanguage(defaultLanguage)]).then(() => undefined);
+}
+
+/** `ensureAssistantShard()` composed with a dynamic import (for `next/dynamic`). */
+export function withAssistantShard<T>(load: () => Promise<T>): Promise<T> {
+  return ensureAssistantShard().then(load);
 }
 
 export default ensureToolShards;

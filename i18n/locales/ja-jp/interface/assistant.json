@@ -1,0 +1,54 @@
+{
+  "assistant": {
+    "guide": {
+      "open": "{{brand}}に質問",
+      "openLabel": "Media Manipulatorのガイド、{{brand}}に質問する",
+      "title": "{{brand}}",
+      "subtitle": "すべてのツールとエディターのガイド",
+      "close": "閉じる",
+      "newChat": "新しいチャット",
+      "history": "チャット履歴",
+      "historyEmpty": "ガイドとのチャットはここに表示されます。",
+      "historyBack": "チャットに戻る",
+      "historyLoadFailed": "チャットを読み込めませんでした。もう一度お試しください。",
+      "untitled": "無題のチャット",
+      "deleteChat": "このチャットを削除",
+      "welcome": "こんにちは、{{brand}}です。どのツールを使えばよいか、サイトのどこに何があるか、動画・写真・音声・アニメーションの編集方法などをお気軽に聞いてください。",
+      "placeholder": "Media Manipulatorについて{{brand}}に何でも質問できます…",
+      "send": "送信",
+      "stop": "停止",
+      "thinking": "考え中…",
+      "searching": "ヘルプページを確認しています…",
+      "stopped": "停止しました。",
+      "disclaimer": "{{brand}}はAIのため、間違えることがあります。回答のため、メッセージは当社のAIプロバイダーに送信されます。",
+      "privacyLink": "プライバシー",
+      "starters": {
+        "whichTool": "どのツールを使えばいい？",
+        "gif": "動画からGIFを作りたい",
+        "premium": "Premiumには何が含まれる？",
+        "photoPro": "写真をプロのように編集したい"
+      },
+      "copilotTeaser": "エディター内では、私が代わりに編集することもできます。",
+      "openEditor": "{{editor}}を開く",
+      "resting": "今日はお休み中です。こちらのページが役に立つはずです：",
+      "helpful": "役に立った",
+      "notHelpful": "役に立たなかった",
+      "thanks": "フィードバックありがとうございます。",
+      "feedbackSignedOut": "回答を評価するにはサインインしてください。"
+    },
+    "errors": {
+      "upstream": "{{brand}}は今は回答できませんでした。もう一度お試しください。",
+      "rateLimited": "短時間に多くの質問が送信されました。1分ほど待ってからもう一度お試しください。",
+      "paused": "{{brand}}は本日の上限に達したため、UTCの午前0時まで休止しています。",
+      "limit": "本日の{{brand}}の編集回数をすべて使用しました。",
+      "signIn": "エディターで{{brand}}を使うにはサインインしてください。",
+      "unavailable": "{{brand}}は現在ご利用いただけません。",
+      "generic": "問題が発生しました。もう一度お試しください。"
+    },
+    "editors": {
+      "studio": "Darkroom",
+      "vector": "Motion",
+      "photo": "Aperture"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "assistant": {
+    "guide": {
+      "open": "Hỏi {{brand}}",
+      "openLabel": "Hỏi {{brand}}, trợ lý hướng dẫn của Media Manipulator",
+      "title": "{{brand}}",
+      "subtitle": "Hướng dẫn cho mọi công cụ và trình chỉnh sửa",
+      "close": "Đóng",
+      "newChat": "Cuộc trò chuyện mới",
+      "history": "Cuộc trò chuyện của bạn",
+      "historyEmpty": "Các cuộc trò chuyện với trợ lý hướng dẫn sẽ hiện ở đây.",
+      "historyBack": "Quay lại cuộc trò chuyện",
+      "historyLoadFailed": "Không thể tải các cuộc trò chuyện của bạn. Hãy thử lại.",
+      "untitled": "Cuộc trò chuyện chưa có tên",
+      "deleteChat": "Xóa cuộc trò chuyện này",
+      "welcome": "Xin chào, mình là {{brand}}. Hãy hỏi mình nên dùng công cụ nào, tìm thứ gì đó ở đâu trên trang, hoặc cách chỉnh sửa video, ảnh, âm thanh hay hoạt ảnh.",
+      "placeholder": "Hỏi {{brand}} bất cứ điều gì về Media Manipulator…",
+      "send": "Gửi",
+      "stop": "Dừng",
+      "thinking": "Đang suy nghĩ…",
+      "searching": "Đang tìm trong các trang trợ giúp…",
+      "stopped": "Đã dừng.",
+      "disclaimer": "{{brand}} là AI và có thể mắc lỗi. Tin nhắn của bạn được gửi đến nhà cung cấp AI của chúng tôi để trả lời bạn.",
+      "privacyLink": "Quyền riêng tư",
+      "starters": {
+        "whichTool": "Tôi cần công cụ nào?",
+        "gif": "Tạo GIF từ video",
+        "premium": "Gói Premium có những gì?",
+        "photoPro": "Chỉnh ảnh như dân chuyên nghiệp"
+      },
+      "copilotTeaser": "Trong trình chỉnh sửa, mình có thể chỉnh sửa giúp bạn.",
+      "openEditor": "Mở {{editor}}",
+      "resting": "Hôm nay mình nghỉ rồi. Những trang này có thể giúp bạn:",
+      "helpful": "Hữu ích",
+      "notHelpful": "Không hữu ích",
+      "thanks": "Cảm ơn bạn đã góp ý.",
+      "feedbackSignedOut": "Đăng nhập để đánh giá câu trả lời."
+    },
+    "errors": {
+      "upstream": "{{brand}} chưa thể trả lời lúc này. Vui lòng thử lại.",
+      "rateLimited": "Bạn đã hỏi khá nhiều trong thời gian ngắn. Vui lòng đợi một phút rồi thử lại.",
+      "paused": "{{brand}} đã đạt giới hạn hôm nay và sẽ nghỉ đến nửa đêm theo giờ UTC.",
+      "limit": "Bạn đã dùng hết lượt chỉnh sửa {{brand}} của hôm nay.",
+      "signIn": "Đăng nhập để dùng {{brand}} trong các trình chỉnh sửa.",
+      "unavailable": "{{brand}} hiện không khả dụng.",
+      "generic": "Đã xảy ra lỗi. Vui lòng thử lại."
+    },
+    "editors": {
+      "studio": "Darkroom",
+      "vector": "Motion",
+      "photo": "Aperture"
+    }
+  }
+}

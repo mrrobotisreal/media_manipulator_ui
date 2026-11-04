@@ -1,0 +1,54 @@
+{
+  "assistant": {
+    "guide": {
+      "open": "{{brand}} fragen",
+      "openLabel": "{{brand}} fragen, den Guide von Media Manipulator",
+      "title": "{{brand}}",
+      "subtitle": "Ihr Guide für alle Tools und Editoren",
+      "close": "Schließen",
+      "newChat": "Neuer Chat",
+      "history": "Ihre Chats",
+      "historyEmpty": "Hier erscheinen Ihre Chats mit dem Guide.",
+      "historyBack": "Zurück zum Chat",
+      "historyLoadFailed": "Ihre Chats konnten nicht geladen werden. Versuchen Sie es erneut.",
+      "untitled": "Chat ohne Titel",
+      "deleteChat": "Diesen Chat löschen",
+      "welcome": "Hallo, ich bin {{brand}}. Fragen Sie mich, welches Tool Sie brauchen, wo Sie etwas auf der Website finden oder wie Sie ein Video, ein Foto, einen Sound oder eine Animation bearbeiten.",
+      "placeholder": "Fragen Sie {{brand}} alles über Media Manipulator…",
+      "send": "Senden",
+      "stop": "Stopp",
+      "thinking": "Denke nach…",
+      "searching": "Durchsuche die Hilfeseiten…",
+      "stopped": "Angehalten.",
+      "disclaimer": "{{brand}} ist eine KI und kann Fehler machen. Ihre Nachrichten werden an unseren KI-Anbieter gesendet, damit Sie eine Antwort erhalten.",
+      "privacyLink": "Datenschutz",
+      "starters": {
+        "whichTool": "Welches Tool brauche ich?",
+        "gif": "Aus einem Video ein GIF machen",
+        "premium": "Was ist in Premium enthalten?",
+        "photoPro": "Ein Foto wie ein Profi bearbeiten"
+      },
+      "copilotTeaser": "Im Editor kann ich Bearbeitungen für Sie vornehmen.",
+      "openEditor": "{{editor}} öffnen",
+      "resting": "Ich mache für heute Pause. Diese Seiten sollten helfen:",
+      "helpful": "Hilfreich",
+      "notHelpful": "Nicht hilfreich",
+      "thanks": "Danke für Ihr Feedback.",
+      "feedbackSignedOut": "Melden Sie sich an, um Antworten zu bewerten."
+    },
+    "errors": {
+      "upstream": "{{brand}} konnte gerade nicht antworten. Bitte versuchen Sie es erneut.",
+      "rateLimited": "Das sind viele Fragen in kurzer Zeit. Bitte warten Sie eine Minute und versuchen Sie es erneut.",
+      "paused": "{{brand}} hat das heutige Limit erreicht und pausiert bis Mitternacht UTC.",
+      "limit": "Sie haben die heutigen Bearbeitungen mit {{brand}} aufgebraucht.",
+      "signIn": "Melden Sie sich an, um {{brand}} in den Editoren zu nutzen.",
+      "unavailable": "{{brand}} ist gerade nicht verfügbar.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    },
+    "editors": {
+      "studio": "Darkroom",
+      "vector": "Motion",
+      "photo": "Aperture"
+    }
+  }
+}
