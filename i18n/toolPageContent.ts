@@ -33,6 +33,7 @@ import {
 import { toolPageOverrideModules } from "@/i18n/generated/toolPages.generated";
 import { defaultLocale, reviewedLocales } from "@/i18n/locales";
 import { withPhotoHandoff } from "@/content/photo/handoffs";
+import { isLocaleIndexHeld } from "@/content/localeIndexHold";
 
 /** Recursive deep-partial so overrides only need the fields they change. */
 type DeepPartial<T> = T extends (infer U)[]
@@ -238,6 +239,8 @@ export function localeBodyCoverage(slug: string, locale: string): LocaleBodyCove
  * and the only locales in which it may be indexed.
  */
 export function fullyCoveredLocaleCodes(slug: string): string[] {
+  // content/localeIndexHold.ts: a held page advertises English only.
+  if (isLocaleIndexHeld(slug)) return reviewedLocales.filter((l) => l.code === defaultLocale).map((l) => l.code);
   return reviewedLocales.filter((l) => localeBodyCoverage(slug, l.code).complete).map((l) => l.code);
 }
 

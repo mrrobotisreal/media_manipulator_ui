@@ -9,6 +9,7 @@
  * which must be 0.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { isLocaleIndexHeld } from "@/content/localeIndexHold";
 
 import { PENDING_ALLOWLIST, REVIEW_CATALOG_SLUGS, REVIEW_INDEXED_TOOL_SLUGS } from "@/content/reviewAllowlist";
 import { TOOL_PAGES } from "@/content/toolPages";
@@ -127,7 +128,10 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
       expect(gaps, code).toEqual([]);
     }
     for (const slug of REVIEW_INDEXED_TOOL_SLUGS) {
-      const expected = APERTURE_SLUGS.has(slug) ? ["en-US", "uk-UA", "ru-RU", "de-DE"].filter((c) => c === "en-US" || apertureDone.has(c)) : ["en-US", "uk-UA", "ru-RU", "de-DE"];
+      // content/localeIndexHold.ts: held pages advertise English only until the hold is lifted.
+      const expected = isLocaleIndexHeld(slug)
+        ? ["en-US"]
+        : APERTURE_SLUGS.has(slug) ? ["en-US", "uk-UA", "ru-RU", "de-DE"].filter((c) => c === "en-US" || apertureDone.has(c)) : ["en-US", "uk-UA", "ru-RU", "de-DE"];
       expect(fullyCoveredLocaleCodes(slug), slug).toEqual(expected);
     }
   });
@@ -136,7 +140,7 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
     const covered = fullyCoveredLocaleCodes(slug);
     for (const l of locales) {
       const meta = buildToolMetadata(slug, l.code);
-      const indexable = l.code === "en-US" || (l.translated && l.reviewed && localeBodyCoverage(slug, l.code).complete);
+      const indexable = l.code === "en-US" || (!isLocaleIndexHeld(slug) && l.translated && l.reviewed && localeBodyCoverage(slug, l.code).complete);
       expect(meta.robots, `${l.code}`).toEqual({ index: indexable, follow: true });
       if (indexable) {
         expect(Object.keys(meta.alternates?.languages ?? {}).sort(), l.code).toEqual([...covered, "x-default"].sort());
