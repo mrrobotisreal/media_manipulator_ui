@@ -99,6 +99,12 @@
           "moody": "इसे मूडी बनाएँ",
           "keepRed": "सिर्फ़ लाल रंग रखें",
           "vintage": "विंटेज फ़िल्म लुक"
+        },
+        "vector": {
+          "lowerThird": "स्लाइड होकर आने वाली लोअर थर्ड पट्टी",
+          "logoReveal": "मेरा लोगो दिखाइए",
+          "titlePop": "इस टेक्स्ट को एनिमेशन के साथ लाइए",
+          "forSocial": "इसे सोशल मीडिया के लिए कैसे एक्सपोर्ट करूँ?"
         }
       },
       "actions": {
@@ -132,6 +138,21 @@
         "purple": "बैंगनी",
         "magenta": "मैजेंटा",
         "custom": "चुने गए रंग"
+      },
+      "vectorChange": {
+        "addLayer": "{{layer}} लेयर जोड़ी",
+        "addText": "टेक्स्ट की एक पंक्ति जोड़ी",
+        "importSvg": "SVG इंपोर्ट किया",
+        "updateLayer": "{{layer}} बदला",
+        "deleteLayer": "{{layer}} हटाया",
+        "animate": "{{layer}} की {{property}} को एनिमेट किया",
+        "animator_one": "{{count}} लेयर पर {{animator}} लगाया",
+        "animator_other": "{{count}} लेयरों पर {{animator}} लगाया",
+        "template": "{{template}} टेम्पलेट जोड़ा",
+        "duration": "अवधि {{seconds}} सेकंड की",
+        "canvas": "कैनवस बदला",
+        "loopOn": "लूप चालू किया",
+        "loopOff": "लूप बंद किया"
       }
     }
   }
