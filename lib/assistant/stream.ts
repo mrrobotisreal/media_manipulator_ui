@@ -25,7 +25,7 @@ export interface AssistantChatBody {
   message?: { text: string };
   context?: { digest: string; projectId?: string };
   frame?: { jpegBase64: string };
-  editResult?: { callId: string; applied: boolean; errors?: string[]; frameAfter?: string };
+  editResult?: { callId: string; applied: boolean; errors?: string[]; frameAfter?: { jpegBase64: string } };
   plan?: boolean;
 }
 
