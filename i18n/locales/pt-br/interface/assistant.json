@@ -106,6 +106,12 @@
           "lowerThird": "Adicionar uma tarja inferior",
           "pauses": "Encurtar as pausas",
           "voice": "Deixar a voz mais clara"
+        },
+        "vector": {
+          "lowerThird": "Tarja inferior que entra deslizando",
+          "logoReveal": "Revelar meu logo",
+          "titlePop": "Animar a entrada deste texto",
+          "forSocial": "Como exporto isso para as redes sociais?"
         }
       },
       "actions": {
@@ -172,6 +178,22 @@
           "captionStyle": "Estilo das legendas alterado",
           "canvas": "Formato da imagem alterado para {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "Adicionei uma camada: {{layer}}",
+        "addText": "Adicionei uma linha de texto",
+        "importSvg": "Importei o SVG",
+        "updateLayer": "Alterei a camada {{layer}}",
+        "deleteLayer": "Excluí a camada {{layer}}",
+        "animate": "Animei {{property}} de {{layer}}",
+        "animator_one": "Apliquei {{animator}} em {{count}} camada",
+        "animator_many": "Apliquei {{animator}} em {{count}} camadas",
+        "animator_other": "Apliquei {{animator}} em {{count}} camadas",
+        "template": "Adicionei o modelo {{template}}",
+        "duration": "Defini a duração em {{seconds}} s",
+        "canvas": "Alterei a tela",
+        "loopOn": "Ativei a repetição",
+        "loopOff": "Desativei a repetição"
       }
     }
   }

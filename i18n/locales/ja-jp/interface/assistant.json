@@ -104,6 +104,12 @@
           "lowerThird": "ローワーサードを追加して",
           "pauses": "間を詰めて",
           "voice": "声を聞き取りやすくして"
+        },
+        "vector": {
+          "lowerThird": "スライドインするテロップ",
+          "logoReveal": "ロゴを登場させて",
+          "titlePop": "このテキストをアニメーションで表示",
+          "forSocial": "SNS用にはどう書き出せばいい?"
         }
       },
       "actions": {
@@ -168,6 +174,20 @@
           "captionStyle": "字幕のスタイルを変更しました",
           "canvas": "画面比率を{{aspect}}に変更しました"
         }
+      },
+      "vectorChange": {
+        "addLayer": "{{layer}}を追加しました",
+        "addText": "テキストを1行追加しました",
+        "importSvg": "SVGを読み込みました",
+        "updateLayer": "{{layer}}を変更しました",
+        "deleteLayer": "{{layer}}を削除しました",
+        "animate": "{{layer}}の{{property}}をアニメーションしました",
+        "animator_other": "{{count}}個のレイヤーに{{animator}}を適用しました",
+        "template": "テンプレート「{{template}}」を追加しました",
+        "duration": "長さを{{seconds}}秒にしました",
+        "canvas": "キャンバスを変更しました",
+        "loopOn": "ループ再生をオンにしました",
+        "loopOff": "ループ再生をオフにしました"
       }
     }
   }

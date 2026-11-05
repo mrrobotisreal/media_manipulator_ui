@@ -1184,6 +1184,39 @@
           "invalid": "Impossibile trasformare quel file Lottie in un'animazione."
         }
       }
+    },
+    "templates": {
+      "button": "Modelli",
+      "title": "Aggiungi un’animazione pronta",
+      "lowerThird": "Sottopancia",
+      "logoReveal": "Rivelazione del logo",
+      "titlePop": "Titolo che spunta",
+      "bulletReveal": "Punti uno alla volta",
+      "counter": "Contatore",
+      "badgeBounce": "Badge che rimbalza",
+      "hint": {
+        "lowerThird": "Nome e ruolo scivolano dentro sopra una barra d’accento.",
+        "logoReveal": "Disegna i contorni selezionati; gli altri livelli compaiono e crescono.",
+        "titlePop": "Un grande titolo centrato che spunta e si assesta.",
+        "bulletReveal": "Tre punti che scivolano dentro uno dopo l’altro.",
+        "counter": "Un numero che sale e si ferma sul totale.",
+        "badgeBounce": "Un badge rotondo che cade e rimbalza."
+      },
+      "placeholder": {
+        "name": "Il tuo nome",
+        "role": "Il tuo ruolo",
+        "title": "Il tuo titolo",
+        "bullet": "Punto {{n}}",
+        "badge": "NUOVO"
+      },
+      "failed": {
+        "logo": "Prima disegna una forma o importa il tuo logo, poi selezionalo.",
+        "generic": "Impossibile aggiungere questo modello all’animazione."
+      }
+    },
+    "medi": {
+      "label": "Chiedi a {{brand}} di animare (Ctrl+J)",
+      "historyLabel": "{{brand}}: {{summary}}"
     }
   },
   "metadataInspectPanel": {

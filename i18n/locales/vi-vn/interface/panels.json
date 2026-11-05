@@ -1172,6 +1172,39 @@
           "invalid": "Không thể chuyển tệp Lottie đó thành hoạt ảnh."
         }
       }
+    },
+    "templates": {
+      "button": "Mẫu",
+      "title": "Thêm hoạt ảnh có sẵn",
+      "lowerThird": "Dải chữ dưới",
+      "logoReveal": "Hiện logo",
+      "titlePop": "Tiêu đề bật lên",
+      "bulletReveal": "Gạch đầu dòng lần lượt",
+      "counter": "Bộ đếm",
+      "badgeBounce": "Huy hiệu nảy",
+      "hint": {
+        "lowerThird": "Tên và chức danh trượt vào trên một thanh màu nhấn.",
+        "logoReveal": "Vẽ dần các đường viền đã chọn; các lớp khác hiện dần và lớn lên.",
+        "titlePop": "Một tiêu đề lớn ở giữa bật lên rồi đứng yên.",
+        "bulletReveal": "Ba ý lần lượt trượt vào.",
+        "counter": "Một con số đếm lên và dừng ở tổng.",
+        "badgeBounce": "Một huy hiệu tròn rơi xuống và nảy lên."
+      },
+      "placeholder": {
+        "name": "Tên của bạn",
+        "role": "Chức danh của bạn",
+        "title": "Tiêu đề của bạn",
+        "bullet": "Ý {{n}}",
+        "badge": "MỚI"
+      },
+      "failed": {
+        "logo": "Hãy vẽ một hình hoặc nhập logo trước, rồi chọn nó.",
+        "generic": "Không thể thêm mẫu này vào hoạt ảnh."
+      }
+    },
+    "medi": {
+      "label": "Nhờ {{brand}} tạo hoạt ảnh (Ctrl+J)",
+      "historyLabel": "{{brand}}: {{summary}}"
     }
   },
   "metadataInspectPanel": {

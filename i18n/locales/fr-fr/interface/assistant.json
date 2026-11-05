@@ -106,6 +106,12 @@
           "lowerThird": "Ajouter un bandeau",
           "pauses": "Resserrer les pauses",
           "voice": "Rendre la voix plus claire"
+        },
+        "vector": {
+          "lowerThird": "Un bandeau titre qui glisse",
+          "logoReveal": "Révéler mon logo",
+          "titlePop": "Animer l’apparition de ce texte",
+          "forSocial": "Comment l’exporter pour les réseaux sociaux ?"
         }
       },
       "actions": {
@@ -172,6 +178,22 @@
           "captionStyle": "Style des sous-titres modifié",
           "canvas": "Format de l’image changé en {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "Calque ajouté : {{layer}}",
+        "addText": "Ligne de texte ajoutée",
+        "importSvg": "SVG importé",
+        "updateLayer": "Calque {{layer}} modifié",
+        "deleteLayer": "Calque {{layer}} supprimé",
+        "animate": "{{property}} de {{layer}} animé",
+        "animator_one": "{{animator}} appliqué à {{count}} calque",
+        "animator_many": "{{animator}} appliqué à {{count}} calques",
+        "animator_other": "{{animator}} appliqué à {{count}} calques",
+        "template": "Modèle {{template}} ajouté",
+        "duration": "Durée réglée sur {{seconds}} s",
+        "canvas": "Canevas modifié",
+        "loopOn": "Lecture en boucle activée",
+        "loopOff": "Lecture en boucle désactivée"
       }
     }
   }

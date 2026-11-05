@@ -105,6 +105,12 @@
           "lowerThird": "Add a lower-third",
           "pauses": "Tighten the pauses",
           "voice": "Make the voice clearer"
+        },
+        "vector": {
+          "lowerThird": "Lower-third that slides in",
+          "logoReveal": "Reveal my logo",
+          "titlePop": "Animate this text in",
+          "forSocial": "How do I export this for social?"
         }
       },
       "actions": {
@@ -170,6 +176,21 @@
           "captionStyle": "Restyled the captions",
           "canvas": "Changed the frame to {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "Added a {{layer}}",
+        "addText": "Added a line of text",
+        "importSvg": "Imported the SVG",
+        "updateLayer": "Changed {{layer}}",
+        "deleteLayer": "Deleted {{layer}}",
+        "animate": "Animated {{property}} of {{layer}}",
+        "animator_one": "Applied {{animator}} to {{count}} layer",
+        "animator_other": "Applied {{animator}} to {{count}} layers",
+        "template": "Added the {{template}} template",
+        "duration": "Set the length to {{seconds}} s",
+        "canvas": "Changed the canvas",
+        "loopOn": "Turned looping on",
+        "loopOff": "Turned looping off"
       }
     }
   }

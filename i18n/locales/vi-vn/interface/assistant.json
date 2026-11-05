@@ -104,6 +104,12 @@
           "lowerThird": "Thêm thanh tên phía dưới",
           "pauses": "Rút ngắn các khoảng lặng",
           "voice": "Làm giọng nói rõ hơn"
+        },
+        "vector": {
+          "lowerThird": "Dải chữ dưới trượt vào",
+          "logoReveal": "Làm logo của tôi xuất hiện",
+          "titlePop": "Tạo hiệu ứng xuất hiện cho chữ này",
+          "forSocial": "Xuất cho mạng xã hội thế nào?"
         }
       },
       "actions": {
@@ -168,6 +174,20 @@
           "captionStyle": "Đã đổi kiểu phụ đề",
           "canvas": "Đã đổi tỉ lệ khung hình thành {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "Đã thêm lớp {{layer}}",
+        "addText": "Đã thêm một dòng chữ",
+        "importSvg": "Đã nhập SVG",
+        "updateLayer": "Đã thay đổi {{layer}}",
+        "deleteLayer": "Đã xóa {{layer}}",
+        "animate": "Đã tạo hoạt ảnh {{property}} cho {{layer}}",
+        "animator_other": "Đã áp dụng {{animator}} cho {{count}} lớp",
+        "template": "Đã thêm mẫu {{template}}",
+        "duration": "Đã đặt thời lượng {{seconds}} giây",
+        "canvas": "Đã thay đổi khung vẽ",
+        "loopOn": "Đã bật phát lặp",
+        "loopOff": "Đã tắt phát lặp"
       }
     }
   }

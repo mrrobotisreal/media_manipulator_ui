@@ -106,6 +106,12 @@
           "lowerThird": "הוספת כותרת תחתונה",
           "pauses": "קיצור ההפסקות",
           "voice": "שיפור צלילות הקול"
+        },
+        "vector": {
+          "lowerThird": "כתובית תחתונה שמחליקה פנימה",
+          "logoReveal": "חשפו את הלוגו שלי",
+          "titlePop": "הנפישו את כניסת הטקסט הזה",
+          "forSocial": "איך מייצאים את זה לרשתות החברתיות?"
         }
       },
       "actions": {
@@ -172,6 +178,22 @@
           "captionStyle": "סגנון הכתוביות שונה",
           "canvas": "יחס התמונה שונה ל-{{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "הוספתי שכבה: {{layer}}",
+        "addText": "הוספתי שורת טקסט",
+        "importSvg": "ייבאתי את ה-SVG",
+        "updateLayer": "שיניתי את השכבה {{layer}}",
+        "deleteLayer": "מחקתי את השכבה {{layer}}",
+        "animate": "הנפשתי את {{property}} של {{layer}}",
+        "animator_one": "החלתי {{animator}} על שכבה אחת ({{count}})",
+        "animator_two": "החלתי {{animator}} על שתי שכבות ({{count}})",
+        "animator_other": "החלתי {{animator}} על {{count}} שכבות",
+        "template": "הוספתי את התבנית {{template}}",
+        "duration": "קבעתי את האורך ל-{{seconds}} שנ׳",
+        "canvas": "שיניתי את משטח העבודה",
+        "loopOn": "הפעלתי חזרה בלולאה",
+        "loopOff": "כיביתי חזרה בלולאה"
       }
     }
   }

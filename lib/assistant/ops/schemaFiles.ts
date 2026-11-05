@@ -7,6 +7,7 @@
  */
 import { photoOpsJsonSchema } from './photo';
 import { studioOpsJsonSchema } from './studio';
+import { vectorOpsJsonSchema } from './vector';
 
 /** Relative to the UI repo root. */
 export const OPS_SCHEMA_DIR = 'lib/assistant/ops/schema';
@@ -17,5 +18,9 @@ export const schemaFileText = (schema: unknown): string => `${JSON.stringify(sch
 
 /** Every generated schema file, `<surface>.json` → bytes. MM109 adds studio, MM110 vector. */
 export function buildOpsSchemaFiles(): Record<string, string> {
-  return { 'photo.json': schemaFileText(photoOpsJsonSchema()), 'studio.json': schemaFileText(studioOpsJsonSchema()) };
+  return {
+    'photo.json': schemaFileText(photoOpsJsonSchema()),
+    'studio.json': schemaFileText(studioOpsJsonSchema()),
+    'vector.json': schemaFileText(vectorOpsJsonSchema()),
+  };
 }

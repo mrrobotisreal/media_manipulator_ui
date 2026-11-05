@@ -106,6 +106,12 @@
           "lowerThird": "Agregar un cintillo inferior",
           "pauses": "Recortar las pausas",
           "voice": "Hacer la voz más clara"
+        },
+        "vector": {
+          "lowerThird": "Cintillo inferior que entra deslizándose",
+          "logoReveal": "Revela mi logo",
+          "titlePop": "Anima la entrada de este texto",
+          "forSocial": "¿Cómo lo exporto para redes sociales?"
         }
       },
       "actions": {
@@ -172,6 +178,22 @@
           "captionStyle": "Estilo de subtítulos cambiado",
           "canvas": "Formato de imagen cambiado a {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "Agregué una capa: {{layer}}",
+        "addText": "Agregué una línea de texto",
+        "importSvg": "Importé el SVG",
+        "updateLayer": "Cambié {{layer}}",
+        "deleteLayer": "Eliminé {{layer}}",
+        "animate": "Animé {{property}} de {{layer}}",
+        "animator_one": "Apliqué {{animator}} a {{count}} capa",
+        "animator_many": "Apliqué {{animator}} a {{count}} capas",
+        "animator_other": "Apliqué {{animator}} a {{count}} capas",
+        "template": "Agregué la plantilla {{template}}",
+        "duration": "Ajusté la duración a {{seconds}} s",
+        "canvas": "Cambié el lienzo",
+        "loopOn": "Activé la repetición",
+        "loopOff": "Desactivé la repetición"
       }
     }
   }

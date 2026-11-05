@@ -1184,6 +1184,39 @@
           "invalid": "Não foi possível transformar esse arquivo Lottie em uma animação."
         }
       }
+    },
+    "templates": {
+      "button": "Modelos",
+      "title": "Adicionar uma animação pronta",
+      "lowerThird": "Tarja inferior",
+      "logoReveal": "Revelação do logo",
+      "titlePop": "Título que surge",
+      "bulletReveal": "Tópicos um a um",
+      "counter": "Contador",
+      "badgeBounce": "Selo quicando",
+      "hint": {
+        "lowerThird": "Nome e cargo entram deslizando sobre uma barra de destaque.",
+        "logoReveal": "Desenha os contornos selecionados; as outras camadas aparecem e crescem.",
+        "titlePop": "Um título grande e centralizado que surge e se acomoda.",
+        "bulletReveal": "Três tópicos que entram um depois do outro.",
+        "counter": "Um número que sobe e para no total.",
+        "badgeBounce": "Um selo redondo que cai e quica."
+      },
+      "placeholder": {
+        "name": "Seu nome",
+        "role": "Seu cargo",
+        "title": "Seu título",
+        "bullet": "Tópico {{n}}",
+        "badge": "NOVO"
+      },
+      "failed": {
+        "logo": "Primeiro desenhe uma forma ou importe seu logo e depois selecione-o.",
+        "generic": "Não foi possível adicionar este modelo à animação."
+      }
+    },
+    "medi": {
+      "label": "Pedir ao {{brand}} para animar (Ctrl+J)",
+      "historyLabel": "{{brand}}: {{summary}}"
     }
   },
   "metadataInspectPanel": {

@@ -1184,6 +1184,39 @@
           "invalid": "Ce fichier Lottie n'a pas pu être converti en animation."
         }
       }
+    },
+    "templates": {
+      "button": "Modèles",
+      "title": "Ajouter une animation toute prête",
+      "lowerThird": "Bandeau titre",
+      "logoReveal": "Révélation du logo",
+      "titlePop": "Titre qui surgit",
+      "bulletReveal": "Puces une à une",
+      "counter": "Compteur",
+      "badgeBounce": "Pastille rebondissante",
+      "hint": {
+        "lowerThird": "Nom et fonction glissent sur une barre d’accent.",
+        "logoReveal": "Trace les contours sélectionnés ; les autres calques apparaissent en grandissant.",
+        "titlePop": "Un grand titre centré qui surgit puis se pose.",
+        "bulletReveal": "Trois points qui glissent l’un après l’autre.",
+        "counter": "Un nombre qui défile jusqu’au total.",
+        "badgeBounce": "Une pastille ronde qui tombe et rebondit."
+      },
+      "placeholder": {
+        "name": "Votre nom",
+        "role": "Votre fonction",
+        "title": "Votre titre",
+        "bullet": "Point {{n}}",
+        "badge": "NOUVEAU"
+      },
+      "failed": {
+        "logo": "Dessinez d’abord une forme ou importez votre logo, puis sélectionnez-le.",
+        "generic": "Impossible d’ajouter ce modèle à l’animation."
+      }
+    },
+    "medi": {
+      "label": "Demander une animation à {{brand}} (Ctrl+J)",
+      "historyLabel": "{{brand}} : {{summary}}"
     }
   },
   "metadataInspectPanel": {

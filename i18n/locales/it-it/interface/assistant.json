@@ -106,6 +106,12 @@
           "lowerThird": "Aggiungi un sottopancia",
           "pauses": "Accorcia le pause",
           "voice": "Rendi la voce più chiara"
+        },
+        "vector": {
+          "lowerThird": "Sottopancia che scivola dentro",
+          "logoReveal": "Rivela il mio logo",
+          "titlePop": "Anima l’entrata di questo testo",
+          "forSocial": "Come lo esporto per i social?"
         }
       },
       "actions": {
@@ -172,6 +178,22 @@
           "captionStyle": "Stile dei sottotitoli modificato",
           "canvas": "Formato dell’immagine cambiato in {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "Ho aggiunto un livello: {{layer}}",
+        "addText": "Ho aggiunto una riga di testo",
+        "importSvg": "Ho importato l’SVG",
+        "updateLayer": "Ho modificato {{layer}}",
+        "deleteLayer": "Ho eliminato {{layer}}",
+        "animate": "Ho animato {{property}} di {{layer}}",
+        "animator_one": "Ho applicato {{animator}} a {{count}} livello",
+        "animator_many": "Ho applicato {{animator}} a {{count}} livelli",
+        "animator_other": "Ho applicato {{animator}} a {{count}} livelli",
+        "template": "Ho aggiunto il modello {{template}}",
+        "duration": "Ho impostato la durata a {{seconds}} s",
+        "canvas": "Ho modificato la tela",
+        "loopOn": "Ho attivato la ripetizione",
+        "loopOff": "Ho disattivato la ripetizione"
       }
     }
   }

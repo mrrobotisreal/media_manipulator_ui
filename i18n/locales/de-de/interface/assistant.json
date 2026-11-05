@@ -105,6 +105,12 @@
           "lowerThird": "Bauchbinde hinzufügen",
           "pauses": "Pausen straffen",
           "voice": "Stimme klarer machen"
+        },
+        "vector": {
+          "lowerThird": "Bauchbinde, die hereingleitet",
+          "logoReveal": "Mein Logo enthüllen",
+          "titlePop": "Diesen Text einblenden",
+          "forSocial": "Wie exportiere ich das für Social Media?"
         }
       },
       "actions": {
@@ -170,6 +176,21 @@
           "captionStyle": "Untertitel neu gestaltet",
           "canvas": "Bildformat auf {{aspect}} geändert"
         }
+      },
+      "vectorChange": {
+        "addLayer": "Ebene hinzugefügt: {{layer}}",
+        "addText": "Eine Textzeile hinzugefügt",
+        "importSvg": "SVG importiert",
+        "updateLayer": "„{{layer}}“ geändert",
+        "deleteLayer": "„{{layer}}“ gelöscht",
+        "animate": "{{property}} von „{{layer}}“ animiert",
+        "animator_one": "{{animator}} auf {{count}} Ebene angewendet",
+        "animator_other": "{{animator}} auf {{count}} Ebenen angewendet",
+        "template": "Vorlage „{{template}}“ hinzugefügt",
+        "duration": "Länge auf {{seconds}} s gesetzt",
+        "canvas": "Arbeitsfläche geändert",
+        "loopOn": "Wiederholung eingeschaltet",
+        "loopOff": "Wiederholung ausgeschaltet"
       }
     }
   }

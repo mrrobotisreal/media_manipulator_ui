@@ -105,6 +105,12 @@
           "lowerThird": "Añadir un rótulo inferior",
           "pauses": "Recortar las pausas",
           "voice": "Que la voz se oiga más clara"
+        },
+        "vector": {
+          "lowerThird": "Rótulo inferior que entra deslizándose",
+          "logoReveal": "Revela mi logotipo",
+          "titlePop": "Anima la entrada de este texto",
+          "forSocial": "¿Cómo lo exporto para redes sociales?"
         }
       },
       "actions": {
@@ -172,6 +178,22 @@
           "captionStyle": "Estilo de subtítulos cambiado",
           "canvas": "Formato de imagen cambiado a {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "He añadido una capa: {{layer}}",
+        "addText": "He añadido una línea de texto",
+        "importSvg": "He importado el SVG",
+        "updateLayer": "He cambiado la capa {{layer}}",
+        "deleteLayer": "He eliminado la capa {{layer}}",
+        "animate": "He animado {{property}} de {{layer}}",
+        "animator_one": "He aplicado {{animator}} a {{count}} capa",
+        "animator_many": "He aplicado {{animator}} a {{count}} capas",
+        "animator_other": "He aplicado {{animator}} a {{count}} capas",
+        "template": "He añadido la plantilla {{template}}",
+        "duration": "He fijado la duración en {{seconds}} s",
+        "canvas": "He cambiado el lienzo",
+        "loopOn": "He activado la repetición",
+        "loopOff": "He desactivado la repetición"
       }
     }
   }

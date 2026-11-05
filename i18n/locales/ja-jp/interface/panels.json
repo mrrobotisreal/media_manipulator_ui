@@ -1172,6 +1172,39 @@
           "invalid": "そのLottieファイルをアニメーションに変換できませんでした。"
         }
       }
+    },
+    "templates": {
+      "button": "テンプレート",
+      "title": "既製のアニメーションを追加",
+      "lowerThird": "テロップ",
+      "logoReveal": "ロゴリビール",
+      "titlePop": "タイトルポップ",
+      "bulletReveal": "箇条書きを順に表示",
+      "counter": "カウンター",
+      "badgeBounce": "弾むバッジ",
+      "hint": {
+        "lowerThird": "名前と肩書きがアクセントバーの上にスライドイン。",
+        "logoReveal": "選択した輪郭を描き、他のレイヤーはフェードしながら拡大。",
+        "titlePop": "中央の大きなタイトルがポップして落ち着きます。",
+        "bulletReveal": "3つの項目が順番にスライドイン。",
+        "counter": "数字がカウントアップして合計で止まります。",
+        "badgeBounce": "丸いバッジが落ちてきて弾みます。"
+      },
+      "placeholder": {
+        "name": "お名前",
+        "role": "肩書き",
+        "title": "見出し",
+        "bullet": "項目{{n}}",
+        "badge": "新着"
+      },
+      "failed": {
+        "logo": "まず図形を描くかロゴを読み込んでから、それを選択してください。",
+        "generic": "このテンプレートをアニメーションに追加できませんでした。"
+      }
+    },
+    "medi": {
+      "label": "{{brand}}にアニメーションを頼む(Ctrl+J)",
+      "historyLabel": "{{brand}}: {{summary}}"
     }
   },
   "metadataInspectPanel": {

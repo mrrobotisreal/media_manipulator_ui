@@ -111,6 +111,8 @@ export interface ExportDialogProps {
   raster?: () => Promise<RasterRuntime>;
   /** MM49: the analytics sink (consent-gated by default). */
   track?: VectorTracker;
+  /** MM110: the format to open on (Medi's "export for …" suggestion); the user still clicks Export. */
+  initialFormat?: string | null;
 }
 
 const loadRasterRuntime = () => import('@/lib/vector/raster/run').then((m) => m.createRasterRuntime());
@@ -122,6 +124,7 @@ export const rasterFileName = (name: string | undefined, f: RasterFormat) => bas
 type Format = 'svg_animated' | 'svg_static' | CodeFormat | RasterFormat;
 const isCode = (f: Format): f is CodeFormat => (CODE_FORMATS as readonly string[]).includes(f);
 const isRaster = (f: Format): f is RasterFormat => (RASTER_FORMATS as readonly string[]).includes(f);
+const isFormat = (f: string): f is Format => f === 'svg_animated' || f === 'svg_static' || isCode(f as Format) || isRaster(f as Format);
 /** The server format a dialog format is counted as (null: static SVG, never counted). */
 const serverFormatOf = (f: Format): VectorExportFormat | null => (f === 'svg_static' ? null : isCode(f) ? SERVER_FORMAT[f] : f);
 const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
@@ -152,10 +155,13 @@ export function ExportDialog({
   probe = defaultProbe,
   raster = loadRasterRuntime,
   track = vectorTracker,
+  initialFormat = null,
 }: ExportDialogProps) {
   const { t } = useLocalization('interface');
   const countedHidden = isIrreversibleActionHidden();
-  const [format, setFormat] = React.useState<Format>(countedHidden ? 'svg_static' : 'svg_animated');
+  const [format, setFormat] = React.useState<Format>(() =>
+    countedHidden ? 'svg_static' : initialFormat && isFormat(initialFormat) ? initialFormat : 'svg_animated',
+  );
   const [status, setStatus] = React.useState<Status>({ kind: 'idle' });
   const [forceAnime, setForceAnime] = React.useState(false);
   const choice = React.useMemo(() => chooseRuntime(doc, { forceAnime }), [doc, forceAnime]);
@@ -196,7 +202,7 @@ export function ExportDialog({
   const sendGated = (format: Format | 'import_lottie', cta: GateCta, tier?: string) => {
     track.track(EVENTS.VECTOR_EXPORT_GATED, { format, tier: tierProp(tier ?? callerTier), upgrade_path: cta });
   };
-  const [rasterOptions, setRasterOptions] = React.useState<RasterOptions>(() => defaultRasterOptions('gif', doc));
+  const [rasterOptions, setRasterOptions] = React.useState<RasterOptions>(() => defaultRasterOptions(isRaster(format) ? format : 'gif', doc));
   const [gif, setGif] = React.useState<GifSettings>({ transparent: true, dither: false, plays: doc.loop === false ? 1 : 0 });
   const abortRef = React.useRef<AbortController | null>(null);
   React.useEffect(() => () => abortRef.current?.abort(), []);

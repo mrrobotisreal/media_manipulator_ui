@@ -104,6 +104,12 @@
           "lowerThird": "加入下三分之一字幕條",
           "pauses": "縮短停頓",
           "voice": "讓人聲更清楚"
+        },
+        "vector": {
+          "lowerThird": "滑入的下方字幕條",
+          "logoReveal": "讓我的標誌登場",
+          "titlePop": "為這段文字加入進場動畫",
+          "forSocial": "要怎麼匯出到社群平台？"
         }
       },
       "actions": {
@@ -168,6 +174,20 @@
           "captionStyle": "已修改字幕樣式",
           "canvas": "已將畫面比例改為 {{aspect}}"
         }
+      },
+      "vectorChange": {
+        "addLayer": "已新增{{layer}}",
+        "addText": "已新增一行文字",
+        "importSvg": "已匯入 SVG",
+        "updateLayer": "已修改{{layer}}",
+        "deleteLayer": "已刪除{{layer}}",
+        "animate": "已為{{layer}}的{{property}}加入動畫",
+        "animator_other": "已對 {{count}} 個圖層套用{{animator}}",
+        "template": "已新增範本「{{template}}」",
+        "duration": "長度已設為 {{seconds}} 秒",
+        "canvas": "已修改畫布",
+        "loopOn": "已開啟循環播放",
+        "loopOff": "已關閉循環播放"
       }
     }
   }
