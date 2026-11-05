@@ -26,6 +26,7 @@ import { useStudioStore } from '@/lib/studioStore';
 import { useDeriveStudioAsset, type StudioDeriveOperation } from '@/lib/useStudioAsset';
 import { grabPreviewCanvas } from '@/lib/studio/frameGrab';
 import { captionGenerateBridge, exportDialogBridge, voiceoverBridge } from '@/lib/studio/editorBridges';
+import { prefillFromParams } from '@/lib/studio/exportOptions';
 import { studioHost } from '@/lib/studio/telemetry';
 import type { AssistantCapabilities } from '@/schemas/assistant';
 import type { AssistantTrack } from '@/lib/assistant/useAssistantStream';
@@ -80,8 +81,9 @@ function useStudioAdapter(refs: React.RefObject<Refs | null>) {
         onVoiceover: (text) => {
           voiceoverBridge.request(text);
         },
-        onExport: () => {
-          exportDialogBridge.request();
+        onExport: (params) => {
+          // MM118: open the dialog prefilled from Medi's validated params; the user presses Export.
+          exportDialogBridge.request(prefillFromParams(params));
         },
         onOpenTool: (p) => {
           const slug = typeof p.slug === 'string' && /^[a-z0-9][a-z0-9-]{0,79}$/.test(p.slug) ? p.slug : null;

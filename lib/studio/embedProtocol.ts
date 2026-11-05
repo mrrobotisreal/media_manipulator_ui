@@ -136,7 +136,14 @@ export interface CsExportHistoryMessage {
   running: number;
   entries: Array<{
     jobId: string;
-    format: 'h264' | 'hevc' | 'mp3' | 'wav';
+    /**
+     * The derived output label (MM118): 'h264' | 'hevc' | 'mp3' | 'wav' as before, or
+     * '<container>_<video>_<audio>' (e.g. 'mov_hevc_aac') for the new outputs. The CreaTV
+     * embed only ever renders the legacy MP4, so a CreaTV host sees the old values.
+     */
+    format: string;
+    /** MM118 (additive): mp4 | mov | mkv | mp3 | wav. */
+    container?: string;
     resolution: number;
     status: 'running' | 'completed' | 'failed';
     available: boolean;

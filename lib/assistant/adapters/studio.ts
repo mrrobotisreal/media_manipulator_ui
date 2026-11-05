@@ -48,7 +48,8 @@ export interface StudioAdapterDeps {
   onGenerateCaptions: (language: string | null) => void | Promise<void>;
   onDeriveAudio: (clipId: string | null, operation: StudioDeriveKind) => void | Promise<void>;
   onVoiceover: (text: string | null) => void;
-  onExport: () => void;
+  /** MM118: the server-validated export params (preset or container/codecs, resolution, captionsMode, upgrade). */
+  onExport: (params: Record<string, unknown>) => void;
   onOpenTool: (params: Record<string, unknown>) => void;
 }
 
@@ -310,7 +311,7 @@ export function createStudioAdapter(deps: StudioAdapterDeps): CopilotAdapter {
         return deps.onDeriveAudio(typeof p.clipId === 'string' ? p.clipId : null, op);
       },
       voiceover: (p) => deps.onVoiceover(typeof p.text === 'string' ? p.text.slice(0, 2000) : null),
-      export: () => deps.onExport(),
+      export: (p) => deps.onExport(p ?? {}),
       open_tool: (p) => deps.onOpenTool(p),
     },
   };

@@ -24,6 +24,7 @@
  * capture. Findings are warnings only.
  */
 
+import { STATIC_STUDIO_OUTPUTS } from '@/lib/studio/studioOutputs';
 import { z } from 'zod';
 
 import type { AnalyticsClient } from './client';
@@ -60,10 +61,18 @@ const studioHostEnum = z.enum(['mm', 'creatv']);
 const onboardingStepId = z.enum(['keep_results', 'darkroom_projects', 'retention']);
 const retentionBucketEnum = z.enum(['24h', '7d', '30d', '90d', '6mo', '1y', '2y', 'custom']);
 const studioHostProps = z.object({ host: studioHostEnum.optional() }).strict();
+// MM118: the derived output label is the API output table's closed list (+ the pre-part-20 'mp4').
+const studioOutputFormats = [...STATIC_STUDIO_OUTPUTS.formats, 'mp4'] as unknown as [string, ...string[]];
 const studioExportProps = z
   .object({
     preset: z.enum(['low', 'medium', 'high']),
-    format: z.enum(['h264', 'hevc', 'mp3', 'wav', 'mp4']),
+    format: z.enum(studioOutputFormats),
+    container: z.enum(STATIC_STUDIO_OUTPUTS.containers.map((c) => c.key) as [string, ...string[]]).optional(),
+    videoCodec: z.enum(['h264', 'hevc', 'none']).optional(),
+    audioCodec: z.enum(STATIC_STUDIO_OUTPUTS.codecs.filter((c) => c.kind === 'audio').map((c) => c.key) as [string, ...string[]]).optional(),
+    audioBitrate: z.number().int().min(0).max(320).optional(),
+    audioChannels: z.union([z.literal(1), z.literal(2)]).optional(),
+    mode: z.enum(['preset', 'advanced']).optional(),
     resolution: z.string(),
     captionsMode: z.enum(['none', 'burn_in', 'sidecar']).optional(),
     durationRatioBucket: z.string().optional(),
@@ -440,6 +449,14 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   studio_export_started: studioExportProps,
   studio_export_completed: studioExportProps,
   studio_export_failed: studioExportProps,
+  studio_export_format_locked: z
+    .object({
+      option: z.enum([...STATIC_STUDIO_OUTPUTS.tokens, 'advanced'] as unknown as [string, ...string[]]),
+      required: z.enum(['free', 'premium', 'pro']),
+      tier,
+      host: studioHostEnum.optional(),
+    })
+    .strict(),
   studio_publish_requested: z
     .object({ embed: z.boolean(), host: studioHostEnum.optional() })
     .strict(),

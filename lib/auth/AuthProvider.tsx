@@ -227,7 +227,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // another one that is already open. (The sign-up panel is a different surface and the 429
   // for anonymous callers still goes there.)
   const openInterstitial = useCallback((input: InterstitialDetail) => {
-    if (!claimInterstitial(limitKeyOf(input))) return;
+    // MM118: a click on a locked export option is the user asking; it is never rate-limited.
+    const clicked = input.kind === 'limit' && input.detail.fromClick === true;
+    if (!clicked && !claimInterstitial(limitKeyOf(input))) return;
     setInterstitial((current) => current ?? input);
   }, []);
 

@@ -28,7 +28,7 @@ describe('export depth capability', () => {
   });
 
   it('CreaTV adaptExport never sees the new fields', () => {
-    const req = buildExportRequest({ fileName: 'x', ...DEFAULT_EXPORT_CHOICES, format: 'hevc', resolution: 2160 }, creatv.capabilities.exportDepth);
+    const req = buildExportRequest({ fileName: 'x', ...DEFAULT_EXPORT_CHOICES, outputPreset: 'mov_hevc', resolution: 2160 }, creatv.capabilities.exportDepth);
     const wire = creatv.adaptExport(req) as Record<string, unknown>;
     expect(Object.keys(wire).sort()).toEqual(['channel_id', 'fileName', 'loudness', 'preset', 'user_id']);
   });
@@ -39,5 +39,10 @@ describe('export depth capability', () => {
       exports: [{ id: 'e', jobId: 'j', format: 'hevc', resolution: 1440, captionsMode: 'sidecar', status: 'running', createdAt: 'now', available: false }],
     });
     expect(rows[0]).toMatchObject({ jobId: 'j', format: 'hevc', resolution: 1440 });
+    // MM118: a new-output row parses (label + parts).
+    const mov = createMmBackend().parseExports({
+      exports: [{ id: 'e', jobId: 'j', format: 'mov_hevc_aac', container: 'mov', videoCodec: 'hevc', audioCodec: 'aac', audioBitrate: 192, audioChannels: 2, resolution: 0, captionsMode: 'none', status: 'completed', createdAt: 'now', available: true }],
+    });
+    expect(mov[0]).toMatchObject({ format: 'mov_hevc_aac', container: 'mov' });
   });
 });

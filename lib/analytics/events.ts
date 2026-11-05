@@ -141,6 +141,8 @@ export const EVENTS = {
   STUDIO_EXPORT_COMPLETED: 'studio_export_completed',
   STUDIO_EXPORT_FAILED: 'studio_export_failed',
   STUDIO_PUBLISH_REQUESTED: 'studio_publish_requested',
+  /** MM118: a locked export option (container, codec or Advanced) was clicked. */
+  STUDIO_EXPORT_FORMAT_LOCKED: 'studio_export_format_locked',
   STUDIO_RECOVERY_OFFERED: 'studio_recovery_offered',
   STUDIO_RECOVERY_ACCEPTED: 'studio_recovery_accepted',
   STUDIO_SAVE_CONFLICT: 'studio_save_conflict',
@@ -342,6 +344,7 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   studio_export_completed: PRIORITY_CRITICAL,
   studio_export_failed: PRIORITY_CRITICAL,
   studio_publish_requested: PRIORITY_CRITICAL,
+  studio_export_format_locked: PRIORITY_HIGH,
   studio_recovery_offered: PRIORITY_HIGH,
   studio_recovery_accepted: PRIORITY_HIGH,
   studio_save_conflict: PRIORITY_HIGH,
@@ -907,8 +910,24 @@ export interface StudioCaptionsGeneratedProps extends StudioHostProp {
 
 export interface StudioExportStartedProps extends StudioHostProp {
   preset: 'low' | 'medium' | 'high';
-  /** Part 20: h264 | hevc | mp3 | wav. (Pre-part-20 builds sent 'mp4'.) */
-  format: 'h264' | 'hevc' | 'mp3' | 'wav' | 'mp4';
+  /**
+   * The derived output label (MM118): 'h264' | 'hevc' | 'mp3' | 'wav' for the combinations
+   * those always meant, else '<container>_<video>_<audio>' from the API's output table
+   * (closed list: lib/studio/studioOutputs.json `formats`). Pre-part-20 builds sent 'mp4'.
+   */
+  format: string;
+  /** MM118: mp4 | mov | mkv | mp3 | wav. Absent from the legacy CreaTV body. */
+  container?: string;
+  /** MM118: h264 | hevc | none. */
+  videoCodec?: string;
+  /** MM118: aac | pcm_s16le | mp3. */
+  audioCodec?: string;
+  /** MM118: kbps from the codec's closed list; 0 = the codec has none (PCM). */
+  audioBitrate?: number;
+  /** MM118: 1 | 2. */
+  audioChannels?: number;
+  /** MM118: preset list or the Premium/Pro Advanced picker. */
+  mode?: 'preset' | 'advanced';
   /**
    * Output height rung ('720p' | '1080p' | '1440p' | '2160p'), or 'canvas' for the
    * project's own size, or 'audio' for audio-only. A closed vocabulary; never a
@@ -926,6 +945,15 @@ export interface StudioExportCompletedProps extends StudioExportStartedProps {
 
 export interface StudioExportFailedProps extends StudioExportStartedProps {
   durationRatioBucket?: string;
+}
+
+export interface StudioExportFormatLockedProps extends StudioHostProp {
+  /** An output token (mp4|mov|mkv|mp3|wav|h264|hevc|aac|pcm_s16le) or 'advanced'. */
+  option: string;
+  /** The lowest plan that unlocks it. */
+  required: 'free' | 'premium' | 'pro';
+  /** The caller's tier. */
+  tier: Tier;
 }
 
 export interface StudioPublishRequestedProps extends StudioHostProp {
@@ -1542,6 +1570,7 @@ export interface EventPropsMap {
   studio_export_completed: StudioExportCompletedProps;
   studio_export_failed: StudioExportFailedProps;
   studio_publish_requested: StudioPublishRequestedProps;
+  studio_export_format_locked: StudioExportFormatLockedProps;
   studio_recovery_offered: StudioRecoveryOfferedProps;
   studio_recovery_accepted: StudioRecoveryAcceptedProps;
   studio_save_conflict: StudioSaveConflictProps;

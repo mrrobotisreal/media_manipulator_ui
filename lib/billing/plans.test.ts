@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { isPaidTier, isTopTier, tierRank, type Tier } from '@/lib/auth/accountApi';
-import { LIMIT_FIELDS, limitRaisedByPro, paidPlanOf, upsellTargetFor } from './plans';
+import { LIMIT_FIELDS, limitRaisedByPro, paidPlanOf, studioFormatOffer, upsellTargetFor } from './plans';
 import { displayPrice } from './price';
 import { tiersFixture } from './test-utils';
 
@@ -84,5 +84,29 @@ describe('displayPrice (the one price helper, MM69 seam)', () => {
   it('renders the served numeral', () => {
     expect(displayPrice(15)).toBe('$15');
     expect(displayPrice(150)).toBe('$150');
+  });
+});
+
+// MM118: a 403 format_not_in_plan sells the plan that unlocks the format; Pro only for Pro-only.
+describe('studioFormatOffer (MM118 decision 8)', () => {
+  it('routes by the required plan, never by tier alone', () => {
+    const cases: Array<[Tier | undefined, string | undefined, string | undefined]> = [
+      ['anonymous', 'free', 'signup'],
+      ['anonymous', 'premium', 'signup'],
+      ['free', 'premium', 'premium'],
+      ['free', 'pro', 'pro'],
+      ['premium', 'pro', 'pro'],
+      ['premium', 'premium', undefined],
+      ['pro', 'pro', undefined],
+      ['free', 'free', undefined],
+      ['operator', 'pro', undefined],
+      ['free', undefined, undefined],
+    ];
+    for (const [tier, required, want] of cases) {
+      expect(studioFormatOffer(tier, required), `${tier} needs ${required}`).toBe(want);
+    }
+  });
+  it('studio_format is a LIMIT_FIELDS key', () => {
+    expect(LIMIT_FIELDS.studio_format).toBe('studioFormats');
   });
 });

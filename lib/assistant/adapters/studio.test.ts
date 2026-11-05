@@ -117,6 +117,9 @@ describe('Darkroom adapter (MM109)', () => {
     expect(spies.onVoiceover).toHaveBeenCalledWith('Welcome back');
     adapter.suggest.export!({});
     expect(spies.onExport).toHaveBeenCalledTimes(1);
+    // MM118: the server-validated params reach the export bridge for the prefill.
+    adapter.suggest.export!({ preset: 'mov_h264', container: 'mov' });
+    expect(spies.onExport).toHaveBeenLastCalledWith({ preset: 'mov_h264', container: 'mov' });
   });
 
   it('verify frames only after visual ops', () => {

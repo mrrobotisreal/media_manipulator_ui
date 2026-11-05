@@ -25,6 +25,9 @@ export const LIMIT_FIELDS = {
   output_height_limited: 'maxOutputHeight',
   ladder_height_limited: 'maxLadderHeight',
   project_limit_reached: 'studioProjects',
+  // MM118: a Darkroom output (container, codec or Advanced) the plan lacks. Not numeric: the
+  // offer follows the refusal's `required` plan (studioFormatOffer), never this field's value.
+  studio_format: 'studioFormats',
 } as const satisfies Record<string, keyof TierLimits>;
 
 export type LimitKey = keyof typeof LIMIT_FIELDS;
@@ -73,6 +76,27 @@ export function limitRaisedByPro(limitKey: string, tiers?: TiersResponse | null)
 
 /** What an upsell surface offers for a limit hit: sign up, a plan, or nothing. */
 export type UpsellTarget = 'signup' | PaidPlan | undefined;
+
+/**
+ * MM118: the offer for a 403 format_not_in_plan. The plan that unlocks the format decides:
+ * an anonymous caller signs up first; Pro is offered ONLY when the format is Pro-only
+ * (`required === 'pro'`), so a free account asking for a Premium format is sold Premium and
+ * a Premium caller is sold Pro only for a Pro-only format; a caller already on (or above)
+ * the required plan is offered nothing.
+ */
+export function studioFormatOffer(tier: Tier | undefined, required: string | undefined): UpsellTarget {
+  if (tier === 'anonymous') return 'signup';
+  switch (required) {
+    case 'free':
+      return tier ? undefined : 'signup';
+    case 'premium':
+      return tier === 'free' ? 'premium' : undefined;
+    case 'pro':
+      return tier === 'free' || tier === 'premium' ? 'pro' : undefined;
+    default:
+      return undefined;
+  }
+}
 
 export function upsellTargetFor(
   tier: Tier | undefined,

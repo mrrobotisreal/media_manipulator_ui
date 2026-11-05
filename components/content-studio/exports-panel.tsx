@@ -30,8 +30,10 @@ import {
   isAudioFormat,
   jobsToWatch,
   mergeExportRows,
-  resolutionLabel,
+  recordOutput,
+  rerenderExportProps,
 } from '@/lib/studio/exportOptions';
+import { outputHumanLabel } from '@/lib/studio/studioOutputs';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEmbedBridgeOptional } from './embed-bridge';
 import type { StudioExportRecord } from '@/lib/studioTypes';
@@ -126,13 +128,8 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
       const res = await renderAgain.mutateAsync(row.id);
       editSummary.increment('exportsRerendered');
       editSummary.increment('uiInvocations');
-      const props = {
-        preset: (['low', 'medium', 'high'].includes(row.preset ?? '') ? row.preset : 'high') as 'low' | 'medium' | 'high',
-        format: row.format,
-        resolution: isAudioFormat(row.format) ? 'audio' : resolutionLabel(row.resolution),
-        captionsMode: row.captionsMode,
-        host: studioHost(),
-      };
+      // MM118: the derived label, its output parts and the mode the stored row implies.
+      const props = rerenderExportProps(row, studioHost());
       rerenderProps.current[res.jobId] = props;
       analytics.track(EVENTS.STUDIO_EXPORT_STARTED, props, { job_id: res.jobId, feature: 'studio' });
       toast.success(t('contentStudio.exports.rerenderStarted'));
@@ -228,7 +225,8 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
                           {(row.fileName || 'export') + '.' + formatExtension(row.format)}
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {t(`contentStudio.exports.format_${row.format}`)}
+                          {/* MM118: "MOV · H.265 · AAC 192k"; container/codec names are universal. */}
+                          {outputHumanLabel(recordOutput(row))}
                           {!isAudioFormat(row.format) && ` · ${row.resolution > 0 ? `${row.resolution}p` : t('contentStudio.exports.canvas')}`}
                           {' · '}
                           {formatDate(row.createdAt)}

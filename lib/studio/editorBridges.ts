@@ -25,5 +25,8 @@ function bridge<A extends unknown[]>() {
 export const captionGenerateBridge = bridge<[language: string | null]>();
 /** Media bin: open the Generate voiceover dialog, optionally prefilled. */
 export const voiceoverBridge = bridge<[text: string | null]>();
-/** Toolbar: open the export dialog. */
-export const exportDialogBridge = bridge<[]>();
+/**
+ * Toolbar: open the export dialog. MM118: optionally prefilled from Medi's validated export
+ * params (the user still presses Export; nothing renders or spends until then).
+ */
+export const exportDialogBridge = bridge<[prefill?: import('./exportOptions').ExportPrefill | null]>();
