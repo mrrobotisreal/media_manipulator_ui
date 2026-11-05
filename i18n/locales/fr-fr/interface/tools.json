@@ -202,7 +202,9 @@
       "saveFailed": "Échec de l'enregistrement",
       "conflict": "Conflit d'enregistrement",
       "undo": "Annuler",
+      "undoNamed": "Annuler : {{step}}",
       "redo": "Rétablir",
+      "redoNamed": "Rétablir : {{step}}",
       "mobileHint": "Darkroom fonctionne mieux sur un grand écran avec une souris ou un pavé tactile.",
       "shortcuts": "Espace lecture/pause · ←/→ image par image · V/C/Y/U/H outils · ⌘/Ctrl+K couper · S magnétisme · M marqueur · Q/W rogner et resserrer · Suppr supprimer · +/− zoom · ⌘Z annuler · ? tous les raccourcis",
       "tabs": {

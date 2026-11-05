@@ -31,7 +31,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import { useLocalization } from '@/i18n/useLocalization';
-import { useStudioStore, clipDuration, clipEnd } from '@/lib/studioStore';
+import { useStudioStore, clipDuration, clipEnd, MEDI_HISTORY_PREFIX } from '@/lib/studioStore';
+import { MEDI_BRAND } from '@/lib/assistant/brand';
 import {
   useProjectQuery,
   useProjectAssetsQuery,
@@ -876,6 +877,11 @@ const EMPTY_DRAFT_SUMMARY: DraftChangeSummary = {
   otherChanges: false,
 };
 
+/** "Medi|Cinematic grade" → "Medi: Cinematic grade" (the brand comes from one place). */
+function historyLabelText(label: string): string {
+  return label.startsWith(MEDI_HISTORY_PREFIX) ? `${MEDI_BRAND}: ${label.slice(MEDI_HISTORY_PREFIX.length)}` : label;
+}
+
 /**
  * Undo/redo chrome buttons. Enabled state tracks the history stacks; the
  * snapshots and gesture batching live in the store (ADR ui/0001). Same
@@ -888,6 +894,11 @@ const UndoRedoButtons: React.FC = () => {
   const canRedo = useStudioStore((s) => s.future.length > 0);
   const undo = useStudioStore((s) => s.undo);
   const redo = useStudioStore((s) => s.redo);
+  // MM109: a labelled step (Medi's edits) names itself in the tooltip: "Undo Medi: Cinematic grade".
+  const undoName = useStudioStore((s) => (s.past.length ? s.undoLabel() : undefined));
+  const redoName = useStudioStore((s) => (s.future.length ? s.redoLabel() : undefined));
+  const undoTitle = undoName ? t('contentStudio.editor.undoNamed', { step: historyLabelText(undoName) }) : t('contentStudio.editor.undo');
+  const redoTitle = redoName ? t('contentStudio.editor.redoNamed', { step: historyLabelText(redoName) }) : t('contentStudio.editor.redo');
   return (
     <div className="flex items-center gap-1">
       <Button
@@ -900,8 +911,8 @@ const UndoRedoButtons: React.FC = () => {
           editSummary.increment('uiInvocations');
           undo();
         }}
-        title={t('contentStudio.editor.undo')}
-        aria-label={t('contentStudio.editor.undo')}
+        title={undoTitle}
+        aria-label={undoTitle}
       >
         <Undo2 className="w-4 h-4" />
       </Button>
@@ -914,8 +925,8 @@ const UndoRedoButtons: React.FC = () => {
           editSummary.increment('uiInvocations');
           redo();
         }}
-        title={t('contentStudio.editor.redo')}
-        aria-label={t('contentStudio.editor.redo')}
+        title={redoTitle}
+        aria-label={redoTitle}
       >
         <Redo2 className="w-4 h-4" />
       </Button>

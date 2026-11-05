@@ -202,7 +202,9 @@
       "saveFailed": "Salvataggio non riuscito",
       "conflict": "Conflitto di salvataggio",
       "undo": "Annulla",
+      "undoNamed": "Annulla: {{step}}",
       "redo": "Ripeti",
+      "redoNamed": "Ripeti: {{step}}",
       "mobileHint": "Darkroom funziona meglio su uno schermo più grande con mouse o trackpad.",
       "shortcuts": "Spazio riproduci/pausa · ←/→ passo · V/C/Y/U/H strumenti · ⌘/Ctrl+K dividi · S agganciamento · M marcatore · Q/W rifila con ripple · Canc elimina · +/− zoom · ⌘Z annulla · ? tutte le scorciatoie",
       "tabs": {

@@ -202,7 +202,9 @@
       "saveFailed": "Error al guardar",
       "conflict": "Conflicto al guardar",
       "undo": "Deshacer",
+      "undoNamed": "Deshacer: {{step}}",
       "redo": "Rehacer",
+      "redoNamed": "Rehacer: {{step}}",
       "mobileHint": "Darkroom funciona mejor en una pantalla más grande con ratón o trackpad.",
       "shortcuts": "Espacio reproducir/pausar · ←/→ avanzar fotograma · V/C/Y/U/H herramientas · ⌘/Ctrl+K dividir · S imán · M marcador · Q/W recorte en cascada · Supr eliminar · +/− zoom · ⌘Z deshacer · ? todos los atajos",
       "tabs": {

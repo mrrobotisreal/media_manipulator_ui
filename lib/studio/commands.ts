@@ -16,7 +16,9 @@ import type { CommandId } from '@/lib/studio/keymap';
  * tool already active) counts nothing. `repeat` presses (key held down) run but
  * are not counted again.
  */
-export type CommandSource = 'shortcut' | 'ui';
+// MM109: 'assistant' = run on Medi's behalf; it counts the command's own counter (a split is a
+// split however it was made) but neither shortcut nor UI invocations.
+export type CommandSource = 'shortcut' | 'ui' | 'assistant';
 
 const TOOL_BY_COMMAND = {
   'tool.select': 'select',
@@ -32,7 +34,7 @@ export function runCommand(command: CommandId, source: CommandSource, opts: { re
   const count = (extra?: () => void) => {
     if (opts.repeat) return;
     extra?.();
-    editSummary.increment(source === 'shortcut' ? 'shortcutInvocations' : 'uiInvocations');
+    if (source !== 'assistant') editSummary.increment(source === 'shortcut' ? 'shortcutInvocations' : 'uiInvocations');
   };
   const fps = Math.max(1, st.project.fps || 30);
 

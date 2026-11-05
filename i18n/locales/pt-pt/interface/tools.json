@@ -202,7 +202,9 @@
       "saveFailed": "Falha ao guardar",
       "conflict": "Conflito ao guardar",
       "undo": "Anular",
+      "undoNamed": "Anular: {{step}}",
       "redo": "Refazer",
+      "redoNamed": "Refazer: {{step}}",
       "mobileHint": "O Darkroom funciona melhor num ecrã maior, com rato ou trackpad.",
       "shortcuts": "Espaço reproduzir/pausar · ←/→ avançar · V/C/Y/U/H ferramentas · ⌘/Ctrl+K dividir · S ajuste magnético · M marcador · Q/W corte em cadeia · Del eliminar · +/− zoom · ⌘Z anular · ? todos os atalhos",
       "tabs": {
