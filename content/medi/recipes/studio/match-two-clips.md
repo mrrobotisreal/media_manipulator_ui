@@ -33,3 +33,8 @@ The values come from comparing the two clips: the example warms down and brighte
 ## How to adjust
 
 Still different: move the playhead to each clip and send a frame of both. Overcorrected: halve the numbers.
+
+## Success criteria
+
+- meanLuma 0.35-0.55
+- warmth -0.08-0.12

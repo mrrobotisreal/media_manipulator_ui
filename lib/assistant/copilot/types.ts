@@ -52,6 +52,11 @@ export interface CopilotAdapter {
   digest(): string;
   /** The current preview as a ≤ 1024 px JPEG, or null (no frame is sent). */
   captureFrame(): Promise<Blob | null>;
+  /**
+   * MM115 (optional): the meters of the current preview. Aperture answers from its histogram; the
+   * others omit it and the hook measures the frame `captureFrame` already produced.
+   */
+  metrics?(): Record<string, number> | null;
   /** The server project id the conversation belongs to (null for a guest/local document). */
   projectId(): string | null;
   /** Validate and apply `ops` all-or-nothing as ONE undo entry labelled with `summary`. */

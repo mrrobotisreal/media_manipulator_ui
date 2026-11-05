@@ -9,6 +9,7 @@
  */
 import { LAYER_TYPES, type LayerType, type PhotoDoc } from '@/lib/photo/photoTypes';
 import type { PhotoState } from '@/lib/photo/photoStore';
+import { metricsFromHistogram } from '@/lib/assistant/metrics';
 import type { Histogram } from '@/lib/photo/gl/histogram';
 import type { StoreApi, UseBoundStore } from 'zustand';
 
@@ -180,6 +181,10 @@ export function createPhotoAdapter(deps: PhotoAdapterDeps): CopilotAdapter {
       return photoDigest({ doc: s.doc, selection: s.selection, histogram: deps.histogram(), previewSize: deps.previewSize() });
     },
     captureFrame: () => deps.captureFrame(),
+    metrics() {
+      const h = deps.histogram();
+      return h ? metricsFromHistogram(h) : null;
+    },
     projectId: () => deps.projectId(),
     apply(summary, ops): CopilotApplyResult {
       const s = deps.store.getState();

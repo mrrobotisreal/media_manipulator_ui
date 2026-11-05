@@ -21,6 +21,18 @@ export const AssistantActionKindSchema = z.enum([
 ]);
 export type AssistantActionKind = z.infer<typeof AssistantActionKindSchema>;
 
+/**
+ * MM115: the browser's meters of the current preview (`context.metrics`, `editResult.metricsBefore/After`).
+ * Short identifier names, finite bounded numbers, at most 128 of them and 4 KB serialized: the same
+ * limits as the API's `analyze.MetricSet.Validate`.
+ */
+export const ASSISTANT_METRICS_MAX_BYTES = 4096;
+export const AssistantMetricsSchema = z
+  .record(z.string().regex(/^[A-Za-z][A-Za-z0-9_]{0,31}$/), z.number().finite().min(-1e6).max(1e6))
+  .refine((m) => Object.keys(m).length <= 128, 'at most 128 metrics')
+  .refine((m) => JSON.stringify(m).length <= ASSISTANT_METRICS_MAX_BYTES, 'metrics are larger than 4 KB');
+export type AssistantMetrics = z.infer<typeof AssistantMetricsSchema>;
+
 // ---------------------------------------------------------------------------
 // SSE events of POST /api/assistant/chat:
 //   meta → (delta | tool)* → [edits | action | ask]* → usage → done

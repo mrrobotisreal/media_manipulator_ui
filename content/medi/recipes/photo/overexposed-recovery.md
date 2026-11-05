@@ -32,3 +32,8 @@ Detail that is truly white cannot come back, but near-white detail can. Lower ex
 ## How to adjust
 
 Now too dark overall: set `ev` to -0.3. Sky still flat white: that area clipped in camera; say so honestly. Looks dull: add `vibranceSaturation` with `vibrance` 15.
+
+## Success criteria
+
+- meanLuma 0.4-0.6
+- highlightsClipped <= 0.01

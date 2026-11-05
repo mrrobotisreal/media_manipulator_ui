@@ -31,3 +31,9 @@ Moving the input black and white points to where the data starts and ends restor
 ## How to adjust
 
 Shadows crush: `inBlack` 0.02. Too bright: `gamma` 0.95. Colour cast: adjust the r/g/b channels the same way.
+
+## Success criteria
+
+- shadowsClipped <= 0.01
+- highlightsClipped <= 0.01
+- lumaStd >= 0.18

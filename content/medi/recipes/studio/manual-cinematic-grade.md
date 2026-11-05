@@ -33,3 +33,9 @@ Clip ids come from the timeline digest; `"all"` grades every video and image cli
 ## How to adjust
 
 Too muted: saturation 0.95. Too warm: temperature 3. Flat: contrast 1.2. Cooler night feel: temperature -12, tint 4.
+
+## Success criteria
+
+- meanLuma 0.3-0.5
+- lumaStd >= 0.15
+- highlightsClipped <= 0.02

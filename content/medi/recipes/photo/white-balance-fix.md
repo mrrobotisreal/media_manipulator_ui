@@ -33,3 +33,8 @@ Sign: a yellow/orange cast needs negative `temperature`, a blue cast positive; g
 ## How to adjust
 
 Overcorrected: halve the values. Want a cosy feel afterwards: apply `warm`; a crisp winter feel: `cool`.
+
+## Success criteria
+
+- warmth -0.05-0.05
+- tint -0.04-0.04

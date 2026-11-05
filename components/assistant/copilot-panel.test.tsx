@@ -270,6 +270,39 @@ describe('CopilotPanel + useCopilot', () => {
     expect(track.mock.calls.find((c) => c[0] === 'assistant_edits_applied')?.[1]).toEqual({ surface: 'photo', op_count: 1, op_kinds: 'grey_except', round: 1 });
   });
 
+  it('sends meters with the message and metricsBefore/After with the verify round (MM115)', async () => {
+    let n = 0;
+    const { a } = fakeAdapter({ metrics: () => (n++ === 0 ? { meanLuma: 0.2, shadowsClipped: 0.08 } : { meanLuma: 0.4, shadowsClipped: 0.004 }) });
+    h.scripts.push(editTurn, confirm);
+    renderPanel(a);
+    await send('Brighten it');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(h.calls[0].context?.metrics).toEqual({ meanLuma: 0.2, shadowsClipped: 0.08 });
+    expect(h.calls[1].editResult?.metricsBefore).toEqual({ meanLuma: 0.2, shadowsClipped: 0.08 });
+    expect(h.calls[1].editResult?.metricsAfter).toEqual({ meanLuma: 0.4, shadowsClipped: 0.004 });
+  });
+
+  it('sends no meters when the preview toggle is off, and drops invalid ones', async () => {
+    const { a } = fakeAdapter({ metrics: () => ({ meanLuma: 0.2 }) });
+    h.scripts.push(editTurn, confirm);
+    renderPanel(a);
+    fireEvent.click(screen.getByTestId('copilot-preview-toggle'));
+    await send('Moody please');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(h.calls[0].context?.metrics).toBeUndefined();
+    expect(h.calls[1].editResult?.metricsAfter).toBeUndefined();
+
+    cleanup();
+    h.calls = [];
+    localStorage.clear();
+    const bad = fakeAdapter({ metrics: () => ({ 'bad name': 1 }) });
+    h.scripts.push(editTurn, confirm);
+    renderPanel(bad.a);
+    await send('Again');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(h.calls[0].context?.metrics).toBeUndefined();
+  });
+
   it('with "Let Medi see the preview" off, no frame is captured or sent (message or verify)', async () => {
     const { a } = fakeAdapter();
     h.scripts.push(editTurn, confirm);

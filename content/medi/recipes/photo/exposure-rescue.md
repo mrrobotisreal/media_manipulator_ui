@@ -32,3 +32,9 @@ A professional lifts exposure first, then protects what was already bright. Rais
 ## How to adjust
 
 Still dark: raise `ev` in steps of 0.2 (stay under about 1.5 or noise shows). Looks flat or grey: lower `shadows` to 20 and push `blacks` to -15. Highlights clip: lower `highlights` to -45. Noisy after brightening: add the low-light noise recipe.
+
+## Success criteria
+
+- meanLuma 0.35-0.55
+- shadowsClipped <= 0.01
+- highlightsClipped <= 0.02
