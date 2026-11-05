@@ -13,6 +13,7 @@ import { vectorDigest, VECTOR_DIGEST_MAX_CHARS } from '@/lib/assistant/digest/ve
 import { createVectorStore } from '@/lib/vector/vectorStore';
 import { parseVectorDoc, serializeVectorDoc, type VectorDoc } from '@/lib/vector/vectorTypes';
 
+import { vectorRevealBridge } from '@/lib/assistant/copilot/revealBridges';
 import { createVectorAdapter, describeVectorOps } from './vector';
 
 const t = (key: string, vars?: Record<string, unknown>) => (vars ? `${key}${JSON.stringify(vars)}` : key);
@@ -162,5 +163,44 @@ describe('Motion digest', () => {
     const out = vectorDigest({ doc: doc(layers), selection: [], time: 0 });
     expect(out.length).toBeLessThanOrEqual(VECTOR_DIGEST_MAX_CHARS);
     expect(out).toMatch(/more layers not shown/);
+  });
+});
+
+describe('Motion adapter: MM114 preview and Show me', () => {
+  it('preview is a dry run: the document and history are untouched, and it lists before → after values', () => {
+    const { store, adapter } = setup();
+    const before = serializeVectorDoc(store.getState().doc!);
+    const r = adapter.preview!([{ op: 'update_layer', layerId: 'headline', patch: { opacity: 0.4 }, reason: 'The headline competes with the logo' }]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.lines[0].reason).toBe('The headline competes with the logo');
+    expect(r.lines[0].values.some((v) => v.label.includes('opacity') && v.after === '0.4')).toBe(true);
+    expect(serializeVectorDoc(store.getState().doc!)).toBe(before);
+    expect(store.getState().past).toHaveLength(0);
+  });
+
+  it('preview refuses what apply would refuse', () => {
+    const { adapter } = setup();
+    expect(adapter.preview!([{ op: 'delete_layer', layerId: 'ghost' }])).toMatchObject({ ok: false, reason: 'unknown_id' });
+  });
+
+  it('reveal(op) asks the Motion bridge for the layer and property row of the op', () => {
+    const { adapter } = setup();
+    const seen: unknown[] = [];
+    const off = vectorRevealBridge.register((target) => seen.push(target));
+    const op = { op: 'animate', layerId: 'headline', property: 'opacity', keyframes: [{ t: 0, value: 0, easing: 'linear' }] };
+    expect(adapter.canReveal!(op)).toBe(true);
+    expect(adapter.reveal!(op)).toBe(true);
+    expect(seen).toEqual([{ layerId: 'headline', property: 'opacity', keys: ['vector:property.headline.opacity', 'vector:layer.headline'] }]);
+    expect(adapter.canReveal!({ op: 'set_loop', loop: true })).toBe(false);
+    expect(adapter.canReveal!({ op: 'delete_layer', layerId: 'ghost' })).toBe(false);
+    off();
+    expect(adapter.reveal!(op)).toBe(false);
+  });
+
+  it('apply returns per-op lines carrying each op reason', () => {
+    const { adapter } = setup();
+    const r = adapter.apply('Fade', [{ op: 'update_layer', layerId: 'headline', patch: { opacity: 0.5 }, reason: 'Soften the title' }]);
+    expect(r.ok && r.lines?.[0]).toMatchObject({ op: 'update_layer', reason: 'Soften the title' });
   });
 });

@@ -1256,6 +1256,7 @@ const ClipBlockImpl: React.FC<ClipBlockProps> = ({
     <div
       ref={setNodeRef}
       {...attributes}
+      data-reveal={`studio:clip.${clip.id}`}
       onClick={(e) => {
         e.stopPropagation();
         if (toolMode === 'razor') {

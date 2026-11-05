@@ -12,7 +12,12 @@
 import type { StoreApi, UseBoundStore } from 'zustand';
 
 import type { StudioProject } from '@/lib/studioTypes';
-import type { CopilotAdapter, CopilotApplyResult, CopilotEditToken } from '@/lib/assistant/copilot/types';
+import type { CopilotAdapter, CopilotApplyResult, CopilotChangeLine, CopilotDiffLine, CopilotEditToken, CopilotPreviewResult } from '@/lib/assistant/copilot/types';
+import { labelOr, leafChanges } from '@/lib/assistant/copilot/diff';
+import { perOpLines } from '@/lib/assistant/copilot/lines';
+import { studioRevealBridge, type StudioRevealTarget } from '@/lib/assistant/copilot/revealBridges';
+import { applyStudioOps } from '@/lib/assistant/ops/applyStudio';
+import { lockedViolation } from '@/lib/studioStore';
 import { studioDigest, type StudioDigestAsset } from '@/lib/assistant/digest/studio';
 import { CANVAS_ASPECTS, type StudioOp } from '@/lib/assistant/ops/studio';
 import { trackLabel } from '@/lib/assistant/ops/applyStudio';
@@ -52,6 +57,11 @@ export const STUDIO_VISUAL_OPS: ReadonlySet<string> = new Set(['grade', 'apply_l
 
 /** The plain-words "what I changed" lines of an applied op list (templated keys, never model text). */
 export function describeStudioOps(ops: StudioOp[], before: StudioProject, t: Translate): string[] {
+  return ops.flatMap((o) => describeStudioOp(o, before, t));
+}
+
+/** One op's lines (the change card shows them per op). */
+export function describeStudioOp(o: StudioOp, before: StudioProject, t: Translate): string[] {
   const clipName = (id: string) => {
     for (const tr of before.tracks) {
       const c = tr.clips.find((x) => x.id === id);
@@ -61,7 +71,7 @@ export function describeStudioOps(ops: StudioOp[], before: StudioProject, t: Tra
   };
   const clips = (ref: 'all' | string[]) => (ref === 'all' ? t('assistant.copilot.studio.allClips') : ref.map(clipName).join(', '));
   const out: string[] = [];
-  for (const o of ops) {
+  {
     const k = (key: string, vars: Record<string, unknown> = {}) => out.push(t(`assistant.copilot.studio.change.${key}`, vars));
     switch (o.op) {
       case 'split':
@@ -125,6 +135,93 @@ export function describeStudioOps(ops: StudioOp[], before: StudioProject, t: Tra
   return out;
 }
 
+
+/** Per-op lines of the change card (MM114). */
+export function studioChangeLines(ops: StudioOp[], before: StudioProject, t: Translate): CopilotChangeLine[] {
+  return perOpLines(ops, (o) => describeStudioOp(o, before, t));
+}
+
+/** The user-facing numbers of a clip that an op can change (the diff card compares these). */
+function pickClip(c: StudioProject['tracks'][number]['clips'][number]) {
+  const effects = c.effects ?? [];
+  const grade = effects.find((e) => e.type === 'lumetri' && !e.id.startsWith('look-')) as Record<string, unknown> | undefined;
+  const look = effects.filter((e) => e.id.startsWith('look-')).map((e) => e.id).join(',');
+  const lut = effects.find((e) => e.type === 'lut') as { intensity?: number } | undefined;
+  const gradeParams = Object.fromEntries(Object.entries(grade ?? {}).filter(([k]) => k !== 'id' && k !== 'type' && k !== 'enabled'));
+  return {
+    transform: c.transform ? { x: c.transform.x, y: c.transform.y, scale: c.transform.scale, rotationDeg: c.transform.rotationDeg } : undefined,
+    opacity: c.opacity,
+    speed: c.speed,
+    volume: c.volume,
+    lumetri: grade ? gradeParams : undefined,
+    look: look || undefined,
+    lut: lut?.intensity,
+    transition: c.transition ? c.transition.durationSeconds : undefined,
+  };
+}
+
+const MOTION_LABEL: Record<string, string> = { x: 'x', y: 'y', scale: 'scale', rotationDeg: 'rotation' };
+
+/** `before → after` values of the clips and project settings one op touched (MM114 diff card). */
+export function studioValueChanges(prev: StudioProject, next: StudioProject, t: Translate) {
+  const out: CopilotDiffLine['values'] = [];
+  const clipsOf = (p: StudioProject) => new Map(p.tracks.flatMap((tr) => tr.clips.map((c) => [c.id, c] as const)));
+  const was = clipsOf(prev);
+  for (const [id, c] of clipsOf(next)) {
+    const old = was.get(id);
+    if (!old) continue;
+    const name = c.title ? t('assistant.copilot.studio.titleClip') : `${trackLabel(next.tracks.find((tr) => tr.clips.some((x) => x.id === id))!)} ${Math.round(c.timelineStart * 10) / 10}s`;
+    for (const v of leafChanges(pickClip(old), pickClip(c), t, (path) => {
+      const [group, key] = path.split('.');
+      const label =
+        group === 'lumetri' ? labelOr(t, `contentStudio.inspector.lumetri.${key}`, key ?? group)
+        : group === 'transform' ? labelOr(t, `contentStudio.inspector.motion.${MOTION_LABEL[key ?? ''] ?? key}`, key ?? group)
+        : labelOr(t, `assistant.copilot.studio.field.${group}`, group);
+      return `${name}: ${label}`;
+    })) out.push(v);
+  }
+  if (prev.width !== next.width || prev.height !== next.height) out.push(...leafChanges({ size: `${prev.width}×${prev.height}` }, { size: `${next.width}×${next.height}` }, t, () => t('assistant.copilot.studio.field.canvas')));
+  if (JSON.stringify(prev.audio) !== JSON.stringify(next.audio)) out.push(...leafChanges(prev.audio ?? {}, next.audio ?? {}, t, (p) => `${t('assistant.copilot.studio.field.ducking')}: ${p}`));
+  return out.slice(0, 8);
+}
+
+/** Where "Show me" goes for an op: the clip, its inspector section, and the control keys to flash. */
+export function studioRevealTarget(op: StudioOp, project: StudioProject): StudioRevealTarget | null {
+  const has = (id: string) => project.tracks.some((tr) => tr.clips.some((c) => c.id === id));
+  const firstClip = (ref: 'all' | string[]) => (ref === 'all' ? project.tracks.flatMap((tr) => (tr.kind === 'video' ? tr.clips : [])).find((c) => !c.title)?.id : ref.find(has));
+  const keysOf = (o: object | undefined, prefix: string) => (o ? Object.keys(o).map((k) => `studio:${prefix}${k}`) : []);
+  switch (op.op) {
+    case 'grade': {
+      const id = firstClip(op.clipIds);
+      return id ? { clipId: id, section: 'effects', keys: [...keysOf(op.lumetri, ''), 'studio:section.effects'] } : null;
+    }
+    case 'apply_look': {
+      const id = firstClip(op.clipIds);
+      return id ? { clipId: id, section: 'effects', keys: ['studio:section.effects'] } : null;
+    }
+    case 'set_transform':
+      return has(op.clipId) ? { clipId: op.clipId, section: 'motion', keys: [...(['x', 'y', 'scale', 'rotationDeg'] as const).filter((k) => op[k] !== undefined).map((k) => `studio:${k}`), 'studio:section.motion'] } : null;
+    case 'set_keyframes':
+      return has(op.clipId) ? { clipId: op.clipId, section: /^(positionX|positionY|scale|rotation)$/.test(op.property) ? 'motion' : op.property === 'volume' || op.property === 'pan' ? 'audio' : 'effects', keys: ['studio:section.motion', 'studio:section.effects', 'studio:section.audio'] } : null;
+    case 'set_speed':
+      return has(op.clipId) ? { clipId: op.clipId, section: 'speed', keys: ['studio:section.speed'] } : null;
+    case 'set_transition':
+      return has(op.clipId) ? { clipId: op.clipId, section: 'transition', keys: ['studio:section.transition'] } : null;
+    case 'set_volume':
+      return op.clipId && has(op.clipId) ? { clipId: op.clipId, section: 'audio', keys: ['studio:section.audio'] } : null;
+    case 'split':
+    case 'trim':
+    case 'move_clip':
+    case 'delete_clip':
+    case 'freeze_frame':
+      return has(op.clipId) ? { clipId: op.clipId, keys: [`studio:clip.${op.clipId}`] } : null;
+    case 'add_title':
+      return { section: 'title', keys: ['studio:section.title'] };
+    default:
+      return null;
+  }
+}
+
 interface TokenState {
   after: StudioProject;
   depth: number;
@@ -166,7 +263,38 @@ export function createStudioAdapter(deps: StudioAdapterDeps): CopilotAdapter {
       const token: CopilotEditToken = { id: tokenSeq };
       tokens.set(token.id, { after: after.project as StudioProject, depth: after.past.length });
       const list = ops as StudioOp[];
-      return { ok: true, token, opCount: list.length, opKinds: Array.from(new Set(list.map((o) => o.op))), changes: describeStudioOps(list, before, deps.t) };
+      return { ok: true, token, opCount: list.length, opKinds: Array.from(new Set(list.map((o) => o.op))), changes: describeStudioOps(list, before, deps.t), lines: studioChangeLines(list, before, deps.t) };
+    },
+    preview(ops): CopilotPreviewResult {
+      const s = deps.store.getState();
+      if (!s.project) return { ok: false, reason: 'validation', errors: ['no project is open'] };
+      const ctx = {
+        assetKind: (id: string) => s.assets[id]?.asset.mediaKind,
+        assetDuration: (id: string) => s.assets[id]?.asset.durationSeconds,
+        lockedViolation,
+      };
+      const list = ops as StudioOp[];
+      const whole = applyStudioOps(s.project, ops, ctx);
+      if (!whole.ok) return whole;
+      let running = s.project;
+      const lines: CopilotDiffLine[] = [];
+      for (const op of list) {
+        const step = applyStudioOps(running, [op], ctx);
+        if (!step.ok) return step;
+        const text = describeStudioOp(op, running, deps.t).join('; ');
+        if (text) lines.push({ text, op: op.op, raw: op, ...(op.reason ? { reason: op.reason } : {}), values: studioValueChanges(running, step.project, deps.t) });
+        running = step.project;
+      }
+      return { ok: true, lines };
+    },
+    canReveal(op) {
+      const p = deps.store.getState().project;
+      return !!p && !!studioRevealTarget(op as StudioOp, p);
+    },
+    reveal(op) {
+      const st = deps.store.getState();
+      const target = st.project ? studioRevealTarget(op as StudioOp, st.project) : null;
+      return target ? studioRevealBridge.request(target) : false;
     },
     canUndo: (tok) => live(tok) !== null,
     undo(tok) {

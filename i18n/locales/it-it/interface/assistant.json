@@ -181,6 +181,16 @@
           "marker": "Marcatore aggiunto a {{at}} s",
           "captionStyle": "Stile dei sottotitoli modificato",
           "canvas": "Formato dell’immagine cambiato in {{aspect}}"
+        },
+        "field": {
+          "opacity": "Opacità",
+          "speed": "Velocità",
+          "volume": "Livello audio",
+          "look": "Stile",
+          "lut": "Intensità del LUT",
+          "transition": "Durata della transizione",
+          "canvas": "Dimensione della tela",
+          "ducking": "Abbassamento musica"
         }
       },
       "vectorChange": {
@@ -197,7 +207,24 @@
         "duration": "Ho impostato la durata a {{seconds}} s",
         "canvas": "Ho modificato la tela",
         "loopOn": "Ho attivato la ripetizione",
-        "loopOff": "Ho disattivato la ripetizione"
+        "loopOff": "Ho disattivato la ripetizione",
+        "keysLabel": "Fotogrammi chiave",
+        "docLabel": "Animazione"
+      },
+      "autoApply": "Applica automaticamente le modifiche di {{brand}}",
+      "autoApplyHint": "Attivo: le modifiche vengono applicate subito e un solo Annulla le ritira. Disattivo: controlli ogni gruppo e premi Applica.",
+      "showMe": "Mostrami",
+      "showMeFor": "Mostrami dove: {{change}}",
+      "staged": {
+        "title": "{{brand}} propone: {{summary}}",
+        "apply": "Applica",
+        "discard": "Scarta",
+        "discarded": "Scartato. Non è stato modificato nulla.",
+        "notYet": "Per ora non è stato applicato nulla.",
+        "to": "a",
+        "on": "attivo",
+        "off": "disattivo",
+        "geometry": "Ritaglio e rotazione"
       }
     }
   }

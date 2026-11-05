@@ -179,6 +179,16 @@
           "marker": "Added a marker at {{at}} s",
           "captionStyle": "Restyled the captions",
           "canvas": "Changed the frame to {{aspect}}"
+        },
+        "field": {
+          "opacity": "Opacity",
+          "speed": "Speed",
+          "volume": "Volume",
+          "look": "Look",
+          "lut": "LUT intensity",
+          "transition": "Transition length",
+          "canvas": "Canvas size",
+          "ducking": "Ducking"
         }
       },
       "vectorChange": {
@@ -194,7 +204,24 @@
         "duration": "Set the length to {{seconds}} s",
         "canvas": "Changed the canvas",
         "loopOn": "Turned looping on",
-        "loopOff": "Turned looping off"
+        "loopOff": "Turned looping off",
+        "keysLabel": "Keyframes",
+        "docLabel": "Animation"
+      },
+      "autoApply": "Apply {{brand}}'s edits automatically",
+      "autoApplyHint": "On: edits land at once and one Undo takes them back. Off: you review each batch and press Apply.",
+      "showMe": "Show me",
+      "showMeFor": "Show me where: {{change}}",
+      "staged": {
+        "title": "{{brand}} suggests: {{summary}}",
+        "apply": "Apply",
+        "discard": "Discard",
+        "discarded": "Discarded. Nothing was changed.",
+        "notYet": "Nothing is applied yet.",
+        "to": "to",
+        "on": "on",
+        "off": "off",
+        "geometry": "Crop and rotation"
       }
     }
   }

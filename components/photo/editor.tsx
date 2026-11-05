@@ -89,6 +89,8 @@ import { selectSubjectMask } from '@/lib/photo/subjectMask';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { AssistantCapabilities } from '@/schemas/assistant';
 import { flushKept, useKeptSessionEnd } from '@/lib/assistant/copilot/kept';
+import { flashReveal } from '@/lib/assistant/copilot/reveal';
+import { photoRevealBridge } from '@/lib/assistant/copilot/revealBridges';
 
 // MM108: Medi's copilot panel, loaded on first open with its i18n shard (nothing in the editor's first load).
 const CopilotPanel = dynamic(() => withAssistantShard(() => import('@/components/assistant/copilot-panel')), { ssr: false });
@@ -888,6 +890,22 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
     mediEditor.current = { session, histogram, caps: assistantCaps, canvas: canvasRef, setPanel, openExport: () => setExportOpen(true), t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized };
   }, [session, histogram, assistantCaps, t, localized]);
 
+  // ---- Medi "Show me" (MM114): select the layer, open its panel, flash the control ------------
+  React.useEffect(() => {
+    let cancel: (() => void) | null = null;
+    const off = photoRevealBridge.register((target) => {
+      cancel?.();
+      if (target.layerId) usePhotoStore.getState().setSelection(target.layerId);
+      if (target.panel) setPanel(target.panel as PanelId);
+      setSheetOpen(true);
+      cancel = flashReveal([...target.keys, 'photo:panel']);
+    });
+    return () => {
+      off();
+      cancel?.();
+    };
+  }, []);
+
   const fetchMaskBlob = React.useCallback(
     (ref: string) => (serverId ? fetchProjectFile(serverId, ref) : Promise.reject(new Error('no project'))),
     [serverId],
@@ -1106,7 +1124,9 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
               </button>
             ))}
           </div>
-          <div className={cn('min-h-0 flex-1 overflow-y-auto', !sheetOpen && 'max-md:hidden')}>{panelBody}</div>
+          <div className={cn('min-h-0 flex-1 overflow-y-auto', !sheetOpen && 'max-md:hidden')} data-reveal="photo:panel">
+            {panelBody}
+          </div>
         </aside>
         {copilotOn && copilotOpen ? (
           <aside

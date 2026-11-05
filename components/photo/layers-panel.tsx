@@ -90,6 +90,7 @@ function Row({ layer, selected, onSelect, onOpenPanel }: { layer: AdjustmentLaye
       style={{ transform: CSS.Transform.toString(transform), transition }}
       className={cn('space-y-2 rounded-md border px-2 py-2', selected ? 'border-primary bg-primary/10' : 'border-edge bg-surface-2', isDragging && 'opacity-60')}
       data-testid={`layer-row-${layer.id}`}
+      data-reveal={`photo:layer.${layer.id}`}
     >
       <div className="flex items-center gap-1.5">
         <button type="button" className="cursor-grab touch-none text-muted-foreground" aria-label={t('photo.layers.moveUp')} {...attributes} {...listeners}>

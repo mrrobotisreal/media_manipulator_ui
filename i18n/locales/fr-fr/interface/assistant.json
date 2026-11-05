@@ -181,6 +181,16 @@
           "marker": "Marqueur ajouté à {{at}} s",
           "captionStyle": "Style des sous-titres modifié",
           "canvas": "Format de l’image changé en {{aspect}}"
+        },
+        "field": {
+          "opacity": "Opacité",
+          "speed": "Vitesse",
+          "volume": "Volume sonore",
+          "look": "Style",
+          "lut": "Intensité du LUT",
+          "transition": "Durée de la transition",
+          "canvas": "Taille du canevas",
+          "ducking": "Baisse de la musique"
         }
       },
       "vectorChange": {
@@ -197,7 +207,24 @@
         "duration": "Durée réglée sur {{seconds}} s",
         "canvas": "Canevas modifié",
         "loopOn": "Lecture en boucle activée",
-        "loopOff": "Lecture en boucle désactivée"
+        "loopOff": "Lecture en boucle désactivée",
+        "keysLabel": "Images clés",
+        "docLabel": "Animation (document)"
+      },
+      "autoApply": "Appliquer automatiquement les modifications de {{brand}}",
+      "autoApplyHint": "Activé : les modifications s'appliquent tout de suite et un seul Annuler les retire. Désactivé : vous relisez chaque lot et appuyez sur Appliquer.",
+      "showMe": "Montre-moi",
+      "showMeFor": "Montre-moi où : {{change}}",
+      "staged": {
+        "title": "{{brand}} propose : {{summary}}",
+        "apply": "Appliquer",
+        "discard": "Ignorer",
+        "discarded": "Ignoré. Rien n'a été modifié.",
+        "notYet": "Rien n'est encore appliqué.",
+        "to": "vers",
+        "on": "activé",
+        "off": "désactivé",
+        "geometry": "Recadrage et rotation"
       }
     }
   }

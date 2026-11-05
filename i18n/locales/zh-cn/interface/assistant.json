@@ -177,6 +177,16 @@
           "marker": "已在 {{at}} 秒添加标记",
           "captionStyle": "已修改字幕样式",
           "canvas": "已将画面比例改为 {{aspect}}"
+        },
+        "field": {
+          "opacity": "不透明度",
+          "speed": "速度",
+          "volume": "音量",
+          "look": "风格",
+          "lut": "LUT 强度",
+          "transition": "转场时长",
+          "canvas": "画布尺寸",
+          "ducking": "自动闪避"
         }
       },
       "vectorChange": {
@@ -191,7 +201,24 @@
         "duration": "时长已设为 {{seconds}} 秒",
         "canvas": "已修改画布",
         "loopOn": "已开启循环播放",
-        "loopOff": "已关闭循环播放"
+        "loopOff": "已关闭循环播放",
+        "keysLabel": "关键帧",
+        "docLabel": "动画"
+      },
+      "autoApply": "自动应用 {{brand}} 的编辑",
+      "autoApplyHint": "开启：编辑立即生效，一次撤销即可还原。关闭：你先查看每一批修改，再点击“应用”。",
+      "showMe": "带我看看",
+      "showMeFor": "带我看看在哪里：{{change}}",
+      "staged": {
+        "title": "{{brand}} 建议：{{summary}}",
+        "apply": "应用",
+        "discard": "放弃",
+        "discarded": "已放弃，未做任何更改。",
+        "notYet": "目前尚未应用任何内容。",
+        "to": "改为",
+        "on": "开",
+        "off": "关",
+        "geometry": "裁剪与旋转"
       }
     }
   }

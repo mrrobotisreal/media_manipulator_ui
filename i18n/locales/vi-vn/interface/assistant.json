@@ -177,6 +177,16 @@
           "marker": "Đã thêm điểm đánh dấu tại {{at}} giây",
           "captionStyle": "Đã đổi kiểu phụ đề",
           "canvas": "Đã đổi tỉ lệ khung hình thành {{aspect}}"
+        },
+        "field": {
+          "opacity": "Độ mờ đục",
+          "speed": "Tốc độ",
+          "volume": "Âm lượng",
+          "look": "Phong cách",
+          "lut": "Cường độ LUT",
+          "transition": "Thời lượng chuyển cảnh",
+          "canvas": "Kích thước canvas",
+          "ducking": "Giảm nhạc nền"
         }
       },
       "vectorChange": {
@@ -191,7 +201,24 @@
         "duration": "Đã đặt thời lượng {{seconds}} giây",
         "canvas": "Đã thay đổi khung vẽ",
         "loopOn": "Đã bật phát lặp",
-        "loopOff": "Đã tắt phát lặp"
+        "loopOff": "Đã tắt phát lặp",
+        "keysLabel": "Khung khóa",
+        "docLabel": "Hoạt ảnh"
+      },
+      "autoApply": "Tự động áp dụng chỉnh sửa của {{brand}}",
+      "autoApplyHint": "Bật: chỉnh sửa được áp dụng ngay và chỉ cần một lần Hoàn tác là gỡ hết. Tắt: bạn xem từng nhóm rồi bấm Áp dụng.",
+      "showMe": "Chỉ cho tôi",
+      "showMeFor": "Chỉ cho tôi chỗ này: {{change}}",
+      "staged": {
+        "title": "{{brand}} đề xuất: {{summary}}",
+        "apply": "Áp dụng",
+        "discard": "Bỏ qua",
+        "discarded": "Đã bỏ qua. Không có gì thay đổi.",
+        "notYet": "Chưa áp dụng gì cả.",
+        "to": "thành",
+        "on": "bật",
+        "off": "tắt",
+        "geometry": "Cắt và xoay"
       }
     }
   }

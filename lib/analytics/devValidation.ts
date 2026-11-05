@@ -636,6 +636,9 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
   assistant_feedback_given: z.object({ surface: assistantSurface, rating: z.enum(['up', 'down']) }).strict(),
   assistant_edit_kept: z.object({ surface: assistantSurface, outcome: z.enum(['exported', 'saved', 'session_end']) }).strict(),
+  assistant_edits_staged_decision: z.object({ surface: assistantSurface, decision: z.enum(['applied', 'discarded']), op_count: z.number().int().min(0).max(99) }).strict(),
+  assistant_show_me_clicked: z.object({ surface: assistantSurface, op: z.string().regex(/^[a-z_]{1,40}$/) }).strict(),
+  assistant_auto_apply_toggled: z.object({ surface: assistantSurface, enabled: z.boolean() }).strict(),
   assistant_limit_hit: z
     .object({ surface: assistantSurface, tier: z.enum(['anonymous', 'free', 'premium', 'pro', 'operator']) })
     .strict(),

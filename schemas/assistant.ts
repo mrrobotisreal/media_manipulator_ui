@@ -31,7 +31,7 @@ export const AssistantStreamEventSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('meta'), conversationId: z.string().nullable(), turnId: z.string(), model: z.string(), promptVersion: z.string().optional() }),
   z.object({ type: z.literal('delta'), text: z.string() }),
   z.object({ type: z.literal('tool'), name: z.string(), status: z.string() }),
-  z.object({ type: z.literal('edits'), callId: z.string(), summary: z.string(), ops: z.unknown() }),
+  z.object({ type: z.literal('edits'), callId: z.string(), summary: z.string(), reason: z.string().optional(), ops: z.unknown() }),
   z.object({
     type: z.literal('action'),
     callId: z.string(),

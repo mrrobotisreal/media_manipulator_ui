@@ -22,6 +22,7 @@ import {
 } from '@/lib/studio/effectRegistry';
 import { defaultTransitionSeconds } from '@/lib/studio/preferences';
 import { requestEyedrop } from '@/lib/studio/eyedropper';
+import { studioRevealBridge, type StudioRevealSection } from '@/lib/assistant/copilot/revealBridges';
 import { valueAt } from '@/lib/studio/ease';
 import {
   keyframeLane,
@@ -280,11 +281,19 @@ const Section: React.FC<{
   icon: React.ReactNode;
   defaultOpen?: boolean;
   action?: React.ReactNode;
+  /** MM114: the id Medi's "Show me" opens this section by (`StudioRevealSection`). */
+  reveal?: StudioRevealSection;
   children: React.ReactNode;
-}> = ({ title, icon, defaultOpen = true, action, children }) => {
-  const [open, setOpen] = React.useState(defaultOpen);
+}> = ({ title, icon, defaultOpen = true, action, reveal, children }) => {
+  const [open, setOpen] = React.useState(() => defaultOpen || (!!reveal && studioRevealBridge.recent()?.section === reveal));
+  React.useEffect(() => {
+    if (!reveal) return;
+    return studioRevealBridge.register((target) => {
+      if (target.section === reveal) setOpen(true);
+    });
+  }, [reveal]);
   return (
-    <Collapsible open={open} onOpenChange={setOpen} className="border-b border-border py-2">
+    <Collapsible open={open} onOpenChange={setOpen} className="border-b border-border py-2" data-reveal={reveal ? `studio:section.${reveal}` : undefined}>
       <div className="flex items-center justify-between">
         <CollapsibleTrigger className="flex items-center gap-1.5 text-xs font-semibold text-card-foreground hover:text-primary">
           <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? '' : '-rotate-90'}`} />
@@ -311,7 +320,7 @@ const ParamSlider: React.FC<{
   // One undo entry per scrub (slider) or focus session (number field).
   const gesture = useUndoGesture();
   return (
-    <div className="mb-2">
+    <div className="mb-2" data-reveal={`studio:${param.key}`}>
       <div className="flex items-center justify-between gap-2">
         <span className="flex items-center gap-1 min-w-0">
           <Label className="text-[11px] text-muted-foreground">{t(param.labelKey)}</Label>
@@ -370,6 +379,7 @@ const MotionSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
     writeKeyframable(clip, MOTION_PROPERTY[key], v, (sv) => setClipTransform(clip.id, { ...tf, [key]: sv }));
   return (
     <Section
+      reveal="motion"
       title={t('contentStudio.inspector.sectionMotion')}
       icon={<Move className="w-3.5 h-3.5" />}
       action={
@@ -561,6 +571,7 @@ const EffectsSection: React.FC<{ clip: StudioClip; lutAssets: StudioAssetEntry[]
 
   return (
     <Section
+      reveal="effects"
       title={t('contentStudio.inspector.sectionEffects')}
       icon={<Layers className="w-3.5 h-3.5" />}
       defaultOpen={false}
@@ -727,6 +738,7 @@ const SpeedSection: React.FC<{ clip: StudioClip; hasAudio: boolean }> = ({ clip,
   const { t } = useLocalization('interface');
   return (
     <Section
+      reveal="speed"
       title={t('contentStudio.inspector.sectionSpeed')}
       icon={<Gauge className="w-3.5 h-3.5" />}
       defaultOpen={false}
@@ -753,7 +765,7 @@ const AudioSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   const db = volume <= 0 ? '−∞' : (20 * Math.log10(volume)).toFixed(1);
 
   return (
-    <Section title={t('contentStudio.inspector.sectionAudio')} icon={<Volume2 className="w-3.5 h-3.5" />} defaultOpen={false}>
+    <Section reveal="audio" title={t('contentStudio.inspector.sectionAudio')} icon={<Volume2 className="w-3.5 h-3.5" />} defaultOpen={false}>
       <div className="mb-3">
         <Label className="text-[11px] text-muted-foreground flex justify-between">
           <span className="flex items-center gap-1">
@@ -832,7 +844,8 @@ const TransitionSection: React.FC<{ clip: StudioClip; track: StudioTrack }> = ({
   };
 
   return (
-    <Section title={t('contentStudio.inspector.sectionTransition')} icon={<Blend className="w-3.5 h-3.5" />} defaultOpen={false}>
+    <Section reveal="transition"
+      title={t('contentStudio.inspector.sectionTransition')} icon={<Blend className="w-3.5 h-3.5" />} defaultOpen={false}>
       <Label className="text-[11px] text-muted-foreground">{t('contentStudio.inspector.transitionType')}</Label>
       <Select value={transition?.type ?? 'none'} onValueChange={applyType} disabled={!hasPrev}>
         <SelectTrigger className="h-7 mt-1 text-xs w-full">
@@ -1152,6 +1165,7 @@ const TitleSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
 
   return (
     <Section
+      reveal="title"
       title={t('contentStudio.inspector.sectionTitle')}
       icon={<Type className="w-3.5 h-3.5" />}
       action={

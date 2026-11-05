@@ -9,12 +9,12 @@
  * Loaded lazily with the assistant shard (`interface/assistant.json`) by the editor.
  */
 import * as React from 'react';
-import { ChevronDown, Info, ListChecks, Loader2, Plus, Send, Square, Undo2, X } from 'lucide-react';
+import { ChevronDown, Crosshair, Info, ListChecks, Loader2, Plus, Send, Square, Undo2, X } from 'lucide-react';
 
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { MEDI_BRAND, MEDI_MARK_SRC } from '@/lib/assistant/brand';
-import { planSteps, useCopilot, type AppliedEdit } from '@/lib/assistant/copilot/useCopilot';
+import { planSteps, useCopilot, type AppliedEdit, type StagedEdit } from '@/lib/assistant/copilot/useCopilot';
 import type { CopilotAdapter } from '@/lib/assistant/copilot/types';
 import type { AssistantTrack, AssistantUiMessage } from '@/lib/assistant/useAssistantStream';
 import type { StreamDeps } from '@/lib/assistant/stream';
@@ -23,6 +23,8 @@ import type { AssistantCapabilities } from '@/schemas/assistant';
 import { getAssistantCapabilities } from '@/lib/assistant/api';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { EVENTS } from '@/lib/analytics/events';
+import type { AssistantSurfaceProp } from '@/lib/analytics/events';
 
 import AssistantMarkdown from './markdown';
 import { errorKey } from './guide-sheet';
@@ -117,6 +119,7 @@ export default function CopilotPanel({
 
   // Edits belong to the answer whose stream carried them (matched by the tool call id).
   const editsFor = (m: AssistantUiMessage) => cp.applied.filter((e) => m.edits.some((x) => x.callId === e.callId));
+  const stagedFor = (m: AssistantUiMessage) => cp.staged.filter((e) => m.edits.some((x) => x.callId === e.callId));
   const rejectedFor = (m: AssistantUiMessage) => cp.rejected.filter((e) => m.edits.some((x) => x.callId === e.callId));
   const latest = [...cp.applied].reverse().find((e) => !e.undone);
 
@@ -128,7 +131,7 @@ export default function CopilotPanel({
       closeLabel={t('assistant.copilot.close', b)}
       actions={
         <>
-          <InfoMenu version={caps.promptVersion} />
+          <InfoMenu version={caps.promptVersion} autoApply={cp.autoApply} onAutoApply={cp.setAutoApply} />
           <button type="button" className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t('assistant.copilot.newChat')} title={t('assistant.copilot.newChat')} onClick={cp.reset}>
             <Plus className="size-4" />
           </button>
@@ -182,8 +185,11 @@ export default function CopilotPanel({
                   {m.tool ? t('assistant.copilot.looking') : t('assistant.copilot.thinking')}
                 </p>
               ) : null}
+              {stagedFor(m).map((st) => (
+                <DiffCard key={st.callId} staged={st} adapter={adapter} track={track} busy={cp.streaming} onApply={() => cp.applyStaged(st.callId)} onDiscard={() => cp.discardStaged(st.callId)} />
+              ))}
               {editsFor(m).map((e) => (
-                <EditCard key={e.callId} edit={e} latest={e === latest} canUndo={cp.canUndo(e)} onUndo={() => cp.undo(e)} />
+                <EditCard key={e.callId} edit={e} latest={e === latest} canUndo={cp.canUndo(e)} onUndo={() => cp.undo(e)} adapter={adapter} track={track} />
               ))}
               {rejectedFor(m).length > 0 ? (
                 <p className="text-xs text-muted-foreground" data-testid="copilot-rejected">
@@ -352,8 +358,8 @@ function PanelFrame({ children, onClose, title, subtitle, closeLabel, actions }:
   );
 }
 
-/** The panel's ⓘ menu (MM113): the build's prompt version, for support to quote. */
-function InfoMenu({ version }: { version?: string }) {
+/** The panel's ⓘ menu: the "Apply Medi's edits automatically" switch (MM114) and the build's prompt version (MM113). */
+function InfoMenu({ version, autoApply, onAutoApply }: { version?: string; autoApply: boolean; onAutoApply: (on: boolean) => void }) {
   const { t } = useLocalization(['interface']);
   const b = { brand: MEDI_BRAND };
   return (
@@ -363,18 +369,106 @@ function InfoMenu({ version }: { version?: string }) {
           <Info className="size-4" />
         </button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-64 space-y-1 p-3 text-sm" data-testid="copilot-info-content">
-        <p className="font-medium">{t('assistant.copilot.infoTitle', b)}</p>
-        <p>
-          {t('assistant.copilot.infoVersion')}: <code className="rounded bg-muted px-1 py-0.5 text-xs" data-testid="copilot-version">{version ?? '—'}</code>
-        </p>
-        <p className="text-xs text-muted-foreground">{t('assistant.copilot.infoHint')}</p>
+      <PopoverContent align="end" className="w-72 space-y-2 p-3 text-sm" data-testid="copilot-info-content">
+        <label className="flex items-start gap-2" data-testid="copilot-auto-apply-row">
+          <input type="checkbox" className="mt-1" checked={autoApply} onChange={(e) => onAutoApply(e.target.checked)} data-testid="copilot-auto-apply" />
+          <span>
+            <span className="block font-medium">{t('assistant.copilot.autoApply', b)}</span>
+            <span className="block text-xs text-muted-foreground">{t('assistant.copilot.autoApplyHint', b)}</span>
+          </span>
+        </label>
+        <div className="space-y-1 border-t border-edge pt-2">
+          <p className="font-medium">{t('assistant.copilot.infoTitle', b)}</p>
+          <p>
+            {t('assistant.copilot.infoVersion')}: <code className="rounded bg-muted px-1 py-0.5 text-xs" data-testid="copilot-version">{version ?? '—'}</code>
+          </p>
+          <p className="text-xs text-muted-foreground">{t('assistant.copilot.infoHint')}</p>
+        </div>
       </PopoverContent>
     </Popover>
   );
 }
 
-function EditCard({ edit, latest, canUndo, onUndo }: { edit: AppliedEdit; latest: boolean; canUndo: boolean; onUndo: () => void }) {
+/** "Show me" on one change line (MM114): the adapter opens the panel and flashes the control. */
+function ShowMe({ adapter, track, line }: { adapter: CopilotAdapter; track: AssistantTrack; line: { op: string; raw: unknown; text: string } }) {
+  const { t } = useLocalization(['interface']);
+  if (!adapter.reveal || !adapter.canReveal?.(line.raw)) return null;
+  return (
+    <button
+      type="button"
+      className="ms-2 inline-flex items-center gap-1 rounded-full border border-edge px-2 py-0.5 text-[11px] hover:bg-accent"
+      aria-label={t('assistant.copilot.showMeFor', { change: line.text })}
+      data-testid="copilot-show-me"
+      onClick={() => {
+        if (adapter.reveal?.(line.raw)) track(EVENTS.ASSISTANT_SHOW_ME_CLICKED, { surface: adapter.surface as AssistantSurfaceProp, op: line.op });
+      }}
+    >
+      <Crosshair className="size-3" aria-hidden />
+      {t('assistant.copilot.showMe')}
+    </button>
+  );
+}
+
+/** The staged batch (auto-apply off): op lines with before → after values; nothing is applied until Apply. */
+function DiffCard({ staged, adapter, track, busy, onApply, onDiscard }: { staged: StagedEdit; adapter: CopilotAdapter; track: AssistantTrack; busy: boolean; onApply: () => void; onDiscard: () => void }) {
+  const { t } = useLocalization(['interface']);
+  const b = { brand: MEDI_BRAND };
+  const discarded = staged.state === 'discarded';
+  return (
+    <div className="rounded-md border border-dashed border-primary/50 bg-primary/5 p-2 text-sm" data-testid="copilot-staged" data-state={staged.state}>
+      <div className="flex items-center gap-2">
+        <img src={MEDI_MARK_SRC} alt="" width={14} height={14} />
+        <span className="min-w-0 flex-1 truncate font-medium">{t('assistant.copilot.staged.title', { ...b, summary: staged.summary })}</span>
+      </div>
+      {staged.reason ? (
+        <p className="mt-1 text-xs text-muted-foreground" data-testid="copilot-reason">
+          {staged.reason}
+        </p>
+      ) : null}
+      <ul className="mt-2 space-y-2" data-testid="copilot-staged-lines">
+        {staged.lines.map((l, i) => (
+          <li key={i} className="text-xs">
+            <div className="flex flex-wrap items-center">
+              <span className="min-w-0 flex-1">{l.text}</span>
+              <ShowMe adapter={adapter} track={track} line={l} />
+            </div>
+            {l.reason ? <p className="text-muted-foreground">{l.reason}</p> : null}
+            {l.values.length ? (
+              <dl className="mt-1 grid grid-cols-[1fr_auto] gap-x-3 gap-y-0.5 rounded bg-background/60 px-2 py-1 font-mono text-[11px]" data-testid="copilot-values">
+                {l.values.map((v, j) => (
+                  <React.Fragment key={j}>
+                    <dt className="truncate text-muted-foreground">{v.label}</dt>
+                    <dd className="text-end tabular-nums">
+                      {v.before} <span aria-hidden>→</span>
+                      <span className="sr-only">{t('assistant.copilot.staged.to')}</span> {v.after}
+                    </dd>
+                  </React.Fragment>
+                ))}
+              </dl>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+      {discarded ? (
+        <p className="mt-2 text-xs text-muted-foreground" data-testid="copilot-staged-discarded">
+          {t('assistant.copilot.staged.discarded')}
+        </p>
+      ) : (
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <button type="button" disabled={busy} className="min-h-9 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground disabled:opacity-50" onClick={onApply} data-testid="copilot-staged-apply">
+            {t('assistant.copilot.staged.apply')}
+          </button>
+          <button type="button" disabled={busy} className="min-h-9 rounded-md border border-edge px-3 text-xs hover:bg-accent disabled:opacity-50" onClick={onDiscard} data-testid="copilot-staged-discard">
+            {t('assistant.copilot.staged.discard')}
+          </button>
+          <span className="text-[11px] text-muted-foreground">{t('assistant.copilot.staged.notYet')}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EditCard({ edit, latest, canUndo, onUndo, adapter, track }: { edit: AppliedEdit; latest: boolean; canUndo: boolean; onUndo: () => void; adapter: CopilotAdapter; track: AssistantTrack }) {
   const { t } = useLocalization(['interface']);
   const [open, setOpen] = React.useState(false);
   return (
@@ -391,6 +485,11 @@ function EditCard({ edit, latest, canUndo, onUndo }: { edit: AppliedEdit; latest
           </button>
         ) : null}
       </div>
+      {edit.reason ? (
+        <p className="mt-1 text-xs text-muted-foreground" data-testid="copilot-reason">
+          {edit.reason}
+        </p>
+      ) : null}
       {edit.changes.length ? (
         <>
           <button type="button" className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
@@ -398,9 +497,13 @@ function EditCard({ edit, latest, canUndo, onUndo }: { edit: AppliedEdit; latest
             {t('assistant.copilot.whatChanged')}
           </button>
           {open ? (
-            <ul className="mt-1 list-disc space-y-0.5 ps-5 text-xs" data-testid="copilot-changes">
-              {edit.changes.map((c, i) => (
-                <li key={i}>{c}</li>
+            <ul className="mt-1 list-disc space-y-1 ps-5 text-xs" data-testid="copilot-changes">
+              {(edit.lines?.length ? edit.lines : edit.changes.map((c) => ({ text: c, op: '', raw: null, reason: undefined as string | undefined }))).map((c, i) => (
+                <li key={i}>
+                  <span>{c.text}</span>
+                  {edit.lines?.length ? <ShowMe adapter={adapter} track={track} line={c} /> : null}
+                  {c.reason ? <span className="block text-muted-foreground" data-testid="copilot-op-reason">{c.reason}</span> : null}
+                </li>
               ))}
             </ul>
           ) : null}

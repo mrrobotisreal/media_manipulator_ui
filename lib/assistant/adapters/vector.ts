@@ -10,11 +10,15 @@
  */
 import type { StoreApi, UseBoundStore } from 'zustand';
 
-import type { CopilotAdapter, CopilotApplyResult, CopilotEditToken } from '@/lib/assistant/copilot/types';
+import type { CopilotAdapter, CopilotApplyResult, CopilotChangeLine, CopilotDiffLine, CopilotEditToken, CopilotPreviewResult } from '@/lib/assistant/copilot/types';
+import { labelOr, leafChanges } from '@/lib/assistant/copilot/diff';
+import { perOpLines } from '@/lib/assistant/copilot/lines';
+import { vectorRevealBridge, type VectorRevealTarget } from '@/lib/assistant/copilot/revealBridges';
 import { vectorDigest } from '@/lib/assistant/digest/vector';
 import { applyVectorOps } from '@/lib/assistant/ops/applyVector';
 import type { VectorOp } from '@/lib/assistant/ops/vector';
 import { findDocLayer } from '@/lib/vector/advanced';
+import { docLoops, forEachLayer } from '@/lib/vector/vectorTypes';
 import type { VectorState } from '@/lib/vector/vectorStore';
 import type { VectorDoc } from '@/lib/vector/vectorTypes';
 
@@ -28,6 +32,11 @@ export type MediExportFormat = (typeof MEDI_EXPORT_FORMATS)[number];
 
 /** The plain-words "what I changed" lines (templated keys, never model text). */
 export function describeVectorOps(ops: VectorOp[], before: VectorDoc, t: Translate): string[] {
+  return ops.flatMap((op) => describeVectorOp(op, before, t));
+}
+
+/** One op's lines (the change card shows them per op). */
+export function describeVectorOp(op: VectorOp, before: VectorDoc, t: Translate): string[] {
   const name = (id: string) => {
     const l = findDocLayer(before, id);
     return l ? l.name || t(`vector.layerTypes.${l.type}`) : id;
@@ -39,7 +48,7 @@ export function describeVectorOps(ops: VectorOp[], before: VectorDoc, t: Transla
     return t(`vector.properties.${key}`, n ? { n: Number(n[1]) + 1 } : undefined);
   };
   const out: string[] = [];
-  for (const op of ops) {
+  {
     switch (op.op) {
       case 'add_layer':
         out.push(t('assistant.copilot.vectorChange.addLayer', { layer: t(`vector.layerTypes.${op.type}`) }));
@@ -77,6 +86,62 @@ export function describeVectorOps(ops: VectorOp[], before: VectorDoc, t: Transla
     }
   }
   return out;
+}
+
+
+/** Per-op lines of the change card (MM114). */
+export function vectorChangeLines(ops: VectorOp[], before: VectorDoc, t: Translate): CopilotChangeLine[] {
+  return perOpLines(ops, (op) => describeVectorOp(op, before, t));
+}
+
+const layerName = (doc: VectorDoc, id: string, t: Translate) => {
+  const l = findDocLayer(doc, id);
+  return l ? l.name || t(`vector.layerTypes.${l.type}`) : id;
+};
+
+/** `before → after` values of one op: changed layer fields and the animation settings (MM114 diff card). */
+export function vectorValueChanges(prev: VectorDoc, next: VectorDoc, t: Translate) {
+  const out: CopilotDiffLine['values'] = [];
+  const flat = (l: Record<string, unknown>) => {
+    return Object.fromEntries(Object.entries(l).filter(([k]) => k !== 'children'));
+  };
+  const byId = (doc: VectorDoc) => {
+    const m = new Map<string, Record<string, unknown>>();
+    forEachLayer(doc, (l) => m.set(l.id, flat(l as unknown as Record<string, unknown>)));
+    return m;
+  };
+  const was = byId(prev);
+  for (const [id, now] of byId(next)) {
+    const old = was.get(id);
+    if (!old) continue;
+    const name = layerName(next, id, t);
+    for (const v of leafChanges(old, now, t, (path) => `${name}: ${labelOr(t, `vector.properties.${path.replace(/^transform\./, '')}`, path)}`)) out.push(v);
+  }
+  const animated = (doc: VectorDoc) => doc.animations.map((a) => `${a.layerId}:${a.property}:${a.keyframes.length}`).sort().join(' ');
+  if (animated(prev) !== animated(next)) out.push({ label: t('assistant.copilot.vectorChange.keysLabel'), before: String(prev.animations.reduce((n, a) => n + a.keyframes.length, 0)), after: String(next.animations.reduce((n, a) => n + a.keyframes.length, 0)) });
+  out.push(...leafChanges({ duration: prev.duration, fps: prev.fps, loop: docLoops(prev), width: prev.canvas.width, height: prev.canvas.height, background: prev.canvas.background }, { duration: next.duration, fps: next.fps, loop: docLoops(next), width: next.canvas.width, height: next.canvas.height, background: next.canvas.background }, t, (p) => `${t('assistant.copilot.vectorChange.docLabel')}: ${p}`));
+  return out.slice(0, 8);
+}
+
+/** Where "Show me" goes for an op: the layer (selected and expanded), a property row, and the keys to flash. */
+export function vectorRevealTarget(op: VectorOp, doc: VectorDoc): VectorRevealTarget | null {
+  const has = (id: string) => !!findDocLayer(doc, id);
+  switch (op.op) {
+    case 'update_layer':
+      return has(op.layerId) ? { layerId: op.layerId, keys: [`vector:layer.${op.layerId}`] } : null;
+    case 'animate':
+      return has(op.layerId) ? { layerId: op.layerId, property: op.property, keys: [`vector:property.${op.layerId}.${op.property}`, `vector:layer.${op.layerId}`] } : null;
+    case 'apply_animator':
+      return op.layerIds.length && has(op.layerIds[0]) ? { layerId: op.layerIds[0], keys: [`vector:layer.${op.layerIds[0]}`] } : null;
+    case 'delete_layer':
+      return has(op.layerId) ? { layerId: op.layerId, keys: [`vector:layer.${op.layerId}`] } : null;
+    case 'template': {
+      const id = op.layerIds?.find(has);
+      return id ? { layerId: id, keys: [`vector:layer.${id}`] } : null;
+    }
+    default:
+      return null;
+  }
 }
 
 export interface VectorAdapterDeps {
@@ -129,7 +194,32 @@ export function createVectorAdapter(deps: VectorAdapterDeps): CopilotAdapter {
       tokenSeq += 1;
       const token: CopilotEditToken = { id: tokenSeq };
       tokens.set(token.id, { after: after.doc as VectorDoc, depth: after.past.length });
-      return { ok: true, token, opCount: list.length, opKinds: Array.from(new Set(list.map((o) => o.op))), changes: describeVectorOps(list, before, deps.t) };
+      return { ok: true, token, opCount: list.length, opKinds: Array.from(new Set(list.map((o) => o.op))), changes: describeVectorOps(list, before, deps.t), lines: vectorChangeLines(list, before, deps.t) };
+    },
+    preview(ops): CopilotPreviewResult {
+      const s = deps.store.getState();
+      if (!s.doc) return { ok: false, reason: 'validation', errors: ['no animation is open'] };
+      const whole = applyVectorOps(s.doc, ops);
+      if (!whole.ok) return whole;
+      let running = s.doc;
+      const lines: CopilotDiffLine[] = [];
+      for (const op of ops as VectorOp[]) {
+        const step = applyVectorOps(running, [op]);
+        if (!step.ok) return step;
+        const text = describeVectorOp(op, running, deps.t).join('; ');
+        if (text) lines.push({ text, op: op.op, raw: op, ...(op.reason ? { reason: op.reason } : {}), values: vectorValueChanges(running, step.doc, deps.t) });
+        running = step.doc;
+      }
+      return { ok: true, lines };
+    },
+    canReveal(op) {
+      const d = deps.store.getState().doc;
+      return !!d && !!vectorRevealTarget(op as VectorOp, d);
+    },
+    reveal(op) {
+      const d = deps.store.getState().doc;
+      const target = d ? vectorRevealTarget(op as VectorOp, d) : null;
+      return target ? vectorRevealBridge.request(target) : false;
     },
     canUndo: (tok) => live(tok) !== null,
     undo(tok) {

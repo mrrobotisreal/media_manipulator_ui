@@ -5,6 +5,7 @@
  */
 const PREVIEW_KEY = 'mm-medi-preview-v1';
 const NOTICE_KEY = 'mm-medi-frame-notice-v1';
+const AUTO_APPLY_KEY = 'mm-medi-auto-apply-v1';
 
 function read(key: string): string | null {
   try {
@@ -28,3 +29,7 @@ export const setPreviewAllowed = (on: boolean): void => write(PREVIEW_KEY, on ? 
 /** The one-time frames disclosure was acknowledged. */
 export const noticeSeen = (): boolean => read(NOTICE_KEY) === 'seen';
 export const markNoticeSeen = (): void => write(NOTICE_KEY, 'seen');
+
+/** MM114: "Apply Medi's edits automatically" (default on; off stages each batch as a diff card). */
+export const autoApplyEnabled = (): boolean => read(AUTO_APPLY_KEY) !== 'off';
+export const setAutoApplyEnabled = (on: boolean): void => write(AUTO_APPLY_KEY, on ? 'on' : 'off');

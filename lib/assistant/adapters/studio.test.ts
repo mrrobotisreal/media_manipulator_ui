@@ -18,6 +18,7 @@ import { useStudioStore } from '@/lib/studioStore';
 import type { StudioAsset } from '@/lib/studioTypes';
 import { STUDIO_FIXTURE_ASSETS, studioFixture } from '@/lib/assistant/ops/studioFixture';
 
+import { studioRevealBridge } from '@/lib/assistant/copilot/revealBridges';
 import { STUDIO_VISUAL_OPS, createStudioAdapter, describeStudioOps } from './studio';
 
 const t = (key: string, vars?: Record<string, unknown>) => (vars ? `${key}${JSON.stringify(vars)}` : key);
@@ -143,5 +144,51 @@ describe('Darkroom adapter (MM109)', () => {
       'assistant.copilot.studio.change.audioPreset{"preset":"contentStudio.mixer.preset.podcast","track":"A1"}',
       'assistant.copilot.studio.change.canvas{"aspect":"9:16"}',
     ]);
+  });
+});
+
+describe('Darkroom adapter: MM114 preview and Show me', () => {
+  const firstVideoClip = () => store().project!.tracks.find((t) => t.kind === 'video')!.clips[0].id;
+
+  it('preview is a dry run with before → after values; the project and history are untouched', () => {
+    const { adapter } = setup();
+    const before = JSON.stringify(store().project);
+    const depth = store().past.length;
+    const id = firstVideoClip();
+    const r = adapter.preview!([{ op: 'set_transform', clipId: id, scale: 1.2, reason: 'Punch in on the speaker' }]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.lines[0].reason).toBe('Punch in on the speaker');
+    expect(r.lines[0].values.some((v) => v.after === '1.2')).toBe(true);
+    expect(JSON.stringify(store().project)).toBe(before);
+    expect(store().past).toHaveLength(depth);
+  });
+
+  it('preview refuses what apply would refuse (a locked track)', () => {
+    const { adapter } = setup(true);
+    const id = firstVideoClip();
+    expect(adapter.preview!([{ op: 'set_transform', clipId: id, scale: 1.2 }])).toMatchObject({ ok: false });
+  });
+
+  it('reveal(op) asks the Darkroom bridge for the clip, the inspector section and the slider', () => {
+    const { adapter } = setup();
+    const id = firstVideoClip();
+    const seen: unknown[] = [];
+    const off = studioRevealBridge.register((target) => seen.push(target));
+    const op = { op: 'set_transform', clipId: id, scale: 1.2 };
+    expect(adapter.canReveal!(op)).toBe(true);
+    expect(adapter.reveal!(op)).toBe(true);
+    expect(seen).toEqual([{ clipId: id, section: 'motion', keys: ['studio:scale', 'studio:section.motion'] }]);
+    expect(adapter.reveal!({ op: 'grade', clipIds: 'all', lumetri: { exposure: 0.2 } })).toBe(true);
+    expect(seen[1]).toMatchObject({ section: 'effects', keys: ['studio:exposure', 'studio:section.effects'] });
+    expect(adapter.canReveal!({ op: 'set_speed', clipId: 'ghost', speed: 2 })).toBe(false);
+    off();
+    expect(adapter.reveal!(op)).toBe(false);
+  });
+
+  it('apply returns per-op lines carrying each op reason', () => {
+    const { adapter } = setup();
+    const r = adapter.apply('Punch in', [{ op: 'set_transform', clipId: firstVideoClip(), scale: 1.1, reason: 'Emphasise the line' }]);
+    expect(r.ok && r.lines?.[0]).toMatchObject({ op: 'set_transform', reason: 'Emphasise the line' });
   });
 });

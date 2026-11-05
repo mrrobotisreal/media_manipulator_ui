@@ -12,6 +12,7 @@ import { resolveLabel } from '@/lib/photo/history';
 import { createPhotoStore } from '@/lib/photo/photoStore';
 import { canonicalPhotoDoc, newPhotoDoc } from '@/lib/photo/photoTypes';
 
+import { photoRevealBridge } from '@/lib/assistant/copilot/revealBridges';
 import { createPhotoAdapter, describePhotoOps, mediLabel } from './photo';
 
 const t = (key: string, vars?: Record<string, unknown>) => (vars ? `${key}${JSON.stringify(vars)}` : key);
@@ -135,5 +136,48 @@ describe('describePhotoOps (what I changed)', () => {
       'assistant.copilot.change.cropAspect{"aspect":"4:5"}',
       'assistant.copilot.change.autoTone',
     ]);
+  });
+});
+
+describe('Aperture adapter: MM114 preview and Show me', () => {
+  it('preview is a dry run with before → after values; the document and history are untouched', () => {
+    const { store, adapter } = setup();
+    const before = JSON.stringify(store.getState().doc);
+    const depth = store.getState().past.length;
+    const r = adapter.preview!([{ op: 'add_layer', type: 'exposure', params: { ev: 0.6 }, reason: 'The photo reads dark' }]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.lines[0].reason).toBe('The photo reads dark');
+    expect(r.lines[0].values.some((v) => v.label.includes('ev') && v.before === '0' && v.after === '0.6')).toBe(true);
+    expect(JSON.stringify(store.getState().doc)).toBe(before);
+    expect(store.getState().past).toHaveLength(depth);
+  });
+
+  it('preview refuses what apply would refuse', () => {
+    const { adapter } = setup();
+    expect(adapter.preview!([{ op: 'update_layer', layerId: 'nope', opacity: 0.5 }])).toMatchObject({ ok: false, reason: 'unknown_id' });
+  });
+
+  it('reveal(op) asks the Aperture bridge for the panel and slider of the op', () => {
+    const { store, adapter } = setup();
+    adapter.apply('Brighten', [{ op: 'add_layer', type: 'exposure', params: { ev: 0.4 } }]);
+    const id = store.getState().doc!.layers[0].id;
+    const seen: unknown[] = [];
+    const off = photoRevealBridge.register((target) => seen.push(target));
+    const op = { op: 'update_layer', layerId: id, params: { ev: 0.8 } };
+    expect(adapter.canReveal!(op)).toBe(true);
+    expect(adapter.reveal!(op)).toBe(true);
+    expect(seen).toEqual([{ panel: 'basic', layerId: id, keys: ['photo:exposure.ev', 'photo:exposure'] }]);
+    expect(adapter.reveal!({ op: 'set_geometry', rotate: 90 })).toBe(true);
+    expect(seen[1]).toEqual({ panel: 'geometry', keys: ['photo:geometry'] });
+    expect(adapter.canReveal!({ op: 'update_layer', layerId: 'ghost', opacity: 0.1 })).toBe(false);
+    off();
+    expect(adapter.reveal!(op)).toBe(false);
+  });
+
+  it('apply returns per-op lines carrying each op reason', () => {
+    const { adapter } = setup();
+    const r = adapter.apply('Brighten', [{ op: 'add_layer', type: 'exposure', params: { ev: 0.4 }, reason: 'Lift the shadows' }]);
+    expect(r.ok && r.lines?.[0]).toMatchObject({ op: 'add_layer', reason: 'Lift the shadows' });
   });
 });

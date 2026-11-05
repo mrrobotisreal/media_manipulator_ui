@@ -20,8 +20,31 @@ export interface CopilotEditToken {
 
 export type CopilotApplyResult =
   /** `changes`: the "what I changed" lines, localized from templated keys (never model text). */
-  | { ok: true; token: CopilotEditToken; opCount: number; opKinds: string[]; changes: string[] }
+  | { ok: true; token: CopilotEditToken; opCount: number; opKinds: string[]; changes: string[]; lines?: CopilotChangeLine[] }
   | { ok: false; reason: CopilotRejectReason; errors: string[] };
+
+/** MM114: one line of the change card. `raw` is the op itself (what `reveal` / `canReveal` read). */
+export interface CopilotChangeLine {
+  text: string;
+  op: string;
+  raw: unknown;
+  /** The op's own reason (the batch reason is on the edit). */
+  reason?: string;
+}
+
+/** MM114: a value the staged edit would change, `before → after`, read from the document. */
+export interface CopilotValueChange {
+  label: string;
+  before: string;
+  after: string;
+}
+
+export interface CopilotDiffLine extends CopilotChangeLine {
+  values: CopilotValueChange[];
+}
+
+/** MM114: a dry run of an op list against the open document: nothing is written. */
+export type CopilotPreviewResult = { ok: true; lines: CopilotDiffLine[] } | { ok: false; reason: CopilotRejectReason; errors: string[] };
 
 export interface CopilotAdapter {
   surface: CopilotSurface;
@@ -46,4 +69,13 @@ export interface CopilotAdapter {
    * loop sends an after-frame. Absent = every applied edit is visual (Aperture).
    */
   isVisual?: (ops: unknown) => boolean;
+  /**
+   * MM114 (optional): dry-run `ops` for the staged diff card (before → after values from the
+   * document). Absent = the staged mode cannot show values and applies directly.
+   */
+  preview?: (ops: unknown) => CopilotPreviewResult;
+  /** MM114 (optional): whether "Show me" has a control to reveal for this op. */
+  canReveal?: (op: unknown) => boolean;
+  /** MM114 (optional): open the editor's panel for this op and flash the control it changed. */
+  reveal?: (op: unknown) => boolean;
 }

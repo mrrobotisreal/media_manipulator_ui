@@ -177,6 +177,16 @@
           "marker": "{{at}}초에 마커를 추가했어요",
           "captionStyle": "자막 스타일을 바꿨어요",
           "canvas": "화면 비율을 {{aspect}}(으)로 바꿨어요"
+        },
+        "field": {
+          "opacity": "불투명도",
+          "speed": "속도",
+          "volume": "볼륨",
+          "look": "룩",
+          "lut": "LUT 강도",
+          "transition": "전환 길이",
+          "canvas": "캔버스 크기",
+          "ducking": "더킹"
         }
       },
       "vectorChange": {
@@ -191,7 +201,24 @@
         "duration": "길이를 {{seconds}}초로 맞췄어요",
         "canvas": "캔버스를 변경했어요",
         "loopOn": "반복 재생을 켰어요",
-        "loopOff": "반복 재생을 껐어요"
+        "loopOff": "반복 재생을 껐어요",
+        "keysLabel": "키프레임",
+        "docLabel": "애니메이션"
+      },
+      "autoApply": "{{brand}}의 편집을 자동으로 적용",
+      "autoApplyHint": "켜짐: 편집이 바로 적용되고 실행 취소 한 번으로 되돌릴 수 있어요. 꺼짐: 묶음마다 확인한 뒤 적용을 누릅니다.",
+      "showMe": "보여주기",
+      "showMeFor": "위치 보여주기: {{change}}",
+      "staged": {
+        "title": "{{brand}}의 제안: {{summary}}",
+        "apply": "적용",
+        "discard": "취소",
+        "discarded": "취소했어요. 아무것도 바뀌지 않았습니다.",
+        "notYet": "아직 적용된 것이 없어요.",
+        "to": "→",
+        "on": "켜짐",
+        "off": "꺼짐",
+        "geometry": "자르기 및 회전"
       }
     }
   }
