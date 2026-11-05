@@ -33,6 +33,7 @@ import { exportProps, setVectorTier, tierProp, vectorTracker, type VectorTracker
 import { resolveFormatGate, resolveLimitCta, type FormatGate, type GateCta } from '@/lib/vector/gating';
 import type { VectorExportFormat } from '@/lib/vector/exportsApi';
 import { cn } from '@/lib/utils';
+import { flushKept } from '@/lib/assistant/copilot/kept';
 
 /**
  * The Motion export dialog, first version (ticket MM44 decision 9).
@@ -226,8 +227,10 @@ export function ExportDialog({
     track.track(EVENTS.VECTOR_EXPORT_STARTED, exportProps(base));
     const t0 = now();
     return {
-      done: (bytes: number, runtime?: 'css' | 'anime') =>
-        track.track(EVENTS.VECTOR_EXPORT_COMPLETED, exportProps({ ...base, ...(runtime ? { runtime } : {}), bytes, ms: now() - t0 })),
+      done: (bytes: number, runtime?: 'css' | 'anime') => {
+        track.track(EVENTS.VECTOR_EXPORT_COMPLETED, exportProps({ ...base, ...(runtime ? { runtime } : {}), bytes, ms: now() - t0 }));
+        flushKept('exported', 'vector'); // MM113: Medi edits that survived to an export
+      },
       failed: (reason: VectorExportFailReason) =>
         track.track(EVENTS.VECTOR_EXPORT_FAILED, { ...exportProps({ ...base, ms: now() - t0 }), reason }),
       refused: (refusal: VectorExportRefusal) => {

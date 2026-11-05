@@ -36,6 +36,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEmbedBridgeOptional } from './embed-bridge';
 import type { StudioExportRecord } from '@/lib/studioTypes';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
+import { flushKept } from '@/lib/assistant/copilot/kept';
 
 /**
  * Watches ONE running export job and reports its live state upward. One
@@ -110,6 +111,7 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
           job_id: jobId,
           feature: 'studio',
         });
+        if (ok) flushKept('exported', 'studio'); // MM113
       }
       if (!ok && error) toast.error(t('error:toasts.exportFailed'), { description: error });
       void queryClient.invalidateQueries({ queryKey: exportsQueryKey(projectId) }).then(emitHistory);

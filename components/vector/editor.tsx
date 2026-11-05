@@ -91,6 +91,7 @@ import { vectorAssistantTrack } from '@/lib/vector/analytics';
 import { loadRasterPlan } from '@/lib/vector/raster/plan';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { AssistantCapabilities } from '@/schemas/assistant';
+import { useKeptSessionEnd } from '@/lib/assistant/copilot/kept';
 
 // MM110: Medi's copilot panel, loaded on first open with its i18n shard (nothing in the editor's first load).
 const CopilotPanel = dynamic(() => withAssistantShard(() => import('@/components/assistant/copilot-panel')), { ssr: false });
@@ -194,6 +195,7 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
   const [assistantCaps, setAssistantCaps] = React.useState<AssistantCapabilities | null>(null);
   const [copilotOpen, setCopilotOpen] = React.useState(false);
   const copilotOn = vectorCopilotOn(assistantCaps);
+  useKeptSessionEnd('vector'); // MM113
   const copilotRef = React.useRef(false);
   const [copilotTier, setCopilotTier] = React.useState<string | undefined>(undefined);
   const phone = useMediaQuery('(max-width: 767px)');

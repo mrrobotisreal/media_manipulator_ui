@@ -7,6 +7,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { createI18nInstance } from '@/i18n';
 import en from '@/i18n/locales/en-us/interface/assistant.json';
@@ -16,6 +17,11 @@ import type { AssistantStreamEvent } from '@/schemas/assistant';
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/photo/x', useRouter: () => ({ push: vi.fn() }) }));
 const h = vi.hoisted(() => ({ calls: [] as AssistantChatBody[], scripts: [] as unknown[][] }));
+const fb = vi.hoisted(() => ({ send: vi.fn(async (...args: [string, string]) => args.length > 0) }));
+vi.mock('@/lib/assistant/api', async (orig) => ({
+  ...(await orig<typeof import('@/lib/assistant/api')>()),
+  sendAssistantFeedback: fb.send,
+}));
 vi.mock('@/lib/assistant/stream', () => ({
   streamAssistantChat: vi.fn(async (body: AssistantChatBody, onEvent: (e: AssistantStreamEvent) => void) => {
     h.calls.push(body);
@@ -25,6 +31,7 @@ vi.mock('@/lib/assistant/stream', () => ({
 
 import CopilotPanel from './copilot-panel';
 import { planSteps } from '@/lib/assistant/copilot/useCopilot';
+import { flushKept, keptPending, resetKept } from '@/lib/assistant/copilot/kept';
 
 const CAPS = {
   enabled: true as const,
@@ -64,9 +71,11 @@ function renderPanel(adapter: CopilotAdapter, props: Partial<React.ComponentProp
   i18n.addResourceBundle('en-US', 'interface', en, true, true);
   const track = vi.fn();
   render(
-    <I18nextProvider i18n={i18n}>
-      <CopilotPanel adapter={adapter} capabilities={CAPS} signedIn tier="free" track={track} onClose={() => {}} {...props} />
-    </I18nextProvider>,
+    <QueryClientProvider client={new QueryClient({ defaultOptions: { mutations: { retry: false } } })}>
+      <I18nextProvider i18n={i18n}>
+        <CopilotPanel adapter={adapter} capabilities={CAPS} signedIn tier="free" track={track} onClose={() => {}} {...props} />
+      </I18nextProvider>
+    </QueryClientProvider>,
   );
   return { track };
 }
@@ -81,6 +90,8 @@ const send = async (text: string) => {
 beforeEach(() => {
   h.calls = [];
   h.scripts = [];
+  fb.send.mockClear();
+  resetKept();
   localStorage.clear();
 });
 afterEach(cleanup);
@@ -223,6 +234,82 @@ describe('CopilotPanel + useCopilot', () => {
   it('not a copilot surface for this caller: an unavailable line, nothing else', () => {
     renderPanel(fakeAdapter().a, { capabilities: { ...CAPS, copilot: { ...CAPS.copilot, surfaces: [] } } });
     expect(screen.getByTestId('copilot-unavailable')).toBeTruthy();
+  });
+});
+
+const doneWithId = [meta, { type: 'delta', text: 'Everything is grey except the red.' }, { type: 'done', messageId: 'msg-9' }];
+
+// MM113 acceptance 5: copilot thumbs.
+describe('copilot thumbs + version (MM113)', () => {
+  it('thumbs-up posts the feedback once through the mutation and tracks it with the copilot surface', async () => {
+    h.scripts.push(doneWithId);
+    const { track } = renderPanel(fakeAdapter().a);
+    await send('hello');
+    fireEvent.click(await screen.findByRole('button', { name: 'Helpful' }));
+    await waitFor(() => expect(fb.send).toHaveBeenCalledWith('msg-9', 'up'));
+    expect(track).toHaveBeenCalledWith('assistant_feedback_given', { surface: 'photo', rating: 'up' });
+    expect(screen.getByText('Thanks for the feedback.')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: 'Not helpful' })).toBeNull();
+    expect(fb.send).toHaveBeenCalledTimes(1);
+  });
+
+  it('thumbs-down sends down; no thumbs for a guest or an answer without a stored id', async () => {
+    h.scripts.push(doneWithId);
+    renderPanel(fakeAdapter().a);
+    await send('hello');
+    fireEvent.click(await screen.findByRole('button', { name: 'Not helpful' }));
+    await waitFor(() => expect(fb.send).toHaveBeenCalledWith('msg-9', 'down'));
+    cleanup();
+    h.scripts.push(confirm);
+    renderPanel(fakeAdapter().a);
+    await send('hello');
+    await screen.findByText('Everything is grey except the red.');
+    expect(screen.queryByTestId('medi-feedback')).toBeNull();
+  });
+
+  it('the ⓘ menu shows the prompt version from capabilities', async () => {
+    renderPanel(fakeAdapter().a, { capabilities: { ...CAPS, promptVersion: 'a1b2c3d4e5f6' } });
+    fireEvent.click(screen.getByTestId('copilot-info'));
+    expect((await screen.findByTestId('copilot-version')).textContent).toBe('a1b2c3d4e5f6');
+  });
+});
+
+// MM113 decision 4: the implicit signal. assistant_edit_kept is the catalog's equivalent of "kept".
+describe('assistant_edit_kept (MM113)', () => {
+  it('an applied edit that survives to an export is reported once as kept/exported', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(editTurn, confirm);
+    const { track } = renderPanel(a);
+    await send('grey except red');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(keptPending('photo')).toBe(1);
+    flushKept('exported', 'photo');
+    flushKept('exported', 'photo');
+    const kept = track.mock.calls.filter((c) => c[0] === 'assistant_edit_kept');
+    expect(kept).toEqual([['assistant_edit_kept', { surface: 'photo', outcome: 'exported' }]]);
+  });
+
+  it('an undone edit is not kept', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(editTurn, confirm);
+    const { track } = renderPanel(a);
+    await send('grey except red');
+    fireEvent.click(await screen.findByTestId('copilot-undo'));
+    flushKept('session_end');
+    expect(track.mock.calls.some((c) => c[0] === 'assistant_edit_kept')).toBe(false);
+    expect(keptPending()).toBe(0);
+  });
+
+  it('flushes by surface and outcome', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(editTurn, confirm);
+    const { track } = renderPanel(a);
+    await send('grey except red');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    flushKept('saved', 'vector');
+    expect(keptPending('photo')).toBe(1);
+    flushKept('session_end');
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_edit_kept')?.[1]).toEqual({ surface: 'photo', outcome: 'session_end' });
   });
 });
 

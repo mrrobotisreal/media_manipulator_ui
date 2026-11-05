@@ -206,6 +206,8 @@ export const EVENTS = {
   ASSISTANT_ACTION_CLICKED: 'assistant_action_clicked',
   ASSISTANT_LINK_CLICKED: 'assistant_link_clicked',
   ASSISTANT_FEEDBACK_GIVEN: 'assistant_feedback_given',
+  // MM113: a Medi edit survived (not undone) to an export, a save or the end of the editor session.
+  ASSISTANT_EDIT_KEPT: 'assistant_edit_kept',
   ASSISTANT_LIMIT_HIT: 'assistant_limit_hit',
 
   // --- Video / audio summary (MM75) -----------------------------------------
@@ -389,6 +391,7 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   assistant_action_clicked: PRIORITY_NORMAL,
   assistant_link_clicked: PRIORITY_NORMAL,
   assistant_feedback_given: PRIORITY_NORMAL,
+  assistant_edit_kept: PRIORITY_NORMAL,
   assistant_limit_hit: PRIORITY_CRITICAL,
 
   // Video / audio summary (MM75)
@@ -1374,6 +1377,11 @@ export interface AssistantFeedbackGivenProps {
   surface: AssistantSurfaceProp;
   rating: 'up' | 'down';
 }
+export type AssistantKeptOutcome = 'exported' | 'saved' | 'session_end';
+export interface AssistantEditKeptProps {
+  surface: AssistantSurfaceProp;
+  outcome: AssistantKeptOutcome;
+}
 export interface AssistantLimitHitProps {
   surface: AssistantSurfaceProp;
   tier: Tier;
@@ -1541,6 +1549,7 @@ export interface EventPropsMap {
   assistant_action_clicked: AssistantActionClickedProps;
   assistant_link_clicked: AssistantLinkClickedProps;
   assistant_feedback_given: AssistantFeedbackGivenProps;
+  assistant_edit_kept: AssistantEditKeptProps;
   assistant_limit_hit: AssistantLimitHitProps;
 
   summary_generated: SummaryGeneratedProps;

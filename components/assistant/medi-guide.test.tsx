@@ -4,9 +4,11 @@
  * answer, renders an action as a locale-prefixed button with its preset, stops, shows the static
  * fallback, sends feedback, and tracks the assistant_* events.
  */
+import * as React from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { I18nextProvider } from 'react-i18next';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { createI18nInstance } from '@/i18n';
 import en from '@/i18n/locales/en-us/interface/assistant.json';
@@ -46,6 +48,16 @@ const ON = {
   spendCapReached: false,
 };
 
+/** The sheet's thumbs use a TanStack mutation (MM113), so every render needs a client. */
+function Providers({ i18n: inst, children }: { i18n: ReturnType<typeof createI18nInstance>; children: React.ReactNode }) {
+  const [qc] = React.useState(() => new QueryClient({ defaultOptions: { mutations: { retry: false } } }));
+  return (
+    <QueryClientProvider client={qc}>
+      <I18nextProvider i18n={inst}>{children}</I18nextProvider>
+    </QueryClientProvider>
+  );
+}
+
 function i18n(locale = 'en-US', shard: object = en) {
   const inst = createI18nInstance(locale);
   inst.addResourceBundle(locale, 'interface', shard, true, true);
@@ -66,9 +78,9 @@ describe('MediGuide launcher', () => {
   it('renders nothing until the first interaction + idle', async () => {
     const load = vi.fn(async () => ON);
     render(
-      <I18nextProvider i18n={i18n()}>
+      <Providers i18n={i18n()}>
         <MediGuide loadCapabilities={load} />
-      </I18nextProvider>,
+      </Providers>,
     );
     expect(screen.queryByTestId('medi-guide-button')).toBeNull();
     expect(load).not.toHaveBeenCalled();
@@ -87,9 +99,9 @@ describe('MediGuide launcher', () => {
 
   it('stays hidden while capabilities say off', async () => {
     render(
-      <I18nextProvider i18n={i18n()}>
+      <Providers i18n={i18n()}>
         <MediGuide armImmediately loadCapabilities={async () => ({ enabled: false })} />
-      </I18nextProvider>,
+      </Providers>,
     );
     await act(async () => {});
     expect(screen.queryByTestId('medi-guide-button')).toBeNull();
@@ -97,9 +109,9 @@ describe('MediGuide launcher', () => {
 
   it('stays hidden when the guide alone is off', async () => {
     render(
-      <I18nextProvider i18n={i18n()}>
+      <Providers i18n={i18n()}>
         <MediGuide armImmediately loadCapabilities={async () => ({ ...ON, guide: { enabled: false } })} />
-      </I18nextProvider>,
+      </Providers>,
     );
     await act(async () => {});
     expect(screen.queryByTestId('medi-guide-button')).toBeNull();
@@ -108,9 +120,9 @@ describe('MediGuide launcher', () => {
   it.each(['/dr/docs', '/embed/content-studio', '/translator', '/tools/content-studio', '/ru/tools/content-studio', '/photo/new', '/motion/x'])('is hidden on %s', async (p) => {
     h.pathname = p;
     render(
-      <I18nextProvider i18n={i18n()}>
+      <Providers i18n={i18n()}>
         <MediGuide armImmediately loadCapabilities={async () => ON} />
-      </I18nextProvider>,
+      </Providers>,
     );
     await act(async () => {});
     expect(screen.queryByTestId('medi-guide-button')).toBeNull();
@@ -118,9 +130,9 @@ describe('MediGuide launcher', () => {
 
   it('shows bottom-right in LTR, bottom-left in RTL, and tracks assistant_opened', async () => {
     const { unmount } = render(
-      <I18nextProvider i18n={i18n()}>
+      <Providers i18n={i18n()}>
         <MediGuide armImmediately loadCapabilities={async () => ON} />
-      </I18nextProvider>,
+      </Providers>,
     );
     const btn = await screen.findByTestId('medi-guide-button');
     expect(btn.className).toContain('right-4');
@@ -131,9 +143,9 @@ describe('MediGuide launcher', () => {
     unmount();
     h.pathname = '/he';
     render(
-      <I18nextProvider i18n={i18n('he-IL', he)}>
+      <Providers i18n={i18n('he-IL', he)}>
         <MediGuide armImmediately loadCapabilities={async () => ON} />
-      </I18nextProvider>,
+      </Providers>,
     );
     expect((await screen.findByTestId('medi-guide-button')).className).toContain('left-4');
   });
@@ -141,9 +153,9 @@ describe('MediGuide launcher', () => {
   it('puts the sheet close button in the inline-end corner, clear of the Medi mark in RTL', async () => {
     h.pathname = '/he';
     render(
-      <I18nextProvider i18n={i18n('he-IL', he)}>
+      <Providers i18n={i18n('he-IL', he)}>
         <MediGuide armImmediately loadCapabilities={async () => ON} />
-      </I18nextProvider>,
+      </Providers>,
     );
     fireEvent.click(await screen.findByTestId('medi-guide-button'));
     const sheet = await screen.findByTestId('medi-guide-sheet');
@@ -165,9 +177,9 @@ function streamWith(frames: unknown[] | ((emit: Emit, signal?: AbortSignal) => P
 
 function renderSheet(locale = 'en-US') {
   return render(
-    <I18nextProvider i18n={i18n(locale)}>
+    <Providers i18n={i18n(locale)}>
       <GuideSheet open onOpenChange={() => {}} capabilities={ON} />
-    </I18nextProvider>,
+    </Providers>,
   );
 }
 

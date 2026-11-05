@@ -23,6 +23,7 @@ import { useAssistantStream, type AssistantTrack } from '@/lib/assistant/useAssi
 import type { StreamDeps } from '@/lib/assistant/stream';
 import type { AssistantActionEvent, AssistantEditsEvent } from '@/schemas/assistant';
 
+import { noteKeptCandidate, noteUndone } from './kept';
 import { markNoticeSeen, noticeSeen, previewAllowed, setPreviewAllowed } from './preferences';
 import type { CopilotAdapter, CopilotEditToken } from './types';
 
@@ -90,6 +91,7 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
         roundsThisTurn.current += 1;
         const round = (Math.min(2, roundsThisTurn.current) as 1 | 2);
         track(EVENTS.ASSISTANT_EDITS_APPLIED, { surface, op_count: Math.min(res.opCount, 99), op_kinds: res.opKinds.slice(0, 8).join(','), round });
+        noteKeptCandidate(ev.callId, surface, track);
         setApplied((l) => [...l, { callId: ev.callId, summary: ev.summary, token: res.token, changes: res.changes, appliedAt: now(), undone: false }]);
         pending.current = { callId: ev.callId, applied: true, visual: a.isVisual ? a.isVisual(ev.ops) : true };
       } else {
@@ -176,6 +178,7 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
     (edit: AppliedEdit): boolean => {
       if (edit.undone || !adapterRef.current.undo(edit.token)) return false;
       track(EVENTS.ASSISTANT_EDITS_UNDONE, { surface, within_seconds_bucket: undoBucket(now() - edit.appliedAt) });
+      noteUndone(edit.callId);
       setApplied((l) => l.map((x) => (x === edit ? { ...x, undone: true } : x)));
       return true;
     },

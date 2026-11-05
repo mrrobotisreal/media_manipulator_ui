@@ -635,6 +635,7 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .object({ surface: assistantSurface, target_kind: z.enum(['tool', 'page', 'editor', 'pricing']) })
     .strict(),
   assistant_feedback_given: z.object({ surface: assistantSurface, rating: z.enum(['up', 'down']) }).strict(),
+  assistant_edit_kept: z.object({ surface: assistantSurface, outcome: z.enum(['exported', 'saved', 'session_end']) }).strict(),
   assistant_limit_hit: z
     .object({ surface: assistantSurface, tier: z.enum(['anonymous', 'free', 'premium', 'pro', 'operator']) })
     .strict(),

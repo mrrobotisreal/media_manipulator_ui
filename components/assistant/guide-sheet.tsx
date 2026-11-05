@@ -9,24 +9,28 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { ArrowLeft, History, Loader2, Plus, Send, Square, ThumbsDown, ThumbsUp, Trash2 } from 'lucide-react';
+import { ArrowLeft, History, Loader2, Plus, Send, Square, Trash2 } from 'lucide-react';
 
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { deleteAssistantConversation, listAssistantConversations, sendAssistantFeedback } from '@/lib/assistant/api';
+import { deleteAssistantConversation, listAssistantConversations } from '@/lib/assistant/api';
 import { MEDI_BRAND, MEDI_MARK_SRC } from '@/lib/assistant/brand';
 import { EDITOR_HREF, editorTeaserFor } from '@/lib/assistant/guideRoutes';
 import { actionHref, linkTargetKind } from '@/lib/assistant/links';
-import { useAssistantStream, type AssistantUiMessage } from '@/lib/assistant/useAssistantStream';
+import { useAssistantStream, type AssistantTrack, type AssistantUiMessage } from '@/lib/assistant/useAssistantStream';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import { PHOTO_ADJUSTMENT_SLUGS } from '@/content/photo/slugs';
 import { cn } from '@/lib/utils';
 import type { AssistantCapabilities, AssistantConversation } from '@/schemas/assistant';
 
 import AssistantMarkdown from './markdown';
+import MessageFeedback from './message-feedback';
+
+/** The guide reports through the site's consent-gated client. */
+const guideTrack: AssistantTrack = (name, props) => analytics.track(name, props as never);
 
 const PHOTO_SLUGS: ReadonlySet<string> = new Set(PHOTO_ADJUSTMENT_SLUGS);
 const STARTERS = ['whichTool', 'gif', 'premium', 'photoPro'] as const;
@@ -271,13 +275,6 @@ function AssistantBubble({
 }) {
   const { t } = useLocalization(['interface']);
   const b = { brand: MEDI_BRAND };
-  const [rated, setRated] = React.useState<'up' | 'down' | null>(null);
-  const rate = (rating: 'up' | 'down') => {
-    if (!m.messageId || rated) return;
-    setRated(rating);
-    analytics.track(EVENTS.ASSISTANT_FEEDBACK_GIVEN, { surface: 'guide', rating });
-    void sendAssistantFeedback(m.messageId, rating);
-  };
   const guideActions = m.actions.filter((a) => a.kind === 'navigate' || a.kind === 'open_tool');
   return (
     <div className="space-y-2" data-testid="medi-answer" data-status={m.status}>
@@ -333,22 +330,7 @@ function AssistantBubble({
           </div>
         </div>
       ) : null}
-      {m.status === 'complete' && m.messageId && signedIn ? (
-        <div className="flex items-center gap-1 text-muted-foreground">
-          {rated ? (
-            <span className="text-xs">{t('assistant.guide.thanks')}</span>
-          ) : (
-            <>
-              <button type="button" className="rounded p-2 hover:bg-accent hover:text-foreground" aria-label={t('assistant.guide.helpful')} title={t('assistant.guide.helpful')} onClick={() => rate('up')}>
-                <ThumbsUp className="size-3.5" />
-              </button>
-              <button type="button" className="rounded p-2 hover:bg-accent hover:text-foreground" aria-label={t('assistant.guide.notHelpful')} title={t('assistant.guide.notHelpful')} onClick={() => rate('down')}>
-                <ThumbsDown className="size-3.5" />
-              </button>
-            </>
-          )}
-        </div>
-      ) : null}
+      {m.status === 'complete' && m.messageId && signedIn ? <MessageFeedback messageId={m.messageId} surface="guide" track={guideTrack} /> : null}
     </div>
   );
 }
