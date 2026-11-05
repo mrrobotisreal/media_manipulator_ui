@@ -199,7 +199,7 @@ describe('the op schema (strict; what the model reads)', () => {
     expect(ranges.required).toContain('id');
     const text = JSON.stringify(s);
     expect(text).not.toContain('"cube"');
-    expect(text).toContain('"minProperties":2');
+    expect(text).toContain('"anyOf":[{"required":["rotate"]}');
   });
 });
 
@@ -222,5 +222,29 @@ describe('helpers', () => {
     const r = greyExceptRanges([], ['green']);
     expect(r.find((x) => x.id === 'greens')?.saturation).toBe(0);
     expect(r).toHaveLength(6);
+  });
+});
+
+describe('MM114: reason on ops', () => {
+  it('every surface accepts an optional per-op reason of 4-140 chars and refuses the rest', () => {
+    expect(photoOpsProblems([{ op: 'auto_tone', reason: 'The histogram is flat' }])).toEqual([]);
+    expect(photoOpsProblems([{ op: 'auto_tone' }])).toEqual([]);
+    expect(photoOpsProblems([{ op: 'auto_tone', reason: 'abc' }]).join()).toMatch(/reason/);
+    expect(photoOpsProblems([{ op: 'auto_tone', reason: 'x'.repeat(141) }]).join()).toMatch(/reason/);
+    expect(photoOpsProblems([{ op: 'set_geometry', reason: 'The horizon is tilted' }]).length).toBeGreaterThan(0);
+  });
+
+  it('a reason does not change what the op does', () => {
+    const a = ok(blank(), [{ op: 'add_layer', type: 'exposure', params: { ev: 0.4 } }]);
+    const b = ok(blank(), [{ op: 'add_layer', type: 'exposure', params: { ev: 0.4 }, reason: 'It reads dark' }]);
+    expect(b.layers.map((l) => ({ ...l, id: '' }))).toEqual(a.layers.map((l) => ({ ...l, id: '' })));
+  });
+
+  it('every op in the exported schemas allows reason (the batch reason lives on apply_edits)', () => {
+    for (const [name, text] of Object.entries(buildOpsSchemaFiles())) {
+      const withOp = (text.match(/"const": "[a-z_]+"/g) ?? []).length;
+      const withReason = (text.match(/"reason": \{/g) ?? []).length + (text.match(/"\$ref": "#\/\$defs\/reason"/g) ?? []).length;
+      expect(withReason, name).toBeGreaterThanOrEqual(withOp);
+    }
   });
 });

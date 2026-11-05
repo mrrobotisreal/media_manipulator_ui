@@ -49,6 +49,11 @@ export const VECTOR_PATH_RE = /^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\-\s]+$/;
 const FONT_RE = /^[A-Za-z0-9 ,_-]{1,100}$/;
 const ID_RE = /^[A-Za-z_][A-Za-z0-9_-]*$/;
 
+/** MM114: why this op (4-140 chars), shown beside it in the change card; optional per op, required once per batch (`apply_edits.reason`). */
+export const OP_REASON_MIN = 4;
+export const OP_REASON_MAX = 140;
+const reasonField = named('reason', z.string().min(OP_REASON_MIN).max(OP_REASON_MAX)).optional();
+
 const layerId = named('layer_id', z.string().max(128).regex(ID_RE));
 const color = named('color', z.string().min(1).max(80).regex(VECTOR_COLOR_RE));
 const unit = named('unit', z.number().min(0).max(1));
@@ -142,13 +147,13 @@ const parentId = layerId.optional();
 const addLayer = z
   .discriminatedUnion(
     'type',
-    VECTOR_NEW_LAYER_TYPES.map((t) => z.strictObject({ op: z.literal('add_layer'), type: z.literal(t), props: VECTOR_LAYER_PROPS[t], parentId })) as unknown as [z.ZodObject, z.ZodObject, ...z.ZodObject[]],
+    VECTOR_NEW_LAYER_TYPES.map((t) => z.strictObject({ op: z.literal('add_layer'), reason: reasonField, type: z.literal(t), props: VECTOR_LAYER_PROPS[t], parentId })) as unknown as [z.ZodObject, z.ZodObject, ...z.ZodObject[]],
   )
   .describe('Add a shape, text, path or empty group on top (or inside the group parentId). Coordinates are canvas user units (viewBox), y down.');
 
 const addText = z
   .strictObject({
-    op: z.literal('add_text'),
+    op: z.literal('add_text'), reason: reasonField,
     text: z.string().min(1).max(500),
     x: coord,
     y: coord,
@@ -162,16 +167,16 @@ const addText = z
   .describe('Add one line of text; y is the baseline.');
 
 const importSvg = z
-  .strictObject({ op: z.literal('import_svg'), markup: z.string().min(10).max(VECTOR_IMPORT_MAX_CHARS), name: z.string().min(1).max(80).optional() })
+  .strictObject({ op: z.literal('import_svg'), reason: reasonField, markup: z.string().min(10).max(VECTOR_IMPORT_MAX_CHARS), name: z.string().min(1).max(80).optional() })
   .describe('Import SVG markup as a group centred on the canvas (scripts, handlers and external references are stripped by the editor).');
 
-const updateLayer = z.strictObject({ op: z.literal('update_layer'), layerId, patch }).describe("Change fields of an existing layer from the digest (only fields its type has).");
-const deleteLayer = z.strictObject({ op: z.literal('delete_layer'), layerId }).describe('Delete a layer and its tracks (ask first).');
+const updateLayer = z.strictObject({ op: z.literal('update_layer'), reason: reasonField, layerId, patch }).describe("Change fields of an existing layer from the digest (only fields its type has).");
+const deleteLayer = z.strictObject({ op: z.literal('delete_layer'), reason: reasonField, layerId }).describe('Delete a layer and its tracks (ask first).');
 
 const keyframe = z.strictObject({ t: ms, value: z.union([z.number().min(-1e7).max(1e7), z.string().min(1).max(80)]), easing });
 const animate = z
   .strictObject({
-    op: z.literal('animate'),
+    op: z.literal('animate'), reason: reasonField,
     layerId,
     property: z.string().regex(TRACK_PROPERTY_PATTERN),
     keyframes: z.array(keyframe).min(2).max(64),
@@ -181,7 +186,7 @@ const animate = z
 const span = named('span', z.strictObject({ start: ms, end: ms, easing: easing.optional() }));
 const applyAnimator = z
   .strictObject({
-    op: z.literal('apply_animator'),
+    op: z.literal('apply_animator'), reason: reasonField,
     layerIds: z.array(layerId).min(1).max(32),
     animator: z.enum(ANIMATOR_IDS),
     span,
@@ -199,7 +204,7 @@ const applyAnimator = z
 
 const template = z
   .strictObject({
-    op: z.literal('template'),
+    op: z.literal('template'), reason: reasonField,
     kind: z.enum(TEMPLATE_KINDS),
     text: z.union([z.string().min(1).max(200), z.array(z.string().min(1).max(200)).min(1).max(8)]).optional(),
     colors: z.array(color).min(1).max(4).optional(),
@@ -210,17 +215,17 @@ const template = z
   })
   .describe('Add a ready-made animation: lowerThird (text: [name, role]), logoReveal (the logo layers), titlePop, bulletReveal (text: lines), counter (value, text = label), badgeBounce (text: one word). colors: accent first.');
 
-const setDuration = z.strictObject({ op: z.literal('set_duration'), ms: z.number().int().min(100).max(MAX_MS) }).describe('Set the composition length (runs before the other ops of the call; keys after the end are removed).');
+const setDuration = z.strictObject({ op: z.literal('set_duration'), reason: reasonField, ms: z.number().int().min(100).max(MAX_MS) }).describe('Set the composition length (runs before the other ops of the call; keys after the end are removed).');
 const setCanvas = z
   .strictObject({
-    op: z.literal('set_canvas'),
+    op: z.literal('set_canvas'), reason: reasonField,
     width: z.number().min(16).max(8192).optional(),
     height: z.number().min(16).max(8192).optional(),
     background: color.optional(),
     fps: z.number().min(1).max(120).optional(),
   })
   .describe('Canvas size (the viewBox follows), background colour and preview fps.');
-const setLoop = z.strictObject({ op: z.literal('set_loop'), loop: z.boolean() }).describe('Whether the animation repeats.');
+const setLoop = z.strictObject({ op: z.literal('set_loop'), reason: reasonField, loop: z.boolean() }).describe('Whether the animation repeats.');
 
 export const vectorOpSchema = z.discriminatedUnion('op', [
   addLayer,
@@ -244,23 +249,24 @@ export type VectorOpName = (typeof VECTOR_OP_NAMES)[number];
 type Transform = Partial<Record<'x' | 'y' | 'scaleX' | 'scaleY' | 'rotation' | 'skewX' | 'skewY' | 'anchorX' | 'anchorY', number>>;
 export type VectorEasingOp = string | { cubicBezier: [number, number, number, number] };
 export type VectorOp =
-  | { op: 'add_layer'; type: VectorNewLayerType; props: Record<string, unknown> & { transform?: Transform }; parentId?: string }
-  | { op: 'add_text'; text: string; x: number; y: number; font?: string; size?: number; weight?: string; fill?: string; anchor?: 'start' | 'middle' | 'end'; parentId?: string }
-  | { op: 'import_svg'; markup: string; name?: string }
-  | { op: 'update_layer'; layerId: string; patch: Record<string, unknown> & { transform?: Transform } }
-  | { op: 'delete_layer'; layerId: string }
-  | { op: 'animate'; layerId: string; property: string; keyframes: Array<{ t: number; value: number | string; easing: VectorEasingOp }> }
+  | { op: 'add_layer'; reason?: string; type: VectorNewLayerType; props: Record<string, unknown> & { transform?: Transform }; parentId?: string }
+  | { op: 'add_text'; reason?: string; text: string; x: number; y: number; font?: string; size?: number; weight?: string; fill?: string; anchor?: 'start' | 'middle' | 'end'; parentId?: string }
+  | { op: 'import_svg'; reason?: string; markup: string; name?: string }
+  | { op: 'update_layer'; reason?: string; layerId: string; patch: Record<string, unknown> & { transform?: Transform } }
+  | { op: 'delete_layer'; reason?: string; layerId: string }
+  | { op: 'animate'; reason?: string; layerId: string; property: string; keyframes: Array<{ t: number; value: number | string; easing: VectorEasingOp }> }
   | {
       op: 'apply_animator';
+      reason?: string;
       layerIds: string[];
       animator: (typeof ANIMATOR_IDS)[number];
       span: { start: number; end: number; easing?: VectorEasingOp };
       options?: { pathId?: string; d?: string; autoOrient?: boolean; targetId?: string; amount?: number };
     }
-  | { op: 'template'; kind: (typeof TEMPLATE_KINDS)[number]; text?: string | string[]; colors?: string[]; at?: number; duration?: number; value?: number; layerIds?: string[] }
-  | { op: 'set_duration'; ms: number }
-  | { op: 'set_canvas'; width?: number; height?: number; background?: string; fps?: number }
-  | { op: 'set_loop'; loop: boolean };
+  | { op: 'template'; reason?: string; kind: (typeof TEMPLATE_KINDS)[number]; text?: string | string[]; colors?: string[]; at?: number; duration?: number; value?: number; layerIds?: string[] }
+  | { op: 'set_duration'; reason?: string; ms: number }
+  | { op: 'set_canvas'; reason?: string; width?: number; height?: number; background?: string; fps?: number }
+  | { op: 'set_loop'; reason?: string; loop: boolean };
 
 /** The JSON Schema the API validates `apply_edits.ops` with (draft 2020-12). */
 export function vectorOpsJsonSchema(): Record<string, unknown> {

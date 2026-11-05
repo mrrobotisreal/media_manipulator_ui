@@ -55,7 +55,7 @@ describe('recipe accuracy against the registries (decision 3)', () => {
   });
 
   it('the checker refuses what does not exist', () => {
-    const mk = (editor: Recipe['editor'], ops: unknown[]) => ({ editor, path: `${editor}/x.md`, example: { summary: 's', ops: ops as Recipe['example'] extends infer E ? E extends { ops: infer O } ? O : never : never } });
+    const mk = (editor: Recipe['editor'], ops: unknown[]) => ({ editor, path: `${editor}/x.md`, example: { summary: 's', reason: 'Because it reads dark', ops: ops as Recipe['example'] extends infer E ? E extends { ops: infer O } ? O : never : never } });
     expect(checkRecipeOps(mk('photo', [{ op: 'make_cinematic' }])).join()).toMatch(/unknown op/);
     expect(checkRecipeOps(mk('photo', [{ op: 'add_layer', type: 'exposure', params: { ev: 9 } }])).join()).toMatch(/9 > max 5/);
     expect(checkRecipeOps(mk('photo', [{ op: 'add_layer', type: 'tone', params: { brightness: 10 } }])).join()).toMatch(/unknown parameter/);
@@ -91,7 +91,7 @@ describe('recipe accuracy against the registries (decision 3)', () => {
       'p',
       '## Ops',
       '```json',
-      '{"summary": "S", "ops": [{"op": "auto_tone"}]}',
+      '{"summary": "S", "reason": "The photo reads flat", "ops": [{"op": "auto_tone"}]}',
       '```',
       '## How to adjust',
       'h',
@@ -135,5 +135,13 @@ describe('export (decision 4)', () => {
     expect(body).toContain('- Category: `photo`');
     expect(body).toContain('### Ops');
     for (const i of r.intents) expect(body).toContain(`\`${i.replace(/`/g, '')}\``);
+  });
+});
+
+describe('MM114: every op example carries a reason', () => {
+  it('has a batch reason of 4-140 characters, and parseRecipe refuses one without', () => {
+    for (const r of recipes) if (r.example) expect(r.example.reason.length, r.path).toBeGreaterThanOrEqual(4);
+    const bad = recipes.find((r) => r.example);
+    expect(bad).toBeDefined();
   });
 });

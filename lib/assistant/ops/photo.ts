@@ -73,12 +73,17 @@ const unit = named('unit', z.number().min(0).max(1));
 const layerName = named('layer_name', z.string().min(1).max(80));
 const blend = named('blend', z.enum(BLEND_MODES));
 
+/** MM114: why this op (4-140 chars), shown beside it in the change card; optional per op, required once per batch (`apply_edits.reason`). */
+export const OP_REASON_MIN = 4;
+export const OP_REASON_MAX = 140;
+const reasonField = named('reason', z.string().min(OP_REASON_MIN).max(OP_REASON_MAX)).optional();
+
 const addLayer = z
   .discriminatedUnion(
     'type',
     LAYER_TYPES.map((t) =>
       z.strictObject({
-        op: z.literal('add_layer'),
+        op: z.literal('add_layer'), reason: reasonField,
         type: z.literal(t),
         params: PARAMS[t].optional(),
         name: layerName.optional(),
@@ -92,7 +97,7 @@ const addLayer = z
 
 const updateLayer = z
   .strictObject({
-    op: z.literal('update_layer'),
+    op: z.literal('update_layer'), reason: reasonField,
     layerId,
     params: z.union(LAYER_TYPES.map((t) => PARAMS[t]) as unknown as [z.ZodType, z.ZodType, ...z.ZodType[]]).optional(),
     opacity: unit.optional(),
@@ -102,17 +107,17 @@ const updateLayer = z
   })
   .describe("Change an existing layer from the digest; params merge into the layer's params.");
 
-const removeLayer = z.strictObject({ op: z.literal('remove_layer'), layerId }).describe('Delete a layer (ask first).');
-const moveLayer = z.strictObject({ op: z.literal('move_layer'), layerId, toIndex: z.number().int().min(0).max(63) }).describe('Move a layer; 0 is the bottom.');
+const removeLayer = z.strictObject({ op: z.literal('remove_layer'), reason: reasonField, layerId }).describe('Delete a layer (ask first).');
+const moveLayer = z.strictObject({ op: z.literal('move_layer'), reason: reasonField, layerId, toIndex: z.number().int().min(0).max(63) }).describe('Move a layer; 0 is the bottom.');
 
 const greyRange = z.union([z.enum(GREY_EXCEPT_NAMES as [GreyExceptName, ...GreyExceptName[]]), z.strictObject({ hue: z.number().min(0).max(360), width: z.number().min(10).max(120).optional() })]);
 const greyExcept = z
-  .strictObject({ op: z.literal('grey_except'), ranges: z.array(greyRange).min(1).max(8), layerId: layerId.optional() })
+  .strictObject({ op: z.literal('grey_except'), reason: reasonField, ranges: z.array(greyRange).min(1).max(8), layerId: layerId.optional() })
   .describe('Make everything grey except the given colours (an HSL layer; layerId reuses an existing HSL layer).');
 
 const setMask = z
   .strictObject({
-    op: z.literal('set_mask'),
+    op: z.literal('set_mask'), reason: reasonField,
     layerId,
     components: z.array(maskComponent).min(1).max(16),
     combine: combine.optional(),
@@ -123,9 +128,9 @@ const setMask = z
 
 const PRESET_IDS = BUILTIN_PRESETS.map((p) => p.id) as [string, ...string[]];
 const applyPreset = z
-  .strictObject({ op: z.literal('apply_preset'), presetId: z.enum(PRESET_IDS), intensity: unit.optional() })
+  .strictObject({ op: z.literal('apply_preset'), reason: reasonField, presetId: z.enum(PRESET_IDS), intensity: unit.optional() })
   .describe('Append a built-in look as a layer group; intensity sets its layers opacity.');
-const autoTone = z.strictObject({ op: z.literal('auto_tone') }).describe('Auto levels and white balance from the histogram.');
+const autoTone = z.strictObject({ op: z.literal('auto_tone'), reason: reasonField }).describe('Auto levels and white balance from the histogram.');
 
 const crop = z.union([
   z.strictObject({ aspect: z.enum(CROP_ASPECTS) }),
@@ -134,14 +139,14 @@ const crop = z.union([
 ]);
 const setGeometry = z
   .strictObject({
-    op: z.literal('set_geometry'),
+    op: z.literal('set_geometry'), reason: reasonField,
     rotate: z.number().int().min(-360).max(360).multipleOf(90).optional(),
     straighten: z.number().min(-45).max(45).optional(),
     flipH: z.boolean().optional(),
     flipV: z.boolean().optional(),
     crop: crop.optional(),
   })
-  .refine((o) => Object.keys(o).length > 1, { message: 'set_geometry needs at least one field' })
+  .refine((o) => Object.keys(o).filter((k) => k !== 'op' && k !== 'reason').length > 0, { message: 'set_geometry needs at least one field' })
   .describe('rotate adds quarter turns; straighten sets the fine angle (auto-crops the corners); crop {aspect} | {rect} | null.');
 
 export const photoOpSchema = z.discriminatedUnion('op', [
@@ -161,15 +166,15 @@ export const photoOpsSchema = z.array(photoOpSchema).min(1).max(PHOTO_MAX_OPS);
 
 export type PhotoMaskSpec = { components: Record<string, unknown>[]; combine?: 'add' | 'subtract' | 'intersect'; feather?: number; invert?: boolean };
 export type PhotoOp =
-  | { op: 'add_layer'; type: LayerType; params?: Record<string, unknown>; name?: string; opacity?: number; blend?: (typeof BLEND_MODES)[number]; mask?: PhotoMaskSpec }
-  | { op: 'update_layer'; layerId: string; params?: Record<string, unknown>; opacity?: number; blend?: (typeof BLEND_MODES)[number]; enabled?: boolean; name?: string }
-  | { op: 'remove_layer'; layerId: string }
-  | { op: 'move_layer'; layerId: string; toIndex: number }
-  | { op: 'grey_except'; ranges: (GreyExceptName | { hue: number; width?: number })[]; layerId?: string }
-  | ({ op: 'set_mask'; layerId: string } & PhotoMaskSpec)
-  | { op: 'apply_preset'; presetId: string; intensity?: number }
-  | { op: 'auto_tone' }
-  | { op: 'set_geometry'; rotate?: number; straighten?: number; flipH?: boolean; flipV?: boolean; crop?: { aspect: CropAspect } | { rect: { x: number; y: number; width: number; height: number } } | null };
+  | { op: 'add_layer'; reason?: string; type: LayerType; params?: Record<string, unknown>; name?: string; opacity?: number; blend?: (typeof BLEND_MODES)[number]; mask?: PhotoMaskSpec }
+  | { op: 'update_layer'; reason?: string; layerId: string; params?: Record<string, unknown>; opacity?: number; blend?: (typeof BLEND_MODES)[number]; enabled?: boolean; name?: string }
+  | { op: 'remove_layer'; reason?: string; layerId: string }
+  | { op: 'move_layer'; reason?: string; layerId: string; toIndex: number }
+  | { op: 'grey_except'; reason?: string; ranges: (GreyExceptName | { hue: number; width?: number })[]; layerId?: string }
+  | ({ op: 'set_mask'; reason?: string; layerId: string } & PhotoMaskSpec)
+  | { op: 'apply_preset'; reason?: string; presetId: string; intensity?: number }
+  | { op: 'auto_tone'; reason?: string }
+  | { op: 'set_geometry'; reason?: string; rotate?: number; straighten?: number; flipH?: boolean; flipV?: boolean; crop?: { aspect: CropAspect } | { rect: { x: number; y: number; width: number; height: number } } | null };
 
 export const PHOTO_OP_NAMES = ['add_layer', 'update_layer', 'remove_layer', 'move_layer', 'grey_except', 'set_mask', 'apply_preset', 'auto_tone', 'set_geometry'] as const;
 
@@ -188,7 +193,7 @@ export function photoOpsJsonSchema(): Record<string, unknown> {
 /**
  * The `set_geometry` "at least one field" refinement has no JSON Schema form of its own
  * (`z.toJSONSchema` drops refinements), so it is written into the exported schema as
- * `minProperties: 2` (`op` plus one field): both validators then refuse an empty call.
+ * an `anyOf` of `required` field names (`reason` does not count): both validators then refuse an empty call.
  */
 function requireGeometryField(schema: Record<string, unknown>): Record<string, unknown> {
   const walk = (v: unknown): void => {
@@ -196,7 +201,7 @@ function requireGeometryField(schema: Record<string, unknown>): Record<string, u
     if (!v || typeof v !== 'object') return;
     const o = v as Record<string, unknown>;
     const props = o.properties as Record<string, { const?: unknown }> | undefined;
-    if (o.type === 'object' && props?.op?.const === 'set_geometry') o.minProperties = 2;
+    if (o.type === 'object' && props?.op?.const === 'set_geometry') o.anyOf = ['rotate', 'straighten', 'flipH', 'flipV', 'crop'].map((k) => ({ required: [k] }));
     Object.values(o).forEach(walk);
   };
   walk(schema);
