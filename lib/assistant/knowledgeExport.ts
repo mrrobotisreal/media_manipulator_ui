@@ -52,12 +52,12 @@ import {
   studioBlendModeSchema,
   studioCaptionStyleSchema,
   studioClipKeyframesSchema,
-  studioExportFormatSchema,
   studioKeyframeEaseSchema,
   studioLoudnessPresetSchema,
   STUDIO_EXPORT_RESOLUTIONS,
 } from '@/lib/studioTypes';
 import { ANIMATOR_IDS } from '@/lib/vector/animators';
+import { CODEC_NAMES, STATIC_STUDIO_OUTPUTS, choiceTokens, outputHumanLabel } from '@/lib/studio/studioOutputs';
 import { EASING_PRESETS, TRACK_PROPERTY_PATTERN, layerSchema as vectorLayerSchema } from '@/lib/vector/vectorTypes';
 import { VECTOR_EXPORT_FORMATS } from '@/lib/vector/exportsApi';
 import { TOOL_IDS, TOOL_SHORTCUTS } from '@/lib/vector/tools/types';
@@ -758,9 +758,10 @@ function studioDocs(): Array<[string, string]> {
       'Caption style:',
       ...cap,
       '### Export',
-      `Formats: ${studioExportFormatSchema.options.join(', ')} (h264/hevc render an MP4; mp3/wav are audio only). Output heights: ${STUDIO_EXPORT_RESOLUTIONS.map((h) => (h === 0 ? 'canvas' : `${h}p`)).join(', ')}. Captions: none, burn in or sidecar. Exports render on the server and count toward the plan's Darkroom export allowance.`,
+      ...studioExportLines(),
+      `Output heights: ${STUDIO_EXPORT_RESOLUTIONS.map((h) => (h === 0 ? 'canvas' : `${h}p`)).join(', ')}. Captions: none, burn in or sidecar (SRT + VTT files next to the video). Exports render on the server and count toward the plan's Darkroom export allowance, one per export whatever the format.`,
       'Canvas: projects up to 4K at 24, 30 or 60 fps; vertical 9:16 for Shorts/Reels/TikTok, 1:1 and 4:5 for feeds, 16:9 for YouTube.',
-    ], ['timeline', 'track', 'tracks', 'split', 'cut', 'trim', 'ripple delete', 'speed', 'slow motion', 'speed ramp', 'freeze frame', 'marker', 'markers', 'captions', 'subtitles', 'srt', 'vtt', 'burn in', 'export', 'render', 'mp4', 'vertical video', 'aspect ratio', 'shorts', 'reels', 'tiktok', 'canvas']),
+    ], ['timeline', 'track', 'tracks', 'split', 'cut', 'trim', 'ripple delete', 'speed', 'slow motion', 'speed ramp', 'freeze frame', 'marker', 'markers', 'captions', 'subtitles', 'srt', 'vtt', 'burn in', 'export', 'render', 'mp4', 'mov', 'mkv', 'h.265', 'hevc', 'h.264', 'final cut', 'imovie', 'wav', 'mp3', 'export format', 'codec', 'container', 'vertical video', 'aspect ratio', 'shorts', 'reels', 'tiktok', 'canvas']),
   );
 
   const sections = cheatSheetSections();
@@ -771,6 +772,61 @@ function studioDocs(): Array<[string, string]> {
     ]), ['shortcuts', 'keyboard shortcuts', 'hotkeys', 'keys', 'razor', 'split at playhead', 'undo', 'redo']),
   );
   return docs;
+}
+
+/**
+ * MM118: the Darkroom export doc, written from the API's output table (studioOutputs.json),
+ * so Medi's matrix, presets, warnings and plan ladder can never drift from what the server
+ * accepts. The plan ladder is the decided default; the server re-checks the live plan, and an
+ * above-plan suggestion is swapped for the nearest allowed preset with an upgrade note.
+ */
+const STUDIO_WARNING_TEXT: Record<string, string> = {
+  apple_incompatible: 'QuickTime, Photos and iPhone will not open it',
+  no_browser_preview: 'a browser cannot play it inline',
+};
+const STUDIO_PRESET_TEXT: Record<string, string> = {
+  mp4_h264: 'plays everywhere: social, YouTube, messaging, the default',
+  mp4_hevc: 'about half the file size at the same quality; plays on phones and modern browsers',
+  mov_h264: 'Final Cut Pro, iMovie and other Apple editing',
+  mov_hevc: 'Apple editing at half the size',
+  mkv_hevc_aac: 'archive copies and media servers (Plex, VLC)',
+  audio_mp3: 'podcasts and music, small files',
+  audio_wav: 'uncompressed audio for further editing or mastering',
+};
+const PLAN_TEXT: Record<string, string> = { anonymous: 'everyone', free: 'a free account', premium: 'Premium', pro: 'Pro' };
+
+export function studioExportLines(): string[] {
+  const t = STATIC_STUDIO_OUTPUTS;
+  const codecName = (k: string) => CODEC_NAMES[k] ?? k;
+  const lines = ['A Darkroom export is a container plus a video codec and an audio codec, from one server table:'];
+  for (const c of t.containers) {
+    const video = c.audioOnly ? 'audio only' : c.videoCodecs.map(codecName).join(' or ');
+    lines.push(`- ${c.key.toUpperCase()} (${c.ext}): ${video}; audio ${c.audioCodecs.map(codecName).join(', ')}.`);
+  }
+  lines.push('Presets (everyone sees them; params.preset in suggest_action export):');
+  for (const p of t.presets) {
+    const tokens = choiceTokens(p);
+    const plan = tokens.map((tok) => t.minTier[tok]).reduce((a, b) => (['anonymous', 'free', 'premium', 'pro'].indexOf(b) > ['anonymous', 'free', 'premium', 'pro'].indexOf(a) ? b : a), 'anonymous');
+    const who = plan === 'anonymous' ? 'open to everyone' : `needs ${PLAN_TEXT[plan] ?? plan}`;
+    lines.push(`- \`${p.key}\` (${outputHumanLabel({ container: p.container, videoCodec: p.videoCodec, audioCodec: p.audioCodec })}): ${STUDIO_PRESET_TEXT[p.key] ?? ''}; ${who}.`);
+  }
+  const aac = t.codecs.find((c) => c.key === 'aac');
+  lines.push(
+    `Advanced (needs ${PLAN_TEXT[t.advancedMinTier]}): pick the container, video and audio codec yourself (any valid combination above), audio bitrate (AAC and MP3: ${(aac?.bitrates ?? []).join(', ')} kbps, default ${aac?.defaultBitrate}; PCM has none) and stereo or mono. Video bitrate, keyframes and frame rate are not settable.`,
+  );
+  lines.push('Warnings shown under the picker:');
+  for (const w of t.warnings) {
+    const where = [w.container?.toUpperCase(), w.videoCodec && codecName(w.videoCodec), w.audioCodec && `${codecName(w.audioCodec)} audio`].filter(Boolean).join(' with ');
+    lines.push(`- ${where}: ${STUDIO_WARNING_TEXT[w.warning] ?? w.warning}.`);
+  }
+  lines.push(
+    `Plans (the server checks the live plan): ${Object.entries(t.minTier)
+      .filter(([, plan]) => plan !== 'anonymous')
+      .map(([tok, plan]) => `${codecName(tok).toUpperCase() === tok.toUpperCase() ? tok.toUpperCase() : codecName(tok)} needs ${PLAN_TEXT[plan] ?? plan}`)
+      .join('; ')}. Everything else is open to everyone. Opus, WebM, AV1, ProRes and FLAC are not available yet.`,
+  );
+  lines.push('Medi offers an export with suggest_action export and params; the dialog opens prefilled and the user presses Export. A choice above the plan is replaced by the nearest one the plan allows, with an upgrade note.');
+  return lines;
 }
 
 // --- Motion (vector) ---------------------------------------------------------
