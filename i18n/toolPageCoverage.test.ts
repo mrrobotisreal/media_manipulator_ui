@@ -103,7 +103,7 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
   // down (an English edit to a translated page must be translated too).
   it("MM93: pages with an English body per locale never increase", () => {
     const nonAlias = TOOL_PAGES.filter((t) => !t.aliasOf).map((t) => t.slug);
-    expect(nonAlias).toHaveLength(98 + 25); // MM100 adds the 25 Aperture pages (English bodies until MM102-<prefix>)
+    expect(nonAlias).toHaveLength(98 + 26); // MM111 adds Medi; MM100 adds the 25 Aperture pages (English bodies until MM102-<prefix>)
     const pinned: Record<string, number> = {
       "uk-UA": 0, "ru-RU": 0, "de-DE": 0,
       "he-IL": 0, "es-ES": 0, "es-MX": 0, "fr-FR": 0, "it-IT": 0, "pt-BR": 0, "pt-PT": 0,
@@ -112,11 +112,11 @@ describe("tool-page indexing follows coverage (MM86 Decision 3)", () => {
     const rows: string[] = [];
     for (const l of nonEnglish) {
       const english = nonAlias.filter((slug) => !localeBodyCoverage(slug, l.code).complete);
-      rows.push(`${l.code.padEnd(6)} English bodies ${String(english.length).padStart(3)}/123`);
+      rows.push(`${l.code.padEnd(6)} English bodies ${String(english.length).padStart(3)}/124`);
       expect(english.length, `${l.code}: ${english.slice(0, 5).join(", ")}`).toBeLessThanOrEqual(pinned[l.code]);
       if (english.length < pinned[l.code]) rows.push(`  ${l.code}: pin can drop to ${english.length}`);
     }
-    console.log(["MM93 tool-body coverage (123 non-alias pages):", ...rows].join("\n"));
+    console.log(["MM93 tool-body coverage (124 non-alias pages):", ...rows].join("\n"));
   });
 
   it("MM86 S3: uk-UA, ru-RU and de-DE fully cover all 24 copy-bar pages (an English edit must be translated too)", () => {

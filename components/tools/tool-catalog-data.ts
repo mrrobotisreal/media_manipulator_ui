@@ -36,7 +36,7 @@ export type CatalogCategory = Exclude<ToolPageContent['category'], 'contentStudi
 export const CATALOG_CATEGORY_ORDER: CatalogCategory[] = ['image', 'photo', 'video', 'audio', 'ai', 'metadata'];
 
 /** MM100: the Aperture landing is featured beside Darkroom and Motion, never in the grid. */
-export const CATALOG_FEATURED_EDITOR_SLUGS: readonly string[] = ['aperture'];
+export const CATALOG_FEATURED_EDITOR_SLUGS: readonly string[] = ['aperture', 'medi'];
 export const CATALOG_GROUP_ORDER: CatalogGroup[] = ['edit', 'convert', 'ai', 'privacy', 'editor'];
 
 /**
