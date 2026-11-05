@@ -101,6 +101,12 @@
           "moody": "Додати похмурого настрою",
           "keepRed": "Залишити лише червоний",
           "vintage": "Стиль вінтажної плівки"
+        },
+        "vector": {
+          "lowerThird": "Нижня плашка, що виїжджає",
+          "logoReveal": "Анімуй появу мого логотипа",
+          "titlePop": "Анімуй появу цього тексту",
+          "forSocial": "Як експортувати це для соцмереж?"
         }
       },
       "actions": {
@@ -134,6 +140,23 @@
         "purple": "фіолетового",
         "magenta": "пурпурового",
         "custom": "вибраного кольору"
+      },
+      "vectorChange": {
+        "addLayer": "Додано шар: {{layer}}",
+        "addText": "Додано рядок тексту",
+        "importSvg": "Імпортовано SVG",
+        "updateLayer": "Змінено шар «{{layer}}»",
+        "deleteLayer": "Видалено шар «{{layer}}»",
+        "animate": "Анімовано «{{property}}» шару «{{layer}}»",
+        "animator_one": "Застосовано «{{animator}}» до {{count}} шару",
+        "animator_few": "Застосовано «{{animator}}» до {{count}} шарів",
+        "animator_many": "Застосовано «{{animator}}» до {{count}} шарів",
+        "animator_other": "Застосовано «{{animator}}» до {{count}} шару",
+        "template": "Додано шаблон «{{template}}»",
+        "duration": "Тривалість змінено на {{seconds}} с",
+        "canvas": "Змінено полотно",
+        "loopOn": "Повтор увімкнено",
+        "loopOff": "Повтор вимкнено"
       }
     }
   }
