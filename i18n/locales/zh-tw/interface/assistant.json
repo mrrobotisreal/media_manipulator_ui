@@ -99,6 +99,12 @@
           "keepRed": "只保留紅色",
           "vintage": "復古底片風格"
         },
+        "studio": {
+          "cinematic": "電影感調色",
+          "lowerThird": "加入下三分之一字幕條",
+          "pauses": "縮短停頓",
+          "voice": "讓人聲更清楚"
+        },
         "vector": {
           "lowerThird": "滑入的下方字幕條",
           "logoReveal": "讓我的標誌登場",
@@ -137,6 +143,37 @@
         "purple": "紫色",
         "magenta": "洋紅色",
         "custom": "所選的顏色"
+      },
+      "studio": {
+        "allClips": "所有片段",
+        "titleClip": "標題",
+        "change": {
+          "split": "已在 {{at}} 秒處分割{{clip}}",
+          "trim": "已修剪{{clip}}",
+          "move": "已將{{clip}}移到 {{at}} 秒",
+          "delete": "已刪除{{clip}}",
+          "deleteRipple": "已刪除{{clip}}並合攏空隙",
+          "transition": "已在{{clip}}前加入 {{seconds}} 秒轉場",
+          "grade": "已調色：{{clips}}",
+          "look": "已套用「{{look}}」風格：{{clips}}",
+          "transform": "已移動並縮放{{clip}}",
+          "keyframes_other": "已用 {{count}} 個關鍵影格為{{clip}}加入動畫",
+          "title": {
+            "lowerThird": "已在 {{at}} 秒加入下三分之一字幕條",
+            "title": "已在 {{at}} 秒加入標題卡",
+            "endCard": "已在 {{at}} 秒加入片尾卡",
+            "caption": "已在 {{at}} 秒加入畫面文字"
+          },
+          "speed": "已將{{clip}}設為 {{speed}} 倍速",
+          "freeze": "已在{{clip}}後加入 {{seconds}} 秒定格畫面",
+          "audioPreset": "已對 {{track}} 套用「{{preset}}」預設",
+          "duckingOn": "已開啟人聲下自動降低音樂",
+          "duckingOff": "已關閉音樂自動降低",
+          "volume": "已將{{target}}設為 {{db}} dB",
+          "marker": "已在 {{at}} 秒加入標記",
+          "captionStyle": "已修改字幕樣式",
+          "canvas": "已將畫面比例改為 {{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "已新增{{layer}}",

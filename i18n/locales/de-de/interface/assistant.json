@@ -100,6 +100,12 @@
           "keepRed": "Nur das Rot behalten",
           "vintage": "Vintage-Filmlook"
         },
+        "studio": {
+          "cinematic": "Kinolook-Farbkorrektur",
+          "lowerThird": "Bauchbinde hinzufügen",
+          "pauses": "Pausen straffen",
+          "voice": "Stimme klarer machen"
+        },
         "vector": {
           "lowerThird": "Bauchbinde, die hereingleitet",
           "logoReveal": "Mein Logo enthüllen",
@@ -138,6 +144,38 @@
         "purple": "Lila",
         "magenta": "Magenta",
         "custom": "der gewählten Farbe"
+      },
+      "studio": {
+        "allClips": "alle Clips",
+        "titleClip": "den Titel",
+        "change": {
+          "split": "{{clip}} bei {{at}} s geteilt",
+          "trim": "{{clip}} getrimmt",
+          "move": "{{clip}} auf {{at}} s verschoben",
+          "delete": "{{clip}} gelöscht",
+          "deleteRipple": "{{clip}} gelöscht und Lücke geschlossen",
+          "transition": "{{seconds}}-s-Übergang vor {{clip}} hinzugefügt",
+          "grade": "Farbkorrektur: {{clips}}",
+          "look": "Look „{{look}}“ angewendet: {{clips}}",
+          "transform": "{{clip}} verschoben und skaliert",
+          "keyframes_one": "{{clip}} mit {{count}} Keyframe animiert",
+          "keyframes_other": "{{clip}} mit {{count}} Keyframes animiert",
+          "title": {
+            "lowerThird": "Bauchbinde bei {{at}} s hinzugefügt",
+            "title": "Titelkarte bei {{at}} s hinzugefügt",
+            "endCard": "Abspann bei {{at}} s hinzugefügt",
+            "caption": "Bildschirmtext bei {{at}} s hinzugefügt"
+          },
+          "speed": "{{clip}} auf {{speed}}× Geschwindigkeit gesetzt",
+          "freeze": "{{seconds}}-s-Standbild nach {{clip}} hinzugefügt",
+          "audioPreset": "Preset „{{preset}}“ auf {{track}} angewendet",
+          "duckingOn": "Musik-Ducking unter der Stimme eingeschaltet",
+          "duckingOff": "Musik-Ducking ausgeschaltet",
+          "volume": "{{target}} auf {{db}} dB gesetzt",
+          "marker": "Marker bei {{at}} s hinzugefügt",
+          "captionStyle": "Untertitel neu gestaltet",
+          "canvas": "Bildformat auf {{aspect}} geändert"
+        }
       },
       "vectorChange": {
         "addLayer": "Ebene hinzugefügt: {{layer}}",

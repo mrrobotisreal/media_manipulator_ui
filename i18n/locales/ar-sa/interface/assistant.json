@@ -104,6 +104,12 @@
           "keepRed": "أبقِ الأحمر فقط",
           "vintage": "مظهر فيلم كلاسيكي قديم"
         },
+        "studio": {
+          "cinematic": "تدرّج لوني سينمائي",
+          "lowerThird": "أضف شريط اسم سفليًا",
+          "pauses": "قلّل فترات الصمت",
+          "voice": "اجعل الصوت أوضح"
+        },
         "vector": {
           "lowerThird": "شريط سفلي ينزلق للداخل",
           "logoReveal": "اكشف شعاري بحركة",
@@ -142,6 +148,42 @@
         "purple": "البنفسجي",
         "magenta": "الأرجواني",
         "custom": "اللون المختار"
+      },
+      "studio": {
+        "allClips": "كل المقاطع",
+        "titleClip": "العنوان",
+        "change": {
+          "split": "قسمت {{clip}} عند {{at}} ث",
+          "trim": "قصصت {{clip}}",
+          "move": "نقلت {{clip}} إلى {{at}} ث",
+          "delete": "حذفت {{clip}}",
+          "deleteRipple": "حذفت {{clip}} وأغلقت الفراغ",
+          "transition": "أضفت انتقالًا مدته {{seconds}} ث قبل {{clip}}",
+          "grade": "صحّحت الألوان: {{clips}}",
+          "look": "طبّقت مظهر {{look}}: {{clips}}",
+          "transform": "نقلت {{clip}} وغيّرت حجمه",
+          "keyframes_zero": "حرّكت {{clip}} بدون إطارات مفتاحية ({{count}})",
+          "keyframes_one": "حرّكت {{clip}} بإطار مفتاحي واحد ({{count}})",
+          "keyframes_two": "حرّكت {{clip}} بإطارين مفتاحيين ({{count}})",
+          "keyframes_few": "حرّكت {{clip}} بـ {{count}} إطارات مفتاحية",
+          "keyframes_many": "حرّكت {{clip}} بـ {{count}} إطارًا مفتاحيًا",
+          "keyframes_other": "حرّكت {{clip}} بـ {{count}} إطار مفتاحي",
+          "title": {
+            "lowerThird": "أضفت شريط اسم سفليًا عند {{at}} ث",
+            "title": "أضفت بطاقة عنوان عند {{at}} ث",
+            "endCard": "أضفت بطاقة ختام عند {{at}} ث",
+            "caption": "أضفت نصًا على الشاشة عند {{at}} ث"
+          },
+          "speed": "ضبطت سرعة {{clip}} على {{speed}}×",
+          "freeze": "أضفت إطارًا ثابتًا مدته {{seconds}} ث بعد {{clip}}",
+          "audioPreset": "طبّقت إعداد {{preset}} على {{track}}",
+          "duckingOn": "شغّلت خفض الموسيقى تحت الصوت",
+          "duckingOff": "أوقفت خفض الموسيقى",
+          "volume": "ضبطت {{target}} على {{db}} dB",
+          "marker": "أضفت علامة عند {{at}} ث",
+          "captionStyle": "غيّرت نمط الترجمة",
+          "canvas": "غيّرت نسبة الإطار إلى {{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "أضفت طبقة: {{layer}}",

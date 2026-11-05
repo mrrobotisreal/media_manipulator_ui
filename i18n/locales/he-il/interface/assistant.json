@@ -101,6 +101,12 @@
           "keepRed": "להשאיר רק את האדום",
           "vintage": "מראה של פילם וינטג'"
         },
+        "studio": {
+          "cinematic": "תיקון צבע קולנועי",
+          "lowerThird": "הוספת כותרת תחתונה",
+          "pauses": "קיצור ההפסקות",
+          "voice": "שיפור צלילות הקול"
+        },
         "vector": {
           "lowerThird": "כתובית תחתונה שמחליקה פנימה",
           "logoReveal": "חשפו את הלוגו שלי",
@@ -139,6 +145,39 @@
         "purple": "סגול",
         "magenta": "מג'נטה",
         "custom": "הצבע שנבחר"
+      },
+      "studio": {
+        "allClips": "כל הקליפים",
+        "titleClip": "הכותרת",
+        "change": {
+          "split": "{{clip}} פוצל ב-{{at}} שנ׳",
+          "trim": "{{clip}} קוצר",
+          "move": "{{clip}} הוזז ל-{{at}} שנ׳",
+          "delete": "{{clip}} נמחק",
+          "deleteRipple": "{{clip}} נמחק והרווח נסגר",
+          "transition": "נוסף מעבר של {{seconds}} שנ׳ לפני {{clip}}",
+          "grade": "תיקון צבע: {{clips}}",
+          "look": "המראה „{{look}}” הוחל: {{clips}}",
+          "transform": "{{clip}} הוזז ושונה בגודלו",
+          "keyframes_one": "{{clip}} הונפש עם פריים מפתח {{count}}",
+          "keyframes_two": "{{clip}} הונפש עם {{count}} פריימי מפתח",
+          "keyframes_other": "{{clip}} הונפש עם {{count}} פריימי מפתח",
+          "title": {
+            "lowerThird": "נוספה כותרת תחתונה ב-{{at}} שנ׳",
+            "title": "נוסף כרטיס כותרת ב-{{at}} שנ׳",
+            "endCard": "נוסף כרטיס סיום ב-{{at}} שנ׳",
+            "caption": "נוסף טקסט על המסך ב-{{at}} שנ׳"
+          },
+          "speed": "מהירות {{clip}} שונתה ל-{{speed}}×",
+          "freeze": "נוסף פריים קפוא של {{seconds}} שנ׳ אחרי {{clip}}",
+          "audioPreset": "ההגדרה „{{preset}}” הוחלה על {{track}}",
+          "duckingOn": "הנמכת המוזיקה מתחת לקול הופעלה",
+          "duckingOff": "הנמכת המוזיקה כובתה",
+          "volume": "עוצמת {{target}} נקבעה ל-{{db}} dB",
+          "marker": "נוסף סמן ב-{{at}} שנ׳",
+          "captionStyle": "סגנון הכתוביות שונה",
+          "canvas": "יחס התמונה שונה ל-{{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "הוספתי שכבה: {{layer}}",

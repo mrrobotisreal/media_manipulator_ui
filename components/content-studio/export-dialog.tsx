@@ -39,6 +39,7 @@ import type { StudioExportStartedProps } from '@/lib/analytics';
 import { exportDurationRatioBucket, studioHost } from '@/lib/studio/telemetry';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import { useEmbedBridgeOptional } from './embed-bridge';
+import { exportDialogBridge } from '@/lib/studio/editorBridges';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 const exportFormSchema = z.object({
@@ -77,6 +78,12 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
   const isCreatv = backend.ecosystem === 'creatv' && backend.capabilities.publish;
 
   const [open, setOpen] = React.useState(false);
+  // MM109: Medi's "Export" suggestion opens this dialog (the user still chooses and starts it).
+  React.useEffect(() => {
+    if (disabled) return;
+    exportDialogBridge.register(() => setOpen(true));
+    return () => exportDialogBridge.register(null);
+  }, [disabled]);
   const [jobId, setJobId] = React.useState<string | null>(null);
   // The completion callback (useStudioJobProgress) always runs the latest
   // closure, so it reads the current `intent` state directly — no ref needed.

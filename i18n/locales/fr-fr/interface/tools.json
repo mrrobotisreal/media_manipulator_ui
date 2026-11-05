@@ -202,7 +202,11 @@
       "saveFailed": "Échec de l'enregistrement",
       "conflict": "Conflit d'enregistrement",
       "undo": "Annuler",
+      "undoNamed": "Annuler : {{step}}",
       "redo": "Rétablir",
+      "redoNamed": "Rétablir : {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "Demander une retouche à {{brand}} (Ctrl+J)",
       "mobileHint": "Darkroom fonctionne mieux sur un grand écran avec une souris ou un pavé tactile.",
       "shortcuts": "Espace lecture/pause · ←/→ image par image · V/C/Y/U/H outils · ⌘/Ctrl+K couper · S magnétisme · M marqueur · Q/W rogner et resserrer · Suppr supprimer · +/− zoom · ⌘Z annuler · ? tous les raccourcis",
       "tabs": {
@@ -665,6 +669,22 @@
       "confirm": "Changer le canevas",
       "confirmTitle": "Changer le canevas en {{width}}×{{height}} ?",
       "confirmBody": "Les clips conservent leurs transformations et l'aperçu les affiche avec des bandes. Le recadrage est manuel. Vous pouvez annuler cette action."
+    },
+    "looks": {
+      "title": "Looks",
+      "clear": "Retirer le look",
+      "cinematic": "Cinéma",
+      "teal-orange": "Bleu canard et orange",
+      "bleach-bypass": "Sans blanchiment",
+      "warm-film": "Pellicule chaude",
+      "cool-night": "Nuit froide",
+      "vintage": "Vintage",
+      "high-key": "High key",
+      "noir": "Noir",
+      "pastel": "Pastel",
+      "punchy-social": "Percutant pour les réseaux",
+      "moody": "Sombre",
+      "golden-hour": "Heure dorée"
     }
   },
   "toolPage": {

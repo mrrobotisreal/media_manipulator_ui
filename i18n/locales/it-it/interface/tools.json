@@ -202,7 +202,11 @@
       "saveFailed": "Salvataggio non riuscito",
       "conflict": "Conflitto di salvataggio",
       "undo": "Annulla",
+      "undoNamed": "Annulla: {{step}}",
       "redo": "Ripeti",
+      "redoNamed": "Ripeti: {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "Chiedi a {{brand}} di modificare (Ctrl+J)",
       "mobileHint": "Darkroom funziona meglio su uno schermo più grande con mouse o trackpad.",
       "shortcuts": "Spazio riproduci/pausa · ←/→ passo · V/C/Y/U/H strumenti · ⌘/Ctrl+K dividi · S agganciamento · M marcatore · Q/W rifila con ripple · Canc elimina · +/− zoom · ⌘Z annulla · ? tutte le scorciatoie",
       "tabs": {
@@ -665,6 +669,22 @@
       "confirm": "Cambia tela",
       "confirmTitle": "Cambiare la tela a {{width}}×{{height}}?",
       "confirmBody": "Le clip mantengono le loro trasformazioni e l'anteprima le mette in letterbox. La reinquadratura è manuale. Puoi annullare questa operazione."
+    },
+    "looks": {
+      "title": "Look",
+      "clear": "Rimuovi look",
+      "cinematic": "Cinematografico",
+      "teal-orange": "Verde acqua e arancio",
+      "bleach-bypass": "Bleach bypass",
+      "warm-film": "Pellicola calda",
+      "cool-night": "Notte fredda",
+      "vintage": "Vintage",
+      "high-key": "High key",
+      "noir": "Noir",
+      "pastel": "Pastello",
+      "punchy-social": "Vivace per i social",
+      "moody": "Cupo",
+      "golden-hour": "Ora d’oro"
     }
   },
   "toolPage": {

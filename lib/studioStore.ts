@@ -43,14 +43,12 @@ import {
   planDuration,
   planFreezeDuration,
   planFreezeInsert,
-  splitSourcePoint,
   type SpeedPlan,
 } from '@/lib/studio/speed';
 import {
   isEffectKeyframeProperty,
   keyframeLane,
   keyframeValueRange,
-  pruneClipKeyframes,
   KEYFRAME_TIME_EPSILON,
   type NamedKeyframeProperty,
 } from '@/lib/studio/keyframes';
@@ -66,6 +64,19 @@ import { clipTrimBound } from '@/lib/studio/clipTrimBound';
 import { normalizeTrackEffects } from '@/lib/studio/audioPresets';
 import { DEFAULT_TITLE_FONT_FAMILY } from '@/lib/studio/titleFonts';
 import { titleFromTextOverlays } from '@/lib/studio/titleConvert';
+import { applyStudioOps } from '@/lib/assistant/ops/applyStudio';
+import { isLookEffectId, lookById, withLook } from '@/lib/studio/looks';
+import {
+  MIN_CLIP_SECONDS,
+  clampRange,
+  uid,
+  ensureBaseTracks,
+  normalizeLane,
+  writeKeyframeLane,
+  fitInGaps,
+  placeInTrack,
+  cutTracksAt,
+} from '@/lib/studio/timelineOps';
 
 /**
  * Zustand store for the Content Studio editor. This holds the live editing
@@ -98,22 +109,15 @@ export interface StudioAssetEntry {
   proxyRebuild?: ProxyRebuildState;
 }
 
-const uid = (): string => {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) return crypto.randomUUID();
-  return `id-${Date.now()}-${Math.floor(Math.random() * 1e9).toString(16)}`;
-};
-
 const HISTORY_CAP = 100; // undo depth (ADR ui/0001); oldest snapshot dropped beyond this
 const DEFAULT_ZOOM = 80; // pixels per second
 const MIN_ZOOM = 10;
 const MAX_ZOOM = 400;
-const MIN_CLIP_SECONDS = 0.1;
 /** Default hold for a freshly placed still image (ADR-0008). */
 export const DEFAULT_IMAGE_SECONDS = 5;
 const MAX_VOLUME = 2; // +6dB ceiling (Premiere-style boost), matches Zod + Go clamp
 const MIN_CAPTION_SECONDS = 0.3;
 
-const clampRange = (v: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, v));
 
 const DEFAULT_AUDIO_CONFIG: StudioAudioConfig = {
   duckingEnabled: false,
@@ -169,6 +173,12 @@ interface StudioState {
   // --- undo history (ADR ui/0001: snapshots of the document slice only) ---
   /** Undo stack: pre-mutation snapshots of `project`, oldest first. */
   past: StudioProject[];
+  /**
+   * MM109: labels of history steps, keyed by the document a step PRODUCED (so a later unrelated
+   * edit, which produces a new document, is never mislabelled). Additive and sparse: only Medi
+   * edits are labelled today ("Medi: <summary>"). Session-only, like the stacks.
+   */
+  historyLabels: WeakMap<StudioProject, string>;
   /** Redo stack: snapshots displaced by undo; the redo target is the last element. */
   future: StudioProject[];
   // --- pro timeline tools (part 18): ephemeral, never part of the document/undo slice ---
@@ -211,6 +221,15 @@ interface StudioState {
    */
   beginGesture: () => void;
   endGesture: () => void;
+  /**
+   * MM109: Medi's public edit entry point. Applies an op list (design MEDI_ASSISTANT.md §8.4)
+   * all-or-nothing as ONE history entry labelled `Medi: <summary>`, honouring locked tracks.
+   * Never uses loadProject/restoreDraft (they clear history). Refused while a gesture is open.
+   */
+  applyAssistantOps: (summary: string, ops: unknown) => StudioAssistantApplyResult;
+  /** MM109: the label of the step Undo / Redo would take (undefined = unlabelled). */
+  undoLabel: () => string | undefined;
+  redoLabel: () => string | undefined;
 
   // --- media bin ---
   setAssets: (assets: StudioAsset[]) => void;
@@ -313,6 +332,10 @@ interface StudioState {
   setClipCrop: (clipId: string, crop: StudioCrop | undefined) => void;
   setClipBlendMode: (clipId: string, mode: StudioBlendMode | undefined) => void;
   addEffect: (clipId: string, type: StudioEffectType) => void;
+  /** MM109: apply a Looks-catalog grade to a clip (replaces its earlier look); one undo entry. */
+  applyLook: (clipId: string, lookId: string, intensity?: number) => void;
+  /** MM109: remove the clip's look (its own grade and other effects stay). */
+  clearLook: (clipId: string) => void;
   // patch is a loose record (the inspector sends one field at a time, often via
   // a computed key) merged onto the discriminated-union effect.
   updateEffect: (clipId: string, effectId: string, patch: Record<string, number | string | boolean>) => void;
@@ -420,17 +443,6 @@ interface StudioState {
 
 // ensureBaseTracks guarantees at least one video track (V1) and one audio track
 // (A1) so the editor always has a video lane and a place to drop music/voiceover.
-function ensureBaseTracks(tracks: StudioTrack[]): StudioTrack[] {
-  const out = [...tracks];
-  if (!out.some((t) => t.kind === 'video')) {
-    out.unshift({ id: uid(), kind: 'video', index: 0, muted: false, clips: [] });
-  }
-  if (!out.some((t) => t.kind === 'audio')) {
-    out.push({ id: uid(), kind: 'audio', index: 0, muted: false, clips: [] });
-  }
-  return out;
-}
-
 // findSpeedTarget locates the clip + its track for a speed action, refusing
 // clips that cannot be retimed: image clips (no time axis; MM15) and title
 // clips (generated). `allowFreeze` lets duration edits through for freeze clips.
@@ -490,25 +502,6 @@ function normalizeKeyframes(kfs: StudioVolumeKeyframe[]): StudioVolumeKeyframe[]
   return out;
 }
 
-// --- EDL v3 keyframe lane helpers (part 15) --------------------------------
-
-// normalizeLane mirrors the Go sanitizer: t ≥ 0, value clamped to the
-// property's range, sorted by t, deduped (same time → last wins), capped at 64.
-function normalizeLane(kfs: StudioKeyframe[], min: number, max: number): StudioKeyframe[] {
-  const sorted = [...kfs]
-    .map((k) => ({ t: Math.max(0, k.t), value: clampRange(k.value, min, max), ease: k.ease }))
-    .sort((a, b) => a.t - b.t);
-  const out: StudioKeyframe[] = [];
-  for (const k of sorted) {
-    if (out.length > 0 && Math.abs(out[out.length - 1].t - k.t) < KEYFRAME_TIME_EPSILON) {
-      out[out.length - 1] = k;
-    } else {
-      out.push(k);
-    }
-  }
-  return out.slice(0, STUDIO_V3_RANGES.keyframesPerProperty);
-}
-
 // staticKeyframeValue reads the value an arming stopwatch seeds from — the
 // clip's current static field (or the effect param / registry default).
 function staticKeyframeValue(clip: StudioClip, property: string): number {
@@ -541,31 +534,6 @@ function staticKeyframeValue(clip: StudioClip, property: string): number {
     default:
       return 0;
   }
-}
-
-// writeKeyframeLane returns the clip with `property`'s lane replaced (undefined
-// removes it). The v3 'volume' lane keeps the legacy `volumeKeyframes` mirror
-// in sync (linear points, gain = value) so the timeline rubber band, pre-v3
-// readers, and the export's legacy path all see the same automation — the same
-// dual-write convention as transition/transitionInSeconds.
-function writeKeyframeLane(clip: StudioClip, property: string, lane: StudioKeyframe[] | undefined): StudioClip {
-  const next = { ...(clip.keyframes ?? {}) };
-  if (isEffectKeyframeProperty(property)) {
-    const effects = { ...(next.effects ?? {}) };
-    if (lane && lane.length > 0) effects[property] = lane;
-    else delete effects[property];
-    next.effects = effects;
-  } else if (lane && lane.length > 0) {
-    next[property as NamedKeyframeProperty] = lane;
-  } else {
-    delete next[property as NamedKeyframeProperty];
-  }
-  const out: StudioClip = { ...clip, keyframes: pruneClipKeyframes(next) };
-  if (property === 'volume') {
-    out.volumeKeyframes =
-      lane && lane.length > 0 ? lane.map((k) => ({ t: k.t, gain: k.value })) : undefined;
-  }
-  return out;
 }
 
 // mirrorLegacyVolume rebuilds the v3 volume lane from a freshly edited legacy
@@ -664,94 +632,6 @@ function splitTextProportional(text: string, ratio: number): { left: string; rig
   return { left: words.slice(0, n).join(' '), right: words.slice(n).join(' ') };
 }
 
-// fitInGaps returns the start position nearest `desired` where a clip of length
-// `dur` fits without overlapping any of `intervals` (the other clips on the
-// track). It walks the free gaps (including the open-ended tail) and clamps
-// `desired` into whichever gap minimizes the distance moved.
-function fitInGaps(
-  intervals: { start: number; end: number }[],
-  dur: number,
-  desired: number,
-): number {
-  const sorted = [...intervals].sort((a, b) => a.start - b.start);
-  const gaps: { start: number; end: number }[] = [];
-  let cursor = 0;
-  for (const iv of sorted) {
-    if (iv.start > cursor) gaps.push({ start: cursor, end: iv.start });
-    cursor = Math.max(cursor, iv.end);
-  }
-  gaps.push({ start: cursor, end: Infinity });
-
-  let best = cursor;
-  let bestDist = Infinity;
-  for (const g of gaps) {
-    const maxStart = g.end === Infinity ? Infinity : g.end - dur;
-    if (maxStart < g.start) continue; // gap too small
-    const placed =
-      maxStart === Infinity ? Math.max(desired, g.start) : Math.min(Math.max(desired, g.start), maxStart);
-    const dist = Math.abs(placed - desired);
-    if (dist < bestDist) {
-      bestDist = dist;
-      best = placed;
-    }
-  }
-  return Math.max(0, best);
-}
-
-// placeInTrack positions the dragged clip within its track, reorder-aware.
-// If the drop keeps the existing left-to-right order, the clip is placed at the
-// nearest non-overlapping slot (gaps preserved). If the drop crosses a
-// neighbour (the user wants a new order), the track is re-packed contiguously
-// in the new order from the block's earliest start — so two clips can be freely
-// swapped. Returns the new clips array for the track.
-function placeInTrack(clips: StudioClip[], draggedId: string, desiredStart: number): StudioClip[] {
-  const dragged = clips.find((c) => c.id === draggedId);
-  if (!dragged) return clips;
-  const dur = clipDuration(dragged);
-  const others = clips.filter((c) => c.id !== draggedId).sort((a, b) => a.timelineStart - b.timelineStart);
-
-  const currentOrder = [...clips].sort((a, b) => a.timelineStart - b.timelineStart).map((c) => c.id);
-
-  // Insertion index among the other clips, by the dragged clip's center.
-  const center = Math.max(0, desiredStart) + dur / 2;
-  let insertIdx = 0;
-  for (const o of others) {
-    if (o.timelineStart + clipDuration(o) / 2 < center) insertIdx += 1;
-    else break;
-  }
-  const newOrder = [
-    ...others.slice(0, insertIdx).map((c) => c.id),
-    draggedId,
-    ...others.slice(insertIdx).map((c) => c.id),
-  ];
-
-  if (newOrder.join() === currentOrder.join()) {
-    // No reorder — reposition the dragged clip, preserving gaps.
-    const placed = fitInGaps(
-      others.map((c) => ({ start: c.timelineStart, end: clipEnd(c) })),
-      dur,
-      Math.max(0, desiredStart),
-    );
-    return clips.map((c) =>
-      c.id === draggedId
-        ? { ...c, timelineStart: placed, transition: undefined, transitionInSeconds: undefined }
-        : c,
-    );
-  }
-
-  // Reorder — re-pack contiguously from the block's earliest start. Positions
-  // change, so any transitions (which depend on overlap) are cleared.
-  const base = Math.max(0, Math.min(...clips.map((c) => c.timelineStart)));
-  const byId = new Map(clips.map((c) => [c.id, c]));
-  let cursor = base;
-  return newOrder.map((id) => {
-    const c = byId.get(id)!;
-    const next = { ...c, timelineStart: cursor, transition: undefined, transitionInSeconds: undefined };
-    cursor += clipDuration(c);
-    return next;
-  });
-}
-
 // --- Pro timeline tools helpers (part 18) -----------------------------------
 
 /**
@@ -824,76 +704,6 @@ function nextMarkerName(markers: readonly StudioMarker[]): string {
 
 const sortMarkers = (ms: StudioMarker[]): StudioMarker[] => [...ms].sort((a, b) => a.t - b.t);
 
-/**
- * Cut every eligible clip crossing `t` in two. The left half keeps the id; the
- * right half gets a fresh id, no entrance transition, and (when the original
- * was grouped) a NEW groupId shared by all right halves of that group — so a
- * grouped cut yields two groups. Non-crossing members of a split group that
- * start at/after `t` join the right-hand group. Speed-aware via
- * splitSourcePoint (part 17).
- */
-function cutTracksAt(
-  tracks: StudioTrack[],
-  t: number,
-  eligible: (clip: StudioClip, track: StudioTrack) => boolean,
-): { tracks: StudioTrack[]; cutIds: string[]; changed: boolean } {
-  const cutIds: string[] = [];
-  const newGroupOf = new Map<string, string>();
-  let changed = false;
-  const cutTracks = tracks.map((track) => {
-    let trackChanged = false;
-    const clips: StudioClip[] = [];
-    for (const c of track.clips) {
-      const crosses = t > c.timelineStart + MIN_CLIP_SECONDS && t < clipEnd(c) - MIN_CLIP_SECONDS;
-      if (!(crosses && eligible(c, track))) {
-        clips.push(c);
-        continue;
-      }
-      trackChanged = true;
-      const splitSource = splitSourcePoint(c, t);
-      const reversed = c.reverse === true && !c.freeze;
-      const left: StudioClip = reversed ? { ...c, sourceIn: splitSource } : { ...c, sourceOut: splitSource };
-      let rightGroup = c.groupId;
-      if (c.groupId) {
-        if (!newGroupOf.has(c.groupId)) newGroupOf.set(c.groupId, uid());
-        rightGroup = newGroupOf.get(c.groupId);
-      }
-      // The right piece starts flush against the left one — no overlap, so it
-      // must not inherit the entrance transition.
-      const right: StudioClip = {
-        ...c,
-        id: uid(),
-        timelineStart: t,
-        ...(reversed ? { sourceOut: splitSource } : { sourceIn: splitSource }),
-        transition: undefined,
-        transitionInSeconds: undefined,
-        groupId: rightGroup,
-      };
-      clips.push(left, right);
-      cutIds.push(left.id, right.id);
-    }
-    if (trackChanged) changed = true;
-    return trackChanged ? { ...track, clips } : track;
-  });
-  if (!changed) return { tracks, cutIds, changed: false };
-  if (newGroupOf.size === 0) return { tracks: cutTracks, cutIds, changed };
-  // Pull the not-crossing members that sit after the cut into the right group.
-  const cutSet = new Set(cutIds);
-  const regrouped = cutTracks.map((track) => {
-    let touched = false;
-    const clips = track.clips.map((c) => {
-      const ng = c.groupId ? newGroupOf.get(c.groupId) : undefined;
-      if (ng && !cutSet.has(c.id) && c.timelineStart >= t - 1e-6) {
-        touched = true;
-        return { ...c, groupId: ng };
-      }
-      return c;
-    });
-    return touched ? { ...track, clips } : track;
-  });
-  return { tracks: regrouped, cutIds, changed };
-}
-
 // pruneSelection keeps only the selection ids that still exist in the restored
 // document. Undo/redo never snapshot selection (ADR ui/0001) — they just drop
 // ids that point at clips the restored EDL doesn't contain.
@@ -912,6 +722,13 @@ function pruneCaptionId(id: string | null, project: StudioProject): string | nul
 function pruneMarkerId(id: string | null, project: StudioProject): string | null {
   return id !== null && (project.markers ?? []).some((m) => m.id === id) ? id : null;
 }
+
+export type StudioAssistantApplyResult =
+  | { ok: true; project: StudioProject; touched: string[] }
+  | { ok: false; reason: 'validation' | 'unknown_id' | 'locked'; errors: string[] };
+
+/** History label prefix of a Medi edit (shown as "Medi: <summary>" in the undo tooltip). */
+export const MEDI_HISTORY_PREFIX = 'Medi|';
 
 type StudioPatch = Partial<StudioState> | ((s: StudioState) => Partial<StudioState>);
 
@@ -977,6 +794,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
   lockNotice: null,
   past: [],
   future: [],
+  historyLabels: new WeakMap(),
   gestureDepth: 0,
   gestureBase: null,
 
@@ -1096,6 +914,49 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
         ? { gestureDepth: 1, gestureBase: s.project }
         : { gestureDepth: s.gestureDepth + 1 },
     ),
+
+  applyAssistantOps: (summary, ops) => {
+    const s = get();
+    if (!s.project) return { ok: false, reason: 'validation', errors: ['no project is open'] };
+    if (s.gestureDepth > 0) return { ok: false, reason: 'locked', errors: ['the user is dragging on the timeline; try again'] };
+    const before = s.project;
+    const res = applyStudioOps(before, ops, {
+      assetKind: (id) => s.assets[id]?.asset.mediaKind,
+      assetDuration: (id) => s.assets[id]?.asset.durationSeconds,
+      lockedViolation,
+    });
+    if (!res.ok) return res;
+    if (JSON.stringify(res.project) === JSON.stringify(before)) {
+      return { ok: false, reason: 'validation', errors: ['the edit changes nothing in this timeline'] };
+    }
+    const label = `${MEDI_HISTORY_PREFIX}${summary.trim().slice(0, 60)}`;
+    // One entry, written directly (not through `mutate`, whose lock guard would only raise a
+    // notice: applyStudioOps already refused a locked change with a reason the model can read).
+    set((st) => {
+      st.historyLabels.set(res.project, label);
+      return {
+        project: res.project,
+        past: [...st.past, before].slice(-HISTORY_CAP),
+        future: [],
+        selectedClipIds: res.touched.length ? [res.touched[res.touched.length - 1]] : pruneSelection(st.selectedClipIds, res.project),
+        selectedCaptionId: pruneCaptionId(st.selectedCaptionId, res.project),
+        selectedMarkerId: pruneMarkerId(st.selectedMarkerId, res.project),
+        dirty: true,
+      };
+    });
+    return res;
+  },
+
+  undoLabel: () => {
+    const s = get();
+    return s.project && s.past.length ? s.historyLabels.get(s.project) : undefined;
+  },
+
+  redoLabel: () => {
+    const s = get();
+    const top = s.future[s.future.length - 1];
+    return top ? s.historyLabels.get(top) : undefined;
+  },
 
   endGesture: () =>
     set((s) => {
@@ -2088,6 +1949,25 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
         ...c,
         effects: [...(c.effects ?? []), effect],
       }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  applyLook: (clipId, lookId, intensity = 1) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const l = lookById(lookId);
+      if (!l) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => withLook(c, l, intensity));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  clearLook: (clipId) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const effects = (c.effects ?? []).filter((e) => !isLookEffectId(e.id));
+        return { ...c, effects: effects.length ? effects : undefined };
+      });
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 

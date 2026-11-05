@@ -99,6 +99,12 @@
           "keepRed": "Chỉ giữ lại màu đỏ",
           "vintage": "Phong cách phim cổ điển"
         },
+        "studio": {
+          "cinematic": "Chỉnh màu kiểu điện ảnh",
+          "lowerThird": "Thêm thanh tên phía dưới",
+          "pauses": "Rút ngắn các khoảng lặng",
+          "voice": "Làm giọng nói rõ hơn"
+        },
         "vector": {
           "lowerThird": "Dải chữ dưới trượt vào",
           "logoReveal": "Làm logo của tôi xuất hiện",
@@ -137,6 +143,37 @@
         "purple": "màu tím",
         "magenta": "màu tím đỏ",
         "custom": "màu đã chọn"
+      },
+      "studio": {
+        "allClips": "tất cả clip",
+        "titleClip": "tiêu đề",
+        "change": {
+          "split": "Đã cắt {{clip}} tại {{at}} giây",
+          "trim": "Đã cắt bớt {{clip}}",
+          "move": "Đã chuyển {{clip}} đến {{at}} giây",
+          "delete": "Đã xóa {{clip}}",
+          "deleteRipple": "Đã xóa {{clip}} và lấp khoảng trống",
+          "transition": "Đã thêm chuyển cảnh {{seconds}} giây trước {{clip}}",
+          "grade": "Đã chỉnh màu: {{clips}}",
+          "look": "Đã áp dụng phong cách {{look}}: {{clips}}",
+          "transform": "Đã di chuyển và đổi kích thước {{clip}}",
+          "keyframes_other": "Đã tạo chuyển động cho {{clip}} bằng {{count}} khung hình chính",
+          "title": {
+            "lowerThird": "Đã thêm thanh tên phía dưới tại {{at}} giây",
+            "title": "Đã thêm thẻ tiêu đề tại {{at}} giây",
+            "endCard": "Đã thêm thẻ kết thúc tại {{at}} giây",
+            "caption": "Đã thêm chữ trên màn hình tại {{at}} giây"
+          },
+          "speed": "Đã đặt {{clip}} ở tốc độ {{speed}}×",
+          "freeze": "Đã thêm khung hình đứng {{seconds}} giây sau {{clip}}",
+          "audioPreset": "Đã áp dụng cài đặt sẵn {{preset}} cho {{track}}",
+          "duckingOn": "Đã bật tự động giảm nhạc dưới giọng nói",
+          "duckingOff": "Đã tắt tự động giảm nhạc",
+          "volume": "Đã đặt {{target}} ở {{db}} dB",
+          "marker": "Đã thêm điểm đánh dấu tại {{at}} giây",
+          "captionStyle": "Đã đổi kiểu phụ đề",
+          "canvas": "Đã đổi tỉ lệ khung hình thành {{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "Đã thêm lớp {{layer}}",

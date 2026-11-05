@@ -99,6 +99,12 @@
           "keepRed": "只保留红色",
           "vintage": "复古胶片风格"
         },
+        "studio": {
+          "cinematic": "电影感调色",
+          "lowerThird": "添加下三分之一字幕条",
+          "pauses": "缩短停顿",
+          "voice": "让人声更清晰"
+        },
         "vector": {
           "lowerThird": "滑入的下方字幕条",
           "logoReveal": "让我的标志出场",
@@ -137,6 +143,37 @@
         "purple": "紫色",
         "magenta": "洋红色",
         "custom": "所选颜色"
+      },
+      "studio": {
+        "allClips": "所有片段",
+        "titleClip": "标题",
+        "change": {
+          "split": "已在 {{at}} 秒处分割{{clip}}",
+          "trim": "已修剪{{clip}}",
+          "move": "已将{{clip}}移到 {{at}} 秒",
+          "delete": "已删除{{clip}}",
+          "deleteRipple": "已删除{{clip}}并合拢空隙",
+          "transition": "已在{{clip}}前添加 {{seconds}} 秒转场",
+          "grade": "已调色：{{clips}}",
+          "look": "已应用“{{look}}”风格：{{clips}}",
+          "transform": "已移动并缩放{{clip}}",
+          "keyframes_other": "已用 {{count}} 个关键帧为{{clip}}添加动画",
+          "title": {
+            "lowerThird": "已在 {{at}} 秒添加下三分之一字幕条",
+            "title": "已在 {{at}} 秒添加标题卡",
+            "endCard": "已在 {{at}} 秒添加片尾卡",
+            "caption": "已在 {{at}} 秒添加屏幕文字"
+          },
+          "speed": "已将{{clip}}设为 {{speed}} 倍速",
+          "freeze": "已在{{clip}}后添加 {{seconds}} 秒定格画面",
+          "audioPreset": "已对 {{track}} 应用“{{preset}}”预设",
+          "duckingOn": "已开启人声下自动压低音乐",
+          "duckingOff": "已关闭音乐自动压低",
+          "volume": "已将{{target}}设为 {{db}} dB",
+          "marker": "已在 {{at}} 秒添加标记",
+          "captionStyle": "已修改字幕样式",
+          "canvas": "已将画面比例改为 {{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "已添加{{layer}}",

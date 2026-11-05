@@ -202,7 +202,11 @@
       "saveFailed": "Falha ao salvar",
       "conflict": "Conflito ao salvar",
       "undo": "Desfazer",
+      "undoNamed": "Desfazer: {{step}}",
       "redo": "Refazer",
+      "redoNamed": "Refazer: {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "Pedir ao {{brand}} para editar (Ctrl+J)",
       "mobileHint": "O Darkroom funciona melhor em uma tela maior, com mouse ou trackpad.",
       "shortcuts": "Espaço reproduzir/pausar · ←/→ avançar quadro · V/C/Y/U/H ferramentas · ⌘/Ctrl+K dividir · S encaixe · M marcador · Q/W aparar com ondulação · Del excluir · +/− zoom · ⌘Z desfazer · ? todos os atalhos",
       "tabs": {
@@ -665,6 +669,22 @@
       "confirm": "Alterar tela",
       "confirmTitle": "Alterar a tela para {{width}}×{{height}}?",
       "confirmBody": "Os clipes mantêm as transformações e a pré-visualização aplica letterbox. O reenquadramento é manual. Você pode desfazer isso."
+    },
+    "looks": {
+      "title": "Looks",
+      "clear": "Remover look",
+      "cinematic": "Cinematográfico",
+      "teal-orange": "Azul-petróleo e laranja",
+      "bleach-bypass": "Bleach bypass",
+      "warm-film": "Filme quente",
+      "cool-night": "Noite fria",
+      "vintage": "Vintage",
+      "high-key": "High key",
+      "noir": "Noir",
+      "pastel": "Pastel",
+      "punchy-social": "Vibrante para redes",
+      "moody": "Sombrio",
+      "golden-hour": "Hora dourada"
     }
   },
   "toolPage": {

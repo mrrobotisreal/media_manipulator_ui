@@ -202,7 +202,11 @@
       "saveFailed": "Не удалось сохранить",
       "conflict": "Конфликт сохранения",
       "undo": "Отменить",
+      "undoNamed": "Отменить: {{step}}",
       "redo": "Повторить",
+      "redoNamed": "Повторить: {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "Попросить {{brand}} отредактировать (Ctrl+J)",
       "mobileHint": "Darkroom лучше всего работает на большом экране с мышью или трекпадом.",
       "shortcuts": "Space воспроизведение/пауза · ←/→ шаг · V/C/Y/U/H инструменты · ⌘/Ctrl+K разделить · S привязка · M маркер · Q/W обрезка со сдвигом · Del удалить · +/− масштаб · ⌘Z отменить · ? все сочетания",
       "tabs": {
@@ -675,6 +679,22 @@
       "confirm": "Change canvas",
       "confirmTitle": "Change canvas to {{width}}×{{height}}?",
       "confirmBody": "Clips keep their transforms and the preview letterboxes them. Reframing is manual. You can undo this."
+    },
+    "looks": {
+      "title": "Стили",
+      "clear": "Убрать стиль",
+      "cinematic": "Кинематографичный",
+      "teal-orange": "Бирюза и оранжевый",
+      "bleach-bypass": "Обход отбеливания",
+      "warm-film": "Тёплый плёночный",
+      "cool-night": "Холодная ночь",
+      "vintage": "Винтаж",
+      "high-key": "Светлый ключ",
+      "noir": "Нуар",
+      "pastel": "Пастель",
+      "punchy-social": "Яркий для соцсетей",
+      "moody": "Мрачный",
+      "golden-hour": "Золотой час"
     }
   },
   "toolPage": {

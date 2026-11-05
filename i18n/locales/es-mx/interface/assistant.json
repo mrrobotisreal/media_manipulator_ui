@@ -101,6 +101,12 @@
           "keepRed": "Conservar solo el rojo",
           "vintage": "Estilo de película vintage"
         },
+        "studio": {
+          "cinematic": "Gradación de color cinematográfica",
+          "lowerThird": "Agregar un cintillo inferior",
+          "pauses": "Recortar las pausas",
+          "voice": "Hacer la voz más clara"
+        },
         "vector": {
           "lowerThird": "Cintillo inferior que entra deslizándose",
           "logoReveal": "Revela mi logo",
@@ -139,6 +145,39 @@
         "purple": "el morado",
         "magenta": "el magenta",
         "custom": "el color elegido"
+      },
+      "studio": {
+        "allClips": "todos los clips",
+        "titleClip": "el título",
+        "change": {
+          "split": "{{clip}} dividido en {{at}} s",
+          "trim": "{{clip}} recortado",
+          "move": "{{clip}} movido a {{at}} s",
+          "delete": "{{clip}} eliminado",
+          "deleteRipple": "{{clip}} eliminado y hueco cerrado",
+          "transition": "Transición de {{seconds}} s agregada antes de {{clip}}",
+          "grade": "Corrección de color aplicada: {{clips}}",
+          "look": "Estilo «{{look}}» aplicado: {{clips}}",
+          "transform": "{{clip}} movido y escalado",
+          "keyframes_one": "{{clip}} animado con {{count}} fotograma clave",
+          "keyframes_many": "{{clip}} animado con {{count}} fotogramas clave",
+          "keyframes_other": "{{clip}} animado con {{count}} fotogramas clave",
+          "title": {
+            "lowerThird": "Cintillo inferior agregado en {{at}} s",
+            "title": "Placa de título agregada en {{at}} s",
+            "endCard": "Placa final agregada en {{at}} s",
+            "caption": "Texto en pantalla agregado en {{at}} s"
+          },
+          "speed": "{{clip}} a velocidad {{speed}}×",
+          "freeze": "Imagen congelada de {{seconds}} s agregada tras {{clip}}",
+          "audioPreset": "Ajuste «{{preset}}» aplicado a {{track}}",
+          "duckingOn": "Atenuación de la música bajo la voz activada",
+          "duckingOff": "Atenuación de la música desactivada",
+          "volume": "{{target}} a {{db}} dB",
+          "marker": "Marcador agregado en {{at}} s",
+          "captionStyle": "Estilo de subtítulos cambiado",
+          "canvas": "Formato de imagen cambiado a {{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "Agregué una capa: {{layer}}",

@@ -39,6 +39,7 @@ import { ensureStudioFontsLoaded } from '@/lib/studio/titleFonts';
 import type { ActiveClip } from '@/lib/studio/previewEngine';
 import { parseCubeLut } from '@/lib/studio/lutParser';
 import { registerEyedropper, rgbToHex } from '@/lib/studio/eyedropper';
+import { registerFrameGrab } from '@/lib/studio/frameGrab';
 import { ensureImage, getImageBitmap, pruneImageCache, subscribeImageCache } from '@/lib/studio/imageCache';
 import { DEFAULT_CAPTION_STYLE, type StudioTitle } from '@/lib/studioTypes';
 import { Segmented } from '@/components/darkroom/segmented';
@@ -1480,6 +1481,12 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     compositorRef.current?.pruneImages(live);
     pruneImageCache(liveImages);
   }, [project, assets]);
+
+  // MM109: Medi's frame grab reads the latest composite (memory only, never stored).
+  React.useEffect(() => {
+    registerFrameGrab(() => compositorRef.current?.readAccumPixels() ?? null);
+    return () => registerFrameGrab(null);
+  }, []);
 
   // Arm the chroma-key eyedropper when the inspector requests it.
   React.useEffect(() => {

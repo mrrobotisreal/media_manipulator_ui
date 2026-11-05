@@ -101,6 +101,12 @@
           "keepRed": "Mantieni solo il rosso",
           "vintage": "Look pellicola vintage"
         },
+        "studio": {
+          "cinematic": "Color grading cinematografico",
+          "lowerThird": "Aggiungi un sottopancia",
+          "pauses": "Accorcia le pause",
+          "voice": "Rendi la voce più chiara"
+        },
         "vector": {
           "lowerThird": "Sottopancia che scivola dentro",
           "logoReveal": "Rivela il mio logo",
@@ -139,6 +145,39 @@
         "purple": "il viola",
         "magenta": "il magenta",
         "custom": "il colore scelto"
+      },
+      "studio": {
+        "allClips": "tutte le clip",
+        "titleClip": "il titolo",
+        "change": {
+          "split": "{{clip}} tagliata a {{at}} s",
+          "trim": "{{clip}} accorciata",
+          "move": "{{clip}} spostata a {{at}} s",
+          "delete": "{{clip}} eliminata",
+          "deleteRipple": "{{clip}} eliminata e spazio chiuso",
+          "transition": "Transizione di {{seconds}} s aggiunta prima di {{clip}}",
+          "grade": "Color grading applicato: {{clips}}",
+          "look": "Look «{{look}}» applicato: {{clips}}",
+          "transform": "{{clip}} spostata e ridimensionata",
+          "keyframes_one": "{{clip}} animata con {{count}} fotogramma chiave",
+          "keyframes_many": "{{clip}} animata con {{count}} fotogrammi chiave",
+          "keyframes_other": "{{clip}} animata con {{count}} fotogrammi chiave",
+          "title": {
+            "lowerThird": "Sottopancia aggiunto a {{at}} s",
+            "title": "Cartello del titolo aggiunto a {{at}} s",
+            "endCard": "Cartello finale aggiunto a {{at}} s",
+            "caption": "Testo a schermo aggiunto a {{at}} s"
+          },
+          "speed": "{{clip}} impostata a velocità {{speed}}×",
+          "freeze": "Fermo immagine di {{seconds}} s aggiunto dopo {{clip}}",
+          "audioPreset": "Preset «{{preset}}» applicato a {{track}}",
+          "duckingOn": "Attenuazione della musica sotto la voce attivata",
+          "duckingOff": "Attenuazione della musica disattivata",
+          "volume": "{{target}} impostato a {{db}} dB",
+          "marker": "Marcatore aggiunto a {{at}} s",
+          "captionStyle": "Stile dei sottotitoli modificato",
+          "canvas": "Formato dell’immagine cambiato in {{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "Ho aggiunto un livello: {{layer}}",

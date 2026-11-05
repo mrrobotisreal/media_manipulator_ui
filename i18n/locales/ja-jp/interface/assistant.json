@@ -99,6 +99,12 @@
           "keepRed": "赤だけを残して",
           "vintage": "ヴィンテージフィルム風にして"
         },
+        "studio": {
+          "cinematic": "シネマティックな色調にして",
+          "lowerThird": "ローワーサードを追加して",
+          "pauses": "間を詰めて",
+          "voice": "声を聞き取りやすくして"
+        },
         "vector": {
           "lowerThird": "スライドインするテロップ",
           "logoReveal": "ロゴを登場させて",
@@ -137,6 +143,37 @@
         "purple": "紫",
         "magenta": "マゼンタ",
         "custom": "選択した色"
+      },
+      "studio": {
+        "allClips": "すべてのクリップ",
+        "titleClip": "タイトル",
+        "change": {
+          "split": "{{clip}}を{{at}}秒で分割しました",
+          "trim": "{{clip}}をトリミングしました",
+          "move": "{{clip}}を{{at}}秒に移動しました",
+          "delete": "{{clip}}を削除しました",
+          "deleteRipple": "{{clip}}を削除して隙間を詰めました",
+          "transition": "{{clip}}の前に{{seconds}}秒のトランジションを追加しました",
+          "grade": "色調を補正しました：{{clips}}",
+          "look": "ルック「{{look}}」を適用しました：{{clips}}",
+          "transform": "{{clip}}を移動・拡大縮小しました",
+          "keyframes_other": "{{clip}}を{{count}}個のキーフレームでアニメーションさせました",
+          "title": {
+            "lowerThird": "{{at}}秒にローワーサードを追加しました",
+            "title": "{{at}}秒にタイトルカードを追加しました",
+            "endCard": "{{at}}秒にエンドカードを追加しました",
+            "caption": "{{at}}秒に画面テキストを追加しました"
+          },
+          "speed": "{{clip}}を{{speed}}倍速にしました",
+          "freeze": "{{clip}}の後に{{seconds}}秒のフリーズフレームを追加しました",
+          "audioPreset": "{{track}}にプリセット「{{preset}}」を適用しました",
+          "duckingOn": "声の下で音楽を自動で下げる設定をオンにしました",
+          "duckingOff": "音楽の自動ダッキングをオフにしました",
+          "volume": "{{target}}を{{db}} dBにしました",
+          "marker": "{{at}}秒にマーカーを追加しました",
+          "captionStyle": "字幕のスタイルを変更しました",
+          "canvas": "画面比率を{{aspect}}に変更しました"
+        }
       },
       "vectorChange": {
         "addLayer": "{{layer}}を追加しました",

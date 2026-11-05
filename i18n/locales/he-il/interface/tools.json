@@ -202,7 +202,11 @@
       "saveFailed": "השמירה נכשלה",
       "conflict": "התנגשות שמירה",
       "undo": "ביטול",
+      "undoNamed": "ביטול: {{step}}",
       "redo": "ביצוע מחדש",
+      "redoNamed": "ביצוע מחדש: {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "בקשו מ-{{brand}} לערוך (Ctrl+J)",
       "mobileHint": "Darkroom עובד הכי טוב במסך גדול יותר עם עכבר או משטח מגע.",
       "shortcuts": "רווח הפעלה/השהיה · ←/→ צעד · V/C/Y/U/H כלים · ⌘/Ctrl+K פיצול · S הצמדה · M סמן · Q/W חיתוך אדווה · Del מחיקה · +/− זום · ⌘Z ביטול · ? כל הקיצורים",
       "tabs": {
@@ -675,6 +679,22 @@
       "confirm": "Change canvas",
       "confirmTitle": "Change canvas to {{width}}×{{height}}?",
       "confirmBody": "Clips keep their transforms and the preview letterboxes them. Reframing is manual. You can undo this."
+    },
+    "looks": {
+      "title": "מראות",
+      "clear": "הסרת מראה",
+      "cinematic": "קולנועי",
+      "teal-orange": "טורקיז וכתום",
+      "bleach-bypass": "עקיפת הלבנה",
+      "warm-film": "פילם חמים",
+      "cool-night": "לילה קר",
+      "vintage": "וינטג׳",
+      "high-key": "מפתח גבוה",
+      "noir": "נואר",
+      "pastel": "פסטל",
+      "punchy-social": "חי לרשתות",
+      "moody": "קודר",
+      "golden-hour": "שעת הזהב"
     }
   },
   "toolPage": {

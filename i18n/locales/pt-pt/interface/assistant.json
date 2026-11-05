@@ -101,6 +101,12 @@
           "keepRed": "Manter só o vermelho",
           "vintage": "Look de película vintage"
         },
+        "studio": {
+          "cinematic": "Correção de cor cinematográfica",
+          "lowerThird": "Adicionar um oráculo",
+          "pauses": "Encurtar as pausas",
+          "voice": "Tornar a voz mais nítida"
+        },
         "vector": {
           "lowerThird": "Oráculo que entra a deslizar",
           "logoReveal": "Revelar o meu logótipo",
@@ -139,6 +145,39 @@
         "purple": "roxo",
         "magenta": "magenta",
         "custom": "a cor escolhida"
+      },
+      "studio": {
+        "allClips": "todos os clipes",
+        "titleClip": "o título",
+        "change": {
+          "split": "{{clip}} dividido aos {{at}} s",
+          "trim": "{{clip}} aparado",
+          "move": "{{clip}} movido para os {{at}} s",
+          "delete": "{{clip}} eliminado",
+          "deleteRipple": "{{clip}} eliminado e espaço fechado",
+          "transition": "Transição de {{seconds}} s adicionada antes de {{clip}}",
+          "grade": "Correção de cor aplicada: {{clips}}",
+          "look": "Look «{{look}}» aplicado: {{clips}}",
+          "transform": "{{clip}} movido e redimensionado",
+          "keyframes_one": "{{clip}} animado com {{count}} fotograma-chave",
+          "keyframes_many": "{{clip}} animado com {{count}} fotogramas-chave",
+          "keyframes_other": "{{clip}} animado com {{count}} fotogramas-chave",
+          "title": {
+            "lowerThird": "Oráculo adicionado aos {{at}} s",
+            "title": "Cartão de título adicionado aos {{at}} s",
+            "endCard": "Cartão final adicionado aos {{at}} s",
+            "caption": "Texto no ecrã adicionado aos {{at}} s"
+          },
+          "speed": "{{clip}} à velocidade {{speed}}×",
+          "freeze": "Imagem congelada de {{seconds}} s adicionada após {{clip}}",
+          "audioPreset": "Predefinição «{{preset}}» aplicada a {{track}}",
+          "duckingOn": "Atenuação da música sob a voz ativada",
+          "duckingOff": "Atenuação da música desativada",
+          "volume": "{{target}} a {{db}} dB",
+          "marker": "Marcador adicionado aos {{at}} s",
+          "captionStyle": "Estilo das legendas alterado",
+          "canvas": "Formato da imagem alterado para {{aspect}}"
+        }
       },
       "vectorChange": {
         "addLayer": "Adicionei uma camada: {{layer}}",
