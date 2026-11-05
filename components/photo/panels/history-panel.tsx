@@ -5,6 +5,7 @@ import { Bookmark, Trash2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { useLocalization } from '@/i18n/useLocalization';
+import { MEDI_BRAND, MEDI_MARK_SRC } from '@/lib/assistant/brand';
 import { historySteps, resolveLabel, useSnapshotStore } from '@/lib/photo/history';
 import { usePhotoStore } from '@/lib/photo/photoStore';
 import { presetById } from '@/lib/photo/presets';
@@ -17,6 +18,7 @@ export function useStepLabel() {
   return React.useCallback(
     (label: string): string => {
       const r = resolveLabel(label);
+      if ('medi' in r) return t('photo.history.labels.medi', { brand: MEDI_BRAND, summary: r.medi });
       if ('layerType' in r) return t(`photo.layers.type.${r.layerType}`);
       if ('presetBuiltin' in r) {
         const p = presetById(r.presetBuiltin);
@@ -87,6 +89,7 @@ export function HistoryPanel() {
                 className={cn('w-full rounded px-2 py-1 text-start text-xs', s.current ? 'bg-primary/15' : 'hover:bg-surface-2', !s.applied && 'text-muted-foreground')}
                 data-testid={`history-step-${s.index}`}
               >
+                {s.label.startsWith('Medi|') ? <img src={MEDI_MARK_SRC} alt="" width={12} height={12} className="me-1.5 inline-block align-[-1px]" data-testid="history-medi-mark" /> : null}
                 {label(s.label)}
               </button>
             </li>

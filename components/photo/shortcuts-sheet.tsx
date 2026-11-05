@@ -4,10 +4,11 @@ import * as React from 'react';
 
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useLocalization } from '@/i18n/useLocalization';
-import { SHORTCUTS, SHORTCUT_GROUPS, formatKey } from '@/lib/photo/shortcuts';
+import { MEDI_BRAND } from '@/lib/assistant/brand';
+import { SHORTCUT_GROUPS, formatKey, visibleShortcuts } from '@/lib/photo/shortcuts';
 
 /** The `?` sheet (MM99 decision 8): lists every shortcut in the registry the editor's key handler reads. */
-export function ShortcutsSheet({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
+export function ShortcutsSheet({ open, onOpenChange, medi = false }: { open: boolean; onOpenChange: (o: boolean) => void; medi?: boolean }) {
   const { t } = useLocalization('interface');
   const mac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
   return (
@@ -22,9 +23,9 @@ export function ShortcutsSheet({ open, onOpenChange }: { open: boolean; onOpenCh
             <section key={g} aria-label={t(`photo.shortcuts.group.${g}`)}>
               <h3 className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t(`photo.shortcuts.group.${g}`)}</h3>
               <dl className="space-y-1">
-                {SHORTCUTS.filter((s) => s.group === g).map((s) => (
+                {visibleShortcuts({ medi }).filter((s) => s.group === g).map((s) => (
                   <div key={s.id} className="flex items-center justify-between gap-3 text-sm" data-testid={`shortcut-${s.id}`}>
-                    <dt>{t(`photo.shortcuts.action.${s.id}`)}</dt>
+                    <dt>{t(`photo.shortcuts.action.${s.id}`, { brand: MEDI_BRAND })}</dt>
                     <dd className="flex gap-1" dir="ltr">
                       {s.keys.map((k) => (
                         <kbd key={k} className="rounded border border-edge bg-surface-2 px-1.5 py-0.5 font-mono text-xs">

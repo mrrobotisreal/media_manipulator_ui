@@ -164,6 +164,15 @@ export const photoTracker: PhotoTracker = {
 };
 
 /**
+ * MM108: Medi's `assistant_*` events from the Aperture copilot, through the same consent gate
+ * (the shared vocabulary, `surface: 'photo'`; `useAssistantStream` / `useCopilot` call it).
+ */
+export const photoAssistantTrack = (name: Parameters<typeof analytics.track>[0], props: Parameters<typeof analytics.track>[1]): void => {
+  if (!photoAnalyticsAllowed()) return;
+  analytics.track(name, props as never, { tool_slug: toolSlug, feature: 'photo' });
+};
+
+/**
  * Identity header for the export and batch routes so the API's
  * `server_photo_export_counted` joins the visitor's client events. The visitor id
  * is an analytics identifier: attached ONLY with consent. (`X-MM-Session-ID` is
