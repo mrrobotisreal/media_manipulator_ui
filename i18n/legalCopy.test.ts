@@ -694,15 +694,22 @@ describe("MM107 Medi UI shard", () => {
     o && typeof o === "object" ? Object.entries(o as Record<string, unknown>).flatMap(([k, v]) => keys(v, p ? `${p}.${k}` : k)) : [p];
   const get = (o: unknown, path: string): unknown => path.split(".").reduce<unknown>((a, k) => (a as Record<string, unknown>)?.[k], o);
   const enShard = shard("en-US");
+  // i18next plural siblings (`key_one`, `key_few`, …) are one logical key: locales have different forms (MM108).
+  const plural = (k: string) => k.replace(/_(zero|one|two|few|many|other)$/, "_#plural");
+  const logical = (o: unknown) => Array.from(new Set(keys(o).map(plural))).sort();
+  // Colour names spelled the same in some languages (es "magenta", it "magenta") (MM108).
+  const COGNATE = /^assistant\.copilot\.colors\.(magenta|aqua)$/;
   for (const { code } of locales) {
     it(`${code}: assistant.json has every key, no English left (brand names aside)`, () => {
       const s = shard(code);
-      expect(keys(s).sort()).toEqual(keys(enShard).sort());
+      expect(logical(s)).toEqual(logical(enShard));
       if (code.toLowerCase() === "en-us") return;
       for (const k of keys(enShard)) {
-        if (k.startsWith("assistant.editors.")) continue;
-        if (!String(get(enShard, k)).replace(/\{\{\s*\w+\s*\}\}/g, "").trim()) continue; // placeholder-only (the title)
-        expect(get(s, k), `${code} ${k}`).not.toBe(get(enShard, k));
+        if (k.startsWith("assistant.editors.") || COGNATE.test(k)) continue;
+        // Placeholder-only or punctuation-only values (the title, "{{brand}}: {{summary}}").
+        if (!/[A-Za-z]{2}/.test(String(get(enShard, k)).replace(/\{\{\s*\w+\s*\}\}/g, "").replace("Ctrl+J", ""))) continue;
+        const got = get(s, k) ?? get(s, k.replace(/_(one|other)$/, "_other"));
+        expect(got, `${code} ${k}`).not.toBe(get(enShard, k));
       }
     });
   }

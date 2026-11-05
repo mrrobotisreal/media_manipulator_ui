@@ -40,6 +40,8 @@ export interface AssistantUiMessage {
   errorCode: string | null;
   /** Server tool currently running ("search_help"…), for the activity line. */
   tool: string | null;
+  /** The answer ended with `done {awaiting: "edit_result"}`: the client owes an editResult (MM108). */
+  awaiting: boolean;
 }
 
 export interface SendOptions {
@@ -54,17 +56,26 @@ export interface UseAssistantStreamOptions {
   locale: string;
   /** Called for each `edits` event (copilots apply them; MM108). */
   onEdits?: (ev: AssistantEditsEvent, turnId: string) => void;
+  /**
+   * The analytics sink (MM108). Defaults to the site client; the chromeless editors pass their
+   * consent-gated tracker (they mount no AnalyticsProvider and send only with a stored grant).
+   */
+  track?: AssistantTrack;
   /** Test seams. */
   deps?: StreamDeps;
   now?: () => number;
   page?: () => { path: string; title?: string };
 }
 
+/** An `assistant_*` event sink with the shared client's signature. */
+export type AssistantTrack = (name: Parameters<typeof analytics.track>[0], props: Parameters<typeof analytics.track>[1]) => void;
+const defaultTrack: AssistantTrack = (name, props) => analytics.track(name, props as never);
+
 let keySeq = 0;
 const nextKey = () => `m${++keySeq}`;
 
 function emptyAssistant(): AssistantUiMessage {
-  return { key: nextKey(), role: 'assistant', text: '', actions: [], ask: null, edits: [], messageId: null, outcome: null, status: 'streaming', errorCode: null, tool: null };
+  return { key: nextKey(), role: 'assistant', text: '', actions: [], ask: null, edits: [], messageId: null, outcome: null, status: 'streaming', errorCode: null, tool: null, awaiting: false };
 }
 
 function currentPage(): { path: string; title?: string } {
@@ -74,6 +85,7 @@ function currentPage(): { path: string; title?: string } {
 
 export function useAssistantStream(opts: UseAssistantStreamOptions) {
   const { surface, locale, onEdits, deps } = opts;
+  const track = opts.track ?? defaultTrack;
   const now = opts.now ?? Date.now;
   const pageOf = opts.page ?? currentPage;
   const [messages, setMessages] = React.useState<AssistantUiMessage[]>([]);
@@ -104,7 +116,7 @@ export function useAssistantStream(opts: UseAssistantStreamOptions) {
       const seen = { edits: false, action: false, ask: false };
       let rounds = 0;
       let finished = false;
-      analytics.track(EVENTS.ASSISTANT_MESSAGE_SENT, {
+      track(EVENTS.ASSISTANT_MESSAGE_SENT, {
         surface,
         has_frame: meta.hasFrame,
         turn_index_bucket: turnIndexBucket(meta.userTurns),
@@ -141,8 +153,8 @@ export function useAssistantStream(opts: UseAssistantStreamOptions) {
             break;
           case 'done':
             finished = true;
-            patchLast((m) => ({ ...m, status: 'complete', tool: null, messageId: ev.messageId ?? null, outcome: ev.outcome ?? null }));
-            analytics.track(EVENTS.ASSISTANT_RESPONSE_COMPLETED, {
+            patchLast((m) => ({ ...m, status: 'complete', tool: null, messageId: ev.messageId ?? null, outcome: ev.outcome ?? null, awaiting: ev.awaiting === 'edit_result' }));
+            track(EVENTS.ASSISTANT_RESPONSE_COMPLETED, {
               surface,
               model_tier: meta.tier,
               latency_bucket: latencyBucket(now() - started),
@@ -153,7 +165,7 @@ export function useAssistantStream(opts: UseAssistantStreamOptions) {
           case 'error':
             finished = true;
             patchLast((m) => ({ ...m, status: 'error', tool: null, errorCode: ev.code }));
-            analytics.track(EVENTS.ASSISTANT_RESPONSE_FAILED, { surface, reason: failReason(ev.code) });
+            track(EVENTS.ASSISTANT_RESPONSE_FAILED, { surface, reason: failReason(ev.code) });
             break;
           default:
             break;
@@ -164,18 +176,18 @@ export function useAssistantStream(opts: UseAssistantStreamOptions) {
         if (!finished) {
           // The stream ended without done/error: a dropped connection.
           patchLast((m) => ({ ...m, status: 'error', tool: null, errorCode: 'upstream' }));
-          analytics.track(EVENTS.ASSISTANT_RESPONSE_FAILED, { surface, reason: 'upstream' });
+          track(EVENTS.ASSISTANT_RESPONSE_FAILED, { surface, reason: 'upstream' });
         }
       } catch (err) {
         const aborted = (err as { name?: string } | null)?.name === 'AbortError';
         patchLast((m) => ({ ...m, status: aborted ? 'stopped' : 'error', tool: null, errorCode: aborted ? null : 'network' }));
-        analytics.track(EVENTS.ASSISTANT_RESPONSE_FAILED, { surface, reason: aborted ? 'aborted' : 'upstream' });
+        track(EVENTS.ASSISTANT_RESPONSE_FAILED, { surface, reason: aborted ? 'aborted' : 'upstream' });
       } finally {
         if (controller.current === ac) controller.current = null;
         setStreaming(false);
       }
     },
-    [surface, deps, onEdits, patchLast, now],
+    [surface, deps, onEdits, patchLast, now, track],
   );
 
   /** Send a user message. Returns false (and does nothing) while a request is running. */

@@ -1,0 +1,212 @@
+/**
+ * MM108 copilot framework: the panel + useCopilot against a fake stream and a fake adapter.
+ * An `edits` event is applied once; after `done {awaiting}` the editResult continuation goes
+ * out (with frameAfter only when the preview toggle is on); the disclosure shows once; a
+ * suggested action does nothing until clicked; the limit card and the sign-in state; Undo.
+ */
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { I18nextProvider } from 'react-i18next';
+
+import { createI18nInstance } from '@/i18n';
+import en from '@/i18n/locales/en-us/interface/assistant.json';
+import type { AssistantChatBody } from '@/lib/assistant/stream';
+import type { CopilotAdapter } from '@/lib/assistant/copilot/types';
+import type { AssistantStreamEvent } from '@/schemas/assistant';
+
+vi.mock('next/navigation', () => ({ usePathname: () => '/photo/x', useRouter: () => ({ push: vi.fn() }) }));
+const h = vi.hoisted(() => ({ calls: [] as AssistantChatBody[], scripts: [] as unknown[][] }));
+vi.mock('@/lib/assistant/stream', () => ({
+  streamAssistantChat: vi.fn(async (body: AssistantChatBody, onEvent: (e: AssistantStreamEvent) => void) => {
+    h.calls.push(body);
+    for (const e of h.scripts.shift() ?? []) onEvent(e as AssistantStreamEvent);
+  }),
+}));
+
+import CopilotPanel from './copilot-panel';
+import { planSteps } from '@/lib/assistant/copilot/useCopilot';
+
+const CAPS = {
+  enabled: true as const,
+  guide: { enabled: true },
+  copilot: { enabled: true, surfaces: ['photo'], signedInOnly: true, editSurfaces: ['photo'] },
+  turns: { limit: 5, remaining: 4, resetsAt: '' },
+  frames: true,
+  maxFrameBytes: 307200,
+  maxMessageChars: 4000,
+  spendCapReached: false,
+};
+
+const meta = { type: 'meta', conversationId: '00000000-0000-0000-0000-000000000001', turnId: '00000000-0000-0000-0000-0000000000aa', model: 'm' };
+const editTurn = [meta, { type: 'delta', text: 'Done.' }, { type: 'edits', callId: 'e1', summary: 'Grey except red', ops: [{ op: 'grey_except', ranges: ['red'] }] }, { type: 'done', awaiting: 'edit_result' }];
+const confirm = [meta, { type: 'delta', text: 'Everything is grey except the red.' }, { type: 'done' }];
+
+function fakeAdapter(over: Partial<CopilotAdapter> = {}) {
+  const undo = vi.fn(() => true);
+  const heal = vi.fn();
+  const a: CopilotAdapter = {
+    surface: 'photo',
+    frameOnMessage: true,
+    digest: () => 'Aperture photo. layers (0):',
+    captureFrame: vi.fn(async () => new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0x00])], { type: 'image/jpeg' })),
+    projectId: () => 'p1',
+    apply: vi.fn(() => ({ ok: true as const, token: { id: 1 }, opCount: 1, opKinds: ['grey_except'], changes: ['Made everything grey except red'] })),
+    undo,
+    canUndo: () => true,
+    suggest: { heal },
+    ...over,
+  };
+  return { a, undo, heal };
+}
+
+function renderPanel(adapter: CopilotAdapter, props: Partial<React.ComponentProps<typeof CopilotPanel>> = {}) {
+  const i18n = createI18nInstance('en-US');
+  i18n.addResourceBundle('en-US', 'interface', en, true, true);
+  const track = vi.fn();
+  render(
+    <I18nextProvider i18n={i18n}>
+      <CopilotPanel adapter={adapter} capabilities={CAPS} signedIn tier="free" track={track} onClose={() => {}} {...props} />
+    </I18nextProvider>,
+  );
+  return { track };
+}
+
+const send = async (text: string) => {
+  fireEvent.change(screen.getByTestId('copilot-input'), { target: { value: text } });
+  await act(async () => {
+    fireEvent.click(screen.getByTestId('copilot-send'));
+  });
+};
+
+beforeEach(() => {
+  h.calls = [];
+  h.scripts = [];
+  localStorage.clear();
+});
+afterEach(cleanup);
+
+describe('CopilotPanel + useCopilot', () => {
+  it('applies the edit once, then continues the same turn with editResult + frameAfter (not a new message)', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(editTurn, confirm);
+    const { track } = renderPanel(a, { });
+    await send('Make everything grey except the red jacket');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(a.apply).toHaveBeenCalledTimes(1);
+    expect(a.apply).toHaveBeenCalledWith('Grey except red', [{ op: 'grey_except', ranges: ['red'] }]);
+    const [first, second] = h.calls;
+    expect(first.surface).toBe('photo');
+    expect(first.context).toEqual({ digest: 'Aperture photo. layers (0):', projectId: 'p1' });
+    expect(first.frame?.jpegBase64).toBeTruthy();
+    expect(second.message).toBeUndefined();
+    expect(second.editResult).toMatchObject({ callId: 'e1', applied: true });
+    expect(second.editResult?.frameAfter?.jpegBase64).toBeTruthy();
+    expect(second.turnId).toBe(meta.turnId);
+    expect(second.conversationId).toBe(meta.conversationId);
+    await screen.findByText('Everything is grey except the red.');
+    expect(screen.getByTestId('copilot-edit').textContent).toContain('Medi: Grey except red');
+    const names = track.mock.calls.map((c) => c[0]);
+    expect(names).toContain('assistant_edits_applied');
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_edits_applied')?.[1]).toEqual({ surface: 'photo', op_count: 1, op_kinds: 'grey_except', round: 1 });
+  });
+
+  it('with "Let Medi see the preview" off, no frame is captured or sent (message or verify)', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(editTurn, confirm);
+    renderPanel(a);
+    fireEvent.click(screen.getByTestId('copilot-preview-toggle'));
+    await send('Moody please');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(a.captureFrame).not.toHaveBeenCalled();
+    expect(h.calls[0].frame).toBeUndefined();
+    expect(h.calls[1].editResult?.frameAfter).toBeUndefined();
+    expect(localStorage.getItem('mm-medi-preview-v1')).toBe('off');
+  });
+
+  it('shows the frames disclosure once; sending acknowledges it', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(confirm);
+    renderPanel(a);
+    expect(screen.getByTestId('copilot-notice').textContent).toMatch(/preview image of your work/);
+    await send('hi');
+    expect(screen.queryByTestId('copilot-notice')).toBeNull();
+    cleanup();
+    renderPanel(fakeAdapter().a);
+    expect(screen.queryByTestId('copilot-notice')).toBeNull();
+  });
+
+  it('a rejected edit reports the errors back to the model and shows nothing was changed', async () => {
+    const { a } = fakeAdapter({ apply: vi.fn(() => ({ ok: false as const, reason: 'unknown_id' as const, errors: ['ops[0]: no layer "x"'] })) });
+    h.scripts.push(editTurn, confirm);
+    const { track } = renderPanel(a);
+    await send('fix it');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(h.calls[1].editResult).toEqual({ callId: 'e1', applied: false, errors: ['ops[0]: no layer "x"'] });
+    expect(screen.getByTestId('copilot-rejected')).toBeTruthy();
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_edits_rejected')?.[1]).toEqual({ surface: 'photo', reason: 'unknown_id' });
+  });
+
+  it('a suggested action calls nothing until clicked', async () => {
+    const { a, heal } = fakeAdapter();
+    h.scripts.push([meta, { type: 'delta', text: 'Heal can remove it.' }, { type: 'action', callId: 'a1', kind: 'heal', label: 'Heal the blemish', params: {} }, { type: 'done' }]);
+    const { track } = renderPanel(a);
+    await send('remove the pimple');
+    const btn = await screen.findByTestId('copilot-action');
+    expect(heal).not.toHaveBeenCalled();
+    await act(async () => {
+      fireEvent.click(btn);
+    });
+    expect(heal).toHaveBeenCalledTimes(1);
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_action_clicked')?.[1]).toEqual({ surface: 'photo', kind: 'heal' });
+  });
+
+  it('Undo on the latest edit calls the adapter and reports assistant_edits_undone', async () => {
+    const { a, undo } = fakeAdapter();
+    h.scripts.push(editTurn, confirm);
+    const { track } = renderPanel(a);
+    await send('grey except red');
+    fireEvent.click(await screen.findByTestId('copilot-undo'));
+    expect(undo).toHaveBeenCalledWith({ id: 1 });
+    expect(screen.getByTestId('copilot-edit').getAttribute('data-undone')).toBe('true');
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_edits_undone')?.[1]).toMatchObject({ surface: 'photo', within_seconds_bucket: '<10s' });
+  });
+
+  it('a limit refusal shows the limit card and reports assistant_limit_hit once', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push([{ type: 'error', code: 'limit', message: 'HTTP 429' }]);
+    const { track } = renderPanel(a);
+    await send('make it moody');
+    expect((await screen.findByTestId('copilot-limit')).textContent).toMatch(/today's Medi edits/);
+    expect(track.mock.calls.filter((c) => c[0] === 'assistant_limit_hit')).toEqual([['assistant_limit_hit', { surface: 'photo', tier: 'free' }]]);
+  });
+
+  it('signed out: the sign-in card, no input, nothing sent', () => {
+    renderPanel(fakeAdapter().a, { signedIn: false });
+    expect(screen.getByTestId('copilot-sign-in')).toBeTruthy();
+    expect((screen.getByTestId('copilot-input') as HTMLTextAreaElement).disabled).toBe(true);
+    expect(h.calls).toHaveLength(0);
+  });
+
+  it('Plan my edit sends plan:true', async () => {
+    h.scripts.push([meta, { type: 'delta', text: '1. Lift the shadows\n2. Warm it up\n3. Add a vignette' }, { type: 'done' }]);
+    renderPanel(fakeAdapter().a);
+    fireEvent.change(screen.getByTestId('copilot-input'), { target: { value: 'make it cinematic' } });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('copilot-plan-button'));
+    });
+    expect(h.calls[0].plan).toBe(true);
+    expect((await screen.findByTestId('copilot-plan')).textContent).toContain('Warm it up');
+  });
+
+  it('not a copilot surface for this caller: an unavailable line, nothing else', () => {
+    renderPanel(fakeAdapter().a, { capabilities: { ...CAPS, copilot: { ...CAPS.copilot, surfaces: [] } } });
+    expect(screen.getByTestId('copilot-unavailable')).toBeTruthy();
+  });
+});
+
+describe('planSteps', () => {
+  it('reads consecutive numbered lines; one line is not a plan', () => {
+    expect(planSteps('Here:\n1. **Lift** shadows\n2) Warm it\n4. skip')).toEqual(['Lift shadows', 'Warm it']);
+    expect(planSteps('1. only')).toEqual([]);
+  });
+});

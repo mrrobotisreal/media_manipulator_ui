@@ -31,6 +31,7 @@ import { ROUTE_SEO_MAP, SITE_NAME } from '@/lib/seo';
 import { VOICES } from '@/content/voices';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 import { PHOTO_BRAND } from '@/lib/photo/brand';
+import { MEDI_BRAND } from '@/lib/assistant/brand';
 import { locales, localizeHref } from '@/i18n/locales';
 import { serverShards } from '@/i18n/generated/serverBundles.generated';
 import { getLocalizedToolBySlug } from '@/i18n/toolPageContent';
@@ -902,7 +903,8 @@ function photoDocs(): Array<[string, string]> {
       'Every change is one undo step (Mod+Z / Shift+Mod+Z). Hold \\ to see the original. Exports are rendered from the original at full resolution on the server (JPG, PNG, WebP, AVIF, TIFF) and count as one everyday job; the preview is drawn in the browser with WebGL2.',
       `Tool pages that open the editor on a panel: ${Object.entries(PHOTO_PAGE_WIRING).map(([slug, w]) => `${slug} → ${w.panel}${w.preset ? ` + ${w.preset}` : ''}`).join('; ')}.`,
       '### Shortcuts',
-      ...PHOTO_SHORTCUTS.map((s) => `- ${s.keys.join(' or ')}: ${str(photo, `shortcuts.action.${s.id}`) || s.id}`),
+      // The copilot shortcut's label names Medi, not the editor (MM108).
+      ...PHOTO_SHORTCUTS.map((s) => `- ${s.keys.join(' or ')}: ${(s.id === 'medi' ? str(photo, `shortcuts.action.${s.id}`).replace(PHOTO_BRAND, MEDI_BRAND) : str(photo, `shortcuts.action.${s.id}`)) || s.id}`),
     ], ['panels', 'layers', 'layer stack', 'undo', 'redo', 'history', 'export', 'save', 'jpg', 'png', 'webp', 'avif', 'tiff', 'full resolution', 'before after', 'compare', 'shortcuts', 'batch']),
   );
   return docs;

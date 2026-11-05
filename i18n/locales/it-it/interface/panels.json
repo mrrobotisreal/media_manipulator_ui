@@ -1462,7 +1462,9 @@
       "exportSettingUp": "Esportazione in preparazione",
       "panelsTab": "Pannelli",
       "layersTab": "Strati",
-      "shortcuts": "Scorciatoie da tastiera"
+      "shortcuts": "Scorciatoie da tastiera",
+      "medi": "{{brand}}",
+      "mediLabel": "Chiedi a {{brand}} di modificare (Ctrl+J)"
     },
     "banner": {
       "local": "Salvato solo in questo browser. Accedi per conservare fino a {{count}} progetti nel tuo account.",
@@ -2047,7 +2049,8 @@
         "brushGesture": "Impostazione pennello",
         "maskGesture": "Impostazione maschera",
         "geometryGesture": "Impostazione geometria",
-        "layerGesture": "Impostazione strato"
+        "layerGesture": "Impostazione strato",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2078,7 +2081,8 @@
         "gradient": "Maschera sfumata",
         "radial": "Maschera radiale",
         "crop": "Ritaglia",
-        "heal": "Ritocco"
+        "heal": "Ritocco",
+        "medi": "Apri {{brand}}"
       }
     },
     "batch": {

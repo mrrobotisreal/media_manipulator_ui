@@ -1462,7 +1462,9 @@
       "exportSettingUp": "Export wird eingerichtet",
       "panelsTab": "Bedienfelder",
       "layersTab": "Ebenen",
-      "shortcuts": "Tastenkürzel"
+      "shortcuts": "Tastenkürzel",
+      "medi": "{{brand}}",
+      "mediLabel": "{{brand}} um eine Bearbeitung bitten (Ctrl+J)"
     },
     "banner": {
       "local": "Nur in diesem Browser gespeichert. Melden Sie sich an, um bis zu {{count}} Projekte in Ihrem Konto zu behalten.",
@@ -2045,7 +2047,8 @@
         "brushGesture": "Pinseleinstellung",
         "maskGesture": "Maskeneinstellung",
         "geometryGesture": "Geometrieeinstellung",
-        "layerGesture": "Ebeneneinstellung"
+        "layerGesture": "Ebeneneinstellung",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2076,7 +2079,8 @@
         "gradient": "Verlaufsmaske",
         "radial": "Radialmaske",
         "crop": "Zuschneiden",
-        "heal": "Reparieren"
+        "heal": "Reparieren",
+        "medi": "{{brand}} öffnen"
       }
     },
     "batch": {

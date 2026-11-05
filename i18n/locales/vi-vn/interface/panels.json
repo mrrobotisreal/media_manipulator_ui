@@ -1450,7 +1450,9 @@
       "exportSettingUp": "Tính năng xuất đang được thiết lập",
       "panelsTab": "Bảng",
       "layersTab": "Lớp",
-      "shortcuts": "Phím tắt"
+      "shortcuts": "Phím tắt",
+      "medi": "{{brand}}",
+      "mediLabel": "Nhờ {{brand}} chỉnh sửa (Ctrl+J)"
     },
     "banner": {
       "local": "Chỉ được lưu trong trình duyệt này. Đăng nhập để giữ tối đa {{count}} dự án trong tài khoản.",
@@ -2031,7 +2033,8 @@
         "brushGesture": "Thiết lập cọ",
         "maskGesture": "Thiết lập mặt nạ",
         "geometryGesture": "Thiết lập hình học",
-        "layerGesture": "Thiết lập lớp"
+        "layerGesture": "Thiết lập lớp",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2062,7 +2065,8 @@
         "gradient": "Mặt nạ chuyển sắc",
         "radial": "Mặt nạ tròn",
         "crop": "Cắt",
-        "heal": "Chữa lành"
+        "heal": "Chữa lành",
+        "medi": "Mở {{brand}}"
       }
     },
     "batch": {

@@ -6,8 +6,9 @@
  * current state is index n. `past[i].label` is the edit that led from state i
  * to i+1; the `future` entries (last = next redo) continue the list. Labels
  * are the English strings every `mutate(label)` call passes; they are mapped
- * to `panels.photo.history.labels.<slug>` here, with three structured forms:
- * `Preset|builtin:<id>`, `Preset|user:<name>` and gesture labels `<type>.<param>`.
+ * to `panels.photo.history.labels.<slug>` here, with four structured forms:
+ * `Preset|builtin:<id>`, `Preset|user:<name>`, gesture labels `<type>.<param>`
+ * and Medi's edits `Medi|<summary>` (MM108).
  */
 import { create } from 'zustand';
 
@@ -26,12 +27,15 @@ export const GESTURE_PREFIXES = ['brush', 'mask', 'geometry', 'layer'] as const;
 
 export type LabelResolution =
   | { key: string; vars?: Record<string, string> }
+  | { medi: string }
   | { layerType: string }
   | { presetBuiltin: string }
   | { presetUser: string };
 
 /** How a history label is shown: a key to translate, a layer type, or a preset reference. */
 export function resolveLabel(label: string): LabelResolution {
+  // MM108: a Medi edit, `Medi|<summary>` (the summary is the model's own short label).
+  if (label.startsWith('Medi|')) return { medi: label.slice('Medi|'.length) };
   if (label.startsWith('Preset|builtin:')) return { presetBuiltin: label.slice('Preset|builtin:'.length) };
   if (label.startsWith('Preset|user:')) return { presetUser: label.slice('Preset|user:'.length) };
   const dot = label.indexOf('.');

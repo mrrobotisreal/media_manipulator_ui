@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { FakeIDBFactory } from '@/lib/vector/testing/fakeIndexedDb';
 import { listUserPresets, saveUserPreset } from '@/lib/photo/presets/userStore';
@@ -146,10 +146,25 @@ describe('layers panel groups', () => {
 });
 
 describe('shortcuts sheet', () => {
-  it('lists every shortcut in the registry', () => {
-    render(<Wrap><ShortcutsSheet open onOpenChange={() => undefined} /></Wrap>);
+  it('lists every shortcut in the registry (Medi\'s only while the copilot is on)', () => {
+    render(<Wrap><ShortcutsSheet open onOpenChange={() => undefined} medi /></Wrap>);
     for (const s of SHORTCUTS) expect(screen.getByTestId(`shortcut-${s.id}`), s.id).toBeTruthy();
     expect(document.querySelectorAll('[data-testid^="shortcut-"]')).toHaveLength(SHORTCUTS.length);
+    expect(screen.getByTestId('shortcut-medi').textContent).toContain('Open Medi');
+    cleanup();
+    render(<Wrap><ShortcutsSheet open onOpenChange={() => undefined} /></Wrap>);
+    expect(screen.queryByTestId('shortcut-medi')).toBeNull();
+    expect(document.querySelectorAll('[data-testid^="shortcut-"]')).toHaveLength(SHORTCUTS.length - 1);
+  });
+});
+
+describe('history panel: Medi edits (MM108)', () => {
+  it('a Medi edit is one step labelled "Medi: <summary>" with the Medi mark', () => {
+    render(<Wrap><HistoryPanel /></Wrap>);
+    act(() => usePhotoStore.getState().mutate('Medi|Grey except red', (d) => ({ ...d, geometry: { ...d.geometry, flipH: true } })));
+    const step = screen.getByTestId('history-step-1');
+    expect(step.textContent).toBe('Medi: Grey except red');
+    expect(step.querySelector('[data-testid="history-medi-mark"]')).toBeTruthy();
   });
 });
 

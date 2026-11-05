@@ -19,13 +19,13 @@ import {
   updateComponent,
   type ComponentKind,
 } from '@/lib/photo/maskOps';
-import { cachedMaskAssets, loadSubjectAlpha, registerSubjectMask } from '@/lib/photo/maskAssets';
-import { requestSubjectMask, requestSubjectMaskStateless, fetchProjectFile } from '@/lib/photo/aiApi';
+import { cachedMaskAssets } from '@/lib/photo/maskAssets';
 import { BRUSH_SIZE_MAX, BRUSH_SIZE_MIN } from '@/lib/photo/brushEngine';
 import { usePhotoStore } from '@/lib/photo/photoStore';
 import { addColorTarget } from '@/lib/photo/maskOps';
 import { LAYER_TYPES, type MaskComponent } from '@/lib/photo/photoTypes';
-import { onAiMaskCompleted, onAiMaskFailed, onAiMaskRequested, onMaskAdded } from '@/lib/photo/seams';
+import { onMaskAdded } from '@/lib/photo/seams';
+import { selectSubjectMask } from '@/lib/photo/subjectMask';
 import { useToolStore } from '@/lib/photo/toolStore';
 import { cn } from '@/lib/utils';
 import { AdjustSlider, PanelSection, ToggleChip } from '../controls';
@@ -234,34 +234,10 @@ export function MasksPanel() {
   const selectSubject = async () => {
     if (!layer) return;
     setSubject('busy');
-    onAiMaskRequested();
     try {
-      let maskRef: string;
-      if (session.projectId && session.signedIn) {
-        const r = await requestSubjectMask(session.projectId);
-        maskRef = r.maskRef;
-        void loadSubjectAlpha(maskRef, (ref) => fetchProjectFile(session.projectId as string, ref));
-      } else {
-        const f = session.currentFile();
-        if (!f) throw new Error('no file');
-        const id = `${Date.now().toString(36)}${Math.floor(performance.now()).toString(36)}`;
-        const r = await requestSubjectMaskStateless(f.blob, f.name, () => id);
-        maskRef = r.maskRef;
-        if (r.blob) {
-          registerSubjectMask(maskRef, r.blob);
-          session.keepLocalMask(maskRef, r.blob);
-          await loadSubjectAlpha(maskRef);
-        }
-      }
-      mutate('Select subject', (d) => addComponent(d, layer.id, { kind: 'subject', mode: 'add', maskRef, invert: false } as MaskComponent));
-      const n = (maskOfLayer(usePhotoStore.getState().doc!, layer.id)?.components.length ?? 1) - 1;
-      useToolStore.getState().setComponent(n);
-      onMaskAdded('subject');
-      onAiMaskCompleted();
+      await selectSubjectMask(session, layer.id);
       setSubject('idle');
     } catch (e) {
-      // A 429 is raised to the existing quota sheet by authedFetch; everything else shows the inline message.
-      onAiMaskFailed(e instanceof Error ? e.name : 'failed');
       setSubject(e instanceof Error && e.name === 'QuotaExceededError' ? 'idle' : 'failed');
     }
   };

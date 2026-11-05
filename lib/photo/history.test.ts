@@ -52,6 +52,7 @@ describe('history panel model', () => {
     expect(resolveLabel('brush.size')).toEqual({ key: 'photo.history.labels.brushGesture' });
     expect(resolveLabel('Preset|builtin:vivid')).toEqual({ presetBuiltin: 'vivid' });
     expect(resolveLabel('Preset|user:My look')).toEqual({ presetUser: 'My look' });
+    expect(resolveLabel('Medi|Grey except red')).toEqual({ medi: 'Grey except red' });
     expect(labelSlug('Black & white')).toBe('blackWhite');
     expect(labelSlug('LUT')).toBe('lut');
     expect(labelSlug('Add local adjustment')).toBe('addLocalAdjustment');

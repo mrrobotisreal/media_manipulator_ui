@@ -24,22 +24,16 @@
  * (`lib/assistant/ops/<surface>.ts`), `checkRecipeOps` validates every op name,
  * parameter name and range against the editor registries the corpus is
  * generated from (`LAYER_PARAMS`, `effectRegistry.ts`, `TRACK_PROPERTY_PATTERN`,
- * `ANIMATOR_IDS`…) — ticket decision 3. MM108 flips photo to the Zod schema,
- * MM109 studio, MM110 vector (`RECIPE_SCHEMA_SURFACES` below).
+ * `ANIMATOR_IDS`…) — ticket decision 3. MM108 flipped photo to the Zod op schema
+ * (`lib/assistant/ops/photo.ts`); MM109 flips studio, MM110 vector
+ * (`RECIPE_SCHEMA_SURFACES` below); the photo vocabulary lives only in the Zod schema.
  *
  * Darkroom looks and Motion templates do not exist yet (MM109/MM110 build
  * `lib/studio/looks.ts` and `lib/vector/templates.ts`); the ids recipes may use
  * are the planned catalogs in `PLANNED_STUDIO_LOOKS` / `PLANNED_VECTOR_TEMPLATES`,
  * and those tickets adjust the recipes if a name changes.
  */
-import {
-  BLEND_MODES,
-  LAYER_PARAMS,
-  LAYER_TYPES,
-  maskComponentSchema,
-  type LayerType,
-} from '@/lib/photo/photoTypes';
-import { BUILTIN_PRESETS } from '@/lib/photo/presets';
+import { photoOpsProblems } from '@/lib/assistant/ops/photo';
 import {
   CHROMAKEY_PARAMS,
   LUMETRI_PARAMS,
@@ -62,7 +56,7 @@ export const RECIPE_DIFFICULTIES = ['basic', 'intermediate', 'advanced'] as cons
 export const RECIPE_SECTIONS = ['When to use', 'What a pro does and why', 'Ops', 'How to adjust'] as const;
 
 /** Surfaces whose recipes are checked against a real op schema (flipped by MM108–MM110). */
-export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = [];
+export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = ['photo'];
 
 /** The Darkroom looks MM109 builds (`lib/studio/looks.ts`, design §8.5). */
 export const PLANNED_STUDIO_LOOKS = [
@@ -83,8 +77,6 @@ export const PLANNED_STUDIO_LOOKS = [
 /** The Motion templates MM110 builds (`lib/vector/templates.ts`, design §8.5). */
 export const PLANNED_VECTOR_TEMPLATES = ['lowerThird', 'logoReveal', 'titlePop', 'bulletReveal', 'counter', 'badgeBounce'] as const;
 
-/** `grey_except` named ranges (design §8.4). */
-export const GREY_EXCEPT_NAMES = ['red', 'orange', 'yellow', 'green', 'aqua', 'blue', 'purple', 'magenta'] as const;
 
 export interface RecipeMeta {
   id: string;
@@ -316,17 +308,6 @@ const listOf = (item: FieldCheck, max = 64): FieldCheck => (v, p, e) => {
   else v.forEach((x, i) => item(x, `${p}[${i}]`, e));
 };
 const schemaOf = (schema: unknown): FieldCheck => (v, p, e) => checkAgainstSchema(schema, v, p, e);
-/** The target layer's type is only known from the digest, so a patch must fit at least one layer schema. */
-const fitsSomeSchema = (schemas: readonly unknown[]): FieldCheck => (v, p, e) => {
-  let best: string[] | null = null;
-  for (const s of schemas) {
-    const errs: string[] = [];
-    checkAgainstSchema(s, v, p, errs);
-    if (errs.length === 0) return;
-    if (!best || errs.length < best.length) best = errs;
-  }
-  e.push(...(best ?? [`${p}: fits no layer type`]));
-};
 const fromParams = (params: readonly EffectParam[]): FieldCheck => (v, p, e) => {
   if (!v || typeof v !== 'object' || Array.isArray(v)) {
     e.push(`${p}: expected an object`);
@@ -375,94 +356,7 @@ function checkOp(specs: Record<string, OpSpec>, op: unknown, path: string, error
   spec.extra?.(o, path, errors);
 }
 
-// --- Aperture (design §8.4) ---------------------------------------------------
-
-const PRESET_IDS = BUILTIN_PRESETS.map((p) => p.id);
-const MASK_KINDS_FOR_MODEL = ['gradient', 'radial', 'luminosity', 'colorRange'];
-const maskComponents: FieldCheck = (v, p, e) => {
-  if (!Array.isArray(v) || v.length === 0 || v.length > 16) {
-    e.push(`${p}: expected 1..16 mask components`);
-    return;
-  }
-  v.forEach((c, i) => {
-    const kind = (c as { kind?: unknown } | null)?.kind;
-    if (!MASK_KINDS_FOR_MODEL.includes(kind as string)) e.push(`${p}[${i}].kind: ${JSON.stringify(kind)} — the model may build only ${MASK_KINDS_FOR_MODEL.join(', ')} (brush and subject are suggested actions)`);
-    else checkAgainstSchema(maskComponentSchema, c, `${p}[${i}]`, e);
-  });
-};
-const greyRange: FieldCheck = (v, p, e) => {
-  if (typeof v === 'string') return oneOf(GREY_EXCEPT_NAMES)(v, p, e);
-  if (v && typeof v === 'object' && !Array.isArray(v)) {
-    const o = v as Record<string, unknown>;
-    for (const k of Object.keys(o)) if (k !== 'hue' && k !== 'width') e.push(`${p}.${k}: unknown field`);
-    range(0, 360)(o.hue, `${p}.hue`, e);
-    if (has(o, 'width')) range(10, 120)(o.width, `${p}.width`, e);
-    return;
-  }
-  e.push(`${p}: a colour name or {hue, width}`);
-};
-const layerParams = (typeOf: (op: Record<string, unknown>) => LayerType | undefined) => (op: Record<string, unknown>, path: string, errors: string[]) => {
-  if (!has(op, 'params')) return;
-  const type = typeOf(op);
-  if (!type) return;
-  checkAgainstSchema(LAYER_PARAMS[type], op.params, `${path}.params`, errors);
-};
-
-export const PHOTO_OP_SPECS: Record<string, OpSpec> = {
-  add_layer: {
-    required: { type: oneOf(LAYER_TYPES) },
-    optional: { params: () => undefined, name: isStr, opacity: range(0, 1), blend: oneOf(BLEND_MODES), mask: (v, p, e) => maskShape(v as Record<string, unknown> | null, p, e) },
-    extra: layerParams((x) => (LAYER_TYPES.includes(x.type as LayerType) ? (x.type as LayerType) : undefined)),
-  },
-  update_layer: {
-    required: { layerId: isStr },
-    optional: { params: fitsSomeSchema(LAYER_TYPES.map((t) => LAYER_PARAMS[t])), opacity: range(0, 1), blend: oneOf(BLEND_MODES), enabled: isBool, name: isStr },
-  },
-  remove_layer: { required: { layerId: isStr } },
-  move_layer: { required: { layerId: isStr, toIndex: range(0, 63, true) } },
-  grey_except: { required: { ranges: listOf(greyRange, 8) } },
-  set_mask: {
-    required: { layerId: isStr, components: maskComponents },
-    optional: { combine: oneOf(['add', 'intersect', 'subtract']), feather: range(0, 100), invert: isBool },
-  },
-  apply_preset: { required: { presetId: oneOf(PRESET_IDS) }, optional: { intensity: range(0, 1) } },
-  auto_tone: { required: {} },
-  set_geometry: {
-    required: {},
-    optional: {
-      rotate: range(-360, 360),
-      straighten: range(-45, 45),
-      flipH: isBool,
-      flipV: isBool,
-      crop: (v, p, e) => {
-        const c = v as Record<string, unknown> | null;
-        if (c && typeof c === 'object' && has(c, 'aspect')) return oneOf(['1:1', '4:3', '3:2', '16:9', '9:16', '4:5', '5:4', '2.39:1', 'original'])(c.aspect, `${p}.aspect`, e);
-        if (c && typeof c === 'object' && has(c, 'rect')) {
-          const r = c.rect as Record<string, unknown>;
-          for (const k of ['x', 'y']) range(0, 0.999)(r?.[k], `${p}.rect.${k}`, e);
-          for (const k of ['width', 'height']) range(0.001, 1)(r?.[k], `${p}.rect.${k}`, e);
-          return;
-        }
-        e.push(`${p}: {aspect} or {rect}`);
-      },
-    },
-    extra: (o, p, e) => {
-      if (Object.keys(o).length === 1) e.push(`${p}: set_geometry needs at least one field`);
-    },
-  },
-};
-
-function maskShape(m: Record<string, unknown> | null, p: string, e: string[]) {
-  if (!m || typeof m !== 'object') {
-    e.push(`${p}: expected {components, feather?, invert?}`);
-    return;
-  }
-  for (const k of Object.keys(m)) if (!['components', 'combine', 'feather', 'invert'].includes(k)) e.push(`${p}.${k}: unknown field`);
-  maskComponents(m.components, `${p}.components`, e);
-  if (has(m, 'feather')) range(0, 100)(m.feather, `${p}.feather`, e);
-  if (has(m, 'invert')) isBool(m.invert, `${p}.invert`, e);
-  if (has(m, 'combine')) oneOf(['add', 'intersect', 'subtract'])(m.combine, `${p}.combine`, e);
-}
+// --- Aperture: the Zod op schema itself (MM108, lib/assistant/ops/photo.ts) -------
 
 // --- Darkroom (design §8.4) ---------------------------------------------------
 
@@ -696,8 +590,7 @@ export const VECTOR_OP_SPECS: Record<string, OpSpec> = {
   set_loop: { required: { loop: isBool } },
 };
 
-export const RECIPE_OP_SPECS: Record<Exclude<RecipeEditor, 'workflow'>, Record<string, OpSpec>> = {
-  photo: PHOTO_OP_SPECS,
+export const RECIPE_OP_SPECS: Record<'studio' | 'vector', Record<string, OpSpec>> = {
   studio: STUDIO_OP_SPECS,
   vector: VECTOR_OP_SPECS,
 };
@@ -706,8 +599,10 @@ export const RECIPE_OP_SPECS: Record<Exclude<RecipeEditor, 'workflow'>, Record<s
 export function checkRecipeOps(recipe: Pick<Recipe, 'editor' | 'example' | 'path'>): string[] {
   if (!recipe.example) return [];
   if (recipe.editor === 'workflow') return [`${recipe.path}: workflow recipes carry no op list`];
+  // MM108: photo recipes are held to the op schema the model is held to (lib/assistant/ops/photo.ts).
+  if (recipe.editor === 'photo') return photoOpsProblems(recipe.example.ops).map((e) => `${recipe.path} ${e}`);
   const errors: string[] = [];
-  recipe.example.ops.forEach((op, i) => checkOp(RECIPE_OP_SPECS[recipe.editor as Exclude<RecipeEditor, 'workflow'>], op, `${recipe.path} ops[${i}]`, errors));
+  recipe.example.ops.forEach((op, i) => checkOp(RECIPE_OP_SPECS[recipe.editor as 'studio' | 'vector'], op, `${recipe.path} ops[${i}]`, errors));
   return errors;
 }
 

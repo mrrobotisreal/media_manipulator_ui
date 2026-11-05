@@ -1462,7 +1462,9 @@
       "exportSettingUp": "La exportación se está preparando",
       "panelsTab": "Paneles",
       "layersTab": "Capas",
-      "shortcuts": "Atajos de teclado"
+      "shortcuts": "Atajos de teclado",
+      "medi": "{{brand}}",
+      "mediLabel": "Pídele a {{brand}} que edite (Ctrl+J)"
     },
     "banner": {
       "local": "Guardado solo en este navegador. Inicia sesión para conservar hasta {{count}} proyectos en tu cuenta.",
@@ -2047,7 +2049,8 @@
         "brushGesture": "Ajuste del pincel",
         "maskGesture": "Ajuste de la máscara",
         "geometryGesture": "Ajuste de la geometría",
-        "layerGesture": "Ajuste de la capa"
+        "layerGesture": "Ajuste de la capa",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2078,7 +2081,8 @@
         "gradient": "Máscara de degradado",
         "radial": "Máscara radial",
         "crop": "Recortar",
-        "heal": "Reparar"
+        "heal": "Reparar",
+        "medi": "Abrir {{brand}}"
       }
     },
     "batch": {

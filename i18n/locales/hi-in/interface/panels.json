@@ -1462,7 +1462,9 @@
       "exportSettingUp": "एक्सपोर्ट तैयार किया जा रहा है",
       "panelsTab": "पैनल",
       "layersTab": "लेयर",
-      "shortcuts": "कीबोर्ड शॉर्टकट"
+      "shortcuts": "कीबोर्ड शॉर्टकट",
+      "medi": "{{brand}}",
+      "mediLabel": "एडिट के लिए {{brand}} से कहें (Ctrl+J)"
     },
     "banner": {
       "local": "केवल इस ब्राउज़र में सेव है। अपने अकाउंट में {{count}} प्रोजेक्ट तक रखने के लिए साइन इन करें।",
@@ -2045,7 +2047,8 @@
         "brushGesture": "ब्रश सेटिंग",
         "maskGesture": "मास्क सेटिंग",
         "geometryGesture": "ज्यामिति सेटिंग",
-        "layerGesture": "लेयर सेटिंग"
+        "layerGesture": "लेयर सेटिंग",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2076,7 +2079,8 @@
         "gradient": "ग्रेडिएंट मास्क",
         "radial": "रेडियल मास्क",
         "crop": "क्रॉप",
-        "heal": "ठीक करें"
+        "heal": "ठीक करें",
+        "medi": "{{brand}} खोलें"
       }
     },
     "batch": {

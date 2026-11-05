@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Redo2, Undo2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
 
 import { Wordmark } from '@/components/darkroom/wordmark';
@@ -78,6 +79,71 @@ import { LevelsPanel } from './panels/levels-panel';
 import { EffectsPanel, LutPanel } from './panels/lut-effects-panels';
 import { HistogramPlot } from './histogram-plot';
 import { useSignedIn } from './use-signed-in';
+import { MEDI_BRAND, MEDI_MARK_SRC } from '@/lib/assistant/brand';
+import { getAssistantCapabilities } from '@/lib/assistant/api';
+import { createPhotoAdapter } from '@/lib/assistant/adapters/photo';
+import { captureJpeg } from '@/lib/assistant/frame';
+import { withAssistantShard } from '@/lib/i18n/ensureShard';
+import { photoAssistantTrack } from '@/lib/photo/analytics';
+import { selectSubjectMask } from '@/lib/photo/subjectMask';
+import { useMediaQuery } from '@/lib/useMediaQuery';
+import type { AssistantCapabilities } from '@/schemas/assistant';
+
+// MM108: Medi's copilot panel, loaded on first open with its i18n shard (nothing in the editor's first load).
+const CopilotPanel = dynamic(() => withAssistantShard(() => import('@/components/assistant/copilot-panel')), { ssr: false });
+
+interface MediEditorRefs {
+  session: PhotoSession;
+  histogram: Histogram | null;
+  caps: AssistantCapabilities | null;
+  canvas: React.RefObject<CanvasHandle | null>;
+  setPanel: (p: PanelId) => void;
+  openExport: () => void;
+  t: (key: string, vars?: Record<string, unknown>) => string;
+  localized: (href: string) => string;
+}
+
+/** The mounted editor's live state (one editor per page, like `usePhotoStore`); set by an effect. */
+const mediEditor: { current: MediEditorRefs | null } = { current: null };
+
+/** The Aperture copilot adapter over the editor's live state (read through `get` at call time, never during render). */
+function createEditorPhotoAdapter(get: () => MediEditorRefs) {
+  return createPhotoAdapter({
+    store: usePhotoStore,
+    t: (key, vars) => get().t(key, vars),
+    histogram: () => get().histogram,
+    previewSize: () => get().session.source,
+    captureFrame: async () => {
+      const c = get().canvas.current?.previewCanvas();
+      const caps = get().caps;
+      return c ? captureJpeg(c, caps && caps.enabled ? caps.maxFrameBytes : undefined) : null;
+    },
+    projectId: () => get().session.projectId,
+    onSubjectMask: async (layerId) => {
+      const st = usePhotoStore.getState();
+      const id = layerId && st.doc?.layers.some((l) => l.id === layerId) ? layerId : st.selection;
+      get().setPanel('masks');
+      if (id) await selectSubjectMask(get().session, id);
+    },
+    onHeal: () => {
+      useToolStore.getState().setTool('heal');
+      get().setPanel('heal');
+    },
+    onExport: () => get().openExport(),
+    onOpenTool: (p) => {
+      const slug = typeof p.slug === 'string' && /^[a-z0-9][a-z0-9-]{0,79}$/.test(p.slug) ? p.slug : null;
+      if (slug) window.open(get().localized(`/tools/${slug}`), '_blank', 'noopener');
+    },
+  });
+}
+
+const EMPTY_SESSION = { projectId: null, signedIn: false, source: null } as unknown as PhotoSession;
+const photoCopilotAdapter = createEditorPhotoAdapter(
+  () => mediEditor.current ?? { session: EMPTY_SESSION, histogram: null, caps: null, canvas: { current: null }, setPanel: () => {}, openExport: () => {}, t: (k) => k, localized: (h) => h },
+);
+
+/** Whether the Aperture copilot answers for this caller (capabilities list `photo` as a copilot surface). */
+export const photoCopilotOn = (c: AssistantCapabilities | null): boolean => !!c && c.enabled && c.copilot.enabled && c.copilot.surfaces.includes('photo');
 
 const PANELS: PanelId[] = ['presets', 'basic', 'detail', 'geometry', 'masks', 'heal', 'redEye', 'curves', 'levels', 'hsl', 'colorBalance', 'blackWhite', 'channelMixer', 'photoFilter', 'splitTone', 'lut', 'effects', 'history'];
 const AUTOSAVE_MS = 2500;
@@ -138,6 +204,10 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const [sheetOpen, setSheetOpen] = React.useState(true);
   const [pickedMask, setPickedMask] = React.useState<{ r: number; g: number; b: number; n: number; shift: boolean } | null>(null);
   const [thumb, setThumb] = React.useState<import('@/lib/photo/colorMath').FloatImage | null>(null);
+  const [assistantCaps, setAssistantCaps] = React.useState<AssistantCapabilities | null>(null);
+  const [copilotOpen, setCopilotOpen] = React.useState(false);
+  const copilotOn = photoCopilotOn(assistantCaps);
+  const phone = useMediaQuery('(max-width: 767px)');
   const tool = useToolStore((st) => st.tool);
   const maskView = useToolStore((st) => st.maskView);
   const maskLayerId = useToolStore((st) => st.maskLayerId);
@@ -172,6 +242,15 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   React.useEffect(() => {
     void getPhotoCapabilities().then(setCaps);
   }, []);
+  // MM108: Medi's capabilities (re-read on sign-in: the remaining turns are per user). Off by any failure.
+  React.useEffect(() => {
+    if (signedIn === null) return;
+    let alive = true;
+    void getAssistantCapabilities().then((c) => alive && setAssistantCaps(c));
+    return () => {
+      alive = false;
+    };
+  }, [signedIn]);
   React.useEffect(() => {
     void fetch(`${getBaseURL()}/tiers`)
       .then((r) => (r.ok ? r.json() : null))
@@ -610,6 +689,10 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   }, []);
 
   // ---- keyboard ---------------------------------------------------------------
+  const copilotRef = React.useRef(false);
+  React.useEffect(() => {
+    copilotRef.current = copilotOn;
+  }, [copilotOn]);
   React.useEffect(() => {
     const typing = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement | null;
@@ -671,6 +754,12 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       } else if (mod && e.key.toLowerCase() === 'e' && !e.shiftKey) {
         e.preventDefault();
         setExportOpen(true);
+      } else if (mod && e.key.toLowerCase() === 'j' && copilotRef.current) {
+        e.preventDefault();
+        setCopilotOpen((o) => {
+          if (!o) photoAssistantTrack(EVENTS.ASSISTANT_OPENED, { surface: 'photo', entry: 'shortcut' });
+          return !o;
+        });
       }
     };
     const up = (e: KeyboardEvent) => {
@@ -791,6 +880,11 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
     }),
     [serverId, signedIn, caps, source, isLocal, localProject, healRef, originalFile, thumb, histogram, pickedMask, decode, loadServerBase],
   );
+  // ---- Medi (MM108): the editor state the copilot adapter reads at call time ------------------
+  React.useEffect(() => {
+    mediEditor.current = { session, histogram, caps: assistantCaps, canvas: canvasRef, setPanel, openExport: () => setExportOpen(true), t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized };
+  }, [session, histogram, assistantCaps, t, localized]);
+
   const fetchMaskBlob = React.useCallback(
     (ref: string) => (serverId ? fetchProjectFile(serverId, ref) : Promise.reject(new Error('no project'))),
     [serverId],
@@ -922,6 +1016,24 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         <Button size="icon" variant="ghost" aria-label={t('photo.bar.shortcuts')} onClick={() => { setShortcutsOpen(true); onShortcutsOpened(); }} data-testid="shortcuts-open">
           <span aria-hidden="true" className="font-mono text-sm">?</span>
         </Button>
+        {copilotOn ? (
+          <Button
+            size="sm"
+            variant={copilotOpen ? 'secondary' : 'outline'}
+            aria-pressed={copilotOpen}
+            aria-label={t('photo.bar.mediLabel', { brand: MEDI_BRAND })}
+            title={t('photo.bar.mediLabel', { brand: MEDI_BRAND })}
+            onClick={() => {
+              if (!copilotOpen) photoAssistantTrack(EVENTS.ASSISTANT_OPENED, { surface: 'photo', entry: 'button' });
+              setCopilotOpen((o) => !o);
+            }}
+            data-testid="medi-copilot-toggle"
+            className="gap-1.5"
+          >
+            <img src={MEDI_MARK_SRC} alt="" width={16} height={16} />
+            {t('photo.bar.medi', { brand: MEDI_BRAND })}
+          </Button>
+        ) : null}
         <Button size="sm" onClick={() => setExportOpen(true)} data-testid="export-open">
           {t('photo.bar.export')}
         </Button>
@@ -993,6 +1105,21 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
           </div>
           <div className={cn('min-h-0 flex-1 overflow-y-auto', !sheetOpen && 'max-md:hidden')}>{panelBody}</div>
         </aside>
+        {copilotOn && copilotOpen ? (
+          <aside
+            className={cn('flex min-h-0 flex-col border-edge', phone ? 'fixed inset-x-0 bottom-0 z-40 h-[70dvh] rounded-t-xl border-t shadow-2xl' : 'w-[360px] shrink-0 border-s')}
+            data-testid="medi-copilot"
+          >
+            <CopilotPanel
+              adapter={photoCopilotAdapter}
+              capabilities={assistantCaps}
+              signedIn={signedIn === true}
+              tier={tierName}
+              track={photoAssistantTrack}
+              onClose={() => setCopilotOpen(false)}
+            />
+          </aside>
+        ) : null}
       </div>
 
       <ExportDialog
@@ -1008,7 +1135,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
         tiers={tiers}
         track={pa}
       />
-      <ShortcutsSheet open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+      <ShortcutsSheet open={shortcutsOpen} onOpenChange={setShortcutsOpen} medi={copilotOn} />
       <ConflictDialog open={conflict !== null} onKeepMine={() => void onKeepMine()} onLoadTheirs={() => void onLoadTheirs()} />
       <DraftDialog
         open={!!draft}

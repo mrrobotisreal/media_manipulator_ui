@@ -21,6 +21,8 @@ export const SHORTCUTS: readonly Shortcut[] = [
   { id: 'save', keys: ['Mod+S'], group: 'general', match: [{ key: 's', mod: true }] },
   { id: 'export', keys: ['Mod+E'], group: 'general', match: [{ key: 'e', mod: true }] },
   { id: 'shortcuts', keys: ['?'], group: 'general', match: [{ key: '?' }] },
+  // MM108: Medi's copilot panel (listed only while the copilot is available, see `visibleShortcuts`).
+  { id: 'medi', keys: ['Mod+J'], group: 'general', match: [{ key: 'j', mod: true }] },
   { id: 'before', keys: ['\\'], group: 'view', match: [{ key: '\\' }] },
   { id: 'fit', keys: ['0'], group: 'view', match: [{ key: '0' }] },
   { id: 'actual', keys: ['1'], group: 'view', match: [{ key: '1' }] },
@@ -38,6 +40,9 @@ export const SHORTCUTS: readonly Shortcut[] = [
 ];
 
 export const SHORTCUT_GROUPS: readonly ShortcutGroup[] = ['general', 'view', 'tools', 'masks'];
+
+/** The shortcuts to list: Medi's only when the copilot is on for this editor. */
+export const visibleShortcuts = (opts: { medi: boolean }): readonly Shortcut[] => (opts.medi ? SHORTCUTS : SHORTCUTS.filter((s) => s.id !== 'medi'));
 
 /** The shortcut id an event maps to, or null. Modifier-free entries never match with Mod/Alt held. */
 export function matchShortcut(e: { key: string; metaKey: boolean; ctrlKey: boolean; altKey: boolean; shiftKey: boolean }): string | null {

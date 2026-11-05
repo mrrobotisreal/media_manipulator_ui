@@ -18,7 +18,8 @@
     "clean:macos-artifacts": "node scripts/clean-appledouble.mjs",
     "i18n:gen": "node scripts/gen-i18n-registry.mjs",
     "check:no-translator": "node scripts/check-no-translator-in-prod.mjs",
-    "export:medi": "tsx scripts/export-medi.ts"
+    "export:medi": "tsx scripts/export-medi.ts",
+    "export:ops": "tsx scripts/export-assistant-ops-schema.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

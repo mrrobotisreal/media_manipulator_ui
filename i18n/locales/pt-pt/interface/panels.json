@@ -1462,7 +1462,9 @@
       "exportSettingUp": "A exportação está a ser preparada",
       "panelsTab": "Painéis",
       "layersTab": "Camadas",
-      "shortcuts": "Atalhos de teclado"
+      "shortcuts": "Atalhos de teclado",
+      "medi": "{{brand}}",
+      "mediLabel": "Pedir ao {{brand}} para editar (Ctrl+J)"
     },
     "banner": {
       "local": "Guardado apenas neste navegador. Inicie sessão para manter até {{count}} projetos na sua conta.",
@@ -2047,7 +2049,8 @@
         "brushGesture": "Definição do pincel",
         "maskGesture": "Definição da máscara",
         "geometryGesture": "Definição da geometria",
-        "layerGesture": "Definição da camada"
+        "layerGesture": "Definição da camada",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2078,7 +2081,8 @@
         "gradient": "Máscara de gradiente",
         "radial": "Máscara radial",
         "crop": "Recortar",
-        "heal": "Corrigir"
+        "heal": "Corrigir",
+        "medi": "Abrir o {{brand}}"
       }
     },
     "batch": {

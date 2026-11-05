@@ -24,6 +24,8 @@ describe('shortcuts registry', () => {
     expect(matchShortcut(ev('?', { shiftKey: true }))).toBe('shortcuts');
     expect(matchShortcut(ev('0'))).toBe('fit');
     expect(matchShortcut(ev('1'))).toBe('actual');
+    expect(matchShortcut(ev('j', { metaKey: true }))).toBe('medi');
+    expect(matchShortcut(ev('j'))).toBeNull();
     expect(matchShortcut(ev('b', { metaKey: true }))).toBeNull();
     expect(matchShortcut(ev('b', { altKey: true }))).toBeNull();
   });

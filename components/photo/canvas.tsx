@@ -24,6 +24,8 @@ export interface CanvasHandle {
   zoomBy: (factor: number) => void;
   /** RGBA8 of the current preview (top-down), for the histogram. */
   readPixels: () => Uint8Array | null;
+  /** MM108: the canvas showing the edited preview (Medi's frame), or null. */
+  previewCanvas: () => HTMLCanvasElement | null;
 }
 
 export interface PhotoCanvasProps {
@@ -100,6 +102,10 @@ export function PhotoCanvas({ source, doc, showOriginal, split, onSplitChange, p
       zoomBy: (f) => {
         const s = size();
         setView((v) => zoomAt(v, s.w / 2, s.h / 2, f));
+      },
+      previewCanvas: () => {
+        const c = mode === 'gl' ? glRef.current : cpuRef.current;
+        return c && c.width && c.height ? c : null;
       },
       readPixels: () => {
         // A <= 256 px downscale of what is on screen: cheap enough for the 200 ms histogram.

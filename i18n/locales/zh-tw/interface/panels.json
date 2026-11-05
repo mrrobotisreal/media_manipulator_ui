@@ -1450,7 +1450,9 @@
       "exportSettingUp": "匯出功能正在設定中",
       "panelsTab": "面板",
       "layersTab": "圖層",
-      "shortcuts": "鍵盤快速鍵"
+      "shortcuts": "鍵盤快速鍵",
+      "medi": "{{brand}}",
+      "mediLabel": "請 {{brand}} 編輯（Ctrl+J）"
     },
     "banner": {
       "local": "僅儲存在此瀏覽器中。登入後可在帳號中保留最多 {{count}} 個專案。",
@@ -2031,7 +2033,8 @@
         "brushGesture": "筆刷設定",
         "maskGesture": "遮色片設定",
         "geometryGesture": "幾何設定",
-        "layerGesture": "圖層設定"
+        "layerGesture": "圖層設定",
+        "medi": "{{brand}}：{{summary}}"
       }
     },
     "shortcuts": {
@@ -2062,7 +2065,8 @@
         "gradient": "漸層遮色片",
         "radial": "放射狀遮色片",
         "crop": "裁切",
-        "heal": "修復"
+        "heal": "修復",
+        "medi": "開啟 {{brand}}"
       }
     },
     "batch": {
