@@ -137,6 +137,22 @@ describe('MediGuide launcher', () => {
     );
     expect((await screen.findByTestId('medi-guide-button')).className).toContain('left-4');
   });
+
+  it('puts the sheet close button in the inline-end corner, clear of the Medi mark in RTL', async () => {
+    h.pathname = '/he';
+    render(
+      <I18nextProvider i18n={i18n('he-IL', he)}>
+        <MediGuide armImmediately loadCapabilities={async () => ON} />
+      </I18nextProvider>,
+    );
+    fireEvent.click(await screen.findByTestId('medi-guide-button'));
+    const sheet = await screen.findByTestId('medi-guide-sheet');
+    const close = sheet.querySelector('[data-slot="sheet-content"] > button:last-child, button.absolute') as HTMLElement;
+    expect(close).not.toBeNull();
+    // Logical `end-4`: right in LTR, left in RTL (Hebrew screenshot, 2026-11-05: the X sat on the mark).
+    expect(close.className).toContain('end-4');
+    expect(close.className).not.toMatch(/(^|\s)right-4(\s|$)/);
+  });
 });
 
 type Emit = (ev: unknown) => void;

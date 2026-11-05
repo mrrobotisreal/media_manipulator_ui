@@ -27,8 +27,8 @@ const BULLETS: Record<(typeof APERTURE_TUTORIAL_STEPS)[number], string[]> = {
 
 /**
  * Long-form, localized Aperture tutorial (MM100). Same shell as the Motion and Darkroom
- * tutorials: server-rendered prose, a CTA to the tool page and related links. No screenshots
- * (no Aperture asset exists outside R2, and R2 is never used for new Media Manipulator assets).
+ * tutorials: server-rendered prose, a CTA to the tool page and related links. The screenshot is
+ * served from `public/tutorials/` (never R2).
  */
 const ApertureTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
   const t = getServerT('interface', locale);
@@ -47,7 +47,7 @@ const ApertureTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
               <h1 className="text-4xl font-bold mb-3 text-card-foreground">{t(`${K}.title`, brand)}</h1>
               <TutorialByline path="/tutorials/aperture" locale={locale} />
               <p className="text-lg mb-6">{t(`${K}.intro`, brand)}</p>
-              <TutorialScreenshot k="aperture" locale={locale} />
+              <TutorialScreenshot k="aperture" locale={locale} src="/tutorials/aperture-editor.webp" width={1600} height={911} />
 
               {APERTURE_TUTORIAL_STEPS.map((step) => (
                 <React.Fragment key={step}>
