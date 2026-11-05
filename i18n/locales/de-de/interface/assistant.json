@@ -99,6 +99,12 @@
           "moody": "Düstere Stimmung erzeugen",
           "keepRed": "Nur das Rot behalten",
           "vintage": "Vintage-Filmlook"
+        },
+        "vector": {
+          "lowerThird": "Bauchbinde, die hereingleitet",
+          "logoReveal": "Mein Logo enthüllen",
+          "titlePop": "Diesen Text einblenden",
+          "forSocial": "Wie exportiere ich das für Social Media?"
         }
       },
       "actions": {
@@ -132,6 +138,21 @@
         "purple": "Lila",
         "magenta": "Magenta",
         "custom": "der gewählten Farbe"
+      },
+      "vectorChange": {
+        "addLayer": "Ebene hinzugefügt: {{layer}}",
+        "addText": "Eine Textzeile hinzugefügt",
+        "importSvg": "SVG importiert",
+        "updateLayer": "„{{layer}}“ geändert",
+        "deleteLayer": "„{{layer}}“ gelöscht",
+        "animate": "{{property}} von „{{layer}}“ animiert",
+        "animator_one": "{{animator}} auf {{count}} Ebene angewendet",
+        "animator_other": "{{animator}} auf {{count}} Ebenen angewendet",
+        "template": "Vorlage „{{template}}“ hinzugefügt",
+        "duration": "Länge auf {{seconds}} s gesetzt",
+        "canvas": "Arbeitsfläche geändert",
+        "loopOn": "Wiederholung eingeschaltet",
+        "loopOff": "Wiederholung ausgeschaltet"
       }
     }
   }
