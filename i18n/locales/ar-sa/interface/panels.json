@@ -1510,7 +1510,9 @@
       "exportSettingUp": "جارٍ إعداد التصدير",
       "panelsTab": "اللوحات",
       "layersTab": "الطبقات",
-      "shortcuts": "اختصارات لوحة المفاتيح"
+      "shortcuts": "اختصارات لوحة المفاتيح",
+      "medi": "{{brand}}",
+      "mediLabel": "اطلب من {{brand}} التعديل (Ctrl+J)"
     },
     "banner": {
       "local": "محفوظ في هذا المتصفح فقط. سجّل الدخول للاحتفاظ بما يصل إلى {{count}} مشروعًا في حسابك.",
@@ -2101,7 +2103,8 @@
         "brushGesture": "إعداد الفرشاة",
         "maskGesture": "إعداد القناع",
         "geometryGesture": "إعداد الهندسة",
-        "layerGesture": "إعداد الطبقة"
+        "layerGesture": "إعداد الطبقة",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2132,7 +2135,8 @@
         "gradient": "قناع متدرج",
         "radial": "قناع دائري",
         "crop": "اقتصاص",
-        "heal": "الإصلاح"
+        "heal": "الإصلاح",
+        "medi": "فتح {{brand}}"
       }
     },
     "batch": {
