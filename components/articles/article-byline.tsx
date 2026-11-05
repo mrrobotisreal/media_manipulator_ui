@@ -56,7 +56,19 @@ export function TutorialByline({ path, locale }: { path: TutorialPath; locale?: 
  */
 export type ScreenshotKey = 'audioGettingStarted' | 'videoGettingStarted' | 'imageGettingStarted' | 'aiFrameInterpolation' | 'motion' | 'aperture';
 
-export function TutorialScreenshot({ k, locale, src }: { k: ScreenshotKey; locale?: string; src?: string }) {
+export function TutorialScreenshot({
+  k,
+  locale,
+  src,
+  width = 1280,
+  height = 720,
+}: {
+  k: ScreenshotKey;
+  locale?: string;
+  src?: string;
+  width?: number;
+  height?: number;
+}) {
   const t = getServerT('interface', locale ?? 'en-US');
   // MM100: the Aperture strings interpolate the brand ({{brand}}); other keys ignore it.
   const brand = { values: { brand: PHOTO_BRAND } };
@@ -64,7 +76,7 @@ export function TutorialScreenshot({ k, locale, src }: { k: ScreenshotKey; local
   return (
     <figure className="not-prose my-6" data-testid="tutorial-screenshot" data-screenshot={k}>
       {src ? (
-        <Image src={src} alt={alt} width={1280} height={720} className="w-full rounded-lg border border-border" />
+        <Image src={src} alt={alt} width={width} height={height} className="h-auto w-full rounded-lg border border-border" />
       ) : (
         <div
           role="img"
