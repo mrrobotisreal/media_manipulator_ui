@@ -98,6 +98,12 @@
           "moody": "营造氛围感",
           "keepRed": "只保留红色",
           "vintage": "复古胶片风格"
+        },
+        "vector": {
+          "lowerThird": "滑入的下方字幕条",
+          "logoReveal": "让我的标志出场",
+          "titlePop": "为这段文字做入场动画",
+          "forSocial": "怎样导出到社交媒体？"
         }
       },
       "actions": {
@@ -131,6 +137,20 @@
         "purple": "紫色",
         "magenta": "洋红色",
         "custom": "所选颜色"
+      },
+      "vectorChange": {
+        "addLayer": "已添加{{layer}}",
+        "addText": "已添加一行文字",
+        "importSvg": "已导入 SVG",
+        "updateLayer": "已修改{{layer}}",
+        "deleteLayer": "已删除{{layer}}",
+        "animate": "已为{{layer}}的{{property}}添加动画",
+        "animator_other": "已对 {{count}} 个图层应用{{animator}}",
+        "template": "已添加模板“{{template}}”",
+        "duration": "时长已设为 {{seconds}} 秒",
+        "canvas": "已修改画布",
+        "loopOn": "已开启循环播放",
+        "loopOff": "已关闭循环播放"
       }
     }
   }
