@@ -344,6 +344,10 @@
       "photo": {
         "title": "Hướng dẫn chỉnh sửa ảnh",
         "description": "Chỉnh ánh sáng và màu sắc, tạo mặt nạ, chữa lành và xuất ảnh với {{brand}}."
+      },
+      "medi": {
+        "title": "Trợ lý AI",
+        "description": "Hỏi Medi để tìm đúng công cụ, chạy một tác vụ đã chuẩn bị sẵn, hoặc chỉnh sửa kèm lý do bạn có thể đọc được."
       }
     },
     "tutorials": {
@@ -619,6 +623,60 @@
             "darkroomDesc": "Chỉnh sửa video trên dòng thời gian đa track và xuất MP4.",
             "licenses": "Giấy phép mã nguồn mở",
             "licensesDesc": "Các thư viện và mô hình mã nguồn mở đứng sau trình chỉnh sửa và phần còn lại của Media Manipulator."
+          }
+        }
+      },
+      "medi": {
+        "title": "Cách dùng {{brand}}, trợ lý của trang",
+        "excerpt": "Ba quy trình ngắn: tìm đúng công cụ, để {{brand}} chuẩn bị một tác vụ cho bạn xác nhận, và chỉnh sửa ảnh, video hoặc hoạt ảnh bằng cách mô tả.",
+        "readTime": "Đọc 5 phút",
+        "page": {
+          "eyebrow": "Hướng dẫn về trợ lý",
+          "title": "Cách dùng {{brand}}",
+          "intro": "{{brand}} là trợ lý bên trong Media Manipulator: người hướng dẫn trên mọi trang công khai và là copilot trong Aperture, Darkroom và Motion. Bài hướng dẫn này trình bày ba quy trình, theo thứ tự mà phần lớn mọi người cần đến. Trong cả ba, {{brand}} chỉ chuẩn bị hoặc đề xuất; người nhấn nút là bạn.",
+          "find": {
+            "title": "1. Tìm đúng công cụ",
+            "body": "Nhấn nút {{brand}} ở góc của bất kỳ trang công khai nào và mô tả kết quả bạn muốn bằng lời của chính mình, bằng bất kỳ ngôn ngữ nào mà trang hỗ trợ. {{brand}} trả lời dựa trên các trang trợ giúp của chính trang web, nêu tên công cụ, thiết lập quan trọng nhất và một đường dẫn.",
+            "bullets": {
+              "ask": "Hãy nói mục tiêu, đừng nói tên công cụ: chẳng hạn, làm video này đủ nhỏ để gửi qua email.",
+              "attach": "Dùng biểu tượng kẹp giấy để đính kèm tệp. {{brand}} đọc loại, kích thước, thời lượng và codec của tệp để lời khuyên phù hợp với chính tệp đó.",
+              "scope": "Nó chỉ nói về Media Manipulator và sẽ từ chối mọi chủ đề khác.",
+              "plans": "Câu hỏi về các gói được trả lời dựa trên bảng gói trực tiếp, không bao giờ dựa trên trí nhớ."
+            }
+          },
+          "job": {
+            "title": "2. Để {{brand}} chuẩn bị tác vụ",
+            "body": "Hãy nói điều bạn muốn làm, hoặc thả một tệp và nói cứ chạy đi. {{brand}} hiển thị một thẻ xác nhận: các thiết lập bằng ngôn ngữ của bạn, hàng đợi dài bao lâu và tác vụ sẽ dùng hạn mức hằng ngày nào. Chưa có gì bắt đầu cả.",
+            "bullets": {
+              "card": "Đọc các thiết lập. Chúng được kiểm tra với các tùy chọn thật của công cụ, nên một giá trị không được hỗ trợ sẽ bị từ chối chứ không bị âm thầm thay đổi.",
+              "start": "Bắt đầu chạy ngay tại chỗ với nén, đổi kích thước, xoay, cắt khung và cắt đoạn video, tách và loại bỏ âm thanh, và chép lời; kết quả mở ra trong một cửa sổ.",
+              "open": "Mọi công cụ khác mở trên trang riêng của nó với các thiết lập đã được điền sẵn, và bạn nhấn nút của công cụ ở đó.",
+              "click": "Luôn cần một cú nhấp. Medi không bao giờ tự bắt đầu bất cứ việc gì."
+            }
+          },
+          "edit": {
+            "title": "3. Chỉnh sửa bằng cách mô tả kết quả",
+            "body": "Trong Aperture, Darkroom hoặc Motion, hãy đăng nhập và nhấn Ctrl+J, rồi mô tả phong cách hoặc thay đổi bạn muốn. {{brand}} chỉnh sửa dự án thành một bước duy nhất và nêu lý do cho từng thay đổi.",
+            "bullets": {
+              "undo": "Hoàn tác sẽ gỡ toàn bộ chỉnh sửa chỉ trong một bước.",
+              "review": "Tắt tự động áp dụng trong menu thông tin để xem lại từng chỉnh sửa dưới dạng thẻ có nút Áp dụng và Bỏ trước.",
+              "showMe": "Chỉ cho tôi mở điều khiển mà chỉnh sửa đã thay đổi để bạn thấy và học cách dùng nó.",
+              "numbers": "{{brand}} có thể đo bản xem trước, chẳng hạn độ sáng, vùng tối bị cắt mất chi tiết hoặc độ to, rồi điều chỉnh tối đa ba lần, mỗi lần đều dẫn ra con số đo được."
+            }
+          },
+          "cta": {
+            "title": "Làm quen với {{brand}}",
+            "body": "Trợ lý hướng dẫn có trên mọi trang công khai. Đọc về những gì nó làm được và cách hạn mức hằng ngày hoạt động trên trang của nó.",
+            "button": "Giới thiệu {{brand}}"
+          },
+          "related": {
+            "title": "Trang liên quan",
+            "intro": "Tìm hiểu thêm về các trình chỉnh sửa mà {{brand}} hoạt động bên trong.",
+            "toolDesc": "Những gì {{brand}} làm, bảng gói và các câu hỏi thường gặp.",
+            "aperture": "Hướng dẫn Aperture",
+            "apertureDesc": "Chỉnh sửa ảnh với lớp và mặt nạ.",
+            "pricing": "Bảng giá",
+            "pricingDesc": "Hạn mức của mọi gói, bao gồm số lượt chỉnh sửa bằng copilot mỗi ngày."
           }
         }
       }
@@ -1813,7 +1871,9 @@
       "photoProjects": "Dự án {{brand}} được lưu",
       "photoMaxMegapixels": "Bản xuất {{brand}} lớn nhất",
       "photoBatch": "Số ảnh {{brand}} mỗi lô",
-      "photoPresets": "Cài đặt sẵn {{brand}} được lưu"
+      "photoPresets": "Cài đặt sẵn {{brand}} được lưu",
+      "assistantGuide": "Trợ lý hướng dẫn {{medi}} trên trang",
+      "assistantTurns": "Lượt chỉnh sửa bằng copilot {{medi}} mỗi ngày"
     },
     "values": {
       "yes": "Có",
@@ -1827,7 +1887,8 @@
       "heightSuffix": "{{height}}p",
       "photoLocalOnly": "1, chỉ trong trình duyệt này",
       "megapixels": "{{count}} MP",
-      "notAvailable": "Không có sẵn"
+      "notAvailable": "Không có sẵn",
+      "signInToUse": "Đăng nhập để sử dụng"
     },
     "unavailableTitle": "Chi tiết gói tạm thời không khả dụng",
     "unavailableBody": "Chúng tôi không kết nối được với dịch vụ gói. Mọi công cụ vẫn hoạt động — hãy tải lại sau giây lát để xem bảng so sánh.",
@@ -2818,5 +2879,42 @@
     ],
     "timing": "Việc xóa từ ứng dụng hoặc trang web bắt đầu ngay lập tức. Nếu một bước không thể hoàn tất, bạn sẽ được thông báo, và bạn có thể viết thư cho chúng tôi theo địa chỉ ở trên.",
     "moreInfo": "Để biết mọi thứ chúng tôi thu thập và cách chúng tôi sử dụng, hãy đọc Chính sách quyền riêng tư."
+  },
+  "mediPage": {
+    "guide": {
+      "summaryTitle": "Cách {{brand}} hoạt động",
+      "whatItIsTitle": "Nó là gì",
+      "whatItIsBody": "{{brand}} là trợ lý được tích hợp sẵn trong Media Manipulator. Trên mọi trang công khai, nó là người hướng dẫn giúp tìm đúng công cụ và các thiết lập của công cụ đó; bên trong Aperture, Darkroom và Motion, nó là copilot chỉnh sửa dự án của bạn theo một yêu cầu bằng lời thường. Nó chỉ chuẩn bị mọi thứ: không có gì bắt đầu cho đến khi bạn nhấn nút.",
+      "stepsTitle": "Bốn bước",
+      "step1": "Nhấn nút {{brand}} ở góc trang, hoặc Ctrl+J trong trình chỉnh sửa, rồi nói điều bạn muốn. Đính kèm tệp bằng biểu tượng kẹp giấy nếu cần.",
+      "step2": "Với một công cụ, {{brand}} hiển thị một thẻ gồm các thiết lập bằng ngôn ngữ của bạn, hàng đợi và hạn mức hằng ngày mà tác vụ sẽ dùng.",
+      "step3": "Với một chỉnh sửa, {{brand}} cho thấy nó đã thay đổi gì và lý do của từng dòng. Bạn có thể xem lại trước khi áp dụng, và nút Chỉ cho tôi sẽ trỏ tới điều khiển mà nó đã thay đổi.",
+      "step4": "Nhấn Bắt đầu hoặc Mở trên thẻ, hoặc Hoàn tác trên một chỉnh sửa. Mọi chỉnh sửa đều có thể được hoàn tác chỉ trong một bước.",
+      "editorTitle": "Nơi nó hoạt động",
+      "editorBody": "Trợ lý hướng dẫn không cần tài khoản. Copilot trong Aperture, Darkroom và Motion yêu cầu bạn đăng nhập, vì chúng dùng hạn mức hằng ngày đi kèm gói của bạn."
+    },
+    "panel": {
+      "title": "Thử ngay",
+      "body": "Tìm nút tròn {{brand}} ở góc trang này và hỏi nó bạn cần công cụ nào, hoặc thả một tệp bằng biểu tượng kẹp giấy và cho nó biết cần làm gì. Bản thân trang này không có chỗ tải lên: {{brand}} nằm trong nút ở góc và bên trong các trình chỉnh sửa.",
+      "editors": "Hoặc mở một trình chỉnh sửa và nhấn Ctrl+J:"
+    },
+    "plans": {
+      "title": "{{brand}} theo từng gói",
+      "intro": "Trợ lý hướng dẫn mở cho tất cả mọi người. Điều thay đổi theo gói là số lượt chỉnh sửa bằng copilot bạn có mỗi ngày trong các trình chỉnh sửa. Những con số này lấy trực tiếp từ máy chủ của chúng tôi, nên luôn được cập nhật.",
+      "caption": "Hạn mức {{brand}} theo từng gói",
+      "feature": "Tính năng",
+      "rows": {
+        "guide": "Trợ lý hướng dẫn trên trang",
+        "edits": "Lượt chỉnh sửa bằng copilot mỗi ngày"
+      },
+      "values": {
+        "included": "Có sẵn",
+        "unlimited": "Không giới hạn",
+        "signIn": "Đăng nhập để sử dụng"
+      },
+      "costNote": "Đặt câu hỏi, hoàn tác một chỉnh sửa và chuẩn bị một tác vụ đều miễn phí. Một tác vụ đã chuẩn bị, khi bạn nhấn nút của nó, sẽ dùng cùng hạn mức tác vụ thường hoặc tác vụ AI như khi bạn tự chạy công cụ.",
+      "unavailable": "Hiện không thể tải bảng gói. Trang bảng giá liệt kê hạn mức của mọi gói.",
+      "seePlans": "So sánh tất cả các gói"
+    }
   }
 }
