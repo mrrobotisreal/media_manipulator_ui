@@ -60,7 +60,7 @@ const params = (extra: Record<string, unknown> = {}) => ({ tool: 'compress-video
 const video = () => new File([new Uint8Array(10)], 'trip.mov', { type: 'video/quicktime' });
 
 let track: ReturnType<typeof vi.fn>;
-let onOpen: ReturnType<typeof vi.fn>;
+let onOpen: ReturnType<typeof vi.fn<(href: string) => void>>;
 beforeEach(() => {
   h.convert.mockReset();
   h.specialized.mockReset();
@@ -69,12 +69,12 @@ beforeEach(() => {
   h.status = null;
   h.toolSlug = 'compress-video';
   track = vi.fn();
-  onOpen = vi.fn();
+  onOpen = vi.fn<(href: string) => void>();
 });
 afterEach(cleanup);
 
 const card = (p: Record<string, unknown>, file: File | null, locale = 'en-US') =>
-  wrap(<JobCard callId="c1" label="Compress it" params={p} locale={locale} file={file} track={track} onOpen={onOpen} />, locale);
+  wrap(<JobCard callId="c1" label="Compress it" params={p} locale={locale} file={file} track={track as never} onOpen={onOpen} />, locale);
 
 describe('JobCard (MM116b)', () => {
   it('shows labels, units and values from the option schema, plus the server-priced quota and queue', async () => {
