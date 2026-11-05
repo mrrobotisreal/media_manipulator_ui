@@ -56,6 +56,13 @@ describe('MM85 tutorial byline and screenshot slot', () => {
     expect(html).toMatch(/<img[^>]*src="\/tutorials\/motion.png"[^>]*alt="The Motion editor/);
   });
 
+  it('passes the real image size through so the Aperture screenshot keeps its aspect ratio', () => {
+    const html = renderToStaticMarkup(
+      <TutorialScreenshot k="aperture" locale="en-US" src="/tutorials/aperture-editor.webp" width={1600} height={911} />,
+    );
+    expect(html).toMatch(/<img[^>]*src="\/tutorials\/aperture-editor.webp"[^>]*width="1600"[^>]*height="911"/);
+  });
+
   it('formats dates in UTC so a day never shifts', () => {
     expect(formatArticleDate('2026-05-17', 'en-US')).toBe('May 17, 2026');
     expect(formatArticleDate('2026-05-17', 'de-DE')).toBe('17. Mai 2026');
