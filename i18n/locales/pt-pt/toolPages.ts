@@ -16503,6 +16503,157 @@ const ptPtToolPages = {
         description: 'Largue uma fotografia para abrir o painel Máscaras; adicione um Intervalo de cores, clique numa cor e ajuste apenas a seleção.',
       },
     },
+    // MM111: Medi's launch page (model-written by Opus 5.5; native review pending).
+    'medi': {
+      name: "Medi",
+      h1: "Medi: o seu guia e copiloto de edição",
+      tagline: "Peça a ferramenta certa, entregue um ficheiro e receba a tarefa preparada, ou diga a um editor o que pretende e veja-o mudar, um passo de anulação de cada vez.",
+      metaTitle: "Medi: guia com IA e copiloto de edição para o Media Manipulator",
+      metaDescription: "O Medi encontra a ferramenta certa, prepara a tarefa para que a confirme e edita fotografias, vídeo e animação a partir de um pedido em linguagem corrente. Cada edição tem um motivo e pode ser anulada.",
+      ogTitle: "Medi: o seu guia e copiloto de edição",
+      ogDescription: "Pergunte ao Medi que ferramenta utilizar, largue um ficheiro, reveja a tarefa preparada e prima o botão por si. Dentro dos editores, faz edições que pode ler, pré-visualizar e anular.",
+      embed: {
+        defaultMediaKind: "image",
+        defaultTask: "medi_guide",
+        title: "Perguntar ao Medi",
+        description: "Abra o guia, descreva o que pretende fazer ou anexe um ficheiro com o clipe, e o Medi indica-lhe a ferramenta certa com as definições já preenchidas.",
+      },
+      intro: "O Medi é o assistente integrado no Media Manipulator e funciona em dois sítios. Em todas as páginas públicas é um guia: um pequeno botão abre uma conversa onde pode dizer o que pretende por palavras suas, em qualquer um dos idiomas do site, e ele responde com base na própria documentação do site sobre o que faz cada ferramenta, que definições existem e o que inclui cada plano. Dentro do Aperture, do Darkroom e do Motion é um copiloto: descreve o resultado que procura e ele altera o documento por si num único passo que pode desfazer. Há duas regras que valem em ambos os sítios. O Medi apenas prepara, por isso nada começa, é exportado ou comprado até premir um botão por si. E explica-se: uma resposta do guia indica a página em que se baseia, e cada edição vem acompanhada de um motivo numa frase.",
+      whatItDoes: [
+        "Responde a perguntas sobre o site com base nas próprias páginas de ajuda, por isso uma pergunta como qual a ferramenta que reduz um vídeo para enviar por e-mail recebe o nome de uma ferramenta e uma definição, não uma resposta genérica. Só fala sobre o Media Manipulator e recusa educadamente tudo o resto.",
+        "Permite-lhe largar um ficheiro no guia com o clipe. O Medi lê os dados técnicos do ficheiro, como o tipo, o tamanho, a duração, a resolução e os codecs, e utiliza-os para recomendar uma ferramenta e as respetivas definições.",
+        "Prepara tarefas de uma só ferramenta. Diga o que pretende, ou largue um ficheiro e diga simplesmente «executa», e o Medi mostra um cartão de confirmação com as definições no seu idioma, o tamanho da fila de espera e a quota diária que a tarefa iria utilizar. Nunca inicia nada por si; o botão do cartão é a única coisa que o faz.",
+        "Edita dentro do Aperture, do Darkroom e do Motion a partir de um pedido como «dá-lhe um ambiente mais sombrio», «encurta as pausas» ou «faz o título entrar a deslizar pela esquerda». A edição fica registada como um único passo de anulação, com um breve motivo para cada alteração.",
+        "Verifica o próprio trabalho com números. Depois de uma edição, consegue medir a pré-visualização, por exemplo a luminosidade e a parte da imagem recortada a preto ou a branco, ou a intensidade sonora do áudio, e ajustar até três rondas, citando de cada vez o valor que mudou.",
+      ],
+      flowSteps: [
+        {
+          title: "Abrir o guia",
+          description: "Prima o botão do Medi no canto de qualquer página pública, ou prima Ctrl+J dentro de um editor. O guia não precisa de conta; os copilotos exigem sessão iniciada.",
+        },
+        {
+          title: "Dizer o que pretende",
+          description: "Escreva um pedido ou escolha uma sugestão inicial. Se ajudar, junte um ficheiro com o clipe; o Medi lê os respetivos dados para que o conselho se adeque a esse ficheiro.",
+        },
+        {
+          title: "Rever o que foi preparado",
+          description: "Uma tarefa aparece como um cartão com as definições, a fila de espera e a quota que iria utilizar. Uma edição aparece como um cartão de alterações com um motivo por linha, e pode optar por revê-la antes de ser aplicada.",
+        },
+        {
+          title: "Premir o botão por si",
+          description: "Iniciar executa no próprio local uma tarefa suportada, ou Abrir leva-o à ferramenta com as definições preenchidas. Num editor, Anular desfaz a edição inteira num só passo.",
+        },
+      ],
+      advancedDetails: [
+        "O guia nunca lê os píxeis nem o áudio do seu ficheiro: trabalha a partir dos metadados e, em algumas verificações de imagem e áudio, de números calculados no nosso servidor (um histograma de luminância, as proporções de píxeis recortados, a intensidade sonora integrada). Um modelo vê esses valores, não o conteúdo multimédia.",
+        "Uma tarefa preparada é validada em relação ao esquema real de opções da ferramenta antes de o cartão ser mostrado. Cerca de noventa ferramentas publicam as suas opções, por isso um pedido de uma definição que não existe, ou de um valor fora do intervalo, é recusado em vez de ser alterado discretamente.",
+        "Iniciar executa a tarefa no próprio local para comprimir, redimensionar, rodar, recortar e cortar vídeo, para extrair ou remover a faixa de áudio e para a transcrição. Todas as outras ferramentas abrem na sua própria página com as definições já preenchidas, porque esses formulários precisam da sua confirmação de detalhes como um formato de saída ou um intervalo de páginas.",
+        "As edições do copiloto são operações estruturadas, verificadas em relação ao esquema do próprio editor antes de qualquer alteração, aplicadas na totalidade ou não aplicadas de todo, e registadas como uma única entrada no histórico do editor. Uma edição que falhe a validação não altera nada, e o modelo é informado do motivo.",
+        "Cada versão do Medi é identificada por um código curto, o hash do conteúdo das instruções, da documentação e dos esquemas de edição em que se baseia. É apresentado no menu de informações do painel do copiloto, para que uma mensagem ao suporte sobre uma resposta possa indicar a versão exata que a deu.",
+      ],
+      whyItMatters: [
+        "Um site com mais de cem ferramentas tem um problema de descoberta: a maioria dos visitantes sabe o resultado que quer, não o nome da ferramenta que o produz. Um guia que lê as próprias páginas do site transforma um pedido vago numa ferramenta, numa definição e numa ligação.",
+        "Editar por palavras só é fiável quando é reversível e explicável. Como cada edição é um único passo de anulação com um motivo declarado, um palpite errado custa uma só tecla e ensina-lhe que controlo fez o quê.",
+        "Entregar uma tarefa a um assistente só é seguro se ele não a puder iniciar. Manter o clique do seu lado significa que um erro da IA pode fazê-lo perder um minuto a ler, mas nunca uma quota, um carregamento ou uma exportação.",
+      ],
+      useCases: [
+        {
+          title: "Encontrar a ferramenta certa",
+          description: "Pergunte como tornar um vídeo pequeno o suficiente para enviar por e-mail ou como obter um logótipo com fundo transparente a partir de uma fotografia, e o Medi indica a ferramenta, explica a definição que importa e dá a ligação.",
+        },
+        {
+          title: "Executar uma tarefa rápida",
+          description: "Largue um clipe do telemóvel, diga simplesmente «executa» e verifique o cartão: o compressor no nível equilibrado, saída em mp4, uma operação comum, sem fila de espera. Prima Iniciar e o resultado aparece na mesma janela.",
+        },
+        {
+          title: "Corrigir uma fotografia descrevendo-a",
+          description: "No Aperture, peça uma versão mais fria e mais clara com as sombras levantadas. O Medi adiciona as camadas de ajuste, explica porquê, e pode premir Mostra-me para ver onde se moveu cada controlo deslizante.",
+        },
+        {
+          title: "Arrumar uma linha temporal",
+          description: "No Darkroom ou no Motion, peça um oráculo que entre a deslizar ou que as pausas longas sejam encurtadas, reveja o cartão de alterações, aplique-o e anule-o se o ritmo não estiver certo.",
+        },
+      ],
+      workedExamples: [
+        {
+          title: "Um clipe do telemóvel, preparado e confirmado",
+          body: "Larga um clipe de 1080 x 1920 gravado num telemóvel e escreve «executa, torna-o pequeno». O Medi lê os metadados (59 segundos, H.264, 30 fps), escolhe o compressor de vídeo no nível equilibrado, com saída em mp4 e a resolução original, e mostra um cartão. Indica que a tarefa utiliza 1 operação comum, que não há fila de espera, e enumera cada definição no seu idioma. Ainda nada aconteceu. Quando prime Iniciar, o compressor é executado exatamente com essas definições e o resultado abre numa janela com um botão de transferência.",
+        },
+        {
+          title: "Uma fotografia escura, ajustada com medições",
+          body: "No Aperture, pede ao Medi para corrigir uma fotografia escura. Primeiro mede a pré-visualização: luminosidade média de 0,18 numa escala de 0 a 1, com 9 por cento dos píxeis esmagados a preto. Adiciona uma camada de exposição e um levantamento das sombras, volta a medir (luminosidade 0,30, sombras 5 por cento), acrescenta uma pequena correção adicional e para em 0,43 com 0,8 por cento recortado, dentro do objetivo que tinha indicado. São 3 rondas ao todo, cada motivo a citar o respetivo valor, e um só Anular remove tudo.",
+        },
+      ],
+      whenNotToUse: "O Medi é um ajudante, não um substituto das próprias ferramentas. Se já conhece a ferramenta e as definições, abrir a página da ferramenta é mais rápido do que perguntar. Não executa tarefas por iniciativa própria, não navega na web nem responde a perguntas sem relação com o Media Manipulator, não consegue ver os seus ficheiros além dos dados técnicos e não é bom juiz de gosto: segue um pedido de um determinado aspeto, mas é você quem decide se o aspeto está certo. Para trabalho que exija controlo exato, como um recorte preciso ou uma taxa de bits específica, defina os valores por si.",
+      whyMediaManipulator: [
+        "O Medi lê as mesmas páginas que você. As respostas sobre ferramentas, definições e planos vêm da própria documentação do site e da tabela de planos em tempo real, por isso mudam quando o site muda, em vez de ficarem desatualizadas.",
+        "Os copilotos editam ficheiros de projeto reais através das mesmas operações que os editores utilizam, por isso tudo o que o Medi faz aparece no histórico do editor e respeita a respetiva função de anular.",
+        "As quotas diárias dos copilotos vêm da mesma tabela de planos que todos os outros limites do site, e o guia está disponível em todos os planos.",
+      ],
+      privacyNote: "O Medi é a única funcionalidade do site que utiliza um serviço de IA externo: a sua mensagem, a página em que se encontra e, num editor, um breve resumo em texto do seu projeto (e uma pequena imagem de pré-visualização, se o permitir) são enviados através do OpenRouter para os modelos Claude da Anthropic; os ficheiros multimédia originais não são. Um ficheiro que largue no guia é guardado como qualquer outro carregamento e mantido segundo a regra de retenção da sua conta. As conversas com sessão iniciada são guardadas para si e eliminadas ao fim do período de retenção que escolher ou juntamente com a sua conta; a Política de Privacidade, secção 1.13, tem a descrição completa.",
+      faq: [
+        {
+          question: "Preciso de uma conta para utilizar o Medi?",
+          answer: "Para o guia, não: qualquer pessoa lhe pode perguntar sobre ferramentas, definições e planos. Os copilotos dentro do Aperture, do Darkroom e do Motion exigem sessão iniciada, porque gastam uma quota diária que pertence à sua conta.",
+        },
+        {
+          question: "O Medi pode executar uma tarefa sem eu premir nada?",
+          answer: "Não. Só pode preparar uma tarefa e mostrar o cartão. Um clique no cartão é a única coisa que inicia uma tarefa ou abre uma ferramenta, por isso um erro do assistente nunca pode, por si só, esgotar uma quota.",
+        },
+        {
+          question: "Quanto me custa uma edição do copiloto?",
+          answer: "Cada mensagem que faz uma edição utiliza uma das suas edições diárias do copiloto; planear uma edição completa passo a passo utiliza algumas. O guia, as perguntas e as anulações são gratuitos. O número diário de cada plano está na tabela desta página e na página de preços.",
+        },
+        {
+          question: "Que ferramentas o Medi pode configurar por mim?",
+          answer: "Cerca de noventa, cada uma com a sua lista real de opções, desde conversores de vídeo e áudio a filtros de imagem, ferramentas de PDF e as ferramentas de IA. Para as restantes, como os próprios editores, explica e dá a ligação. Se pedir uma definição que uma ferramenta não tem, ele avisa-o.",
+        },
+        {
+          question: "Como anulo uma edição do Medi, e posso verificá-la primeiro?",
+          answer: "Prima Anular no cartão de alterações, ou utilize a função de anular do próprio editor, para desfazer a edição inteira num só passo. Se preferir ver antes de qualquer alteração, desative a aplicação automática no menu de informações, e cada edição fica à espera como um cartão com os valores antes e depois e os botões Aplicar e Descartar.",
+        },
+        {
+          question: "Posso confiar nos números que o Medi cita depois de uma edição?",
+          answer: "São medidos, não adivinhados: luminosidade, proporções recortadas e dominante de cor nas imagens, intensidade sonora e pico real no áudio, calculados a partir da pré-visualização ou do ficheiro. O modelo lê esses valores, pode ajustar até três vezes para atingir o objetivo e tem instruções para parar quando o objetivo é alcançado.",
+        },
+        {
+          question: "Que idiomas o Medi entende?",
+          answer: "Todos os idiomas em que o site está disponível, e responde no idioma em que escreve. O cartão de confirmação e os nomes das definições seguem o idioma do site, por isso uma tarefa preparada lê-se com naturalidade antes de premir qualquer coisa.",
+        },
+      ],
+      related: [
+        {
+          label: "Comprimir vídeo",
+          to: "/tools/compress-video",
+          description: "O compressor que o Medi prepara e pode iniciar no próprio local a partir do guia.",
+        },
+        {
+          label: "Cortar vídeo",
+          to: "/tools/video-trimmer",
+          description: "Corte um clipe entre um momento inicial e um final, outra tarefa que o Medi pode executar a partir de um cartão confirmado.",
+        },
+        {
+          label: "Extrair áudio de vídeo",
+          to: "/tools/extract-audio-from-video",
+          description: "Retire a banda sonora de um vídeo, também disponível como tarefa preparada executada no próprio local.",
+        },
+        {
+          label: "Aperture",
+          to: "/tools/aperture",
+          description: "O editor de fotografias cujo copiloto edita camadas e máscaras a partir de um pedido.",
+        },
+        {
+          label: "Motion",
+          to: "/tools/motion",
+          description: "O editor de animação SVG cujo copiloto escreve fotogramas-chave que pode inspecionar.",
+        },
+        {
+          label: "Tutorial do Medi",
+          to: "/tutorials/medi",
+          description: "Três fluxos de trabalho curtos: encontrar uma ferramenta, executar uma tarefa e editar com um motivo que pode ler.",
+        },
+      ],
+    },
   },
 } as const;
 

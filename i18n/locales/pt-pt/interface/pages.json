@@ -344,6 +344,10 @@
       "photo": {
         "title": "Tutoriais de edição de fotografias",
         "description": "Corrija a luz e a cor, aplique máscaras, corrija manchas e exporte fotografias com o {{brand}}."
+      },
+      "medi": {
+        "title": "Assistente de IA",
+        "description": "Peça ao Medi a ferramenta certa, execute uma tarefa preparada ou edite com um motivo que pode ler."
       }
     },
     "tutorials": {
@@ -619,6 +623,60 @@
             "darkroomDesc": "Edite vídeo numa linha cronológica multipista e exporte um MP4.",
             "licenses": "Licenças de código aberto",
             "licensesDesc": "As bibliotecas e os modelos de código aberto por trás do editor e do resto do Media Manipulator."
+          }
+        }
+      },
+      "medi": {
+        "title": "Como utilizar o {{brand}}, o assistente",
+        "excerpt": "Três fluxos de trabalho curtos: encontrar a ferramenta certa, deixar o {{brand}} preparar uma tarefa que confirma e editar uma fotografia, um vídeo ou uma animação descrevendo-os.",
+        "readTime": "5 min de leitura",
+        "page": {
+          "eyebrow": "Tutorial do assistente",
+          "title": "Como utilizar o {{brand}}",
+          "intro": "O {{brand}} é o assistente do Media Manipulator: um guia em todas as páginas públicas e um copiloto no Aperture, no Darkroom e no Motion. Este tutorial aborda três fluxos de trabalho, pela ordem em que a maioria das pessoas precisa deles. Em todos, o {{brand}} apenas prepara ou propõe; quem prime o botão é você.",
+          "find": {
+            "title": "1. Encontrar a ferramenta certa",
+            "body": "Prima o botão do {{brand}} no canto de qualquer página pública e descreva o resultado que pretende por palavras suas, em qualquer idioma suportado pelo site. O {{brand}} responde com base nas próprias páginas de ajuda do site e indica a ferramenta, a definição que importa e uma ligação.",
+            "bullets": {
+              "ask": "Diga o objetivo, não a ferramenta: por exemplo, tornar este vídeo pequeno o suficiente para enviar por e-mail.",
+              "attach": "Utilize o clipe para anexar um ficheiro. O {{brand}} lê o tipo, o tamanho, a duração e os codecs, para que o conselho se adeque a esse ficheiro.",
+              "scope": "Só fala sobre o Media Manipulator e recusa tudo o resto.",
+              "plans": "As perguntas sobre planos são respondidas a partir da tabela de planos em tempo real, nunca de memória."
+            }
+          },
+          "job": {
+            "title": "2. Deixar o {{brand}} preparar uma tarefa",
+            "body": "Diga o que pretende fazer, ou largue um ficheiro e diga simplesmente «executa». O {{brand}} mostra um cartão de confirmação: as definições no seu idioma, o tamanho da fila de espera e a quota diária que a tarefa iria utilizar. Ainda nada começou.",
+            "bullets": {
+              "card": "Leia as definições. São verificadas em relação às opções reais da ferramenta, por isso um valor não suportado é recusado em vez de alterado.",
+              "start": "Iniciar executa a tarefa no próprio local para comprimir, redimensionar, rodar, recortar e cortar vídeo, para extrair e remover áudio e para a transcrição; o resultado abre numa janela.",
+              "open": "Todas as outras ferramentas abrem na sua própria página com as definições preenchidas, e é aí que prime o botão.",
+              "click": "É sempre necessário um clique. O Medi nunca inicia nada por si."
+            }
+          },
+          "edit": {
+            "title": "3. Editar descrevendo o resultado",
+            "body": "No Aperture, no Darkroom ou no Motion, inicie sessão e prima Ctrl+J; depois descreva o aspeto ou a alteração que pretende. O {{brand}} edita o projeto num único passo e indica um motivo para cada alteração.",
+            "bullets": {
+              "undo": "Anular desfaz a edição inteira num só passo.",
+              "review": "Desative a aplicação automática no menu de informações para rever primeiro cada edição como um cartão com Aplicar e Descartar.",
+              "showMe": "Mostra-me abre o controlo que uma edição alterou, para que o possa ver e aprender.",
+              "numbers": "O {{brand}} consegue medir a pré-visualização, como a luminosidade, as sombras recortadas ou a intensidade sonora, e ajustar até três vezes, citando o valor de cada vez."
+            }
+          },
+          "cta": {
+            "title": "Conheça o {{brand}}",
+            "body": "O guia está em todas as páginas públicas. Leia na respetiva página o que consegue fazer e como funciona a quota diária.",
+            "button": "Sobre o {{brand}}"
+          },
+          "related": {
+            "title": "Páginas relacionadas",
+            "intro": "Mais sobre os editores em que o {{brand}} trabalha.",
+            "toolDesc": "O que o {{brand}} faz, a tabela de planos e as perguntas mais frequentes.",
+            "aperture": "Tutorial do Aperture",
+            "apertureDesc": "Edite uma fotografia com camadas e máscaras.",
+            "pricing": "Preços",
+            "pricingDesc": "As quotas de cada plano, incluindo as edições do copiloto por dia."
           }
         }
       }
@@ -1813,7 +1871,9 @@
       "photoProjects": "Projetos do {{brand}} guardados",
       "photoMaxMegapixels": "Maior exportação do {{brand}}",
       "photoBatch": "Fotografias do {{brand}} por lote",
-      "photoPresets": "Predefinições do {{brand}} guardadas"
+      "photoPresets": "Predefinições do {{brand}} guardadas",
+      "assistantGuide": "Guia do site {{medi}}",
+      "assistantTurns": "Edições do copiloto {{medi}} por dia"
     },
     "values": {
       "yes": "Incluído",
@@ -1827,7 +1887,8 @@
       "heightSuffix": "{{height}}p",
       "photoLocalOnly": "1, apenas neste navegador",
       "megapixels": "{{count}} MP",
-      "notAvailable": "Não disponível"
+      "notAvailable": "Não disponível",
+      "signInToUse": "Inicie sessão para utilizar"
     },
     "unavailableTitle": "Os detalhes dos planos estão temporariamente indisponíveis",
     "unavailableBody": "Não foi possível contactar o serviço de planos. Todas as ferramentas continuam a funcionar; recarregue dentro de instantes para ver a comparação.",
@@ -2818,5 +2879,42 @@
     ],
     "timing": "A eliminação a partir da aplicação ou do sítio web começa de imediato. Se não for possível concluir algum passo, será informado e pode escrever-nos para o endereço acima.",
     "moreInfo": "Para tudo o que recolhemos e a forma como o utilizamos, leia a Política de Privacidade."
+  },
+  "mediPage": {
+    "guide": {
+      "summaryTitle": "Como funciona o {{brand}}",
+      "whatItIsTitle": "O que é",
+      "whatItIsBody": "O {{brand}} é o assistente integrado no Media Manipulator. Em todas as páginas públicas é um guia que encontra a ferramenta certa e as respetivas definições; dentro do Aperture, do Darkroom e do Motion é um copiloto que edita o seu projeto a partir de um pedido simples. Limita-se a preparar: nada começa até premir um botão.",
+      "stepsTitle": "Quatro passos",
+      "step1": "Prima o botão do {{brand}} no canto da página, ou Ctrl+J dentro de um editor, e diga o que pretende. Se ajudar, junte um ficheiro com o clipe.",
+      "step2": "Para uma ferramenta, o {{brand}} mostra um cartão com as definições no seu idioma, a fila de espera e a quota diária que a tarefa iria utilizar.",
+      "step3": "Para uma edição, o {{brand}} mostra o que alterou e um motivo para cada linha. Pode revê-la antes de ser aplicada, e Mostra-me indica o controlo que foi mexido.",
+      "step4": "Prima Iniciar ou Abrir no cartão, ou Anular numa edição. Qualquer edição pode ser desfeita num só passo.",
+      "editorTitle": "Onde funciona",
+      "editorBody": "O guia não precisa de conta. Os copilotos do Aperture, do Darkroom e do Motion exigem que tenha sessão iniciada, porque utilizam uma quota diária incluída no seu plano."
+    },
+    "panel": {
+      "title": "Experimente agora",
+      "body": "Procure o botão redondo do {{brand}} no canto desta página e pergunte-lhe de que ferramenta precisa, ou largue um ficheiro com o clipe e diga-lhe o que fazer. Esta página em si não tem nada para carregar: o {{brand}} vive no botão do canto e dentro dos editores.",
+      "editors": "Ou abra um editor e prima Ctrl+J:"
+    },
+    "plans": {
+      "title": "O {{brand}} em cada plano",
+      "intro": "O guia está aberto a todos. O que muda com o plano é o número de edições do copiloto que tem por dia dentro dos editores. Estes números vêm diretamente dos nossos servidores, por isso estão sempre atualizados.",
+      "caption": "Quotas do {{brand}} por plano",
+      "feature": "Funcionalidade",
+      "rows": {
+        "guide": "Guia do site",
+        "edits": "Edições do copiloto por dia"
+      },
+      "values": {
+        "included": "Incluído",
+        "unlimited": "Ilimitado",
+        "signIn": "Inicie sessão para utilizar"
+      },
+      "costNote": "Fazer perguntas, anular uma edição e preparar uma tarefa não custam nada. Uma tarefa preparada, depois de premir o respetivo botão, utiliza a mesma quota de operações comuns ou de IA que executar a ferramenta por si.",
+      "unavailable": "De momento não foi possível carregar a tabela de planos. A página de preços indica a quota de cada plano.",
+      "seePlans": "Comparar todos os planos"
+    }
   }
 }
