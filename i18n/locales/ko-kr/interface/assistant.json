@@ -98,6 +98,12 @@
           "moody": "분위기 있게 만들기",
           "keepRed": "빨간색만 남기기",
           "vintage": "빈티지 필름 느낌"
+        },
+        "studio": {
+          "cinematic": "시네마틱 색보정",
+          "lowerThird": "하단 자막 바 추가",
+          "pauses": "쉬는 구간 줄이기",
+          "voice": "목소리를 또렷하게"
         }
       },
       "actions": {
@@ -131,6 +137,37 @@
         "purple": "보라",
         "magenta": "자홍",
         "custom": "선택한 색상"
+      },
+      "studio": {
+        "allClips": "모든 클립",
+        "titleClip": "타이틀",
+        "change": {
+          "split": "{{clip}}을(를) {{at}}초에서 분할했어요",
+          "trim": "{{clip}}을(를) 트리밍했어요",
+          "move": "{{clip}}을(를) {{at}}초로 옮겼어요",
+          "delete": "{{clip}}을(를) 삭제했어요",
+          "deleteRipple": "{{clip}}을(를) 삭제하고 빈 곳을 메웠어요",
+          "transition": "{{clip}} 앞에 {{seconds}}초 전환 효과를 추가했어요",
+          "grade": "색보정했어요: {{clips}}",
+          "look": "{{look}} 룩을 적용했어요: {{clips}}",
+          "transform": "{{clip}}의 위치와 크기를 바꿨어요",
+          "keyframes_other": "{{clip}}에 키프레임 {{count}}개로 애니메이션을 넣었어요",
+          "title": {
+            "lowerThird": "{{at}}초에 하단 자막 바를 추가했어요",
+            "title": "{{at}}초에 타이틀 카드를 추가했어요",
+            "endCard": "{{at}}초에 엔드 카드를 추가했어요",
+            "caption": "{{at}}초에 화면 텍스트를 추가했어요"
+          },
+          "speed": "{{clip}}을(를) {{speed}}배속으로 바꿨어요",
+          "freeze": "{{clip}} 뒤에 {{seconds}}초 정지 화면을 추가했어요",
+          "audioPreset": "{{track}}에 {{preset}} 프리셋을 적용했어요",
+          "duckingOn": "목소리 아래 음악 자동 줄이기를 켰어요",
+          "duckingOff": "음악 자동 줄이기를 껐어요",
+          "volume": "{{target}}을(를) {{db}} dB로 맞췄어요",
+          "marker": "{{at}}초에 마커를 추가했어요",
+          "captionStyle": "자막 스타일을 바꿨어요",
+          "canvas": "화면 비율을 {{aspect}}(으)로 바꿨어요"
+        }
       }
     }
   }

@@ -65,9 +65,9 @@ describe('recipe accuracy against the registries (decision 3)', () => {
     expect(checkRecipeOps(mk('studio', [{ op: 'grade', clipIds: 'all', lumetri: { highlights: -20 } }])).join()).toMatch(/unknown parameter/);
     expect(checkRecipeOps(mk('studio', [{ op: 'set_transition', clipId: 'c', type: 'zoomBlur', durationSeconds: 1 }])).join()).toMatch(/not one of/);
     expect(checkRecipeOps(mk('studio', [{ op: 'set_keyframes', clipId: 'c', property: 'scale', keyframes: [{ t: 0, value: 20, ease: 'linear' }] }])).join()).toMatch(/outside/);
-    expect(checkRecipeOps(mk('studio', [{ op: 'set_speed', clipId: 'c', speed: 20 }])).join()).toMatch(/outside/);
+    expect(checkRecipeOps(mk('studio', [{ op: 'set_speed', clipId: 'c', speed: 20 }])).join()).toMatch(/> max 10/);
     expect(checkRecipeOps(mk('studio', [{ op: 'set_keyframes', clipId: 'c', property: 'lumetri1.exposure', keyframes: [{ t: 0, value: 1, ease: 'linear' }] }]))).toEqual([]);
-    expect(checkRecipeOps(mk('studio', [{ op: 'set_keyframes', clipId: 'c', property: 'lumetri1.glow', keyframes: [{ t: 0, value: 1, ease: 'linear' }] }])).join()).toMatch(/not a keyframe lane/);
+    expect(checkRecipeOps(mk('studio', [{ op: 'set_keyframes', clipId: 'c', property: 'lumetri1.glow', keyframes: [{ t: 0, value: 1, ease: 'linear' }] }])).join()).toMatch(/keyframes|property/);
     expect(checkRecipeOps(mk('vector', [{ op: 'animate', layerId: 'l', property: 'transform.zoom', keyframes: [] }])).join()).toMatch(/not an animatable property/);
     expect(checkRecipeOps(mk('vector', [{ op: 'apply_animator', layerIds: ['l'], animator: 'explode', span: { start: 0, end: 500 } }])).join()).toMatch(/not one of/);
     expect(checkRecipeOps(mk('vector', [{ op: 'add_layer', type: 'rect', props: { x: 0, y: 0, width: 10, height: 10, cornerRadius: 4 } }])).join()).toMatch(/unknown property/);

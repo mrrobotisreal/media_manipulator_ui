@@ -34,6 +34,8 @@
  * and those tickets adjust the recipes if a name changes.
  */
 import { photoOpsProblems } from '@/lib/assistant/ops/photo';
+import { studioOpsProblems } from '@/lib/assistant/ops/studio';
+import { STUDIO_LOOK_IDS } from '@/lib/studio/looks';
 import {
   CHROMAKEY_PARAMS,
   LUMETRI_PARAMS,
@@ -56,23 +58,10 @@ export const RECIPE_DIFFICULTIES = ['basic', 'intermediate', 'advanced'] as cons
 export const RECIPE_SECTIONS = ['When to use', 'What a pro does and why', 'Ops', 'How to adjust'] as const;
 
 /** Surfaces whose recipes are checked against a real op schema (flipped by MM108–MM110). */
-export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = ['photo'];
+export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = ['photo', 'studio'];
 
-/** The Darkroom looks MM109 builds (`lib/studio/looks.ts`, design §8.5). */
-export const PLANNED_STUDIO_LOOKS = [
-  'cinematic',
-  'teal-orange',
-  'bleach-bypass',
-  'warm-film',
-  'cool-night',
-  'vintage',
-  'high-key',
-  'noir',
-  'pastel',
-  'punchy-social',
-  'moody',
-  'golden-hour',
-] as const;
+/** The Darkroom looks (`lib/studio/looks.ts`, MM109): recipes may name any of them. */
+export const PLANNED_STUDIO_LOOKS = STUDIO_LOOK_IDS;
 
 /** The Motion templates MM110 builds (`lib/vector/templates.ts`, design §8.5). */
 export const PLANNED_VECTOR_TEMPLATES = ['lowerThird', 'logoReveal', 'titlePop', 'bulletReveal', 'counter', 'badgeBounce'] as const;
@@ -601,6 +590,8 @@ export function checkRecipeOps(recipe: Pick<Recipe, 'editor' | 'example' | 'path
   if (recipe.editor === 'workflow') return [`${recipe.path}: workflow recipes carry no op list`];
   // MM108: photo recipes are held to the op schema the model is held to (lib/assistant/ops/photo.ts).
   if (recipe.editor === 'photo') return photoOpsProblems(recipe.example.ops).map((e) => `${recipe.path} ${e}`);
+  // MM109: Darkroom recipes too (lib/assistant/ops/studio.ts).
+  if (recipe.editor === 'studio') return studioOpsProblems(recipe.example.ops).map((e) => `${recipe.path} ${e}`);
   const errors: string[] = [];
   recipe.example.ops.forEach((op, i) => checkOp(RECIPE_OP_SPECS[recipe.editor as 'studio' | 'vector'], op, `${recipe.path} ops[${i}]`, errors));
   return errors;

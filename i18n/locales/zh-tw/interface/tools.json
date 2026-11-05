@@ -202,7 +202,11 @@
       "saveFailed": "儲存失敗",
       "conflict": "儲存衝突",
       "undo": "復原",
+      "undoNamed": "復原：{{step}}",
       "redo": "重做",
+      "redoNamed": "重做：{{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "請 {{brand}} 編輯（Ctrl+J）",
       "mobileHint": "Darkroom 在較大的螢幕上搭配滑鼠或觸控板使用效果最佳。",
       "shortcuts": "空白鍵 播放／暫停 · ←/→ 逐格 · V/C/Y/U/H 工具 · ⌘/Ctrl+K 分割 · S 吸附 · M 標記 · Q/W 漣漪修剪 · Del 刪除 · +/− 縮放 · ⌘Z 復原 · ? 所有快速鍵",
       "tabs": {
@@ -660,6 +664,22 @@
       "confirm": "變更畫布",
       "confirmTitle": "將畫布變更為 {{width}}×{{height}}？",
       "confirmBody": "素材會保留其變形設定，預覽會加上黑邊。重新取景需手動進行。這個操作可以復原。"
+    },
+    "looks": {
+      "title": "風格",
+      "clear": "清除風格",
+      "cinematic": "電影感",
+      "teal-orange": "青橙色調",
+      "bleach-bypass": "留銀效果",
+      "warm-film": "暖色底片",
+      "cool-night": "冷色夜景",
+      "vintage": "復古",
+      "high-key": "高調",
+      "noir": "黑色電影",
+      "pastel": "粉彩",
+      "punchy-social": "社群高飽和",
+      "moody": "陰鬱",
+      "golden-hour": "黃金時刻"
     }
   },
   "toolPage": {

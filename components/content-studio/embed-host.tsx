@@ -46,7 +46,7 @@ const ContentStudioEmbedHost: React.FC = () => {
       <EmbedBridgeProvider bridge={bridge}>
         <div className="min-h-screen bg-background p-4">
           <EmbedStateReporter />
-          <Editor projectId={projectId} onClose={() => bridge.emit({ type: 'cs:command', action: 'close' })} />
+          <Editor projectId={projectId} embedded onClose={() => bridge.emit({ type: 'cs:command', action: 'close' })} />
         </div>
       </EmbedBridgeProvider>
     </StudioBackendProvider>

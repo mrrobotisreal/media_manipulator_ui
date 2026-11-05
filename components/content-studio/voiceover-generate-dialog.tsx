@@ -57,6 +57,8 @@ export interface VoiceoverGenerateDialogProps {
   onAssetReady: (assetId: string) => void;
   /** Test seam: the job poll interval. */
   pollMs?: number;
+  /** MM109: text to prefill when the dialog opens (Medi's suggested voiceover). */
+  initialText?: string | null;
 }
 
 type Phase =
@@ -65,7 +67,7 @@ type Phase =
   | { kind: 'running'; jobId: string; progress: number }
   | { kind: 'error'; message: string };
 
-const VoiceoverGenerateDialog: React.FC<VoiceoverGenerateDialogProps> = ({ projectId, open, onOpenChange, onAssetReady, pollMs = 2000 }) => {
+const VoiceoverGenerateDialog: React.FC<VoiceoverGenerateDialogProps> = ({ projectId, open, onOpenChange, onAssetReady, pollMs = 2000, initialText = null }) => {
   const { t } = useLocalization('interface');
   const auth = useAuth();
   const signedIn = !!auth?.user;
@@ -78,7 +80,9 @@ const VoiceoverGenerateDialog: React.FC<VoiceoverGenerateDialogProps> = ({ proje
   const id = React.useId();
 
   const [choice, setChoice] = React.useState<VoiceChoice | null>(null);
-  const [text, setText] = React.useState('');
+  // MM109: a Medi suggestion opens the dialog with its text (the user still reviews and
+  // generates); the media bin remounts the dialog per suggestion, so the initial state is enough.
+  const [text, setText] = React.useState(initialText ?? '');
   const [language, setLanguage] = React.useState<string | null>(null);
   const [phase, setPhase] = React.useState<Phase>({ kind: 'idle' });
   const playheadRef = React.useRef(0);
