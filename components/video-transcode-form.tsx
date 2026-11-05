@@ -18,6 +18,7 @@ import {
 import InfoTooltip from '@/components/info-tooltip';
 import { Trans } from 'react-i18next';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 import { describe as describeResult } from '@/lib/results/describe';
 import { ResultPanel } from '@/components/results/result-panel';
 import { StreamReport } from '@/components/results/stream-report';
@@ -104,8 +105,9 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
   onJobStarted,
 }) => {
   const { t } = useLocalization('interface');
-  const [protocol, setProtocol] = useState<TranscodeProtocol>(defaultProtocol);
-  const [dashCodec, setDashCodec] = useState<DashCodec>(defaultDashCodec);
+  const link = useDeepLinkContext();
+  const [protocol, setProtocol] = useState<TranscodeProtocol>(lockProtocol ? defaultProtocol : ((link?.protocol as TranscodeProtocol | undefined) ?? defaultProtocol));
+  const [dashCodec, setDashCodec] = useState<DashCodec>((link?.dashCodec as DashCodec | undefined) ?? defaultDashCodec);
   const [probe, setProbe] = useState<TranscodeProbeResponse | null>(null);
   const [probeContext, setProbeContext] = useState<ProbeMutationResult | null>(null);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
@@ -142,12 +144,12 @@ const VideoTranscodeForm: React.FC<VideoTranscodeFormProps> = ({
   }, []);
 
   useEffect(() => {
-    setProtocol(defaultProtocol);
-  }, [defaultProtocol]);
+    setProtocol(lockProtocol ? defaultProtocol : ((link?.protocol as TranscodeProtocol | undefined) ?? defaultProtocol));
+  }, [defaultProtocol, lockProtocol, link]);
 
   useEffect(() => {
-    setDashCodec(defaultDashCodec);
-  }, [defaultDashCodec]);
+    setDashCodec((link?.dashCodec as DashCodec | undefined) ?? defaultDashCodec);
+  }, [defaultDashCodec, link]);
 
   // Clear probe when file changes.
   useEffect(() => {

@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { pdfConversionSchema } from "@/schemas/pdfSchema";
 import type { ConversionFormData } from "@/schemas/types";
 import InfoTooltip from "@/components/info-tooltip";
+import type { OptionValues } from "@/lib/assistant/toolOptions/codec";
+import { mergeDefaults, pdfFormDefaults } from "@/lib/assistant/toolOptions/prefill";
 import { useLocalization } from "@/i18n/useLocalization";
 
 export interface PdfFormPresets {
@@ -17,6 +19,8 @@ export interface PdfFormPresets {
   defaultPageSelection?: 'all' | 'first';
   /** Default render DPI. */
   defaultDpi?: number;
+  /** MM116a: validated `?o=` deep-link options. */
+  options?: OptionValues;
 }
 
 const DPI_CHOICES = [100, 150, 200, 300];
@@ -36,12 +40,12 @@ const PdfConversionForm: React.FC<{
 
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(pdfConversionSchema),
-    defaultValues: {
+    defaultValues: mergeDefaults({
       format: presets?.defaultOutputFormat ?? 'jpg',
       pageSelection: presets?.defaultPageSelection ?? 'all',
       dpi: presets?.defaultDpi ?? 150,
       quality: 90,
-    },
+    }, presets?.options ? pdfFormDefaults(presets.options) : undefined) as never,
     mode: 'onChange',
   });
 

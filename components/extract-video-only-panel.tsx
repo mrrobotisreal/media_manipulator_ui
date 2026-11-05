@@ -6,10 +6,12 @@ import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 
 const ExtractVideoOnlyPanel: React.FC = () => {
   const { t } = useLocalization('interface');
-  const [format, setFormat] = useState<'mp4' | 'webm'>('mp4');
+  const link = useDeepLinkContext();
+  const [format, setFormat] = useState<'mp4' | 'webm'>(link?.format === 'webm' ? 'webm' : 'mp4');
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const { mutate, isPending, uploadProgress } = useSpecializedMediaTool((res) => {
     setConversionJob({

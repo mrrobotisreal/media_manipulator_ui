@@ -76,3 +76,40 @@ export async function sendAssistantFeedback(
     return false;
   }
 }
+
+/** A file the visitor dropped into the guide (MM116a): POST /assistant/files. */
+export interface AssistantDroppedFile {
+  fileRef: string;
+  name: string;
+  kind: 'image' | 'video' | 'audio' | 'document';
+  mime: string;
+  sizeBytes: number;
+}
+
+export class AssistantFileError extends Error {
+  constructor(public readonly code: string) {
+    super(code);
+  }
+}
+
+/**
+ * Upload one file for the guide to look at. Free like the guide (the uploads rate bucket applies);
+ * stored like a job upload, so the visitor's retention window deletes it. Throws
+ * `AssistantFileError` with the API's code (`file_too_large`, `unsupported_file`, ...).
+ */
+export async function uploadAssistantFile(file: File, fetchImpl: typeof authedFetch = authedFetch): Promise<AssistantDroppedFile> {
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetchImpl(`${getBaseURL()}/assistant/files`, { method: 'POST', body: form });
+  if (!res.ok) {
+    let code = `http_${res.status}`;
+    try {
+      const b = (await res.clone().json()) as { error?: unknown };
+      if (typeof b.error === 'string' && /^[a-z_]{2,40}$/.test(b.error)) code = b.error;
+    } catch {
+      // not JSON
+    }
+    throw new AssistantFileError(code);
+  }
+  return (await res.json()) as AssistantDroppedFile;
+}

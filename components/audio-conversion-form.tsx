@@ -10,6 +10,7 @@ import MediaTrimModal from "@/components/media-trim-modal";
 import AdvancedAudioEffects from "@/components/advanced-audio-effects";
 import InfoTooltip from "@/components/info-tooltip";
 import type { ConversionFormData } from "@/schemas/types";
+import { mergeDefaults, audioFormDefaults, trimOf } from "@/lib/assistant/toolOptions/prefill";
 import { useEffect, useState } from "react";
 import { useLocalization } from "@/i18n/useLocalization";
 import type { AudioFormPresets } from "@/components/embedded-tool-panel";
@@ -34,7 +35,7 @@ const AudioConversionForm: React.FC<{
 }> = ({ onSubmit, isLoading, audioUrl, presets, fileName, fileType }) => {
   const { t, formatDuration } = useLocalization(['interface', 'error', 'accessibility']);
   const [showTrimModal, setShowTrimModal] = useState(false);
-  const [trimRange, setTrimRange] = useState<TrimRange | null>(null);
+  const [trimRange, setTrimRange] = useState<TrimRange | null>(presets?.options ? trimOf(presets.options) ?? null : null);
 
   const fx = presets?.effectDefaults;
   // MM81: vocal stems default to "Same as input" (`auto`, resolved by the API). A preset may
@@ -44,7 +45,7 @@ const AudioConversionForm: React.FC<{
   const durationSeconds = useMediaDuration(audioUrl);
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(audioConversionSchema),
-    defaultValues: {
+    defaultValues: mergeDefaults({
       format: ((presets?.lockedFormat ?? presets?.defaultFormat) as 'mp3' | undefined) ?? ('mp3' as const),
       bitrate: '192' as const,
       speed: fx?.speed ?? 1,
@@ -148,7 +149,7 @@ const AudioConversionForm: React.FC<{
         enabled: !!presets?.aiOperation,
         operation: presets?.aiOperation ?? ('none' as const),
       },
-    },
+    }, presets?.options ? audioFormDefaults(presets.options) : undefined) as never,
     mode: 'onChange',
   });
 

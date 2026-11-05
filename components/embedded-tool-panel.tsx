@@ -43,6 +43,8 @@ import {
   describePanelChrome,
   dropzoneClass,
 } from '@/components/tools/panel-chrome';
+import { DeepLinkContext, useDeepLinkOptions } from '@/lib/assistant/toolOptions/useDeepLink';
+import type { OptionValues } from '@/lib/assistant/toolOptions/codec';
 import { isVocalStemJob } from '@/lib/results/mp3Download';
 import { isStemFormatChoice, isStemOperation, stemOutputFormat, type StemFormatChoice } from '@/lib/audio/stemFormat';
 
@@ -246,6 +248,8 @@ export interface ImageFormPresets {
   effect?: ImageEffectEmphasis;
   /** Seed the filter select (grayscale page, rotate page). */
   defaultFilter?: string;
+  /** MM116a: validated `?o=` deep-link options (lib/assistant/toolOptions), win over the defaults. */
+  options?: OptionValues;
 }
 
 /** Output containers/codecs the embedded video converter understands. Mirrors
@@ -284,6 +288,8 @@ export interface VideoFormPresets {
   /** Open and highlight one effect section (`embed.preset` kind 'video_effect'). */
   effect?: VideoEffectEmphasis;
   effectDefaults?: VideoEffectDefaults;
+  /** MM116a: validated `?o=` deep-link options. */
+  options?: OptionValues;
 }
 
 /**
@@ -307,6 +313,8 @@ export interface AudioFormPresets {
   effect?: AudioEffectEmphasis;
   /** Seed values for the emphasised effect, e.g. `{ speed: 1.5 }` or `{ pitchSemitones: 2 }`. */
   effectDefaults?: AudioEffectDefaults;
+  /** MM116a: validated `?o=` deep-link options. */
+  options?: OptionValues;
 }
 
 export interface AudioEffectDefaults {
@@ -345,6 +353,8 @@ export interface ExtractAudioPresets {
   accept?: string;
   /** Expected input format hint, shown above the panel. */
   expectedInput?: string;
+  /** MM116a: validated `?o=` deep-link options. */
+  options?: OptionValues;
 }
 
 /** Friendly compression level (mapped to a CRF value client-side). */
@@ -360,6 +370,8 @@ export interface VideoCompressorPresets {
   defaultPreset?: EmbeddedVideoCompressionPreset;
   defaultCodec?: EmbeddedVideoCodec;
   expectedInput?: string;
+  /** MM116a: validated `?o=` deep-link options. */
+  options?: OptionValues;
 }
 
 /** Preset/lock config for the focused trim/cut panel. */
@@ -369,6 +381,8 @@ export interface VideoTrimmerPresets {
   /** 'trim' keeps the middle; 'cut' is the same operation, different framing/copy. */
   intent?: 'trim' | 'cut';
   expectedInput?: string;
+  /** MM116a: validated `?o=` deep-link options. */
+  options?: OptionValues;
 }
 
 /** Which transform control the transform panel emphasizes. */
@@ -384,6 +398,8 @@ export interface VideoTransformPresets {
   defaultRotation?: number;
   defaultCrop?: { x: number; y: number; width: number; height: number };
   expectedInput?: string;
+  /** MM116a: validated `?o=` deep-link options. */
+  options?: OptionValues;
 }
 
 interface EmbeddedToolPanelProps {
@@ -810,6 +826,23 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   });
   const { t, formatFileSize } = useLocalization('interface');
   const localized = useLocalizedHref();
+  // MM116a: Medi's `?o=` deep link, validated against this tool's option schema (undefined = none/invalid).
+  const deepLink = useDeepLinkOptions({
+    slug: toolSlug ?? undefined,
+    defaultMediaKind,
+    defaultTask,
+    preset,
+    lockedOutputFormat,
+    lockedVideoOutputFormat,
+    lockedExtractAudioFormat,
+    defaultAIImageOperation,
+    lockedAIImageOperation,
+    pdfLockOutputFormat,
+    transcribeMode,
+    transcodeMode,
+    transcodeProtocol,
+    transcodeLockProtocol,
+  });
 
   // Must recognize EVERY EmbeddedImageFormat — otherwise tool pages advertising
   // AVIF/PDF/SVG/ICO output silently fall through and the promised output is
@@ -839,6 +872,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
       preset?.kind === 'metadata' ? preset.mode : defaultTask === 'remove_metadata' ? 'strip' : undefined,
     effect: preset?.kind === 'image_effect' ? preset.effect : undefined,
     defaultFilter: preset?.kind === 'image_effect' ? preset.filter : undefined,
+    options: deepLink,
   };
 
   const pdfPresets: PdfFormPresets = {
@@ -846,6 +880,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     lockOutputFormat: pdfLockOutputFormat,
     defaultPageSelection: pdfDefaultPageSelection,
     defaultDpi: pdfDefaultDpi,
+    options: deepLink,
   };
 
   // Concrete preset/lock config for the video converter. Ignored for non-video
@@ -862,6 +897,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
       preset && preset.kind === 'video' && 'aiOperation' in preset ? preset : undefined,
     effect: preset && preset.kind === 'video_effect' ? preset.effect : undefined,
     effectDefaults: preset && preset.kind === 'video_effect' ? preset.defaults : undefined,
+    options: deepLink,
   };
 
   // Audio converter preset. Undefined unless the page declares an audio preset,
@@ -875,6 +911,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
           ...(isStemOperation(preset.aiOperation)
             ? { stemFormat: isStemFormatChoice(preset.format) ? preset.format : undefined }
             : { defaultFormat: preset.format }),
+          options: deepLink,
         }
       : preset && preset.kind === 'audio_effect'
         ? {
@@ -882,10 +919,13 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
             effectDefaults: preset.defaults,
             defaultFormat: defaultOutputFormat,
             lockedFormat: lockedOutputFormat,
+            options: deepLink,
           }
         : defaultMediaKind === 'audio' && (defaultOutputFormat || lockedOutputFormat)
-          ? { defaultFormat: defaultOutputFormat, lockedFormat: lockedOutputFormat }
-          : undefined;
+          ? { defaultFormat: defaultOutputFormat, lockedFormat: lockedOutputFormat, options: deepLink }
+          : deepLink && defaultMediaKind === 'audio'
+            ? { options: deepLink }
+            : undefined;
 
   // Concrete preset/lock config for the specialized extract-audio panel
   // (mp4-to-mp3 / video-to-mp3 pages).
@@ -894,6 +934,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     lockedFormat: lockedExtractAudioFormat,
     accept: acceptOverride,
     expectedInput: lockedInputFormat,
+    options: deepLink,
   };
 
   // Preset/lock config for the focused video utility panels (batch 2).
@@ -903,6 +944,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     defaultPreset: defaultVideoCompressionPreset,
     defaultCodec: defaultVideoCodec,
     expectedInput: lockedInputFormat,
+    options: deepLink,
   };
   const videoTrimmerPresets: VideoTrimmerPresets = {
     defaultOutputFormat: defaultVideoOutputFormat,
@@ -910,6 +952,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     intent:
       defaultTask === 'video_cutter' || defaultTask === 'cut_video_online' ? 'cut' : 'trim',
     expectedInput: lockedInputFormat,
+    options: deepLink,
   };
   // The crop/resize/rotate panel emphasizes one control, derived from the task.
   const transformEmphasis: VideoTransformEmphasis =
@@ -927,6 +970,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
     defaultRotation: defaultTransform?.rotation,
     defaultCrop: defaultTransform?.crop,
     expectedInput: lockedInputFormat,
+    options: deepLink,
   };
 
   const isTranscribeAllowed =
@@ -934,6 +978,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
   const isTranscodeAllowed = transcodeMode && defaultMediaKind === 'video';
 
   return (
+    <DeepLinkContext.Provider value={deepLink}>
     <ToolPanelSection compact={compact} aria-label={t('embeddedToolPanel.sectionAria')}>
       <ToolPanelIntro
         mediaKind={defaultMediaKind}
@@ -1190,6 +1235,7 @@ const EmbeddedToolPanelInner: React.FC<EmbeddedToolPanelProps> = ({
         suffix={t('embeddedToolPanel.needFullSuffix')}
       />
     </ToolPanelSection>
+    </DeepLinkContext.Provider>
   );
 };
 

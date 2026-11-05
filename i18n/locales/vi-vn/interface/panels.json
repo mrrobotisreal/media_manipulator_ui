@@ -170,6 +170,8 @@
       "h264": "H.264 (tương thích nhất)",
       "h265": "H.265 / HEVC (nhỏ hơn, thiết bị hiện đại)"
     },
+    "crfLabel": "Tự đặt giá trị CRF (không bắt buộc)",
+    "crfHint": "Tinh chỉnh vượt ngoài mức đã chọn: {{min}} gần như không mất chất lượng, {{max}} cho tệp rất nhỏ. Để trống để dùng theo mức.",
     "stripAudio": "Bỏ bản âm thanh để tệp còn nhỏ hơn nữa",
     "note": "Chúng tôi mã hóa lại video ở mức đã chọn. Đầu ra MP4 dùng H.264 + AAC với faststart để phát ngay lập tức.",
     "running": "Đang nén…",

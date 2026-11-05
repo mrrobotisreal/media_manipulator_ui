@@ -13,19 +13,17 @@ import type { ConversionFormData } from '@/schemas/types';
 import useConvertFile from '@/lib/useConvertFile';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
+import { COMPRESSION_LEVELS, COMPRESSION_RESOLUTIONS, COMPRESSOR_CODEC_CHOICES, COMPRESSOR_CRF, COMPRESSOR_FORMATS, LEVEL_CRF } from '@/lib/assistant/toolOptions/fields';
+import { compressorState } from '@/lib/assistant/toolOptions/prefill';
 
-const LEVELS: EmbeddedVideoCompressionPreset[] = ['smallest', 'balanced', 'high_quality'];
-const FORMATS: EmbeddedVideoFormat[] = ['mp4', 'webm'];
-const RESOLUTIONS = ['keep', '1080', '720', '480'] as const;
+const LEVELS: readonly EmbeddedVideoCompressionPreset[] = COMPRESSION_LEVELS;
+const FORMATS: readonly EmbeddedVideoFormat[] = COMPRESSOR_FORMATS;
+const RESOLUTIONS = COMPRESSION_RESOLUTIONS;
 type Resolution = (typeof RESOLUTIONS)[number];
 
 // Friendly compression level -> CRF. Mirrors the backend README mapping
 // (smallest ~31, balanced ~26, high quality ~22).
-const LEVEL_CRF: Record<EmbeddedVideoCompressionPreset, number> = {
-  smallest: 31,
-  balanced: 26,
-  high_quality: 22,
-};
+// (The numbers live in lib/assistant/toolOptions/fields.ts, shared with Medi's option schema.)
 // Quality enum is still sent for backward-compat / validation; CRF refines it.
 const LEVEL_QUALITY: Record<EmbeddedVideoCompressionPreset, 'low' | 'medium' | 'high'> = {
   smallest: 'low',
@@ -43,11 +41,14 @@ const LEVEL_QUALITY: Record<EmbeddedVideoCompressionPreset, 'low' | 'medium' | '
 const VideoCompressorPanel: React.FC<{ presets?: VideoCompressorPresets }> = ({ presets }) => {
   const { t } = useLocalization('interface');
   const lockedFormat = presets?.lockedOutputFormat;
-  const [level, setLevel] = useState<EmbeddedVideoCompressionPreset>(presets?.defaultPreset ?? 'balanced');
-  const [format, setFormat] = useState<EmbeddedVideoFormat>(lockedFormat ?? presets?.defaultOutputFormat ?? 'mp4');
-  const [codec, setCodec] = useState<EmbeddedVideoCodec>(presets?.defaultCodec ?? 'h264');
-  const [resolution, setResolution] = useState<Resolution>('keep');
-  const [stripAudio, setStripAudio] = useState(false);
+  const link = presets?.options ? compressorState(presets.options) : {};
+  const [level, setLevel] = useState<EmbeddedVideoCompressionPreset>((link.level as EmbeddedVideoCompressionPreset) ?? presets?.defaultPreset ?? 'balanced');
+  const [format, setFormat] = useState<EmbeddedVideoFormat>(lockedFormat ?? (link.format as EmbeddedVideoFormat) ?? presets?.defaultOutputFormat ?? 'mp4');
+  const [codec, setCodec] = useState<EmbeddedVideoCodec>((link.codec as EmbeddedVideoCodec) ?? presets?.defaultCodec ?? 'h264');
+  const [resolution, setResolution] = useState<Resolution>((link.resolution as Resolution) ?? 'keep');
+  const [stripAudio, setStripAudio] = useState(link.stripAudio ?? false);
+  // CRF override (MM116a): empty = the level's own CRF. A deep link may set it; the user may edit it.
+  const [crfOverride, setCrfOverride] = useState<number | ''>(link.crf ?? '');
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
 
   const submitFormat = lockedFormat ?? format;
@@ -66,7 +67,7 @@ const VideoCompressorPanel: React.FC<{ presets?: VideoCompressorPresets }> = ({ 
       quality: LEVEL_QUALITY[level],
       speed: 1,
       preserveAspectRatio: true,
-      crf: LEVEL_CRF[level],
+      crf: crfOverride === '' ? LEVEL_CRF[level] : crfOverride,
       stripAudio,
     };
     // VP9 (WebM) is selected by the backend automatically; only forward an
@@ -159,11 +160,31 @@ const VideoCompressorPanel: React.FC<{ presets?: VideoCompressorPresets }> = ({ 
                 onChange={(e) => setCodec(e.target.value as EmbeddedVideoCodec)}
                 className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
               >
-                <option value="h264">{t('videoCompressor.codecs.h264')}</option>
-                <option value="h265">{t('videoCompressor.codecs.h265')}</option>
+                {COMPRESSOR_CODEC_CHOICES.map((c) => (
+                  <option key={c} value={c}>{t(`videoCompressor.codecs.${c}`)}</option>
+                ))}
               </select>
             </div>
           )}
+
+          <div>
+            <label className="block text-sm font-medium text-card-foreground mb-1">{t('videoCompressor.crfLabel')}</label>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={COMPRESSOR_CRF.min}
+              max={COMPRESSOR_CRF.max}
+              step={1}
+              value={crfOverride}
+              placeholder={String(LEVEL_CRF[level])}
+              onChange={(e) => {
+                const v = e.target.value;
+                setCrfOverride(v === '' ? '' : Math.min(COMPRESSOR_CRF.max, Math.max(COMPRESSOR_CRF.min, Math.round(Number(v)) || COMPRESSOR_CRF.min)));
+              }}
+              className="w-full p-2 border border-input rounded-lg bg-input text-card-foreground"
+            />
+            <p className="text-xs text-muted-foreground mt-1">{t('videoCompressor.crfHint', { min: COMPRESSOR_CRF.min, max: COMPRESSOR_CRF.max })}</p>
+          </div>
 
           <label className="flex items-center gap-2 text-sm text-card-foreground">
             <input

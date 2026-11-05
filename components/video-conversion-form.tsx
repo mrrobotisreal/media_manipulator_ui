@@ -9,6 +9,7 @@ import MediaTrimModal from "@/components/media-trim-modal";
 import AdvancedVideoEffects from "@/components/advanced-video-effects";
 import AIVideoTools from "@/components/ai-video-tools";
 import type { ConversionFormData } from "@/schemas/types";
+import { mergeDefaults, videoFormDefaults } from "@/lib/assistant/toolOptions/prefill";
 import type { VideoFormPresets } from "@/components/embedded-tool-panel";
 import { useState } from "react";
 import { useLocalization } from "@/i18n/useLocalization";
@@ -39,7 +40,7 @@ const VideoConversionForm: React.FC<{
   const fx = presets?.effectDefaults;
   const { control, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: zodResolver(videoConversionSchema),
-    defaultValues: {
+    defaultValues: mergeDefaults({
       format: presets?.aiPreset ? ('mp4' as const) : initialFormat,
       quality: presets?.defaultQuality ?? 'medium',
       speed: fx?.speed ?? presets?.defaultSpeed ?? 1,
@@ -131,7 +132,7 @@ const VideoConversionForm: React.FC<{
           preserveAudio: true,
         },
       },
-    },
+    }, presets?.options ? videoFormDefaults(presets.options) : undefined) as never,
     mode: 'onChange',
   });
 

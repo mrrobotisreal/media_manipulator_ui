@@ -2,6 +2,7 @@
 
 import { FileText, Captions, Braces, Subtitles } from 'lucide-react';
 import { useState } from 'react';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 import { Trans } from 'react-i18next';
 import type { TranscribeFormData, TranscribeOutputFormat } from '@/lib/useTranscribeFile';
 import InfoTooltip from '@/components/info-tooltip';
@@ -29,8 +30,9 @@ const FORMAT_VALUES: TranscribeOutputFormat[] = ['vtt', 'srt', 'txt', 'json'];
 
 const TranscribeForm: React.FC<TranscribeFormProps> = ({ mediaKind, isLoading, onSubmit, defaultFormat }) => {
   const { t } = useLocalization(['interface', 'accessibility']);
-  const [format, setFormat] = useState<TranscribeOutputFormat>(defaultFormat ?? 'vtt');
-  const [language, setLanguage] = useState<string>('');
+  const link = useDeepLinkContext();
+  const [format, setFormat] = useState<TranscribeOutputFormat>((link?.format as TranscribeOutputFormat | undefined) ?? defaultFormat ?? 'vtt');
+  const [language, setLanguage] = useState<string>(typeof link?.language === 'string' ? link.language : '');
 
   const mediaKindLabel = t(`interface:transcribeForm.mediaKind.${mediaKind}`);
 

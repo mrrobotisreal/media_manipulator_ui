@@ -7,6 +7,7 @@ import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 import { ProcessingIndicator } from '@/components/darkroom/processing-indicator';
 
 /**
@@ -88,28 +89,29 @@ const FPS_PRESETS = [15, 24, 25, 30, 60];
 
 const AudioWaveformPanel: React.FC = () => {
   const { t } = useLocalization('interface');
-  const [outputSelection, setOutputSelection] = useState<OutputSelection>('video');
-  const [videoFormat, setVideoFormat] = useState<'mp4' | 'webm'>('mp4');
-  const [imageFormat, setImageFormat] = useState<'png' | 'webp'>('png');
+  const link = useDeepLinkContext();
+  const [outputSelection, setOutputSelection] = useState<OutputSelection>((link?.output as OutputSelection | undefined) ?? 'video');
+  const [videoFormat, setVideoFormat] = useState<'mp4' | 'webm'>((link?.videoFormat as 'mp4' | 'webm' | undefined) ?? 'mp4');
+  const [imageFormat, setImageFormat] = useState<'png' | 'webp'>((link?.imageFormat as 'png' | 'webp' | undefined) ?? 'png');
   const [presetId, setPresetId] = useState<string>('medium-10x1');
-  const [customSize, setCustomSize] = useState(false);
-  const [width, setWidth] = useState<number>(1600);
-  const [height, setHeight] = useState<number>(160);
+  const [customSize, setCustomSize] = useState(typeof link?.width === 'number' || typeof link?.height === 'number');
+  const [width, setWidth] = useState<number>(typeof link?.width === 'number' ? link.width : 1600);
+  const [height, setHeight] = useState<number>(typeof link?.height === 'number' ? link.height : 160);
   const [advancedOpen, setAdvancedOpen] = useState(false);
 
-  const [mode, setMode] = useState<'point' | 'line' | 'p2p' | 'cline'>('point');
+  const [mode, setMode] = useState<'point' | 'line' | 'p2p' | 'cline'>((link?.mode as 'point' | 'line' | 'p2p' | 'cline' | undefined) ?? 'point');
   const [rateMode, setRateMode] = useState<'rate' | 'n'>('rate');
   const [rate, setRate] = useState<number>(25);
   const [n, setN] = useState<number>(0);
   const [splitChannels, setSplitChannels] = useState(false);
-  const [colorPrimary, setColorPrimary] = useState('#22D3EE');
-  const [colorSecondary, setColorSecondary] = useState('#A855F7');
-  const [scale, setScale] = useState<'lin' | 'log' | 'sqrt' | 'cbrt'>('lin');
+  const [colorPrimary, setColorPrimary] = useState(typeof link?.colorPrimary === 'string' ? link.colorPrimary : '#22D3EE');
+  const [colorSecondary, setColorSecondary] = useState(typeof link?.colorSecondary === 'string' ? link.colorSecondary : '#A855F7');
+  const [scale, setScale] = useState<'lin' | 'log' | 'sqrt' | 'cbrt'>((link?.scale as 'lin' | 'log' | 'sqrt' | 'cbrt' | undefined) ?? 'lin');
   const [draw, setDraw] = useState<'scale' | 'full'>('scale');
   // Default to true so the waveform video plays in sync with the source audio
   // out of the box — that's the most useful artifact for creators (audiograms,
   // music previews, podcast clips). Toggling off produces a silent waveform.
-  const [includeAudio, setIncludeAudio] = useState<boolean>(true);
+  const [includeAudio, setIncludeAudio] = useState<boolean>(typeof link?.includeAudio === 'boolean' ? link.includeAudio : true);
 
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const { mutate, isPending, uploadProgress } = useSpecializedMediaTool((res) => {

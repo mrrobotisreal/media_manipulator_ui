@@ -34,6 +34,8 @@ export interface AssistantChatBody {
     metricsAfter?: Record<string, number>;
   };
   plan?: boolean;
+  /** MM116a: id of a file dropped into the guide (POST /assistant/files). */
+  fileRef?: string;
 }
 
 /** The pre-stream refusal codes callers branch on (beside the API's in-stream error codes). */

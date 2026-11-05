@@ -66,10 +66,11 @@ const TrimFields: React.FC<{
 }> = ({ file, isProcessing, presets, onRun }) => {
   const { t, formatDuration } = useLocalization('interface');
   const lockedFormat = presets?.lockedOutputFormat;
-  const [format, setFormat] = useState<EmbeddedVideoFormat>(lockedFormat ?? presets?.defaultOutputFormat ?? 'mp4');
-  const [start, setStart] = useState(0);
-  const [end, setEnd] = useState(0);
-  const [reencode, setReencode] = useState(false);
+  const link = presets?.options;
+  const [format, setFormat] = useState<EmbeddedVideoFormat>(lockedFormat ?? (link?.format as EmbeddedVideoFormat | undefined) ?? presets?.defaultOutputFormat ?? 'mp4');
+  const [start, setStart] = useState(typeof link?.startTime === 'number' ? link.startTime : 0);
+  const [end, setEnd] = useState(typeof link?.endTime === 'number' ? link.endTime : 0);
+  const [reencode, setReencode] = useState(link?.reencode === true);
   const [showModal, setShowModal] = useState(false);
   const [mediaUrl, setMediaUrl] = useState<string | null>(null);
   const initializedEnd = useRef(false);
@@ -120,7 +121,8 @@ const TrimFields: React.FC<{
             if (initializedEnd.current) return;
             const d = (e.target as HTMLVideoElement).duration;
             if (Number.isFinite(d) && d > 0) {
-              setEnd(d);
+              // A deep-linked end time stays unless it runs past the clip.
+              setEnd((prev) => (prev > 0 && prev <= d ? prev : d));
               initializedEnd.current = true;
             }
           }}

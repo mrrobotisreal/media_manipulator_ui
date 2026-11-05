@@ -6,17 +6,19 @@ import type { ConversionJob } from '@/lib/useGetJobStatus';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 
 type FramesMode = 'every_n_seconds' | 'fps' | 'timestamp';
 
 const ExtractFramesPanel: React.FC = () => {
   const { t } = useLocalization('interface');
-  const [mode, setMode] = useState<FramesMode>('every_n_seconds');
-  const [intervalSeconds, setIntervalSeconds] = useState<number>(5);
-  const [fps, setFps] = useState<number>(1);
-  const [timestamps, setTimestamps] = useState<string>('');
-  const [format, setFormat] = useState<'jpg' | 'png' | 'webp'>('jpg');
-  const [maxFrames, setMaxFrames] = useState<number>(300);
+  const link = useDeepLinkContext();
+  const [mode, setMode] = useState<FramesMode>((link?.frameMode as FramesMode | undefined) ?? 'every_n_seconds');
+  const [intervalSeconds, setIntervalSeconds] = useState<number>(typeof link?.intervalSeconds === 'number' ? link.intervalSeconds : 5);
+  const [fps, setFps] = useState<number>(typeof link?.fps === 'number' ? link.fps : 1);
+  const [timestamps, setTimestamps] = useState<string>(typeof link?.timestamps === 'string' ? link.timestamps : '');
+  const [format, setFormat] = useState<'jpg' | 'png' | 'webp'>((link?.format as 'jpg' | 'png' | 'webp' | undefined) ?? 'jpg');
+  const [maxFrames, setMaxFrames] = useState<number>(typeof link?.maxFrames === 'number' ? link.maxFrames : 300);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
 
   const { mutate, isPending, uploadProgress } = useSpecializedMediaTool((res) => {
