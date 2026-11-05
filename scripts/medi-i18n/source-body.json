@@ -1,0 +1,150 @@
+{
+  "name": "Medi",
+  "h1": "Medi: Your Guide and Editing Copilot",
+  "tagline": "Ask for the right tool, hand over a file and get the job prepared, or tell an editor what you want and watch it change, one undo step at a time.",
+  "metaTitle": "Medi: AI Guide and Editing Copilot for Media Manipulator",
+  "metaDescription": "Medi finds the right tool, prepares the job for you to confirm, and edits photos, video and animation from a plain-language request. Every edit has a reason and can be undone.",
+  "ogTitle": "Medi: Your Guide and Editing Copilot",
+  "ogDescription": "Ask Medi which tool to use, drop in a file, review the prepared job and press the button yourself. Inside the editors it makes edits you can read, preview and undo.",
+  "embed": {
+    "defaultMediaKind": "image",
+    "defaultTask": "medi_guide",
+    "title": "Ask Medi",
+    "description": "Open the guide, describe what you want to do or attach a file with the paperclip, and Medi points you to the right tool with the settings filled in."
+  },
+  "intro": "Medi is the assistant built into Media Manipulator, and it works in two places. On every public page it is a guide: a small button opens a chat where you can say what you want in your own words, in any of the site's languages, and it answers from the site's own documentation about what each tool does, which settings exist and what a plan includes. Inside Aperture, Darkroom and Motion it is a copilot: you describe the result you are after, and it changes the document for you as a single step you can take back. Two rules hold in both places. Medi only prepares things, so nothing starts, exports or is bought until you press a button yourself. And it explains itself: a guide answer names the page it relies on, and every edit comes with a one-sentence reason.",
+  "whatItDoes": [
+    "Answers questions about the site from its own help pages, so a question such as which tool shrinks a video for email gets a named tool and a setting, not a generic reply. It only talks about Media Manipulator and politely declines anything else.",
+    "Lets you drop a file on the guide with the paperclip. Medi reads the file's technical details, such as its type, size, duration, resolution and codecs, and uses them to recommend a tool and its settings.",
+    "Prepares single-tool jobs. Say what you want, or drop a file and say just run it, and Medi shows a confirmation card with the settings in your language, how long the queue is and which daily allowance the job would use. It never starts anything itself; the card's button is the only thing that does.",
+    "Edits inside Aperture, Darkroom and Motion from a request like make it moodier, tighten the pauses or slide the title in from the left. The edit lands as one undo step, with a short reason for every change.",
+    "Checks its own work with numbers. After an edit it can measure the preview, for example brightness and how much of the picture is clipped to black or white, or the loudness of audio, and adjust for up to three rounds, each time citing the figure that moved."
+  ],
+  "flowSteps": [
+    {
+      "title": "Open the guide",
+      "description": "Press the Medi button in the corner of any public page, or press Ctrl+J inside an editor. The guide needs no account; the copilots need you to be signed in."
+    },
+    {
+      "title": "Say what you want",
+      "description": "Type a request or choose a starter. Add a file with the paperclip if it helps, and Medi reads its details so the advice fits that file."
+    },
+    {
+      "title": "Review what it prepared",
+      "description": "A job appears as a card with the settings, the queue and the allowance it would use. An edit appears as a change card with a reason per line, and you can choose to review it before it is applied."
+    },
+    {
+      "title": "Press the button yourself",
+      "description": "Start runs a supported job in place, or Open takes you to the tool with the settings filled in. In an editor, Undo takes the whole edit back in one step."
+    }
+  ],
+  "advancedDetails": [
+    "The guide never reads your file's pixels or audio: it works from metadata and, for a few image and audio checks, from numbers computed on our server (a luma histogram, clipped-pixel shares, integrated loudness). A model sees those figures, not the media.",
+    "A prepared job is validated against the real option schema of the tool before the card is shown. About ninety tools publish their options, so a request for a setting that does not exist, or a value out of range, is refused instead of being quietly changed.",
+    "Start runs in place for video compress, resize, rotate, crop and trim, for extracting or removing the audio track, and for transcription. Every other tool opens on its own page with the settings already filled in, because those forms need your own confirmation of details such as an output format or a page range.",
+    "Copilot edits are structured operations checked against the editor's own schema before anything changes, applied all-or-nothing, and recorded as one entry in the editor's history. An edit that fails validation changes nothing and the model is told why.",
+    "Every Medi build is identified by a short version code, the content hash of the instructions, documentation and edit schemas it runs on. It is shown in the information menu of the copilot panel, so a support message about one answer can name the exact build that gave it."
+  ],
+  "whyItMatters": [
+    "A site with over a hundred tools has a discovery problem: most visitors know the result they want, not the name of the tool that produces it. A guide that reads the site's own pages turns a vague request into a tool, a setting and a link.",
+    "Editing with words is only trustworthy when it is reversible and explainable. Because each edit is one undo step with a stated reason, a wrong guess costs a single keystroke and teaches you which control did what.",
+    "Handing an assistant a job is only safe if it cannot start the job. Keeping the click with you means an AI mistake can waste a minute of reading but never an allowance, an upload or an export."
+  ],
+  "useCases": [
+    {
+      "title": "Find the right tool",
+      "description": "Ask how to make a video small enough to email or how to get a transparent logo out of a photo, and Medi names the tool, explains the one setting that matters and links to it."
+    },
+    {
+      "title": "Run a quick job",
+      "description": "Drop a phone clip, say just run it, and check the card: the compressor at its balanced level, mp4 output, one everyday operation, no queue. Press Start and the result appears in the same window."
+    },
+    {
+      "title": "Fix a photo by describing it",
+      "description": "In Aperture, ask for a cooler, brighter version with the shadows lifted. Medi adds the adjustment layers, tells you why, and you can press Show me to see where each slider moved."
+    },
+    {
+      "title": "Tidy a timeline",
+      "description": "In Darkroom or Motion, ask for a lower-third that slides in or for the long pauses to be tightened, review the change card, apply it, and undo it if the timing is not right."
+    }
+  ],
+  "workedExamples": [
+    {
+      "title": "A phone clip, prepared and confirmed",
+      "body": "You drop a 1080 x 1920 clip from a phone and type just run it, make it small. Medi reads the metadata (59 seconds, H.264, 30 fps), picks the video compressor at the balanced level with mp4 output and the original resolution, and shows a card. It says the job uses 1 everyday operation, that the queue is none, and lists each setting in your language. Nothing has happened yet. When you press Start, the compressor runs with exactly those settings and the result opens in a window with a download button."
+    },
+    {
+      "title": "A dark photo, adjusted with measurements",
+      "body": "In Aperture you ask Medi to fix a dark photo. It measures the preview first: mean brightness 0.18 on a scale of 0 to 1, with 9 percent of the pixels crushed to black. It adds an exposure layer and a shadows lift, measures again (brightness 0.30, shadows 5 percent), adds a small further correction and stops at 0.43 with 0.8 percent clipped, which is inside the target it quoted. That is 3 rounds in all, each reason citing its figure, and one Undo removes everything."
+    }
+  ],
+  "whenNotToUse": "Medi is a helper, not a replacement for the tools themselves. If you already know the tool and the settings, opening the tool page is faster than asking. It does not run jobs on its own, it does not browse the web or answer questions unrelated to Media Manipulator, it cannot see your files beyond their technical details, and it is not a good judge of taste: it will follow a request for a look, but you decide whether the look is right. For work that needs exact control, such as a precise crop or a specific bitrate, set the values yourself.",
+  "whyMediaManipulator": [
+    "Medi reads the same pages you do. Its answers about tools, settings and plans come from the site's own documentation and the live plan table, so they change when the site changes instead of going stale.",
+    "The copilots edit real project files through the same operations the editors use, so everything Medi does appears in the editor's history and obeys its undo.",
+    "Daily allowances for the copilots come from the same plan table as every other limit on the site, and the guide is available on every plan."
+  ],
+  "privacyNote": "Medi is the one feature of the site that uses an outside AI service: your message, the page you are on and, in an editor, a short text summary of your project (and a small preview image if you allow it) are sent through OpenRouter to the Claude models of Anthropic, and the original media files are not. A file you drop on the guide is stored like any other upload and kept under the retention rule of your account. Signed-in conversations are saved for you and deleted with the retention period you choose or with your account; the Privacy Policy, section 1.13, has the full account.",
+  "faq": [
+    {
+      "question": "Do I need an account to use Medi?",
+      "answer": "No for the guide: anyone can ask it about tools, settings and plans. The copilots inside Aperture, Darkroom and Motion need you to be signed in, because they spend a daily allowance that belongs to your account."
+    },
+    {
+      "question": "Can Medi run a job without me pressing anything?",
+      "answer": "No. It can only prepare a job and show the card. A click on the card is the one thing that starts a job or opens a tool, so an assistant mistake can never use up an allowance by itself."
+    },
+    {
+      "question": "What does a copilot edit cost me?",
+      "answer": "Each message that makes an edit uses one of your daily copilot edits; planning a whole edit step by step uses a few. The guide, asking questions and undoing are free. The daily number for each plan is in the table on this page and on the pricing page."
+    },
+    {
+      "question": "Which tools can Medi set up for me?",
+      "answer": "About ninety, each with its real list of options, from video and audio converters to image filters, PDF tools and the AI tools. For the rest, such as the editors themselves, it explains and links. If you ask for a setting a tool does not have, it tells you so."
+    },
+    {
+      "question": "How do I undo a Medi edit, and can I check it first?",
+      "answer": "Press Undo on the change card, or use the editor's own undo, to take the entire edit back in one step. If you would rather look before anything changes, switch off automatic application in the information menu and each edit waits as a card with before and after values and Apply and Discard buttons."
+    },
+    {
+      "question": "Can I trust the numbers Medi quotes after an edit?",
+      "answer": "They are measured, not guessed: brightness, clipped shares and colour cast for images, loudness and true peak for audio, computed from the preview or the file. The model reads those figures, may adjust up to three times to hit its target, and is told to stop when the target is met."
+    },
+    {
+      "question": "Which languages does Medi understand?",
+      "answer": "Every language the site is available in, and it replies in the language you write in. The confirmation card and its setting names follow your site language, so a prepared job reads naturally before you press anything."
+    }
+  ],
+  "related": [
+    {
+      "label": "Compress Video",
+      "to": "/tools/compress-video",
+      "description": "The compressor that Medi prepares and can start in place from the guide."
+    },
+    {
+      "label": "Video Trimmer",
+      "to": "/tools/video-trimmer",
+      "description": "Cut a clip to a start and end time, another job Medi can run from a confirmed card."
+    },
+    {
+      "label": "Extract Audio from Video",
+      "to": "/tools/extract-audio-from-video",
+      "description": "Pull the soundtrack out of a video, also available as a prepared in-place job."
+    },
+    {
+      "label": "Aperture",
+      "to": "/tools/aperture",
+      "description": "The photo editor whose copilot edits layers and masks from a request."
+    },
+    {
+      "label": "Motion",
+      "to": "/tools/motion",
+      "description": "The SVG animation editor whose copilot writes keyframes you can inspect."
+    },
+    {
+      "label": "Medi tutorial",
+      "to": "/tutorials/medi",
+      "description": "Three short workflows: find a tool, run a job, and edit with a reason you can read."
+    }
+  ]
+}

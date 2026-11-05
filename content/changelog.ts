@@ -23,6 +23,19 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM111: Medi launches (guide, copilots, jobs).
+  {
+    id: '2026-11-05-medi',
+    date: '2026-11-05',
+    title: 'Meet Medi, the guide and editing copilot',
+    body: 'Medi is the assistant built into Media Manipulator. The round button in the corner of every public page opens a guide that finds the right tool and its settings, and a paperclip lets you drop a file so the advice fits it. Say what you want, or drop a file and say just run it, and Medi prepares the job and shows a confirmation card: the settings in your language, the queue and the daily allowance it would use. It never starts anything itself; a click on the card is always required. Start runs in place for video compress, resize, rotate, crop and trim, audio extract and remove, and transcription, and every other tool opens with Medi\'s settings already filled in. Medi knows the real options of about 90 tools. Inside Aperture, Darkroom and Motion, signed-in users get a copilot that edits from a plain request as one undo step, with a reason for every change. You can review an edit before it is applied, press Show me to find the control it moved, and Medi checks the numbers after an edit (brightness and clipping for pictures, loudness for audio) and adjusts up to three times, citing the figure each time. The daily number of copilot edits per plan is on the pricing page.',
+    tags: ['new'],
+    links: [
+      { label: 'About Medi', href: '/tools/medi' },
+      { label: 'Medi tutorial', href: '/tutorials/medi' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MM93: full tool-page bodies in the remaining seven languages.
   {
     id: '2026-11-04-tool-pages-all-languages',
