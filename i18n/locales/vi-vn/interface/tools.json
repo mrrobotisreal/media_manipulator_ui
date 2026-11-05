@@ -662,6 +662,22 @@
       "confirm": "Đổi khung",
       "confirmTitle": "Đổi khung thành {{width}}×{{height}}?",
       "confirmBody": "Các clip giữ nguyên phép biến đổi và bản xem trước letterbox chúng. Bố cục lại là thủ công. Bạn có thể hoàn tác."
+    },
+    "looks": {
+      "title": "Phong cách màu",
+      "clear": "Bỏ phong cách",
+      "cinematic": "Điện ảnh",
+      "teal-orange": "Xanh mòng két và cam",
+      "bleach-bypass": "Bleach bypass",
+      "warm-film": "Phim ấm",
+      "cool-night": "Đêm lạnh",
+      "vintage": "Cổ điển",
+      "high-key": "Tông sáng",
+      "noir": "Noir",
+      "pastel": "Pastel",
+      "punchy-social": "Rực rỡ cho mạng xã hội",
+      "moody": "U tối",
+      "golden-hour": "Giờ vàng"
     }
   },
   "toolPage": {

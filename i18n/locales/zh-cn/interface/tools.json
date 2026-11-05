@@ -662,6 +662,22 @@
       "confirm": "更改画布",
       "confirmTitle": "将画布更改为{{width}}×{{height}}？",
       "confirmBody": "片段保持其变换，预览会为它们加上黑边。重新构图需要手动完成。此操作可以撤销。"
+    },
+    "looks": {
+      "title": "风格",
+      "clear": "清除风格",
+      "cinematic": "电影感",
+      "teal-orange": "青橙色调",
+      "bleach-bypass": "漂白效果",
+      "warm-film": "暖色胶片",
+      "cool-night": "冷色夜景",
+      "vintage": "复古",
+      "high-key": "高调",
+      "noir": "黑色电影",
+      "pastel": "粉彩",
+      "punchy-social": "社交媒体高饱和",
+      "moody": "阴郁",
+      "golden-hour": "黄金时刻"
     }
   },
   "toolPage": {

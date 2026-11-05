@@ -677,6 +677,22 @@
       "confirm": "Change canvas",
       "confirmTitle": "Change canvas to {{width}}×{{height}}?",
       "confirmBody": "Clips keep their transforms and the preview letterboxes them. Reframing is manual. You can undo this."
+    },
+    "looks": {
+      "title": "Стилі",
+      "clear": "Прибрати стиль",
+      "cinematic": "Кінематографічний",
+      "teal-orange": "Бірюза й помаранч",
+      "bleach-bypass": "Обхід відбілювання",
+      "warm-film": "Теплий плівковий",
+      "cool-night": "Холодна ніч",
+      "vintage": "Вінтаж",
+      "high-key": "Світлий ключ",
+      "noir": "Нуар",
+      "pastel": "Пастель",
+      "punchy-social": "Яскравий для соцмереж",
+      "moody": "Похмурий",
+      "golden-hour": "Золота година"
     }
   },
   "toolPage": {

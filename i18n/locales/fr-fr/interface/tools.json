@@ -667,6 +667,22 @@
       "confirm": "Changer le canevas",
       "confirmTitle": "Changer le canevas en {{width}}×{{height}} ?",
       "confirmBody": "Les clips conservent leurs transformations et l'aperçu les affiche avec des bandes. Le recadrage est manuel. Vous pouvez annuler cette action."
+    },
+    "looks": {
+      "title": "Looks",
+      "clear": "Retirer le look",
+      "cinematic": "Cinéma",
+      "teal-orange": "Bleu canard et orange",
+      "bleach-bypass": "Sans blanchiment",
+      "warm-film": "Pellicule chaude",
+      "cool-night": "Nuit froide",
+      "vintage": "Vintage",
+      "high-key": "High key",
+      "noir": "Noir",
+      "pastel": "Pastel",
+      "punchy-social": "Percutant pour les réseaux",
+      "moody": "Sombre",
+      "golden-hour": "Heure dorée"
     }
   },
   "toolPage": {

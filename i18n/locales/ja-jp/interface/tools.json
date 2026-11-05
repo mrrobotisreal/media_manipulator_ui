@@ -662,6 +662,22 @@
       "confirm": "キャンバスを変更",
       "confirmTitle": "キャンバスを{{width}}×{{height}}に変更しますか？",
       "confirmBody": "クリップは変形を保ち、プレビューではレターボックス表示されます。再構図は手動です。この操作は元に戻せます。"
+    },
+    "looks": {
+      "title": "ルック",
+      "clear": "ルックを解除",
+      "cinematic": "シネマティック",
+      "teal-orange": "ティール＆オレンジ",
+      "bleach-bypass": "銀残し",
+      "warm-film": "暖かいフィルム",
+      "cool-night": "クールな夜",
+      "vintage": "ヴィンテージ",
+      "high-key": "ハイキー",
+      "noir": "ノワール",
+      "pastel": "パステル",
+      "punchy-social": "SNS向けビビッド",
+      "moody": "ムーディー",
+      "golden-hour": "ゴールデンアワー"
     }
   },
   "toolPage": {

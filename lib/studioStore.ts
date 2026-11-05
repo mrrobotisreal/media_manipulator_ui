@@ -65,6 +65,7 @@ import { normalizeTrackEffects } from '@/lib/studio/audioPresets';
 import { DEFAULT_TITLE_FONT_FAMILY } from '@/lib/studio/titleFonts';
 import { titleFromTextOverlays } from '@/lib/studio/titleConvert';
 import { applyStudioOps } from '@/lib/assistant/ops/applyStudio';
+import { isLookEffectId, lookById, withLook } from '@/lib/studio/looks';
 import {
   MIN_CLIP_SECONDS,
   clampRange,
@@ -331,6 +332,10 @@ interface StudioState {
   setClipCrop: (clipId: string, crop: StudioCrop | undefined) => void;
   setClipBlendMode: (clipId: string, mode: StudioBlendMode | undefined) => void;
   addEffect: (clipId: string, type: StudioEffectType) => void;
+  /** MM109: apply a Looks-catalog grade to a clip (replaces its earlier look); one undo entry. */
+  applyLook: (clipId: string, lookId: string, intensity?: number) => void;
+  /** MM109: remove the clip's look (its own grade and other effects stay). */
+  clearLook: (clipId: string) => void;
   // patch is a loose record (the inspector sends one field at a time, often via
   // a computed key) merged onto the discriminated-union effect.
   updateEffect: (clipId: string, effectId: string, patch: Record<string, number | string | boolean>) => void;
@@ -1944,6 +1949,25 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
         ...c,
         effects: [...(c.effects ?? []), effect],
       }));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  applyLook: (clipId, lookId, intensity = 1) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const l = lookById(lookId);
+      if (!l) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => withLook(c, l, intensity));
+      return { project: { ...s.project, tracks }, dirty: true };
+    }),
+
+  clearLook: (clipId) =>
+    mutate((s) => {
+      if (!s.project) return {};
+      const tracks = updateClipInTracks(s.project.tracks, clipId, (c) => {
+        const effects = (c.effects ?? []).filter((e) => !isLookEffectId(e.id));
+        return { ...c, effects: effects.length ? effects : undefined };
+      });
       return { project: { ...s.project, tracks }, dirty: true };
     }),
 

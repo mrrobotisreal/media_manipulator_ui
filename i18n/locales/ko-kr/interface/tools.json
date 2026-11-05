@@ -662,6 +662,22 @@
       "confirm": "캔버스 변경",
       "confirmTitle": "캔버스를 {{width}}×{{height}}(으)로 변경할까요?",
       "confirmBody": "클립은 변형을 유지하며 미리보기에서 레터박스 처리됩니다. 구도 조정은 직접 해야 합니다. 실행 취소할 수 있습니다."
+    },
+    "looks": {
+      "title": "룩",
+      "clear": "룩 지우기",
+      "cinematic": "시네마틱",
+      "teal-orange": "틸 & 오렌지",
+      "bleach-bypass": "블리치 바이패스",
+      "warm-film": "따뜻한 필름",
+      "cool-night": "차가운 밤",
+      "vintage": "빈티지",
+      "high-key": "하이 키",
+      "noir": "누아르",
+      "pastel": "파스텔",
+      "punchy-social": "SNS용 선명함",
+      "moody": "무디",
+      "golden-hour": "골든 아워"
     }
   },
   "toolPage": {

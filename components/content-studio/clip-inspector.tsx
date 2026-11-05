@@ -33,7 +33,9 @@ import { useUndoGesture } from './useUndoGesture';
 import { SpeedControls } from './speed-controls';
 import { editSummary } from '@/lib/studio/telemetry';
 import { Panel } from '@/components/darkroom/panel';
+import { cn } from '@/lib/utils';
 import { STUDIO_TITLE_FONTS, titleFontByFamily } from '@/lib/studio/titleFonts';
+import { STUDIO_LOOKS, isLookEffectId } from '@/lib/studio/looks';
 import type {
   StudioClip, StudioTrack, StudioEffect, StudioBlendMode, StudioTransform, StudioCrop,
   StudioTransitionType, StudioKeyframeEase, StudioTitleLayer, StudioTitleTextLayer,
@@ -497,6 +499,56 @@ const ColorSection: React.FC<{ clip: StudioClip }> = ({ clip }) => {
   );
 };
 
+// --- Looks (MM109): one-click grades from Lumetri parameters ----------------
+
+/**
+ * The Looks row: every catalog look as a swatch chip (lib/studio/looks.ts). One click replaces
+ * the clip's previous look as one undo step; the same catalog powers Medi's `apply_look`, so a
+ * user who never opens Medi gets the same grades.
+ */
+const LooksRow: React.FC<{ clip: StudioClip }> = ({ clip }) => {
+  const { t } = useLocalization('interface');
+  const applyLook = useStudioStore((s) => s.applyLook);
+  const clearLook = useStudioStore((s) => s.clearLook);
+  const current = (clip.effects ?? []).find((e) => isLookEffectId(e.id))?.id.slice(5) ?? null;
+  return (
+    <div className="mb-3" data-testid="looks-row">
+      <div className="mb-1.5 flex items-center justify-between">
+        <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{t('contentStudio.looks.title')}</span>
+        {current ? (
+          <button type="button" className="text-[11px] text-muted-foreground hover:text-foreground" onClick={() => clearLook(clip.id)}>
+            {t('contentStudio.looks.clear')}
+          </button>
+        ) : null}
+      </div>
+      <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('contentStudio.looks.title')}>
+        {STUDIO_LOOKS.map((l) => (
+          <button
+            key={l.id}
+            type="button"
+            aria-pressed={current === l.id}
+            title={t(l.labelKey)}
+            onClick={() => {
+              applyLook(clip.id, l.id);
+              // Counted as an effect of type "look" (the existing effectsByType breakdown).
+              editSummary.increment('effectsAdded', 'look');
+              editSummary.increment('uiInvocations');
+            }}
+            className={cn(
+              'inline-flex min-h-7 items-center gap-1.5 rounded-full border px-2 text-[11px] hover:bg-accent',
+              current === l.id ? 'border-primary bg-primary/10 text-foreground' : 'border-edge text-muted-foreground',
+            )}
+            data-look={l.id}
+          >
+            <span aria-hidden className="size-3 shrink-0 rounded-full" style={{ background: `linear-gradient(135deg, ${l.swatch[0]}, ${l.swatch[1]})` }} />
+            {t(l.labelKey)}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // --- Effects (lumetri / lut / chromakey) ------------------------------------
 
 const EffectsSection: React.FC<{ clip: StudioClip; lutAssets: StudioAssetEntry[] }> = ({ clip, lutAssets }) => {
@@ -538,6 +590,7 @@ const EffectsSection: React.FC<{ clip: StudioClip; lutAssets: StudioAssetEntry[]
         </Select>
       }
     >
+      <LooksRow clip={clip} />
       {effects.length === 0 ? (
         <p className="text-[11px] text-muted-foreground">{t('contentStudio.inspector.effects.empty')}</p>
       ) : (
