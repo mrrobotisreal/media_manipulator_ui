@@ -32,3 +32,8 @@ Skin sits in the orange range and its opposite is teal, so pushing shadows towar
 ## How to adjust
 
 Too strong: lower both split-tone saturations by 10. Skin looks orange: highlight saturation 18. More teal: shadow hue 185, saturation 45.
+
+## Success criteria
+
+- highlightsClipped <= 0.02
+- shadowsClipped <= 0.03

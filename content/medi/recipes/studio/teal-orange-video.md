@@ -32,3 +32,8 @@ Clip ids come from the timeline digest; `"all"` grades every video and image cli
 ## How to adjust
 
 Skin too orange: intensity 0.5. Subtler: try `cinematic`.
+
+## Success criteria
+
+- meanLuma 0.3-0.5
+- highlightsClipped <= 0.02

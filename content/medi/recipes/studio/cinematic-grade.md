@@ -32,3 +32,9 @@ Clip ids come from the timeline digest; `"all"` grades every video and image cli
 ## How to adjust
 
 Too strong: `intensity` 0.5. Want more colour: use the `teal-orange` look. Darker, heavier: `moody`.
+
+## Success criteria
+
+- meanLuma 0.3-0.5
+- shadowsClipped <= 0.03
+- highlightsClipped <= 0.02

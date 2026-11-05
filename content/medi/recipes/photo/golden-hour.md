@@ -33,3 +33,8 @@ Real golden light is warm in the highlights and less warm in the shadows, so a p
 ## How to adjust
 
 Too orange: `temperature` 15 and filter `density` 10. Skin too red: tint 0. Light from the side: move the gradient `to` point to that edge.
+
+## Success criteria
+
+- warmth 0.08-0.3
+- highlightsClipped <= 0.02
