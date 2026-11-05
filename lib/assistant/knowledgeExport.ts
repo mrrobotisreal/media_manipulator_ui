@@ -60,6 +60,7 @@ import { ANIMATOR_IDS } from '@/lib/vector/animators';
 import { EASING_PRESETS, TRACK_PROPERTY_PATTERN, layerSchema as vectorLayerSchema } from '@/lib/vector/vectorTypes';
 import { VECTOR_EXPORT_FORMATS } from '@/lib/vector/exportsApi';
 import { TOOL_IDS, TOOL_SHORTCUTS } from '@/lib/vector/tools/types';
+import { TEMPLATE_KINDS } from '@/lib/vector/templates';
 import { BLEND_MODES, LAYER_PARAMS, geometrySchema, maskComponentSchema, maskSchema, type LayerType } from '@/lib/photo/photoTypes';
 import { BUILTIN_PRESETS } from '@/lib/photo/presets';
 import { SHORTCUTS as PHOTO_SHORTCUTS } from '@/lib/photo/shortcuts';
@@ -793,6 +794,14 @@ function vectorDocs(): Array<[string, string]> {
       ...TOOL_IDS.map((t) => `- \`${t}\` (${str(v, `tools.${t}`) || t}): key ${TOOL_SHORTCUTS[t].toUpperCase()}`),
       'Styling: fill, stroke, stroke width, linecap/linejoin, opacity, linear and radial gradients, masks and clip paths.',
     ], ['layers', 'layer', 'group', 'path', 'shape', 'rectangle', 'ellipse', 'circle', 'line', 'polygon', 'text', 'image', 'pen tool', 'draw', 'import svg', 'fill', 'stroke', 'gradient', 'shortcuts']),
+  );
+  const tpl = (k: string) => str(v, `templates.${k}`) || k;
+  docs.push(
+    editorDoc('vector', 'templates', `${MOTION_BRAND} templates (lower third, logo reveal, title pop, bullets, counter, badge)`, `Ready-made animations in ${MOTION_BRAND}'s ${tpl('button')} menu (top bar), each added as one undo step at the playhead; Medi adds the same ones with the template op.`, [
+      ...TEMPLATE_KINDS.map((k) => `- \`${k}\` (${tpl(k)}): ${str(v, `templates.hint.${k}`)}`),
+      'Options: text (one line, or a list: lower third = name then role, bullets = one line each), colors (accent first), at (start, ms), duration (ms), value (counter), layerIds (logo reveal: which layers).',
+      'Templates are ordinary layers and keyframes afterwards: edit the text, move the group, retime keys in the timeline. A template that needs more time lengthens the composition.',
+    ], ['template', 'templates', 'lower third', 'lower-third', 'name title', 'logo reveal', 'title pop', 'text pop', 'bullet points', 'bullet reveal', 'counter', 'count up', 'number animation', 'badge', 'sticker', 'bounce']),
   );
   docs.push(
     editorDoc('vector', 'export', `${MOTION_BRAND} export formats`, `What ${MOTION_BRAND} exports, all made in the browser: static and animated SVG, Lottie, code (React, JS/TS, Flutter) and raster video/GIF.`, [

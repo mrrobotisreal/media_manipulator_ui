@@ -121,6 +121,16 @@ export const vectorTracker: VectorTracker = {
 };
 
 /**
+ * MM110: Medi's copilot events in Motion (the shared `assistant_*` vocabulary, `surface:
+ * 'vector'`; `useAssistantStream` / `useCopilot` call it). Same consent gate as every
+ * `vector_*` event: the chromeless editor sends nothing without the visitor's stored consent.
+ */
+export const vectorAssistantTrack = (name: Parameters<typeof analytics.track>[0], props: Parameters<typeof analytics.track>[1]): void => {
+  if (!vectorAnalyticsAllowed()) return;
+  analytics.track(name, props as never, { tool_slug: 'motion', feature: 'vector' });
+};
+
+/**
  * Identity headers for `POST /api/vector/exports`, so the API's
  * `server_vector_export_counted` joins the visitor's client events. The
  * visitor id is an analytics identifier: it is attached ONLY with consent.

@@ -155,7 +155,8 @@ describe('Motion editor: account save + 409 flow', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Save to account' }));
     const prompt = await screen.findByTestId('vector-signin-prompt');
     expect(within(prompt).getByRole('button', { name: 'Download .json' })).toBeTruthy();
-    expect(fetchMock).not.toHaveBeenCalled();
+    // Nothing project-related is sent (MM110: the read-only Medi capabilities check is allowed).
+    expect(fetchMock.mock.calls.filter(([url]) => !String(url).endsWith('/assistant/capabilities'))).toEqual([]);
   });
 
   it('signed in, local project: Save to account creates it and moves the URL to the server id', async () => {

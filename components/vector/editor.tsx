@@ -28,6 +28,8 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
+import dynamic from 'next/dynamic';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -79,6 +81,51 @@ import { usePlayback } from './use-playback';
 import { useSignedIn } from './use-signed-in';
 import { useProjectSync, type ProjectSync } from './use-project-sync';
 import { useVectorAnalytics } from './use-vector-analytics';
+import { TemplatesMenu } from './templates-menu';
+import { MEDI_BRAND, MEDI_MARK_SRC } from '@/lib/assistant/brand';
+import { getAssistantCapabilities } from '@/lib/assistant/api';
+import { createVectorAdapter, type MediExportFormat } from '@/lib/assistant/adapters/vector';
+import { captureVectorFrame } from '@/lib/assistant/vectorFrame';
+import { withAssistantShard } from '@/lib/i18n/ensureShard';
+import { vectorAssistantTrack } from '@/lib/vector/analytics';
+import { loadRasterPlan } from '@/lib/vector/raster/plan';
+import { useMediaQuery } from '@/lib/useMediaQuery';
+import type { AssistantCapabilities } from '@/schemas/assistant';
+
+// MM110: Medi's copilot panel, loaded on first open with its i18n shard (nothing in the editor's first load).
+const CopilotPanel = dynamic(() => withAssistantShard(() => import('@/components/assistant/copilot-panel')), { ssr: false });
+
+interface MediMotionRefs {
+  projectId: string | null;
+  caps: AssistantCapabilities | null;
+  openExport: (format: MediExportFormat | null) => void;
+  t: (key: string, vars?: Record<string, unknown>) => string;
+  localized: (href: string) => string;
+}
+
+/** The mounted editor's live state (one editor per page, like `useVectorStore`); set by an effect. */
+const mediMotion: { current: MediMotionRefs | null } = { current: null };
+const mediRefs = (): MediMotionRefs => mediMotion.current ?? { projectId: null, caps: null, openExport: () => {}, t: (k) => k, localized: (h) => h };
+
+/** The Motion copilot adapter over the editor's live state (read at call time, never during render). */
+const vectorCopilotAdapter = createVectorAdapter({
+  store: useVectorStore,
+  t: (key, vars) => mediRefs().t(key, vars),
+  captureFrame: async () => {
+    const s = useVectorStore.getState();
+    const caps = mediRefs().caps;
+    return s.doc ? captureVectorFrame(s.doc, s.time, caps && caps.enabled ? caps.maxFrameBytes : undefined) : null;
+  },
+  projectId: () => mediRefs().projectId,
+  onExport: (format) => mediRefs().openExport(format),
+  onOpenTool: (p) => {
+    const slug = typeof p.slug === 'string' && /^[a-z0-9][a-z0-9-]{0,79}$/.test(p.slug) ? p.slug : null;
+    if (slug) window.open(mediRefs().localized(`/tools/${slug}`), '_blank', 'noopener');
+  },
+});
+
+/** Whether the Motion copilot answers for this caller (capabilities list `vector` as a copilot surface). */
+export const vectorCopilotOn = (c: AssistantCapabilities | null): boolean => !!c && c.enabled && c.copilot.enabled && c.copilot.surfaces.includes('vector');
 
 export interface MotionEditorProps {
   projectId: string;
@@ -142,6 +189,15 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
   usePlayback();
   const signedIn = useSignedIn();
   const [exportOpen, setExportOpen] = React.useState(false);
+  const [exportFormat, setExportFormat] = React.useState<MediExportFormat | null>(null);
+  // MM110: Medi (the copilot answers only when the API lists `vector`; off by any failure).
+  const [assistantCaps, setAssistantCaps] = React.useState<AssistantCapabilities | null>(null);
+  const [copilotOpen, setCopilotOpen] = React.useState(false);
+  const copilotOn = vectorCopilotOn(assistantCaps);
+  const copilotRef = React.useRef(false);
+  const [copilotTier, setCopilotTier] = React.useState<string | undefined>(undefined);
+  const phone = useMediaQuery('(max-width: 767px)');
+  const lastUndoLabel = useVectorStore((s) => s.past.at(-1)?.label ?? null);
   const [initialServer, setInitialServer] = React.useState<{ id: string; revision: number } | null>(null);
   const [signInOpen, setSignInOpen] = React.useState(false);
   const [reloadAsk, setReloadAsk] = React.useState(false);
@@ -163,6 +219,37 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
     [va, onAnimatorUsed],
   );
   const sync = useProjectSync({ ready: phase.kind === 'ready', signedIn, initialServer, onSaved: va.projectSaved });
+  // MM110: Medi's capabilities (re-read on sign-in: the remaining turns are per user).
+  React.useEffect(() => {
+    if (signedIn === null) return;
+    let alive = true;
+    void getAssistantCapabilities().then((c) => alive && setAssistantCaps(c));
+    return () => {
+      alive = false;
+    };
+  }, [signedIn]);
+  React.useEffect(() => {
+    copilotRef.current = copilotOn;
+  }, [copilotOn]);
+  // The caller's tier for Medi's limit event, read once the panel is first opened (signed in).
+  React.useEffect(() => {
+    if (!copilotOpen || signedIn !== true || copilotTier) return;
+    const ctl = new AbortController();
+    loadRasterPlan(ctl.signal).then((p) => !ctl.signal.aborted && p?.tier && setCopilotTier(p.tier), () => {});
+    return () => ctl.abort();
+  }, [copilotOpen, signedIn, copilotTier]);
+  React.useEffect(() => {
+    mediMotion.current = {
+      projectId: sync.server?.id ?? null,
+      caps: assistantCaps,
+      openExport: (format) => {
+        setExportFormat(format);
+        setExportOpen(true);
+      },
+      t: (key, vars) => String(t(key, vars as Record<string, unknown>)),
+      localized,
+    };
+  }, [sync.server, assistantCaps, t, localized]);
   const serverRef = React.useRef(sync.server);
   React.useEffect(() => {
     serverRef.current = sync.server;
@@ -370,6 +457,14 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
         // MM44: Cmd+S saves (account projects / signed in); otherwise the free static SVG.
         if (saveRef.current) saveRef.current();
         else exportSvg();
+        return;
+      }
+      if (mod && k === 'j' && copilotRef.current) {
+        e.preventDefault();
+        setCopilotOpen((o) => {
+          if (!o) vectorAssistantTrack(EVENTS.ASSISTANT_OPENED, { surface: 'vector', entry: 'shortcut' });
+          return !o;
+        });
         return;
       }
       if (mod && (k === ']' || k === '[')) {
@@ -607,7 +702,7 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
           className="ms-2 hidden h-7 min-w-0 max-w-56 flex-1 rounded-md border border-transparent bg-transparent px-2 text-sm hover:border-edge focus-visible:border-data focus-visible:outline-none md:block"
         />
         <span className="flex-1" />
-        <IconButton label={t('vector.undo')} disabled={!canUndo} onClick={() => useVectorStore.getState().undo()}>
+        <IconButton label={undoTitle(t('vector.undo'), lastUndoLabel, t)} disabled={!canUndo} onClick={() => useVectorStore.getState().undo()}>
           <Undo2 className="size-4 rtl:-scale-x-100" />
         </IconButton>
         <IconButton label={t('vector.redo')} disabled={!canRedo} onClick={() => useVectorStore.getState().redo()}>
@@ -630,7 +725,32 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
           {importing ? <Loader2 className="animate-spin" /> : <FileUp />}
           <span className="hidden sm:inline">{t('vector.import.button')}</span>
         </Button>
-        <Button size="sm" disabled={!doc} onClick={() => setExportOpen(true)}>
+        <TemplatesMenu disabled={phase.kind !== 'ready' || !doc} />
+        {copilotOn ? (
+          <Button
+            size="sm"
+            variant={copilotOpen ? 'secondary' : 'outline'}
+            aria-pressed={copilotOpen}
+            aria-label={t('vector.medi.label', { brand: MEDI_BRAND })}
+            title={t('vector.medi.label', { brand: MEDI_BRAND })}
+            onClick={() => {
+              if (!copilotOpen) vectorAssistantTrack(EVENTS.ASSISTANT_OPENED, { surface: 'vector', entry: 'button' });
+              setCopilotOpen((o) => !o);
+            }}
+            data-testid="medi-copilot-toggle"
+          >
+            <img src={MEDI_MARK_SRC} alt="" width={16} height={16} />
+            <span className="hidden sm:inline">{MEDI_BRAND}</span>
+          </Button>
+        ) : null}
+        <Button
+          size="sm"
+          disabled={!doc}
+          onClick={() => {
+            setExportFormat(null);
+            setExportOpen(true);
+          }}
+        >
           <Download />
           <span className="hidden sm:inline">{t('vector.export.open')}</span>
         </Button>
@@ -736,6 +856,21 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
             <AnimatorPanel onAnimatorUsed={animatorUsed} />
           </div>
         </aside>
+        {copilotOn && copilotOpen ? (
+          <aside
+            className={cn('flex min-h-0 flex-col border-edge', phone ? 'fixed inset-x-0 bottom-0 z-40 h-[70dvh] rounded-t-xl border-t shadow-2xl' : 'w-[360px] shrink-0 border-s')}
+            data-testid="medi-copilot"
+          >
+            <CopilotPanel
+              adapter={vectorCopilotAdapter}
+              capabilities={assistantCaps}
+              signedIn={signedIn === true}
+              tier={signedIn === true ? tierProp(copilotTier ?? 'free') : 'anonymous'}
+              track={vectorAssistantTrack}
+              onClose={() => setCopilotOpen(false)}
+            />
+          </aside>
+        ) : null}
       </div>
       {/* MM44 timeline */}
       {phase.kind === 'ready' && doc && (
@@ -754,6 +889,7 @@ export default function MotionEditor({ projectId, onToolUsed, onAnimatorUsed }: 
           time={useVectorStore.getState().time}
           {...(sync.server ? { projectId: sync.server.id } : {})}
           signedIn={signedIn === true}
+          initialFormat={exportFormat}
         />
       )}
       {lottiePending && (
@@ -820,6 +956,13 @@ function RecoveryDialog({ draft, onRecover, onDiscard }: { draft: VectorDraft; o
       </DialogContent>
     </Dialog>
   );
+}
+
+/** The Undo button's tooltip: "Undo Medi: <summary>" after a Medi edit, else plain "Undo". */
+export function undoTitle(base: string, label: string | null, t: (key: string, vars?: Record<string, unknown>) => string): string {
+  if (label?.startsWith('Medi|')) return `${base}: ${t('vector.medi.historyLabel', { brand: MEDI_BRAND, summary: label.slice('Medi|'.length) })}`;
+  if (label?.startsWith('Template|')) return `${base}: ${t(`vector.templates.${label.slice('Template|'.length)}`)}`;
+  return base;
 }
 
 /** The document as a `.motion.json` file (signed-out save; "keep my version" before a reload). */
