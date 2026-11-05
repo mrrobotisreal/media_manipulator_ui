@@ -86,6 +86,28 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe('CopilotPanel + useCopilot', () => {
+  it('re-reads the allowance after a turn so "edits left" follows the server', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(editTurn, confirm);
+    const loadCapabilities = vi.fn(async () => ({ ...CAPS, turns: { limit: 5, remaining: 3, resetsAt: '' } }));
+    renderPanel(a, { loadCapabilities });
+    expect(screen.getByTestId('copilot-turns').textContent).toContain('4');
+    await send('Make everything grey except the red jacket');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    await screen.findByText('Everything is grey except the red.');
+    await waitFor(() => expect(loadCapabilities).toHaveBeenCalled());
+    await waitFor(() => expect(screen.getByTestId("copilot-turns").textContent).toContain("3"));
+    expect(loadCapabilities).toHaveBeenCalled();
+  });
+
+  it('does not re-read the allowance when signed out', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push([meta, { type: 'error', code: 'sign_in_required', message: 'x' }]);
+    const loadCapabilities = vi.fn(async () => CAPS);
+    renderPanel(a, { loadCapabilities, signedIn: false });
+    expect(loadCapabilities).not.toHaveBeenCalled();
+  });
+
   it('applies the edit once, then continues the same turn with editResult + frameAfter (not a new message)', async () => {
     const { a } = fakeAdapter();
     h.scripts.push(editTurn, confirm);
