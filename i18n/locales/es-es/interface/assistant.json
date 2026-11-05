@@ -99,6 +99,12 @@
           "moody": "Darle un aire sombrío",
           "keepRed": "Dejar solo el rojo",
           "vintage": "Estilo de película antigua"
+        },
+        "vector": {
+          "lowerThird": "Rótulo inferior que entra deslizándose",
+          "logoReveal": "Revela mi logotipo",
+          "titlePop": "Anima la entrada de este texto",
+          "forSocial": "¿Cómo lo exporto para redes sociales?"
         }
       },
       "actions": {
@@ -133,7 +139,23 @@
         "magenta": "magenta",
         "custom": "el color elegido"
       },
-      "turnsLeft_many": "Te quedan {{count}} ediciones hoy"
+      "turnsLeft_many": "Te quedan {{count}} ediciones hoy",
+      "vectorChange": {
+        "addLayer": "He añadido una capa: {{layer}}",
+        "addText": "He añadido una línea de texto",
+        "importSvg": "He importado el SVG",
+        "updateLayer": "He cambiado la capa {{layer}}",
+        "deleteLayer": "He eliminado la capa {{layer}}",
+        "animate": "He animado {{property}} de {{layer}}",
+        "animator_one": "He aplicado {{animator}} a {{count}} capa",
+        "animator_many": "He aplicado {{animator}} a {{count}} capas",
+        "animator_other": "He aplicado {{animator}} a {{count}} capas",
+        "template": "He añadido la plantilla {{template}}",
+        "duration": "He fijado la duración en {{seconds}} s",
+        "canvas": "He cambiado el lienzo",
+        "loopOn": "He activado la repetición",
+        "loopOff": "He desactivado la repetición"
+      }
     }
   }
 }
