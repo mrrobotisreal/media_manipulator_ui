@@ -26,8 +26,8 @@ const h = vi.hoisted(() => ({
 vi.mock('next/navigation', () => ({ usePathname: () => h.pathname, useRouter: () => ({ push: h.push }) }));
 vi.mock('@/lib/analytics', async () => ({ EVENTS: (await import('@/lib/analytics/events')).EVENTS, analytics: { track: h.track } }));
 vi.mock('@/lib/auth/AuthProvider', () => ({ useAuth: () => ({ user: h.user }) }));
+vi.mock('@/lib/i18n/ensureShard', () => ({ withAssistantShard: <T,>(load: () => Promise<T>) => load(), withToolShards: <T,>(load: () => Promise<T>) => load() }));
 vi.mock('@/lib/useMediaQuery', () => ({ useMediaQuery: () => false }));
-vi.mock('@/lib/i18n/ensureShard', () => ({ withAssistantShard: <T,>(load: () => Promise<T>) => load() }));
 vi.mock('@/lib/assistant/stream', () => ({ streamAssistantChat: h.stream }));
 vi.mock('@/lib/assistant/api', async (orig) => ({
   ...(await orig<typeof import('@/lib/assistant/api')>()),
@@ -235,6 +235,68 @@ describe('GuideSheet', () => {
     fireEvent.change(screen.getByTestId('medi-file-input'), { target: { files: [new File(['x'], 'a.txt', { type: 'text/plain' })] } });
     expect(await screen.findByText(/can read images, video, audio and PDF/)).toBeTruthy();
     expect(screen.queryByTestId('medi-file-chip')?.textContent).not.toContain('a.txt');
+  });
+
+  it('attach: pressing the paperclip tracks attach_file', async () => {
+    renderSheet();
+    fireEvent.click(screen.getByRole('button', { name: /Attach a file/ }));
+    expect(h.track).toHaveBeenCalledWith('assistant_action_clicked', { surface: 'guide', kind: 'attach_file' });
+  });
+
+  // MM116b acceptance: "just run it" shows a confirmation card; no job call happens until the click.
+  const CONFIRM = [
+    { type: 'meta', conversationId: null, turnId: 't', model: 'm' },
+    { type: 'delta', text: 'Ready when you are.' },
+    {
+      type: 'action',
+      callId: 'j1',
+      kind: 'confirm_job',
+      label: 'Compress it',
+      params: { tool: 'compress-video', toolName: 'Compress Video', family: 'video:compress', options: { level: 'smallest' }, quota: { metric: 'ops', limit: 10, remaining: 7 }, queueEstimate: { gpu: false, bucket: 'none' } },
+    },
+    { type: 'usage', inputTokens: 1, outputTokens: 1, cachedTokens: 0, costUsd: 0 },
+    { type: 'done' },
+  ];
+
+  it('confirm_job renders a card, not a plain action button, and does not run anything', async () => {
+    streamWith(CONFIRM);
+    renderSheet();
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'just run it' } });
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!);
+    const card = await screen.findByTestId('medi-job-card');
+    expect(card.getAttribute('data-state')).toBe('proposed');
+    expect(screen.queryByTestId('medi-action')).toBeNull();
+    expect(h.push).not.toHaveBeenCalled();
+    expect(h.upload).not.toHaveBeenCalled();
+    expect(h.track).toHaveBeenCalledWith('assistant_response_completed', expect.objectContaining({ outcome: 'action' }));
+  });
+
+  it('with no file the card opens the tool with the prefilled link on click, and only then', async () => {
+    streamWith(CONFIRM);
+    renderSheet();
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'just run it' } });
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!);
+    const open = await screen.findByTestId('medi-job-open');
+    expect(h.push).not.toHaveBeenCalled();
+    expect(h.track).not.toHaveBeenCalledWith('assistant_job_confirmed', expect.anything());
+    fireEvent.click(open);
+    expect(h.push).toHaveBeenCalledTimes(1);
+    expect(h.push.mock.calls[0][0]).toMatch(/^\/tools\/compress-video\?o=/);
+    expect(h.track).toHaveBeenCalledWith('assistant_job_confirmed', { surface: 'guide', tool: 'compress-video', mode: 'open', quota_metric: 'ops' });
+  });
+
+  it('with a dropped file the card offers Start, which still waits for the click', async () => {
+    h.upload.mockResolvedValue({ fileRef: '11111111-1111-4111-8111-111111111111', name: 'clip.mov', kind: 'video', mime: 'video/quicktime', sizeBytes: 5 });
+    streamWith(CONFIRM);
+    renderSheet();
+    fireEvent.change(screen.getByTestId('medi-file-input'), { target: { files: [new File(['x'], 'clip.mov', { type: 'video/quicktime' })] } });
+    await screen.findByText('clip.mov');
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'just run it' } });
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!);
+    expect(await screen.findByTestId('medi-job-start')).toBeTruthy();
+    expect(screen.queryByTestId('medi-job-open')).toBeNull();
+    expect(h.track).toHaveBeenCalledWith('assistant_job_proposed', { surface: 'guide', tool: 'compress-video', quota_metric: 'ops', queue_bucket: 'none', has_file: true });
+    expect(h.track).not.toHaveBeenCalledWith('assistant_job_confirmed', expect.anything());
   });
 
   it('Stop aborts the stream and says so', async () => {

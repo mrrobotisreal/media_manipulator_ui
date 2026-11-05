@@ -8,6 +8,7 @@ import type { ConversionFormData } from '@/schemas/types';
 import useConvertFile from '@/lib/useConvertFile';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
+import { transformRequest, transformValid } from '@/lib/assistant/toolOptions/requests';
 
 const FORMATS: EmbeddedVideoFormat[] = ['mp4', 'webm', 'mov', 'mkv'];
 const ROTATIONS = [90, 180, 270] as const;
@@ -52,29 +53,9 @@ const VideoTransformPanel: React.FC<{ presets: VideoTransformPresets }> = ({ pre
     });
   });
 
-  const cropValid = emphasis !== 'crop' || (typeof cropW === 'number' && cropW > 0 && typeof cropH === 'number' && cropH > 0);
-  const resizeValid = emphasis !== 'resize' || (typeof width === 'number' && width > 0) || (typeof height === 'number' && height > 0);
-  const valid = cropValid && resizeValid;
-
-  const buildOptions = (): ConversionFormData => {
-    const options: Record<string, unknown> = {
-      format: submitFormat,
-      quality: 'medium',
-      speed: 1,
-      preserveAspectRatio: emphasis === 'resize' ? preserveAspect : true,
-    };
-    if (emphasis === 'resize') {
-      if (typeof width === 'number') options.width = width;
-      if (typeof height === 'number') options.height = height;
-    } else if (emphasis === 'rotate') {
-      options.transform = { rotation, flipHorizontal: flipH, flipVertical: flipV };
-    } else if (emphasis === 'crop') {
-      options.transform = {
-        crop: { x: cropX, y: cropY, width: Number(cropW), height: Number(cropH) },
-      };
-    }
-    return options as unknown as ConversionFormData;
-  };
+  const transformState = { emphasis, format: submitFormat, width, height, preserveAspect, rotation, flipH, flipV, cropX, cropY, cropW, cropH };
+  const valid = transformValid(transformState);
+  const buildOptions = (): ConversionFormData => transformRequest(transformState);
 
   const icon = emphasis === 'crop' ? <Crop className="w-4 h-4" /> : emphasis === 'rotate' ? <RotateCw className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />;
 

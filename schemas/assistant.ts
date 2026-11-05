@@ -18,6 +18,8 @@ export const AssistantActionKindSchema = z.enum([
   'voiceover',
   'derive_audio',
   'export',
+  // MM116b: a single-tool job proposal; the card, not the model, shows the numbers.
+  'confirm_job',
 ]);
 export type AssistantActionKind = z.infer<typeof AssistantActionKindSchema>;
 
@@ -142,3 +144,30 @@ export const AssistantConversationDetailSchema = z.object({
   messages: z.array(AssistantStoredMessageSchema),
 });
 export type AssistantConversationDetail = z.infer<typeof AssistantConversationDetailSchema>;
+
+// ---------------------------------------------------------------------------
+// MM116b: the confirm_job action's params (server-computed; nothing has run)
+// ---------------------------------------------------------------------------
+
+export const ConfirmJobParamsSchema = z.object({
+  tool: z.string().regex(/^[a-z0-9][a-z0-9-]{0,119}$/),
+  toolName: z.string().max(200).optional(),
+  family: z.string().max(60).optional(),
+  route: z.string().optional(),
+  options: z.record(z.string(), z.unknown()).optional(),
+  quota: z.object({
+    metric: z.enum(['ops', 'ai_ops']),
+    tier: z.string().optional(),
+    unlimited: z.boolean().optional(),
+    limit: z.number().optional(),
+    remaining: z.number().optional(),
+    resetsAt: z.string().optional(),
+  }),
+  queueEstimate: z.object({
+    gpu: z.boolean().optional(),
+    bucket: z.enum(['none', 'short', 'long', 'unknown']),
+    waiting: z.number().optional(),
+    running: z.number().optional(),
+  }),
+});
+export type ConfirmJobParams = z.infer<typeof ConfirmJobParamsSchema>;

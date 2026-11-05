@@ -8,6 +8,7 @@ import useSpecializedMediaTool, { type SpecializedToolOptions } from '@/lib/useS
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import MediaTrimModal from '@/components/media-trim-modal';
 import { useLocalization } from '@/i18n/useLocalization';
+import { trimRequest, trimValid } from '@/lib/assistant/toolOptions/requests';
 
 const FORMATS: EmbeddedVideoFormat[] = ['mp4', 'mov', 'webm'];
 
@@ -86,7 +87,7 @@ const TrimFields: React.FC<{
 
   const submitFormat = lockedFormat ?? format;
   const duration = end - start;
-  const valid = end > start && start >= 0 && duration >= 0.1;
+  const valid = trimValid(start, end);
   const isCut = presets?.intent === 'cut';
 
   return (
@@ -94,13 +95,7 @@ const TrimFields: React.FC<{
       onSubmit={(e) => {
         e.preventDefault();
         if (!valid) return;
-        onRun({
-          mode: 'trim_video',
-          format: submitFormat,
-          startTime: start,
-          endTime: end,
-          copyMode: reencode ? 'reencode' : 'auto',
-        });
+        onRun(trimRequest({ format: submitFormat, start, end, reencode }));
       }}
       className="space-y-4"
     >

@@ -15,6 +15,7 @@ import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
 import { COMPRESSION_LEVELS, COMPRESSION_RESOLUTIONS, COMPRESSOR_CODEC_CHOICES, COMPRESSOR_CRF, COMPRESSOR_FORMATS, LEVEL_CRF } from '@/lib/assistant/toolOptions/fields';
 import { compressorState } from '@/lib/assistant/toolOptions/prefill';
+import { compressorRequest } from '@/lib/assistant/toolOptions/requests';
 
 const LEVELS: readonly EmbeddedVideoCompressionPreset[] = COMPRESSION_LEVELS;
 const FORMATS: readonly EmbeddedVideoFormat[] = COMPRESSOR_FORMATS;
@@ -61,25 +62,8 @@ const VideoCompressorPanel: React.FC<{ presets?: VideoCompressorPresets }> = ({ 
     });
   });
 
-  const buildOptions = (): ConversionFormData => {
-    const options: Record<string, unknown> = {
-      format: submitFormat,
-      quality: LEVEL_QUALITY[level],
-      speed: 1,
-      preserveAspectRatio: true,
-      crf: crfOverride === '' ? LEVEL_CRF[level] : crfOverride,
-      stripAudio,
-    };
-    // VP9 (WebM) is selected by the backend automatically; only forward an
-    // explicit codec for the H.26x containers where the choice is meaningful.
-    if (submitFormat !== 'webm') {
-      options.videoCodec = codec;
-    }
-    if (resolution !== 'keep') {
-      options.height = Number(resolution);
-    }
-    return options as unknown as ConversionFormData;
-  };
+  const buildOptions = (): ConversionFormData =>
+    compressorRequest({ level, format: submitFormat, codec, resolution, stripAudio, crfOverride });
 
   return (
     <SpecializedToolShell
