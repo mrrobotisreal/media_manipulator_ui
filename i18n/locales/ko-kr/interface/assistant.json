@@ -98,6 +98,12 @@
           "moody": "분위기 있게 만들기",
           "keepRed": "빨간색만 남기기",
           "vintage": "빈티지 필름 느낌"
+        },
+        "vector": {
+          "lowerThird": "슬라이드로 들어오는 하단 자막",
+          "logoReveal": "내 로고를 등장시켜 줘",
+          "titlePop": "이 텍스트에 등장 애니메이션 넣기",
+          "forSocial": "SNS용으로는 어떻게 내보내요?"
         }
       },
       "actions": {
@@ -131,6 +137,20 @@
         "purple": "보라",
         "magenta": "자홍",
         "custom": "선택한 색상"
+      },
+      "vectorChange": {
+        "addLayer": "{{layer}} 레이어를 추가했어요",
+        "addText": "텍스트 한 줄을 추가했어요",
+        "importSvg": "SVG를 가져왔어요",
+        "updateLayer": "{{layer}}을(를) 변경했어요",
+        "deleteLayer": "{{layer}}을(를) 삭제했어요",
+        "animate": "{{layer}}의 {{property}}에 애니메이션을 넣었어요",
+        "animator_other": "레이어 {{count}}개에 {{animator}}을(를) 적용했어요",
+        "template": "{{template}} 템플릿을 추가했어요",
+        "duration": "길이를 {{seconds}}초로 맞췄어요",
+        "canvas": "캔버스를 변경했어요",
+        "loopOn": "반복 재생을 켰어요",
+        "loopOff": "반복 재생을 껐어요"
       }
     }
   }
