@@ -33,6 +33,7 @@
  * are the planned catalogs in `PLANNED_STUDIO_LOOKS` / `PLANNED_VECTOR_TEMPLATES`,
  * and those tickets adjust the recipes if a name changes.
  */
+import { OP_REASON_MAX, OP_REASON_MIN } from '@/lib/assistant/ops/photo';
 import { photoOpsProblems } from '@/lib/assistant/ops/photo';
 import { studioOpsProblems } from '@/lib/assistant/ops/studio';
 import { STUDIO_LOOK_IDS } from '@/lib/studio/looks';
@@ -118,7 +119,7 @@ export interface Recipe extends RecipeMeta {
   /** MM115: the parsed `## Success criteria` (empty when the recipe has none). */
   criteria: RecipeCriterion[];
   /** The parsed `## Ops` JSON (null when `ops_example` is false). */
-  example: { summary: string; ops: Op[] } | null;
+  example: { summary: string; reason: string; ops: Op[] } | null;
 }
 
 export type Op = { op: string } & Record<string, unknown>;
@@ -193,11 +194,13 @@ export function parseRecipe(path: string, text: string): Recipe {
     } catch (e) {
       fail(`## Ops JSON does not parse: ${(e as Error).message}`);
     }
-    const p = parsed as { summary?: unknown; ops?: unknown };
+    const p = parsed as { summary?: unknown; reason?: unknown; ops?: unknown };
     if (!p || typeof p.summary !== 'string' || !p.summary.trim() || p.summary.length > 60) fail('## Ops needs a summary of at most 60 characters (the undo label)');
+    // MM114: every example carries the batch `reason` (4-140 chars) a real apply_edits call must have.
+    if (typeof p.reason !== 'string' || p.reason.trim().length < OP_REASON_MIN || p.reason.length > OP_REASON_MAX) fail(`## Ops needs a reason of ${OP_REASON_MIN}-${OP_REASON_MAX} characters (why the edit, citing what was seen or asked)`);
     if (!Array.isArray(p.ops) || p.ops.length === 0) fail('## Ops needs a non-empty ops list');
-    if (Object.keys(p).some((k) => k !== 'summary' && k !== 'ops')) fail('## Ops object has only summary and ops');
-    example = { summary: p.summary as string, ops: p.ops as Op[] };
+    if (Object.keys(p).some((k) => k !== 'summary' && k !== 'reason' && k !== 'ops')) fail('## Ops object has only summary, reason and ops');
+    example = { summary: p.summary as string, reason: p.reason as string, ops: p.ops as Op[] };
   } else if (fence) {
     fail('ops_example is false but ## Ops has a ```json block');
   }

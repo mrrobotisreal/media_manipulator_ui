@@ -57,7 +57,10 @@ function fakeAdapter(over: Partial<CopilotAdapter> = {}) {
     digest: () => 'Aperture photo. layers (0):',
     captureFrame: vi.fn(async () => new Blob([new Uint8Array([0xff, 0xd8, 0xff, 0x00])], { type: 'image/jpeg' })),
     projectId: () => 'p1',
-    apply: vi.fn(() => ({ ok: true as const, token: { id: 1 }, opCount: 1, opKinds: ['grey_except'], changes: ['Made everything grey except red'] })),
+    apply: vi.fn(() => ({ ok: true as const, token: { id: 1 }, opCount: 1, opKinds: ['grey_except'], changes: ['Made everything grey except red'], lines: [{ text: 'Made everything grey except red', op: 'grey_except', raw: { op: 'grey_except' }, reason: 'Only the red jacket keeps colour' }] })),
+    preview: vi.fn(() => ({ ok: true as const, lines: [{ text: 'Made everything grey except red', op: 'grey_except', raw: { op: 'grey_except' }, reason: 'Only the red jacket keeps colour', values: [{ label: 'Saturation', before: '0', after: '-100' }] }] })),
+    canReveal: () => true,
+    reveal: vi.fn(() => true),
     undo,
     canUndo: () => true,
     suggest: { heal },
@@ -95,6 +98,130 @@ beforeEach(() => {
   localStorage.clear();
 });
 afterEach(cleanup);
+
+const reasonTurn = [meta, { type: 'delta', text: 'Done.' }, { type: 'edits', callId: 'e1', summary: 'Grey except red', reason: 'The jacket is the only thing you asked to keep', ops: [{ op: 'grey_except', ranges: ['red'] }] }, { type: 'done', awaiting: 'edit_result' }];
+const openMenu = async () => {
+  await act(async () => {
+    fireEvent.click(screen.getByTestId('copilot-info'));
+  });
+};
+
+describe('MM114 reasons, staged mode and Show me', () => {
+  it('shows the batch reason under the summary and the op reason in the "what I changed" list', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(reasonTurn, confirm);
+    renderPanel(a);
+    await send('grey except red');
+    await screen.findByTestId('copilot-edit');
+    expect(screen.getByTestId('copilot-reason').textContent).toBe('The jacket is the only thing you asked to keep');
+    fireEvent.click(screen.getByText('What I changed'));
+    expect(screen.getByTestId('copilot-op-reason').textContent).toBe('Only the red jacket keeps colour');
+  });
+
+  it('auto-apply is on by default, and the switch is persisted with try/catch storage', async () => {
+    const { a } = fakeAdapter();
+    const { track } = renderPanel(a);
+    await openMenu();
+    const box = screen.getByTestId('copilot-auto-apply') as HTMLInputElement;
+    expect(box.checked).toBe(true);
+    fireEvent.click(box);
+    expect(localStorage.getItem('mm-medi-auto-apply-v1')).toBe('off');
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_auto_apply_toggled')?.[1]).toEqual({ surface: 'photo', enabled: false });
+  });
+
+  it('survives storage that throws: the default stays on and the panel still works', async () => {
+    const spy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    const set = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+    const { a } = fakeAdapter();
+    renderPanel(a);
+    await openMenu();
+    expect((screen.getByTestId('copilot-auto-apply') as HTMLInputElement).checked).toBe(true);
+    fireEvent.click(screen.getByTestId('copilot-auto-apply'));
+    expect((screen.getByTestId('copilot-auto-apply') as HTMLInputElement).checked).toBe(false);
+    spy.mockRestore();
+    set.mockRestore();
+  });
+
+  it('staged: nothing is applied until Apply; Apply is one apply call (one undo entry) and then reports applied', async () => {
+    localStorage.setItem('mm-medi-auto-apply-v1', 'off');
+    const { a } = fakeAdapter();
+    h.scripts.push(reasonTurn, confirm);
+    const { track } = renderPanel(a);
+    await send('grey except red');
+    const card = await screen.findByTestId('copilot-staged');
+    expect(a.preview).toHaveBeenCalledTimes(1);
+    expect(a.apply).not.toHaveBeenCalled();
+    expect(screen.queryByTestId('copilot-edit')).toBeNull();
+    expect(screen.getByTestId('copilot-values').textContent).toContain('Saturation');
+    expect(screen.getByTestId('copilot-values').textContent).toMatch(/0 →.*-100/);
+    expect(card.textContent).toContain('The jacket is the only thing you asked to keep');
+    expect(h.calls).toHaveLength(1);
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('copilot-staged-apply'));
+    });
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(a.apply).toHaveBeenCalledTimes(1);
+    expect(a.apply).toHaveBeenCalledWith('Grey except red', [{ op: 'grey_except', ranges: ['red'] }]);
+    expect(h.calls[1].editResult).toMatchObject({ callId: 'e1', applied: true });
+    expect(screen.queryByTestId('copilot-staged')).toBeNull();
+    expect(screen.getByTestId('copilot-edit')).toBeTruthy();
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_edits_staged_decision')?.[1]).toEqual({ surface: 'photo', decision: 'applied', op_count: 1 });
+  });
+
+  it('staged: Discard reports editResult applied:false with "user discarded" and never touches the document', async () => {
+    localStorage.setItem('mm-medi-auto-apply-v1', 'off');
+    const { a } = fakeAdapter();
+    h.scripts.push(reasonTurn, [meta, { type: 'delta', text: 'No problem, I left it as it was.' }, { type: 'done' }]);
+    const { track } = renderPanel(a);
+    await send('grey except red');
+    await screen.findByTestId('copilot-staged');
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('copilot-staged-discard'));
+    });
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(h.calls[1].editResult).toEqual({ callId: 'e1', applied: false, errors: ['user discarded'] });
+    expect(a.apply).not.toHaveBeenCalled();
+    expect(screen.getByTestId('copilot-staged-discarded')).toBeTruthy();
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_edits_staged_decision')?.[1]).toEqual({ surface: 'photo', decision: 'discarded', op_count: 1 });
+  });
+
+  it('staged: a batch that fails its dry run is reported back as rejected without a card', async () => {
+    localStorage.setItem('mm-medi-auto-apply-v1', 'off');
+    const { a } = fakeAdapter({ preview: vi.fn(() => ({ ok: false as const, reason: 'unknown_id' as const, errors: ['ops[0]: no layer "x"'] })) });
+    h.scripts.push(reasonTurn, confirm);
+    renderPanel(a);
+    await send('fix it');
+    await waitFor(() => expect(h.calls).toHaveLength(2));
+    expect(h.calls[1].editResult).toEqual({ callId: 'e1', applied: false, errors: ['ops[0]: no layer "x"'] });
+    expect(screen.queryByTestId('copilot-staged')).toBeNull();
+  });
+
+  it('Show me calls the adapter with the op and reports assistant_show_me_clicked', async () => {
+    const { a } = fakeAdapter();
+    h.scripts.push(reasonTurn, confirm);
+    const { track } = renderPanel(a);
+    await send('grey except red');
+    await screen.findByTestId('copilot-edit');
+    fireEvent.click(screen.getByText('What I changed'));
+    fireEvent.click(screen.getByTestId('copilot-show-me'));
+    expect(a.reveal).toHaveBeenCalledWith({ op: 'grey_except' });
+    expect(track.mock.calls.find((c) => c[0] === 'assistant_show_me_clicked')?.[1]).toEqual({ surface: 'photo', op: 'grey_except' });
+  });
+
+  it('no Show me button when the adapter has no control for the op', async () => {
+    const { a } = fakeAdapter({ canReveal: () => false });
+    h.scripts.push(reasonTurn, confirm);
+    renderPanel(a);
+    await send('grey except red');
+    await screen.findByTestId('copilot-edit');
+    fireEvent.click(screen.getByText('What I changed'));
+    expect(screen.queryByTestId('copilot-show-me')).toBeNull();
+  });
+});
 
 describe('CopilotPanel + useCopilot', () => {
   it('re-reads the allowance after a turn so "edits left" follows the server', async () => {

@@ -96,8 +96,13 @@ const titleStyle = named(
   }),
 );
 
+/** MM114: why this op (4-140 chars), shown beside it in the change card; optional per op, required once per batch (`apply_edits.reason`). */
+export const OP_REASON_MIN = 4;
+export const OP_REASON_MAX = 140;
+const reasonField = named('reason', z.string().min(OP_REASON_MIN).max(OP_REASON_MAX)).optional();
+
 const op = <T extends Record<string, z.ZodType>>(name: string, shape: T, describe: string) =>
-  z.strictObject({ op: z.literal(name), ...shape }).describe(describe);
+  z.strictObject({ op: z.literal(name), reason: reasonField, ...shape }).describe(describe);
 
 const split = op('split', { clipId, at: time }, 'Cut a clip in two at timeline time `at`; the right piece gets a new id (read it from the next digest).');
 const trim = op(
@@ -254,24 +259,24 @@ export type StudioTitleStyle = Partial<{
   backgroundOpacity: number;
 }>;
 export type StudioOp =
-  | { op: 'split'; clipId: string; at: number }
-  | { op: 'trim'; clipId: string; sourceIn?: number; sourceOut?: number }
-  | { op: 'move_clip'; clipId: string; timelineStart: number; track?: string }
-  | { op: 'delete_clip'; clipId: string; ripple?: boolean }
-  | { op: 'set_transition'; clipId: string; type: string; durationSeconds: number }
-  | { op: 'grade'; clipIds: 'all' | string[]; lumetri: Lumetri }
-  | { op: 'apply_look'; clipIds: 'all' | string[]; lookId: string; intensity?: number }
-  | { op: 'set_transform'; clipId: string; x?: number; y?: number; scale?: number; rotationDeg?: number }
-  | { op: 'set_keyframes'; clipId: string; property: string; keyframes: { t: number; value: number; ease: 'linear' | 'hold' | 'easeIn' | 'easeOut' | 'easeBoth' }[] }
-  | { op: 'add_title'; template: TitleTemplate; lines: string[]; start: number; duration: number; style?: StudioTitleStyle; animateIn?: (typeof TITLE_ANIMATE_IN)[number]; animateOut?: (typeof TITLE_ANIMATE_OUT)[number] }
-  | { op: 'set_speed'; clipId: string; speed: number; maintainPitch?: boolean }
-  | { op: 'freeze_frame'; clipId: string; at: number; duration: number }
-  | { op: 'audio_preset'; track: string; preset: string }
-  | { op: 'set_ducking'; enabled: boolean; voiceTrack?: string; amountDb?: number; attackMs?: number; releaseMs?: number }
-  | { op: 'set_volume'; clipId?: string; track?: string; gainDb: number }
-  | { op: 'add_marker'; at: number; label: string }
-  | { op: 'set_caption_style'; fontSizePct?: number; color?: string; backgroundColor?: string; backgroundOpacity?: number; position?: 'bottom' | 'top'; maxWidthPct?: number }
-  | { op: 'set_canvas'; aspect: CanvasAspect };
+  | { op: 'split'; reason?: string; clipId: string; at: number }
+  | { op: 'trim'; reason?: string; clipId: string; sourceIn?: number; sourceOut?: number }
+  | { op: 'move_clip'; reason?: string; clipId: string; timelineStart: number; track?: string }
+  | { op: 'delete_clip'; reason?: string; clipId: string; ripple?: boolean }
+  | { op: 'set_transition'; reason?: string; clipId: string; type: string; durationSeconds: number }
+  | { op: 'grade'; reason?: string; clipIds: 'all' | string[]; lumetri: Lumetri }
+  | { op: 'apply_look'; reason?: string; clipIds: 'all' | string[]; lookId: string; intensity?: number }
+  | { op: 'set_transform'; reason?: string; clipId: string; x?: number; y?: number; scale?: number; rotationDeg?: number }
+  | { op: 'set_keyframes'; reason?: string; clipId: string; property: string; keyframes: { t: number; value: number; ease: 'linear' | 'hold' | 'easeIn' | 'easeOut' | 'easeBoth' }[] }
+  | { op: 'add_title'; reason?: string; template: TitleTemplate; lines: string[]; start: number; duration: number; style?: StudioTitleStyle; animateIn?: (typeof TITLE_ANIMATE_IN)[number]; animateOut?: (typeof TITLE_ANIMATE_OUT)[number] }
+  | { op: 'set_speed'; reason?: string; clipId: string; speed: number; maintainPitch?: boolean }
+  | { op: 'freeze_frame'; reason?: string; clipId: string; at: number; duration: number }
+  | { op: 'audio_preset'; reason?: string; track: string; preset: string }
+  | { op: 'set_ducking'; reason?: string; enabled: boolean; voiceTrack?: string; amountDb?: number; attackMs?: number; releaseMs?: number }
+  | { op: 'set_volume'; reason?: string; clipId?: string; track?: string; gainDb: number }
+  | { op: 'add_marker'; reason?: string; at: number; label: string }
+  | { op: 'set_caption_style'; reason?: string; fontSizePct?: number; color?: string; backgroundColor?: string; backgroundOpacity?: number; position?: 'bottom' | 'top'; maxWidthPct?: number }
+  | { op: 'set_canvas'; reason?: string; aspect: CanvasAspect };
 
 /**
  * Rules JSON Schema cannot state on its own field list (`z.toJSONSchema` drops refinements):
@@ -286,7 +291,7 @@ function refineSchema(schema: Record<string, unknown>): Record<string, unknown> 
     const name = (o.properties as Record<string, { const?: unknown }> | undefined)?.op?.const;
     if (o.type === 'object' && name === 'set_volume') o.oneOf = [{ required: ['clipId'] }, { required: ['track'] }];
     if (o.type === 'object' && name === 'trim') o.anyOf = [{ required: ['sourceIn'] }, { required: ['sourceOut'] }];
-    if (o.type === 'object' && name === 'set_caption_style') o.minProperties = 2;
+    if (o.type === 'object' && name === 'set_caption_style') o.anyOf = ['fontSizePct', 'color', 'backgroundColor', 'backgroundOpacity', 'position', 'maxWidthPct'].map((k) => ({ required: [k] }));
     Object.values(o).forEach(walk);
   };
   walk(schema);
@@ -309,7 +314,7 @@ function refinementProblems(ops: StudioOp[]): string[] {
     }
     if (o.op === 'set_volume' && (o.clipId === undefined) === (o.track === undefined)) out.push(`ops[${i}]: set_volume needs exactly one of clipId or track`);
     if (o.op === 'trim' && o.sourceIn === undefined && o.sourceOut === undefined) out.push(`ops[${i}]: trim needs sourceIn or sourceOut`);
-    if (o.op === 'set_caption_style' && Object.keys(o).length < 2) out.push(`ops[${i}]: set_caption_style needs at least one field`);
+    if (o.op === 'set_caption_style' && Object.keys(o).filter((k) => k !== 'op' && k !== 'reason').length < 1) out.push(`ops[${i}]: set_caption_style needs at least one field`);
   });
   return out;
 }

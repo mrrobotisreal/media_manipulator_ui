@@ -179,6 +179,16 @@
           "marker": "Marker bei {{at}} s hinzugefügt",
           "captionStyle": "Untertitel neu gestaltet",
           "canvas": "Bildformat auf {{aspect}} geändert"
+        },
+        "field": {
+          "opacity": "Deckkraft",
+          "speed": "Tempo",
+          "volume": "Lautstärke",
+          "look": "Stil",
+          "lut": "LUT-Intensität",
+          "transition": "Übergangsdauer",
+          "canvas": "Canvas-Größe",
+          "ducking": "Musik absenken"
         }
       },
       "vectorChange": {
@@ -194,7 +204,24 @@
         "duration": "Länge auf {{seconds}} s gesetzt",
         "canvas": "Arbeitsfläche geändert",
         "loopOn": "Wiederholung eingeschaltet",
-        "loopOff": "Wiederholung ausgeschaltet"
+        "loopOff": "Wiederholung ausgeschaltet",
+        "keysLabel": "Schlüsselbilder",
+        "docLabel": "Animationsdokument"
+      },
+      "autoApply": "Änderungen von {{brand}} automatisch anwenden",
+      "autoApplyHint": "An: Änderungen werden sofort angewendet, ein Rückgängig nimmt sie zurück. Aus: Du prüfst jeden Stapel und tippst auf Anwenden.",
+      "showMe": "Zeig mir",
+      "showMeFor": "Zeig mir, wo: {{change}}",
+      "staged": {
+        "title": "{{brand}} schlägt vor: {{summary}}",
+        "apply": "Anwenden",
+        "discard": "Verwerfen",
+        "discarded": "Verworfen. Es wurde nichts geändert.",
+        "notYet": "Noch nichts angewendet.",
+        "to": "zu",
+        "on": "an",
+        "off": "aus",
+        "geometry": "Zuschnitt und Drehung"
       }
     }
   }

@@ -208,6 +208,10 @@ export const EVENTS = {
   ASSISTANT_FEEDBACK_GIVEN: 'assistant_feedback_given',
   // MM113: a Medi edit survived (not undone) to an export, a save or the end of the editor session.
   ASSISTANT_EDIT_KEPT: 'assistant_edit_kept',
+  // MM114: staged diff card decision, "Show me" pressed, auto-apply switch.
+  ASSISTANT_EDITS_STAGED_DECISION: 'assistant_edits_staged_decision',
+  ASSISTANT_SHOW_ME_CLICKED: 'assistant_show_me_clicked',
+  ASSISTANT_AUTO_APPLY_TOGGLED: 'assistant_auto_apply_toggled',
   ASSISTANT_LIMIT_HIT: 'assistant_limit_hit',
 
   // --- Video / audio summary (MM75) -----------------------------------------
@@ -392,6 +396,9 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   assistant_link_clicked: PRIORITY_NORMAL,
   assistant_feedback_given: PRIORITY_NORMAL,
   assistant_edit_kept: PRIORITY_NORMAL,
+  assistant_edits_staged_decision: PRIORITY_NORMAL,
+  assistant_show_me_clicked: PRIORITY_NORMAL,
+  assistant_auto_apply_toggled: PRIORITY_NORMAL,
   assistant_limit_hit: PRIORITY_CRITICAL,
 
   // Video / audio summary (MM75)
@@ -1382,6 +1389,19 @@ export interface AssistantEditKeptProps {
   surface: AssistantSurfaceProp;
   outcome: AssistantKeptOutcome;
 }
+export interface AssistantEditsStagedDecisionProps {
+  surface: AssistantSurfaceProp;
+  decision: 'applied' | 'discarded';
+  op_count: number;
+}
+export interface AssistantShowMeClickedProps {
+  surface: AssistantSurfaceProp;
+  op: string;
+}
+export interface AssistantAutoApplyToggledProps {
+  surface: AssistantSurfaceProp;
+  enabled: boolean;
+}
 export interface AssistantLimitHitProps {
   surface: AssistantSurfaceProp;
   tier: Tier;
@@ -1550,6 +1570,9 @@ export interface EventPropsMap {
   assistant_link_clicked: AssistantLinkClickedProps;
   assistant_feedback_given: AssistantFeedbackGivenProps;
   assistant_edit_kept: AssistantEditKeptProps;
+  assistant_edits_staged_decision: AssistantEditsStagedDecisionProps;
+  assistant_show_me_clicked: AssistantShowMeClickedProps;
+  assistant_auto_apply_toggled: AssistantAutoApplyToggledProps;
   assistant_limit_hit: AssistantLimitHitProps;
 
   summary_generated: SummaryGeneratedProps;

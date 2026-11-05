@@ -33,6 +33,8 @@ import { EDITABLE_PROPERTIES, isEditableProperty, isSampledLayerProperty, type E
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import { docLoops, type Easing, type Layer, type VectorDoc } from '@/lib/vector/vectorTypes';
 import { cn } from '@/lib/utils';
+import { flashReveal } from '@/lib/assistant/copilot/reveal';
+import { vectorRevealBridge } from '@/lib/assistant/copilot/revealBridges';
 import { BezierEditor } from './bezier-editor';
 import { IconButton } from './layer-panel';
 
@@ -165,6 +167,23 @@ export function Timeline() {
   const store = useVectorStore;
 
   const selectedKeys = React.useMemo(() => new Set(keySelection.map(keyId)), [keySelection]);
+
+  // Medi "Show me" (MM114): select the layer, expand its row (the property row shows) and flash it.
+  React.useEffect(() => {
+    let cancel: (() => void) | null = null;
+    const off = vectorRevealBridge.register((target) => {
+      cancel?.();
+      if (target.layerId) {
+        useVectorStore.getState().setSelection([target.layerId]);
+        setExpanded((prev) => new Set(prev).add(target.layerId!));
+      }
+      cancel = flashReveal(target.keys);
+    });
+    return () => {
+      off();
+      cancel?.();
+    };
+  }, []);
 
   if (!doc) return null;
   const pxPerMs = pxPerSec / 1000;
@@ -480,7 +499,7 @@ export function Timeline() {
             const times = layerKeyTimes(doc, layer.id);
             const tracks = doc.animations.filter((tr) => tr.layerId === layer.id);
             return (
-              <div key={layer.id} data-testid="timeline-layer" data-layer={layer.id}>
+              <div key={layer.id} data-testid="timeline-layer" data-layer={layer.id} data-reveal={`vector:layer.${layer.id}`}>
                 <div className={cn('flex border-b border-edge/60', isSel && 'bg-surface-2/60')} style={{ height: ROW_H }}>
                   <div
                     className="sticky left-0 z-10 flex shrink-0 items-center gap-1 border-e border-edge bg-inherit pe-2 text-xs"
@@ -529,7 +548,7 @@ export function Timeline() {
                     const label = propertyLabel(t, p);
                     const advanced = !isEditableProperty(p);
                     return (
-                      <div key={p} data-testid="timeline-property" data-property={p} className="flex border-b border-edge/40" style={{ height: ROW_H }}>
+                      <div key={p} data-testid="timeline-property" data-property={p} data-reveal={`vector:property.${layer.id}.${p}`} className="flex border-b border-edge/40" style={{ height: ROW_H }}>
                         <div
                           className="sticky left-0 z-10 flex shrink-0 items-center gap-1 border-e border-edge pe-1 text-[11px] text-muted-foreground"
                           style={{ width: LABEL_W, paddingInlineStart: 26 + depth * 12, backgroundColor: 'var(--surface-1)' }}

@@ -181,6 +181,16 @@
           "marker": "Marcador añadido en {{at}} s",
           "captionStyle": "Estilo de subtítulos cambiado",
           "canvas": "Formato de imagen cambiado a {{aspect}}"
+        },
+        "field": {
+          "opacity": "Opacidad",
+          "speed": "Velocidad",
+          "volume": "Volumen",
+          "look": "Estilo",
+          "lut": "Intensidad del LUT",
+          "transition": "Duración de la transición",
+          "canvas": "Tamaño del lienzo",
+          "ducking": "Bajada de música"
         }
       },
       "vectorChange": {
@@ -197,7 +207,24 @@
         "duration": "He fijado la duración en {{seconds}} s",
         "canvas": "He cambiado el lienzo",
         "loopOn": "He activado la repetición",
-        "loopOff": "He desactivado la repetición"
+        "loopOff": "He desactivado la repetición",
+        "keysLabel": "Fotogramas clave",
+        "docLabel": "Animación"
+      },
+      "autoApply": "Aplicar automáticamente los cambios de {{brand}}",
+      "autoApplyHint": "Activado: los cambios se aplican al instante y un solo Deshacer los revierte. Desactivado: revisas cada lote y pulsas Aplicar.",
+      "showMe": "Muéstrame",
+      "showMeFor": "Muéstrame dónde: {{change}}",
+      "staged": {
+        "title": "{{brand}} propone: {{summary}}",
+        "apply": "Aplicar",
+        "discard": "Descartar",
+        "discarded": "Descartado. No se cambió nada.",
+        "notYet": "Todavía no se ha aplicado nada.",
+        "to": "a",
+        "on": "activado",
+        "off": "desactivado",
+        "geometry": "Recorte y rotación"
       }
     }
   }

@@ -177,6 +177,16 @@
           "marker": "{{at}}秒にマーカーを追加しました",
           "captionStyle": "字幕のスタイルを変更しました",
           "canvas": "画面比率を{{aspect}}に変更しました"
+        },
+        "field": {
+          "opacity": "不透明度",
+          "speed": "速度",
+          "volume": "音量",
+          "look": "ルック",
+          "lut": "LUTの強さ",
+          "transition": "トランジションの長さ",
+          "canvas": "キャンバスサイズ",
+          "ducking": "ダッキング"
         }
       },
       "vectorChange": {
@@ -191,7 +201,24 @@
         "duration": "長さを{{seconds}}秒にしました",
         "canvas": "キャンバスを変更しました",
         "loopOn": "ループ再生をオンにしました",
-        "loopOff": "ループ再生をオフにしました"
+        "loopOff": "ループ再生をオフにしました",
+        "keysLabel": "キーフレーム",
+        "docLabel": "アニメーション"
+      },
+      "autoApply": "{{brand}}の編集を自動で適用する",
+      "autoApplyHint": "オン：編集はすぐに適用され、元に戻すを1回押せば取り消せます。オフ：変更をまとめて確認し、「適用」を押します。",
+      "showMe": "見せて",
+      "showMeFor": "場所を見せて：{{change}}",
+      "staged": {
+        "title": "{{brand}}の提案：{{summary}}",
+        "apply": "適用",
+        "discard": "破棄",
+        "discarded": "破棄しました。何も変更していません。",
+        "notYet": "まだ何も適用されていません。",
+        "to": "→",
+        "on": "オン",
+        "off": "オフ",
+        "geometry": "トリミングと回転"
       }
     }
   }

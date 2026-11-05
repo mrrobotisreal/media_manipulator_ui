@@ -64,7 +64,7 @@ export function AdjustSlider({ label, value, min, max, step = 1, defaultValue, o
   };
 
   return (
-    <div className={cn('space-y-1', className)} data-testid="adjust-slider">
+    <div className={cn('space-y-1', className)} data-testid="adjust-slider" data-reveal={gestureLabel ? `photo:${gestureLabel}` : undefined}>
       <div className="flex items-center justify-between gap-2">
         <label htmlFor={id} className="truncate text-xs text-muted-foreground" onDoubleClick={() => { apply(defaultValue); end(); }}>
           {label}

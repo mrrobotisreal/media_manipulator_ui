@@ -30,6 +30,8 @@ import { studioHost } from '@/lib/studio/telemetry';
 import type { AssistantCapabilities } from '@/schemas/assistant';
 import type { AssistantTrack } from '@/lib/assistant/useAssistantStream';
 import { useKeptSessionEnd } from '@/lib/assistant/copilot/kept';
+import { flashReveal } from '@/lib/assistant/copilot/reveal';
+import { studioRevealBridge } from '@/lib/assistant/copilot/revealBridges';
 
 // Medi's copilot panel, loaded on first open with its i18n shard (nothing in the editor's first load).
 const CopilotPanel = dynamic(() => withAssistantShard(() => import('@/components/assistant/copilot-panel')), { ssr: false });
@@ -105,6 +107,21 @@ export function useStudioCopilot(projectId: string, embedded: boolean) {
     refs.current = { projectId, caps, t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized, derive };
   });
   const adapter = useStudioAdapter(refs);
+
+  // "Show me" (MM114): select the clip (its inspector opens the section), then flash the control.
+  React.useEffect(() => {
+    if (embedded) return;
+    let cancel: (() => void) | null = null;
+    const off = studioRevealBridge.register((target) => {
+      cancel?.();
+      if (target.clipId) useStudioStore.getState().selectClip(target.clipId);
+      cancel = flashReveal(target.keys);
+    });
+    return () => {
+      off();
+      cancel?.();
+    };
+  }, [embedded]);
 
   // Capabilities (re-read on sign-in: the remaining turns are per user). Off by any failure.
   React.useEffect(() => {

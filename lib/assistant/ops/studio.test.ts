@@ -63,7 +63,7 @@ describe('studio op schema (MM109)', () => {
     const text = JSON.stringify(studioOpsJsonSchema());
     expect(text).toContain('"oneOf":[{"required":["clipId"]},{"required":["track"]}]');
     expect(text).toContain('"anyOf":[{"required":["sourceIn"]},{"required":["sourceOut"]}]');
-    expect(text).toContain('"minProperties":2');
+    expect(text).toContain('"anyOf":[{"required":["fontSizePct"]}');
   });
 });
 

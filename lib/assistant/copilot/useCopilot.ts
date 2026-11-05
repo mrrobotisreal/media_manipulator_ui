@@ -25,16 +25,30 @@ import type { StreamDeps } from '@/lib/assistant/stream';
 import type { AssistantActionEvent, AssistantEditsEvent } from '@/schemas/assistant';
 
 import { noteKeptCandidate, noteUndone } from './kept';
-import { markNoticeSeen, noticeSeen, previewAllowed, setPreviewAllowed } from './preferences';
-import type { CopilotAdapter, CopilotEditToken } from './types';
+import { autoApplyEnabled, markNoticeSeen, noticeSeen, previewAllowed, setAutoApplyEnabled, setPreviewAllowed } from './preferences';
+import type { CopilotAdapter, CopilotChangeLine, CopilotDiffLine, CopilotEditToken } from './types';
 
 export interface AppliedEdit {
   callId: string;
   summary: string;
   token: CopilotEditToken;
   changes: string[];
+  /** MM114: the batch reason, and the per-op lines (each with its own reason) the card lists. */
+  reason?: string;
+  lines?: CopilotChangeLine[];
   appliedAt: number;
   undone: boolean;
+}
+
+/** MM114: a batch waiting for Apply / Discard (auto-apply off). Nothing is in the document yet. */
+export interface StagedEdit {
+  callId: string;
+  summary: string;
+  reason?: string;
+  ops: unknown;
+  opCount: number;
+  lines: CopilotDiffLine[];
+  state: 'pending' | 'discarded';
 }
 
 /** An edit the adapter refused (nothing changed). Matched to its message by `callId`. */
@@ -81,13 +95,22 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
   const [notice, setNotice] = React.useState(() => !noticeSeen());
 
   const pending = React.useRef<PendingResult | null>(null);
+  const autoApplyRef = React.useRef(autoApplyEnabled());
   const roundsThisTurn = React.useRef(0);
   // MM115: the last meters taken of the preview (at send, then after each edit): the next edit's "before".
   const lastMetrics = React.useRef<Record<string, number> | undefined>(undefined);
   const [tick, setTick] = React.useState(0);
+  const stagedRef = React.useRef<StagedEdit[]>([]);
 
-  const onEdits = React.useCallback(
-    (ev: AssistantEditsEvent) => {
+  const [staged, setStaged] = React.useState<StagedEdit[]>([]);
+  const [autoApply, setAutoApplyState] = React.useState(autoApplyEnabled);
+  React.useEffect(() => {
+    stagedRef.current = staged;
+  }, [staged]);
+
+  /** Apply `ev` to the document now (one undo entry) and queue the editResult. */
+  const applyNow = React.useCallback(
+    (ev: AssistantEditsEvent): boolean => {
       const a = adapterRef.current;
       const res = a.apply(ev.summary, ev.ops);
       if (res.ok) {
@@ -95,15 +118,38 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
         const round = (Math.min(2, roundsThisTurn.current) as 1 | 2);
         track(EVENTS.ASSISTANT_EDITS_APPLIED, { surface, op_count: Math.min(res.opCount, 99), op_kinds: res.opKinds.slice(0, 8).join(','), round });
         noteKeptCandidate(ev.callId, surface, track);
-        setApplied((l) => [...l, { callId: ev.callId, summary: ev.summary, token: res.token, changes: res.changes, appliedAt: now(), undone: false }]);
+        setApplied((l) => [...l, { callId: ev.callId, summary: ev.summary, token: res.token, changes: res.changes, ...(ev.reason ? { reason: ev.reason } : {}), ...(res.lines ? { lines: res.lines } : {}), appliedAt: now(), undone: false }]);
         pending.current = { callId: ev.callId, applied: true, visual: a.isVisual ? a.isVisual(ev.ops) : true };
       } else {
         track(EVENTS.ASSISTANT_EDITS_REJECTED, { surface, reason: res.reason });
         setRejected((l) => [...l, { callId: ev.callId, errors: res.errors }]);
         pending.current = { callId: ev.callId, applied: false, errors: res.errors.slice(0, 8), visual: false };
       }
+      return res.ok;
     },
     [surface, track, now],
+  );
+
+  const onEdits = React.useCallback(
+    (ev: AssistantEditsEvent) => {
+      const a = adapterRef.current;
+      // MM114: with auto-apply off the batch is staged as a diff card; nothing touches the document
+      // until Apply. An adapter that cannot preview applies directly (the default path).
+      if (!autoApplyRef.current && a.preview) {
+        const dry = a.preview(ev.ops);
+        if (!dry.ok) {
+          track(EVENTS.ASSISTANT_EDITS_REJECTED, { surface, reason: dry.reason });
+          setRejected((l) => [...l, { callId: ev.callId, errors: dry.errors }]);
+          pending.current = { callId: ev.callId, applied: false, errors: dry.errors.slice(0, 8), visual: false };
+          return;
+        }
+        const opCount = Array.isArray(ev.ops) ? ev.ops.length : dry.lines.length;
+        setStaged((l) => [...l, { callId: ev.callId, summary: ev.summary, ...(ev.reason ? { reason: ev.reason } : {}), ops: ev.ops, opCount, lines: dry.lines, state: 'pending' }]);
+        return;
+      }
+      applyNow(ev);
+    },
+    [surface, track, applyNow],
   );
 
   const chat = useAssistantStream({ surface: adapter.surface, locale, onEdits, track, deps });
@@ -161,11 +207,45 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
     // `tick` re-runs this when an edit lands after the stream already settled.
   }, [chat.streaming, chat, lastAssistant, tick, waitForPaint]);
 
+  /** Apply a staged batch (the existing one-undo path), then report the result like any applied edit. */
+  const applyStaged = React.useCallback(
+    (callId: string) => {
+      const st = stagedRef.current.find((x) => x.callId === callId && x.state === 'pending');
+      if (!st) return;
+      track(EVENTS.ASSISTANT_EDITS_STAGED_DECISION, { surface, decision: 'applied', op_count: Math.min(st.opCount, 99) });
+      setStaged((l) => l.filter((x) => x.callId !== callId));
+      applyNow({ type: 'edits', callId: st.callId, summary: st.summary, ...(st.reason ? { reason: st.reason } : {}), ops: st.ops });
+      setTick((n) => n + 1);
+    },
+    [surface, track, applyNow],
+  );
+  const discardStaged = React.useCallback(
+    (callId: string) => {
+      const st = stagedRef.current.find((x) => x.callId === callId && x.state === 'pending');
+      if (!st) return;
+      track(EVENTS.ASSISTANT_EDITS_STAGED_DECISION, { surface, decision: 'discarded', op_count: Math.min(st.opCount, 99) });
+      setStaged((l) => l.map((x) => (x.callId === callId ? { ...x, state: 'discarded' as const } : x)));
+      pending.current = { callId, applied: false, errors: ['user discarded'], visual: false };
+      setTick((n) => n + 1);
+    },
+    [surface, track],
+  );
+  const setAutoApply = React.useCallback(
+    (on: boolean) => {
+      setAutoApplyEnabled(on);
+      autoApplyRef.current = on;
+      setAutoApplyState(on);
+      track(EVENTS.ASSISTANT_AUTO_APPLY_TOGGLED, { surface, enabled: on });
+    },
+    [surface, track],
+  );
+
   const send = React.useCallback(
     async (text: string, opts: { plan?: boolean } = {}): Promise<boolean> => {
       if (!text.trim() || chat.streaming) return false;
       const a = adapterRef.current;
       roundsThisTurn.current = 0;
+      setStaged((l) => l.filter((x) => x.state === 'discarded'));
       let frame: { jpegBase64: string } | undefined;
       let metrics: Record<string, number> | undefined;
       lastMetrics.current = undefined;
@@ -233,6 +313,7 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
     pending.current = null;
     setApplied([]);
     setRejected([]);
+    setStaged([]);
   }, [chat]);
 
   return {
@@ -243,6 +324,11 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
     reset,
     applied,
     rejected,
+    staged,
+    autoApply,
+    setAutoApply,
+    applyStaged,
+    discardStaged,
     undo,
     canUndo: (e: AppliedEdit) => !e.undone && adapterRef.current.canUndo(e.token),
     runAction,

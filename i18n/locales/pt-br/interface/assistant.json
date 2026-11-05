@@ -181,6 +181,16 @@
           "marker": "Marcador adicionado em {{at}} s",
           "captionStyle": "Estilo das legendas alterado",
           "canvas": "Formato da imagem alterado para {{aspect}}"
+        },
+        "field": {
+          "opacity": "Opacidade",
+          "speed": "Velocidade",
+          "volume": "Nível do som",
+          "look": "Estilo",
+          "lut": "Intensidade do LUT",
+          "transition": "Duração da transição",
+          "canvas": "Tamanho da tela",
+          "ducking": "Redução da música"
         }
       },
       "vectorChange": {
@@ -197,7 +207,24 @@
         "duration": "Defini a duração em {{seconds}} s",
         "canvas": "Alterei a tela",
         "loopOn": "Ativei a repetição",
-        "loopOff": "Desativei a repetição"
+        "loopOff": "Desativei a repetição",
+        "keysLabel": "Quadros-chave",
+        "docLabel": "Animação"
+      },
+      "autoApply": "Aplicar as edições de {{brand}} automaticamente",
+      "autoApplyHint": "Ligado: as edições entram na hora e um único Desfazer as remove. Desligado: você revisa cada lote e toca em Aplicar.",
+      "showMe": "Mostre-me",
+      "showMeFor": "Mostre-me onde: {{change}}",
+      "staged": {
+        "title": "{{brand}} sugere: {{summary}}",
+        "apply": "Aplicar",
+        "discard": "Descartar",
+        "discarded": "Descartado. Nada foi alterado.",
+        "notYet": "Nada foi aplicado ainda.",
+        "to": "para",
+        "on": "ligado",
+        "off": "desligado",
+        "geometry": "Corte e rotação"
       }
     }
   }

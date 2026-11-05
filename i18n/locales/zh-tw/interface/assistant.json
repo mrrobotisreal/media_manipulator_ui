@@ -177,6 +177,16 @@
           "marker": "已在 {{at}} 秒加入標記",
           "captionStyle": "已修改字幕樣式",
           "canvas": "已將畫面比例改為 {{aspect}}"
+        },
+        "field": {
+          "opacity": "不透明度",
+          "speed": "速度",
+          "volume": "音量",
+          "look": "風格",
+          "lut": "LUT 強度",
+          "transition": "轉場長度",
+          "canvas": "畫布尺寸",
+          "ducking": "自動閃避"
         }
       },
       "vectorChange": {
@@ -191,7 +201,24 @@
         "duration": "長度已設為 {{seconds}} 秒",
         "canvas": "已修改畫布",
         "loopOn": "已開啟循環播放",
-        "loopOff": "已關閉循環播放"
+        "loopOff": "已關閉循環播放",
+        "keysLabel": "關鍵影格",
+        "docLabel": "動畫"
+      },
+      "autoApply": "自動套用 {{brand}} 的編輯",
+      "autoApplyHint": "開啟：編輯會立即生效，按一次復原即可還原。關閉：你先檢視每一批修改，再按「套用」。",
+      "showMe": "帶我看看",
+      "showMeFor": "帶我看看在哪裡：{{change}}",
+      "staged": {
+        "title": "{{brand}} 建議：{{summary}}",
+        "apply": "套用",
+        "discard": "捨棄",
+        "discarded": "已捨棄，未做任何變更。",
+        "notYet": "目前尚未套用任何內容。",
+        "to": "改為",
+        "on": "開",
+        "off": "關",
+        "geometry": "裁切與旋轉"
       }
     }
   }
