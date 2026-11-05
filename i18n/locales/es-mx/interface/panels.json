@@ -1184,6 +1184,39 @@
           "invalid": "Ese archivo Lottie no se pudo convertir en una animación."
         }
       }
+    },
+    "templates": {
+      "button": "Plantillas",
+      "title": "Agregar una animación lista",
+      "lowerThird": "Cintillo inferior",
+      "logoReveal": "Revelado del logo",
+      "titlePop": "Título que aparece",
+      "bulletReveal": "Viñetas una por una",
+      "counter": "Contador",
+      "badgeBounce": "Insignia que rebota",
+      "hint": {
+        "lowerThird": "Nombre y puesto que entran deslizándose sobre una barra de acento.",
+        "logoReveal": "Dibuja los contornos seleccionados; las demás capas aparecen y crecen.",
+        "titlePop": "Un título grande y centrado que salta y se acomoda.",
+        "bulletReveal": "Tres puntos que entran uno tras otro.",
+        "counter": "Un número que sube y se detiene en el total.",
+        "badgeBounce": "Una insignia redonda que cae y rebota."
+      },
+      "placeholder": {
+        "name": "Tu nombre",
+        "role": "Tu puesto",
+        "title": "Tu encabezado",
+        "bullet": "Punto {{n}}",
+        "badge": "NUEVO"
+      },
+      "failed": {
+        "logo": "Primero dibuja una forma o importa tu logo y luego selecciónalo.",
+        "generic": "No se pudo agregar esta plantilla a la animación."
+      }
+    },
+    "medi": {
+      "label": "Pídele a {{brand}} que anime (Ctrl+J)",
+      "historyLabel": "{{brand}}: {{summary}}"
     }
   },
   "metadataInspectPanel": {
