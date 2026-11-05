@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { VideoOff } from 'lucide-react';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
+import { extractVideoOnlyRequest } from '@/lib/assistant/toolOptions/requests';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -35,10 +36,7 @@ const ExtractVideoOnlyPanel: React.FC = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            mutate({
-              file,
-              options: { mode: 'extract_video_only', format },
-            });
+            mutate({ file, options: extractVideoOnlyRequest(format) });
           }}
           className="space-y-4"
         >

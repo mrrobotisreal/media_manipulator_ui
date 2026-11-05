@@ -5,6 +5,7 @@ import { Music } from 'lucide-react';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import type { ExtractAudioPresets } from '@/components/embedded-tool-panel';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
+import { extractAudioRequest } from '@/lib/assistant/toolOptions/requests';
 import { EXTRACT_AUDIO_FORMATS } from '@/lib/assistant/toolOptions/fields';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -44,10 +45,7 @@ const ExtractAudioPanel: React.FC<{ presets?: ExtractAudioPresets }> = ({ preset
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            mutate({
-              file,
-              options: { mode: 'extract_audio', format: submitFormat },
-            });
+            mutate({ file, options: extractAudioRequest(submitFormat) });
           }}
           className="space-y-4"
         >

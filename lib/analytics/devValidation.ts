@@ -628,7 +628,7 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   assistant_action_clicked: z
     .object({
       surface: assistantSurface,
-      kind: z.enum(['navigate', 'open_tool', 'generate_captions', 'subject_mask', 'heal', 'voiceover', 'derive_audio', 'export']),
+      kind: z.enum(['navigate', 'open_tool', 'generate_captions', 'subject_mask', 'heal', 'voiceover', 'derive_audio', 'export', 'attach_file']),
     })
     .strict(),
   assistant_link_clicked: z
@@ -639,6 +639,18 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
   assistant_edits_staged_decision: z.object({ surface: assistantSurface, decision: z.enum(['applied', 'discarded']), op_count: z.number().int().min(0).max(99) }).strict(),
   assistant_show_me_clicked: z.object({ surface: assistantSurface, op: z.string().regex(/^[a-z_]{1,40}$/) }).strict(),
   assistant_auto_apply_toggled: z.object({ surface: assistantSurface, enabled: z.boolean() }).strict(),
+  assistant_job_proposed: z
+    .object({
+      surface: assistantSurface,
+      tool: z.string().regex(/^[a-z0-9-]{1,120}$/),
+      quota_metric: z.enum(['ops', 'ai_ops']),
+      queue_bucket: z.enum(['none', 'short', 'long', 'unknown']),
+      has_file: z.boolean(),
+    })
+    .strict(),
+  assistant_job_confirmed: z
+    .object({ surface: assistantSurface, tool: z.string().regex(/^[a-z0-9-]{1,120}$/), mode: z.enum(['run', 'open']), quota_metric: z.enum(['ops', 'ai_ops']) })
+    .strict(),
   assistant_limit_hit: z
     .object({ surface: assistantSurface, tier: z.enum(['anonymous', 'free', 'premium', 'pro', 'operator']) })
     .strict(),

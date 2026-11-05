@@ -27,11 +27,16 @@ import { PHOTO_ADJUSTMENT_SLUGS } from '@/content/photo/slugs';
 import { cn } from '@/lib/utils';
 import type { AssistantCapabilities, AssistantConversation } from '@/schemas/assistant';
 
+import { withToolShards } from '@/lib/i18n/ensureShard';
+
 import AssistantMarkdown from './markdown';
 import MessageFeedback from './message-feedback';
 
 /** The guide reports through the site's consent-gated client. */
 const guideTrack: AssistantTrack = (name, props) => analytics.track(name, props as never);
+
+/** MM116b: the confirmation card is loaded the first time one appears (it pulls in the job hooks and the tool registry). */
+const JobCard = React.lazy(() => withToolShards(() => import('./job-card')));
 
 const PHOTO_SLUGS: ReadonlySet<string> = new Set(PHOTO_ADJUSTMENT_SLUGS);
 const STARTERS = ['whichTool', 'gif', 'premium', 'photoPro'] as const;
@@ -77,6 +82,8 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
   const [draft, setDraft] = React.useState('');
   // MM116a: a file dropped into the guide. Uploaded on pick; the next message names it as fileRef.
   const [dropped, setDropped] = React.useState<AssistantDroppedFile | null>(null);
+  // MM116b: the browser still holds the File, so a confirmation card can run the job right here.
+  const [droppedBlob, setDroppedBlob] = React.useState<File | null>(null);
   const [uploading, setUploading] = React.useState(false);
   const [fileError, setFileError] = React.useState<string | null>(null);
   const fileInput = React.useRef<HTMLInputElement>(null);
@@ -102,6 +109,7 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
     try {
       const up = await uploadAssistantFile(file);
       setDropped(up);
+      setDroppedBlob(file);
     } catch (err) {
       const code = err instanceof AssistantFileError ? err.code : 'failed';
       setFileError(code === 'file_too_large' ? t('assistant.guide.fileTooLarge') : code === 'unsupported_file' ? t('assistant.guide.fileUnsupported') : t('assistant.guide.fileFailed'));
@@ -149,6 +157,7 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
             onClick={() => {
               chat.reset();
               setDropped(null);
+              setDroppedBlob(null);
               setFileError(null);
               setView('chat');
             }}
@@ -216,6 +225,11 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
                       router.push(href);
                     }}
                     onChoice={submit}
+                    file={droppedBlob}
+                    onJobOpen={(href) => {
+                      if (phone) onOpenChange(false);
+                      router.push(href);
+                    }}
                   />
                 ),
               )}
@@ -235,7 +249,7 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
                     <span className="flex min-w-0 items-center gap-1 rounded-md border border-edge px-2 py-1">
                       <Paperclip className="size-3 shrink-0" />
                       <span className="truncate">{dropped.name}</span>
-                      <button type="button" onClick={() => setDropped(null)} aria-label={t('assistant.guide.fileRemove')} title={t('assistant.guide.fileRemove')} className="shrink-0 hover:text-foreground">
+                      <button type="button" onClick={() => { setDropped(null); setDroppedBlob(null); }} aria-label={t('assistant.guide.fileRemove')} title={t('assistant.guide.fileRemove')} className="shrink-0 hover:text-foreground">
                         <X className="size-3" />
                       </button>
                     </span>
@@ -247,7 +261,10 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
                 <input ref={fileInput} type="file" accept="image/*,video/*,audio/*,application/pdf" className="hidden" onChange={(e) => void pickFile(e.target.files?.[0])} data-testid="medi-file-input" />
                 <button
                   type="button"
-                  onClick={() => fileInput.current?.click()}
+                  onClick={() => {
+                    analytics.track(EVENTS.ASSISTANT_ACTION_CLICKED, { surface: 'guide', kind: 'attach_file' });
+                    fileInput.current?.click();
+                  }}
                   disabled={uploading || chat.streaming}
                   className="flex size-11 items-center justify-center rounded-md border border-edge hover:bg-accent disabled:opacity-50"
                   aria-label={t('assistant.guide.attach')}
@@ -315,7 +332,11 @@ function AssistantBubble({
   onLink,
   onAction,
   onChoice,
+  file,
+  onJobOpen,
 }: {
+  file: File | null;
+  onJobOpen: (href: string) => void;
   m: AssistantUiMessage;
   locale: string;
   signedIn: boolean;
@@ -327,6 +348,7 @@ function AssistantBubble({
   const { t } = useLocalization(['interface']);
   const b = { brand: MEDI_BRAND };
   const guideActions = m.actions.filter((a) => a.kind === 'navigate' || a.kind === 'open_tool');
+  const jobCards = m.actions.filter((a) => a.kind === 'confirm_job');
   return (
     <div className="space-y-2" data-testid="medi-answer" data-status={m.status}>
       {m.outcome === 'static' && !m.text ? <p className="text-sm">{t('assistant.guide.resting')}</p> : null}
@@ -363,6 +385,11 @@ function AssistantBubble({
           })}
         </div>
       ) : null}
+      {jobCards.map((a) => (
+        <React.Suspense key={a.callId} fallback={<Loader2 className="size-4 animate-spin text-muted-foreground" />}>
+          <JobCard callId={a.callId} label={a.label} params={a.params} locale={locale} file={file} track={guideTrack} onOpen={onJobOpen} />
+        </React.Suspense>
+      ))}
       {m.ask ? (
         <div className="space-y-2">
           <p className="text-sm">{m.ask.question}</p>

@@ -212,6 +212,9 @@ export const EVENTS = {
   ASSISTANT_EDITS_STAGED_DECISION: 'assistant_edits_staged_decision',
   ASSISTANT_SHOW_ME_CLICKED: 'assistant_show_me_clicked',
   ASSISTANT_AUTO_APPLY_TOGGLED: 'assistant_auto_apply_toggled',
+  // MM116b: Medi proposed a single-tool job (the confirmation card was shown) / the visitor pressed its button.
+  ASSISTANT_JOB_PROPOSED: 'assistant_job_proposed',
+  ASSISTANT_JOB_CONFIRMED: 'assistant_job_confirmed',
   ASSISTANT_LIMIT_HIT: 'assistant_limit_hit',
 
   // --- Video / audio summary (MM75) -----------------------------------------
@@ -399,6 +402,8 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   assistant_edits_staged_decision: PRIORITY_NORMAL,
   assistant_show_me_clicked: PRIORITY_NORMAL,
   assistant_auto_apply_toggled: PRIORITY_NORMAL,
+  assistant_job_proposed: PRIORITY_NORMAL,
+  assistant_job_confirmed: PRIORITY_HIGH,
   assistant_limit_hit: PRIORITY_CRITICAL,
 
   // Video / audio summary (MM75)
@@ -1332,7 +1337,8 @@ export type AssistantActionKindProp =
   | 'heal'
   | 'voiceover'
   | 'derive_audio'
-  | 'export';
+  | 'export'
+  | 'attach_file';
 export type AssistantLinkTargetProp = 'tool' | 'page' | 'editor' | 'pricing';
 
 export interface AssistantOpenedProps {
@@ -1401,6 +1407,24 @@ export interface AssistantShowMeClickedProps {
 export interface AssistantAutoApplyToggledProps {
   surface: AssistantSurfaceProp;
   enabled: boolean;
+}
+export type AssistantJobQuotaMetricProp = 'ops' | 'ai_ops';
+export type AssistantJobQueueBucketProp = 'none' | 'short' | 'long' | 'unknown';
+export interface AssistantJobProposedProps {
+  surface: AssistantSurfaceProp;
+  /** Tool slug. */
+  tool: string;
+  quota_metric: AssistantJobQuotaMetricProp;
+  queue_bucket: AssistantJobQueueBucketProp;
+  /** A dropped file is attached, so the card can run the job in place. */
+  has_file: boolean;
+}
+export interface AssistantJobConfirmedProps {
+  surface: AssistantSurfaceProp;
+  tool: string;
+  /** run = submitted from the guide with the dropped file; open = tool page opened with the settings. */
+  mode: 'run' | 'open';
+  quota_metric: AssistantJobQuotaMetricProp;
 }
 export interface AssistantLimitHitProps {
   surface: AssistantSurfaceProp;
@@ -1573,6 +1597,8 @@ export interface EventPropsMap {
   assistant_edits_staged_decision: AssistantEditsStagedDecisionProps;
   assistant_show_me_clicked: AssistantShowMeClickedProps;
   assistant_auto_apply_toggled: AssistantAutoApplyToggledProps;
+  assistant_job_proposed: AssistantJobProposedProps;
+  assistant_job_confirmed: AssistantJobConfirmedProps;
   assistant_limit_hit: AssistantLimitHitProps;
 
   summary_generated: SummaryGeneratedProps;
