@@ -125,6 +125,8 @@ export type EmbeddedTask =
   // Aperture (MM100): the 24 adjustment pages render the photo drop zone (components/photo/landing),
   // never the generic panel; the literal only lets their toolPages entries typecheck.
   | 'photo_editor'
+  // Medi (MM111): the launch page renders its own panel (components/assistant/landing); the literal only types the entry.
+  | 'medi_guide'
   | 'png_to_jpg'
   | 'jpg_to_png'
   | 'webp_to_png'

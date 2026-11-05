@@ -16,6 +16,8 @@ export const REVIEW_INDEXED_TOOL_SLUGS = [
   'motion',
   // MM100: Aperture's landing page (long original copy, guide, plan table, FAQ; no ad slot).
   'aperture',
+  // MM111: Medi's launch page (long original copy, plan table, FAQ; no ad slot).
+  'medi',
   'remove-exif-metadata',
   'compress-image',
   'image-resizer',

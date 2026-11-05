@@ -105,6 +105,8 @@ export interface TierLimits {
   photoMaxMegapixels?: number;
   /** Photos per batch run (0 / 3 / 10 / 25). */
   photoBatch?: number;
+  /** Medi (MM104): daily copilot edits; 0 = sign-in required, -1 unlimited. Absent on APIs before MM104. */
+  assistantTurns?: number;
   /** Longest counted export in ms; 0 means no cap. */
   vectorMaxDurationMs?: number;
   /** Raster export caps; a 0 field means no cap on that axis. */

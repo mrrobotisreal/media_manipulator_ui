@@ -224,6 +224,7 @@ const PAGE_PATHS = [
   '/tutorials/ai-frame-interpolation',
   '/tutorials/motion',
   '/tutorials/aperture',
+  '/tutorials/medi',
   '/privacy-policy',
   '/terms-of-service',
 ] as const;

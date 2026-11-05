@@ -57,6 +57,8 @@ const MM48_URLS = ['/tools/motion', '/licenses'].map((p) => new URL(p, ORIGIN).t
 /** MM85: the contact page joins the core block after /licenses. */
 /** MM100: Aperture's landing page (core route, also in the review allowlist). */
 const APERTURE_URL = new URL('/tools/aperture', ORIGIN).toString();
+/** MM111: Medi's launch page follows Aperture's. */
+const MEDI_URL = new URL('/tools/medi', ORIGIN).toString();
 const MM85_CONTACT_URL = new URL('/contact', ORIGIN).toString();
 /**
  * MM85: the blog posts and tutorials join the review sitemap (frozen here as
@@ -73,12 +75,14 @@ const MM85_ARTICLE_URLS = [
   '/tutorials/content-studio',
   '/tutorials/motion',
   '/tutorials/aperture',
+  '/tutorials/medi',
 ].map((p) => new URL(p, ORIGIN).toString());
 const REVIEW_SAFE_URLS = [
   ...TODAY_URLS.slice(0, 2),
   MM48_URLS[0],
   // MM100: Aperture's landing page follows Motion's.
   APERTURE_URL,
+  MEDI_URL,
   ...TODAY_URLS.slice(2, 10),
   MM48_URLS[1],
   // MA26: the public account-deletion page follows /licenses.
@@ -96,7 +100,7 @@ describe('MM34 flag off (default)', () => {
   it('sitemap equals the pre-MM34 review-safe list plus the MM48 and MM85 routes, exactly', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', '');
     expect(urls()).toEqual(REVIEW_SAFE_URLS);
-    expect(urls()).toHaveLength(40);
+    expect(urls()).toHaveLength(42);
     for (const u of TODAY_URLS) expect(urls()).toContain(u);
   });
 
@@ -155,18 +159,18 @@ describe('MM34 flag on', () => {
     for (const p of BLOG_POSTS) expect(list).toContain(new URL(p.path, ORIGIN).toString());
     const tutorials = PUBLIC_ROUTES.filter((p) => p.startsWith('/tutorials/'));
     // MM48 adds /tutorials/motion to the five earlier tutorials.
-    expect(tutorials.length).toBe(7);
+    expect(tutorials.length).toBe(8);
     expect(tutorials).toContain('/tutorials/motion');
     for (const p of tutorials) expect(list).toContain(new URL(p, ORIGIN).toString());
     // Every flag-off URL is still present.
     for (const u of TODAY_URLS) expect(list).toContain(u);
   });
 
-  it('URL count = core (15) + tool slugs + blog + tutorials + changelog', () => {
+  it('URL count = core (16) + tool slugs + blog + tutorials + changelog', () => {
     vi.stubEnv('NEXT_PUBLIC_SEO_FULL_INDEX', 'true');
     // /tools/content-studio and /tools/motion are core routes, so they are not double counted.
-    const toolsOutsideCore = TOOL_PAGES.filter((t) => t.slug !== 'content-studio' && t.slug !== 'motion' && t.slug !== 'aperture').length;
-    const expected = 15 + toolsOutsideCore + BLOG_POSTS.length + 7 + 1;
+    const toolsOutsideCore = TOOL_PAGES.filter((t) => t.slug !== 'content-studio' && t.slug !== 'motion' && t.slug !== 'aperture' && t.slug !== 'medi').length;
+    const expected = 16 + toolsOutsideCore + BLOG_POSTS.length + 8 + 1;
     expect(urls()).toHaveLength(expected);
     expect(urls()).toContain(new URL('/changelog', ORIGIN).toString());
   });

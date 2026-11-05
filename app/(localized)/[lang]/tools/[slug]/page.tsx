@@ -16,7 +16,7 @@ import { getServerT } from '@/lib/i18n/server';
 // Slugs served by dedicated static routes (custom interactive panels) instead
 // of this dynamic one. Exclude them here AND in generateMetadata AND in the
 // page body so the static sibling owns the URL.
-const STATIC_ROUTE_SLUGS = new Set(['content-studio', 'motion', 'aperture', 'ai-video-restoration', 'ai-image-restoration', 'ai-document-scan']);
+const STATIC_ROUTE_SLUGS = new Set(['content-studio', 'motion', 'aperture', 'medi', 'ai-video-restoration', 'ai-image-restoration', 'ai-document-scan']);
 
 // Statically generate the review-allowed tool pages (static-route slugs have
 // their own dedicated routes). dynamicParams stays true so any other valid

@@ -25,6 +25,7 @@ import { formatBytes, formatDuration } from '@/lib/auth/formatLimits';
 import { planPrices, yearlyMonthsFree } from '@/lib/billing/price';
 import { cn } from '@/lib/utils';
 import { PHOTO_BRAND } from '@/lib/photo/brand';
+import { MEDI_BRAND } from '@/lib/assistant/brand';
 
 type T = ReturnType<typeof getServerT>;
 
@@ -110,6 +111,22 @@ const ROWS: Row[] = [
     served: (l) => typeof l.photoBatch === 'number',
   },
   {
+    // MM111: Medi rows, hidden when the API predates MM104 (no `assistantTurns`).
+    key: 'assistantGuide',
+    render: (_l, t) => t('interface:pricing.values.yes'),
+    served: (l) => typeof l.assistantTurns === 'number',
+  },
+  {
+    key: 'assistantTurns',
+    render: (l, t) =>
+      (l.assistantTurns ?? 0) < 0
+        ? t('interface:pricing.values.unlimited')
+        : (l.assistantTurns ?? 0) === 0
+          ? t('interface:pricing.values.signInToUse')
+          : `${l.assistantTurns}`,
+    served: (l) => typeof l.assistantTurns === 'number',
+  },
+  {
     key: 'priorityGpu',
     render: (l, t) =>
       l.priorityGpu
@@ -142,6 +159,7 @@ const NUMERIC_ROWS = new Set([
   'photoProjects',
   'photoMaxMegapixels',
   'photoBatch',
+  'assistantTurns',
   'maxFileBytes',
   'maxVideoSeconds',
   'maxOutputHeight',
@@ -258,7 +276,7 @@ const RowList: React.FC<{ rows: Row[]; column: TierDescriptor; t: T }> = ({ rows
         key={row.key}
         className="flex items-baseline justify-between gap-4 border-b border-edge pb-2 last:border-0 last:pb-0"
       >
-        <dt className="text-sm text-muted-foreground">{t(`interface:pricing.rows.${row.key}`, { values: { brand: PHOTO_BRAND } })}</dt>
+        <dt className="text-sm text-muted-foreground">{t(`interface:pricing.rows.${row.key}`, { values: { brand: PHOTO_BRAND, medi: MEDI_BRAND } })}</dt>
         <dd className="text-end">
           <ValueCell numeric={NUMERIC_ROWS.has(row.key)}>
             {row.render(column.limits, t, column.tier as TierKey)}
@@ -402,7 +420,7 @@ export const PricingView: React.FC<{ data: TiersResponse; locale?: string }> = (
                   scope="row"
                   className="py-3 pe-4 text-start text-sm font-normal text-muted-foreground"
                 >
-                  {t(`interface:pricing.rows.${row.key}`, { values: { brand: PHOTO_BRAND } })}
+                  {t(`interface:pricing.rows.${row.key}`, { values: { brand: PHOTO_BRAND, medi: MEDI_BRAND } })}
                 </th>
                 {columns.map((column) => (
                   <td key={column.tier} className="py-3 pe-4" data-tier={column.tier} data-row={row.key}>

@@ -1,0 +1,101 @@
+{
+  "pricing": {
+    "rows": {
+      "assistantGuide": "{{medi}} site guide",
+      "assistantTurns": "{{medi}} copilot edits per day"
+    },
+    "values": { "signInToUse": "Sign in to use" }
+  },
+  "mediPage": {
+    "guide": {
+      "summaryTitle": "How {{brand}} works",
+      "whatItIsTitle": "What it is",
+      "whatItIsBody": "{{brand}} is the assistant built into Media Manipulator. On every public page it is a guide that finds the right tool and its settings; inside Aperture, Darkroom and Motion it is a copilot that edits your project from a plain request. It only prepares things: nothing starts until you press a button.",
+      "stepsTitle": "Four steps",
+      "step1": "Press the {{brand}} button in the corner of the page, or Ctrl+J inside an editor, and say what you want. Add a file with the paperclip if it helps.",
+      "step2": "For a tool, {{brand}} shows a card with the settings in your language, the queue and the daily allowance the job would use.",
+      "step3": "For an edit, {{brand}} shows what it changed and a reason for every line. You can review it before it is applied, and Show me points to the control it moved.",
+      "step4": "Press Start or Open on the card, or Undo on an edit. Every edit can be taken back in one step.",
+      "editorTitle": "Where it works",
+      "editorBody": "The guide needs no account. The copilots in Aperture, Darkroom and Motion need you to be signed in, because they use a daily allowance that comes with your plan."
+    },
+    "panel": {
+      "title": "Try it now",
+      "body": "Look for the round {{brand}} button in the corner of this page and ask it which tool you need, or drop a file with the paperclip and tell it what to do. The page itself has nothing to upload: {{brand}} lives in the corner button and inside the editors.",
+      "editors": "Or open an editor and press Ctrl+J:"
+    },
+    "plans": {
+      "title": "{{brand}} by plan",
+      "intro": "The guide is open to everyone. What changes with the plan is how many copilot edits you get each day inside the editors. These numbers come straight from our servers, so they are always current.",
+      "caption": "{{brand}} allowances by plan",
+      "feature": "Feature",
+      "rows": { "guide": "Site guide", "edits": "Copilot edits per day" },
+      "values": { "included": "Included", "unlimited": "Unlimited", "signIn": "Sign in to use" },
+      "costNote": "Asking questions, undoing an edit and preparing a job cost nothing. A prepared job, once you press its button, uses the same everyday or AI allowance as running the tool yourself.",
+      "unavailable": "The plan table could not be loaded right now. The pricing page lists every plan's allowance.",
+      "seePlans": "Compare all plans"
+    }
+  },
+  "tutorialsCategory": {
+    "title": "AI assistant",
+    "description": "Ask Medi for the right tool, run a prepared job, or edit with a reason you can read."
+  },
+  "tutorial": {
+    "title": "How to use {{brand}}, the assistant",
+    "excerpt": "Three short workflows: find the right tool, let {{brand}} prepare a job you confirm, and edit a photo, video or animation by describing it.",
+    "readTime": "5 min read",
+    "page": {
+      "eyebrow": "Assistant Tutorial",
+      "title": "How to use {{brand}}",
+      "intro": "{{brand}} is the assistant inside Media Manipulator: a guide on every public page and a copilot in Aperture, Darkroom and Motion. This tutorial covers three workflows, in the order most people need them. In all of them {{brand}} only prepares or proposes; you press the button.",
+      "find": {
+        "title": "1. Find the right tool",
+        "body": "Press the {{brand}} button in the corner of any public page and describe the result you want in your own words, in any language the site supports. {{brand}} answers from the site's own help pages and names the tool, the one setting that matters, and a link.",
+        "bullets": {
+          "ask": "Say the goal, not the tool: for example, make this video small enough to email.",
+          "attach": "Use the paperclip to attach a file. {{brand}} reads its type, size, duration and codecs so the advice fits that file.",
+          "scope": "It only talks about Media Manipulator and will decline anything else.",
+          "plans": "Questions about plans are answered from the live plan table, never from memory."
+        }
+      },
+      "job": {
+        "title": "2. Let {{brand}} prepare a job",
+        "body": "Say what you want done, or drop a file and say just run it. {{brand}} shows a confirmation card: the settings in your language, how long the queue is and which daily allowance the job would use. Nothing has started.",
+        "bullets": {
+          "card": "Read the settings. They are checked against the tool's real options, so an unsupported value is refused instead of changed.",
+          "start": "Start runs in place for video compress, resize, rotate, crop and trim, audio extract and remove, and transcription; the result opens in a window.",
+          "open": "Every other tool opens on its own page with the settings filled in, and you press its button there.",
+          "click": "A click is always required. Medi never starts anything by itself."
+        }
+      },
+      "edit": {
+        "title": "3. Edit by describing the result",
+        "body": "In Aperture, Darkroom or Motion, sign in and press Ctrl+J, then describe the look or change you want. {{brand}} edits the project as a single step and gives a reason for every change.",
+        "bullets": {
+          "undo": "Undo takes the whole edit back in one step.",
+          "review": "Switch off automatic application in the information menu to review each edit as a card with Apply and Discard first.",
+          "showMe": "Show me opens the control an edit changed so you can see and learn it.",
+          "numbers": "{{brand}} can measure the preview, such as brightness, clipped shadows or loudness, and adjust up to three times, citing the figure each time."
+        }
+      },
+      "cta": {
+        "title": "Meet {{brand}}",
+        "body": "The guide is on every public page. Read what it can do, and how the daily allowance works, on its page.",
+        "button": "About {{brand}}"
+      },
+      "related": {
+        "title": "Related pages",
+        "intro": "More about the editors {{brand}} works in.",
+        "toolDesc": "What {{brand}} does, the plan table and the questions people ask.",
+        "aperture": "Aperture tutorial",
+        "apertureDesc": "Edit a photo with layers and masks.",
+        "pricing": "Pricing",
+        "pricingDesc": "Every plan's allowances, including the copilot edits per day."
+      }
+    }
+  },
+  "seo": {
+    "tool": { "title": "Medi: AI Guide and Editing Copilot | Media Manipulator", "description": "Medi finds the right tool, prepares the job for you to confirm, and edits photos, video and animation from a plain request. Every edit has a reason and can be undone." },
+    "tutorial": { "title": "How to Use Medi, the Assistant | Media Manipulator Tutorial", "description": "Three workflows with Medi: find the right tool, prepare a job you confirm, and edit photos, video or animation by describing them, with a reason for every change." }
+  }
+}
