@@ -51,7 +51,7 @@ describe('/tools catalog data (MM73, MM84)', () => {
     const tools = build(false);
     const aliases = Object.keys(TOOL_ALIAS_OF);
     expect(tools.some((t) => aliases.includes(t.slug))).toBe(false);
-    const expected = TOOL_PAGES.filter((t) => !t.aliasOf && t.category !== 'contentStudio' && t.category !== 'motion' && t.slug !== 'aperture');
+    const expected = TOOL_PAGES.filter((t) => !t.aliasOf && t.category !== 'contentStudio' && t.category !== 'motion' && t.slug !== 'aperture' && t.slug !== 'medi');
     expect(tools.map((t) => t.slug).sort()).toEqual(expected.map((t) => t.slug).sort());
   });
 
