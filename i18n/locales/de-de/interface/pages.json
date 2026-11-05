@@ -344,6 +344,10 @@
       "photo": {
         "title": "Tutorials zur Fotobearbeitung",
         "description": "Korrigieren Sie Licht und Farbe, maskieren, reparieren und exportieren Sie Fotos mit {{brand}}."
+      },
+      "medi": {
+        "title": "KI-Assistent",
+        "description": "Fragen Sie Medi nach dem passenden Tool, starten Sie einen vorbereiteten Auftrag oder bearbeiten Sie mit einer Begründung, die Sie nachlesen können."
       }
     },
     "tutorials": {
@@ -619,6 +623,60 @@
             "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4.",
             "licenses": "Open-Source-Lizenzen",
             "licensesDesc": "Die Open-Source-Bibliotheken und -Modelle hinter dem Editor und dem übrigen Media Manipulator."
+          }
+        }
+      },
+      "medi": {
+        "title": "So verwenden Sie {{brand}}, den Assistenten",
+        "excerpt": "Drei kurze Abläufe: das passende Tool finden, {{brand}} einen Auftrag vorbereiten lassen, den Sie bestätigen, und ein Foto, Video oder eine Animation bearbeiten, indem Sie das Ergebnis beschreiben.",
+        "readTime": "5 Min. Lesezeit",
+        "page": {
+          "eyebrow": "Assistenten-Tutorial",
+          "title": "So verwenden Sie {{brand}}",
+          "intro": "{{brand}} ist der Assistent in Media Manipulator: ein Guide auf jeder öffentlichen Seite und ein Copilot in Aperture, Darkroom und Motion. Dieses Tutorial behandelt drei Abläufe in der Reihenfolge, in der die meisten sie brauchen. In allen dreien bereitet {{brand}} nur vor oder schlägt vor; klicken müssen Sie selbst.",
+          "find": {
+            "title": "1. Das passende Tool finden",
+            "body": "Klicken Sie auf einer beliebigen öffentlichen Seite auf die {{brand}}-Schaltfläche in der Ecke und beschreiben Sie das gewünschte Ergebnis in eigenen Worten, in jeder Sprache, die die Website unterstützt. {{brand}} antwortet anhand der Hilfeseiten der Website und nennt das Tool, die eine Einstellung, auf die es ankommt, und einen Link.",
+            "bullets": {
+              "ask": "Nennen Sie das Ziel, nicht das Tool: zum Beispiel „Mach dieses Video klein genug für eine E-Mail“.",
+              "attach": "Hängen Sie mit der Büroklammer eine Datei an. {{brand}} liest Typ, Größe, Dauer und Codecs aus, damit der Rat zu genau dieser Datei passt.",
+              "scope": "Er spricht nur über Media Manipulator und lehnt alles andere ab.",
+              "plans": "Fragen zu Tarifen werden anhand der aktuellen Tariftabelle beantwortet, nie aus dem Gedächtnis."
+            }
+          },
+          "job": {
+            "title": "2. {{brand}} einen Auftrag vorbereiten lassen",
+            "body": "Sagen Sie, was erledigt werden soll, oder legen Sie eine Datei ab und sagen Sie einfach „Mach es“. {{brand}} zeigt eine Bestätigungskarte: die Einstellungen in Ihrer Sprache, wie lang die Warteschlange ist und welches Tageskontingent der Auftrag verbrauchen würde. Gestartet ist noch nichts.",
+            "bullets": {
+              "card": "Lesen Sie die Einstellungen. Sie werden mit den tatsächlichen Optionen des Tools abgeglichen, daher wird ein nicht unterstützter Wert abgelehnt statt verändert.",
+              "start": "„Starten“ führt den Auftrag direkt aus beim Komprimieren, Skalieren, Drehen, Zuschneiden und Kürzen von Videos, beim Extrahieren und Entfernen von Audio sowie bei der Transkription; das Ergebnis öffnet sich in einem Fenster.",
+              "open": "Jedes andere Tool öffnet sich auf seiner eigenen Seite mit ausgefüllten Einstellungen, und dort klicken Sie auf seine Schaltfläche.",
+              "click": "Ein Klick ist immer nötig. Medi startet nie etwas von selbst."
+            }
+          },
+          "edit": {
+            "title": "3. Bearbeiten durch Beschreiben des Ergebnisses",
+            "body": "Melden Sie sich in Aperture, Darkroom oder Motion an, drücken Sie Ctrl+J und beschreiben Sie den Look oder die Änderung, die Sie möchten. {{brand}} bearbeitet das Projekt in einem einzigen Schritt und begründet jede Änderung.",
+            "bullets": {
+              "undo": "„Rückgängig“ nimmt die gesamte Bearbeitung in einem Schritt zurück.",
+              "review": "Schalten Sie im Infomenü die automatische Anwendung aus, um jede Bearbeitung zuerst als Karte mit „Anwenden“ und „Verwerfen“ zu prüfen.",
+              "showMe": "„Zeig mir“ öffnet den Regler, den eine Bearbeitung verändert hat, damit Sie ihn sehen und kennenlernen.",
+              "numbers": "{{brand}} kann die Vorschau messen, etwa Helligkeit, abgeschnittene Schatten oder Lautheit, und bis zu dreimal nachjustieren, wobei jedes Mal der Messwert genannt wird."
+            }
+          },
+          "cta": {
+            "title": "Lernen Sie {{brand}} kennen",
+            "body": "Der Guide ist auf jeder öffentlichen Seite verfügbar. Was er kann und wie das Tageskontingent funktioniert, lesen Sie auf seiner Seite.",
+            "button": "Über {{brand}}"
+          },
+          "related": {
+            "title": "Verwandte Seiten",
+            "intro": "Mehr über die Editoren, in denen {{brand}} arbeitet.",
+            "toolDesc": "Was {{brand}} tut, die Tariftabelle und häufige Fragen.",
+            "aperture": "Aperture-Tutorial",
+            "apertureDesc": "Ein Foto mit Ebenen und Masken bearbeiten.",
+            "pricing": "Preise",
+            "pricingDesc": "Die Kontingente aller Tarife, einschließlich der Copilot-Bearbeitungen pro Tag."
           }
         }
       }
@@ -1813,7 +1871,9 @@
       "photoProjects": "Gespeicherte {{brand}}-Projekte",
       "photoMaxMegapixels": "Größter {{brand}}-Export",
       "photoBatch": "{{brand}}-Fotos pro Stapel",
-      "photoPresets": "Gespeicherte {{brand}}-Voreinstellungen"
+      "photoPresets": "Gespeicherte {{brand}}-Voreinstellungen",
+      "assistantGuide": "{{medi}} als Website-Guide",
+      "assistantTurns": "{{medi}}-Copilot-Bearbeitungen pro Tag"
     },
     "values": {
       "yes": "Enthalten",
@@ -1827,7 +1887,8 @@
       "heightSuffix": "{{height}}p",
       "photoLocalOnly": "1, nur in diesem Browser",
       "megapixels": "{{count}} MP",
-      "notAvailable": "Nicht verfügbar"
+      "notAvailable": "Nicht verfügbar",
+      "signInToUse": "Nach Anmeldung nutzbar"
     },
     "unavailableTitle": "Plandetails sind vorübergehend nicht verfügbar",
     "unavailableBody": "Wir konnten den Plandienst nicht erreichen. Alle Werkzeuge funktionieren weiterhin — laden Sie die Seite gleich neu, um den Vergleich zu sehen.",
@@ -2818,5 +2879,42 @@
     ],
     "timing": "Das Löschen über die App oder die Website beginnt sofort. Wenn ein Schritt nicht abgeschlossen werden kann, werden Sie informiert, und Sie können uns unter der oben genannten Adresse schreiben.",
     "moreInfo": "Alles, was wir erheben, und wie wir es verwenden, lesen Sie in der Datenschutzerklärung."
+  },
+  "mediPage": {
+    "guide": {
+      "summaryTitle": "So funktioniert {{brand}}",
+      "whatItIsTitle": "Was es ist",
+      "whatItIsBody": "{{brand}} ist der in Media Manipulator integrierte Assistent. Auf jeder öffentlichen Seite ist er ein Guide, der das passende Tool und dessen Einstellungen findet; in Aperture, Darkroom und Motion ist er ein Copilot, der Ihr Projekt nach einer einfachen Bitte bearbeitet. Er bereitet nur vor: Nichts startet, bevor Sie auf eine Schaltfläche klicken.",
+      "stepsTitle": "Vier Schritte",
+      "step1": "Klicken Sie auf die {{brand}}-Schaltfläche in der Ecke der Seite oder drücken Sie in einem Editor Ctrl+J, und sagen Sie, was Sie möchten. Hängen Sie bei Bedarf mit der Büroklammer eine Datei an.",
+      "step2": "Für ein Tool zeigt {{brand}} eine Karte mit den Einstellungen in Ihrer Sprache, der Warteschlange und dem Tageskontingent, das der Auftrag verbrauchen würde.",
+      "step3": "Bei einer Bearbeitung zeigt {{brand}}, was geändert wurde, mit einer Begründung für jede Zeile. Sie können sie prüfen, bevor sie angewendet wird, und „Zeig mir“ führt Sie zu dem Regler, der verändert wurde.",
+      "step4": "Klicken Sie auf der Karte auf „Starten“ oder „Öffnen“, bei einer Bearbeitung auf „Rückgängig“. Jede Bearbeitung lässt sich in einem Schritt zurücknehmen.",
+      "editorTitle": "Wo es funktioniert",
+      "editorBody": "Für den Guide brauchen Sie kein Konto. Die Copiloten in Aperture, Darkroom und Motion setzen eine Anmeldung voraus, weil sie ein Tageskontingent nutzen, das zu Ihrem Tarif gehört."
+    },
+    "panel": {
+      "title": "Jetzt ausprobieren",
+      "body": "Suchen Sie die runde {{brand}}-Schaltfläche in der Ecke dieser Seite und fragen Sie, welches Tool Sie brauchen, oder legen Sie mit der Büroklammer eine Datei ab und sagen Sie, was damit passieren soll. Auf der Seite selbst gibt es nichts hochzuladen: {{brand}} steckt in der Schaltfläche in der Ecke und in den Editoren.",
+      "editors": "Oder öffnen Sie einen Editor und drücken Sie Ctrl+J:"
+    },
+    "plans": {
+      "title": "{{brand}} nach Tarif",
+      "intro": "Der Guide steht allen offen. Mit dem Tarif ändert sich nur, wie viele Copilot-Bearbeitungen Sie pro Tag in den Editoren erhalten. Diese Zahlen kommen direkt von unseren Servern und sind deshalb immer aktuell.",
+      "caption": "{{brand}}-Kontingente nach Tarif",
+      "feature": "Funktion",
+      "rows": {
+        "guide": "Website-Guide",
+        "edits": "Copilot-Bearbeitungen pro Tag"
+      },
+      "values": {
+        "included": "Enthalten",
+        "unlimited": "Unbegrenzt",
+        "signIn": "Nach Anmeldung nutzbar"
+      },
+      "costNote": "Fragen stellen, eine Bearbeitung rückgängig machen und einen Auftrag vorbereiten kostet nichts. Ein vorbereiteter Auftrag verbraucht, sobald Sie auf seine Schaltfläche klicken, dasselbe Standard- oder KI-Kontingent, als würden Sie das Tool selbst ausführen.",
+      "unavailable": "Die Tariftabelle konnte gerade nicht geladen werden. Auf der Preisseite finden Sie die Kontingente aller Tarife.",
+      "seePlans": "Alle Tarife vergleichen"
+    }
   }
 }

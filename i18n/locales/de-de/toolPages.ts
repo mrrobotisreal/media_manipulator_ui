@@ -16491,6 +16491,157 @@ const deToolPages = {
         description: 'Legen Sie ein Foto ab, um das Bedienfeld „Masken“ zu öffnen; fügen Sie einen „Farbbereich“ hinzu, klicken Sie auf eine Farbe und passen Sie dann nur die Auswahl an.',
       },
     },
+    // MM111: Medi's launch page (model-written by Opus 5.5; native review pending).
+    'medi': {
+      name: "Medi",
+      h1: "Medi: Ihr Guide und Bearbeitungs-Copilot",
+      tagline: "Fragen Sie nach dem passenden Tool, übergeben Sie eine Datei und erhalten Sie den Auftrag vorbereitet, oder sagen Sie einem Editor, was Sie möchten, und sehen Sie zu, wie es sich ändert, jeweils mit einem Schritt zum Rückgängigmachen.",
+      metaTitle: "Medi: KI-Guide und Bearbeitungs-Copilot für Media Manipulator",
+      metaDescription: "Medi findet das passende Tool, bereitet den Auftrag zur Bestätigung vor und bearbeitet Fotos, Videos und Animationen nach einer Bitte in Alltagssprache. Jede Bearbeitung ist begründet und lässt sich rückgängig machen.",
+      ogTitle: "Medi: Ihr Guide und Bearbeitungs-Copilot",
+      ogDescription: "Fragen Sie Medi, welches Tool Sie nehmen sollen, legen Sie eine Datei ab, prüfen Sie den vorbereiteten Auftrag und klicken Sie selbst auf die Schaltfläche. In den Editoren nimmt Medi Bearbeitungen vor, die Sie nachlesen, in der Vorschau ansehen und rückgängig machen können.",
+      embed: {
+        defaultMediaKind: "image",
+        defaultTask: "medi_guide",
+        title: "Medi fragen",
+        description: "Öffnen Sie den Guide, beschreiben Sie, was Sie vorhaben, oder hängen Sie mit der Büroklammer eine Datei an, und Medi führt Sie zum passenden Tool mit bereits ausgefüllten Einstellungen.",
+      },
+      intro: "Medi ist der in Media Manipulator integrierte Assistent und arbeitet an zwei Stellen. Auf jeder öffentlichen Seite ist Medi ein Guide: Eine kleine Schaltfläche öffnet einen Chat, in dem Sie in eigenen Worten und in jeder Sprache der Website sagen, was Sie möchten, und die Antworten stammen aus der Dokumentation der Website selbst, also darüber, was jedes Tool tut, welche Einstellungen es gibt und was ein Tarif umfasst. In Aperture, Darkroom und Motion ist Medi ein Copilot: Sie beschreiben das gewünschte Ergebnis, und Medi ändert das Dokument für Sie in einem einzigen Schritt, den Sie zurücknehmen können. An beiden Stellen gelten zwei Regeln. Medi bereitet nur vor, es wird also nichts gestartet, exportiert oder gekauft, bevor Sie selbst auf eine Schaltfläche klicken. Und Medi erklärt sich: Eine Antwort des Guides nennt die Seite, auf die sie sich stützt, und jede Bearbeitung kommt mit einer Begründung in einem Satz.",
+      whatItDoes: [
+        "Beantwortet Fragen zur Website anhand ihrer eigenen Hilfeseiten, sodass eine Frage wie „Welches Tool verkleinert ein Video für eine E-Mail?“ ein konkretes Tool und eine Einstellung als Antwort erhält statt einer allgemeinen Floskel. Medi spricht nur über Media Manipulator und lehnt alles andere höflich ab.",
+        "Lässt Sie mit der Büroklammer eine Datei im Guide ablegen. Medi liest die technischen Angaben der Datei aus, etwa Typ, Größe, Dauer, Auflösung und Codecs, und empfiehlt darauf gestützt ein Tool und seine Einstellungen.",
+        "Bereitet Aufträge für ein einzelnes Tool vor. Sagen Sie, was Sie möchten, oder legen Sie eine Datei ab und sagen Sie einfach „Mach es“, und Medi zeigt eine Bestätigungskarte mit den Einstellungen in Ihrer Sprache, der Länge der Warteschlange und dem Tageskontingent, das der Auftrag verbrauchen würde. Medi startet nie selbst etwas; allein die Schaltfläche auf der Karte tut das.",
+        "Bearbeitet in Aperture, Darkroom und Motion nach Bitten wie „Mach es düsterer“, „Straff die Pausen“ oder „Lass den Titel von links hereingleiten“. Die Bearbeitung landet als ein einziger Rückgängig-Schritt, mit einer kurzen Begründung für jede Änderung.",
+        "Prüft die eigene Arbeit mit Zahlen. Nach einer Bearbeitung kann Medi die Vorschau messen, zum Beispiel die Helligkeit und wie viel des Bildes zu reinem Schwarz oder Weiß abgeschnitten ist, oder die Lautheit des Tons, und bis zu drei Runden nachjustieren, wobei jedes Mal der Messwert genannt wird, der sich verändert hat.",
+      ],
+      flowSteps: [
+        {
+          title: "Guide öffnen",
+          description: "Klicken Sie auf einer beliebigen öffentlichen Seite auf die Medi-Schaltfläche in der Ecke oder drücken Sie in einem Editor Ctrl+J. Für den Guide brauchen Sie kein Konto; die Copiloten setzen eine Anmeldung voraus.",
+        },
+        {
+          title: "Sagen, was Sie möchten",
+          description: "Tippen Sie eine Bitte ein oder wählen Sie einen Vorschlag. Hängen Sie bei Bedarf mit der Büroklammer eine Datei an; Medi liest ihre Angaben aus, damit der Rat zu genau dieser Datei passt.",
+        },
+        {
+          title: "Das Vorbereitete prüfen",
+          description: "Ein Auftrag erscheint als Karte mit den Einstellungen, der Warteschlange und dem Kontingent, das er verbrauchen würde. Eine Bearbeitung erscheint als Änderungskarte mit einer Begründung pro Zeile, und Sie können festlegen, dass Sie sie vor dem Anwenden prüfen.",
+        },
+        {
+          title: "Selbst auf die Schaltfläche klicken",
+          description: "„Starten“ führt einen unterstützten Auftrag direkt aus, oder „Öffnen“ bringt Sie zum Tool mit ausgefüllten Einstellungen. In einem Editor nimmt „Rückgängig“ die gesamte Bearbeitung in einem Schritt zurück.",
+        },
+      ],
+      advancedDetails: [
+        "Der Guide liest nie die Pixel oder den Ton Ihrer Datei: Er arbeitet mit Metadaten und, bei einigen Bild- und Audioprüfungen, mit Zahlen, die auf unserem Server berechnet werden (ein Luminanzhistogramm, Anteile abgeschnittener Pixel, integrierte Lautheit). Ein Modell sieht diese Werte, nicht die Medien.",
+        "Ein vorbereiteter Auftrag wird mit dem tatsächlichen Optionsschema des Tools abgeglichen, bevor die Karte erscheint. Rund neunzig Tools veröffentlichen ihre Optionen, daher wird die Bitte um eine Einstellung, die es nicht gibt, oder um einen Wert außerhalb des zulässigen Bereichs abgelehnt, statt stillschweigend geändert zu werden.",
+        "„Starten“ führt den Auftrag direkt aus beim Komprimieren, Skalieren, Drehen, Zuschneiden und Kürzen von Videos, beim Extrahieren oder Entfernen der Tonspur und bei der Transkription. Jedes andere Tool öffnet sich auf seiner eigenen Seite mit bereits ausgefüllten Einstellungen, weil diese Formulare Ihre eigene Bestätigung von Details wie einem Ausgabeformat oder einem Seitenbereich brauchen.",
+        "Copilot-Bearbeitungen sind strukturierte Operationen, die vor jeder Änderung gegen das Schema des Editors geprüft, nach dem Alles-oder-nichts-Prinzip angewendet und als ein Eintrag im Verlauf des Editors gespeichert werden. Eine Bearbeitung, die die Prüfung nicht besteht, ändert nichts, und das Modell erfährt den Grund.",
+        "Jeder Medi-Build trägt einen kurzen Versionscode, den Inhalts-Hash der Anweisungen, der Dokumentation und der Bearbeitungsschemata, auf denen er läuft. Er steht im Infomenü des Copilot-Bereichs, sodass eine Supportanfrage zu einer Antwort genau den Build benennen kann, der sie gegeben hat.",
+      ],
+      whyItMatters: [
+        "Eine Website mit über hundert Tools hat ein Auffindbarkeitsproblem: Die meisten Besucher wissen, welches Ergebnis sie wollen, aber nicht, wie das Tool heißt, das es liefert. Ein Guide, der die eigenen Seiten der Website liest, macht aus einer vagen Bitte ein Tool, eine Einstellung und einen Link.",
+        "Bearbeiten mit Worten ist nur vertrauenswürdig, wenn es umkehrbar und nachvollziehbar ist. Weil jede Bearbeitung ein Rückgängig-Schritt mit einer genannten Begründung ist, kostet ein Fehlgriff nur einen Tastendruck und zeigt Ihnen, welcher Regler was bewirkt.",
+        "Einem Assistenten einen Auftrag zu übergeben, ist nur sicher, wenn er den Auftrag nicht selbst starten kann. Weil der Klick bei Ihnen bleibt, kann ein KI-Fehler höchstens eine Minute Lesezeit kosten, aber nie ein Kontingent, einen Upload oder einen Export.",
+      ],
+      useCases: [
+        {
+          title: "Das passende Tool finden",
+          description: "Fragen Sie, wie Sie ein Video klein genug für eine E-Mail bekommen oder wie Sie ein freigestelltes Logo aus einem Foto holen, und Medi nennt das Tool, erklärt die eine Einstellung, auf die es ankommt, und verlinkt es.",
+        },
+        {
+          title: "Einen schnellen Auftrag ausführen",
+          description: "Legen Sie einen Handyclip ab, sagen Sie einfach „Mach es“ und prüfen Sie die Karte: der Kompressor auf der ausgewogenen Stufe, MP4-Ausgabe, ein Standardvorgang, keine Warteschlange. Klicken Sie auf „Starten“, und das Ergebnis erscheint im selben Fenster.",
+        },
+        {
+          title: "Ein Foto per Beschreibung korrigieren",
+          description: "Bitten Sie in Aperture um eine kühlere, hellere Version mit aufgehellten Schatten. Medi fügt die Einstellungsebenen hinzu, erklärt Ihnen den Grund, und mit „Zeig mir“ sehen Sie, wohin sich jeder Regler bewegt hat.",
+        },
+        {
+          title: "Eine Zeitleiste aufräumen",
+          description: "Bitten Sie in Darkroom oder Motion um eine hereingleitende Bauchbinde oder darum, die langen Pausen zu straffen, prüfen Sie die Änderungskarte, wenden Sie sie an und machen Sie sie rückgängig, wenn das Timing nicht stimmt.",
+        },
+      ],
+      workedExamples: [
+        {
+          title: "Ein Handyclip, vorbereitet und bestätigt",
+          body: "Sie legen einen Clip mit 1080 x 1920 von einem Handy ab und tippen „Mach es einfach, mach es klein“. Medi liest die Metadaten (59 Sekunden, H.264, 30 fps), wählt den Videokompressor auf der ausgewogenen Stufe mit MP4-Ausgabe und der Originalauflösung und zeigt eine Karte. Darauf steht, dass der Auftrag 1 Standardvorgang verbraucht, dass es keine Warteschlange gibt, und jede Einstellung ist in Ihrer Sprache aufgeführt. Noch ist nichts passiert. Wenn Sie auf „Starten“ klicken, läuft der Kompressor mit genau diesen Einstellungen, und das Ergebnis öffnet sich in einem Fenster mit einer Download-Schaltfläche.",
+        },
+        {
+          title: "Ein dunkles Foto, mit Messwerten angepasst",
+          body: "In Aperture bitten Sie Medi, ein dunkles Foto zu korrigieren. Medi misst zuerst die Vorschau: mittlere Helligkeit 0,18 auf einer Skala von 0 bis 1, wobei 9 Prozent der Pixel ins Schwarz abgesoffen sind. Medi fügt eine Belichtungsebene und eine Schattenaufhellung hinzu, misst erneut (Helligkeit 0,30, Schatten 5 Prozent), ergänzt eine kleine weitere Korrektur und hört bei 0,43 mit 0,8 Prozent abgeschnittenen Pixeln auf, also innerhalb des genannten Zielbereichs. Das sind insgesamt 3 Runden, jede Begründung nennt ihren Messwert, und ein einziges „Rückgängig“ entfernt alles.",
+        },
+      ],
+      whenNotToUse: "Medi ist eine Hilfe, kein Ersatz für die Tools selbst. Wenn Sie Tool und Einstellungen schon kennen, ist es schneller, die Tool-Seite direkt zu öffnen, als zu fragen. Medi führt keine Aufträge von selbst aus, durchsucht nicht das Web, beantwortet keine Fragen ohne Bezug zu Media Manipulator, sieht von Ihren Dateien nur die technischen Angaben und ist kein guter Geschmacksrichter: Medi folgt der Bitte um einen bestimmten Look, aber ob der Look stimmt, entscheiden Sie. Für Arbeiten, die exakte Kontrolle erfordern, etwa einen präzisen Zuschnitt oder eine bestimmte Bitrate, stellen Sie die Werte selbst ein.",
+      whyMediaManipulator: [
+        "Medi liest dieselben Seiten wie Sie. Die Antworten zu Tools, Einstellungen und Tarifen stammen aus der Dokumentation der Website und der aktuellen Tariftabelle, ändern sich also mit der Website, statt zu veralten.",
+        "Die Copiloten bearbeiten echte Projektdateien über dieselben Operationen, die auch die Editoren verwenden, sodass alles, was Medi tut, im Verlauf des Editors erscheint und dessen Rückgängig-Funktion gehorcht.",
+        "Die Tageskontingente der Copiloten stammen aus derselben Tariftabelle wie jedes andere Limit der Website, und der Guide ist in jedem Tarif verfügbar.",
+      ],
+      privacyNote: "Medi ist die einzige Funktion der Website, die einen externen KI-Dienst nutzt: Ihre Nachricht, die Seite, auf der Sie sich befinden, und in einem Editor eine kurze Textzusammenfassung Ihres Projekts (und ein kleines Vorschaubild, wenn Sie es erlauben) werden über OpenRouter an die Claude-Modelle von Anthropic gesendet, die Original-Mediendateien nicht. Eine Datei, die Sie im Guide ablegen, wird wie jeder andere Upload gespeichert und nach der Aufbewahrungsregel Ihres Kontos behalten. Chats von angemeldeten Nutzern werden für Sie gespeichert und nach der von Ihnen gewählten Aufbewahrungsfrist oder mit Ihrem Konto gelöscht; Abschnitt 1.13 der Datenschutzerklärung enthält alle Einzelheiten.",
+      faq: [
+        {
+          question: "Brauche ich ein Konto, um Medi zu nutzen?",
+          answer: "Für den Guide nicht: Jeder kann ihn zu Tools, Einstellungen und Tarifen befragen. Die Copiloten in Aperture, Darkroom und Motion setzen eine Anmeldung voraus, weil sie ein Tageskontingent verbrauchen, das zu Ihrem Konto gehört.",
+        },
+        {
+          question: "Kann Medi einen Auftrag ausführen, ohne dass ich etwas anklicke?",
+          answer: "Nein. Medi kann einen Auftrag nur vorbereiten und die Karte anzeigen. Allein ein Klick auf die Karte startet einen Auftrag oder öffnet ein Tool, daher kann ein Fehler des Assistenten nie von sich aus ein Kontingent aufbrauchen.",
+        },
+        {
+          question: "Was kostet mich eine Copilot-Bearbeitung?",
+          answer: "Jede Nachricht, die eine Bearbeitung vornimmt, verbraucht eine Ihrer täglichen Copilot-Bearbeitungen; eine ganze Bearbeitung Schritt für Schritt zu planen, verbraucht ein paar. Der Guide, Fragen und Rückgängigmachen sind kostenlos. Die Tageszahl für jeden Tarif steht in der Tabelle auf dieser Seite und auf der Preisseite.",
+        },
+        {
+          question: "Welche Tools kann Medi für mich einrichten?",
+          answer: "Rund neunzig, jeweils mit ihrer echten Optionsliste, von Video- und Audiokonvertern über Bildfilter und PDF-Tools bis zu den KI-Tools. Für den Rest, etwa die Editoren selbst, erklärt Medi und verlinkt. Wenn Sie nach einer Einstellung fragen, die ein Tool nicht hat, sagt Medi Ihnen das.",
+        },
+        {
+          question: "Wie mache ich eine Medi-Bearbeitung rückgängig, und kann ich sie vorher prüfen?",
+          answer: "Klicken Sie auf der Änderungskarte auf „Rückgängig“ oder nutzen Sie die Rückgängig-Funktion des Editors, um die gesamte Bearbeitung in einem Schritt zurückzunehmen. Wenn Sie lieber nachsehen möchten, bevor sich etwas ändert, schalten Sie im Infomenü die automatische Anwendung aus, und jede Bearbeitung wartet als Karte mit Vorher- und Nachher-Werten sowie den Schaltflächen „Anwenden“ und „Verwerfen“.",
+        },
+        {
+          question: "Kann ich den Zahlen trauen, die Medi nach einer Bearbeitung nennt?",
+          answer: "Sie sind gemessen, nicht geschätzt: Helligkeit, abgeschnittene Anteile und Farbstich bei Bildern, Lautheit und True Peak bei Audio, berechnet aus der Vorschau oder der Datei. Das Modell liest diese Werte, darf bis zu dreimal nachjustieren, um sein Ziel zu erreichen, und ist angewiesen aufzuhören, sobald das Ziel erreicht ist.",
+        },
+        {
+          question: "Welche Sprachen versteht Medi?",
+          answer: "Jede Sprache, in der die Website verfügbar ist, und Medi antwortet in der Sprache, in der Sie schreiben. Die Bestätigungskarte und die Namen ihrer Einstellungen folgen Ihrer Website-Sprache, sodass sich ein vorbereiteter Auftrag natürlich liest, bevor Sie etwas anklicken.",
+        },
+      ],
+      related: [
+        {
+          label: "Video komprimieren",
+          to: "/tools/compress-video",
+          description: "Der Kompressor, den Medi vorbereitet und direkt aus dem Guide starten kann.",
+        },
+        {
+          label: "Video-Trimmer",
+          to: "/tools/video-trimmer",
+          description: "Einen Clip auf eine Start- und Endzeit kürzen, ein weiterer Auftrag, den Medi von einer bestätigten Karte aus ausführen kann.",
+        },
+        {
+          label: "Audio aus Video extrahieren",
+          to: "/tools/extract-audio-from-video",
+          description: "Die Tonspur aus einem Video lösen, ebenfalls als vorbereiteter Direktauftrag verfügbar.",
+        },
+        {
+          label: "Aperture",
+          to: "/tools/aperture",
+          description: "Der Fotoeditor, dessen Copilot Ebenen und Masken nach einer Bitte bearbeitet.",
+        },
+        {
+          label: "Motion",
+          to: "/tools/motion",
+          description: "Der SVG-Animationseditor, dessen Copilot Keyframes schreibt, die Sie prüfen können.",
+        },
+        {
+          label: "Medi-Tutorial",
+          to: "/tutorials/medi",
+          description: "Drei kurze Abläufe: ein Tool finden, einen Auftrag ausführen und mit einer Begründung bearbeiten, die Sie nachlesen können.",
+        },
+      ],
+    },
   },
 } as const;
 
