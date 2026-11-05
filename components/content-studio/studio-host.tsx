@@ -66,13 +66,28 @@ const ContentStudioPage: React.FC<ContentStudioPageProps> = ({ embedded = false 
   // decision (relocating the editor to a full-viewport overlay) while keeping
   // the Editor instance mounted, so editing state survives the toggle.
   const focusMode = useFocusMode();
+  const { enterFocus, exitFocus } = focusMode;
+
+  // Creating or opening a project goes straight to the full-page editor, like
+  // Aperture and Motion (Mitch, 2026-11-05). The CreaTV embed stays inline.
+  const openProject = React.useCallback(
+    (id: string) => {
+      setOpenProjectId(id);
+      if (!embedded) enterFocus();
+    },
+    [embedded, enterFocus],
+  );
+  const closeProject = React.useCallback(() => {
+    exitFocus();
+    setOpenProjectId(null);
+  }, [exitFocus]);
 
   const body = openProjectId ? (
     <FocusableEditorShell focused={focusMode.focused} containerRef={focusMode.containerRef}>
-      <Editor projectId={openProjectId} onClose={() => setOpenProjectId(null)} focusMode={focusMode} />
+      <Editor projectId={openProjectId} onClose={closeProject} focusMode={focusMode} />
     </FocusableEditorShell>
   ) : (
-    <EntryScreen onOpen={setOpenProjectId} />
+    <EntryScreen onOpen={openProject} />
   );
 
   if (embedded) return body;

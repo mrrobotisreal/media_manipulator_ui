@@ -744,8 +744,18 @@ const Editor: React.FC<{
       <p className="lg:hidden text-xs text-premium/90 -mt-1">{t('contentStudio.editor.mobileHint')}</p>
 
       {/* MM109: with Medi's panel open on desktop, the editor and the panel sit side by side. */}
-      <div className={cn(copilot.open && isDesktop && 'flex items-start gap-4')}>
-        <div className={cn(copilot.open && isDesktop && 'min-w-0 flex-1')}>
+      {/* Both wrappers must pass focus mode's flex-fill through: plain blocks here
+          squashed the full-page editor into the top of the screen (2026-11-05). */}
+      <div
+        className={cn(
+          copilot.open && isDesktop && 'flex gap-4',
+          copilot.open && isDesktop && !focused && 'items-start',
+          focused && 'flex flex-1 min-h-0',
+          // Medi's panel has a fixed height outside focus mode; in focus mode it runs full height.
+          focused && '[&>aside]:h-auto',
+        )}
+      >
+        <div className={cn((copilot.open && isDesktop) || focused ? 'flex min-w-0 flex-1 flex-col' : undefined, focused && 'min-h-0')}>
           {/* Media bin + timeline share one DndContext so assets can be dragged from
               the bin onto a track and clips can be moved between tracks. */}
           <DndContext
