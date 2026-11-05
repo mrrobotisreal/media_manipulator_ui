@@ -98,6 +98,12 @@
           "moody": "營造憂鬱氛圍",
           "keepRed": "只保留紅色",
           "vintage": "復古底片風格"
+        },
+        "vector": {
+          "lowerThird": "滑入的下方字幕條",
+          "logoReveal": "讓我的標誌登場",
+          "titlePop": "為這段文字加入進場動畫",
+          "forSocial": "要怎麼匯出到社群平台？"
         }
       },
       "actions": {
@@ -131,6 +137,20 @@
         "purple": "紫色",
         "magenta": "洋紅色",
         "custom": "所選的顏色"
+      },
+      "vectorChange": {
+        "addLayer": "已新增{{layer}}",
+        "addText": "已新增一行文字",
+        "importSvg": "已匯入 SVG",
+        "updateLayer": "已修改{{layer}}",
+        "deleteLayer": "已刪除{{layer}}",
+        "animate": "已為{{layer}}的{{property}}加入動畫",
+        "animator_other": "已對 {{count}} 個圖層套用{{animator}}",
+        "template": "已新增範本「{{template}}」",
+        "duration": "長度已設為 {{seconds}} 秒",
+        "canvas": "已修改畫布",
+        "loopOn": "已開啟循環播放",
+        "loopOff": "已關閉循環播放"
       }
     }
   }
