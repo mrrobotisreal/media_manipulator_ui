@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Aperture, Music, Image as ImageIcon, Spline, Video as VideoIcon } from 'lucide-react';
+import { Aperture, Bot, Music, Image as ImageIcon, Spline, Video as VideoIcon } from 'lucide-react';
 import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { getServerT } from '@/lib/i18n/server';
 import { localizeHref } from '@/i18n/locales';
@@ -14,7 +14,7 @@ interface TutorialDef {
 }
 
 interface CategoryDef {
-  id: 'audio' | 'video' | 'image' | 'motion' | 'photo';
+  id: 'audio' | 'video' | 'image' | 'motion' | 'photo' | 'medi';
   titleKey: string;
   descriptionKey: string;
   icon: React.ReactNode;
@@ -103,6 +103,21 @@ const CATEGORIES: CategoryDef[] = [
         excerptKey: 'tutorials.tutorials.aperture.excerpt',
         readTimeKey: 'tutorials.tutorials.aperture.readTime',
         slug: 'aperture',
+      },
+    ],
+  },
+  {
+    // MM111
+    id: 'medi',
+    titleKey: 'tutorials.categories.medi.title',
+    descriptionKey: 'tutorials.categories.medi.description',
+    icon: <Bot className="w-7 h-7 text-data" />,
+    tutorials: [
+      {
+        titleKey: 'tutorials.tutorials.medi.title',
+        excerptKey: 'tutorials.tutorials.medi.excerpt',
+        readTimeKey: 'tutorials.tutorials.medi.readTime',
+        slug: 'medi',
       },
     ],
   },

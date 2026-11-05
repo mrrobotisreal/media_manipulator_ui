@@ -29,6 +29,8 @@ const CORE_ROUTES = [
   '/tools/motion',
   // MM100: Aperture's landing page (also in the review allowlist).
   '/tools/aperture',
+  // MM111: Medi's launch page (also in the review allowlist).
+  '/tools/medi',
   '/about',
   '/how-it-works',
   '/tutorials',
@@ -50,7 +52,7 @@ const CORE_ROUTES = [
 ] as const;
 
 /** Tool pages already emitted as core routes, so the tool lists skip them. */
-const CORE_TOOL_SLUGS = new Set(['content-studio', 'motion', 'aperture']);
+const CORE_TOOL_SLUGS = new Set(['content-studio', 'motion', 'aperture', 'medi']);
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // MM52: a translator deployment lists nothing.

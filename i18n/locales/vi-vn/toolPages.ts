@@ -16508,6 +16508,157 @@ const viToolPages = {
         description: 'Thả ảnh vào để mở bảng Mặt nạ; thêm một Dải màu, nhấp vào một màu, rồi chỉ chỉnh vùng chọn.',
       },
     },
+    // MM111: Medi's launch page (model-written by Opus 5.5; native review pending).
+    'medi': {
+      name: "Medi",
+      h1: "Medi: Trợ lý hướng dẫn và copilot chỉnh sửa của bạn",
+      tagline: "Hỏi để tìm đúng công cụ, giao một tệp và nhận tác vụ đã chuẩn bị sẵn, hoặc nói với trình chỉnh sửa điều bạn muốn và xem nó thay đổi, mỗi lần một bước hoàn tác.",
+      metaTitle: "Medi: Trợ lý hướng dẫn AI và copilot chỉnh sửa cho Media Manipulator",
+      metaDescription: "Medi tìm đúng công cụ, chuẩn bị tác vụ để bạn xác nhận, và chỉnh sửa ảnh, video, hoạt ảnh theo một yêu cầu bằng ngôn ngữ thường ngày. Mọi chỉnh sửa đều có lý do và có thể hoàn tác.",
+      ogTitle: "Medi: Trợ lý hướng dẫn và copilot chỉnh sửa của bạn",
+      ogDescription: "Hỏi Medi nên dùng công cụ nào, thả một tệp vào, xem lại tác vụ đã chuẩn bị rồi tự mình nhấn nút. Bên trong các trình chỉnh sửa, nó thực hiện những chỉnh sửa bạn có thể đọc, xem trước và hoàn tác.",
+      embed: {
+        defaultMediaKind: "image",
+        defaultTask: "medi_guide",
+        title: "Hỏi Medi",
+        description: "Mở trợ lý hướng dẫn, mô tả điều bạn muốn làm hoặc đính kèm một tệp bằng biểu tượng kẹp giấy, và Medi sẽ chỉ bạn tới đúng công cụ với các thiết lập đã được điền sẵn.",
+      },
+      intro: "Medi là trợ lý được tích hợp sẵn trong Media Manipulator, và nó hoạt động ở hai nơi. Trên mọi trang công khai, nó là người hướng dẫn: một nút nhỏ mở ra khung trò chuyện, nơi bạn có thể nói điều mình muốn bằng lời của chính mình, bằng bất kỳ ngôn ngữ nào của trang, và nó trả lời dựa trên tài liệu của chính trang web về công dụng của từng công cụ, những thiết lập hiện có và nội dung của mỗi gói. Bên trong Aperture, Darkroom và Motion, nó là copilot: bạn mô tả kết quả mình hướng tới, và nó thay đổi tài liệu giúp bạn thành một bước duy nhất có thể hoàn tác. Có hai nguyên tắc áp dụng ở cả hai nơi. Medi chỉ chuẩn bị, nên không có gì bắt đầu, được xuất ra hay được mua cho đến khi chính bạn nhấn nút. Và nó luôn giải thích: một câu trả lời của trợ lý hướng dẫn nêu rõ trang mà nó dựa vào, còn mỗi chỉnh sửa đều kèm một lý do dài một câu.",
+      whatItDoes: [
+        "Trả lời câu hỏi về trang web dựa trên các trang trợ giúp của chính trang, nên một câu hỏi như công cụ nào thu nhỏ video để gửi email sẽ nhận được tên một công cụ cụ thể và một thiết lập, chứ không phải câu trả lời chung chung. Nó chỉ nói về Media Manipulator và lịch sự từ chối mọi chủ đề khác.",
+        "Cho phép bạn thả một tệp vào trợ lý hướng dẫn bằng biểu tượng kẹp giấy. Medi đọc các thông số kỹ thuật của tệp, chẳng hạn loại, kích thước, thời lượng, độ phân giải và codec, rồi dùng chúng để đề xuất công cụ và thiết lập.",
+        "Chuẩn bị các tác vụ dùng một công cụ. Hãy nói điều bạn muốn, hoặc thả một tệp và nói cứ chạy đi, rồi Medi hiển thị một thẻ xác nhận với các thiết lập bằng ngôn ngữ của bạn, hàng đợi dài bao lâu và tác vụ sẽ dùng hạn mức hằng ngày nào. Nó không bao giờ tự bắt đầu việc gì; chỉ có nút trên thẻ mới làm được điều đó.",
+        "Chỉnh sửa bên trong Aperture, Darkroom và Motion theo những yêu cầu như làm cho ảnh u buồn hơn, rút ngắn các khoảng lặng hoặc cho tiêu đề trượt vào từ bên trái. Chỉnh sửa được ghi thành một bước hoàn tác, kèm một lý do ngắn cho từng thay đổi.",
+        "Tự kiểm tra kết quả bằng số liệu. Sau một chỉnh sửa, nó có thể đo bản xem trước, ví dụ độ sáng và tỷ lệ phần ảnh bị cắt về đen hoặc trắng, hoặc độ to của âm thanh, rồi điều chỉnh tối đa ba vòng, mỗi lần đều dẫn ra con số đã thay đổi.",
+      ],
+      flowSteps: [
+        {
+          title: "Mở trợ lý hướng dẫn",
+          description: "Nhấn nút Medi ở góc của bất kỳ trang công khai nào, hoặc nhấn Ctrl+J trong trình chỉnh sửa. Trợ lý hướng dẫn không cần tài khoản; copilot yêu cầu bạn đăng nhập.",
+        },
+        {
+          title: "Nói điều bạn muốn",
+          description: "Gõ một yêu cầu hoặc chọn một gợi ý có sẵn. Đính kèm tệp bằng biểu tượng kẹp giấy nếu cần, Medi sẽ đọc thông tin của tệp để lời khuyên phù hợp với chính tệp đó.",
+        },
+        {
+          title: "Xem lại những gì nó đã chuẩn bị",
+          description: "Một tác vụ hiện ra dưới dạng thẻ với các thiết lập, hàng đợi và hạn mức nó sẽ dùng. Một chỉnh sửa hiện ra dưới dạng thẻ thay đổi kèm lý do cho từng dòng, và bạn có thể chọn xem lại trước khi áp dụng.",
+        },
+        {
+          title: "Tự mình nhấn nút",
+          description: "Bắt đầu chạy một tác vụ được hỗ trợ ngay tại chỗ, hoặc Mở đưa bạn tới công cụ với các thiết lập đã điền sẵn. Trong trình chỉnh sửa, Hoàn tác gỡ toàn bộ chỉnh sửa chỉ trong một bước.",
+        },
+      ],
+      advancedDetails: [
+        "Trợ lý hướng dẫn không bao giờ đọc điểm ảnh hay âm thanh trong tệp của bạn: nó làm việc dựa trên siêu dữ liệu và, với một số kiểm tra ảnh và âm thanh, dựa trên các con số được tính trên máy chủ của chúng tôi (biểu đồ tần suất độ sáng, tỷ lệ điểm ảnh bị cắt, độ to tích hợp). Mô hình chỉ thấy những con số đó, không thấy nội dung đa phương tiện.",
+        "Một tác vụ đã chuẩn bị được kiểm tra với lược đồ tùy chọn thật của công cụ trước khi thẻ hiện ra. Khoảng chín mươi công cụ công bố các tùy chọn của mình, nên yêu cầu một thiết lập không tồn tại, hoặc một giá trị nằm ngoài phạm vi, sẽ bị từ chối chứ không bị âm thầm thay đổi.",
+        "Bắt đầu chạy ngay tại chỗ với nén, đổi kích thước, xoay, cắt khung và cắt đoạn video, với việc tách hoặc loại bỏ rãnh âm thanh, và với chép lời. Mọi công cụ khác mở trên trang riêng của nó với các thiết lập đã điền sẵn, vì những biểu mẫu đó cần chính bạn xác nhận các chi tiết như định dạng đầu ra hoặc phạm vi trang.",
+        "Chỉnh sửa của copilot là các thao tác có cấu trúc, được kiểm tra với lược đồ riêng của trình chỉnh sửa trước khi bất cứ thứ gì thay đổi, được áp dụng theo kiểu tất cả hoặc không gì cả, và được ghi thành một mục trong lịch sử của trình chỉnh sửa. Một chỉnh sửa không vượt qua kiểm tra sẽ không thay đổi gì và mô hình được cho biết lý do.",
+        "Mỗi bản dựng của Medi được nhận diện bằng một mã phiên bản ngắn, là giá trị băm nội dung của các chỉ dẫn, tài liệu và lược đồ chỉnh sửa mà nó dựa vào. Mã này hiển thị trong menu thông tin của bảng copilot, nên một tin nhắn hỗ trợ về một câu trả lời có thể nêu chính xác bản dựng đã đưa ra câu trả lời đó.",
+      ],
+      whyItMatters: [
+        "Một trang web có hơn một trăm công cụ sẽ gặp vấn đề về khám phá: phần lớn khách truy cập biết kết quả họ muốn, chứ không biết tên công cụ tạo ra kết quả đó. Một trợ lý hướng dẫn đọc các trang của chính trang web sẽ biến một yêu cầu mơ hồ thành một công cụ, một thiết lập và một đường dẫn.",
+        "Chỉnh sửa bằng lời nói chỉ đáng tin khi có thể đảo ngược và giải thích được. Vì mỗi chỉnh sửa là một bước hoàn tác kèm lý do rõ ràng, một lần đoán sai chỉ tốn một lần nhấn phím và giúp bạn biết điều khiển nào làm gì.",
+        "Giao một tác vụ cho trợ lý chỉ an toàn khi nó không thể tự bắt đầu tác vụ đó. Giữ cú nhấp trong tay bạn nghĩa là một sai sót của AI có thể làm bạn mất một phút đọc, nhưng không bao giờ làm mất hạn mức, một lượt tải lên hay một lượt xuất.",
+      ],
+      useCases: [
+        {
+          title: "Tìm đúng công cụ",
+          description: "Hỏi cách làm video đủ nhỏ để gửi email hoặc cách lấy logo nền trong suốt ra khỏi một bức ảnh, và Medi sẽ nêu tên công cụ, giải thích thiết lập quan trọng nhất và đưa đường dẫn tới đó.",
+        },
+        {
+          title: "Chạy nhanh một tác vụ",
+          description: "Thả một clip quay bằng điện thoại, nói cứ chạy đi, rồi kiểm tra thẻ: trình nén ở mức cân bằng, đầu ra mp4, một tác vụ thường, không phải xếp hàng. Nhấn Bắt đầu và kết quả hiện ra ngay trong cùng cửa sổ.",
+        },
+        {
+          title: "Sửa ảnh bằng cách mô tả",
+          description: "Trong Aperture, hãy yêu cầu một phiên bản mát hơn, sáng hơn và nâng vùng tối. Medi thêm các lớp điều chỉnh, cho bạn biết lý do, và bạn có thể nhấn Chỉ cho tôi để xem từng thanh trượt đã dịch chuyển ở đâu.",
+        },
+        {
+          title: "Sắp xếp gọn dòng thời gian",
+          description: "Trong Darkroom hoặc Motion, hãy yêu cầu một dòng chú thích phía dưới trượt vào hoặc rút ngắn các khoảng lặng dài, xem lại thẻ thay đổi, áp dụng nó, rồi hoàn tác nếu nhịp chưa đúng.",
+        },
+      ],
+      workedExamples: [
+        {
+          title: "Một clip điện thoại, được chuẩn bị và xác nhận",
+          body: "Bạn thả một clip 1080 x 1920 từ điện thoại và gõ cứ chạy đi, làm nó nhỏ lại. Medi đọc siêu dữ liệu (59 giây, H.264, 30 fps), chọn trình nén video ở mức cân bằng với đầu ra mp4 và giữ độ phân giải gốc, rồi hiển thị một thẻ. Thẻ cho biết tác vụ dùng 1 tác vụ thường, không có hàng đợi, và liệt kê từng thiết lập bằng ngôn ngữ của bạn. Chưa có gì xảy ra cả. Khi bạn nhấn Bắt đầu, trình nén chạy với đúng những thiết lập đó và kết quả mở ra trong một cửa sổ có nút tải xuống.",
+        },
+        {
+          title: "Một bức ảnh tối, được điều chỉnh theo số đo",
+          body: "Trong Aperture, bạn nhờ Medi sửa một bức ảnh tối. Trước tiên nó đo bản xem trước: độ sáng trung bình 0,18 trên thang từ 0 đến 1, với 9 phần trăm điểm ảnh bị dìm hẳn về đen. Nó thêm một lớp phơi sáng và một lớp nâng vùng tối, đo lại (độ sáng 0,30, vùng tối 5 phần trăm), thêm một chỉnh sửa nhỏ nữa và dừng ở 0,43 với 0,8 phần trăm bị cắt, nằm trong mục tiêu nó đã nêu. Tổng cộng là 3 vòng, mỗi lý do đều dẫn ra con số tương ứng, và một lần Hoàn tác gỡ bỏ tất cả.",
+        },
+      ],
+      whenNotToUse: "Medi là trợ thủ, không thay thế cho chính các công cụ. Nếu bạn đã biết công cụ và thiết lập cần dùng, mở thẳng trang công cụ sẽ nhanh hơn là hỏi. Nó không tự chạy tác vụ, không duyệt web hay trả lời những câu hỏi không liên quan đến Media Manipulator, không thể thấy tệp của bạn ngoài các thông số kỹ thuật, và cũng không phải người đánh giá thẩm mỹ giỏi: nó sẽ làm theo yêu cầu về một phong cách, nhưng bạn mới là người quyết định phong cách đó có đúng hay không. Với công việc cần kiểm soát chính xác, như cắt khung thật chuẩn hoặc một bitrate cụ thể, hãy tự đặt các giá trị.",
+      whyMediaManipulator: [
+        "Medi đọc chính những trang mà bạn đọc. Câu trả lời của nó về công cụ, thiết lập và các gói đến từ tài liệu của chính trang web và bảng gói trực tiếp, nên chúng thay đổi khi trang web thay đổi thay vì trở nên lỗi thời.",
+        "Copilot chỉnh sửa các tệp dự án thật thông qua đúng những thao tác mà trình chỉnh sửa sử dụng, nên mọi việc Medi làm đều xuất hiện trong lịch sử của trình chỉnh sửa và tuân theo cơ chế hoàn tác của nó.",
+        "Hạn mức hằng ngày của copilot lấy từ cùng bảng gói với mọi giới hạn khác trên trang, và trợ lý hướng dẫn có sẵn trong mọi gói.",
+      ],
+      privacyNote: "Medi là tính năng duy nhất của trang dùng dịch vụ AI bên ngoài: tin nhắn của bạn, trang bạn đang xem và, trong trình chỉnh sửa, một bản tóm tắt ngắn bằng văn bản về dự án của bạn (cùng một ảnh xem trước nhỏ nếu bạn cho phép) được gửi qua OpenRouter tới các mô hình Claude của Anthropic, còn các tệp đa phương tiện gốc thì không. Một tệp bạn thả vào trợ lý hướng dẫn được lưu như mọi lượt tải lên khác và được giữ theo quy tắc lưu trữ của tài khoản bạn. Các cuộc trò chuyện khi đã đăng nhập được lưu lại cho bạn và bị xóa theo thời gian lưu trữ bạn chọn hoặc cùng với tài khoản của bạn; Chính sách quyền riêng tư, mục 1.13, trình bày đầy đủ chi tiết.",
+      faq: [
+        {
+          question: "Tôi có cần tài khoản để dùng Medi không?",
+          answer: "Với trợ lý hướng dẫn thì không: bất kỳ ai cũng có thể hỏi nó về công cụ, thiết lập và các gói. Copilot bên trong Aperture, Darkroom và Motion yêu cầu bạn đăng nhập, vì chúng dùng hạn mức hằng ngày thuộc về tài khoản của bạn.",
+        },
+        {
+          question: "Medi có thể chạy một tác vụ mà tôi không cần nhấn gì không?",
+          answer: "Không. Nó chỉ có thể chuẩn bị tác vụ và hiển thị thẻ. Một cú nhấp trên thẻ là thứ duy nhất bắt đầu tác vụ hoặc mở công cụ, nên một sai sót của trợ lý không bao giờ có thể tự tiêu hết hạn mức.",
+        },
+        {
+          question: "Một chỉnh sửa bằng copilot tốn của tôi bao nhiêu?",
+          answer: "Mỗi tin nhắn tạo ra một chỉnh sửa dùng một lượt chỉnh sửa bằng copilot hằng ngày của bạn; lập kế hoạch cho cả một chỉnh sửa theo từng bước sẽ dùng vài lượt. Trợ lý hướng dẫn, việc đặt câu hỏi và hoàn tác đều miễn phí. Số lượt hằng ngày của từng gói có trong bảng trên trang này và trên trang bảng giá.",
+        },
+        {
+          question: "Medi có thể thiết lập sẵn những công cụ nào cho tôi?",
+          answer: "Khoảng chín mươi công cụ, mỗi công cụ với danh sách tùy chọn thật của nó, từ bộ chuyển đổi video và âm thanh đến bộ lọc ảnh, công cụ PDF và các công cụ AI. Với phần còn lại, chẳng hạn chính các trình chỉnh sửa, nó giải thích và đưa đường dẫn. Nếu bạn yêu cầu một thiết lập mà công cụ không có, nó sẽ nói cho bạn biết.",
+        },
+        {
+          question: "Làm sao để hoàn tác một chỉnh sửa của Medi, và tôi có thể kiểm tra trước không?",
+          answer: "Nhấn Hoàn tác trên thẻ thay đổi, hoặc dùng chức năng hoàn tác của chính trình chỉnh sửa, để gỡ toàn bộ chỉnh sửa trong một bước. Nếu bạn muốn xem trước khi có gì thay đổi, hãy tắt tự động áp dụng trong menu thông tin, khi đó mỗi chỉnh sửa sẽ chờ dưới dạng thẻ với giá trị trước và sau cùng các nút Áp dụng và Bỏ.",
+        },
+        {
+          question: "Tôi có thể tin những con số Medi đưa ra sau một chỉnh sửa không?",
+          answer: "Chúng được đo, không phải đoán: độ sáng, tỷ lệ bị cắt và ám màu đối với ảnh, độ to và đỉnh thực đối với âm thanh, được tính từ bản xem trước hoặc từ tệp. Mô hình đọc những con số đó, có thể điều chỉnh tối đa ba lần để đạt mục tiêu, và được yêu cầu dừng lại khi đã đạt mục tiêu.",
+        },
+        {
+          question: "Medi hiểu những ngôn ngữ nào?",
+          answer: "Mọi ngôn ngữ mà trang web hỗ trợ, và nó trả lời bằng chính ngôn ngữ bạn viết. Thẻ xác nhận và tên các thiết lập trên thẻ theo ngôn ngữ của trang, nên một tác vụ đã chuẩn bị đọc lên tự nhiên trước khi bạn nhấn bất cứ nút nào.",
+        },
+      ],
+      related: [
+        {
+          label: "Nén video",
+          to: "/tools/compress-video",
+          description: "Trình nén mà Medi chuẩn bị và có thể khởi chạy ngay tại chỗ từ trợ lý hướng dẫn.",
+        },
+        {
+          label: "Cắt video",
+          to: "/tools/video-trimmer",
+          description: "Cắt một clip theo thời điểm bắt đầu và kết thúc, một tác vụ khác mà Medi có thể chạy từ thẻ đã xác nhận.",
+        },
+        {
+          label: "Tách âm thanh khỏi video",
+          to: "/tools/extract-audio-from-video",
+          description: "Lấy phần âm thanh ra khỏi video, cũng có sẵn dưới dạng tác vụ đã chuẩn bị chạy ngay tại chỗ.",
+        },
+        {
+          label: "Aperture",
+          to: "/tools/aperture",
+          description: "Trình chỉnh sửa ảnh có copilot chỉnh sửa lớp và mặt nạ theo yêu cầu.",
+        },
+        {
+          label: "Motion",
+          to: "/tools/motion",
+          description: "Trình chỉnh sửa hoạt ảnh SVG có copilot viết các khung hình chính mà bạn có thể kiểm tra.",
+        },
+        {
+          label: "Hướng dẫn Medi",
+          to: "/tutorials/medi",
+          description: "Ba quy trình ngắn: tìm công cụ, chạy tác vụ, và chỉnh sửa kèm lý do bạn có thể đọc được.",
+        },
+      ],
+    },
   },
 } as const;
 

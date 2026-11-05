@@ -344,6 +344,10 @@
       "photo": {
         "title": "Tutoriels de retouche photo",
         "description": "Corrigez la lumière et les couleurs, masquez, corrigez et exportez vos photos avec {{brand}}."
+      },
+      "medi": {
+        "title": "Assistant IA",
+        "description": "Demandez à Medi le bon outil, lancez une tâche préparée ou modifiez avec une raison que vous pouvez lire."
       }
     },
     "tutorials": {
@@ -619,6 +623,60 @@
             "darkroomDesc": "Montez des vidéos sur une timeline multipiste et exportez en MP4.",
             "licenses": "Licences open source",
             "licensesDesc": "Les bibliothèques et modèles open source qui font fonctionner l'éditeur et le reste de Media Manipulator."
+          }
+        }
+      },
+      "medi": {
+        "title": "Comment utiliser {{brand}}, l'assistant",
+        "excerpt": "Trois courts scénarios : trouver le bon outil, laisser {{brand}} préparer une tâche que vous confirmez, et retoucher une photo, une vidéo ou une animation en la décrivant.",
+        "readTime": "5 min de lecture",
+        "page": {
+          "eyebrow": "Tutoriel de l'assistant",
+          "title": "Comment utiliser {{brand}}",
+          "intro": "{{brand}} est l'assistant de Media Manipulator : un guide sur chaque page publique et un copilote dans Aperture, Darkroom et Motion. Ce tutoriel présente trois scénarios, dans l'ordre où la plupart des gens en ont besoin. Dans tous les cas, {{brand}} ne fait que préparer ou proposer ; c'est vous qui appuyez sur le bouton.",
+          "find": {
+            "title": "1. Trouver le bon outil",
+            "body": "Appuyez sur le bouton {{brand}} dans le coin de n'importe quelle page publique et décrivez avec vos propres mots le résultat voulu, dans l'une des langues du site. {{brand}} répond à partir des pages d'aide du site et vous indique l'outil, le réglage qui compte et un lien.",
+            "bullets": {
+              "ask": "Décrivez le but, pas l'outil : par exemple, « rends cette vidéo assez légère pour l'envoyer par e-mail ».",
+              "attach": "Utilisez le trombone pour joindre un fichier. {{brand}} lit son type, sa taille, sa durée et ses codecs pour que le conseil corresponde à ce fichier.",
+              "scope": "Il ne parle que de Media Manipulator et refuse tout autre sujet.",
+              "plans": "Les questions sur les offres reçoivent une réponse tirée du tableau des offres en direct, jamais de mémoire."
+            }
+          },
+          "job": {
+            "title": "2. Laisser {{brand}} préparer une tâche",
+            "body": "Dites ce que vous voulez faire, ou déposez un fichier et dites simplement « lance-le ». {{brand}} affiche une carte de confirmation : les réglages dans votre langue, la longueur de la file d'attente et le quota quotidien que la tâche utiliserait. Rien n'a encore démarré.",
+            "bullets": {
+              "card": "Lisez les réglages. Ils sont vérifiés par rapport aux options réelles de l'outil : une valeur non prise en charge est refusée au lieu d'être modifiée.",
+              "start": "Démarrer exécute la tâche sur place pour la compression, le redimensionnement, la rotation, le recadrage et la découpe de vidéo, l'extraction et la suppression de l'audio, ainsi que la transcription ; le résultat s'ouvre dans une fenêtre.",
+              "open": "Tous les autres outils s'ouvrent sur leur propre page avec les réglages déjà remplis, et c'est là que vous appuyez sur leur bouton.",
+              "click": "Un clic est toujours nécessaire. Medi ne démarre jamais rien de lui-même."
+            }
+          },
+          "edit": {
+            "title": "3. Modifier en décrivant le résultat",
+            "body": "Dans Aperture, Darkroom ou Motion, connectez-vous et appuyez sur Ctrl+J, puis décrivez le rendu ou le changement souhaité. {{brand}} modifie le projet en une seule étape et donne une raison pour chaque changement.",
+            "bullets": {
+              "undo": "Annuler retire toute la modification en une seule étape.",
+              "review": "Désactivez l'application automatique dans le menu d'information pour relire d'abord chaque modification sous forme de carte, avec Appliquer et Ignorer.",
+              "showMe": "Montre-moi ouvre la commande qu'une modification a changée, pour que vous la voyiez et appreniez à vous en servir.",
+              "numbers": "{{brand}} peut mesurer l'aperçu, par exemple la luminosité, les ombres écrêtées ou l'intensité sonore, et corriger jusqu'à trois fois, en citant le chiffre à chaque fois."
+            }
+          },
+          "cta": {
+            "title": "Découvrez {{brand}}",
+            "body": "Le guide est présent sur chaque page publique. Sa page explique ce qu'il sait faire et comment fonctionne le quota quotidien.",
+            "button": "À propos de {{brand}}"
+          },
+          "related": {
+            "title": "Pages associées",
+            "intro": "En savoir plus sur les éditeurs dans lesquels {{brand}} travaille.",
+            "toolDesc": "Ce que fait {{brand}}, le tableau des offres et les questions fréquentes.",
+            "aperture": "Tutoriel Aperture",
+            "apertureDesc": "Retouchez une photo avec des calques et des masques.",
+            "pricing": "Tarifs",
+            "pricingDesc": "Les quotas de chaque offre, y compris les modifications du copilote par jour."
           }
         }
       }
@@ -1813,7 +1871,9 @@
       "photoProjects": "Projets {{brand}} enregistrés",
       "photoMaxMegapixels": "Export {{brand}} maximal",
       "photoBatch": "Photos {{brand}} par lot",
-      "photoPresets": "Préréglages {{brand}} enregistrés"
+      "photoPresets": "Préréglages {{brand}} enregistrés",
+      "assistantGuide": "Guide du site {{medi}}",
+      "assistantTurns": "Modifications du copilote {{medi}} par jour"
     },
     "values": {
       "yes": "Inclus",
@@ -1827,7 +1887,8 @@
       "heightSuffix": "{{height}}p",
       "photoLocalOnly": "1, dans ce navigateur uniquement",
       "megapixels": "{{count}} MP",
-      "notAvailable": "Non disponible"
+      "notAvailable": "Non disponible",
+      "signInToUse": "Connectez-vous pour l'utiliser"
     },
     "unavailableTitle": "Le détail des offres est temporairement indisponible",
     "unavailableBody": "Nous n'avons pas pu joindre le service des offres. Tous les outils fonctionnent ; rechargez dans un instant pour voir le comparatif.",
@@ -2818,5 +2879,42 @@
     ],
     "timing": "La suppression depuis l'application ou le site web démarre immédiatement. Si une étape ne peut pas être menée à bien, vous en êtes informé et vous pouvez nous écrire à l'adresse indiquée ci-dessus.",
     "moreInfo": "Pour tout ce que nous collectons et la manière dont nous l'utilisons, lisez la Politique de confidentialité."
+  },
+  "mediPage": {
+    "guide": {
+      "summaryTitle": "Comment fonctionne {{brand}}",
+      "whatItIsTitle": "Ce que c'est",
+      "whatItIsBody": "{{brand}} est l'assistant intégré à Media Manipulator. Sur chaque page publique, c'est un guide qui trouve le bon outil et ses réglages ; dans Aperture, Darkroom et Motion, c'est un copilote qui modifie votre projet à partir d'une simple demande. Il ne fait que préparer : rien ne démarre tant que vous n'avez pas appuyé sur un bouton.",
+      "stepsTitle": "Quatre étapes",
+      "step1": "Appuyez sur le bouton {{brand}} dans le coin de la page, ou sur Ctrl+J dans un éditeur, et dites ce que vous voulez. Joignez un fichier avec le trombone si cela peut aider.",
+      "step2": "Pour un outil, {{brand}} affiche une carte avec les réglages dans votre langue, la file d'attente et le quota quotidien que la tâche utiliserait.",
+      "step3": "Pour une modification, {{brand}} montre ce qu'il a changé, avec une raison pour chaque ligne. Vous pouvez la relire avant qu'elle soit appliquée, et Montre-moi désigne la commande qu'il a déplacée.",
+      "step4": "Appuyez sur Démarrer ou Ouvrir sur la carte, ou sur Annuler pour une modification. Chaque modification peut être retirée en une seule étape.",
+      "editorTitle": "Où il fonctionne",
+      "editorBody": "Le guide ne demande aucun compte. Les copilotes d'Aperture, de Darkroom et de Motion exigent que vous soyez connecté, car ils utilisent un quota quotidien lié à votre offre."
+    },
+    "panel": {
+      "title": "Essayez-le maintenant",
+      "body": "Repérez le bouton rond {{brand}} dans le coin de cette page et demandez-lui quel outil il vous faut, ou déposez un fichier avec le trombone et dites-lui quoi faire. La page elle-même ne reçoit aucun fichier : {{brand}} vit dans le bouton du coin et dans les éditeurs.",
+      "editors": "Ou ouvrez un éditeur et appuyez sur Ctrl+J :"
+    },
+    "plans": {
+      "title": "{{brand}} selon l'offre",
+      "intro": "Le guide est ouvert à tous. Ce qui change selon l'offre, c'est le nombre de modifications du copilote auxquelles vous avez droit chaque jour dans les éditeurs. Ces chiffres viennent directement de nos serveurs : ils sont donc toujours à jour.",
+      "caption": "Quotas {{brand}} selon l'offre",
+      "feature": "Fonctionnalité",
+      "rows": {
+        "guide": "Guide du site",
+        "edits": "Modifications du copilote par jour"
+      },
+      "values": {
+        "included": "Inclus",
+        "unlimited": "Illimité",
+        "signIn": "Connectez-vous pour l'utiliser"
+      },
+      "costNote": "Poser des questions, annuler une modification et préparer une tâche ne coûtent rien. Une tâche préparée, une fois que vous appuyez sur son bouton, consomme le même quota standard ou IA que si vous lanciez l'outil vous-même.",
+      "unavailable": "Le tableau des offres n'a pas pu être chargé pour le moment. La page des tarifs indique le quota de chaque offre.",
+      "seePlans": "Comparer toutes les offres"
+    }
   }
 }

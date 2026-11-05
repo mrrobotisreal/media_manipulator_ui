@@ -70,6 +70,7 @@ const NO_OPTIONS_SLUGS: Record<string, string> = {
 const NO_OPTIONS: Record<string, string> = {
   edit_video: 'Darkroom is an editor; Medi edits it through its copilot, not through options.',
   motion_editor: 'Motion is an editor; Medi edits it through its copilot, not through options.',
+  medi_guide: 'Medi is the assistant itself; there is nothing to prefill.',
   photo_editor: 'Aperture is an editor; Medi edits it through its copilot, not through options.',
   inspect_metadata: 'Shows every tag of a file; there is nothing to configure.',
   voice_clone: 'Needs a consent step and a recording; it cannot be prefilled.',

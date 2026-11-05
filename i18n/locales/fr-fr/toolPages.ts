@@ -16501,6 +16501,157 @@ const frToolPages = {
         description: 'Déposez une photo pour ouvrir le panneau Masques ; ajoutez une Plage de couleurs, cliquez sur une couleur, puis ne réglez que la sélection.',
       },
     },
+    // MM111: Medi's launch page (model-written by Opus 5.5; native review pending).
+    'medi': {
+      name: "Medi",
+      h1: "Medi : votre guide et copilote de retouche",
+      tagline: "Demandez le bon outil, confiez un fichier et recevez la tâche toute prête, ou dites à un éditeur ce que vous voulez et regardez-le changer, une étape d’annulation à la fois.",
+      metaTitle: "Medi : guide IA et copilote de retouche pour Media Manipulator",
+      metaDescription: "Medi trouve le bon outil, prépare la tâche pour que vous la confirmiez et retouche photos, vidéos et animations à partir d’une demande en langage courant. Chaque modification est justifiée et peut être annulée.",
+      ogTitle: "Medi : votre guide et copilote de retouche",
+      ogDescription: "Demandez à Medi quel outil utiliser, déposez un fichier, vérifiez la tâche préparée et appuyez vous-même sur le bouton. Dans les éditeurs, il fait des modifications que vous pouvez lire, prévisualiser et annuler.",
+      embed: {
+        defaultMediaKind: "image",
+        defaultTask: "medi_guide",
+        title: "Demander à Medi",
+        description: "Ouvrez le guide, décrivez ce que vous voulez faire ou joignez un fichier avec le trombone, et Medi vous oriente vers le bon outil avec les réglages déjà remplis.",
+      },
+      intro: "Medi est l’assistant intégré à Media Manipulator, et il travaille à deux endroits. Sur chaque page publique, c’est un guide : un petit bouton ouvre une conversation où vous dites ce que vous voulez avec vos propres mots, dans n’importe quelle langue du site, et il répond à partir de la documentation du site sur ce que fait chaque outil, les réglages disponibles et le contenu de chaque offre. Dans Aperture, Darkroom et Motion, c’est un copilote : vous décrivez le résultat recherché, et il modifie le document pour vous en une seule étape que vous pouvez annuler. Deux règles valent partout. Medi ne fait que préparer : rien ne démarre, ne s’exporte ni ne s’achète tant que vous n’avez pas appuyé vous-même sur un bouton. Et il s’explique : une réponse du guide cite la page sur laquelle elle s’appuie, et chaque modification s’accompagne d’une raison en une phrase.",
+      whatItDoes: [
+        "Répond aux questions sur le site à partir de ses propres pages d’aide : une question comme « quel outil réduit une vidéo pour l’envoyer par e-mail ? » reçoit un outil précis et un réglage, pas une réponse générique. Il ne parle que de Media Manipulator et décline poliment tout autre sujet.",
+        "Vous permet de déposer un fichier sur le guide grâce au trombone. Medi lit les caractéristiques techniques du fichier, comme son type, sa taille, sa durée, sa résolution et ses codecs, et s’en sert pour recommander un outil et ses réglages.",
+        "Prépare des tâches portant sur un seul outil. Dites ce que vous voulez, ou déposez un fichier et dites simplement « lance-le », et Medi affiche une carte de confirmation avec les réglages dans votre langue, la longueur de la file d’attente et le quota quotidien que la tâche utiliserait. Il ne démarre jamais rien lui-même ; seul le bouton de la carte le fait.",
+        "Modifie vos projets dans Aperture, Darkroom et Motion à partir d’une demande comme « rends-la plus sombre et mystérieuse », « resserre les pauses » ou « fais glisser le titre depuis la gauche ». La modification s’enregistre comme une seule étape d’annulation, avec une courte raison pour chaque changement.",
+        "Vérifie son propre travail avec des chiffres. Après une modification, il peut mesurer l’aperçu, par exemple la luminosité et la part de l’image écrêtée au noir ou au blanc, ou l’intensité sonore de l’audio, puis corriger sur trois passes au maximum, en citant à chaque fois le chiffre qui a bougé.",
+      ],
+      flowSteps: [
+        {
+          title: "Ouvrez le guide",
+          description: "Appuyez sur le bouton Medi dans le coin de n’importe quelle page publique, ou sur Ctrl+J dans un éditeur. Le guide ne demande aucun compte ; les copilotes exigent que vous soyez connecté.",
+        },
+        {
+          title: "Dites ce que vous voulez",
+          description: "Tapez une demande ou choisissez une suggestion. Joignez un fichier avec le trombone si cela peut aider : Medi lit ses caractéristiques pour que le conseil corresponde à ce fichier.",
+        },
+        {
+          title: "Vérifiez ce qu’il a préparé",
+          description: "Une tâche apparaît sous forme de carte avec les réglages, la file d’attente et le quota qu’elle utiliserait. Une modification apparaît sous forme de carte de changements avec une raison par ligne, et vous pouvez choisir de la relire avant qu’elle soit appliquée.",
+        },
+        {
+          title: "Appuyez vous-même sur le bouton",
+          description: "Démarrer exécute sur place une tâche prise en charge, ou Ouvrir vous mène à l’outil avec les réglages déjà remplis. Dans un éditeur, Annuler retire toute la modification en une seule étape.",
+        },
+      ],
+      advancedDetails: [
+        "Le guide ne lit jamais les pixels ni le son de votre fichier : il travaille à partir des métadonnées et, pour quelques vérifications d’image et d’audio, à partir de chiffres calculés sur notre serveur (un histogramme de luma, des parts de pixels écrêtés, une intensité sonore intégrée). Un modèle voit ces chiffres, pas le média.",
+        "Une tâche préparée est validée par rapport au véritable schéma d’options de l’outil avant que la carte ne s’affiche. Environ quatre-vingt-dix outils publient leurs options : une demande de réglage inexistant, ou une valeur hors limites, est donc refusée au lieu d’être discrètement modifiée.",
+        "Démarrer exécute la tâche sur place pour la compression, le redimensionnement, la rotation, le recadrage et la découpe de vidéo, pour l’extraction ou la suppression de la piste audio, et pour la transcription. Tous les autres outils s’ouvrent sur leur propre page avec les réglages déjà remplis, car leurs formulaires exigent que vous confirmiez vous-même certains détails, comme un format de sortie ou une plage de pages.",
+        "Les modifications du copilote sont des opérations structurées, vérifiées par rapport au schéma de l’éditeur avant tout changement, appliquées en tout ou rien et enregistrées comme une seule entrée dans l’historique de l’éditeur. Une modification qui échoue à la validation ne change rien, et le modèle en reçoit la raison.",
+        "Chaque version de Medi est identifiée par un court code de version : l’empreinte du contenu des instructions, de la documentation et des schémas de modification sur lesquels elle repose. Il est affiché dans le menu d’information du panneau du copilote, si bien qu’un message au support concernant une réponse peut désigner la version exacte qui l’a donnée.",
+      ],
+      whyItMatters: [
+        "Un site de plus de cent outils pose un problème de découverte : la plupart des visiteurs savent quel résultat ils veulent, pas le nom de l’outil qui le produit. Un guide qui lit les pages du site transforme une demande vague en un outil, un réglage et un lien.",
+        "Retoucher avec des mots n’inspire confiance que si c’est réversible et explicable. Comme chaque modification est une seule étape d’annulation accompagnée d’une raison, une erreur ne coûte qu’une touche et vous apprend quelle commande fait quoi.",
+        "Confier une tâche à un assistant n’est sûr que s’il ne peut pas la lancer. En vous laissant le clic, une erreur de l’IA peut vous faire perdre une minute de lecture, mais jamais un quota, un envoi de fichier ou un export.",
+      ],
+      useCases: [
+        {
+          title: "Trouver le bon outil",
+          description: "Demandez comment rendre une vidéo assez légère pour l’envoyer par e-mail ou comment extraire un logo sur fond transparent d’une photo : Medi nomme l’outil, explique le réglage qui compte et donne le lien.",
+        },
+        {
+          title: "Lancer une tâche rapide",
+          description: "Déposez une vidéo de téléphone, dites « lance-le » et vérifiez la carte : le compresseur au niveau équilibré, sortie mp4, une opération standard, pas d’attente. Appuyez sur Démarrer et le résultat apparaît dans la même fenêtre.",
+        },
+        {
+          title: "Corriger une photo en la décrivant",
+          description: "Dans Aperture, demandez une version plus froide et plus lumineuse avec des ombres débouchées. Medi ajoute les calques de réglage, vous dit pourquoi, et vous pouvez appuyer sur Montre-moi pour voir où chaque curseur a bougé.",
+        },
+        {
+          title: "Mettre de l’ordre dans une timeline",
+          description: "Dans Darkroom ou Motion, demandez un bandeau-titre qui glisse à l’écran ou le resserrement des longues pauses, relisez la carte de changements, appliquez-la, puis annulez-la si le rythme ne convient pas.",
+        },
+      ],
+      workedExamples: [
+        {
+          title: "Une vidéo de téléphone, préparée puis confirmée",
+          body: "Vous déposez une vidéo de 1080 x 1920 filmée au téléphone et tapez « lance-le, rends-la légère ». Medi lit les métadonnées (59 secondes, H.264, 30 images/s), choisit le compresseur vidéo au niveau équilibré avec une sortie mp4 et la résolution d’origine, et affiche une carte. Elle indique que la tâche utilise 1 opération standard, qu’il n’y a pas d’attente, et liste chaque réglage dans votre langue. Rien ne s’est encore passé. Quand vous appuyez sur Démarrer, le compresseur s’exécute avec exactement ces réglages et le résultat s’ouvre dans une fenêtre avec un bouton de téléchargement.",
+        },
+        {
+          title: "Une photo sombre, corrigée à l’aide de mesures",
+          body: "Dans Aperture, vous demandez à Medi de corriger une photo sombre. Il mesure d’abord l’aperçu : luminosité moyenne de 0,18 sur une échelle de 0 à 1, avec 9 pour cent des pixels bouchés au noir. Il ajoute un calque d’exposition et un éclaircissement des ombres, mesure à nouveau (luminosité 0,30, ombres 5 pour cent), ajoute une petite correction supplémentaire et s’arrête à 0,43 avec 0,8 pour cent d’écrêtage, ce qui se situe dans la cible qu’il avait annoncée. Cela fait 3 passes en tout, chaque raison citant son chiffre, et un seul Annuler retire le tout.",
+        },
+      ],
+      whenNotToUse: "Medi est une aide, pas un remplaçant des outils eux-mêmes. Si vous connaissez déjà l’outil et les réglages, ouvrir la page de l’outil est plus rapide que de demander. Il ne lance aucune tâche de lui-même, ne navigue pas sur le web, ne répond pas aux questions sans rapport avec Media Manipulator, ne voit rien de vos fichiers au-delà de leurs caractéristiques techniques et n’est pas un bon juge en matière de goût : il suivra une demande de rendu, mais c’est vous qui décidez si le rendu est le bon. Pour un travail qui exige un contrôle précis, comme un recadrage exact ou un débit binaire particulier, réglez les valeurs vous-même.",
+      whyMediaManipulator: [
+        "Medi lit les mêmes pages que vous. Ses réponses sur les outils, les réglages et les offres proviennent de la documentation du site et du tableau des offres en direct : elles évoluent avec le site au lieu de devenir obsolètes.",
+        "Les copilotes modifient de vrais fichiers de projet avec les mêmes opérations que les éditeurs : tout ce que fait Medi apparaît dans l’historique de l’éditeur et obéit à son annulation.",
+        "Les quotas quotidiens des copilotes proviennent du même tableau des offres que toutes les autres limites du site, et le guide est disponible avec toutes les offres.",
+      ],
+      privacyNote: "Medi est la seule fonctionnalité du site qui fait appel à un service d’IA externe : votre message, la page sur laquelle vous vous trouvez et, dans un éditeur, un court résumé textuel de votre projet (ainsi qu’une petite image d’aperçu si vous l’autorisez) sont envoyés via OpenRouter aux modèles Claude d’Anthropic, mais pas les fichiers multimédias d’origine. Un fichier que vous déposez sur le guide est stocké comme tout autre envoi et conservé selon la règle de conservation de votre compte. Les conversations des utilisateurs connectés sont enregistrées pour vous et supprimées à l’issue de la durée de conservation que vous choisissez ou avec votre compte ; la section 1.13 de la Politique de confidentialité donne tous les détails.",
+      faq: [
+        {
+          question: "Faut-il un compte pour utiliser Medi ?",
+          answer: "Pas pour le guide : tout le monde peut l’interroger sur les outils, les réglages et les offres. Les copilotes d’Aperture, de Darkroom et de Motion exigent que vous soyez connecté, car ils consomment un quota quotidien rattaché à votre compte.",
+        },
+        {
+          question: "Medi peut-il lancer une tâche sans que j’appuie sur quoi que ce soit ?",
+          answer: "Non. Il peut seulement préparer une tâche et afficher la carte. Un clic sur la carte est la seule chose qui démarre une tâche ou ouvre un outil : une erreur de l’assistant ne peut donc jamais consommer un quota à elle seule.",
+        },
+        {
+          question: "Combien me coûte une modification du copilote ?",
+          answer: "Chaque message qui produit une modification utilise une de vos modifications quotidiennes du copilote ; planifier toute une modification étape par étape en utilise quelques-unes. Le guide, les questions et les annulations sont gratuits. Le nombre quotidien de chaque offre figure dans le tableau de cette page et sur la page des tarifs.",
+        },
+        {
+          question: "Quels outils Medi peut-il configurer pour moi ?",
+          answer: "Environ quatre-vingt-dix, chacun avec sa véritable liste d’options, des convertisseurs vidéo et audio aux filtres d’image, en passant par les outils PDF et les outils d’IA. Pour les autres, comme les éditeurs eux-mêmes, il explique et donne le lien. Si vous demandez un réglage qu’un outil ne possède pas, il vous le dit.",
+        },
+        {
+          question: "Comment annuler une modification de Medi, et puis-je la vérifier d’abord ?",
+          answer: "Appuyez sur Annuler sur la carte de changements, ou utilisez la fonction d’annulation de l’éditeur, pour retirer toute la modification en une seule étape. Si vous préférez regarder avant que quoi que ce soit ne change, désactivez l’application automatique dans le menu d’information : chaque modification attend alors sous forme de carte, avec les valeurs avant et après et les boutons Appliquer et Ignorer.",
+        },
+        {
+          question: "Puis-je me fier aux chiffres que Medi cite après une modification ?",
+          answer: "Ils sont mesurés, pas devinés : luminosité, parts écrêtées et dominante de couleur pour les images, intensité sonore et crête réelle pour l’audio, calculées à partir de l’aperçu ou du fichier. Le modèle lit ces chiffres, peut corriger jusqu’à trois fois pour atteindre sa cible et a pour consigne de s’arrêter une fois la cible atteinte.",
+        },
+        {
+          question: "Quelles langues Medi comprend-il ?",
+          answer: "Toutes les langues dans lesquelles le site est disponible, et il répond dans la langue dans laquelle vous écrivez. La carte de confirmation et les noms de ses réglages suivent la langue du site, si bien qu’une tâche préparée se lit naturellement avant que vous n’appuyiez sur quoi que ce soit.",
+        },
+      ],
+      related: [
+        {
+          label: "Compresser une vidéo",
+          to: "/tools/compress-video",
+          description: "Le compresseur que Medi prépare et peut lancer sur place depuis le guide.",
+        },
+        {
+          label: "Découper une vidéo",
+          to: "/tools/video-trimmer",
+          description: "Coupez une vidéo entre un début et une fin : une autre tâche que Medi peut lancer depuis une carte confirmée.",
+        },
+        {
+          label: "Extraire l’audio d’une vidéo",
+          to: "/tools/extract-audio-from-video",
+          description: "Récupérez la bande-son d’une vidéo, également disponible comme tâche préparée exécutée sur place.",
+        },
+        {
+          label: "Aperture",
+          to: "/tools/aperture",
+          description: "L’éditeur photo dont le copilote modifie les calques et les masques à partir d’une demande.",
+        },
+        {
+          label: "Motion",
+          to: "/tools/motion",
+          description: "L’éditeur d’animation SVG dont le copilote écrit des images clés que vous pouvez examiner.",
+        },
+        {
+          label: "Tutoriel Medi",
+          to: "/tutorials/medi",
+          description: "Trois courts scénarios : trouver un outil, lancer une tâche et modifier avec une raison que vous pouvez lire.",
+        },
+      ],
+    },
   },
 } as const;
 

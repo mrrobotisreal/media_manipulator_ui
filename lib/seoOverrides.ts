@@ -21,6 +21,16 @@ export interface SeoOverride {
 type LocaleOverrides = Record<string, SeoOverride>;
 
 const RU_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/medi': {
+    title: "Medi: ИИ-гид и помощник по редактированию | Media Manipulator",
+    description:
+      "Medi подбирает нужный инструмент, готовит задачу, которую вы подтверждаете, и редактирует фото, видео и анимацию по простой просьбе. У каждой правки есть объяснение, и ее можно отменить.",
+  },
+  '/tutorials/medi': {
+    title: "Как пользоваться помощником Medi | Урок Media Manipulator",
+    description:
+      "Три сценария с Medi: найти нужный инструмент, подготовить задачу для подтверждения и редактировать фото, видео или анимацию по описанию, с объяснением каждого изменения.",
+  },
   '/tools/aperture': {
     title: 'Aperture: онлайн-фоторедактор со слоями и масками | Media Manipulator',
     description:
@@ -129,6 +139,16 @@ const RU_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const UK_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/medi': {
+    title: "Medi: ШІ-гід і копілот для редагування | Media Manipulator",
+    description:
+      "Medi знаходить потрібний інструмент, готує завдання, яке ви підтверджуєте, і редагує фото, відео та анімацію за звичайним проханням. Кожна правка має пояснення, і її можна скасувати.",
+  },
+  '/tutorials/medi': {
+    title: "Як користуватися помічником Medi | Посібник Media Manipulator",
+    description:
+      "Три сценарії з Medi: знайти потрібний інструмент, підготувати завдання, яке ви підтверджуєте, і редагувати фото, відео чи анімацію, описуючи результат, з поясненням кожної зміни.",
+  },
   '/tools/aperture': {
     title: 'Aperture: онлайн-фоторедактор із шарами та масками | Media Manipulator',
     description:
@@ -237,6 +257,16 @@ const UK_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const DE_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/medi': {
+    title: "Medi: KI-Guide und Bearbeitungs-Copilot | Media Manipulator",
+    description:
+      "Medi findet das passende Tool, bereitet den Auftrag zur Bestätigung vor und bearbeitet Fotos, Videos und Animationen nach einer einfachen Bitte. Jede Bearbeitung ist begründet und lässt sich rückgängig machen.",
+  },
+  '/tutorials/medi': {
+    title: "So verwenden Sie Medi, den Assistenten | Media Manipulator Tutorial",
+    description:
+      "Drei Abläufe mit Medi: das passende Tool finden, einen Auftrag zur Bestätigung vorbereiten und Fotos, Videos oder Animationen durch Beschreiben bearbeiten, mit einer Begründung für jede Änderung.",
+  },
   '/tools/aperture': {
     title: 'Aperture: Online-Fotoeditor mit Ebenen und Masken | Media Manipulator',
     description:
@@ -345,6 +375,16 @@ const DE_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const HE_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/medi': {
+    title: "Medi: מדריך AI ועוזר עריכה | Media Manipulator",
+    description:
+      "Medi מוצא את הכלי הנכון, מכין את המשימה כדי שתאשרו אותה, ועורך תמונות, וידאו ואנימציה לפי בקשה פשוטה. לכל עריכה יש נימוק, ואפשר לבטל אותה.",
+  },
+  '/tutorials/medi': {
+    title: "איך להשתמש ב-Medi, העוזר | מדריך Media Manipulator",
+    description:
+      "שלושה תהליכים עם Medi: מוצאים את הכלי הנכון, מכינים משימה שאתם מאשרים, ועורכים תמונות, וידאו או אנימציה על ידי תיאור, עם נימוק לכל שינוי.",
+  },
   '/tools/aperture': {
     title: 'Aperture: עורך תמונות אונליין עם שכבות ומסכות | Media Manipulator',
     description:
@@ -453,6 +493,16 @@ const HE_SEO_OVERRIDES: LocaleOverrides = {
 };
 
 const ES_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/medi': {
+    title: "Medi: guía con IA y copiloto de edición | Media Manipulator",
+    description:
+      "Medi encuentra la herramienta adecuada, prepara el trabajo para que tú lo confirmes y edita fotos, vídeo y animación a partir de una petición sencilla. Cada edición tiene un motivo y se puede deshacer.",
+  },
+  '/tutorials/medi': {
+    title: "Cómo usar Medi, el asistente | Tutorial de Media Manipulator",
+    description:
+      "Tres flujos de trabajo con Medi: encontrar la herramienta adecuada, preparar un trabajo que tú confirmas y editar fotos, vídeo o animación describiéndolos, con un motivo para cada cambio.",
+  },
   '/tools/aperture': {
     title: 'Aperture: editor de fotos online con capas y máscaras | Media Manipulator',
     description:
@@ -562,6 +612,16 @@ const ES_SEO_OVERRIDES: LocaleOverrides = {
 
 // MM72: Latin-American Spanish, adapted from ES_SEO_OVERRIDES (es-ES).
 const ES_MX_SEO_OVERRIDES: LocaleOverrides = {
+  '/tools/medi': {
+    title: "Medi: guía con IA y copiloto de edición | Media Manipulator",
+    description:
+      "Medi encuentra la herramienta adecuada, prepara el trabajo para que lo confirmes y edita fotos, video y animación a partir de una petición sencilla. Cada edición tiene un motivo y se puede deshacer.",
+  },
+  '/tutorials/medi': {
+    title: "Cómo usar Medi, el asistente | Tutorial de Media Manipulator",
+    description:
+      "Tres flujos de trabajo con Medi: encontrar la herramienta adecuada, preparar un trabajo que tú confirmas y editar fotos, video o animación con solo describirlos, con un motivo para cada cambio.",
+  },
   '/tools/aperture': {
     title: 'Aperture: editor de fotos en línea con capas y máscaras | Media Manipulator',
     description:

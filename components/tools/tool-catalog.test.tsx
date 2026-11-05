@@ -51,13 +51,13 @@ describe('/tools catalog data (MM73, MM84)', () => {
     const tools = build(false);
     const aliases = Object.keys(TOOL_ALIAS_OF);
     expect(tools.some((t) => aliases.includes(t.slug))).toBe(false);
-    const expected = TOOL_PAGES.filter((t) => !t.aliasOf && t.category !== 'contentStudio' && t.category !== 'motion' && t.slug !== 'aperture');
+    const expected = TOOL_PAGES.filter((t) => !t.aliasOf && t.category !== 'contentStudio' && t.category !== 'motion' && t.slug !== 'aperture' && t.slug !== 'medi');
     expect(tools.map((t) => t.slug).sort()).toEqual(expected.map((t) => t.slug).sort());
   });
 
   it('review mode: exactly the copy-bar tools (minus the two editors) are full cards', () => {
     const listed = build(false).filter((t) => t.listed).map((t) => t.slug).sort();
-    expect(listed).toEqual(REVIEW_CATALOG_SLUGS.filter((s) => s !== 'content-studio' && s !== 'motion' && s !== 'aperture').sort());
+    expect(listed).toEqual(REVIEW_CATALOG_SLUGS.filter((s) => s !== 'content-studio' && s !== 'motion' && s !== 'aperture' && s !== 'medi').sort());
     expect(listed).toHaveLength(22 + 24);
   });
 

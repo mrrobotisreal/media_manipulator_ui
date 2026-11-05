@@ -25,6 +25,7 @@ import { MOTION_BRAND } from '@/lib/vector/brand';
 import type { PhotoPanelId } from '@/lib/photo/panelIds';
 import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { PHOTO_TOOL_PAGES } from '@/content/photo/index';
+import { MEDI_PAGE, MEDI_PAGES_REVIEWED } from '@/content/medi/page';
 
 import { RETENTION_PROMISE } from '@/content/retentionPromise';
 import { privacyNoteFor } from '@/content/toolPrivacy';
@@ -8941,6 +8942,8 @@ const TOOL_PAGE_ENTRIES: ToolPageContent[] = [
   ...VOICE_TOOL_PAGES,
   // MM100: Aperture (the landing + 24 adjustment pages), content/photo/.
   ...PHOTO_TOOL_PAGES,
+  // MM111: Medi's launch page, content/medi/page.ts.
+  { ...MEDI_PAGE, lastReviewed: MEDI_PAGES_REVIEWED },
 ];
 
 /**
