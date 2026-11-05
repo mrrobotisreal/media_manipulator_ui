@@ -20,6 +20,7 @@ import type { AssistantTrack, AssistantUiMessage } from '@/lib/assistant/useAssi
 import type { StreamDeps } from '@/lib/assistant/stream';
 import type { Tier } from '@/lib/analytics/events';
 import type { AssistantCapabilities } from '@/schemas/assistant';
+import { getAssistantCapabilities } from '@/lib/assistant/api';
 import { cn } from '@/lib/utils';
 
 import AssistantMarkdown from './markdown';
@@ -43,9 +44,22 @@ export interface CopilotPanelProps {
   deps?: StreamDeps;
   /** Opens the editor's sign-in (the chromeless editors link to /account). */
   signInHref?: string;
+  /** Re-reads capabilities after each turn so "N edits left today" follows the server (tests inject a fake). */
+  loadCapabilities?: () => Promise<AssistantCapabilities | null>;
 }
 
-export default function CopilotPanel({ adapter, capabilities, signedIn, tier, track, onClose, planCost = 3, deps, signInHref = '/account' }: CopilotPanelProps) {
+export default function CopilotPanel({
+  adapter,
+  capabilities,
+  signedIn,
+  tier,
+  track,
+  onClose,
+  planCost = 3,
+  deps,
+  signInHref = '/account',
+  loadCapabilities = getAssistantCapabilities,
+}: CopilotPanelProps) {
   const { t, language } = useLocalization(['interface']);
   const localized = useLocalizedHref();
   const locale = language.code;
@@ -56,7 +70,27 @@ export default function CopilotPanel({ adapter, capabilities, signedIn, tier, tr
   const caps = capabilities && capabilities.enabled ? capabilities : null;
   const maxChars = caps?.maxMessageChars ?? 4000;
   const canEdit = !!caps?.copilot.editSurfaces?.includes(adapter.surface);
-  const turns = caps?.turns ?? null;
+  // The editor loads capabilities once on open; a turn spends (or refunds) the daily allowance on the
+  // server, so re-read it whenever a stream ends (Mitch, 2026-11-05: the count stayed at 5 after an edit).
+  const [liveTurns, setLiveTurns] = React.useState<Extract<AssistantCapabilities, { enabled: true }>['turns'] | null>(null);
+  // Only once the whole turn has ended: an edit's verify round (`awaiting`) follows the first reply,
+  // and a re-render while it captures the after-frame would cancel it.
+  const lastReply = [...cp.messages].reverse().find((m) => m.role === 'assistant');
+  const turnEnded = !cp.streaming && !!lastReply && lastReply.status !== 'streaming' && !(lastReply.status === 'complete' && lastReply.awaiting);
+  const settled = turnEnded ? cp.messages.filter((m) => m.role === 'assistant').length : 0;
+  React.useEffect(() => {
+    if (settled === 0 || !signedIn) return;
+    let alive = true;
+    void loadCapabilities()
+      .then((c) => {
+        if (alive && c && c.enabled && c.turns) setLiveTurns(c.turns);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [settled, signedIn, loadCapabilities]);
+  const turns = liveTurns ?? caps?.turns ?? null;
   const signInNeeded = !signedIn || cp.lastError === 'sign_in_required';
 
   React.useEffect(() => {
