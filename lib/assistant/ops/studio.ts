@@ -23,7 +23,7 @@ import { z } from 'zod/v4';
 
 import { AUDIO_PRESETS } from '@/lib/studio/audioPresets';
 import { LUMETRI_PARAMS, STUDIO_V3_RANGES, TRANSFORM_PARAMS, TRANSITION_TYPE_GROUPS } from '@/lib/studio/effectRegistry';
-import { NAMED_KEYFRAME_PROPERTIES } from '@/lib/studio/keyframes';
+import { NAMED_KEYFRAME_PROPERTIES, keyframeValueRange } from '@/lib/studio/keyframes';
 import { STUDIO_LOOK_IDS } from '@/lib/studio/looks';
 import { STUDIO_TITLE_FONTS } from '@/lib/studio/titleFonts';
 import { studioAudioConfigSchema, studioCaptionStyleSchema, studioKeyframeEaseSchema } from '@/lib/studioTypes';
@@ -293,10 +293,20 @@ function refineSchema(schema: Record<string, unknown>): Record<string, unknown> 
   return schema;
 }
 
-/** The same three rules for the client-side parse (the Zod objects above stay plain for export). */
+/**
+ * The same three rules for the client-side parse (the Zod objects above stay plain for export),
+ * plus each keyframe lane's own value range (a property-dependent bound JSON Schema cannot
+ * express on one `value` field; the engine refuses it too, and the model hears the reason).
+ */
 function refinementProblems(ops: StudioOp[]): string[] {
   const out: string[] = [];
   ops.forEach((o, i) => {
+    if (o.op === 'set_keyframes') {
+      const { min, max } = keyframeValueRange(o.property);
+      o.keyframes.forEach((k, j) => {
+        if (k.value < min || k.value > max) out.push(`ops[${i}].keyframes[${j}].value: ${k.value} is outside ${min}..${max} for ${o.property}`);
+      });
+    }
     if (o.op === 'set_volume' && (o.clipId === undefined) === (o.track === undefined)) out.push(`ops[${i}]: set_volume needs exactly one of clipId or track`);
     if (o.op === 'trim' && o.sourceIn === undefined && o.sourceOut === undefined) out.push(`ops[${i}]: trim needs sourceIn or sourceOut`);
     if (o.op === 'set_caption_style' && Object.keys(o).length < 2) out.push(`ops[${i}]: set_caption_style needs at least one field`);
