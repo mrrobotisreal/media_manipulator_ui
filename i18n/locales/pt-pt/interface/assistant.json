@@ -100,6 +100,12 @@
           "moody": "Dar-lhe um ambiente sombrio",
           "keepRed": "Manter só o vermelho",
           "vintage": "Look de película vintage"
+        },
+        "vector": {
+          "lowerThird": "Oráculo que entra a deslizar",
+          "logoReveal": "Revelar o meu logótipo",
+          "titlePop": "Animar a entrada deste texto",
+          "forSocial": "Como exporto isto para as redes sociais?"
         }
       },
       "actions": {
@@ -133,6 +139,22 @@
         "purple": "roxo",
         "magenta": "magenta",
         "custom": "a cor escolhida"
+      },
+      "vectorChange": {
+        "addLayer": "Adicionei uma camada: {{layer}}",
+        "addText": "Adicionei uma linha de texto",
+        "importSvg": "Importei o SVG",
+        "updateLayer": "Alterei a camada {{layer}}",
+        "deleteLayer": "Eliminei a camada {{layer}}",
+        "animate": "Animei {{property}} de {{layer}}",
+        "animator_one": "Apliquei {{animator}} a {{count}} camada",
+        "animator_many": "Apliquei {{animator}} a {{count}} camadas",
+        "animator_other": "Apliquei {{animator}} a {{count}} camadas",
+        "template": "Adicionei o modelo {{template}}",
+        "duration": "Defini a duração para {{seconds}} s",
+        "canvas": "Alterei a tela",
+        "loopOn": "Ativei a repetição",
+        "loopOff": "Desativei a repetição"
       }
     }
   }
