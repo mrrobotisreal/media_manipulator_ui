@@ -101,6 +101,12 @@
           "moody": "Сделать атмосфернее",
           "keepRed": "Оставить только красный",
           "vintage": "Винтажная плёнка"
+        },
+        "vector": {
+          "lowerThird": "Нижняя плашка, которая выезжает",
+          "logoReveal": "Анимируй появление моего логотипа",
+          "titlePop": "Анимируй появление этого текста",
+          "forSocial": "Как экспортировать это для соцсетей?"
         }
       },
       "actions": {
@@ -134,6 +140,23 @@
         "purple": "фиолетового",
         "magenta": "пурпурного",
         "custom": "выбранного цвета"
+      },
+      "vectorChange": {
+        "addLayer": "Добавлен слой: {{layer}}",
+        "addText": "Добавлена строка текста",
+        "importSvg": "Импортирован SVG",
+        "updateLayer": "Изменён слой «{{layer}}»",
+        "deleteLayer": "Удалён слой «{{layer}}»",
+        "animate": "Анимировано «{{property}}» у слоя «{{layer}}»",
+        "animator_one": "«{{animator}}» применено к {{count}} слою",
+        "animator_few": "«{{animator}}» применено к {{count}} слоям",
+        "animator_many": "«{{animator}}» применено к {{count}} слоям",
+        "animator_other": "«{{animator}}» применено к {{count}} слоя",
+        "template": "Добавлен шаблон «{{template}}»",
+        "duration": "Длительность изменена на {{seconds}} с",
+        "canvas": "Изменён холст",
+        "loopOn": "Повтор включён",
+        "loopOff": "Повтор выключен"
       }
     }
   }
