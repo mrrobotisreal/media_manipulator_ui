@@ -99,6 +99,12 @@
           "moody": "Make it moody",
           "keepRed": "Keep only the red",
           "vintage": "Vintage film look"
+        },
+        "studio": {
+          "cinematic": "Cinematic grade",
+          "lowerThird": "Add a lower-third",
+          "pauses": "Tighten the pauses",
+          "voice": "Make the voice clearer"
         }
       },
       "actions": {
@@ -132,6 +138,38 @@
         "purple": "purple",
         "magenta": "magenta",
         "custom": "the chosen color"
+      },
+      "studio": {
+        "allClips": "all clips",
+        "titleClip": "the title",
+        "change": {
+          "split": "Split {{clip}} at {{at}} s",
+          "trim": "Trimmed {{clip}}",
+          "move": "Moved {{clip}} to {{at}} s",
+          "delete": "Deleted {{clip}}",
+          "deleteRipple": "Deleted {{clip}} and closed the gap",
+          "transition": "Added a {{seconds}} s transition into {{clip}}",
+          "grade": "Colour-graded {{clips}}",
+          "look": "Applied the {{look}} look to {{clips}}",
+          "transform": "Moved and scaled {{clip}}",
+          "keyframes_one": "Animated {{clip}} with {{count}} keyframe",
+          "keyframes_other": "Animated {{clip}} with {{count}} keyframes",
+          "title": {
+            "lowerThird": "Added a lower-third at {{at}} s",
+            "title": "Added a title card at {{at}} s",
+            "endCard": "Added an end card at {{at}} s",
+            "caption": "Added an on-screen caption at {{at}} s"
+          },
+          "speed": "Set {{clip}} to {{speed}}× speed",
+          "freeze": "Added a {{seconds}} s freeze frame after {{clip}}",
+          "audioPreset": "Applied the {{preset}} preset to {{track}}",
+          "duckingOn": "Turned on music ducking under the voice",
+          "duckingOff": "Turned off music ducking",
+          "volume": "Set {{target}} to {{db}} dB",
+          "marker": "Added a marker at {{at}} s",
+          "captionStyle": "Restyled the captions",
+          "canvas": "Changed the frame to {{aspect}}"
+        }
       }
     }
   }

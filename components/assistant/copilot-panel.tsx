@@ -27,7 +27,7 @@ import { errorKey } from './guide-sheet';
 
 export const COPILOT_STARTERS: Record<CopilotAdapter['surface'], readonly string[]> = {
   photo: ['fixLighting', 'moody', 'keepRed', 'vintage'],
-  studio: [],
+  studio: ['cinematic', 'lowerThird', 'pauses', 'voice'],
   vector: [],
 };
 

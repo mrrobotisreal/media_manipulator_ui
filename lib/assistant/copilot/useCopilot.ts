@@ -91,7 +91,7 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
         const round = (Math.min(2, roundsThisTurn.current) as 1 | 2);
         track(EVENTS.ASSISTANT_EDITS_APPLIED, { surface, op_count: Math.min(res.opCount, 99), op_kinds: res.opKinds.slice(0, 8).join(','), round });
         setApplied((l) => [...l, { callId: ev.callId, summary: ev.summary, token: res.token, changes: res.changes, appliedAt: now(), undone: false }]);
-        pending.current = { callId: ev.callId, applied: true, visual: true };
+        pending.current = { callId: ev.callId, applied: true, visual: a.isVisual ? a.isVisual(ev.ops) : true };
       } else {
         track(EVENTS.ASSISTANT_EDITS_REJECTED, { surface, reason: res.reason });
         setRejected((l) => [...l, { callId: ev.callId, errors: res.errors }]);

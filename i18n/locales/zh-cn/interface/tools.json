@@ -205,6 +205,8 @@
       "undoNamed": "撤销：{{step}}",
       "redo": "重做",
       "redoNamed": "重做：{{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "让{{brand}}编辑（Ctrl+J）",
       "mobileHint": "Darkroom在配有鼠标或触控板的大屏幕上体验最佳。",
       "shortcuts": "空格 播放/暂停 · ←/→ 逐帧 · V/C/Y/U/H 工具 · ⌘/Ctrl+K 分割 · S 吸附 · M 标记 · Q/W 波纹修剪 · Del 删除 · +/− 缩放 · ⌘Z 撤销 · ? 全部快捷键",
       "tabs": {

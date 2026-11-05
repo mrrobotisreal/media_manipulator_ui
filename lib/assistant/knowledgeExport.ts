@@ -45,6 +45,7 @@ import {
   TRANSITION_TYPE_GROUPS,
 } from '@/lib/studio/effectRegistry';
 import { AUDIO_PRESETS } from '@/lib/studio/audioPresets';
+import { STUDIO_LOOKS } from '@/lib/studio/looks';
 import { STUDIO_TITLE_FONTS } from '@/lib/studio/titleFonts';
 import { cheatSheetSections } from '@/lib/studio/keymap';
 import {
@@ -655,7 +656,11 @@ function studioDocs(): Array<[string, string]> {
       '',
       '### Blend modes (clip opacity & blend)',
       `- ${studioBlendModeSchema.options.join(', ')}`,
-    ], ['effects', 'colour grade', 'color grade', 'grading', 'lumetri', 'exposure', 'contrast', 'saturation', 'temperature', 'tint', 'vibrance', 'lut', 'cube', 'chroma key', 'green screen', 'blend mode', 'cinematic look']),
+      '',
+      '### Looks (Effects panel → Looks row; Medi op `apply_look`)',
+      'One-click grades made only of Lumetri values, applied as one Lumetri effect per clip (a new look replaces the old one; intensity mixes it from neutral):',
+      ...STUDIO_LOOKS.map((l) => `- \`${l.id}\` (${lbl(l.labelKey.replace('contentStudio.', '')) || l.id}): ${LUMETRI_PARAMS.filter((p) => (l.lumetri as unknown as Record<string, number>)[p.key] !== p.default).map((p) => `${p.key} ${(l.lumetri as unknown as Record<string, number>)[p.key]}`).join(', ')}`),
+    ], ['effects', 'colour grade', 'color grade', 'grading', 'lumetri', 'exposure', 'contrast', 'saturation', 'temperature', 'tint', 'vibrance', 'lut', 'cube', 'chroma key', 'green screen', 'blend mode', 'cinematic look', 'looks', 'look', 'teal and orange', 'noir', 'film look']),
   );
 
   docs.push(

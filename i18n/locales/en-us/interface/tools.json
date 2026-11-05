@@ -205,6 +205,8 @@
       "undoNamed": "Undo {{step}}",
       "redo": "Redo",
       "redoNamed": "Redo {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "Ask {{brand}} to edit (Ctrl+J)",
       "mobileHint": "Darkroom works best on a larger screen with a mouse or trackpad.",
       "shortcuts": "Space play/pause · ←/→ step · V/C/Y/U/H tools · ⌘/Ctrl+K split · S snapping · M marker · Q/W ripple trim · Del delete · +/− zoom · ⌘Z undo · ? all shortcuts",
       "tabs": {

@@ -205,6 +205,8 @@
       "undoNamed": "Deshacer: {{step}}",
       "redo": "Rehacer",
       "redoNamed": "Rehacer: {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "Pide a {{brand}} que edite (Ctrl+J)",
       "mobileHint": "Darkroom funciona mejor en una pantalla más grande con ratón o trackpad.",
       "shortcuts": "Espacio reproducir/pausar · ←/→ avanzar fotograma · V/C/Y/U/H herramientas · ⌘/Ctrl+K dividir · S imán · M marcador · Q/W recorte en cascada · Supr eliminar · +/− zoom · ⌘Z deshacer · ? todos los atajos",
       "tabs": {

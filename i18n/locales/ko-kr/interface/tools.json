@@ -205,6 +205,8 @@
       "undoNamed": "{{step}} 실행 취소",
       "redo": "다시 실행",
       "redoNamed": "{{step}} 다시 실행",
+      "medi": "{{brand}}",
+      "mediLabel": "{{brand}}에게 편집 요청 (Ctrl+J)",
       "mobileHint": "Darkroom은 마우스나 트랙패드가 있는 큰 화면에서 가장 잘 작동해요.",
       "shortcuts": "Space 재생/일시정지 · ←/→ 프레임 이동 · V/C/Y/U/H 도구 · ⌘/Ctrl+K 분할 · S 스냅 · M 마커 · Q/W 리플 트림 · Del 삭제 · +/− 확대/축소 · ⌘Z 실행 취소 · ? 모든 단축키",
       "tabs": {

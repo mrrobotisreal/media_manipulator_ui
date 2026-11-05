@@ -60,21 +60,8 @@ export const RECIPE_SECTIONS = ['When to use', 'What a pro does and why', 'Ops',
 /** Surfaces whose recipes are checked against a real op schema (flipped by MM108–MM110). */
 export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = ['photo', 'studio'];
 
-/** The Darkroom looks MM109 builds (`lib/studio/looks.ts`, design §8.5). */
-export const PLANNED_STUDIO_LOOKS = [
-  'cinematic',
-  'teal-orange',
-  'bleach-bypass',
-  'warm-film',
-  'cool-night',
-  'vintage',
-  'high-key',
-  'noir',
-  'pastel',
-  'punchy-social',
-  'moody',
-  'golden-hour',
-] as const;
+/** The Darkroom looks (`lib/studio/looks.ts`, MM109): recipes may name any of them. */
+export const PLANNED_STUDIO_LOOKS = STUDIO_LOOK_IDS;
 
 /** The Motion templates MM110 builds (`lib/vector/templates.ts`, design §8.5). */
 export const PLANNED_VECTOR_TEMPLATES = ['lowerThird', 'logoReveal', 'titlePop', 'bulletReveal', 'counter', 'badgeBounce'] as const;

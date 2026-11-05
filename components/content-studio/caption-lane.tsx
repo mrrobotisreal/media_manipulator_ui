@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import { useGenerateCaptions, serializeSRT, serializeVTT, downloadText } from '@/lib/useStudioCaptions';
+import { captionGenerateBridge } from '@/lib/studio/editorBridges';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
 import { authedFetch } from '@/lib/auth/authedFetch';
 import { getBaseURL } from '@/lib/utils';
@@ -75,10 +76,10 @@ export const CaptionControls: React.FC<{ projectId: string }> = ({ projectId }) 
   const hasCues = cues.length > 0;
   const generating = isGenerating || !!jobId;
 
-  const onGenerate = async () => {
+  const onGenerate = async (lang: string = language) => {
     if (hasCues && !window.confirm(t('contentStudio.captions.overwriteConfirm'))) return;
     try {
-      const res = await generate(language);
+      const res = await generate(lang);
       setJobId(res.jobId);
     } catch (err) {
       toast.error(t('contentStudio.captions.failed'), { description: (err as Error).message });
@@ -87,6 +88,7 @@ export const CaptionControls: React.FC<{ projectId: string }> = ({ projectId }) 
 
   return (
     <div className="flex items-center gap-1.5">
+      <CaptionBridge onGenerate={(lang) => void onGenerate(lang ?? language)} disabled={generating} />
       <Captions className="w-4 h-4 text-muted-foreground" />
       <Select value={language || 'auto'} onValueChange={(v) => setLanguage(v === 'auto' ? '' : v)}>
         <SelectTrigger className="h-7 w-24 text-xs">
@@ -100,7 +102,7 @@ export const CaptionControls: React.FC<{ projectId: string }> = ({ projectId }) 
           ))}
         </SelectContent>
       </Select>
-      <Button size="sm" variant="ghost" className="h-7" disabled={generating} onClick={onGenerate}>
+      <Button size="sm" variant="ghost" className="h-7" disabled={generating} onClick={() => void onGenerate()}>
         {generating ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Captions className="w-3.5 h-3.5 mr-1" />}
         {generating ? t('contentStudio.captions.generating') : t('contentStudio.captions.generate')}
       </Button>
@@ -217,4 +219,19 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
       })}
     </div>
   );
+};
+
+/** MM109: Medi's "Generate captions" button lands here (spends allowance only on that click). */
+const CaptionBridge: React.FC<{ onGenerate: (language: string | null) => void; disabled: boolean }> = ({ onGenerate, disabled }) => {
+  const ref = React.useRef({ onGenerate, disabled });
+  React.useEffect(() => {
+    ref.current = { onGenerate, disabled };
+  });
+  React.useEffect(() => {
+    captionGenerateBridge.register((lang) => {
+      if (!ref.current.disabled) ref.current.onGenerate(lang ?? null);
+    });
+    return () => captionGenerateBridge.register(null);
+  }, []);
+  return null;
 };

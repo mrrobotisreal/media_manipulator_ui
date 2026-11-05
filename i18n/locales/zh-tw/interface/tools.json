@@ -205,6 +205,8 @@
       "undoNamed": "復原：{{step}}",
       "redo": "重做",
       "redoNamed": "重做：{{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "請 {{brand}} 編輯（Ctrl+J）",
       "mobileHint": "Darkroom 在較大的螢幕上搭配滑鼠或觸控板使用效果最佳。",
       "shortcuts": "空白鍵 播放／暫停 · ←/→ 逐格 · V/C/Y/U/H 工具 · ⌘/Ctrl+K 分割 · S 吸附 · M 標記 · Q/W 漣漪修剪 · Del 刪除 · +/− 縮放 · ⌘Z 復原 · ? 所有快速鍵",
       "tabs": {

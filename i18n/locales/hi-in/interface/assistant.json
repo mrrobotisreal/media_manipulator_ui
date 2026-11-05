@@ -99,6 +99,12 @@
           "moody": "इसे मूडी बनाएँ",
           "keepRed": "सिर्फ़ लाल रंग रखें",
           "vintage": "विंटेज फ़िल्म लुक"
+        },
+        "studio": {
+          "cinematic": "सिनेमाई कलर ग्रेड",
+          "lowerThird": "लोअर-थर्ड जोड़ें",
+          "pauses": "ठहराव छोटे करें",
+          "voice": "आवाज़ को साफ़ करें"
         }
       },
       "actions": {
@@ -132,6 +138,38 @@
         "purple": "बैंगनी",
         "magenta": "मैजेंटा",
         "custom": "चुने गए रंग"
+      },
+      "studio": {
+        "allClips": "सभी क्लिप",
+        "titleClip": "टाइटल",
+        "change": {
+          "split": "{{clip}} को {{at}} से. पर काटा",
+          "trim": "{{clip}} ट्रिम किया",
+          "move": "{{clip}} को {{at}} से. पर ले जाया",
+          "delete": "{{clip}} हटाया",
+          "deleteRipple": "{{clip}} हटाया और खाली जगह भरी",
+          "transition": "{{clip}} से पहले {{seconds}} से. का ट्रांज़िशन जोड़ा",
+          "grade": "कलर ग्रेड किया: {{clips}}",
+          "look": "{{look}} लुक लगाया: {{clips}}",
+          "transform": "{{clip}} को खिसकाया और आकार बदला",
+          "keyframes_one": "{{clip}} को {{count}} कीफ़्रेम से एनिमेट किया",
+          "keyframes_other": "{{clip}} को {{count}} कीफ़्रेम से एनिमेट किया",
+          "title": {
+            "lowerThird": "{{at}} से. पर लोअर-थर्ड जोड़ा",
+            "title": "{{at}} से. पर टाइटल कार्ड जोड़ा",
+            "endCard": "{{at}} से. पर एंड कार्ड जोड़ा",
+            "caption": "{{at}} से. पर स्क्रीन पर टेक्स्ट जोड़ा"
+          },
+          "speed": "{{clip}} की गति {{speed}}× की",
+          "freeze": "{{clip}} के बाद {{seconds}} से. का फ़्रीज़ फ़्रेम जोड़ा",
+          "audioPreset": "{{track}} पर {{preset}} प्रीसेट लगाया",
+          "duckingOn": "आवाज़ के नीचे संगीत धीमा करना चालू किया",
+          "duckingOff": "संगीत धीमा करना बंद किया",
+          "volume": "{{target}} को {{db}} dB पर सेट किया",
+          "marker": "{{at}} से. पर मार्कर जोड़ा",
+          "captionStyle": "कैप्शन की स्टाइल बदली",
+          "canvas": "फ़्रेम का अनुपात {{aspect}} किया"
+        }
       }
     }
   }

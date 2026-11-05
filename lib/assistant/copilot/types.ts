@@ -41,4 +41,9 @@ export interface CopilotAdapter {
   suggest: Partial<Record<AssistantActionKind, (params: Record<string, unknown>) => void | Promise<void>>>;
   /** Attach a frame to new messages when the preview toggle is on (Aperture, Darkroom: yes; Motion: verify only). */
   frameOnMessage: boolean;
+  /**
+   * MM109 (optional): whether an applied op list changed what the preview shows, so the verify
+   * loop sends an after-frame. Absent = every applied edit is visual (Aperture).
+   */
+  isVisual?: (ops: unknown) => boolean;
 }

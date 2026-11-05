@@ -100,6 +100,12 @@
           "moody": "Donner une ambiance sombre",
           "keepRed": "Ne garder que le rouge",
           "vintage": "Style pellicule vintage"
+        },
+        "studio": {
+          "cinematic": "Étalonnage cinéma",
+          "lowerThird": "Ajouter un bandeau",
+          "pauses": "Resserrer les pauses",
+          "voice": "Rendre la voix plus claire"
         }
       },
       "actions": {
@@ -133,6 +139,39 @@
         "purple": "le violet",
         "magenta": "le magenta",
         "custom": "la couleur choisie"
+      },
+      "studio": {
+        "allClips": "tous les clips",
+        "titleClip": "le titre",
+        "change": {
+          "split": "{{clip}} coupé à {{at}} s",
+          "trim": "{{clip}} raccourci",
+          "move": "{{clip}} déplacé à {{at}} s",
+          "delete": "{{clip}} supprimé",
+          "deleteRipple": "{{clip}} supprimé et espace refermé",
+          "transition": "Transition de {{seconds}} s ajoutée avant {{clip}}",
+          "grade": "Étalonnage appliqué : {{clips}}",
+          "look": "Look « {{look}} » appliqué : {{clips}}",
+          "transform": "{{clip}} déplacé et redimensionné",
+          "keyframes_one": "{{clip}} animé avec {{count}} image clé",
+          "keyframes_many": "{{clip}} animé avec {{count}} images clés",
+          "keyframes_other": "{{clip}} animé avec {{count}} images clés",
+          "title": {
+            "lowerThird": "Bandeau ajouté à {{at}} s",
+            "title": "Carton titre ajouté à {{at}} s",
+            "endCard": "Carton de fin ajouté à {{at}} s",
+            "caption": "Texte à l’écran ajouté à {{at}} s"
+          },
+          "speed": "{{clip}} réglé à la vitesse {{speed}}×",
+          "freeze": "Arrêt sur image de {{seconds}} s ajouté après {{clip}}",
+          "audioPreset": "Préréglage « {{preset}} » appliqué à {{track}}",
+          "duckingOn": "Atténuation de la musique sous la voix activée",
+          "duckingOff": "Atténuation de la musique désactivée",
+          "volume": "{{target}} réglé à {{db}} dB",
+          "marker": "Marqueur ajouté à {{at}} s",
+          "captionStyle": "Style des sous-titres modifié",
+          "canvas": "Format de l’image changé en {{aspect}}"
+        }
       }
     }
   }

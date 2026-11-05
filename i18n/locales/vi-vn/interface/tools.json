@@ -205,6 +205,8 @@
       "undoNamed": "Hoàn tác: {{step}}",
       "redo": "Làm lại",
       "redoNamed": "Làm lại: {{step}}",
+      "medi": "{{brand}}",
+      "mediLabel": "Nhờ {{brand}} chỉnh sửa (Ctrl+J)",
       "mobileHint": "Darkroom hoạt động tốt nhất trên màn hình lớn hơn với chuột hoặc bàn di chuột.",
       "shortcuts": "Space phát/tạm dừng · ←/→ từng khung · V/C/Y/U/H công cụ · ⌘/Ctrl+K cắt · S bắt dính · M đánh dấu · Q/W cắt dồn · Del xóa · +/− thu phóng · ⌘Z hoàn tác · ? tất cả phím tắt",
       "tabs": {

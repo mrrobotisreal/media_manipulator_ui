@@ -205,6 +205,8 @@
       "undoNamed": "{{step}}を元に戻す",
       "redo": "やり直す",
       "redoNamed": "{{step}}をやり直す",
+      "medi": "{{brand}}",
+      "mediLabel": "編集を{{brand}}に頼む（Ctrl+J）",
       "mobileHint": "Darkroomは、マウスやトラックパッドのある大きな画面で最も快適に使えます。",
       "shortcuts": "Space 再生/一時停止 · ←/→ コマ送り · V/C/Y/U/H ツール · ⌘/Ctrl+K 分割 · S スナップ · M マーカー · Q/W リップルトリム · Del 削除 · +/− ズーム · ⌘Z 元に戻す · ? すべてのショートカット",
       "tabs": {

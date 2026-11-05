@@ -89,6 +89,7 @@ import { studioUploadQueue, type UploadItem } from '@/lib/studio/uploadQueue';
 import { isProxyRebuildCandidate, proxyRebuildCandidates } from '@/lib/studio/proxyRebuild';
 import VoiceoverRecorder from './voiceover-recorder';
 import { useVoiceoverAvailable } from '@/lib/studio/voiceoverGenerate';
+import { voiceoverBridge } from '@/lib/studio/editorBridges';
 import { withToolShards } from '@/lib/i18n/ensureShard';
 
 // MM79: the Generate voiceover dialog loads with the panels shard (voiceTools.*) on
@@ -161,6 +162,16 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
   // MM79: Generate voiceover (hidden unless the backend + server offer it).
   const voiceoverAvailable = useVoiceoverAvailable();
   const [voiceoverOpen, setVoiceoverOpen] = React.useState(false);
+  // MM109: Medi's "Voiceover" suggestion opens the same dialog, prefilled.
+  const [voiceoverText, setVoiceoverText] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    if (!voiceoverAvailable) return;
+    voiceoverBridge.register((text) => {
+      setVoiceoverText(text);
+      setVoiceoverOpen(true);
+    });
+    return () => voiceoverBridge.register(null);
+  }, [voiceoverAvailable]);
   const [highlighted, setHighlighted] = React.useState<string | null>(null);
   const onVoiceoverReady = React.useCallback((assetId: string) => {
     setQuery('');
@@ -535,10 +546,15 @@ const MediaBin: React.FC<{ projectId: string }> = ({ projectId }) => {
       {voiceoverAvailable && voiceoverOpen && (
         <React.Suspense fallback={null}>
           <VoiceoverGenerateDialog
+            key={voiceoverText ?? ''}
             projectId={projectId}
             open={voiceoverOpen}
-            onOpenChange={setVoiceoverOpen}
+            onOpenChange={(o) => {
+              setVoiceoverOpen(o);
+              if (!o) setVoiceoverText(null);
+            }}
             onAssetReady={onVoiceoverReady}
+            initialText={voiceoverText}
           />
         </React.Suspense>
       )}
