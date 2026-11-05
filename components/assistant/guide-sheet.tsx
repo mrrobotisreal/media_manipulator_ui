@@ -9,7 +9,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { ArrowLeft, History, Loader2, Plus, Send, Square, Trash2 } from 'lucide-react';
+import { ArrowLeft, History, Loader2, Paperclip, Plus, Send, Square, Trash2, X } from 'lucide-react';
 
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { useLocalization } from '@/i18n/useLocalization';
@@ -20,6 +20,7 @@ import { deleteAssistantConversation, listAssistantConversations } from '@/lib/a
 import { MEDI_BRAND, MEDI_MARK_SRC } from '@/lib/assistant/brand';
 import { EDITOR_HREF, editorTeaserFor } from '@/lib/assistant/guideRoutes';
 import { actionHref, linkTargetKind } from '@/lib/assistant/links';
+import { AssistantFileError, uploadAssistantFile, type AssistantDroppedFile } from '@/lib/assistant/api';
 import { useAssistantStream, type AssistantTrack, type AssistantUiMessage } from '@/lib/assistant/useAssistantStream';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import { PHOTO_ADJUSTMENT_SLUGS } from '@/content/photo/slugs';
@@ -74,6 +75,11 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
   const locale = language.code;
   const chat = useAssistantStream({ surface: 'guide', locale });
   const [draft, setDraft] = React.useState('');
+  // MM116a: a file dropped into the guide. Uploaded on pick; the next message names it as fileRef.
+  const [dropped, setDropped] = React.useState<AssistantDroppedFile | null>(null);
+  const [uploading, setUploading] = React.useState(false);
+  const [fileError, setFileError] = React.useState<string | null>(null);
+  const fileInput = React.useRef<HTMLInputElement>(null);
   const [view, setView] = React.useState<'chat' | 'history'>('chat');
   const listRef = React.useRef<HTMLDivElement>(null);
   const maxChars = capabilities && capabilities.enabled ? capabilities.maxMessageChars : 4000;
@@ -86,7 +92,23 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
   }, [chat.messages]);
 
   const submit = (text: string) => {
-    if (chat.send(text.slice(0, maxChars))) setDraft('');
+    if (chat.send(text.slice(0, maxChars), dropped ? { fileRef: dropped.fileRef } : undefined)) setDraft('');
+  };
+
+  const pickFile = async (file: File | undefined) => {
+    if (!file) return;
+    setFileError(null);
+    setUploading(true);
+    try {
+      const up = await uploadAssistantFile(file);
+      setDropped(up);
+    } catch (err) {
+      const code = err instanceof AssistantFileError ? err.code : 'failed';
+      setFileError(code === 'file_too_large' ? t('assistant.guide.fileTooLarge') : code === 'unsupported_file' ? t('assistant.guide.fileUnsupported') : t('assistant.guide.fileFailed'));
+    } finally {
+      setUploading(false);
+      if (fileInput.current) fileInput.current.value = '';
+    }
   };
 
   const followLink = (href: string) => {
@@ -126,6 +148,8 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
             title={t('assistant.guide.newChat')}
             onClick={() => {
               chat.reset();
+              setDropped(null);
+              setFileError(null);
               setView('chat');
             }}
           >
@@ -203,7 +227,34 @@ export default function GuideSheet({ open, onOpenChange, capabilities }: GuideSh
                 submit(draft);
               }}
             >
+              {(dropped || uploading || fileError) && (
+                <div className="mb-2 flex items-center gap-2 text-xs" data-testid="medi-file-chip">
+                  {uploading ? (
+                    <span className="flex items-center gap-1 text-muted-foreground"><Loader2 className="size-3 animate-spin" />{t('assistant.guide.fileUploading')}</span>
+                  ) : dropped ? (
+                    <span className="flex min-w-0 items-center gap-1 rounded-md border border-edge px-2 py-1">
+                      <Paperclip className="size-3 shrink-0" />
+                      <span className="truncate">{dropped.name}</span>
+                      <button type="button" onClick={() => setDropped(null)} aria-label={t('assistant.guide.fileRemove')} title={t('assistant.guide.fileRemove')} className="shrink-0 hover:text-foreground">
+                        <X className="size-3" />
+                      </button>
+                    </span>
+                  ) : null}
+                  {fileError && <span role="alert" className="text-destructive">{fileError}</span>}
+                </div>
+              )}
               <div className="flex items-end gap-2">
+                <input ref={fileInput} type="file" accept="image/*,video/*,audio/*,application/pdf" className="hidden" onChange={(e) => void pickFile(e.target.files?.[0])} data-testid="medi-file-input" />
+                <button
+                  type="button"
+                  onClick={() => fileInput.current?.click()}
+                  disabled={uploading || chat.streaming}
+                  className="flex size-11 items-center justify-center rounded-md border border-edge hover:bg-accent disabled:opacity-50"
+                  aria-label={t('assistant.guide.attach')}
+                  title={t('assistant.guide.attach')}
+                >
+                  <Paperclip className="size-4" />
+                </button>
                 <textarea
                   value={draft}
                   onChange={(e) => setDraft(e.target.value.slice(0, maxChars))}

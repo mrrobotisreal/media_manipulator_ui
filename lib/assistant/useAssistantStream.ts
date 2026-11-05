@@ -48,6 +48,8 @@ export interface SendOptions {
   plan?: boolean;
   context?: AssistantChatBody['context'];
   frame?: AssistantChatBody['frame'];
+  /** MM116a (guide): the dropped file this message is about. */
+  fileRef?: string;
 }
 
 export interface UseAssistantStreamOptions {
@@ -210,6 +212,7 @@ export function useAssistantStream(opts: UseAssistantStreamOptions) {
         ...(options.context ? { context: options.context } : {}),
         ...(options.frame ? { frame: options.frame } : {}),
         ...(options.plan ? { plan: true } : {}),
+        ...(options.fileRef ? { fileRef: options.fileRef } : {}),
       };
       const tier = surface === 'guide' ? 'guide' : options.plan ? 'plan' : 'copilot';
       void run(body, { plan: !!options.plan, hasFrame: !!options.frame, userTurns, tier });

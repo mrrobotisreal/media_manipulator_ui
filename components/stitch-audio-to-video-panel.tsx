@@ -10,6 +10,7 @@ import useStitchAudioToVideoTool, {
   type StitchMode,
 } from '@/lib/useStitchAudioToVideoTool';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 
 /**
  * StitchAudioToVideoPanel orchestrates the multi-file workflow: one base
@@ -25,8 +26,9 @@ const StitchAudioToVideoPanel: React.FC = () => {
   const { t, formatFileSize } = useLocalization('interface');
   const [video, setVideo] = useState<File | null>(null);
   const [tracks, setTracks] = useState<StitchAudioTrackInput[]>([]);
-  const [mode, setMode] = useState<StitchMode>('mix');
-  const [trimToVideoDuration, setTrimToVideoDuration] = useState(true);
+  const link = useDeepLinkContext();
+  const [mode, setMode] = useState<StitchMode>((link?.audioMode as StitchMode | undefined) ?? 'mix');
+  const [trimToVideoDuration, setTrimToVideoDuration] = useState(typeof link?.trimToVideoDuration === 'boolean' ? link.trimToVideoDuration : true);
   const [isDragOver, setIsDragOver] = useState(false);
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);

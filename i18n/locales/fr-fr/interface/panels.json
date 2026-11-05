@@ -171,6 +171,8 @@
       "h264": "H.264 (le plus compatible)",
       "h265": "H.265 / HEVC (plus léger, appareils récents)"
     },
+    "crfLabel": "Valeur CRF personnalisée (facultatif)",
+    "crfHint": "Réglage fin au-delà du niveau : {{min}} est presque sans perte, {{max}} donne un fichier très petit. Laissez vide pour utiliser le niveau.",
     "stripAudio": "Supprimer la piste audio pour un fichier encore plus léger",
     "note": "Nous réencodons la vidéo au niveau choisi. La sortie MP4 utilise H.264 + AAC avec faststart pour une lecture instantanée.",
     "running": "Compression…",

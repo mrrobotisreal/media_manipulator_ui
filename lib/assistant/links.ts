@@ -6,6 +6,7 @@
  */
 import { localizeHref, stripLocalePrefix } from '@/i18n/locales';
 import { SITE_ORIGIN } from '@/lib/seo';
+import { MAX_OPTIONS_PARAM_CHARS, OPTIONS_PARAM, encodeOptions } from '@/lib/assistant/toolOptions/codec';
 
 import type { AssistantLinkTargetProp } from '@/lib/analytics/events';
 
@@ -73,7 +74,15 @@ export function actionHref(kind: string, params: Record<string, unknown> | null 
     const base = safeSiteHref(route, localeCode);
     if (!base) return null;
     const preset = typeof p.preset === 'string' && /^[A-Za-z0-9_-]{1,40}$/.test(p.preset) ? p.preset : null;
-    return preset ? `${base}${base.includes('?') ? '&' : '?'}preset=${encodeURIComponent(preset)}` : base;
+    let href = preset ? `${base}${base.includes('?') ? '&' : '?'}preset=${encodeURIComponent(preset)}` : base;
+    // MM116a: the API already validated `options` against the tool's manifest schema; the page
+    // validates again on arrival (codec.ts), so a link that is too big is simply dropped here.
+    const opts = p.options;
+    if (opts && typeof opts === 'object' && !Array.isArray(opts) && Object.keys(opts).length > 0) {
+      const o = encodeOptions(opts as Record<string, unknown>);
+      if (o.length <= MAX_OPTIONS_PARAM_CHARS) href += `${href.includes('?') ? '&' : '?'}${OPTIONS_PARAM}=${o}`;
+    }
+    return href;
   }
   return null;
 }

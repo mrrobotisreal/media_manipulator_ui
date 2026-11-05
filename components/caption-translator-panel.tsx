@@ -9,6 +9,7 @@ import useCaptionTranslatorTool, {
   type CaptionFormat,
 } from '@/lib/useCaptionTranslatorTool';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 
 /**
  * CaptionTranslatorPanel handles the bespoke "upload a .srt or .vtt file
@@ -64,9 +65,10 @@ const CaptionTranslatorPanel: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [inputFormat, setInputFormat] = useState<CaptionFormat>('srt');
-  const [outputFormat, setOutputFormat] = useState<CaptionFormat | 'same'>('same');
-  const [sourceLanguage, setSourceLanguage] = useState<string>('auto');
-  const [targetLanguage, setTargetLanguage] = useState<string>('es');
+  const link = useDeepLinkContext();
+  const [outputFormat, setOutputFormat] = useState<CaptionFormat | 'same'>((link?.outputFormat as CaptionFormat | 'same' | undefined) ?? 'same');
+  const [sourceLanguage, setSourceLanguage] = useState<string>(typeof link?.sourceLanguage === 'string' ? link.sourceLanguage : 'auto');
+  const [targetLanguage, setTargetLanguage] = useState<string>(typeof link?.targetLanguage === 'string' ? link.targetLanguage : 'es');
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

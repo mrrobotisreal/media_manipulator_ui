@@ -24,20 +24,22 @@ const VideoTransformPanel: React.FC<{ presets: VideoTransformPresets }> = ({ pre
   const emphasis = presets.emphasis;
   const lockedFormat = presets.lockedOutputFormat;
 
-  const [format, setFormat] = useState<EmbeddedVideoFormat>(lockedFormat ?? presets.defaultOutputFormat ?? 'mp4');
+  const link = presets.options;
+  const num = (k: string): number | undefined => (typeof link?.[k] === 'number' ? (link[k] as number) : undefined);
+  const [format, setFormat] = useState<EmbeddedVideoFormat>(lockedFormat ?? (link?.format as EmbeddedVideoFormat | undefined) ?? presets.defaultOutputFormat ?? 'mp4');
   // Resize state
-  const [width, setWidth] = useState<number | ''>(presets.defaultWidth ?? '');
-  const [height, setHeight] = useState<number | ''>(presets.defaultHeight ?? '');
-  const [preserveAspect, setPreserveAspect] = useState(true);
+  const [width, setWidth] = useState<number | ''>(num('width') ?? presets.defaultWidth ?? '');
+  const [height, setHeight] = useState<number | ''>(num('height') ?? presets.defaultHeight ?? '');
+  const [preserveAspect, setPreserveAspect] = useState(typeof link?.preserveAspectRatio === 'boolean' ? link.preserveAspectRatio : true);
   // Rotate state
-  const [rotation, setRotation] = useState<number>(presets.defaultRotation ?? 90);
-  const [flipH, setFlipH] = useState(false);
-  const [flipV, setFlipV] = useState(false);
+  const [rotation, setRotation] = useState<number>(num('rotation') ?? presets.defaultRotation ?? 90);
+  const [flipH, setFlipH] = useState(link?.flipHorizontal === true);
+  const [flipV, setFlipV] = useState(link?.flipVertical === true);
   // Crop state
-  const [cropX, setCropX] = useState<number>(presets.defaultCrop?.x ?? 0);
-  const [cropY, setCropY] = useState<number>(presets.defaultCrop?.y ?? 0);
-  const [cropW, setCropW] = useState<number | ''>(presets.defaultCrop?.width ?? '');
-  const [cropH, setCropH] = useState<number | ''>(presets.defaultCrop?.height ?? '');
+  const [cropX, setCropX] = useState<number>(num('cropX') ?? presets.defaultCrop?.x ?? 0);
+  const [cropY, setCropY] = useState<number>(num('cropY') ?? presets.defaultCrop?.y ?? 0);
+  const [cropW, setCropW] = useState<number | ''>(num('cropWidth') ?? presets.defaultCrop?.width ?? '');
+  const [cropH, setCropH] = useState<number | ''>(num('cropHeight') ?? presets.defaultCrop?.height ?? '');
 
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   const submitFormat = lockedFormat ?? format;

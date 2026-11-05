@@ -11,6 +11,7 @@ import { QuotaExceededError } from '@/lib/auth/authedFetch';
 import { answerOutcome, failReason, latencyBucket, turnIndexBucket, undoBucket } from './analytics';
 import { EDITOR_HREF, editorTeaserFor, guideAllowedOn } from './guideRoutes';
 import { actionHref, linkTargetKind, safeSiteHref } from './links';
+import { encodeOptions } from './toolOptions/codec';
 import { streamAssistantChat, type AssistantChatBody } from './stream';
 import type { AssistantStreamEvent } from '@/schemas/assistant';
 
@@ -142,6 +143,13 @@ describe('link safety', () => {
     expect(actionHref('open_tool', { slug: 'compress-video' }, 'en-US')).toBe('/tools/compress-video');
     expect(actionHref('open_tool', { slug: 'x', preset: 'bad preset!' }, 'en-US')).toBe('/tools/x');
     expect(actionHref('navigate', { target: '/pricing' }, 'ja-JP')).toBe('/ja/pricing');
+    // MM116a: options ride in ?o= (base64url JSON), after any preset, never when empty or too big.
+    const o = encodeOptions({ level: 'smallest', crf: 30 });
+    expect(actionHref('open_tool', { slug: 'compress-video', options: { level: 'smallest', crf: 30 } }, 'en-US')).toBe(`/tools/compress-video?o=${o}`);
+    expect(actionHref('open_tool', { slug: 'compress-video', preset: 'web', options: { level: 'smallest', crf: 30 } }, 'ru-RU')).toBe(`/ru/tools/compress-video?preset=web&o=${o}`);
+    expect(actionHref('open_tool', { slug: 'compress-video', options: {} }, 'en-US')).toBe('/tools/compress-video');
+    expect(actionHref('open_tool', { slug: 'compress-video', options: [1] }, 'en-US')).toBe('/tools/compress-video');
+    expect(actionHref('open_tool', { slug: 'compress-video', options: { pad: 'x'.repeat(4000) } }, 'en-US')).toBe('/tools/compress-video');
     expect(actionHref('navigate', { target: 'https://evil.example' }, 'en-US')).toBeNull();
     expect(actionHref('open_tool', { slug: '../../x' }, 'en-US')).toBeNull();
     expect(actionHref('heal', {}, 'en-US')).toBeNull();

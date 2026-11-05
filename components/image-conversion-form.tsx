@@ -12,6 +12,7 @@ import FaceSelectionOverlay from "@/components/face-selection-overlay";
 import RemoveObjectOverlay, { type RemoveObjectRectangle } from "@/components/remove-object-overlay";
 import useDetectFaces, { type FaceDetectionResponse } from "@/lib/useDetectFaces";
 import type { ConversionFormData } from "@/schemas/types";
+import { mergeDefaults, imageFormDefaults } from "@/lib/assistant/toolOptions/prefill";
 import type { ImageFormPresets } from "@/components/embedded-tool-panel";
 import { useEffect, useState } from "react";
 import { useLocalization } from "@/i18n/useLocalization";
@@ -100,7 +101,7 @@ const ImageConversionForm: React.FC<{
   const { control, handleSubmit, setValue, clearErrors, unregister, formState: { errors } } = useForm({
     resolver: zodResolver(imageConversionSchema),
     shouldUnregister: true,
-    defaultValues: {
+    defaultValues: mergeDefaults({
       format: initialFormat,
       quality: presets?.defaultQuality ?? 85,
       width: presets?.defaultWidth,
@@ -161,7 +162,7 @@ const ImageConversionForm: React.FC<{
           selectedFaceIds: [] as string[],
         },
       },
-    },
+    }, presets?.options ? imageFormDefaults(presets.options) : undefined) as never,
     mode: 'onChange',
   });
   const metadataMode = useWatch({ control, name: 'metadataMode' });

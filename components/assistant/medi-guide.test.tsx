@@ -21,6 +21,7 @@ const h = vi.hoisted(() => ({
   user: null as null | { uid: string },
   stream: vi.fn(),
   feedback: vi.fn(async () => true),
+  upload: vi.fn(),
 }));
 vi.mock('next/navigation', () => ({ usePathname: () => h.pathname, useRouter: () => ({ push: h.push }) }));
 vi.mock('@/lib/analytics', async () => ({ EVENTS: (await import('@/lib/analytics/events')).EVENTS, analytics: { track: h.track } }));
@@ -31,6 +32,7 @@ vi.mock('@/lib/assistant/stream', () => ({ streamAssistantChat: h.stream }));
 vi.mock('@/lib/assistant/api', async (orig) => ({
   ...(await orig<typeof import('@/lib/assistant/api')>()),
   sendAssistantFeedback: h.feedback,
+  uploadAssistantFile: h.upload,
   listAssistantConversations: vi.fn(async () => []),
 }));
 
@@ -71,6 +73,7 @@ beforeEach(() => {
   h.push.mockReset();
   h.stream.mockReset();
   h.feedback.mockClear();
+  h.upload.mockReset();
 });
 afterEach(cleanup);
 
@@ -206,6 +209,32 @@ describe('GuideSheet', () => {
     expect(h.track).toHaveBeenCalledWith('assistant_response_completed', expect.objectContaining({ surface: 'guide', model_tier: 'guide', outcome: 'action', tool_rounds: 0 }));
     const body = h.stream.mock.calls[0][0];
     expect(body).toMatchObject({ surface: 'guide', locale: 'ru-RU', message: { text: 'Which tool do I need?' } });
+  });
+
+  // MM116a: a file dropped into the guide is uploaded once and named as fileRef on the next message.
+  it('attach: uploads the file, shows a chip, sends fileRef, and New chat forgets it', async () => {
+    h.upload.mockResolvedValue({ fileRef: '11111111-1111-4111-8111-111111111111', name: 'clip.mov', kind: 'video', mime: 'video/quicktime', sizeBytes: 5 });
+    streamWith([{ type: 'meta', conversationId: null, turnId: 't', model: 'm' }, { type: 'delta', text: 'ok' }, { type: 'done' }]);
+    renderSheet();
+    const input = screen.getByTestId('medi-file-input') as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [new File(['x'], 'clip.mov', { type: 'video/quicktime' })] } });
+    expect(await screen.findByText('clip.mov')).toBeTruthy();
+    expect(h.upload).toHaveBeenCalledTimes(1);
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'what is this' } });
+    fireEvent.submit(screen.getByRole('textbox').closest('form')!);
+    await waitFor(() => expect(h.stream).toHaveBeenCalled());
+    expect(h.stream.mock.calls[0][0]).toMatchObject({ message: { text: 'what is this' }, fileRef: '11111111-1111-4111-8111-111111111111' });
+    fireEvent.click(await screen.findByLabelText('New chat'));
+    await waitFor(() => expect(screen.queryByText('clip.mov')).toBeNull());
+  });
+
+  it('attach: a refused upload shows a localized message and no chip', async () => {
+    const { AssistantFileError } = await import('@/lib/assistant/api');
+    h.upload.mockRejectedValue(new AssistantFileError('unsupported_file'));
+    renderSheet();
+    fireEvent.change(screen.getByTestId('medi-file-input'), { target: { files: [new File(['x'], 'a.txt', { type: 'text/plain' })] } });
+    expect(await screen.findByText(/can read images, video, audio and PDF/)).toBeTruthy();
+    expect(screen.queryByTestId('medi-file-chip')?.textContent).not.toContain('a.txt');
   });
 
   it('Stop aborts the stream and says so', async () => {

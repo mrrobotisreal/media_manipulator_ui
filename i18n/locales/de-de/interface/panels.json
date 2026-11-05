@@ -171,6 +171,8 @@
       "h264": "H.264 (beste Kompatibilität)",
       "h265": "H.265 / HEVC (kleiner, moderne Geräte)"
     },
+    "crfLabel": "CRF-Wert überschreiben (optional)",
+    "crfHint": "Feinsteuerung über die Stufe hinaus: {{min}} ist fast verlustfrei, {{max}} sehr klein. Leer lassen, um die Stufe zu nutzen.",
     "stripAudio": "Audiospur entfernen für eine noch kleinere Datei",
     "note": "Wir kodieren das Video in der gewählten Stufe neu. Die MP4-Ausgabe verwendet H.264 + AAC mit Faststart für sofortige Wiedergabe.",
     "running": "Wird komprimiert…",

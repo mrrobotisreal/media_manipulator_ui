@@ -19,6 +19,7 @@ import {
 } from '@/lib/useSummarize';
 import { framesFromStages, useSummaryGenerated } from '@/lib/summaryAnalytics';
 import type { SummarizeCapabilities, SummaryDepth } from '@/lib/summarizeTypes';
+import { useDeepLinkContext } from '@/lib/assistant/toolOptions/useDeepLink';
 import { cn } from '@/lib/utils';
 
 /**
@@ -131,9 +132,10 @@ const SummarizePanel: React.FC<SummarizePanelProps> = ({ task }) => {
   const groupName = useId();
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
   // The page locale is the default and follows a language switch until the visitor picks one.
-  const [pickedLanguage, setPickedLanguage] = useState<string | null>(null);
+  const link = useDeepLinkContext();
+  const [pickedLanguage, setPickedLanguage] = useState<string | null>(typeof link?.language === 'string' ? link.language : null);
   const outputLanguage = pickedLanguage ?? language?.code ?? 'en-US';
-  const [depth, setDepth] = useState<SummaryDepth>('standard');
+  const [depth, setDepth] = useState<SummaryDepth>(link?.depth === 'deep' ? 'deep' : 'standard');
 
   const summarize = useSummarize((res) => {
     setConversionJob({ id: res.jobId, status: 'processing', originalFile: new File([], 'temp'), progress: 0 });

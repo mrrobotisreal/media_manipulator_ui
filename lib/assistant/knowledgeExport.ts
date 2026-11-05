@@ -66,6 +66,9 @@ import { BLEND_MODES, LAYER_PARAMS, geometrySchema, maskComponentSchema, maskSch
 import { BUILTIN_PRESETS } from '@/lib/photo/presets';
 import { SHORTCUTS as PHOTO_SHORTCUTS } from '@/lib/photo/shortcuts';
 import { PHOTO_PANEL_IDS, type PhotoPanelId } from '@/lib/photo/panelIds';
+import { optionsSpecForTool } from '@/lib/assistant/toolOptions/registry';
+import { loadToolSidecar } from '@/lib/assistant/toolOptions/sidecars';
+import { optionsFileText } from '@/lib/assistant/toolOptions/export';
 import { RECIPE_SECTIONS, parseRecipe, type Recipe, type RecipeCriterion } from '@/lib/assistant/recipes';
 
 /** Output directory relative to the UI repo root (the script's default). */
@@ -187,6 +190,8 @@ interface DocInput {
   keywords: string[];
   links: string[];
   opens?: string[];
+  /** MM116a: `## Routing` (tools only). */
+  routing?: string[];
 }
 
 const uniq = (xs: string[]) => [...new Set(xs.map((x) => x.trim()).filter(Boolean))];
@@ -200,6 +205,7 @@ function doc(d: DocInput): string {
   lines.push('## Search keywords', '', uniq(d.keywords).map((k) => `\`${k.replace(/`/g, '')}\``).join(', '), '');
   lines.push('## Links', '', ...(d.links.length ? uniq(d.links).map((l) => `- ${l}`) : ['- (none)']), '');
   if (d.opens && d.opens.length) lines.push('## Opens', '', ...d.opens.map((o) => `- ${o}`), '');
+  if (d.routing && d.routing.length) lines.push('## Routing', '', ...d.routing, '');
   return lines.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd() + '\n';
 }
 
@@ -253,6 +259,15 @@ function opensFacts(tool: ToolPageContent): string[] {
   return out;
 }
 
+/** MM116a: the assistant-only routing copy (`content/medi/tools/<slug>.md`) as a `## Routing` section. */
+function routingLines(tool: ToolPageContent): string[] {
+  const sc = loadToolSidecar(tool.slug);
+  if (!sc) return [];
+  const lines = ['When to send a visitor here: ' + sc.whenToUse.replace(/\s+/g, ' '), 'When to send them elsewhere: ' + sc.whenNotToUse.replace(/\s+/g, ' ')];
+  if (sc.related.length) lines.push('Related tools: ' + sc.related.map((r) => `${r.slug} (${r.reason})`).join('; '));
+  return lines;
+}
+
 function toolDoc(tool: ToolPageContent): string {
   const aliases = aliasesOf(tool.slug);
   const f = tool.supportedFormats;
@@ -280,6 +295,7 @@ function toolDoc(tool: ToolPageContent): string {
     keywords,
     links: tool.related.filter((r) => r.to.startsWith('/')).map((r) => `[${r.label}](${r.to})`),
     opens: opensFacts(tool),
+    routing: routingLines(tool),
   });
 }
 
@@ -1048,14 +1064,17 @@ export function recipeDoc(r: Recipe): string {
 /** Every Medi knowledge file keyed by its path relative to `knowledge/`. */
 export function buildMediKnowledge(recipes: Recipe[] = loadRecipes()): Record<string, string> {
   const files: Record<string, string> = {};
-  for (const t of PRIMARY_TOOL_PAGES) files[`tools/${t.slug}.md`] = toolDoc(t);
+  for (const t of PRIMARY_TOOL_PAGES) {
+    files[`tools/${t.slug}.md`] = toolDoc(t);
+    files[`tools/${t.slug}.options.json`] = optionsFileText(t.slug, optionsSpecForTool(t));
+  }
   const specs = pageSpecs();
   for (const s of specs) files[pageFile(s.route)] = pageDoc(s);
   for (const [p, body] of [...studioDocs(), ...vectorDocs(), ...photoDocs()]) files[p] = body;
   for (const r of recipes) files[`recipes/${r.path}`] = recipeDoc(r);
 
   const index: Record<string, ReturnType<typeof indexEntry>> = {};
-  for (const [p, body] of Object.entries(files)) index[p.replace(/\.md$/, '')] = indexEntry(p, body);
+  for (const [p, body] of Object.entries(files).filter(([f]) => f.endsWith('.md'))) index[p.replace(/\.md$/, '')] = indexEntry(p, body);
 
   files['routes.json'] = stableJson(buildRoutes(specs));
   for (const l of locales) files[`names/${l.code}.json`] = stableJson(buildNames(l.code, specs));
@@ -1070,6 +1089,7 @@ export function buildMediKnowledge(recipes: Recipe[] = loadRecipes()): Record<st
     'the UI test `lib/assistant/knowledgeExport.test.ts` fails when this copy is stale.',
     '',
     '- `tools/<slug>.md`: one per primary tool page (aliases are keywords of their target)',
+    '- `tools/<slug>.options.json`: that tool\'s option JSON Schema (or an explicit `none`), from the code that builds the form',
     '- `pages/<route>.md`: every other public route',
     '- `editors/{studio,vector,photo}/*.md`: what each editor can do, from its registries',
     '- `recipes/{photo,studio,vector,workflow}/*.md`: professional techniques with op examples (from `content/medi/recipes/`)',

@@ -5,10 +5,11 @@ import { Music } from 'lucide-react';
 import type { ConversionJob } from '@/lib/useGetJobStatus';
 import type { ExtractAudioPresets } from '@/components/embedded-tool-panel';
 import useSpecializedMediaTool from '@/lib/useSpecializedMediaTool';
+import { EXTRACT_AUDIO_FORMATS } from '@/lib/assistant/toolOptions/fields';
 import SpecializedToolShell from '@/components/specialized-tool-shell';
 import { useLocalization } from '@/i18n/useLocalization';
 
-const FORMAT_VALUES = ['mp3', 'wav', 'm4a', 'aac', 'flac', 'ogg'] as const;
+const FORMAT_VALUES = EXTRACT_AUDIO_FORMATS;
 type ExtractAudioFormat = typeof FORMAT_VALUES[number];
 
 const ExtractAudioPanel: React.FC<{ presets?: ExtractAudioPresets }> = ({ presets }) => {
@@ -17,7 +18,7 @@ const ExtractAudioPanel: React.FC<{ presets?: ExtractAudioPresets }> = ({ preset
   // submitted format always reflects the lock.
   const lockedFormat = presets?.lockedFormat;
   const [format, setFormat] = useState<ExtractAudioFormat>(
-    lockedFormat ?? presets?.defaultFormat ?? 'mp3',
+    lockedFormat ?? (presets?.options?.format as ExtractAudioFormat | undefined) ?? presets?.defaultFormat ?? 'mp3',
   );
   const submitFormat = lockedFormat ?? format;
   const [conversionJob, setConversionJob] = useState<ConversionJob | null>(null);
