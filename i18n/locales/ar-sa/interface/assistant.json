@@ -103,6 +103,12 @@
           "moody": "اجعلها ذات طابع قاتم",
           "keepRed": "أبقِ الأحمر فقط",
           "vintage": "مظهر فيلم كلاسيكي قديم"
+        },
+        "vector": {
+          "lowerThird": "شريط سفلي ينزلق للداخل",
+          "logoReveal": "اكشف شعاري بحركة",
+          "titlePop": "حرّك ظهور هذا النص",
+          "forSocial": "كيف أصدّر هذا لوسائل التواصل؟"
         }
       },
       "actions": {
@@ -136,6 +142,25 @@
         "purple": "البنفسجي",
         "magenta": "الأرجواني",
         "custom": "اللون المختار"
+      },
+      "vectorChange": {
+        "addLayer": "أضفت طبقة: {{layer}}",
+        "addText": "أضفت سطرًا من النص",
+        "importSvg": "استوردت ملف SVG",
+        "updateLayer": "غيّرت {{layer}}",
+        "deleteLayer": "حذفت {{layer}}",
+        "animate": "حرّكت {{property}} في {{layer}}",
+        "animator_zero": "طبّقت {{animator}} على {{count}} طبقة",
+        "animator_one": "طبّقت {{animator}} على طبقة واحدة ({{count}})",
+        "animator_two": "طبّقت {{animator}} على طبقتين ({{count}})",
+        "animator_few": "طبّقت {{animator}} على {{count}} طبقات",
+        "animator_many": "طبّقت {{animator}} على {{count}} طبقة",
+        "animator_other": "طبّقت {{animator}} على {{count}} طبقة",
+        "template": "أضفت القالب {{template}}",
+        "duration": "ضبطت المدة على {{seconds}} ث",
+        "canvas": "غيّرت لوحة الرسم",
+        "loopOn": "شغّلت التكرار",
+        "loopOff": "أوقفت التكرار"
       }
     }
   }
