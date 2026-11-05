@@ -34,6 +34,8 @@
  * and those tickets adjust the recipes if a name changes.
  */
 import { photoOpsProblems } from '@/lib/assistant/ops/photo';
+import { vectorOpsProblems } from '@/lib/assistant/ops/vector';
+import { TEMPLATE_KINDS } from '@/lib/vector/templates';
 import {
   CHROMAKEY_PARAMS,
   LUMETRI_PARAMS,
@@ -47,8 +49,6 @@ import { AUDIO_PRESETS } from '@/lib/studio/audioPresets';
 import { STUDIO_TITLE_FONTS } from '@/lib/studio/titleFonts';
 import { NAMED_KEYFRAME_PROPERTIES } from '@/lib/studio/keyframes';
 import { studioCaptionStyleSchema, studioKeyframeEaseSchema, studioAudioConfigSchema } from '@/lib/studioTypes';
-import { ANIMATOR_IDS } from '@/lib/vector/animators';
-import { EASING_PRESETS, TRACK_PROPERTY_PATTERN, layerSchema as vectorLayerSchema } from '@/lib/vector/vectorTypes';
 
 export const RECIPE_EDITORS = ['photo', 'studio', 'vector', 'workflow'] as const;
 export type RecipeEditor = (typeof RECIPE_EDITORS)[number];
@@ -56,7 +56,7 @@ export const RECIPE_DIFFICULTIES = ['basic', 'intermediate', 'advanced'] as cons
 export const RECIPE_SECTIONS = ['When to use', 'What a pro does and why', 'Ops', 'How to adjust'] as const;
 
 /** Surfaces whose recipes are checked against a real op schema (flipped by MM108–MM110). */
-export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = ['photo'];
+export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = ['photo', 'vector'];
 
 /** The Darkroom looks MM109 builds (`lib/studio/looks.ts`, design §8.5). */
 export const PLANNED_STUDIO_LOOKS = [
@@ -74,8 +74,8 @@ export const PLANNED_STUDIO_LOOKS = [
   'golden-hour',
 ] as const;
 
-/** The Motion templates MM110 builds (`lib/vector/templates.ts`, design §8.5). */
-export const PLANNED_VECTOR_TEMPLATES = ['lowerThird', 'logoReveal', 'titlePop', 'bulletReveal', 'counter', 'badgeBounce'] as const;
+/** The Motion templates (`lib/vector/templates.ts`, MM110); every one needs a recipe. */
+export const PLANNED_VECTOR_TEMPLATES = TEMPLATE_KINDS;
 
 
 export interface RecipeMeta {
@@ -489,110 +489,10 @@ export const STUDIO_OP_SPECS: Record<string, OpSpec> = {
   set_canvas: { required: { aspect: oneOf(['16:9', '9:16', '1:1', '4:5']) } },
 };
 
-// --- Motion (design §8.4) -----------------------------------------------------
+// Motion recipes are checked against the op schema (MM110, lib/assistant/ops/vector.ts).
 
-const VECTOR_LAYER_TYPES = ['group', 'path', 'rect', 'ellipse', 'line', 'polyline', 'polygon', 'text', 'image', 'use'];
-const vectorEasing: FieldCheck = (v, p, e) => {
-  if (typeof v === 'string') return oneOf([...EASING_PRESETS, 'hold'])(v, p, e);
-  const cb = (v as { cubicBezier?: unknown } | null)?.cubicBezier;
-  if (!Array.isArray(cb) || cb.length !== 4 || !cb.every((x) => typeof x === 'number')) e.push(`${p}: ${[...EASING_PRESETS, 'hold'].join(', ')} or {cubicBezier:[x1,y1,x2,y2]}`);
-};
-const vectorKeyframes: FieldCheck = (v, p, e) => {
-  if (!Array.isArray(v) || v.length < 2 || v.length > 64) {
-    e.push(`${p}: 2..64 keyframes`);
-    return;
-  }
-  let last = -1;
-  v.forEach((k, i) => {
-    const kk = k as Record<string, unknown>;
-    for (const f of Object.keys(kk ?? {})) if (!['t', 'value', 'easing'].includes(f)) e.push(`${p}[${i}].${f}: unknown field`);
-    range(0, 3_600_000)(kk?.t, `${p}[${i}].t`, e);
-    if (typeof kk?.t === 'number' && kk.t <= last) e.push(`${p}[${i}].t: keyframes must be in increasing time (ms)`);
-    last = typeof kk?.t === 'number' ? kk.t : last;
-    if (typeof kk?.value !== 'number' && typeof kk?.value !== 'string') e.push(`${p}[${i}].value: number or text`);
-    vectorEasing(kk?.easing, `${p}[${i}].easing`, e);
-  });
-};
-const vectorLayerOf = (type: string) =>
-  ((vectorLayerSchema as unknown as ZodLike)._def.options as ZodLike[]).find((o) => unwrap(shapeOf(o).type)._def.value === type);
-const vectorProps = (type: unknown): FieldCheck => (v, p, e) => {
-  const schema = vectorLayerOf(type as string);
-  if (!schema) return;
-  if (!v || typeof v !== 'object' || Array.isArray(v)) {
-    e.push(`${p}: expected an object`);
-    return;
-  }
-  const shape = shapeOf(schema);
-  for (const [k, x] of Object.entries(v)) {
-    if (k === 'type' || k === 'id' || k === 'children') e.push(`${p}.${k}: set by the editor, not the recipe`);
-    else if (!(k in shape)) e.push(`${p}.${k}: unknown property of a ${type as string} layer`);
-    else checkAgainstSchema(shape[k], x, `${p}.${k}`, e);
-  }
-};
-
-export const VECTOR_OP_SPECS: Record<string, OpSpec> = {
-  add_layer: {
-    required: { type: oneOf(VECTOR_LAYER_TYPES), props: () => undefined },
-    optional: { parentId: isStr },
-    extra: (o, p, e) => vectorProps(o.type)(o.props, `${p}.props`, e),
-  },
-  add_text: {
-    required: { text: isStr, x: range(-100_000, 100_000), y: range(-100_000, 100_000) },
-    optional: { font: isStr, size: range(1, 2000), fill: isStr, anchor: oneOf(['start', 'middle', 'end']) },
-  },
-  import_svg: { required: { markup: isStr } },
-  update_layer: {
-    required: {
-      layerId: isStr,
-      patch: (v, p, e) => {
-        let best: string[] | null = null;
-        for (const t of VECTOR_LAYER_TYPES) {
-          const errs: string[] = [];
-          vectorProps(t)(v, p, errs);
-          if (errs.length === 0) return;
-          if (!best || errs.length < best.length) best = errs;
-        }
-        e.push(...(best ?? []));
-      },
-    },
-  },
-  delete_layer: { required: { layerId: isStr } },
-  animate: {
-    required: {
-      layerId: isStr,
-      property: (v, p, e) => {
-        if (typeof v !== 'string' || !TRACK_PROPERTY_PATTERN.test(v)) e.push(`${p}: ${JSON.stringify(v)} is not an animatable property`);
-      },
-      keyframes: vectorKeyframes,
-    },
-  },
-  apply_animator: {
-    required: {
-      layerIds: listOf(isStr, 32),
-      animator: oneOf(ANIMATOR_IDS),
-      span: (v, p, e) => {
-        const s = v as Record<string, unknown> | null;
-        range(0, 3_600_000)(s?.start, `${p}.start`, e);
-        range(0, 3_600_000)(s?.end, `${p}.end`, e);
-        if (typeof s?.start === 'number' && typeof s?.end === 'number' && s.end <= s.start) e.push(`${p}: end after start`);
-        if (s && has(s, 'easing')) vectorEasing(s.easing, `${p}.easing`, e);
-        for (const k of Object.keys(s ?? {})) if (!['start', 'end', 'easing'].includes(k)) e.push(`${p}.${k}: unknown field`);
-      },
-    },
-    optional: { options: () => undefined },
-  },
-  template: {
-    required: { kind: oneOf(PLANNED_VECTOR_TEMPLATES) },
-    optional: { text: (v, p, e) => (typeof v === 'string' || (Array.isArray(v) && v.every((x) => typeof x === 'string')) ? undefined : e.push(`${p}: text or a list of lines`)), colors: listOf(isStr, 4), at: range(0, 3_600_000), duration: range(100, 60_000), value: range(-1e9, 1e9) },
-  },
-  set_duration: { required: { ms: range(100, 3_600_000, true) } },
-  set_canvas: { required: {}, optional: { width: range(16, 8192), height: range(16, 8192), background: isStr, fps: range(1, 120) } },
-  set_loop: { required: { loop: isBool } },
-};
-
-export const RECIPE_OP_SPECS: Record<'studio' | 'vector', Record<string, OpSpec>> = {
+export const RECIPE_OP_SPECS: Record<'studio', Record<string, OpSpec>> = {
   studio: STUDIO_OP_SPECS,
-  vector: VECTOR_OP_SPECS,
 };
 
 /** Every problem with a recipe's ops against its editor's registries ([] = valid). */
@@ -601,8 +501,10 @@ export function checkRecipeOps(recipe: Pick<Recipe, 'editor' | 'example' | 'path
   if (recipe.editor === 'workflow') return [`${recipe.path}: workflow recipes carry no op list`];
   // MM108: photo recipes are held to the op schema the model is held to (lib/assistant/ops/photo.ts).
   if (recipe.editor === 'photo') return photoOpsProblems(recipe.example.ops).map((e) => `${recipe.path} ${e}`);
+  // MM110: Motion recipes likewise (lib/assistant/ops/vector.ts).
+  if (recipe.editor === 'vector') return vectorOpsProblems(recipe.example.ops).map((e) => `${recipe.path} ${e}`);
   const errors: string[] = [];
-  recipe.example.ops.forEach((op, i) => checkOp(RECIPE_OP_SPECS[recipe.editor as 'studio' | 'vector'], op, `${recipe.path} ops[${i}]`, errors));
+  recipe.example.ops.forEach((op, i) => checkOp(RECIPE_OP_SPECS[recipe.editor as 'studio'], op, `${recipe.path} ops[${i}]`, errors));
   return errors;
 }
 
