@@ -77,13 +77,13 @@ describe('format_not_in_plan (MM118)', () => {
   it('names the option and the unlocking plan', () => {
     expect(interstitialCopy({ kind: 'limit', detail: formatBody('mov', 'premium', 'premium') })).toMatchObject({
       titleKey: 'interface:upgradeInterstitial.format.title',
-      bodyKey: 'interface:upgradeInterstitial.format.bodyPremium',
-      values: { option: 'MOV' },
+      bodyKey: 'interface:upgradeInterstitial.format.bodyPlan',
+      values: { option: 'MOV', plan: 'Premium' },
       limitKey: 'studio_format',
       required: 'premium',
     });
     expect(interstitialCopy({ kind: 'limit', detail: formatBody('hevc', 'free', 'signup') })).toMatchObject({ bodyKey: 'interface:upgradeInterstitial.format.bodyFree', values: { option: 'H.265' } });
-    expect(interstitialCopy({ kind: 'limit', detail: formatBody('advanced', 'premium', 'premium') }).bodyKey).toBe('interface:upgradeInterstitial.format.advancedPremium');
+    expect(interstitialCopy({ kind: 'limit', detail: formatBody('advanced', 'premium', 'premium') }).bodyKey).toBe('interface:upgradeInterstitial.format.advanced');
   });
   it('offers Pro only for a Pro-only format', () => {
     const premiumFormat = interstitialCopy({ kind: 'limit', detail: formatBody('mov', 'premium', 'premium') });
@@ -96,7 +96,7 @@ describe('format_not_in_plan (MM118)', () => {
   });
   it('a free caller asking for a Premium format gets Premium Checkout', async () => {
     render(<UpgradeInterstitial input={{ kind: 'limit', detail: formatBody('mov', 'premium', 'premium') }} onClose={vi.fn()} />);
-    expect(screen.getByText('interface:upgradeInterstitial.format.bodyPremium|option=MOV')).toBeTruthy();
+    expect(screen.getByText('interface:upgradeInterstitial.format.bodyPlan|option=MOV,plan=Premium')).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'interface:upgradeInterstitial.upgrade' }));
     await waitFor(() => expect(h.startCheckout).toHaveBeenCalledWith('monthly', 'limit_interstitial', 'en-US', 'premium'));
   });

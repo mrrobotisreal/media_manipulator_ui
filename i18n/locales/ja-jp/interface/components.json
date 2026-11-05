@@ -630,7 +630,8 @@
       "exportsUnlimited": "Premiumには1日のエクスポート回数の上限がありません。",
       "height": "Premiumなら最大{{value}}pで出力できます。",
       "projects": "Premiumならプロジェクトを{{value}}件まで保存できます。",
-      "projectsUnlimited": "Premiumには保存プロジェクト数の上限がありません。"
+      "projectsUnlimited": "Premiumには保存プロジェクト数の上限がありません。",
+      "studioFormats": "PremiumではMOV、MKV、エクスポートの詳細設定が使えます。"
     },
     "noHigherPlan": "この上限をさらに引き上げるプランはありません。続行するには設定値を下げてください。",
     "proNote": "アップグレードすると日割りの差額が本日請求されます。更新日は変わりません。",
@@ -641,6 +642,12 @@
       "aiOpsUnlimited": "ProにはAIジョブの1日の上限がありません。",
       "exports": "Proなら1日{{value}}回のエクスポートができます。",
       "exportsUnlimited": "Proには1日のエクスポート回数の上限がありません。"
+    },
+    "format": {
+      "title": "このエクスポート形式はお使いのプランに含まれていません",
+      "bodyPlan": "{{option}}でのエクスポートは{{plan}}に含まれます。",
+      "bodyFree": "{{option}}でのエクスポートには無料アカウントが必要です。作成すると使えるようになります。",
+      "advanced": "エクスポートの詳細設定（コンテナとコーデックの自由な組み合わせ、音声ビットレート、モノラル）は{{plan}}に含まれます。"
     }
   },
   "recentStrip": {

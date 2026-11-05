@@ -479,7 +479,9 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
               />
               {exportDepth && prefill?.upgrade && (
                 <p className="rounded-md border border-border bg-muted/40 p-2 text-[12px] text-muted-foreground" data-testid="medi-export-upgrade">
-                  {t(`contentStudio.export.mediUpgrade_${prefill.upgrade.required}`)}
+                  {prefill.upgrade.required === 'free'
+                    ? t('contentStudio.export.mediUpgradeFree')
+                    : t('contentStudio.export.mediUpgradePlan', { plan: prefill.upgrade.required === 'pro' ? 'Pro' : 'Premium' })}
                 </p>
               )}
               {exportDepth && (

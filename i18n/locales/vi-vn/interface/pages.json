@@ -368,12 +368,12 @@
       },
       "contentStudio": {
         "title": "Cách dùng Darkroom: Biên tập video đa track trong trình duyệt",
-        "excerpt": "Hướng dẫn từng bước về Darkroom — nhập phương tiện, dựng dòng thời gian đa track, cắt đoạn, tách và xóa dồn, thêm hòa tan chéo, điều chỉnh màu và chữ phủ, rồi xuất MP4.",
+        "excerpt": "Hướng dẫn từng bước về Darkroom — nhập phương tiện, dựng dòng thời gian đa track, cắt đoạn, tách và xóa dồn, thêm hòa tan chéo, điều chỉnh màu và chữ phủ, rồi xuất MP4, MOV hoặc MKV.",
         "readTime": "Đọc 8 phút",
         "page": {
           "eyebrow": "Hướng dẫn video",
           "title": "Cách dùng Darkroom",
-          "intro": "Darkroom là trình biên tập video đa track kiểu Premiere Pro, chạy hoàn toàn trong trình duyệt của bạn. Tải lên video, hình ảnh và âm thanh, sắp xếp chúng trên dòng thời gian, xếp lớp và phối các track, thêm hiệu ứng và xuất một MP4 hoàn chỉnh — không cần cài phần mềm. Hướng dẫn này đi qua toàn bộ quy trình.",
+          "intro": "Darkroom là trình biên tập video đa track kiểu Premiere Pro, chạy hoàn toàn trong trình duyệt của bạn. Tải lên video, hình ảnh và âm thanh, sắp xếp chúng trên dòng thời gian, xếp lớp và phối các track, thêm hiệu ứng và xuất một video hoàn chỉnh (MP4, MOV hoặc MKV) — không cần cài phần mềm. Hướng dẫn này đi qua toàn bộ quy trình.",
           "overviewAlt": "Trình biên tập Darkroom hiển thị khay phương tiện, bản xem trước, bảng hiệu ứng clip và dòng thời gian đa track.",
           "overviewCaption": "Không gian làm việc Darkroom: khay phương tiện (trái), xem trước trực tiếp (giữa), hiệu ứng clip (phải) và dòng thời gian đa track (dưới).",
           "create": {
@@ -422,8 +422,8 @@
             "body": "Dùng các nút điều khiển dưới bản xem trước để phát/tạm dừng, đi từng khung hình, hoặc nhảy về đầu/cuối. Kéo trên thước dòng thời gian để tua — kéo đến mép và dòng thời gian tự cuộn để bạn đến được bất kỳ điểm nào. Khi phát, khung nhìn tự động theo đầu phát."
           },
           "export": {
-            "title": "6. Xuất ra MP4",
-            "body": "Nhấp “Xuất MP4”, chọn tên tệp và chất lượng, Darkroom sẽ kết xuất toàn bộ dòng thời gian của bạn trên máy chủ — ghép các track video, trộn âm thanh và áp dụng hiệu ứng — rồi đưa cho bạn liên kết tải xuống. Kết xuất diễn ra trên GPU nên dự án lớn cũng hoàn tất nhanh."
+            "title": "6. Xuất",
+            "body": "Nhấp “Xuất”, chọn tên tệp, định dạng và chất lượng, Darkroom sẽ kết xuất toàn bộ dòng thời gian của bạn trên máy chủ — ghép các track video, trộn âm thanh và áp dụng hiệu ứng — rồi đưa cho bạn liên kết tải xuống. MP4 H.264 phát được ở mọi nơi; danh sách định dạng còn có H.265, MOV, MKV và tệp chỉ có âm thanh, kèm gói mở khóa từng định dạng. Kết xuất diễn ra trên GPU nên dự án lớn cũng hoàn tất nhanh."
           },
           "shortcuts": {
             "title": "Phím tắt",
@@ -518,7 +518,7 @@
             "licenses": "Giấy phép mã nguồn mở",
             "licensesDesc": "Các thư viện mà trình biên tập sử dụng và ghi vào bản xuất của bạn.",
             "darkroom": "Hướng dẫn Darkroom",
-            "darkroomDesc": "Chỉnh sửa video trên dòng thời gian đa track và xuất MP4."
+            "darkroomDesc": "Chỉnh sửa video trên dòng thời gian đa track và xuất MP4, MOV hoặc MKV."
           }
         }
       },
@@ -620,7 +620,7 @@
             "intro": "Thêm các trang để làm việc với ảnh trên Media Manipulator.",
             "toolDesc": "Trang công cụ của trình chỉnh sửa, với danh sách đầy đủ các bảng, định dạng xuất và những gì mỗi gói cho phép.",
             "darkroom": "Hướng dẫn trình chỉnh sửa video Darkroom",
-            "darkroomDesc": "Chỉnh sửa video trên dòng thời gian đa track và xuất MP4.",
+            "darkroomDesc": "Chỉnh sửa video trên dòng thời gian đa track và xuất MP4, MOV hoặc MKV.",
             "licenses": "Giấy phép mã nguồn mở",
             "licensesDesc": "Các thư viện và mô hình mã nguồn mở đứng sau trình chỉnh sửa và phần còn lại của Media Manipulator."
           }
@@ -1873,7 +1873,8 @@
       "photoBatch": "Số ảnh {{brand}} mỗi lô",
       "photoPresets": "Cài đặt sẵn {{brand}} được lưu",
       "assistantGuide": "Trợ lý hướng dẫn {{medi}} trên trang",
-      "assistantTurns": "Lượt chỉnh sửa bằng copilot {{medi}} mỗi ngày"
+      "assistantTurns": "Lượt chỉnh sửa bằng copilot {{medi}} mỗi ngày",
+      "studioFormats": "Định dạng xuất của Darkroom"
     },
     "values": {
       "yes": "Có",
@@ -1888,7 +1889,8 @@
       "photoLocalOnly": "1, chỉ trong trình duyệt này",
       "megapixels": "{{count}} MP",
       "notAvailable": "Không có sẵn",
-      "signInToUse": "Đăng nhập để sử dụng"
+      "signInToUse": "Đăng nhập để sử dụng",
+      "studioAdvanced": "Cài đặt nâng cao"
     },
     "unavailableTitle": "Chi tiết gói tạm thời không khả dụng",
     "unavailableBody": "Chúng tôi không kết nối được với dịch vụ gói. Mọi công cụ vẫn hoạt động — hãy tải lại sau giây lát để xem bảng so sánh.",
@@ -2410,23 +2412,23 @@
   "contentStudioGuide": {
     "summaryTitle": "Cách Darkroom hoạt động — hướng dẫn nhanh",
     "whatItIsTitle": "Darkroom là gì",
-    "whatItIsBody": "Một trình biên tập video đa track miễn phí, chạy trên trình duyệt. Bạn dựng một bản chỉnh sửa hoàn chỉnh — video, hình ảnh, tiêu đề và âm thanh trên các track xếp chồng của dòng thời gian — và xuất một MP4 duy nhất. Không cài đặt, không đăng ký.",
+    "whatItIsBody": "Một trình biên tập video đa track miễn phí, chạy trên trình duyệt. Bạn dựng một bản chỉnh sửa hoàn chỉnh — video, hình ảnh, tiêu đề và âm thanh trên các track xếp chồng của dòng thời gian — và xuất thành một tệp hoàn chỉnh. Không cài đặt, không đăng ký.",
     "whenToUseTitle": "Khi nào nên dùng",
     "whenToUseBody": "Hãy dùng Darkroom khi một tệp là chưa đủ: ghép nhiều clip, thêm tiêu đề hoặc nhạc nền, xếp lớp phủ, hoặc cắt và sắp xếp lại cảnh quay thành một video hoàn chỉnh.",
     "supportedMediaTitle": "Loại phương tiện được hỗ trợ",
-    "supportedMediaBody": "Video (MP4, MOV, WebM, MKV), hình ảnh (JPG, PNG, WebP) và âm thanh (MP3, WAV, AAC). Bản xuất cuối là MP4 (video H.264, âm thanh AAC).",
+    "supportedMediaBody": "Bạn có thể nhập video (MP4, MOV, WebM, MKV), hình ảnh (JPG, PNG, WebP) và âm thanh (MP3, WAV, AAC). Bạn có thể xuất MP4 (video H.264 hoặc H.265), MOV, MKV, hoặc chỉ âm thanh dạng MP3 và WAV.",
     "stepByStepTitle": "Từng bước",
     "step1": "Tạo dự án và chọn độ phân giải (tối đa 4K) cùng tốc độ khung hình (24/30/60 fps).",
     "step2": "Kéo tệp video, hình ảnh và âm thanh vào khay phương tiện.",
     "step3": "Thả clip lên các track của dòng thời gian, rồi cắt đoạn và tách chúng tại đầu phát.",
     "step4": "Xếp lớp phủ và tiêu đề lên các track cao hơn và thêm track âm thanh để phối.",
-    "step5": "Xem trước bản ghép, rồi xuất ra MP4 và tải xuống.",
+    "step5": "Xem trước bản ghép, rồi xuất ra MP4, MOV hoặc MKV và tải xuống.",
     "timelineTitle": "Dòng thời gian & lớp",
     "timelineBody": "Dòng thời gian chính xác đến từng khung hình — đầu phát và mép clip bắt dính theo tốc độ khung hình của dự án. Các track được ghép theo thứ tự xếp chồng, nên clip trên track cao hơn hiển thị đè lên các track bên dưới. Đó là cách tiêu đề, logo và lớp phủ hình-trong-hình nằm trên video nền của bạn.",
     "exportTitle": "Xuất",
-    "exportBody": "Xuất sẽ kết xuất toàn bộ chuỗi — mọi track, đoạn cắt và lớp phủ — thành một MP4 có thể tải xuống, mã hóa với video H.264 và âm thanh AAC.",
+    "exportBody": "Xuất sẽ kết xuất toàn bộ chuỗi — mọi track, đoạn cắt và lớp phủ — trên máy chủ. Ai cũng có thể xuất MP4 với video H.264 và âm thanh AAC, hoặc chỉ âm thanh dạng MP3 và WAV. Tài khoản miễn phí có thêm MP4 H.265 (HEVC), cùng chất lượng nhưng dung lượng chỉ khoảng một nửa. Premium và Pro có thêm MOV (cho Final Cut và iMovie) và MKV, cùng cài đặt nâng cao: tự kết hợp định dạng chứa và codec, bitrate âm thanh và mono.",
     "limitationsTitle": "Hạn chế",
-    "limitationsBody": "Darkroom đang được phát triển tích cực. Các chức năng chỉnh sửa cốt lõi — dòng thời gian đa track, cắt đoạn/tách, xếp lớp, phối âm thanh và xuất MP4 — đã có sẵn. Các hiệu ứng nâng cao tiếp tục được bổ sung theo thời gian.",
+    "limitationsBody": "Darkroom đang được phát triển tích cực. Các chức năng chỉnh sửa cốt lõi — dòng thời gian đa track, cắt đoạn/tách, xếp lớp, phối âm thanh và xuất MP4, MOV, MKV, MP3 hoặc WAV — đã có sẵn. Các hiệu ứng nâng cao tiếp tục được bổ sung theo thời gian.",
     "privacyTitle": "Quyền riêng tư",
     "privacyBody": "Tệp được lưu 24 giờ với khách; với tài khoản miễn phí bạn chọn từ 24 giờ đến 2 năm. Không cần tài khoản và tệp không bao giờ được chia sẻ với nhà cung cấp bên thứ ba."
   },

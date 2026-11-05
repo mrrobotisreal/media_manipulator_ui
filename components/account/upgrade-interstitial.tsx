@@ -134,13 +134,17 @@ export function interstitialCopy(
   if (d.error === 'format_not_in_plan') {
     const required = d.required === 'free' || d.required === 'premium' || d.required === 'pro' ? d.required : undefined;
     const advanced = d.option === 'advanced';
-    const plan = required === 'pro' ? 'Pro' : required === 'free' ? 'Free' : 'Premium';
+    // Plan names are brands (untranslated); a free account is a sentence of its own.
+    const bodyKey =
+      required === 'free'
+        ? 'interface:upgradeInterstitial.format.bodyFree'
+        : advanced
+          ? 'interface:upgradeInterstitial.format.advanced'
+          : 'interface:upgradeInterstitial.format.bodyPlan';
     return {
       titleKey: 'interface:upgradeInterstitial.format.title',
-      bodyKey: advanced
-        ? `interface:upgradeInterstitial.format.advanced${plan}`
-        : `interface:upgradeInterstitial.format.body${plan}`,
-      values: { option: studioOptionName(d.option) },
+      bodyKey,
+      values: { option: advanced ? 'Advanced' : studioOptionName(d.option), plan: required === 'pro' ? 'Pro' : 'Premium' },
       upgradePath: d.upgradePath,
       placement: 'limit_interstitial',
       limitKey: 'studio_format',

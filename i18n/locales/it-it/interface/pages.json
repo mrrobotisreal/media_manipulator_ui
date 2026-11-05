@@ -368,12 +368,12 @@
       },
       "contentStudio": {
         "title": "Come usare Darkroom: montaggio video multitraccia nel browser",
-        "excerpt": "Una guida passo passo a Darkroom: importa i media, costruisci una timeline multitraccia, taglia, dividi ed elimina con ripple, aggiungi dissolvenze incrociate, regolazioni del colore e testi sovrapposti, poi esporta in MP4.",
+        "excerpt": "Una guida passo passo a Darkroom: importa i media, costruisci una timeline multitraccia, taglia, dividi ed elimina con ripple, aggiungi dissolvenze incrociate, regolazioni del colore e testi sovrapposti, poi esporta in MP4, MOV o MKV.",
         "readTime": "8 min di lettura",
         "page": {
           "eyebrow": "Tutorial video",
           "title": "Come usare Darkroom",
-          "intro": "Darkroom è un editor video multitraccia in stile Premiere Pro che gira interamente nel browser. Carica video, immagini e audio, disponili su una timeline, sovrapponi e mixa le tracce, aggiungi effetti ed esporta un MP4 finito, senza installare software. Questa guida percorre l'intero flusso di lavoro.",
+          "intro": "Darkroom è un editor video multitraccia in stile Premiere Pro che gira interamente nel browser. Carica video, immagini e audio, disponili su una timeline, sovrapponi e mixa le tracce, aggiungi effetti ed esporta un video finito (MP4, MOV o MKV), senza installare software. Questa guida percorre l'intero flusso di lavoro.",
           "overviewAlt": "L'editor Darkroom con il contenitore multimediale, l'anteprima, il pannello degli effetti della clip e una timeline multitraccia.",
           "overviewCaption": "L'area di lavoro di Darkroom: contenitore multimediale (sinistra), anteprima dal vivo (centro), effetti della clip (destra) e timeline multitraccia (in basso).",
           "create": {
@@ -422,8 +422,8 @@
             "body": "Usa i controlli di trasporto sotto l'anteprima per riprodurre/mettere in pausa, avanzare di un fotogramma alla volta o saltare all'inizio/alla fine. Trascina sul righello della timeline per scorrere: trascina fino al bordo e la timeline scorre da sola, così raggiungi qualsiasi punto. Durante la riproduzione la vista segue automaticamente il cursore."
           },
           "export": {
-            "title": "6. Esporta in MP4",
-            "body": "Clicca “Esporta MP4”, scegli un nome file e la qualità, e Darkroom renderizza l'intera timeline sul server (componendo le tracce video, mixando l'audio e applicando gli effetti), poi ti dà un link di download. Il rendering avviene su GPU, quindi anche i progetti grandi finiscono in fretta."
+            "title": "6. Esporta",
+            "body": "Clicca “Esporta”, scegli un nome file, un formato e la qualità, e Darkroom renderizza l'intera timeline sul server (componendo le tracce video, mixando l'audio e applicando gli effetti), poi ti dà un link di download. L'MP4 in H.264 si riproduce ovunque; l'elenco dei formati offre anche H.265, MOV, MKV e file solo audio, e indica quale piano sblocca ciascuno. Il rendering avviene su GPU, quindi anche i progetti grandi finiscono in fretta."
           },
           "shortcuts": {
             "title": "Scorciatoie da tastiera",
@@ -518,7 +518,7 @@
             "licenses": "Licenze open source",
             "licensesDesc": "Le librerie che l'editor usa e scrive nelle tue esportazioni.",
             "darkroom": "Tutorial di Darkroom",
-            "darkroomDesc": "Monta video su una timeline multitraccia ed esporta in MP4."
+            "darkroomDesc": "Monta video su una timeline multitraccia ed esporta in MP4, MOV o MKV."
           }
         }
       },
@@ -620,7 +620,7 @@
             "intro": "Altre pagine per lavorare con le foto su Media Manipulator.",
             "toolDesc": "La pagina dello strumento dell'editor, con l'elenco completo dei pannelli, dei formati di esportazione e di ciò che consente ogni piano.",
             "darkroom": "Tutorial dell'editor video Darkroom",
-            "darkroomDesc": "Monta video su una timeline multitraccia ed esporta in MP4.",
+            "darkroomDesc": "Monta video su una timeline multitraccia ed esporta in MP4, MOV o MKV.",
             "licenses": "Licenze open source",
             "licensesDesc": "Le librerie e i modelli open source dietro l'editor e il resto di Media Manipulator."
           }
@@ -1873,7 +1873,8 @@
       "photoBatch": "Foto {{brand}} per lotto",
       "photoPresets": "Preset {{brand}} salvati",
       "assistantGuide": "Guida del sito {{medi}}",
-      "assistantTurns": "Modifiche del copilota {{medi}} al giorno"
+      "assistantTurns": "Modifiche del copilota {{medi}} al giorno",
+      "studioFormats": "Formati di esportazione Darkroom"
     },
     "values": {
       "yes": "Incluso",
@@ -1888,7 +1889,8 @@
       "photoLocalOnly": "1, solo in questo browser",
       "megapixels": "{{count}} MP",
       "notAvailable": "Non disponibile",
-      "signInToUse": "Accedi per usarlo"
+      "signInToUse": "Accedi per usarlo",
+      "studioAdvanced": "Impostazioni avanzate"
     },
     "unavailableTitle": "I dettagli dei piani non sono disponibili al momento",
     "unavailableBody": "Non siamo riusciti a raggiungere il servizio dei piani. Tutti gli strumenti funzionano comunque: ricarica tra un attimo per vedere il confronto.",
@@ -2410,23 +2412,23 @@
   "contentStudioGuide": {
     "summaryTitle": "Come funziona Darkroom: guida rapida",
     "whatItIsTitle": "Cos'è Darkroom",
-    "whatItIsBody": "Un editor video multitraccia gratuito nel browser. Assembli un montaggio completo (video, immagini, titoli e audio su tracce impilate nella timeline) ed esporti un unico MP4. Niente da installare e nessuna registrazione.",
+    "whatItIsBody": "Un editor video multitraccia gratuito nel browser. Assembli un montaggio completo (video, immagini, titoli e audio su tracce impilate nella timeline) e lo esporti come un unico file finito. Niente da installare e nessuna registrazione.",
     "whenToUseTitle": "Quando usarlo",
     "whenToUseBody": "Scegli Darkroom quando un solo file non basta: combinare più clip, aggiungere titoli o musica di sottofondo, sovrapporre elementi, oppure tagliare e riordinare le riprese in un video finito.",
     "supportedMediaTitle": "Tipi di media supportati",
-    "supportedMediaBody": "Video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). L'esportazione finale è in MP4 (video H.264, audio AAC).",
+    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265), MOV, MKV o solo audio in MP3 e WAV.",
     "stepByStepTitle": "Passo dopo passo",
     "step1": "Crea un progetto e scegli una risoluzione (fino a 4K) e una frequenza fotogrammi (24/30/60 fps).",
     "step2": "Trascina file video, immagini e audio nel contenitore multimediale.",
     "step3": "Rilascia le clip sulle tracce della timeline, poi tagliale e dividile al cursore.",
     "step4": "Impila sovrapposizioni e titoli sulle tracce superiori e aggiungi tracce audio da mixare.",
-    "step5": "Guarda l'anteprima del composito, poi esporta in MP4 e scarica.",
+    "step5": "Guarda l'anteprima del composito, poi esporta in MP4, MOV o MKV e scarica.",
     "timelineTitle": "Timeline e livelli",
     "timelineBody": "La timeline è precisa al fotogramma: il cursore e i bordi delle clip si agganciano alla frequenza fotogrammi del progetto. Le tracce si compongono in ordine di impilamento, quindi una clip su una traccia superiore viene renderizzata sopra quelle sottostanti. È così che titoli, loghi e sovrapposizioni picture-in-picture stanno sopra il tuo video di base.",
     "exportTitle": "Esportazione",
-    "exportBody": "L'esportazione renderizza l'intera sequenza (ogni traccia, taglio e sovrapposizione) in un unico MP4 scaricabile, codificato con video H.264 e audio AAC.",
+    "exportBody": "L'esportazione renderizza l'intera sequenza (ogni traccia, taglio e sovrapposizione) sul server. Chiunque può esportare in MP4 con video H.264 e audio AAC, oppure solo audio in MP3 e WAV. Un account gratuito aggiunge l'MP4 in H.265 (HEVC), circa metà dimensione a parità di qualità. Premium e Pro aggiungono MOV (per Final Cut e iMovie) e MKV, più le impostazioni avanzate: una combinazione di contenitore e codec a tua scelta, il bitrate audio e il mono.",
     "limitationsTitle": "Limitazioni",
-    "limitationsBody": "Darkroom è in continua evoluzione. Il montaggio di base (timeline multitraccia, taglio/divisione, sovrapposizione, mixaggio audio ed esportazione MP4) è disponibile ora. Gli effetti avanzati continuano ad arrivare nel tempo.",
+    "limitationsBody": "Darkroom è in continua evoluzione. Il montaggio di base (timeline multitraccia, taglio/divisione, sovrapposizione, mixaggio audio ed esportazione in MP4, MOV, MKV, MP3 o WAV) è disponibile ora. Gli effetti avanzati continuano ad arrivare nel tempo.",
     "privacyTitle": "Privacy",
     "privacyBody": "I file degli ospiti restano 24 ore; con un account gratuito scegli tu da 24 ore a 2 anni. Non serve alcun account e i file non vengono mai condivisi con fornitori di terze parti."
   },

@@ -368,12 +368,12 @@
       },
       "contentStudio": {
         "title": "Cómo usar Darkroom: edición de vídeo multipista en tu navegador",
-        "excerpt": "Una guía paso a paso de Darkroom: importa medios, monta una línea de tiempo multipista, recorta, divide y elimina por ondulación, añade fundidos encadenados, ajustes de color y superposiciones de texto, y luego exporta a MP4.",
+        "excerpt": "Una guía paso a paso de Darkroom: importa medios, monta una línea de tiempo multipista, recorta, divide y elimina por ondulación, añade fundidos encadenados, ajustes de color y superposiciones de texto, y luego exporta a MP4, MOV o MKV.",
         "readTime": "8 min de lectura",
         "page": {
           "eyebrow": "Tutorial en vídeo",
           "title": "Cómo usar Darkroom",
-          "intro": "Darkroom es un editor de vídeo multipista, al estilo de Premiere Pro, que funciona íntegramente en tu navegador. Sube vídeo, imágenes y audio, colócalos en una línea de tiempo, apila y mezcla pistas, añade efectos y exporta un MP4 terminado, sin instalar software. Esta guía recorre todo el flujo de trabajo.",
+          "intro": "Darkroom es un editor de vídeo multipista, al estilo de Premiere Pro, que funciona íntegramente en tu navegador. Sube vídeo, imágenes y audio, colócalos en una línea de tiempo, apila y mezcla pistas, añade efectos y exporta un vídeo terminado (MP4, MOV o MKV), sin instalar software. Esta guía recorre todo el flujo de trabajo.",
           "overviewAlt": "El editor Darkroom mostrando el depósito de medios, la vista previa, el panel de efectos de clip y una línea de tiempo multipista.",
           "overviewCaption": "El espacio de trabajo de Darkroom: depósito de medios (izquierda), vista previa en directo (centro), efectos de clip (derecha) y la línea de tiempo multipista (abajo).",
           "create": {
@@ -422,8 +422,8 @@
             "body": "Usa los controles de transporte bajo la vista previa para reproducir/pausar, avanzar fotograma a fotograma o saltar al inicio/final. Arrastra sobre la regla de la línea de tiempo para desplazarte; arrastra hasta el borde y la línea de tiempo se desplaza automáticamente para que puedas llegar a cualquier punto. Durante la reproducción, la vista sigue a la cabeza de reproducción automáticamente."
           },
           "export": {
-            "title": "6. Exporta a MP4",
-            "body": "Haz clic en «Exportar MP4», elige un nombre de archivo y una calidad, y Darkroom renderiza toda tu línea de tiempo en el servidor —componiendo las pistas de vídeo, mezclando el audio y aplicando tus efectos— y luego te da un enlace de descarga. El renderizado se hace en una GPU, así que los proyectos grandes terminan rápido."
+            "title": "6. Exporta",
+            "body": "Haz clic en «Exportar», elige un nombre de archivo, un formato y una calidad, y Darkroom renderiza toda tu línea de tiempo en el servidor —componiendo las pistas de vídeo, mezclando el audio y aplicando tus efectos— y luego te da un enlace de descarga. MP4 con H.264 se reproduce en todas partes; la lista de formatos también ofrece H.265, MOV, MKV y archivos de solo audio, e indica qué plan desbloquea cada uno. El renderizado se hace en una GPU, así que los proyectos grandes terminan rápido."
           },
           "shortcuts": {
             "title": "Atajos de teclado",
@@ -518,7 +518,7 @@
             "licenses": "Licencias de código abierto",
             "licensesDesc": "Las bibliotecas que usa el editor y que se escriben en tus exportaciones.",
             "darkroom": "Tutorial de Darkroom",
-            "darkroomDesc": "Edita vídeo en una línea de tiempo multipista y exporta MP4."
+            "darkroomDesc": "Edita vídeo en una línea de tiempo multipista y exporta MP4, MOV o MKV."
           }
         }
       },
@@ -620,7 +620,7 @@
             "intro": "Más páginas para trabajar con fotos en Media Manipulator.",
             "toolDesc": "La página de la herramienta del editor, con la lista completa de paneles, formatos de exportación y lo que permite cada plan.",
             "darkroom": "Tutorial del editor de vídeo Darkroom",
-            "darkroomDesc": "Edita vídeo en una línea de tiempo multipista y exporta un MP4.",
+            "darkroomDesc": "Edita vídeo en una línea de tiempo multipista y exporta en MP4, MOV o MKV.",
             "licenses": "Licencias de código abierto",
             "licensesDesc": "Las bibliotecas y los modelos de código abierto que hay detrás del editor y del resto de Media Manipulator."
           }
@@ -1873,7 +1873,8 @@
       "photoBatch": "Fotos de {{brand}} por lote",
       "photoPresets": "Preajustes de {{brand}} guardados",
       "assistantGuide": "Guía del sitio {{medi}}",
-      "assistantTurns": "Ediciones del copiloto {{medi}} al día"
+      "assistantTurns": "Ediciones del copiloto {{medi}} al día",
+      "studioFormats": "Formatos de exportación de Darkroom"
     },
     "values": {
       "yes": "Incluido",
@@ -1888,7 +1889,8 @@
       "photoLocalOnly": "1, solo en este navegador",
       "megapixels": "{{count}} MP",
       "notAvailable": "No disponible",
-      "signInToUse": "Inicia sesión para usarlo"
+      "signInToUse": "Inicia sesión para usarlo",
+      "studioAdvanced": "Ajustes avanzados"
     },
     "unavailableTitle": "Los detalles de los planes no están disponibles temporalmente",
     "unavailableBody": "No hemos podido contactar con el servicio de planes. Todas las herramientas siguen funcionando: recarga en un momento para ver la comparación.",
@@ -2410,23 +2412,23 @@
   "contentStudioGuide": {
     "summaryTitle": "Cómo funciona Darkroom: guía rápida",
     "whatItIsTitle": "Qué es Darkroom",
-    "whatItIsBody": "Un editor de vídeo multipista gratuito y basado en el navegador. Montas una edición completa —vídeo, imágenes, títulos y audio en pistas de línea de tiempo apiladas— y exportas un único MP4. Sin instalación y sin registro.",
+    "whatItIsBody": "Un editor de vídeo multipista gratuito y basado en el navegador. Montas una edición completa —vídeo, imágenes, títulos y audio en pistas de línea de tiempo apiladas— y la exportas como un único archivo terminado. Sin instalación y sin registro.",
     "whenToUseTitle": "Cuándo usarlo",
     "whenToUseBody": "Recurre a Darkroom cuando un solo archivo no es suficiente: combinar varios clips, añadir títulos o música de fondo, superponer capas, o recortar y reordenar imágenes hasta formar un vídeo terminado.",
     "supportedMediaTitle": "Tipos de medios compatibles",
-    "supportedMediaBody": "Vídeo (MP4, MOV, WebM, MKV), imágenes (JPG, PNG, WebP) y audio (MP3, WAV, AAC). La exportación final es MP4 (vídeo H.264, audio AAC).",
+    "supportedMediaBody": "Puedes importar vídeo (MP4, MOV, WebM, MKV), imágenes (JPG, PNG, WebP) y audio (MP3, WAV, AAC). Puedes exportar MP4 (vídeo H.264 o H.265), MOV, MKV o solo audio en MP3 y WAV.",
     "stepByStepTitle": "Paso a paso",
     "step1": "Crea un proyecto y elige una resolución (hasta 4K) y una tasa de fotogramas (24/30/60 fps).",
     "step2": "Arrastra archivos de vídeo, imagen y audio al depósito de medios.",
     "step3": "Suelta clips en las pistas de la línea de tiempo, y luego recórtalos y divídelos en la cabeza de reproducción.",
     "step4": "Apila superposiciones y títulos en pistas superiores y añade pistas de audio para mezclar.",
-    "step5": "Previsualiza el conjunto y luego exporta a MP4 y descárgalo.",
+    "step5": "Previsualiza el conjunto y luego exporta a MP4, MOV o MKV y descárgalo.",
     "timelineTitle": "Línea de tiempo y capas",
     "timelineBody": "La línea de tiempo es precisa a nivel de fotograma: la cabeza de reproducción y los bordes de los clips se ajustan a la tasa de fotogramas del proyecto. Las pistas se componen en orden de apilamiento, así que un clip en una pista superior se renderiza por encima de los de las pistas inferiores. Así es como los títulos, logotipos y superposiciones de imagen en imagen se sitúan sobre tu vídeo base.",
     "exportTitle": "Exportación",
-    "exportBody": "Al exportar se renderiza toda la secuencia —cada pista, recorte y superposición— en un único MP4 descargable codificado con vídeo H.264 y audio AAC.",
+    "exportBody": "Al exportar se renderiza toda la secuencia —cada pista, recorte y superposición— en el servidor. Cualquiera puede exportar MP4 con vídeo H.264 y audio AAC, o solo audio en MP3 y WAV. Una cuenta gratuita añade MP4 en H.265 (HEVC), con la misma calidad en aproximadamente la mitad de tamaño. Premium y Pro añaden MOV (para Final Cut e iMovie) y MKV, además de ajustes avanzados: tu propia combinación de contenedor y códecs, la tasa de bits de audio y mono.",
     "limitationsTitle": "Limitaciones",
-    "limitationsBody": "Darkroom evoluciona activamente. La edición esencial —línea de tiempo multipista, recorte/división, superposición de capas, mezcla de audio y exportación a MP4— ya está disponible. Con el tiempo se siguen añadiendo efectos avanzados.",
+    "limitationsBody": "Darkroom evoluciona activamente. La edición esencial —línea de tiempo multipista, recorte/división, superposición de capas, mezcla de audio y exportación a MP4, MOV, MKV, MP3 o WAV— ya está disponible. Con el tiempo se siguen añadiendo efectos avanzados.",
     "privacyTitle": "Privacidad",
     "privacyBody": "Los archivos se conservan 24 horas para visitantes; con una cuenta gratuita eliges de 24 horas a 2 años. No se requiere cuenta y los archivos nunca se comparten con proveedores externos."
   },

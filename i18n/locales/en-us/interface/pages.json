@@ -368,12 +368,12 @@
       },
       "contentStudio": {
         "title": "How to Use Darkroom: Multi-Track Video Editing in Your Browser",
-        "excerpt": "A step-by-step guide to Darkroom — import media, build a multi-track timeline, trim, split and ripple-delete, add cross-dissolves, color adjustments and text overlays, then export MP4.",
+        "excerpt": "A step-by-step guide to Darkroom — import media, build a multi-track timeline, trim, split and ripple-delete, add cross-dissolves, color adjustments and text overlays, then export MP4, MOV or MKV.",
         "readTime": "8 min read",
         "page": {
           "eyebrow": "Video Tutorial",
           "title": "How to Use Darkroom",
-          "intro": "Darkroom is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video, images, and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished MP4 — no software to install. This guide walks through the whole workflow.",
+          "intro": "Darkroom is a Premiere Pro–style, multi-track video editor that runs entirely in your browser. Upload video, images, and audio, arrange them on a timeline, layer and mix tracks, add effects, and export a finished video (MP4, MOV or MKV) — no software to install. This guide walks through the whole workflow.",
           "overviewAlt": "The Darkroom editor showing the media bin, preview, clip effects panel, and a multi-track timeline.",
           "overviewCaption": "The Darkroom workspace: media bin (left), live preview (center), clip effects (right), and the multi-track timeline (bottom).",
           "create": {
@@ -422,8 +422,8 @@
             "body": "Use the transport controls under the preview to play/pause, step a frame at a time, or jump to the start/end. Drag on the timeline ruler to scrub — drag to the edge and the timeline auto-scrolls so you can reach any point. During playback the view follows the playhead automatically."
           },
           "export": {
-            "title": "6. Export to MP4",
-            "body": "Click “Export MP4”, choose a file name and quality, and Darkroom renders your full timeline on the server — compositing video tracks, mixing audio, and applying your effects — then gives you a download link. Rendering happens on a GPU, so larger projects finish quickly."
+            "title": "6. Export",
+            "body": "Click “Export”, choose a file name, a format and the quality, and Darkroom renders your full timeline on the server — compositing video tracks, mixing audio, and applying your effects — then gives you a download link. MP4 with H.264 plays everywhere; the format list also offers H.265, MOV, MKV and audio-only files, and shows which plan unlocks each. Rendering happens on a GPU, so larger projects finish quickly."
           },
           "shortcuts": {
             "title": "Keyboard shortcuts",
@@ -518,7 +518,7 @@
             "licenses": "Open-source licences",
             "licensesDesc": "The libraries the editor uses and writes into your exports.",
             "darkroom": "Darkroom tutorial",
-            "darkroomDesc": "Edit video on a multi-track timeline and export MP4."
+            "darkroomDesc": "Edit video on a multi-track timeline and export MP4, MOV or MKV."
           }
         }
       },
@@ -620,7 +620,7 @@
             "intro": "More pages for working with photos on Media Manipulator.",
             "toolDesc": "The editor's tool page, with the full list of panels, export formats and what each plan allows.",
             "darkroom": "Darkroom video editor tutorial",
-            "darkroomDesc": "Edit video on a multi-track timeline and export an MP4.",
+            "darkroomDesc": "Edit video on a multi-track timeline and export MP4, MOV or MKV.",
             "licenses": "Open-source licenses",
             "licensesDesc": "The open-source libraries and models behind the editor and the rest of Media Manipulator."
           }
@@ -1873,7 +1873,8 @@
       "photoBatch": "{{brand}} photos per batch",
       "photoPresets": "Saved {{brand}} presets",
       "assistantGuide": "{{medi}} site guide",
-      "assistantTurns": "{{medi}} copilot edits per day"
+      "assistantTurns": "{{medi}} copilot edits per day",
+      "studioFormats": "Darkroom export formats"
     },
     "values": {
       "yes": "Included",
@@ -1888,7 +1889,8 @@
       "photoLocalOnly": "1, in this browser only",
       "megapixels": "{{count}} MP",
       "notAvailable": "Not available",
-      "signInToUse": "Sign in to use"
+      "signInToUse": "Sign in to use",
+      "studioAdvanced": "Advanced settings"
     },
     "unavailableTitle": "Plan details are temporarily unavailable",
     "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
@@ -2410,23 +2412,23 @@
   "contentStudioGuide": {
     "summaryTitle": "How Darkroom works — quick guide",
     "whatItIsTitle": "What Darkroom is",
-    "whatItIsBody": "A free, browser-based multi-track video editor. You assemble a full edit — video, images, titles, and audio across stacked timeline tracks — and export a single MP4. No install and no signup.",
+    "whatItIsBody": "A free, browser-based multi-track video editor. You assemble a full edit — video, images, titles, and audio across stacked timeline tracks — and export it as one finished file. No install and no signup.",
     "whenToUseTitle": "When to use it",
     "whenToUseBody": "Reach for Darkroom when one file isn’t enough: combining several clips, adding titles or background music, layering overlays, or trimming and re-ordering footage into a finished video.",
     "supportedMediaTitle": "Supported media types",
-    "supportedMediaBody": "Video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). The final export is MP4 (H.264 video, AAC audio).",
+    "supportedMediaBody": "You can import video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). You can export MP4 (H.264 or H.265 video), MOV, MKV, or audio-only MP3 and WAV.",
     "stepByStepTitle": "Step by step",
     "step1": "Create a project and choose a resolution (up to 4K) and frame rate (24/30/60 fps).",
     "step2": "Drag video, image, and audio files into the media bin.",
     "step3": "Drop clips onto the timeline tracks, then trim and split them at the playhead.",
     "step4": "Stack overlays and titles on higher tracks and add audio tracks to mix.",
-    "step5": "Preview the composite, then export to MP4 and download.",
+    "step5": "Preview the composite, then export to MP4, MOV or MKV and download.",
     "timelineTitle": "Timeline & layers",
     "timelineBody": "The timeline is frame-accurate — the playhead and clip edges snap to the project frame rate. Tracks composite in stacking order, so a clip on a higher track renders over the ones below it. That’s how titles, logos, and picture-in-picture overlays sit on top of your base video.",
     "exportTitle": "Export",
-    "exportBody": "Exporting renders the whole sequence — every track, trim, and overlay — into one downloadable MP4 encoded with H.264 video and AAC audio.",
+    "exportBody": "Exporting renders the whole sequence — every track, trim, and overlay — on the server. Everyone can export MP4 with H.264 video and AAC audio, or audio-only MP3 and WAV. A free account adds H.265 (HEVC) MP4, about half the file size at the same quality. Premium and Pro add MOV (for Final Cut and iMovie) and MKV, plus Advanced settings: your own container and codec combination, audio bitrate, and mono.",
     "limitationsTitle": "Limitations",
-    "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and MP4 export — is available now. Advanced effects continue to be added over time.",
+    "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and export to MP4, MOV, MKV, MP3 or WAV — is available now. Advanced effects continue to be added over time.",
     "privacyTitle": "Privacy",
     "privacyBody": "Files are kept 24 hours for guests; with a free account you choose 24 hours to 2 years. No account is required and files are never shared with third-party providers."
   },

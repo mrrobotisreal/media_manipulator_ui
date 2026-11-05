@@ -136,6 +136,26 @@ describe('three-column pricing (MM40 decision 1)', () => {
     expect(photoHtml).toContain('one AI job');
   });
 
+  it('MM118: the Darkroom export formats row lists each tier\'s served formats', () => {
+    const anon = ['mp4', 'mp3', 'wav', 'h264', 'aac', 'pcm_s16le'];
+    const fixture = tiersFixture();
+    const sets: Record<string, [string[], boolean]> = {
+      anonymous: [anon, false],
+      free: [[...anon, 'hevc'], false],
+      premium: [[...anon, 'hevc', 'mov', 'mkv'], true],
+      pro: [[...anon, 'hevc', 'mov', 'mkv'], true],
+    };
+    const withStudio = { ...fixture, tiers: fixture.tiers.map((x) => ({ ...x, limits: { ...x.limits, studioFormats: sets[x.tier][0], studioAdvanced: sets[x.tier][1] } })) };
+    const html = renderToStaticMarkup(<PricingView data={withStudio} />);
+    const cell = (tier: string) => html.match(new RegExp(`data-tier="${tier}" data-row="studioFormats"><span[^>]*>([^<]*)<`))?.[1];
+    expect(cell('anonymous')).toBe('MP4 (H.264), MP3, WAV');
+    expect(cell('free')).toBe('MP4 (H.264, H.265), MP3, WAV');
+    expect(cell('premium')).toBe('MP4 (H.264, H.265), MOV (H.264, H.265), MKV (H.264, H.265), MP3, WAV · Advanced settings');
+    expect(html).toContain('Darkroom export formats');
+    // An API before MM118 hides the row.
+    expect(renderToStaticMarkup(<PricingView data={fixture} />)).not.toContain('data-row="studioFormats"');
+  });
+
   it('MM100: a payload without photo fields hides the Aperture rows and does not crash', () => {
     const out = renderToStaticMarkup(<PricingView data={tiersFixture()} />);
     for (const row of ['photoProjects', 'photoMaxMegapixels', 'photoBatch']) expect(out).not.toContain(`data-row="${row}"`);

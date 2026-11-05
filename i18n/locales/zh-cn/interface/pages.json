@@ -368,12 +368,12 @@
       },
       "contentStudio": {
         "title": "如何使用Darkroom：在浏览器中进行多轨视频编辑",
-        "excerpt": "Darkroom的分步指南——导入媒体、构建多轨时间线、裁剪、分割和波纹删除、添加交叉溶解、色彩调整和文字叠加，然后导出MP4。",
+        "excerpt": "Darkroom的分步指南——导入媒体、构建多轨时间线、裁剪、分割和波纹删除、添加交叉溶解、色彩调整和文字叠加，然后导出MP4、MOV 或 MKV。",
         "readTime": "阅读时间8分钟",
         "page": {
           "eyebrow": "视频教程",
           "title": "如何使用Darkroom",
-          "intro": "Darkroom是一款Premiere Pro风格的多轨视频编辑器，完全在你的浏览器中运行。上传视频、图片和音频，在时间线上排列它们，叠加和混合轨道，添加效果，然后导出成品MP4——无需安装软件。本指南将带你了解整个工作流程。",
+          "intro": "Darkroom是一款Premiere Pro风格的多轨视频编辑器，完全在你的浏览器中运行。上传视频、图片和音频，在时间线上排列它们，叠加和混合轨道，添加效果，然后导出成品MP4、MOV 或 MKV——无需安装软件。本指南将带你了解整个工作流程。",
           "overviewAlt": "Darkroom编辑器，显示媒体库、预览、片段效果面板和多轨时间线。",
           "overviewCaption": "Darkroom工作区：媒体库（左）、实时预览（中）、片段效果（右）和多轨时间线（底部）。",
           "create": {
@@ -422,8 +422,8 @@
             "body": "使用预览下方的播放控件来播放/暂停、逐帧步进或跳到开头/结尾。在时间线标尺上拖动可快速浏览——拖到边缘时时间线会自动滚动，让你可以到达任何位置。播放期间视图会自动跟随播放头。"
           },
           "export": {
-            "title": "6. 导出为MP4",
-            "body": "点击“导出MP4”，选择文件名和质量，Darkroom会在服务器上渲染你的完整时间线——合成视频轨道、混合音频并应用你的效果——然后提供下载链接。渲染在GPU上进行，因此较大的项目也能很快完成。"
+            "title": "6. 导出",
+            "body": "点击“导出”，选择文件名、格式和质量，Darkroom会在服务器上渲染你的完整时间线——合成视频轨道、混合音频并应用你的效果——然后提供下载链接。H.264 的 MP4 到处都能播放；格式列表还提供 H.265、MOV、MKV 和仅音频文件，并标明每种格式由哪个套餐解锁。渲染在GPU上进行，因此较大的项目也能很快完成。"
           },
           "shortcuts": {
             "title": "键盘快捷键",
@@ -518,7 +518,7 @@
             "licenses": "开源许可证",
             "licensesDesc": "编辑器使用并写入你导出文件中的库。",
             "darkroom": "Darkroom教程",
-            "darkroomDesc": "在多轨时间线上编辑视频并导出MP4。"
+            "darkroomDesc": "在多轨时间线上编辑视频并导出MP4、MOV 或 MKV。"
           }
         }
       },
@@ -620,7 +620,7 @@
             "intro": "Media Manipulator上更多处理照片的页面。",
             "toolDesc": "编辑器的工具页面，列出全部面板、导出格式以及每个套餐的额度。",
             "darkroom": "Darkroom视频编辑器教程",
-            "darkroomDesc": "在多轨时间线上编辑视频并导出MP4。",
+            "darkroomDesc": "在多轨时间线上编辑视频并导出MP4、MOV 或 MKV。",
             "licenses": "开源许可证",
             "licensesDesc": "编辑器以及Media Manipulator其余部分所依赖的开源库和模型。"
           }
@@ -1873,7 +1873,8 @@
       "photoBatch": "{{brand}}每批照片数",
       "photoPresets": "已保存的{{brand}}预设",
       "assistantGuide": "{{medi}}网站指南",
-      "assistantTurns": "{{medi}}每日助手编辑次数"
+      "assistantTurns": "{{medi}}每日助手编辑次数",
+      "studioFormats": "Darkroom 导出格式"
     },
     "values": {
       "yes": "包含",
@@ -1888,7 +1889,8 @@
       "photoLocalOnly": "1个，仅限此浏览器",
       "megapixels": "{{count}} MP",
       "notAvailable": "不可用",
-      "signInToUse": "登录后可用"
+      "signInToUse": "登录后可用",
+      "studioAdvanced": "高级设置"
     },
     "unavailableTitle": "套餐详情暂时不可用",
     "unavailableBody": "我们无法连接到套餐服务。所有工具仍可正常使用——请稍后重新加载以查看对比。",
@@ -2410,23 +2412,23 @@
   "contentStudioGuide": {
     "summaryTitle": "Darkroom的工作原理——快速指南",
     "whatItIsTitle": "Darkroom是什么",
-    "whatItIsBody": "一款免费的基于浏览器的多轨视频编辑器。你可以组装一个完整的剪辑——视频、图片、标题和音频分布在叠放的时间线轨道上——并导出单个MP4。无需安装，无需注册。",
+    "whatItIsBody": "一款免费的基于浏览器的多轨视频编辑器。你可以组装一个完整的剪辑——视频、图片、标题和音频分布在叠放的时间线轨道上——并导出为一个成品文件。无需安装，无需注册。",
     "whenToUseTitle": "何时使用",
     "whenToUseBody": "当一个文件不够用时，就选择Darkroom：合并多个片段、添加标题或背景音乐、叠加覆盖层，或将素材裁剪并重新排序成完整的视频。",
     "supportedMediaTitle": "支持的媒体类型",
-    "supportedMediaBody": "视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。最终导出为MP4（H.264视频，AAC音频）。",
+    "supportedMediaBody": "可导入视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。可导出为 MP4（H.264 或 H.265 视频）、MOV、MKV，或仅音频的 MP3 和 WAV。",
     "stepByStepTitle": "分步说明",
     "step1": "创建项目并选择分辨率（最高4K）和帧率（24/30/60 fps）。",
     "step2": "将视频、图片和音频文件拖入媒体库。",
     "step3": "将片段放到时间线轨道上，然后在播放头处裁剪和分割。",
     "step4": "在更高的轨道上叠放覆盖层和标题，并添加音频轨道进行混音。",
-    "step5": "预览合成效果，然后导出为MP4并下载。",
+    "step5": "预览合成效果，然后导出为MP4、MOV 或 MKV并下载。",
     "timelineTitle": "时间线与图层",
     "timelineBody": "时间线精确到帧——播放头和片段边缘会吸附到项目帧率。轨道按叠放顺序合成，因此较高轨道上的片段会渲染在下方轨道之上。标题、标志和画中画覆盖层就是这样位于你的基础视频之上的。",
     "exportTitle": "导出",
-    "exportBody": "导出会将整个序列——每条轨道、每次裁剪和每个覆盖层——渲染为一个可下载的MP4，采用H.264视频和AAC音频编码。",
+    "exportBody": "导出会在服务器上渲染整个序列——每条轨道、每次裁剪和每个覆盖层。所有人都可以导出 H.264 视频加 AAC 音频的 MP4，或仅音频的 MP3 和 WAV。免费账号新增 H.265（HEVC）MP4，同等画质下体积约为一半。Premium 和 Pro 新增 MOV（适用于 Final Cut 和 iMovie）和 MKV，以及高级设置：自选容器与编解码器组合、音频码率和单声道。",
     "limitationsTitle": "限制",
-    "limitationsBody": "Darkroom在持续演进。核心编辑功能——多轨时间线、裁剪/分割、图层叠放、音频混合和MP4导出——现已可用。高级效果会随时间不断添加。",
+    "limitationsBody": "Darkroom在持续演进。核心编辑功能——多轨时间线、裁剪/分割、图层叠放、音频混合，以及导出为 MP4、MOV、MKV、MP3 或 WAV——现已可用。高级效果会随时间不断添加。",
     "privacyTitle": "隐私",
     "privacyBody": "访客的文件保留24小时；注册免费账号后，你可以选择保留24小时至2年。无需账号，文件绝不会与第三方服务商共享。"
   },
