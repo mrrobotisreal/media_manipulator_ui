@@ -1462,7 +1462,9 @@
       "exportSettingUp": "Export is being set up",
       "panelsTab": "Panels",
       "layersTab": "Layers",
-      "shortcuts": "Keyboard shortcuts"
+      "shortcuts": "Keyboard shortcuts",
+      "medi": "{{brand}}",
+      "mediLabel": "Ask {{brand}} to edit (Ctrl+J)"
     },
     "banner": {
       "local": "Saved in this browser only. Sign in to keep up to {{count}} projects on your account.",
@@ -2045,7 +2047,8 @@
         "brushGesture": "Brush setting",
         "maskGesture": "Mask setting",
         "geometryGesture": "Geometry setting",
-        "layerGesture": "Layer setting"
+        "layerGesture": "Layer setting",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2076,7 +2079,8 @@
         "gradient": "Gradient mask",
         "radial": "Radial mask",
         "crop": "Crop",
-        "heal": "Heal"
+        "heal": "Heal",
+        "medi": "Open {{brand}}"
       }
     },
     "batch": {

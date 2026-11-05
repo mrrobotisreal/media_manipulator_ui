@@ -1450,7 +1450,9 @@
       "exportSettingUp": "导出功能正在设置中",
       "panelsTab": "面板",
       "layersTab": "图层",
-      "shortcuts": "键盘快捷键"
+      "shortcuts": "键盘快捷键",
+      "medi": "{{brand}}",
+      "mediLabel": "让{{brand}}编辑（Ctrl+J）"
     },
     "banner": {
       "local": "仅保存在此浏览器中。登录后可在账户中保留最多 {{count}} 个项目。",
@@ -2031,7 +2033,8 @@
         "brushGesture": "画笔设置",
         "maskGesture": "蒙版设置",
         "geometryGesture": "几何设置",
-        "layerGesture": "图层设置"
+        "layerGesture": "图层设置",
+        "medi": "{{brand}}：{{summary}}"
       }
     },
     "shortcuts": {
@@ -2062,7 +2065,8 @@
         "gradient": "渐变蒙版",
         "radial": "径向蒙版",
         "crop": "裁剪",
-        "heal": "修复"
+        "heal": "修复",
+        "medi": "打开{{brand}}"
       }
     },
     "batch": {

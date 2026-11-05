@@ -1462,7 +1462,9 @@
       "exportSettingUp": "L'export est en cours de préparation",
       "panelsTab": "Panneaux",
       "layersTab": "Calques",
-      "shortcuts": "Raccourcis clavier"
+      "shortcuts": "Raccourcis clavier",
+      "medi": "{{brand}}",
+      "mediLabel": "Demander une retouche à {{brand}} (Ctrl+J)"
     },
     "banner": {
       "local": "Enregistré uniquement dans ce navigateur. Connectez-vous pour conserver jusqu'à {{count}} projets sur votre compte.",
@@ -2047,7 +2049,8 @@
         "brushGesture": "Réglage du pinceau",
         "maskGesture": "Réglage du masque",
         "geometryGesture": "Réglage de la géométrie",
-        "layerGesture": "Réglage du calque"
+        "layerGesture": "Réglage du calque",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2078,7 +2081,8 @@
         "gradient": "Masque dégradé",
         "radial": "Masque radial",
         "crop": "Recadrer",
-        "heal": "Correction"
+        "heal": "Correction",
+        "medi": "Ouvrir {{brand}}"
       }
     },
     "batch": {

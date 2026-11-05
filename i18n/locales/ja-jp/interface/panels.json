@@ -1450,7 +1450,9 @@
       "exportSettingUp": "エクスポートを準備中です",
       "panelsTab": "パネル",
       "layersTab": "レイヤー",
-      "shortcuts": "キーボードショートカット"
+      "shortcuts": "キーボードショートカット",
+      "medi": "{{brand}}",
+      "mediLabel": "編集を{{brand}}に頼む（Ctrl+J）"
     },
     "banner": {
       "local": "このブラウザーにのみ保存されています。サインインすると、アカウントに最大{{count}}件のプロジェクトを保持できます。",
@@ -2031,7 +2033,8 @@
         "brushGesture": "ブラシ設定",
         "maskGesture": "マスク設定",
         "geometryGesture": "ジオメトリ設定",
-        "layerGesture": "レイヤー設定"
+        "layerGesture": "レイヤー設定",
+        "medi": "{{brand}}：{{summary}}"
       }
     },
     "shortcuts": {
@@ -2062,7 +2065,8 @@
         "gradient": "グラデーションマスク",
         "radial": "円形マスク",
         "crop": "切り抜き",
-        "heal": "修復"
+        "heal": "修復",
+        "medi": "{{brand}}を開く"
       }
     },
     "batch": {

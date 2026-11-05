@@ -1475,7 +1475,9 @@
       "exportSettingUp": "הייצוא בהכנה",
       "panelsTab": "חלוניות",
       "layersTab": "שכבות",
-      "shortcuts": "קיצורי מקלדת"
+      "shortcuts": "קיצורי מקלדת",
+      "medi": "{{brand}}",
+      "mediLabel": "בקשו מ-{{brand}} לערוך (Ctrl+J)"
     },
     "banner": {
       "local": "נשמר בדפדפן הזה בלבד. התחברו כדי לשמור עד {{count}} פרויקטים בחשבון שלכם.",
@@ -2060,7 +2062,8 @@
         "brushGesture": "הגדרת מברשת",
         "maskGesture": "הגדרת מסכה",
         "geometryGesture": "הגדרת גיאומטריה",
-        "layerGesture": "הגדרת שכבה"
+        "layerGesture": "הגדרת שכבה",
+        "medi": "{{brand}}: {{summary}}"
       }
     },
     "shortcuts": {
@@ -2091,7 +2094,8 @@
         "gradient": "מסכת מעבר",
         "radial": "מסכה רדיאלית",
         "crop": "חיתוך",
-        "heal": "תיקון"
+        "heal": "תיקון",
+        "medi": "פתיחת {{brand}}"
       }
     },
     "batch": {
