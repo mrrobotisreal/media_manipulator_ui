@@ -23,9 +23,16 @@ export interface AssistantChatBody {
   locale: string;
   page: { path: string; title?: string };
   message?: { text: string };
-  context?: { digest: string; projectId?: string };
+  context?: { digest: string; projectId?: string; metrics?: Record<string, number> };
   frame?: { jpegBase64: string };
-  editResult?: { callId: string; applied: boolean; errors?: string[]; frameAfter?: { jpegBase64: string } };
+  editResult?: {
+    callId: string;
+    applied: boolean;
+    errors?: string[];
+    frameAfter?: { jpegBase64: string };
+    metricsBefore?: Record<string, number>;
+    metricsAfter?: Record<string, number>;
+  };
   plan?: boolean;
 }
 

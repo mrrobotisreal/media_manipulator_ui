@@ -56,6 +56,40 @@ export const RECIPE_EDITORS = ['photo', 'studio', 'vector', 'workflow'] as const
 export type RecipeEditor = (typeof RECIPE_EDITORS)[number];
 export const RECIPE_DIFFICULTIES = ['basic', 'intermediate', 'advanced'] as const;
 export const RECIPE_SECTIONS = ['When to use', 'What a pro does and why', 'Ops', 'How to adjust'] as const;
+/**
+ * MM115: the optional fifth section. One bullet per measurable goal, `- <metric> <range>`, using the
+ * meter names the browser sends (`lib/assistant/metrics.ts`): `meanLuma 0.35-0.55`,
+ * `shadowsClipped <= 0.005`. The adjust loop stops when they hold; the `adjust` evals grade against them.
+ */
+export const RECIPE_CRITERIA_SECTION = 'Success criteria';
+export const CRITERIA_METRICS = ['meanLuma', 'medianLuma', 'lumaStd', 'shadowsClipped', 'highlightsClipped', 'warmth', 'tint', 'integratedLUFS', 'truePeakDBFS', 'noiseFloorDB'] as const;
+
+export interface RecipeCriterion {
+  metric: (typeof CRITERIA_METRICS)[number];
+  min?: number;
+  max?: number;
+}
+
+/** Parse the `## Success criteria` bullets; throws a plain message on a malformed line. */
+export function parseCriteria(text: string): RecipeCriterion[] {
+  const out: RecipeCriterion[] = [];
+  for (const raw of text.split('\n')) {
+    const line = raw.trim();
+    if (!line.startsWith('- ')) continue;
+    const m = /^- (\w+) (?:(-?\d+(?:\.\d+)?)-(-?\d+(?:\.\d+)?)|(<=|>=) (-?\d+(?:\.\d+)?))(?:\s|$)/.exec(line);
+    if (!m) throw new Error(`criteria line ${JSON.stringify(line)}: use "- <metric> <min>-<max>" or "- <metric> <= <n>"`);
+    if (!(CRITERIA_METRICS as readonly string[]).includes(m[1])) throw new Error(`criteria metric ${m[1]} is not a known meter`);
+    const metric = m[1] as RecipeCriterion['metric'];
+    if (m[2] !== undefined) {
+      const lo = Number(m[2]);
+      const hi = Number(m[3]);
+      if (lo > hi) throw new Error(`criteria line ${JSON.stringify(line)}: min above max`);
+      out.push({ metric, min: lo, max: hi });
+    } else out.push(m[4] === '<=' ? { metric, max: Number(m[5]) } : { metric, min: Number(m[5]) });
+  }
+  if (out.length === 0) throw new Error('criteria section has no "- metric range" bullets');
+  return out;
+}
 
 /** Surfaces whose recipes are checked against a real op schema (flipped by MM108–MM110). */
 export const RECIPE_SCHEMA_SURFACES: readonly RecipeEditor[] = ['photo', 'studio', 'vector'];
@@ -81,6 +115,8 @@ export interface Recipe extends RecipeMeta {
   /** Path relative to the recipes root, e.g. `photo/grey-except-red.md`. */
   path: string;
   sections: Record<(typeof RECIPE_SECTIONS)[number], string>;
+  /** MM115: the parsed `## Success criteria` (empty when the recipe has none). */
+  criteria: RecipeCriterion[];
   /** The parsed `## Ops` JSON (null when `ops_example` is false). */
   example: { summary: string; ops: Op[] } | null;
 }
@@ -127,12 +163,23 @@ export function parseRecipe(path: string, text: string): Recipe {
 
   const body = m![2];
   const heads = [...body.matchAll(/^## (.+)$/gm)].map((h) => ({ name: h[1].trim(), at: h.index! }));
-  if (heads.map((h) => h.name).join('|') !== RECIPE_SECTIONS.join('|')) fail(`sections must be exactly: ${RECIPE_SECTIONS.join(', ')}`);
+  const names = heads.map((h) => h.name).join('|');
+  const base = RECIPE_SECTIONS.join('|');
+  if (names !== base && names !== `${base}|${RECIPE_CRITERIA_SECTION}`) fail(`sections must be exactly: ${RECIPE_SECTIONS.join(', ')} (and optionally ${RECIPE_CRITERIA_SECTION} last)`);
+  let criteria: RecipeCriterion[] = [];
   const sections = {} as Recipe['sections'];
   heads.forEach((h, i) => {
     const start = h.at + `## ${h.name}`.length;
     const text = body.slice(start, i + 1 < heads.length ? heads[i + 1].at : undefined).trim();
     if (!text) fail(`section ${h.name} is empty`);
+    if (h.name === RECIPE_CRITERIA_SECTION) {
+      try {
+        criteria = parseCriteria(text);
+      } catch (e) {
+        fail((e as Error).message);
+      }
+      return;
+    }
     sections[h.name as (typeof RECIPE_SECTIONS)[number]] = text;
   });
 
@@ -165,6 +212,7 @@ export function parseRecipe(path: string, text: string): Recipe {
     tools: tools as string[],
     path,
     sections,
+    criteria,
     example,
   };
 }

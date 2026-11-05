@@ -19,6 +19,7 @@ import { EVENTS } from '@/lib/analytics/events';
 import type { AssistantActionKindProp, AssistantSurfaceProp, Tier } from '@/lib/analytics/events';
 import { undoBucket } from '@/lib/assistant/analytics';
 import { blobToBase64 } from '@/lib/assistant/frame';
+import { metricsForBody, metricsFromBlob } from '@/lib/assistant/metrics';
 import { useAssistantStream, type AssistantTrack } from '@/lib/assistant/useAssistantStream';
 import type { StreamDeps } from '@/lib/assistant/stream';
 import type { AssistantActionEvent, AssistantEditsEvent } from '@/schemas/assistant';
@@ -81,6 +82,8 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
 
   const pending = React.useRef<PendingResult | null>(null);
   const roundsThisTurn = React.useRef(0);
+  // MM115: the last meters taken of the preview (at send, then after each edit): the next edit's "before".
+  const lastMetrics = React.useRef<Record<string, number> | undefined>(undefined);
   const [tick, setTick] = React.useState(0);
 
   const onEdits = React.useCallback(
@@ -129,17 +132,28 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
     let alive = true;
     void (async () => {
       let frameAfter: { jpegBase64: string } | undefined;
+      let metricsAfter: Record<string, number> | undefined;
       if (p.applied && p.visual && previewAllowed() && noticeSeen()) {
         try {
           await waitForPaint();
-          const blob = await adapterRef.current.captureFrame();
+          const a = adapterRef.current;
+          const blob = await a.captureFrame();
           if (blob) frameAfter = { jpegBase64: await blobToBase64(blob) };
+          metricsAfter = metricsForBody(a.metrics ? a.metrics() : blob ? await metricsFromBlob(blob) : null);
         } catch {
           frameAfter = undefined;
         }
       }
       if (!alive) return;
-      chat.continueEdit({ callId: p.callId, applied: p.applied, ...(p.errors?.length ? { errors: p.errors } : {}), ...(frameAfter ? { frameAfter } : {}) });
+      const metricsBefore = metricsAfter ? lastMetrics.current : undefined;
+      if (metricsAfter) lastMetrics.current = metricsAfter;
+      chat.continueEdit({
+        callId: p.callId,
+        applied: p.applied,
+        ...(p.errors?.length ? { errors: p.errors } : {}),
+        ...(frameAfter ? { frameAfter } : {}),
+        ...(metricsBefore && metricsAfter ? { metricsBefore, metricsAfter } : metricsAfter ? { metricsAfter } : {}),
+      });
     })();
     return () => {
       alive = false;
@@ -153,21 +167,31 @@ export function useCopilot({ adapter, locale, track, tier, deps, now = Date.now,
       const a = adapterRef.current;
       roundsThisTurn.current = 0;
       let frame: { jpegBase64: string } | undefined;
+      let metrics: Record<string, number> | undefined;
+      lastMetrics.current = undefined;
       const mayFrame = a.frameOnMessage && previewAllowed();
       if (mayFrame && !noticeSeen()) {
         markNoticeSeen();
         setNotice(false);
       }
-      if (mayFrame) {
+      // Meters ride along wherever the preview may be read: with the frame, or (Motion, whose frame
+      // goes only on the verify round) once the disclosure has been acknowledged.
+      if (mayFrame || (previewAllowed() && noticeSeen())) {
         try {
-          const blob = await a.captureFrame();
-          if (blob) frame = { jpegBase64: await blobToBase64(blob) };
+          const blob = mayFrame || !a.metrics ? await a.captureFrame() : null;
+          if (mayFrame && blob) frame = { jpegBase64: await blobToBase64(blob) };
+          metrics = metricsForBody(a.metrics ? a.metrics() : blob ? await metricsFromBlob(blob) : null);
         } catch {
           frame = undefined;
         }
       }
+      lastMetrics.current = metrics;
       const pid = a.projectId();
-      const ok = chat.send(text, { plan: !!opts.plan, context: { digest: a.digest(), ...(pid ? { projectId: pid } : {}) }, ...(frame ? { frame } : {}) });
+      const ok = chat.send(text, {
+        plan: !!opts.plan,
+        context: { digest: a.digest(), ...(pid ? { projectId: pid } : {}), ...(metrics ? { metrics } : {}) },
+        ...(frame ? { frame } : {}),
+      });
       setTick((n) => n + 1);
       return ok;
     },

@@ -66,7 +66,7 @@ import { BLEND_MODES, LAYER_PARAMS, geometrySchema, maskComponentSchema, maskSch
 import { BUILTIN_PRESETS } from '@/lib/photo/presets';
 import { SHORTCUTS as PHOTO_SHORTCUTS } from '@/lib/photo/shortcuts';
 import { PHOTO_PANEL_IDS, type PhotoPanelId } from '@/lib/photo/panelIds';
-import { RECIPE_SECTIONS, parseRecipe, type Recipe } from '@/lib/assistant/recipes';
+import { RECIPE_SECTIONS, parseRecipe, type Recipe, type RecipeCriterion } from '@/lib/assistant/recipes';
 
 /** Output directory relative to the UI repo root (the script's default). */
 export const MEDI_KNOWLEDGE_DIR = '../media_manipulator_api/internal/assistant/knowledge';
@@ -1026,9 +1026,13 @@ const RECIPE_EDITOR_LABEL: Record<string, string> = { photo: PHOTO_BRAND, studio
 /** First sentence of a section, for the doc summary and the capsule line. */
 const firstSentenceOf = (s: string) => (/^([\s\S]+?[.!?])(\s|$)/.exec(s.replace(/\s+/g, ' ').trim())?.[1] ?? s).trim();
 
+const criterionLine = (c: RecipeCriterion) =>
+  `- ${c.metric} ${c.min !== undefined && c.max !== undefined ? `${c.min} to ${c.max}` : c.max !== undefined ? `at most ${c.max}` : `at least ${c.min}`}`;
+
 export function recipeDoc(r: Recipe): string {
   const details: string[] = [];
   for (const name of RECIPE_SECTIONS) details.push(`### ${name}`, '', ...r.sections[name].split('\n'), '');
+  if (r.criteria.length) details.push('### Success criteria', '', ...r.criteria.map(criterionLine), '');
   return doc({
     title: r.title,
     kind: 'recipe',

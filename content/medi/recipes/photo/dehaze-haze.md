@@ -32,3 +32,8 @@ Dehaze restores contrast that scales with haze depth; a little goes a long way. 
 ## How to adjust
 
 Sky turns too dark or blue: dehaze 15. Want the fog as mood: use negative dehaze (-20).
+
+## Success criteria
+
+- lumaStd >= 0.2
+- shadowsClipped <= 0.02
