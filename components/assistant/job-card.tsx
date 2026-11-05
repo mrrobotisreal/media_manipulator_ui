@@ -98,11 +98,9 @@ function JobCardBody({ callId, params, locale, file: fileProp, track, onOpen, jo
   const specialized = useSpecializedMediaTool(started);
   const transcribe = useTranscribeFile(started);
   const { data: polled } = useGetJobStatus(jobState);
-  React.useEffect(() => {
-    if (polled) setJobState((prev) => (prev ? { ...prev, ...polled } : null));
-  }, [polled]);
-
-  const status = jobState?.status;
+  // The polled status is merged on read (no effect): the latest poll for this job wins.
+  const live: ConversionJob | null = jobState ? (polled && polled.id === jobState.id ? { ...jobState, ...polled } : jobState) : null;
+  const status = live?.status;
   const failedUpload = running && !jobState && (convert.isError || specialized.isError || transcribe.isError);
   const failed = status === 'failed' || failedUpload;
   const done = status === 'completed';
@@ -163,8 +161,8 @@ function JobCardBody({ callId, params, locale, file: fileProp, track, onOpen, jo
 
   const noteKey = !tool ? null : block === 'no_file' ? 'needFile' : block === 'wrong_kind' ? 'wrongKind' : block === 'unsupported' ? 'unsupported' : block === 'quota_exhausted' ? 'exhausted' : null;
 
-  const descriptor = done && jobState && plan && file
-    ? describeResult({ job: jobState, originalFile: file, mode: plan.submit === 'transcribe' ? 'transcribe' : 'convert', kindHint: 'video', fallbackFileName: resultFileName(plan, file) })
+  const descriptor = done && live && plan && file
+    ? describeResult({ job: live!, originalFile: file, mode: plan.submit === 'transcribe' ? 'transcribe' : 'convert', kindHint: 'video', fallbackFileName: resultFileName(plan, file) })
     : null;
 
   return (
@@ -212,11 +210,11 @@ function JobCardBody({ callId, params, locale, file: fileProp, track, onOpen, jo
         <div role="status" className="space-y-1" data-testid="medi-job-progress">
           <p className="flex items-center gap-2 text-xs">
             <Loader2 className="size-3 animate-spin" />
-            {jobState ? t('assistant.jobCard.working') : t('assistant.jobCard.uploading', { percent: progress })}
-            {jobState?.progress ? ` · ${jobState.progress}%` : ''}
+            {live ? t('assistant.jobCard.working') : t('assistant.jobCard.uploading', { percent: progress })}
+            {live?.progress ? ` · ${live.progress}%` : ''}
           </p>
           <div className="h-1.5 w-full rounded-full bg-muted">
-            <div className="h-1.5 rounded-full bg-primary transition-all" style={{ width: `${jobState?.progress || progress || 0}%` }} />
+            <div className="h-1.5 rounded-full bg-primary transition-all" style={{ width: `${live?.progress || progress || 0}%` }} />
           </div>
         </div>
       ) : null}

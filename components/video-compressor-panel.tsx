@@ -25,13 +25,6 @@ type Resolution = (typeof RESOLUTIONS)[number];
 // Friendly compression level -> CRF. Mirrors the backend README mapping
 // (smallest ~31, balanced ~26, high quality ~22).
 // (The numbers live in lib/assistant/toolOptions/fields.ts, shared with Medi's option schema.)
-// Quality enum is still sent for backward-compat / validation; CRF refines it.
-const LEVEL_QUALITY: Record<EmbeddedVideoCompressionPreset, 'low' | 'medium' | 'high'> = {
-  smallest: 'low',
-  balanced: 'medium',
-  high_quality: 'high',
-};
-
 /**
  * VideoCompressorPanel is the focused UI for /tools/video-compressor and
  * /tools/compress-mp4. It runs the standard video-conversion engine

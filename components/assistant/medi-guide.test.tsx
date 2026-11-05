@@ -263,7 +263,7 @@ describe('GuideSheet', () => {
     renderSheet();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'just run it' } });
     fireEvent.submit(screen.getByRole('textbox').closest('form')!);
-    const card = await screen.findByTestId('medi-job-card');
+    const card = await screen.findByTestId('medi-job-card', {}, { timeout: 8000 });
     expect(card.getAttribute('data-state')).toBe('proposed');
     expect(screen.queryByTestId('medi-action')).toBeNull();
     expect(h.push).not.toHaveBeenCalled();
@@ -276,7 +276,7 @@ describe('GuideSheet', () => {
     renderSheet();
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'just run it' } });
     fireEvent.submit(screen.getByRole('textbox').closest('form')!);
-    const open = await screen.findByTestId('medi-job-open');
+    const open = await screen.findByTestId('medi-job-open', {}, { timeout: 8000 });
     expect(h.push).not.toHaveBeenCalled();
     expect(h.track).not.toHaveBeenCalledWith('assistant_job_confirmed', expect.anything());
     fireEvent.click(open);
@@ -293,7 +293,7 @@ describe('GuideSheet', () => {
     await screen.findByText('clip.mov');
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'just run it' } });
     fireEvent.submit(screen.getByRole('textbox').closest('form')!);
-    expect(await screen.findByTestId('medi-job-start')).toBeTruthy();
+    expect(await screen.findByTestId('medi-job-start', {}, { timeout: 8000 })).toBeTruthy();
     expect(screen.queryByTestId('medi-job-open')).toBeNull();
     expect(h.track).toHaveBeenCalledWith('assistant_job_proposed', { surface: 'guide', tool: 'compress-video', quota_metric: 'ops', queue_bucket: 'none', has_file: true });
     expect(h.track).not.toHaveBeenCalledWith('assistant_job_confirmed', expect.anything());

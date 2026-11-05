@@ -698,7 +698,8 @@ describe("MM107 Medi UI shard", () => {
   const plural = (k: string) => k.replace(/_(zero|one|two|few|many|other)$/, "_#plural");
   const logical = (o: unknown) => Array.from(new Set(keys(o).map(plural))).sort();
   // Colour names spelled the same in some languages (es "magenta", it "magenta") (MM108).
-  const COGNATE = /^assistant\.copilot\.colors\.(magenta|aqua)$/;
+  // MM116b: the job card's unit symbols and the loanwords/cognates a locale spells like English (jazz, rock, mono, codec...).
+  const COGNATE = /^assistant\.(copilot\.colors\.(magenta|aqua)|jobCard\.(units\.[A-Za-z]+|file|fields\.(bitrate|codec|equalizerPreset|fadeIn|fadeOut|filter|output|overlayText|pageSelection|rotation|saturation|startTime|volume)|values\.(auto|image|jazz|lin|mono|point|rock|sepia|standard|stereo|video|vintage|vocal)))$/;
   for (const { code } of locales) {
     it(`${code}: assistant.json has every key, no English left (brand names aside)`, () => {
       const s = shard(code);

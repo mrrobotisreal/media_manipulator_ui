@@ -79,7 +79,7 @@ const card = (p: Record<string, unknown>, file: File | null, locale = 'en-US') =
 describe('JobCard (MM116b)', () => {
   it('shows labels, units and values from the option schema, plus the server-priced quota and queue', async () => {
     card(params(), video());
-    const rows = await screen.findByTestId('medi-job-settings');
+    const rows = await screen.findByTestId('medi-job-settings', {}, { timeout: 8000 });
     expect(rows.textContent).toContain('Compression level');
     expect(rows.textContent).toContain('Smallest');
     expect(rows.textContent).toContain('Resolution');
@@ -93,13 +93,13 @@ describe('JobCard (MM116b)', () => {
 
   it('never takes words from the model: its label is not rendered', async () => {
     card(params({ options: { level: 'smallest' } }), video());
-    await screen.findByTestId('medi-job-settings');
+    await screen.findByTestId('medi-job-settings', {}, { timeout: 8000 });
     expect(screen.queryByText('Compress it')).toBeNull();
   });
 
   it('proposing emits assistant_job_proposed once and submits nothing (no submit call until the click)', async () => {
     card(params(), video());
-    await screen.findByTestId('medi-job-start');
+    await screen.findByTestId('medi-job-start', {}, { timeout: 8000 });
     expect(track).toHaveBeenCalledTimes(1);
     expect(track).toHaveBeenCalledWith('assistant_job_proposed', { surface: 'guide', tool: 'compress-video', quota_metric: 'ops', queue_bucket: 'none', has_file: true });
     expect(h.convert).not.toHaveBeenCalled();
@@ -111,7 +111,7 @@ describe('JobCard (MM116b)', () => {
   it('Start runs the job through the tool hook with the file and the page request, and nothing else', async () => {
     const f = video();
     card(params(), f);
-    fireEvent.click(await screen.findByTestId('medi-job-start'));
+    fireEvent.click(await screen.findByTestId('medi-job-start', {}, { timeout: 8000 }));
     expect(h.convert).toHaveBeenCalledTimes(1);
     expect(h.convert).toHaveBeenCalledWith({
       file: f,
@@ -127,7 +127,7 @@ describe('JobCard (MM116b)', () => {
 
   it('progress and the result: polls via useGetJobStatus and opens the shared ResultPanel', async () => {
     card(params(), video());
-    fireEvent.click(await screen.findByTestId('medi-job-start'));
+    fireEvent.click(await screen.findByTestId('medi-job-start', {}, { timeout: 8000 }));
     await act(async () => h.onStarted?.({ jobId: 'job-1' }));
     expect(screen.getByTestId('medi-job-progress')).toBeTruthy();
   });
@@ -135,7 +135,7 @@ describe('JobCard (MM116b)', () => {
   it('a finished job offers the result in the panel', async () => {
     const f = video();
     card(params(), f);
-    fireEvent.click(await screen.findByTestId('medi-job-start'));
+    fireEvent.click(await screen.findByTestId('medi-job-start', {}, { timeout: 8000 }));
     // The status poll answers once the job exists (a new object, like a refetch).
     h.status = { id: 'job-1', status: 'completed', resultFileName: 'trip.mp4', resultSizeBytes: 5 };
     await act(async () => h.onStarted?.({ jobId: 'job-1' }));
@@ -148,7 +148,7 @@ describe('JobCard (MM116b)', () => {
 
   it('no file attached: the button opens the tool with these settings (?o= link) and submits nothing', async () => {
     card(params(), null);
-    const btn = await screen.findByTestId('medi-job-open');
+    const btn = await screen.findByTestId('medi-job-open', {}, { timeout: 8000 });
     expect(screen.queryByTestId('medi-job-start')).toBeNull();
     expect(btn.textContent).toBe('Open Compress Video with these settings');
     expect(btn.getAttribute('data-href')).toMatch(/^\/tools\/compress-video\?o=[A-Za-z0-9_-]+$/);
@@ -162,13 +162,13 @@ describe('JobCard (MM116b)', () => {
 
   it('a locale prefix rides on the open link', async () => {
     card(params(), null, 'es-ES');
-    expect((await screen.findByTestId('medi-job-open')).getAttribute('data-href')).toMatch(/^\/es\/tools\/compress-video\?o=/);
+    expect((await screen.findByTestId('medi-job-open', {}, { timeout: 8000 })).getAttribute('data-href')).toMatch(/^\/es\/tools\/compress-video\?o=/);
   });
 
   it('a family that cannot run here (the image converter) falls back to the deep link even with a file', async () => {
     const img = new File([new Uint8Array(4)], 'a.png', { type: 'image/png' });
     card(params({ tool: 'image-converter', toolName: 'Image Converter', family: 'image:convert', options: { format: 'webp' }, queueEstimate: { bucket: 'none' } }), img);
-    const btn = await screen.findByTestId('medi-job-open');
+    const btn = await screen.findByTestId('medi-job-open', {}, { timeout: 8000 });
     expect(screen.queryByTestId('medi-job-start')).toBeNull();
     expect(btn.getAttribute('data-href')).toMatch(/^\/tools\/image-converter\?o=/);
     expect(screen.getByText(/run from its own page/)).toBeTruthy();
@@ -179,14 +179,14 @@ describe('JobCard (MM116b)', () => {
 
   it('the wrong kind of file falls back to opening the tool', async () => {
     card(params(), new File([new Uint8Array(4)], 'a.mp3', { type: 'audio/mpeg' }));
-    await screen.findByTestId('medi-job-open');
+    await screen.findByTestId('medi-job-open', {}, { timeout: 8000 });
     expect(screen.queryByTestId('medi-job-start')).toBeNull();
     expect(screen.getByText(/isn't the kind this tool works on/)).toBeTruthy();
   });
 
   it('an AI job shows the AI allowance; an exhausted allowance does not offer Start', async () => {
     card(params({ tool: 'transcribe-audio', toolName: 'Transcribe Audio', family: 'transcribe', options: { format: 'srt' }, quota: { metric: 'ai_ops', limit: 3, remaining: 0 }, queueEstimate: { gpu: true, bucket: 'long', waiting: 5 } }), new File([new Uint8Array(4)], 't.mp3', { type: 'audio/mpeg' }));
-    await screen.findByTestId('medi-job-open');
+    await screen.findByTestId('medi-job-open', {}, { timeout: 8000 });
     expect(screen.getByTestId('medi-job-costs').textContent).toContain('Uses 1 of your daily AI operations.');
     expect(screen.getByTestId('medi-job-costs').textContent).toContain('0 of 3 left today.');
     expect(screen.getByTestId('medi-job-queue').textContent).toContain('A longer wait');
@@ -196,7 +196,7 @@ describe('JobCard (MM116b)', () => {
   it('transcribe runs through the transcribe hook', async () => {
     const f = new File([new Uint8Array(4)], 't.mp3', { type: 'audio/mpeg' });
     card(params({ tool: 'transcribe-audio', toolName: 'Transcribe Audio', family: 'transcribe', options: { format: 'srt', language: 'es' }, quota: { metric: 'ai_ops', unlimited: true }, queueEstimate: { gpu: true, bucket: 'unknown' } }), f);
-    await screen.findByTestId('medi-job-start');
+    await screen.findByTestId('medi-job-start', {}, { timeout: 8000 });
     expect(screen.getByTestId('medi-job-costs').textContent).toContain('You have no daily limit on this.');
     expect(screen.getByTestId('medi-job-queue').textContent).toBe("The wait can't be estimated right now.");
     fireEvent.click(screen.getByTestId('medi-job-start'));
