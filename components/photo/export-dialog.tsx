@@ -28,6 +28,7 @@ import { defaultBatchDeps } from '@/lib/photo/batch';
 import { exportStartedProps, failReason, photoCountHeaders, photoTierProp, photoTracker, setPhotoBatchContext, type PhotoTracker } from '@/lib/photo/analytics';
 import { resolvePhotoGate, type PhotoCta, type PhotoGate } from '@/lib/photo/gating';
 import { cn } from '@/lib/utils';
+import { flushKept } from '@/lib/assistant/copilot/kept';
 import { BatchApply, type BatchFinish } from './batch-apply';
 import { PhotoUpgradeCta } from './upgrade-cta';
 
@@ -161,6 +162,7 @@ export function ExportDialog(props: ExportDialogProps) {
     if (done) {
       reported.current = job.id;
       track.track(EVENTS.PHOTO_EXPORT_COMPLETED, { ...base, ...(typeof live?.resultSizeBytes === 'number' ? { bytes_bucket: vectorBytesBucket(live.resultSizeBytes) } : {}) });
+      flushKept('exported', 'photo'); // MM113: Medi edits that survived to an export
     } else if (failed) {
       reported.current = job.id;
       track.track(EVENTS.PHOTO_EXPORT_FAILED, { ...base, reason: 'render' });
@@ -184,7 +186,10 @@ export function ExportDialog(props: ExportDialogProps) {
   /** A batch run ended (or was refused): the client's started/completed/failed pair for it. */
   const onBatchFinished = (r: BatchFinish) => {
     const base = { format, megapixels_bucket: exportStartedProps({ format, megapixels: effectiveMp, doc }).megapixels_bucket, ms: vectorMsBucket(r.ms) };
-    if (r.done > 0) track.track(EVENTS.PHOTO_EXPORT_COMPLETED, base);
+    if (r.done > 0) {
+      track.track(EVENTS.PHOTO_EXPORT_COMPLETED, base);
+      flushKept('exported', 'photo');
+    }
     else track.track(EVENTS.PHOTO_EXPORT_FAILED, { ...base, reason: r.error === 'photo_batch_limit' ? 'limit' : r.error === 'sign_in_required' ? 'locked' : 'render' });
   };
 

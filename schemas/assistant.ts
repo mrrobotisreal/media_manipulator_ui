@@ -28,7 +28,7 @@ export type AssistantActionKind = z.infer<typeof AssistantActionKindSchema>;
 // ---------------------------------------------------------------------------
 
 export const AssistantStreamEventSchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('meta'), conversationId: z.string().nullable(), turnId: z.string(), model: z.string() }),
+  z.object({ type: z.literal('meta'), conversationId: z.string().nullable(), turnId: z.string(), model: z.string(), promptVersion: z.string().optional() }),
   z.object({ type: z.literal('delta'), text: z.string() }),
   z.object({ type: z.literal('tool'), name: z.string(), status: z.string() }),
   z.object({ type: z.literal('edits'), callId: z.string(), summary: z.string(), ops: z.unknown() }),
@@ -81,6 +81,8 @@ export const AssistantCapabilitiesSchema = z.union([
     maxFrameBytes: z.number(),
     maxMessageChars: z.number(),
     spendCapReached: z.boolean(),
+    // MM113: the build's content hash (persona + capsules + knowledge + op schemas), shown in the panel's info menu.
+    promptVersion: z.string().optional(),
   }),
   z.object({ enabled: z.literal(false) }),
 ]);

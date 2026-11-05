@@ -29,6 +29,7 @@ import { captionGenerateBridge, exportDialogBridge, voiceoverBridge } from '@/li
 import { studioHost } from '@/lib/studio/telemetry';
 import type { AssistantCapabilities } from '@/schemas/assistant';
 import type { AssistantTrack } from '@/lib/assistant/useAssistantStream';
+import { useKeptSessionEnd } from '@/lib/assistant/copilot/kept';
 
 // Medi's copilot panel, loaded on first open with its i18n shard (nothing in the editor's first load).
 const CopilotPanel = dynamic(() => withAssistantShard(() => import('@/components/assistant/copilot-panel')), { ssr: false });
@@ -98,6 +99,7 @@ export function useStudioCopilot(projectId: string, embedded: boolean) {
   const [caps, setCaps] = React.useState<AssistantCapabilities | null>(null);
   const [open, setOpen] = React.useState(false);
   const { derive } = useDeriveStudioAsset();
+  useKeptSessionEnd('studio'); // MM113
   const refs = React.useRef<Refs | null>(null);
   React.useEffect(() => {
     refs.current = { projectId, caps, t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized, derive };

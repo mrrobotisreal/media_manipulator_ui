@@ -40,6 +40,7 @@ import { exportDurationRatioBucket, studioHost } from '@/lib/studio/telemetry';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import { useEmbedBridgeOptional } from './embed-bridge';
 import { exportDialogBridge } from '@/lib/studio/editorBridges';
+import { flushKept } from '@/lib/assistant/copilot/kept';
 import { isIrreversibleActionHidden } from '@/lib/translator/mode';
 
 const exportFormSchema = z.object({
@@ -195,6 +196,7 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
             { job_id: jobId, feature: 'studio' },
           );
         }
+        flushKept('exported', 'studio'); // MM113: Medi edits that survived to an export
       }
       toast.error(t('error:toasts.exportFailed'), { description: msg });
       if (isCreatv && jobId) bridge?.emit({ type: 'cs:export-failed', jobId, error: msg });

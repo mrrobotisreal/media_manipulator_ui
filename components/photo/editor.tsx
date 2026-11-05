@@ -88,6 +88,7 @@ import { photoAssistantTrack } from '@/lib/photo/analytics';
 import { selectSubjectMask } from '@/lib/photo/subjectMask';
 import { useMediaQuery } from '@/lib/useMediaQuery';
 import type { AssistantCapabilities } from '@/schemas/assistant';
+import { flushKept, useKeptSessionEnd } from '@/lib/assistant/copilot/kept';
 
 // MM108: Medi's copilot panel, loaded on first open with its i18n shard (nothing in the editor's first load).
 const CopilotPanel = dynamic(() => withAssistantShard(() => import('@/components/assistant/copilot-panel')), { ssr: false });
@@ -207,6 +208,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
   const [assistantCaps, setAssistantCaps] = React.useState<AssistantCapabilities | null>(null);
   const [copilotOpen, setCopilotOpen] = React.useState(false);
   const copilotOn = photoCopilotOn(assistantCaps);
+  useKeptSessionEnd('photo'); // MM113: leaving the editor reports Medi edits that survived
   const phone = useMediaQuery('(max-width: 767px)');
   const tool = useToolStore((st) => st.tool);
   const maskView = useToolStore((st) => st.maskView);
@@ -630,6 +632,7 @@ export default function PhotoEditor({ projectId }: PhotoEditorProps) {
       setSaveState('saved');
       void deletePhotoDraft(serverId);
       pa.saved(s.doc);
+      flushKept('saved', 'photo'); // MM113
       return true;
     }
     if (out.kind === 'conflict') {

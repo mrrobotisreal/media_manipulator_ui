@@ -6,6 +6,7 @@ import { EVENTS } from '@/lib/analytics/events';
 import type { DrawToolId } from '@/lib/vector/tools/types';
 import type { AnimatorId } from '@/lib/vector/animators';
 import { addedKeyframeProperties, importProps, layerCount, savedProps, startVectorAnalytics, vectorTracker, type VectorTracker } from '@/lib/vector/analytics';
+import { flushKept } from '@/lib/assistant/copilot/kept';
 import { useVectorStore } from '@/lib/vector/vectorStore';
 import type { VectorDoc } from '@/lib/vector/vectorTypes';
 
@@ -86,7 +87,10 @@ export function useVectorAnalytics(opts: { ready: boolean; source: 'new' | 'draf
         }
       },
       importFailed: (format: 'svg' | 'lottie' | 'motion_json') => trackRef.current.track(EVENTS.VECTOR_IMPORT_FAILED, importProps(format, 0, 0)),
-      projectSaved: (revision: number, documentBytes: number) => trackRef.current.track(EVENTS.VECTOR_PROJECT_SAVED, savedProps(revision, documentBytes)),
+      projectSaved: (revision: number, documentBytes: number) => {
+        trackRef.current.track(EVENTS.VECTOR_PROJECT_SAVED, savedProps(revision, documentBytes));
+        flushKept('saved', 'vector'); // MM113
+      },
       track: (...args: Parameters<VectorTracker['track']>) => trackRef.current.track(...args),
       /** A Motion document file opened into a new project is not a new creation. */
       openedDocumentFile: () => {

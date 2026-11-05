@@ -9,7 +9,7 @@
  * Loaded lazily with the assistant shard (`interface/assistant.json`) by the editor.
  */
 import * as React from 'react';
-import { ChevronDown, ListChecks, Loader2, Plus, Send, Square, Undo2, X } from 'lucide-react';
+import { ChevronDown, Info, ListChecks, Loader2, Plus, Send, Square, Undo2, X } from 'lucide-react';
 
 import { useLocalization } from '@/i18n/useLocalization';
 import { useLocalizedHref } from '@/i18n/useLocalizedHref';
@@ -22,9 +22,11 @@ import type { Tier } from '@/lib/analytics/events';
 import type { AssistantCapabilities } from '@/schemas/assistant';
 import { getAssistantCapabilities } from '@/lib/assistant/api';
 import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 import AssistantMarkdown from './markdown';
 import { errorKey } from './guide-sheet';
+import MessageFeedback from './message-feedback';
 
 export const COPILOT_STARTERS: Record<CopilotAdapter['surface'], readonly string[]> = {
   photo: ['fixLighting', 'moody', 'keepRed', 'vintage'],
@@ -125,9 +127,12 @@ export default function CopilotPanel({
       subtitle={t('assistant.copilot.subtitle')}
       closeLabel={t('assistant.copilot.close', b)}
       actions={
-        <button type="button" className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t('assistant.copilot.newChat')} title={t('assistant.copilot.newChat')} onClick={cp.reset}>
-          <Plus className="size-4" />
-        </button>
+        <>
+          <InfoMenu version={caps.promptVersion} />
+          <button type="button" className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t('assistant.copilot.newChat')} title={t('assistant.copilot.newChat')} onClick={cp.reset}>
+            <Plus className="size-4" />
+          </button>
+        </>
       }
     >
       <div ref={listRef} className="min-h-0 flex-1 space-y-4 overflow-y-auto px-3 py-3" aria-live="polite" data-testid="copilot-messages">
@@ -226,6 +231,7 @@ export default function CopilotPanel({
                 </div>
               ) : null}
               {m.status === 'stopped' ? <p className="text-xs text-muted-foreground">{t('assistant.copilot.stopped')}</p> : null}
+              {m.status === 'complete' && m.messageId && signedIn ? <MessageFeedback messageId={m.messageId} surface={adapter.surface} track={track} /> : null}
               {m.status === 'error' && m.errorCode !== 'limit' && m.errorCode !== 'sign_in_required' ? (
                 <p className="text-sm text-destructive" role="alert">
                   {t(`assistant.errors.${errorKey(m.errorCode)}`, b)}
@@ -343,6 +349,28 @@ function PanelFrame({ children, onClose, title, subtitle, closeLabel, actions }:
       </header>
       {children}
     </section>
+  );
+}
+
+/** The panel's ⓘ menu (MM113): the build's prompt version, for support to quote. */
+function InfoMenu({ version }: { version?: string }) {
+  const { t } = useLocalization(['interface']);
+  const b = { brand: MEDI_BRAND };
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button type="button" className="rounded p-2 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t('assistant.copilot.info', b)} title={t('assistant.copilot.info', b)} data-testid="copilot-info">
+          <Info className="size-4" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-64 space-y-1 p-3 text-sm" data-testid="copilot-info-content">
+        <p className="font-medium">{t('assistant.copilot.infoTitle', b)}</p>
+        <p>
+          {t('assistant.copilot.infoVersion')}: <code className="rounded bg-muted px-1 py-0.5 text-xs" data-testid="copilot-version">{version ?? '—'}</code>
+        </p>
+        <p className="text-xs text-muted-foreground">{t('assistant.copilot.infoHint')}</p>
+      </PopoverContent>
+    </Popover>
   );
 }
 
