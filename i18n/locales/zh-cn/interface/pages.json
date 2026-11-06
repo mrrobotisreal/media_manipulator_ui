@@ -441,6 +441,10 @@
             "studioDesc": "打开多轨编辑器。",
             "video": "视频入门",
             "videoDesc": "转换、压缩和裁剪视频文件。"
+          },
+          "captions": {
+            "title": "字幕",
+            "body": "点击字幕轨上的“生成”，把音频转写成按词计时的字幕（一次 AI 任务）。选中一条字幕可编辑文字和时间，然后从 12 种样式中选一种，或自行设置字体、颜色、描边和动画：卡拉 OK 填充、高亮、弹跳、跳动、逐词出现、方框高亮、淡入淡出、打字机或发光。使用 Premium 或 Pro，你可以拖动词与词之间的边界来重新调整时间，点击某个词来强调它，用“按音频重新计时”恢复转写时的时间，并把自己的样式保存到账户（Premium 保存 10 个，Pro 不限）。样式和动画会烧录进视频；SRT 和 VTT 文件只含纯文本。"
           }
         }
       },
@@ -1875,7 +1879,9 @@
       "assistantGuide": "{{medi}}网站指南",
       "assistantTurns": "{{medi}}每日助手编辑次数",
       "studioFormats": "Darkroom 导出格式",
-      "studioAnimatedCaptions": "Darkroom 动画字幕"
+      "studioAnimatedCaptions": "Darkroom 动画字幕",
+      "studioCaptionWordEdit": "逐词字幕计时",
+      "studioCaptionLooksSaved": "已保存的字幕样式"
     },
     "values": {
       "yes": "包含",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "何时使用",
     "whenToUseBody": "当一个文件不够用时，就选择Darkroom：合并多个片段、添加标题或背景音乐、叠加覆盖层，或将素材裁剪并重新排序成完整的视频。",
     "supportedMediaTitle": "支持的媒体类型",
-    "supportedMediaBody": "可导入视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。可导出为 MP4（H.264 或 H.265 视频，AAC 或 Opus 音频）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或仅音频的 MP3、WAV 和 Opus。Pro 还提供 AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC 和 24 位 WAV。字幕按词计时，可使用 6 种现成样式和 27 种字体添加动画（卡拉 OK 填充、高亮、弹跳）；预览与导出使用同一渲染引擎。",
+    "supportedMediaBody": "可导入视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。可导出为 MP4（H.264 或 H.265 视频，AAC 或 Opus 音频）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或仅音频的 MP3、WAV 和 Opus。Pro 还提供 AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC 和 24 位 WAV。字幕按词计时，可使用 12 种现成样式和 27 种字体添加动画（卡拉 OK 填充、高亮、弹跳、跳动、逐词出现、方框高亮、淡入淡出、打字机、发光）；预览与导出使用同一渲染引擎。Premium 和 Pro 还可在字幕轨上逐词调整时间和强调，并把字幕样式保存到你的账户。",
     "stepByStepTitle": "分步说明",
     "step1": "创建项目并选择分辨率（最高4K）和帧率（24/30/60 fps）。",
     "step2": "将视频、图片和音频文件拖入媒体库。",

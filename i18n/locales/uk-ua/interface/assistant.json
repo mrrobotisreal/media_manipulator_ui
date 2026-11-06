@@ -171,8 +171,6 @@
           "look": "Стиль «{{look}}» застосовано: {{clips}}",
           "transform": "Кліп {{clip}} переміщено й масштабовано",
           "keyframes_one": "Кліп {{clip}} анімовано: {{count}} ключовий кадр",
-          "keyframes_few": "Кліп {{clip}} анімовано: {{count}} ключові кадри",
-          "keyframes_many": "Кліп {{clip}} анімовано: {{count}} ключових кадрів",
           "keyframes_other": "Кліп {{clip}} анімовано: {{count}} ключового кадру",
           "title": {
             "lowerThird": "Додано нижню плашку на {{at}} с",
@@ -188,7 +186,13 @@
           "volume": "Гучність {{target}}: {{db}} дБ",
           "marker": "Додано маркер на {{at}} с",
           "captionStyle": "Змінено стиль субтитрів",
-          "canvas": "Формат кадру змінено на {{aspect}}"
+          "captionWords_one": "Виділено {{count}} слово в субтитрах",
+          "captionWords_other": "Виділено {{count}} слова в субтитрах",
+          "captionWords_few": "Виділено {{count}} слова в субтитрах",
+          "captionWords_many": "Виділено {{count}} слів у субтитрах",
+          "canvas": "Формат кадру змінено на {{aspect}}",
+          "keyframes_few": "Кліп {{clip}} анімовано: {{count}} ключові кадри",
+          "keyframes_many": "Кліп {{clip}} анімовано: {{count}} ключових кадрів"
         },
         "field": {
           "opacity": "Непрозорість",

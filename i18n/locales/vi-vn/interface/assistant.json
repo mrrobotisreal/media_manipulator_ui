@@ -182,6 +182,7 @@
           "volume": "Đã đặt {{target}} ở {{db}} dB",
           "marker": "Đã thêm điểm đánh dấu tại {{at}} giây",
           "captionStyle": "Đã đổi kiểu phụ đề",
+          "captionWords_other": "Đã nhấn mạnh {{count}} từ trong phụ đề",
           "canvas": "Đã đổi tỉ lệ khung hình thành {{aspect}}"
         },
         "field": {

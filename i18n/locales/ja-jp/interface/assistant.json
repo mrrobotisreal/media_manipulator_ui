@@ -182,6 +182,7 @@
           "volume": "{{target}}を{{db}} dBにしました",
           "marker": "{{at}}秒にマーカーを追加しました",
           "captionStyle": "字幕のスタイルを変更しました",
+          "captionWords_other": "字幕の{{count}}語を強調しました",
           "canvas": "画面比率を{{aspect}}に変更しました"
         },
         "field": {

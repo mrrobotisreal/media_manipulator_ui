@@ -182,6 +182,7 @@
           "volume": "{{target}}을(를) {{db}} dB로 맞췄어요",
           "marker": "{{at}}초에 마커를 추가했어요",
           "captionStyle": "자막 스타일을 바꿨어요",
+          "captionWords_other": "자막 단어 {{count}}개를 강조했어요",
           "canvas": "화면 비율을 {{aspect}}(으)로 바꿨어요"
         },
         "field": {

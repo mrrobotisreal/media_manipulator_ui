@@ -170,7 +170,6 @@
           "look": "Look “{{look}}” aplicado: {{clips}}",
           "transform": "{{clip}} movido e redimensionado",
           "keyframes_one": "{{clip}} animado com {{count}} quadro-chave",
-          "keyframes_many": "{{clip}} animado com {{count}} quadros-chave",
           "keyframes_other": "{{clip}} animado com {{count}} quadros-chave",
           "title": {
             "lowerThird": "Tarja inferior adicionada em {{at}} s",
@@ -186,7 +185,11 @@
           "volume": "{{target}} em {{db}} dB",
           "marker": "Marcador adicionado em {{at}} s",
           "captionStyle": "Estilo das legendas alterado",
-          "canvas": "Formato da imagem alterado para {{aspect}}"
+          "captionWords_one": "{{count}} palavra de legenda enfatizada",
+          "captionWords_other": "{{count}} palavras de legenda enfatizadas",
+          "captionWords_many": "{{count}} palavras de legenda enfatizadas",
+          "canvas": "Formato da imagem alterado para {{aspect}}",
+          "keyframes_many": "{{clip}} animado com {{count}} quadros-chave"
         },
         "field": {
           "opacity": "Opacidade",

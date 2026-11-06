@@ -441,6 +441,10 @@
             "studioDesc": "Apri l'editor multitraccia.",
             "video": "Primi passi con i video",
             "videoDesc": "Converti, comprimi e taglia file video."
+          },
+          "captions": {
+            "title": "Sottotitoli",
+            "body": "Fai clic su «Genera» nella traccia dei sottotitoli per trascrivere l'audio in sottotitoli sincronizzati parola per parola (un lavoro IA). Seleziona un sottotitolo per modificarne testo e tempi, poi scegli uno dei dodici stili o imposta tu carattere, colori, contorno e animazione: riempimento karaoke, evidenziazione, pop, rimbalzo, parola per parola, evidenziazione a riquadro, dissolvenza, macchina da scrivere o bagliore. Con Premium o Pro puoi trascinare i confini tra le parole per risincronizzarle, fare clic su una parola per enfatizzarla, usare «Risincronizza dall'audio» per tornare ai tempi trascritti e salvare i tuoi stili nel tuo account (Premium ne conserva 10, Pro senza limiti). Stile e animazione vengono impressi nel video; i file SRT e VTT contengono solo testo."
           }
         }
       },
@@ -1875,7 +1879,9 @@
       "assistantGuide": "Guida del sito {{medi}}",
       "assistantTurns": "Modifiche del copilota {{medi}} al giorno",
       "studioFormats": "Formati di esportazione Darkroom",
-      "studioAnimatedCaptions": "Sottotitoli animati di Darkroom"
+      "studioAnimatedCaptions": "Sottotitoli animati di Darkroom",
+      "studioCaptionWordEdit": "Sincronizzazione dei sottotitoli per parola",
+      "studioCaptionLooksSaved": "Stili dei sottotitoli salvati"
     },
     "values": {
       "yes": "Incluso",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Quando usarlo",
     "whenToUseBody": "Scegli Darkroom quando un solo file non basta: combinare più clip, aggiungere titoli o musica di sottofondo, sovrapporre elementi, oppure tagliare e riordinare le riprese in un video finito.",
     "supportedMediaTitle": "Tipi di media supportati",
-    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus. Pro aggiunge AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV a 24 bit. I sottotitoli sono sincronizzati parola per parola e si possono animare (riempimento karaoke, evidenziazione, pop) con sei stili pronti e 27 caratteri; l'anteprima li disegna con lo stesso motore dell'esportazione.",
+    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus. Pro aggiunge AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV a 24 bit. I sottotitoli sono sincronizzati parola per parola e si possono animare (riempimento karaoke, evidenziazione, pop, rimbalzo, parola per parola, evidenziazione a riquadro, dissolvenza, macchina da scrivere, bagliore) con dodici stili pronti e 27 caratteri; l'anteprima li disegna con lo stesso motore dell'esportazione. Premium e Pro aggiungono la sincronizzazione e l'enfasi per parola nella traccia dei sottotitoli e gli stili dei sottotitoli salvati nel tuo account.",
     "stepByStepTitle": "Passo dopo passo",
     "step1": "Crea un progetto e scegli una risoluzione (fino a 4K) e una frequenza fotogrammi (24/30/60 fps).",
     "step2": "Trascina file video, immagini e audio nel contenitore multimediale.",

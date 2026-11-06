@@ -170,7 +170,6 @@
           "look": "Look « {{look}} » appliqué : {{clips}}",
           "transform": "{{clip}} déplacé et redimensionné",
           "keyframes_one": "{{clip}} animé avec {{count}} image clé",
-          "keyframes_many": "{{clip}} animé avec {{count}} images clés",
           "keyframes_other": "{{clip}} animé avec {{count}} images clés",
           "title": {
             "lowerThird": "Bandeau ajouté à {{at}} s",
@@ -186,7 +185,11 @@
           "volume": "{{target}} réglé à {{db}} dB",
           "marker": "Marqueur ajouté à {{at}} s",
           "captionStyle": "Style des sous-titres modifié",
-          "canvas": "Format de l’image changé en {{aspect}}"
+          "captionWords_one": "{{count}} mot de sous-titre accentué",
+          "captionWords_other": "{{count}} mots de sous-titres accentués",
+          "captionWords_many": "{{count}} mots de sous-titres accentués",
+          "canvas": "Format de l’image changé en {{aspect}}",
+          "keyframes_many": "{{clip}} animé avec {{count}} images clés"
         },
         "field": {
           "opacity": "Opacité",

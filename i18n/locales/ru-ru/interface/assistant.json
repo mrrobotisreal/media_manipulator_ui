@@ -171,8 +171,6 @@
           "look": "Стиль «{{look}}» применён: {{clips}}",
           "transform": "Клип {{clip}} перемещён и масштабирован",
           "keyframes_one": "Клип {{clip}} анимирован: {{count}} ключевой кадр",
-          "keyframes_few": "Клип {{clip}} анимирован: {{count}} ключевых кадра",
-          "keyframes_many": "Клип {{clip}} анимирован: {{count}} ключевых кадров",
           "keyframes_other": "Клип {{clip}} анимирован: {{count}} ключевого кадра",
           "title": {
             "lowerThird": "Добавлена нижняя плашка на {{at}} с",
@@ -188,7 +186,13 @@
           "volume": "Громкость {{target}}: {{db}} дБ",
           "marker": "Добавлен маркер на {{at}} с",
           "captionStyle": "Изменён стиль субтитров",
-          "canvas": "Формат кадра изменён на {{aspect}}"
+          "captionWords_one": "Выделено {{count}} слово в субтитрах",
+          "captionWords_other": "Выделено {{count}} слова в субтитрах",
+          "captionWords_few": "Выделено {{count}} слова в субтитрах",
+          "captionWords_many": "Выделено {{count}} слов в субтитрах",
+          "canvas": "Формат кадра изменён на {{aspect}}",
+          "keyframes_few": "Клип {{clip}} анимирован: {{count}} ключевых кадра",
+          "keyframes_many": "Клип {{clip}} анимирован: {{count}} ключевых кадров"
         },
         "field": {
           "opacity": "Непрозрачность",

@@ -657,7 +657,6 @@
       "savedLookCount": "{{used}} of {{limit}} saved",
       "savedLookCountUnlimited": "{{used}} saved",
       "savedLookDelete": "Delete look",
-      "savedLookRename": "Rename",
       "savedLookSaved": "Look saved",
       "savedLookFailed": "Could not save the look.",
       "savedLookConflict": "This look changed in another tab; reload to see it.",

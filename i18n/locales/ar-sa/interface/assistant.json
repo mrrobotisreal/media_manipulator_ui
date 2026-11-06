@@ -172,11 +172,7 @@
           "grade": "صحّحت الألوان: {{clips}}",
           "look": "طبّقت مظهر {{look}}: {{clips}}",
           "transform": "نقلت {{clip}} وغيّرت حجمه",
-          "keyframes_zero": "حرّكت {{clip}} بدون إطارات مفتاحية ({{count}})",
           "keyframes_one": "حرّكت {{clip}} بإطار مفتاحي واحد ({{count}})",
-          "keyframes_two": "حرّكت {{clip}} بإطارين مفتاحيين ({{count}})",
-          "keyframes_few": "حرّكت {{clip}} بـ {{count}} إطارات مفتاحية",
-          "keyframes_many": "حرّكت {{clip}} بـ {{count}} إطارًا مفتاحيًا",
           "keyframes_other": "حرّكت {{clip}} بـ {{count}} إطار مفتاحي",
           "title": {
             "lowerThird": "أضفت شريط اسم سفليًا عند {{at}} ث",
@@ -192,7 +188,17 @@
           "volume": "ضبطت {{target}} على {{db}} dB",
           "marker": "أضفت علامة عند {{at}} ث",
           "captionStyle": "غيّرت نمط الترجمة",
-          "canvas": "غيّرت نسبة الإطار إلى {{aspect}}"
+          "captionWords_one": "أبرزت كلمة واحدة في الترجمة ({{count}})",
+          "captionWords_other": "أبرزت {{count}} كلمة في الترجمة",
+          "captionWords_zero": "أبرزت كلمات الترجمة ({{count}})",
+          "captionWords_two": "أبرزت كلمتين في الترجمة ({{count}})",
+          "captionWords_few": "أبرزت {{count}} كلمات في الترجمة",
+          "captionWords_many": "أبرزت {{count}} كلمة في الترجمة",
+          "canvas": "غيّرت نسبة الإطار إلى {{aspect}}",
+          "keyframes_zero": "حرّكت {{clip}} بدون إطارات مفتاحية ({{count}})",
+          "keyframes_two": "حرّكت {{clip}} بإطارين مفتاحيين ({{count}})",
+          "keyframes_few": "حرّكت {{clip}} بـ {{count}} إطارات مفتاحية",
+          "keyframes_many": "حرّكت {{clip}} بـ {{count}} إطارًا مفتاحيًا"
         },
         "field": {
           "opacity": "العتامة",

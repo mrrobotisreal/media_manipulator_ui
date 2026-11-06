@@ -441,6 +441,10 @@
             "studioDesc": "Mở trình biên tập đa track.",
             "video": "Bắt đầu với video",
             "videoDesc": "Chuyển đổi, nén và cắt đoạn tệp video."
+          },
+          "captions": {
+            "title": "Phụ đề",
+            "body": "Nhấp “Tạo” trên track phụ đề để chép lời âm thanh thành phụ đề căn thời gian theo từng từ (một tác vụ AI). Chọn một đoạn để sửa nội dung và thời gian, rồi chọn một trong mười hai kiểu hoặc tự đặt phông chữ, màu, viền và hiệu ứng động: tô màu karaoke, tô sáng, bật nảy, nhún nhảy, từng từ một, tô sáng bằng khung, mờ dần, máy đánh chữ hoặc phát sáng. Với Premium hoặc Pro, bạn có thể kéo ranh giới giữa các từ để căn lại thời gian, nhấp vào một từ để nhấn mạnh, dùng “Căn lại theo âm thanh” để quay về thời gian đã chép và lưu kiểu riêng vào tài khoản (Premium giữ 10 kiểu, Pro không giới hạn). Kiểu dáng và hiệu ứng động được in vào video; tệp SRT và VTT chỉ chứa văn bản."
           }
         }
       },
@@ -1875,7 +1879,9 @@
       "assistantGuide": "Trợ lý hướng dẫn {{medi}} trên trang",
       "assistantTurns": "Lượt chỉnh sửa bằng copilot {{medi}} mỗi ngày",
       "studioFormats": "Định dạng xuất của Darkroom",
-      "studioAnimatedCaptions": "Phụ đề động Darkroom"
+      "studioAnimatedCaptions": "Phụ đề động Darkroom",
+      "studioCaptionWordEdit": "Căn thời gian phụ đề theo từng từ",
+      "studioCaptionLooksSaved": "Kiểu phụ đề đã lưu"
     },
     "values": {
       "yes": "Có",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Khi nào nên dùng",
     "whenToUseBody": "Hãy dùng Darkroom khi một tệp là chưa đủ: ghép nhiều clip, thêm tiêu đề hoặc nhạc nền, xếp lớp phủ, hoặc cắt và sắp xếp lại cảnh quay thành một video hoàn chỉnh.",
     "supportedMediaTitle": "Loại phương tiện được hỗ trợ",
-    "supportedMediaBody": "Bạn có thể nhập video (MP4, MOV, WebM, MKV), hình ảnh (JPG, PNG, WebP) và âm thanh (MP3, WAV, AAC). Bạn có thể xuất MP4 (video H.264 hoặc H.265, âm thanh AAC hoặc Opus), MOV, WebM (VP9 với Opus hoặc Vorbis), MKV, hoặc chỉ âm thanh dạng MP3, WAV và Opus. Gói Pro có thêm AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC và WAV 24-bit. Phụ đề được căn thời gian theo từng từ và có thể tạo hiệu ứng động (tô màu karaoke, tô sáng, bật nảy) với sáu kiểu có sẵn và 27 phông chữ; bản xem trước vẽ chúng bằng cùng công cụ với bản xuất.",
+    "supportedMediaBody": "Bạn có thể nhập video (MP4, MOV, WebM, MKV), hình ảnh (JPG, PNG, WebP) và âm thanh (MP3, WAV, AAC). Bạn có thể xuất MP4 (video H.264 hoặc H.265, âm thanh AAC hoặc Opus), MOV, WebM (VP9 với Opus hoặc Vorbis), MKV, hoặc chỉ âm thanh dạng MP3, WAV và Opus. Gói Pro có thêm AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC và WAV 24-bit. Phụ đề được căn thời gian theo từng từ và có thể tạo hiệu ứng động (tô màu karaoke, tô sáng, bật nảy, nhún nhảy, từng từ một, tô sáng bằng khung, mờ dần, máy đánh chữ, phát sáng) với mười hai kiểu có sẵn và 27 phông chữ; bản xem trước vẽ chúng bằng cùng công cụ với bản xuất. Premium và Pro có thêm căn thời gian và nhấn mạnh từng từ trên track phụ đề, cùng các kiểu phụ đề được lưu trong tài khoản của bạn.",
     "stepByStepTitle": "Từng bước",
     "step1": "Tạo dự án và chọn độ phân giải (tối đa 4K) cùng tốc độ khung hình (24/30/60 fps).",
     "step2": "Kéo tệp video, hình ảnh và âm thanh vào khay phương tiện.",

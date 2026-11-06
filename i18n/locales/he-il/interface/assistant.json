@@ -170,7 +170,6 @@
           "look": "המראה „{{look}}” הוחל: {{clips}}",
           "transform": "{{clip}} הוזז ושונה בגודלו",
           "keyframes_one": "{{clip}} הונפש עם פריים מפתח {{count}}",
-          "keyframes_two": "{{clip}} הונפש עם {{count}} פריימי מפתח",
           "keyframes_other": "{{clip}} הונפש עם {{count}} פריימי מפתח",
           "title": {
             "lowerThird": "נוספה כותרת תחתונה ב-{{at}} שנ׳",
@@ -186,7 +185,11 @@
           "volume": "עוצמת {{target}} נקבעה ל-{{db}} dB",
           "marker": "נוסף סמן ב-{{at}} שנ׳",
           "captionStyle": "סגנון הכתוביות שונה",
-          "canvas": "יחס התמונה שונה ל-{{aspect}}"
+          "captionWords_one": "הודגשה מילת כתובית {{count}}",
+          "captionWords_other": "הודגשו {{count}} מילות כתובית",
+          "captionWords_two": "הודגשו {{count}} מילות כתובית",
+          "canvas": "יחס התמונה שונה ל-{{aspect}}",
+          "keyframes_two": "{{clip}} הונפש עם {{count}} פריימי מפתח"
         },
         "field": {
           "opacity": "אטימות",

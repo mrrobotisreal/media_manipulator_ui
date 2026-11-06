@@ -441,6 +441,10 @@
             "studioDesc": "Ouvrez l'éditeur multipiste.",
             "video": "Premiers pas avec la vidéo",
             "videoDesc": "Convertissez, compressez et découpez des fichiers vidéo."
+          },
+          "captions": {
+            "title": "Sous-titres",
+            "body": "Cliquez sur « Générer » dans la piste de sous-titres pour transcrire votre audio en sous-titres synchronisés mot à mot (une tâche IA). Sélectionnez un sous-titre pour modifier son texte et son minutage, puis choisissez l'un des douze styles ou réglez vous-même la police, les couleurs, le contour et l'animation : remplissage karaoké, surlignage, pop, rebond, mot par mot, surlignage en boîte, fondu, machine à écrire ou lueur. Avec Premium ou Pro, vous pouvez faire glisser les limites entre les mots pour les recaler, cliquer sur un mot pour l'accentuer, utiliser « Recaler sur l'audio » pour revenir au minutage transcrit et enregistrer vos propres styles dans votre compte (Premium en garde 10, Pro sans limite). Le style et l'animation sont incrustés dans la vidéo ; les fichiers SRT et VTT ne contiennent que du texte."
           }
         }
       },
@@ -1875,7 +1879,9 @@
       "assistantGuide": "Guide du site {{medi}}",
       "assistantTurns": "Modifications du copilote {{medi}} par jour",
       "studioFormats": "Formats d'export Darkroom",
-      "studioAnimatedCaptions": "Sous-titres animés Darkroom"
+      "studioAnimatedCaptions": "Sous-titres animés Darkroom",
+      "studioCaptionWordEdit": "Minutage des sous-titres mot à mot",
+      "studioCaptionLooksSaved": "Styles de sous-titres enregistrés"
     },
     "values": {
       "yes": "Inclus",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Quand l'utiliser",
     "whenToUseBody": "Tournez-vous vers Darkroom quand un seul fichier ne suffit pas : combiner plusieurs clips, ajouter des titres ou une musique de fond, superposer des éléments, ou découper et réordonner des images pour en faire une vidéo finie.",
     "supportedMediaTitle": "Types de médias pris en charge",
-    "supportedMediaBody": "Vous pouvez importer de la vidéo (MP4, MOV, WebM, MKV), des images (JPG, PNG, WebP) et de l'audio (MP3, WAV, AAC). Vous pouvez exporter en MP4 (vidéo H.264 ou H.265, audio AAC ou Opus), MOV, WebM (VP9 avec Opus ou Vorbis), MKV, ou en audio seul MP3, WAV et Opus. Pro ajoute l’AV1 (MP4, WebM, MKV), le MOV ProRes 422, le FLAC et le WAV 24 bits. Les sous-titres sont synchronisés mot à mot et peuvent être animés (remplissage karaoké, surlignage, pop) dans six styles prêts à l'emploi et 27 polices ; l'aperçu les dessine avec le même moteur que l'export.",
+    "supportedMediaBody": "Vous pouvez importer de la vidéo (MP4, MOV, WebM, MKV), des images (JPG, PNG, WebP) et de l'audio (MP3, WAV, AAC). Vous pouvez exporter en MP4 (vidéo H.264 ou H.265, audio AAC ou Opus), MOV, WebM (VP9 avec Opus ou Vorbis), MKV, ou en audio seul MP3, WAV et Opus. Pro ajoute l’AV1 (MP4, WebM, MKV), le MOV ProRes 422, le FLAC et le WAV 24 bits. Les sous-titres sont synchronisés mot à mot et peuvent être animés (remplissage karaoké, surlignage, pop, rebond, mot par mot, surlignage en boîte, fondu, machine à écrire, lueur) dans douze styles prêts à l'emploi et 27 polices ; l'aperçu les dessine avec le même moteur que l'export. Premium et Pro ajoutent le minutage et l'accentuation mot à mot sur la piste de sous-titres, et des styles de sous-titres enregistrés dans votre compte.",
     "stepByStepTitle": "Pas à pas",
     "step1": "Créez un projet et choisissez une résolution (jusqu'à 4K) et une fréquence d'images (24/30/60 fps).",
     "step2": "Glissez des fichiers vidéo, image et audio dans le chutier.",

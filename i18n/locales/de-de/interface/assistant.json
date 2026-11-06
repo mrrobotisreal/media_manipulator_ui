@@ -184,6 +184,8 @@
           "volume": "{{target}} auf {{db}} dB gesetzt",
           "marker": "Marker bei {{at}} s hinzugefügt",
           "captionStyle": "Untertitel neu gestaltet",
+          "captionWords_one": "{{count}} Untertitelwort betont",
+          "captionWords_other": "{{count}} Untertitelwörter betont",
           "canvas": "Bildformat auf {{aspect}} geändert"
         },
         "field": {

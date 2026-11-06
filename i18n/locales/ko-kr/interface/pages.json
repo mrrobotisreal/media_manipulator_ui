@@ -441,6 +441,10 @@
             "studioDesc": "멀티트랙 편집기를 여세요.",
             "video": "동영상 시작하기",
             "videoDesc": "동영상 파일을 변환, 압축, 자르기."
+          },
+          "captions": {
+            "title": "자막",
+            "body": "자막 레인에서 “생성”을 클릭하면 오디오를 단어 단위로 타이밍이 맞춰진 자막으로 받아 적어요(AI 작업 1회). 큐를 선택해 텍스트와 타이밍을 편집한 다음, 12가지 스타일 중 하나를 고르거나 글꼴, 색상, 윤곽선, 애니메이션을 직접 설정하세요. 애니메이션은 노래방 채우기, 강조, 팝, 바운스, 한 단어씩, 박스 강조, 페이드, 타자기, 글로우 중에서 고를 수 있어요. Premium이나 Pro에서는 단어 사이 경계를 드래그해 타이밍을 다시 맞추고, 단어를 클릭해 강조하고, “오디오 기준으로 다시 맞추기”로 받아 적은 타이밍으로 되돌리고, 내 스타일을 계정에 저장할 수 있어요(Premium은 10개, Pro는 무제한). 스타일과 애니메이션은 영상에 입혀지고, SRT와 VTT 파일은 텍스트만 담아요."
           }
         }
       },
@@ -1875,7 +1879,9 @@
       "assistantGuide": "{{medi}} 사이트 가이드",
       "assistantTurns": "하루 {{medi}} 코파일럿 편집 횟수",
       "studioFormats": "Darkroom 내보내기 형식",
-      "studioAnimatedCaptions": "Darkroom 애니메이션 자막"
+      "studioAnimatedCaptions": "Darkroom 애니메이션 자막",
+      "studioCaptionWordEdit": "단어별 자막 타이밍",
+      "studioCaptionLooksSaved": "저장된 자막 스타일"
     },
     "values": {
       "yes": "포함",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "언제 사용하나요",
     "whenToUseBody": "파일 하나로는 부족할 때 Darkroom을 꺼내세요. 여러 클립 합치기, 타이틀이나 배경 음악 추가, 오버레이 쌓기, 영상을 자르고 순서를 바꿔 완성된 동영상 만들기에 알맞아요.",
     "supportedMediaTitle": "지원 미디어 유형",
-    "supportedMediaBody": "동영상(MP4, MOV, WebM, MKV), 이미지(JPG, PNG, WebP), 오디오(MP3, WAV, AAC)를 가져올 수 있어요. 내보내기는 MP4(H.264 또는 H.265 비디오, AAC 또는 Opus 오디오), MOV, WebM(VP9와 Opus 또는 Vorbis), MKV, 오디오만 담은 MP3, WAV, Opus를 지원해요. Pro는 AV1(MP4, WebM, MKV), ProRes 422 MOV, FLAC, 24비트 WAV를 추가로 제공합니다. 자막은 단어 단위로 타이밍이 맞춰지며, 6가지 기본 스타일과 27가지 글꼴로 애니메이션(노래방 채우기, 강조, 팝)을 줄 수 있습니다. 미리보기는 내보내기와 같은 엔진으로 그립니다.",
+    "supportedMediaBody": "동영상(MP4, MOV, WebM, MKV), 이미지(JPG, PNG, WebP), 오디오(MP3, WAV, AAC)를 가져올 수 있어요. 내보내기는 MP4(H.264 또는 H.265 비디오, AAC 또는 Opus 오디오), MOV, WebM(VP9와 Opus 또는 Vorbis), MKV, 오디오만 담은 MP3, WAV, Opus를 지원해요. Pro는 AV1(MP4, WebM, MKV), ProRes 422 MOV, FLAC, 24비트 WAV를 추가로 제공합니다. 자막은 단어 단위로 타이밍이 맞춰지며, 12가지 기본 스타일과 27가지 글꼴로 애니메이션(노래방 채우기, 강조, 팝, 바운스, 한 단어씩, 박스 강조, 페이드, 타자기, 글로우)을 줄 수 있습니다. 미리보기는 내보내기와 같은 엔진으로 그립니다. Premium과 Pro에서는 자막 레인에서 단어별 타이밍과 강조, 계정에 저장하는 자막 스타일도 쓸 수 있습니다.",
     "stepByStepTitle": "단계별 안내",
     "step1": "프로젝트를 만들고 해상도(최대 4K)와 프레임 레이트(24/30/60 fps)를 고르세요.",
     "step2": "동영상, 이미지, 오디오 파일을 미디어 보관함으로 끌어다 놓으세요.",

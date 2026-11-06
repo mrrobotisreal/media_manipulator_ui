@@ -441,6 +441,10 @@
             "studioDesc": "Den Multi-Track-Editor öffnen.",
             "video": "Erste Schritte mit Video",
             "videoDesc": "Videodateien konvertieren, komprimieren und zuschneiden."
+          },
+          "captions": {
+            "title": "Untertitel",
+            "body": "Klicken Sie in der Untertitelspur auf „Generieren“, um Ihr Audio in wortgenau getimte Untertitel zu transkribieren (ein KI-Auftrag). Wählen Sie einen Eintrag aus, um Text und Timing zu bearbeiten, und nehmen Sie dann einen von zwölf Stilen oder legen Sie Schrift, Farben, Kontur und Animation selbst fest: Karaoke-Füllung, Hervorhebung, Pop, Hüpfen, Wort für Wort, Box-Hervorhebung, Einblenden, Schreibmaschine oder Leuchten. Mit Premium oder Pro können Sie die Grenzen zwischen Wörtern ziehen, um sie neu zu timen, ein Wort anklicken, um es zu betonen, mit „Timing aus Audio“ zum transkribierten Timing zurückkehren und eigene Stile in Ihrem Konto speichern (Premium behält 10, Pro unbegrenzt). Styling und Animation werden ins Video eingebrannt; SRT- und VTT-Dateien enthalten nur Text."
           }
         }
       },
@@ -1875,7 +1879,9 @@
       "assistantGuide": "{{medi}} als Website-Guide",
       "assistantTurns": "{{medi}}-Copilot-Bearbeitungen pro Tag",
       "studioFormats": "Darkroom-Exportformate",
-      "studioAnimatedCaptions": "Animierte Untertitel in Darkroom"
+      "studioAnimatedCaptions": "Animierte Untertitel in Darkroom",
+      "studioCaptionWordEdit": "Wortgenaues Untertitel-Timing",
+      "studioCaptionLooksSaved": "Gespeicherte Untertitelstile"
     },
     "values": {
       "yes": "Enthalten",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Wann Sie es verwenden sollten",
     "whenToUseBody": "Greifen Sie zu Darkroom, wenn eine Datei nicht ausreicht: mehrere Clips kombinieren, Titel oder Hintergrundmusik hinzufügen, Überlagerungen schichten oder Filmmaterial zuschneiden und neu anordnen, um ein fertiges Video zu erstellen.",
     "supportedMediaTitle": "Unterstützte Medientypen",
-    "supportedMediaBody": "Sie können Video (MP4, MOV, WebM, MKV), Bilder (JPG, PNG, WebP) und Audio (MP3, WAV, AAC) importieren. Exportieren können Sie MP4 (H.264- oder H.265-Video, AAC- oder Opus-Audio), MOV, WebM (VP9 mit Opus oder Vorbis), MKV oder reines Audio als MP3, WAV und Opus. Pro ergänzt AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC und WAV mit 24 Bit. Untertitel sind wortgenau getimt und lassen sich animieren (Karaoke-Füllung, Hervorhebung, Pop) – in sechs fertigen Stilen und 27 Schriften; die Vorschau zeichnet sie mit derselben Engine wie der Export.",
+    "supportedMediaBody": "Sie können Video (MP4, MOV, WebM, MKV), Bilder (JPG, PNG, WebP) und Audio (MP3, WAV, AAC) importieren. Exportieren können Sie MP4 (H.264- oder H.265-Video, AAC- oder Opus-Audio), MOV, WebM (VP9 mit Opus oder Vorbis), MKV oder reines Audio als MP3, WAV und Opus. Pro ergänzt AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC und WAV mit 24 Bit. Untertitel sind wortgenau getimt und lassen sich animieren (Karaoke-Füllung, Hervorhebung, Pop, Hüpfen, Wort für Wort, Box-Hervorhebung, Einblenden, Schreibmaschine, Leuchten) – in zwölf fertigen Stilen und 27 Schriften; die Vorschau zeichnet sie mit derselben Engine wie der Export. Premium und Pro ergänzen wortgenaues Timing und Betonung in der Untertitelspur sowie gespeicherte Untertitelstile in Ihrem Konto.",
     "stepByStepTitle": "Schritt für Schritt",
     "step1": "Erstellen Sie ein Projekt und wählen Sie eine Auflösung (bis zu 4K) und Bildrate (24/30/60 fps).",
     "step2": "Ziehen Sie Video-, Bild- und Audiodateien in die Medienablage.",

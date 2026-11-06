@@ -441,6 +441,10 @@
             "studioDesc": "Abra o editor multipista.",
             "video": "Primeiros passos com vídeo",
             "videoDesc": "Converta, comprima e corte ficheiros de vídeo."
+          },
+          "captions": {
+            "title": "Legendas",
+            "body": "Clique em «Gerar» na faixa de legendas para transcrever o seu áudio em legendas sincronizadas palavra a palavra (uma tarefa de IA). Selecione uma legenda para editar o texto e o tempo e, depois, escolha um dos doze estilos ou defina o tipo de letra, as cores, o contorno e a animação: preenchimento karaoke, destaque, pop, ressalto, palavra a palavra, destaque em caixa, desvanecimento, máquina de escrever ou brilho. Com o Premium ou o Pro pode arrastar os limites entre as palavras para as ressincronizar, clicar numa palavra para a enfatizar, usar «Ressincronizar pelo áudio» para voltar ao tempo transcrito e guardar os seus próprios estilos na sua conta (o Premium guarda 10, o Pro sem limite). O estilo e a animação ficam gravados no vídeo; os ficheiros SRT e VTT contêm apenas texto."
           }
         }
       },
@@ -1875,7 +1879,9 @@
       "assistantGuide": "Guia do site {{medi}}",
       "assistantTurns": "Edições do copiloto {{medi}} por dia",
       "studioFormats": "Formatos de exportação do Darkroom",
-      "studioAnimatedCaptions": "Legendas animadas do Darkroom"
+      "studioAnimatedCaptions": "Legendas animadas do Darkroom",
+      "studioCaptionWordEdit": "Sincronização de legendas palavra a palavra",
+      "studioCaptionLooksSaved": "Estilos de legenda guardados"
     },
     "values": {
       "yes": "Incluído",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Quando o usar",
     "whenToUseBody": "Recorra ao Darkroom quando um ficheiro não chega: para combinar vários clipes, adicionar títulos ou música de fundo, sobrepor camadas, ou cortar e reordenar filmagens num vídeo acabado.",
     "supportedMediaTitle": "Tipos de multimédia suportados",
-    "supportedMediaBody": "Pode importar vídeo (MP4, MOV, WebM, MKV), imagens (JPG, PNG, WebP) e áudio (MP3, WAV, AAC). Pode exportar em MP4 (vídeo H.264 ou H.265, áudio AAC ou Opus), MOV, WebM (VP9 com Opus ou Vorbis), MKV ou só áudio em MP3, WAV e Opus. O Pro acrescenta AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV de 24 bits. As legendas são sincronizadas palavra a palavra e podem ser animadas (preenchimento karaoke, destaque, pop) em seis estilos prontos e 27 tipos de letra; a pré-visualização desenha-as com o mesmo motor da exportação.",
+    "supportedMediaBody": "Pode importar vídeo (MP4, MOV, WebM, MKV), imagens (JPG, PNG, WebP) e áudio (MP3, WAV, AAC). Pode exportar em MP4 (vídeo H.264 ou H.265, áudio AAC ou Opus), MOV, WebM (VP9 com Opus ou Vorbis), MKV ou só áudio em MP3, WAV e Opus. O Pro acrescenta AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV de 24 bits. As legendas são sincronizadas palavra a palavra e podem ser animadas (preenchimento karaoke, destaque, pop, ressalto, palavra a palavra, destaque em caixa, desvanecimento, máquina de escrever, brilho) em doze estilos prontos e 27 tipos de letra; a pré-visualização desenha-as com o mesmo motor da exportação. O Premium e o Pro acrescentam a sincronização e a ênfase palavra a palavra na faixa de legendas, bem como estilos de legenda guardados na sua conta.",
     "stepByStepTitle": "Passo a passo",
     "step1": "Crie um projeto e escolha uma resolução (até 4K) e uma taxa de fotogramas (24/30/60 fps).",
     "step2": "Arraste ficheiros de vídeo, imagem e áudio para o painel de multimédia.",
