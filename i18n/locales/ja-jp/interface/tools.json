@@ -579,7 +579,50 @@
       "positionBottom": "下",
       "positionTop": "上",
       "maxWidth": "最大幅",
-      "add": "字幕を追加"
+      "add": "字幕を追加",
+      "positionMiddle": "中央",
+      "looks": "スタイル",
+      "lookModified": "変更あり",
+      "looksLockedHint": "無料登録で、すべてのスタイルとアニメーションが使えます。",
+      "signUpToUse": "登録が必要",
+      "look": {
+        "bold_pop": "ボールドポップ",
+        "karaoke_classic": "カラオケクラシック",
+        "clean_highlight": "クリーンハイライト",
+        "minimal": "ミニマル",
+        "neon": "ネオン",
+        "podcast": "ポッドキャスト"
+      },
+      "font": "フォント",
+      "fontGroup": {
+        "sans": "サンセリフ",
+        "display": "ディスプレイ",
+        "serif": "セリフ",
+        "mono": "等幅",
+        "script": "手書き風",
+        "fallback": "その他の文字体系"
+      },
+      "bold": "太字",
+      "uppercase": "大文字",
+      "animation": "アニメーション",
+      "anim": {
+        "none": "なし",
+        "karaoke_fill": "カラオケ塗り",
+        "highlight": "単語をハイライト",
+        "pop": "ポップ"
+      },
+      "animationStrength": "ポップの強さ",
+      "wordsPerGroup": "画面上の単語数",
+      "wholeLine": "1 行全体",
+      "highlight": "ハイライト",
+      "outline": "縁取り",
+      "outlineWidth": "縁取りの太さ",
+      "shadow": "影",
+      "backgroundMode": "背景",
+      "bgBox": "ボックス",
+      "bgWordBox": "現在の単語にボックス",
+      "bgNone": "なし",
+      "burnInOnly": "アニメーションとスタイルは動画に焼き込まれます。SRT/VTT ファイルはテキストのみです。"
     },
     "speed": {
       "badgeFreeze": "フリーズ",

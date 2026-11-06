@@ -594,7 +594,50 @@
       "positionBottom": "תחתונה",
       "positionTop": "עליונה",
       "maxWidth": "רוחב מקסימלי",
-      "add": "הוספת כתובית"
+      "add": "הוספת כתובית",
+      "positionMiddle": "באמצע",
+      "looks": "סגנונות",
+      "lookModified": "שונה",
+      "looksLockedHint": "הירשמו בחינם כדי לפתוח את כל הסגנונות וההנפשות.",
+      "signUpToUse": "נדרשת הרשמה",
+      "look": {
+        "bold_pop": "בולט וקופץ",
+        "karaoke_classic": "קריוקי קלאסי",
+        "clean_highlight": "הדגשה נקייה",
+        "minimal": "מינימלי",
+        "neon": "ניאון",
+        "podcast": "פודקאסט"
+      },
+      "font": "גופן",
+      "fontGroup": {
+        "sans": "ללא תגים",
+        "display": "תצוגה",
+        "serif": "עם תגים",
+        "mono": "ברוחב קבוע",
+        "script": "כתב יד",
+        "fallback": "מערכות כתב אחרות"
+      },
+      "bold": "מודגש",
+      "uppercase": "אותיות רישיות",
+      "animation": "הנפשה",
+      "anim": {
+        "none": "ללא",
+        "karaoke_fill": "מילוי קריוקי",
+        "highlight": "הדגשת המילה",
+        "pop": "קפיצה"
+      },
+      "animationStrength": "עוצמת הקפיצה",
+      "wordsPerGroup": "מילים על המסך",
+      "wholeLine": "כל השורה",
+      "highlight": "צבע הדגשה",
+      "outline": "קו מתאר",
+      "outlineWidth": "עובי קו המתאר",
+      "shadow": "צל",
+      "backgroundMode": "רקע",
+      "bgBox": "תיבה",
+      "bgWordBox": "תיבה מאחורי המילה הנוכחית",
+      "bgNone": "ללא",
+      "burnInOnly": "ההנפשות והעיצוב נצרבים בסרטון; קובצי SRT/VTT מכילים טקסט בלבד."
     },
     "speed": {
       "badgeFreeze": "Freeze",

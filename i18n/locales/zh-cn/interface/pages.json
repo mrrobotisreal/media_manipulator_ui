@@ -1874,7 +1874,8 @@
       "photoPresets": "已保存的{{brand}}预设",
       "assistantGuide": "{{medi}}网站指南",
       "assistantTurns": "{{medi}}每日助手编辑次数",
-      "studioFormats": "Darkroom 导出格式"
+      "studioFormats": "Darkroom 导出格式",
+      "studioAnimatedCaptions": "Darkroom 动画字幕"
     },
     "values": {
       "yes": "包含",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "高级设置",
       "studioAudio": "{{codecs}} 音频",
       "studioEmbeddedCaptions": "内嵌字幕",
-      "studioLossless": "无损：{{codecs}}"
+      "studioLossless": "无损：{{codecs}}",
+      "captionLooksGuest": "3 种字幕样式"
     },
     "unavailableTitle": "套餐详情暂时不可用",
     "unavailableBody": "我们无法连接到套餐服务。所有工具仍可正常使用——请稍后重新加载以查看对比。",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "何时使用",
     "whenToUseBody": "当一个文件不够用时，就选择Darkroom：合并多个片段、添加标题或背景音乐、叠加覆盖层，或将素材裁剪并重新排序成完整的视频。",
     "supportedMediaTitle": "支持的媒体类型",
-    "supportedMediaBody": "可导入视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。可导出为 MP4（H.264 或 H.265 视频，AAC 或 Opus 音频）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或仅音频的 MP3、WAV 和 Opus。Pro 还提供 AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC 和 24 位 WAV。",
+    "supportedMediaBody": "可导入视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。可导出为 MP4（H.264 或 H.265 视频，AAC 或 Opus 音频）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或仅音频的 MP3、WAV 和 Opus。Pro 还提供 AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC 和 24 位 WAV。字幕按词计时，可使用 6 种现成样式和 27 种字体添加动画（卡拉 OK 填充、高亮、弹跳）；预览与导出使用同一渲染引擎。",
     "stepByStepTitle": "分步说明",
     "step1": "创建项目并选择分辨率（最高4K）和帧率（24/30/60 fps）。",
     "step2": "将视频、图片和音频文件拖入媒体库。",

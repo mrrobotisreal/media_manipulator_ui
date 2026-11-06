@@ -1874,7 +1874,8 @@
       "photoPresets": "הגדרות מוכנות שמורות ב-{{brand}}",
       "assistantGuide": "{{medi}}, המדריך באתר",
       "assistantTurns": "עריכות של {{medi}} בעורכים ביום",
-      "studioFormats": "פורמטי ייצוא של Darkroom"
+      "studioFormats": "פורמטי ייצוא של Darkroom",
+      "studioAnimatedCaptions": "כתוביות מונפשות ב-Darkroom"
     },
     "values": {
       "yes": "כלול",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "הגדרות מתקדמות",
       "studioAudio": "אודיו {{codecs}}",
       "studioEmbeddedCaptions": "כתוביות מוטמעות",
-      "studioLossless": "ללא אובדן: {{codecs}}"
+      "studioLossless": "ללא אובדן: {{codecs}}",
+      "captionLooksGuest": "3 סגנונות כתוביות"
     },
     "unavailableTitle": "פרטי התוכנית אינם זמינים כרגע",
     "unavailableBody": "לא הצלחנו להתחבר לשירות התוכניות. כל הכלים עדיין פועלים — טענו מחדש בעוד רגע כדי לראות את ההשוואה.",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "מתי להשתמש בזה",
     "whenToUseBody": "פנו אל Darkroom כשקובץ אחד לא מספיק: שילוב של כמה קליפים, הוספת כותרות או מוזיקת רקע, שכבות של שכבות־על, או גזירה וסידור מחדש של צילומים לכדי וידאו מוגמר.",
     "supportedMediaTitle": "סוגי מדיה נתמכים",
-    "supportedMediaBody": "אפשר לייבא וידאו (MP4,‏ MOV,‏ WebM,‏ MKV), תמונות (JPG,‏ PNG,‏ WebP), ואודיו (MP3,‏ WAV,‏ AAC). אפשר לייצא ל־MP4 (וידאו H.264 או H.265, אודיו AAC או Opus), ל־MOV, ל־WebM ‏(VP9 עם Opus או Vorbis), ל־MKV, או לאודיו בלבד ב־MP3, ב־WAV וב־Opus. Pro מוסיף את AV1 ‏(MP4, ‏WebM, ‏MKV), ‏ProRes 422 MOV, ‏FLAC ו־WAV ‏24 ביט.",
+    "supportedMediaBody": "אפשר לייבא וידאו (MP4,‏ MOV,‏ WebM,‏ MKV), תמונות (JPG,‏ PNG,‏ WebP), ואודיו (MP3,‏ WAV,‏ AAC). אפשר לייצא ל־MP4 (וידאו H.264 או H.265, אודיו AAC או Opus), ל־MOV, ל־WebM ‏(VP9 עם Opus או Vorbis), ל־MKV, או לאודיו בלבד ב־MP3, ב־WAV וב־Opus. Pro מוסיף את AV1 ‏(MP4, ‏WebM, ‏MKV), ‏ProRes 422 MOV, ‏FLAC ו־WAV ‏24 ביט. הכתוביות מתוזמנות לפי מילה ואפשר להנפיש אותן (מילוי קריוקי, הדגשה, קפיצה) בשישה סגנונות מוכנים וב-27 גופנים; התצוגה המקדימה מציירת אותן באותו מנוע כמו הייצוא.",
     "stepByStepTitle": "שלב אחר שלב",
     "step1": "צרו פרויקט ובחרו רזולוציה (עד 4K) וקצב פריימים (24/30/60 fps).",
     "step2": "גררו קובצי וידאו, תמונה, ואודיו לתיבת המדיה.",

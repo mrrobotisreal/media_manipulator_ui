@@ -1874,7 +1874,8 @@
       "photoPresets": "Збережені пресети {{brand}}",
       "assistantGuide": "Гід сайтом {{medi}}",
       "assistantTurns": "Правок копілота {{medi}} на день",
-      "studioFormats": "Формати експорту Darkroom"
+      "studioFormats": "Формати експорту Darkroom",
+      "studioAnimatedCaptions": "Анімовані субтитри Darkroom"
     },
     "values": {
       "yes": "Включено",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "Розширені налаштування",
       "studioAudio": "Аудіо {{codecs}}",
       "studioEmbeddedCaptions": "Вбудовані субтитри",
-      "studioLossless": "Без втрат: {{codecs}}"
+      "studioLossless": "Без втрат: {{codecs}}",
+      "captionLooksGuest": "3 стилі субтитрів"
     },
     "unavailableTitle": "Інформація про тарифи тимчасово недоступна",
     "unavailableBody": "Не вдалося підключитися до сервісу тарифів. Усі інструменти й далі працюють — оновіть сторінку за хвилину, щоб побачити порівняння.",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "Коли його використовувати",
     "whenToUseBody": "Звертайтеся до Darkroom, коли одного файлу недостатньо: потрібно об'єднати кілька кліпів, додати титри чи фонову музику, накласти оверлеї або обрізати й переставити кадри, щоб зібрати готове відео.",
     "supportedMediaTitle": "Підтримувані типи медіафайлів",
-    "supportedMediaBody": "Імпортувати можна відео (MP4, MOV, WebM, MKV), зображення (JPG, PNG, WebP) та аудіо (MP3, WAV, AAC). Експортувати — у MP4 (відео H.264 або H.265, аудіо AAC або Opus), MOV, WebM (VP9 з Opus або Vorbis), MKV або лише аудіо в MP3, WAV і Opus. Pro додає AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC і WAV 24 біт.",
+    "supportedMediaBody": "Імпортувати можна відео (MP4, MOV, WebM, MKV), зображення (JPG, PNG, WebP) та аудіо (MP3, WAV, AAC). Експортувати — у MP4 (відео H.264 або H.265, аудіо AAC або Opus), MOV, WebM (VP9 з Opus або Vorbis), MKV або лише аудіо в MP3, WAV і Opus. Pro додає AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC і WAV 24 біт. Субтитри прив’язані до слів і можуть бути анімовані (караоке-заливка, підсвічування, спливання) у шести готових стилях і 27 шрифтах; превʼю малює їх тим самим рушієм, що й експорт.",
     "stepByStepTitle": "Покрокова інструкція",
     "step1": "Створіть проект і оберіть роздільну здатність (до 4K) і частоту кадрів (24/30/60 fps).",
     "step2": "Перетягніть файли відео, зображень і аудіо в медіабін.",

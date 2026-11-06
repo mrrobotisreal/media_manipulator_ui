@@ -1874,7 +1874,8 @@
       "photoPresets": "保存できる{{brand}}プリセット",
       "assistantGuide": "{{medi}}サイトガイド",
       "assistantTurns": "{{medi}}コパイロットの一日あたりの編集回数",
-      "studioFormats": "Darkroomのエクスポート形式"
+      "studioFormats": "Darkroomのエクスポート形式",
+      "studioAnimatedCaptions": "Darkroom のアニメーション字幕"
     },
     "values": {
       "yes": "含まれる",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "詳細設定",
       "studioAudio": "{{codecs}}音声",
       "studioEmbeddedCaptions": "埋め込み字幕",
-      "studioLossless": "ロスレス：{{codecs}}"
+      "studioLossless": "ロスレス：{{codecs}}",
+      "captionLooksGuest": "字幕スタイル 3 種"
     },
     "unavailableTitle": "プランの詳細は一時的に利用できません",
     "unavailableBody": "プランサービスに接続できませんでした。すべてのツールは引き続き動作します。しばらくしてから再読み込みすると比較表が表示されます。",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "使いどころ",
     "whenToUseBody": "1つのファイルでは足りないときにDarkroomを使います。複数のクリップの結合、タイトルやBGMの追加、オーバーレイの重ね合わせ、映像のトリミングと並べ替えによる完成動画の作成などです。",
     "supportedMediaTitle": "対応メディアの種類",
-    "supportedMediaBody": "読み込めるのは動画（MP4、MOV、WebM、MKV）、画像（JPG、PNG、WebP）、音声（MP3、WAV、AAC）です。エクスポートはMP4（H.264またはH.265映像、AACまたはOpus音声）、MOV、WebM（VP9とOpusまたはVorbis）、MKV、または音声のみのMP3、WAV、Opusに対応しています。Proでは、AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC、24ビットWAVも使えます。",
+    "supportedMediaBody": "読み込めるのは動画（MP4、MOV、WebM、MKV）、画像（JPG、PNG、WebP）、音声（MP3、WAV、AAC）です。エクスポートはMP4（H.264またはH.265映像、AACまたはOpus音声）、MOV、WebM（VP9とOpusまたはVorbis）、MKV、または音声のみのMP3、WAV、Opusに対応しています。Proでは、AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC、24ビットWAVも使えます。字幕は単語単位でタイミングが付き、6 種のスタイルと 27 種のフォントでアニメーション（カラオケ塗り、ハイライト、ポップ）を付けられます。プレビューは書き出しと同じエンジンで描画します。",
     "stepByStepTitle": "手順",
     "step1": "プロジェクトを作成し、解像度（最大4K）とフレームレート（24/30/60 fps）を選びます。",
     "step2": "動画、画像、音声ファイルをメディアビンにドラッグします。",

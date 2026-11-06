@@ -594,7 +594,50 @@
       "positionBottom": "Внизу",
       "positionTop": "Вгорі",
       "maxWidth": "Максимальна ширина",
-      "add": "Додати субтитр"
+      "add": "Додати субтитр",
+      "positionMiddle": "По центру",
+      "looks": "Стилі",
+      "lookModified": "змінено",
+      "looksLockedHint": "Зареєструйтеся безкоштовно, щоб відкрити всі стилі й анімації.",
+      "signUpToUse": "потрібна реєстрація",
+      "look": {
+        "bold_pop": "Яскравий акцент",
+        "karaoke_classic": "Караоке",
+        "clean_highlight": "Чисте підсвічування",
+        "minimal": "Мінімалізм",
+        "neon": "Неон",
+        "podcast": "Подкаст"
+      },
+      "font": "Шрифт",
+      "fontGroup": {
+        "sans": "Без зарубок",
+        "display": "Акцидентні",
+        "serif": "Із зарубками",
+        "mono": "Моноширинні",
+        "script": "Рукописні",
+        "fallback": "Інші писемності"
+      },
+      "bold": "Жирний",
+      "uppercase": "Великі літери",
+      "animation": "Анімація",
+      "anim": {
+        "none": "Немає",
+        "karaoke_fill": "Караоке-заливка",
+        "highlight": "Підсвічування слова",
+        "pop": "Спливання"
+      },
+      "animationStrength": "Сила спливання",
+      "wordsPerGroup": "Слів на екрані",
+      "wholeLine": "Увесь рядок",
+      "highlight": "Підсвічування",
+      "outline": "Обведення",
+      "outlineWidth": "Товщина обведення",
+      "shadow": "Тінь",
+      "backgroundMode": "Фон",
+      "bgBox": "Плашка",
+      "bgWordBox": "Плашка під поточним словом",
+      "bgNone": "Немає",
+      "burnInOnly": "Анімація та оформлення вшиваються у відео; файли SRT/VTT містять лише текст."
     },
     "speed": {
       "badgeFreeze": "Freeze",

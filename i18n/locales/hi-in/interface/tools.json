@@ -584,7 +584,50 @@
       "positionBottom": "नीचे",
       "positionTop": "ऊपर",
       "maxWidth": "अधिकतम चौड़ाई",
-      "add": "कैप्शन जोड़ें"
+      "add": "कैप्शन जोड़ें",
+      "positionMiddle": "बीच में",
+      "looks": "लुक",
+      "lookModified": "बदला गया",
+      "looksLockedHint": "सभी लुक और एनिमेशन खोलने के लिए मुफ़्त साइन अप करें।",
+      "signUpToUse": "साइन अप ज़रूरी",
+      "look": {
+        "bold_pop": "बोल्ड पॉप",
+        "karaoke_classic": "क्लासिक कराओके",
+        "clean_highlight": "साफ़ हाइलाइट",
+        "minimal": "मिनिमल",
+        "neon": "नियॉन",
+        "podcast": "पॉडकास्ट"
+      },
+      "font": "फ़ॉन्ट",
+      "fontGroup": {
+        "sans": "सैन्स",
+        "display": "डिस्प्ले",
+        "serif": "सेरिफ़",
+        "mono": "मोनो",
+        "script": "स्क्रिप्ट",
+        "fallback": "अन्य लिपियाँ"
+      },
+      "bold": "बोल्ड",
+      "uppercase": "बड़े अक्षर",
+      "animation": "एनिमेशन",
+      "anim": {
+        "none": "कोई नहीं",
+        "karaoke_fill": "कराओके फ़िल",
+        "highlight": "शब्द हाइलाइट",
+        "pop": "पॉप"
+      },
+      "animationStrength": "पॉप की ताक़त",
+      "wordsPerGroup": "स्क्रीन पर शब्द",
+      "wholeLine": "पूरी पंक्ति",
+      "highlight": "हाइलाइट",
+      "outline": "आउटलाइन",
+      "outlineWidth": "आउटलाइन की मोटाई",
+      "shadow": "छाया",
+      "backgroundMode": "बैकग्राउंड",
+      "bgBox": "बॉक्स",
+      "bgWordBox": "मौजूदा शब्द पर बॉक्स",
+      "bgNone": "कोई नहीं",
+      "burnInOnly": "एनिमेशन और स्टाइल वीडियो में बर्न हो जाते हैं; SRT/VTT फ़ाइलों में सिर्फ़ टेक्स्ट होता है।"
     },
     "speed": {
       "badgeFreeze": "फ़्रीज़",

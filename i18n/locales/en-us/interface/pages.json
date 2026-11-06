@@ -1874,7 +1874,8 @@
       "photoPresets": "Saved {{brand}} presets",
       "assistantGuide": "{{medi}} site guide",
       "assistantTurns": "{{medi}} copilot edits per day",
-      "studioFormats": "Darkroom export formats"
+      "studioFormats": "Darkroom export formats",
+      "studioAnimatedCaptions": "Darkroom animated captions"
     },
     "values": {
       "yes": "Included",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "Advanced settings",
       "studioAudio": "{{codecs}} audio",
       "studioEmbeddedCaptions": "Embedded captions",
-      "studioLossless": "Lossless {{codecs}}"
+      "studioLossless": "Lossless {{codecs}}",
+      "captionLooksGuest": "3 caption looks"
     },
     "unavailableTitle": "Plan details are temporarily unavailable",
     "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "When to use it",
     "whenToUseBody": "Reach for Darkroom when one file isn’t enough: combining several clips, adding titles or background music, layering overlays, or trimming and re-ordering footage into a finished video.",
     "supportedMediaTitle": "Supported media types",
-    "supportedMediaBody": "You can import video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). You can export MP4 (H.264 or H.265 video, AAC or Opus audio), MOV, WebM (VP9 with Opus or Vorbis), MKV, or audio-only MP3, WAV and Opus. Pro adds AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC and 24-bit WAV.",
+    "supportedMediaBody": "You can import video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). You can export MP4 (H.264 or H.265 video, AAC or Opus audio), MOV, WebM (VP9 with Opus or Vorbis), MKV, or audio-only MP3, WAV and Opus. Pro adds AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC and 24-bit WAV. Captions are word-timed and can be animated (karaoke fill, highlight, pop) in six ready-made looks and 27 caption fonts; the preview draws them with the same engine as the export.",
     "stepByStepTitle": "Step by step",
     "step1": "Create a project and choose a resolution (up to 4K) and frame rate (24/30/60 fps).",
     "step2": "Drag video, image, and audio files into the media bin.",

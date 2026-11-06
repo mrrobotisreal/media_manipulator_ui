@@ -579,7 +579,50 @@
       "positionBottom": "底部",
       "positionTop": "頂部",
       "maxWidth": "最大寬度",
-      "add": "新增字幕"
+      "add": "新增字幕",
+      "positionMiddle": "置中",
+      "looks": "樣式",
+      "lookModified": "已修改",
+      "looksLockedHint": "免費註冊即可解鎖所有樣式與動畫。",
+      "signUpToUse": "需註冊",
+      "look": {
+        "bold_pop": "醒目彈跳",
+        "karaoke_classic": "經典卡拉 OK",
+        "clean_highlight": "簡潔強調",
+        "minimal": "極簡",
+        "neon": "霓虹",
+        "podcast": "Podcast"
+      },
+      "font": "字型",
+      "fontGroup": {
+        "sans": "無襯線",
+        "display": "標題",
+        "serif": "襯線",
+        "mono": "等寬",
+        "script": "手寫",
+        "fallback": "其他文字"
+      },
+      "bold": "粗體",
+      "uppercase": "大寫",
+      "animation": "動畫",
+      "anim": {
+        "none": "無",
+        "karaoke_fill": "卡拉 OK 填色",
+        "highlight": "強調目前字詞",
+        "pop": "彈跳"
+      },
+      "animationStrength": "彈跳強度",
+      "wordsPerGroup": "畫面上的字詞數",
+      "wholeLine": "整行",
+      "highlight": "強調色",
+      "outline": "外框",
+      "outlineWidth": "外框粗細",
+      "shadow": "陰影",
+      "backgroundMode": "背景",
+      "bgBox": "底框",
+      "bgWordBox": "目前字詞底框",
+      "bgNone": "無",
+      "burnInOnly": "動畫與樣式會燒錄進影片；SRT/VTT 檔案只含純文字。"
     },
     "speed": {
       "badgeFreeze": "凍結",

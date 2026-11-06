@@ -1874,7 +1874,8 @@
       "photoPresets": "सेव किए गए {{brand}} प्रीसेट",
       "assistantGuide": "{{medi}} साइट गाइड",
       "assistantTurns": "प्रतिदिन {{medi}} कोपायलट एडिट",
-      "studioFormats": "Darkroom एक्सपोर्ट फ़ॉर्मैट"
+      "studioFormats": "Darkroom एक्सपोर्ट फ़ॉर्मैट",
+      "studioAnimatedCaptions": "Darkroom एनिमेटेड कैप्शन"
     },
     "values": {
       "yes": "शामिल",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "एडवांस्ड सेटिंग्स",
       "studioAudio": "{{codecs}} ऑडियो",
       "studioEmbeddedCaptions": "एम्बेडेड कैप्शन",
-      "studioLossless": "लॉसलेस: {{codecs}}"
+      "studioLossless": "लॉसलेस: {{codecs}}",
+      "captionLooksGuest": "3 कैप्शन लुक"
     },
     "unavailableTitle": "प्लान विवरण अस्थायी रूप से उपलब्ध नहीं हैं",
     "unavailableBody": "हम प्लान सेवा तक नहीं पहुँच सके। हर टूल अब भी काम करता है — तुलना देखने के लिए थोड़ी देर बाद रीलोड करें।",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "इसका उपयोग कब करें",
     "whenToUseBody": "जब एक फ़ाइल काफ़ी न हो तब Darkroom चुनें: कई क्लिप जोड़ना, टाइटल या बैकग्राउंड संगीत जोड़ना, ओवरले लेयर करना, या फ़ुटेज को ट्रिम और फिर से क्रम में लगाकर तैयार वीडियो बनाना।",
     "supportedMediaTitle": "समर्थित मीडिया प्रकार",
-    "supportedMediaBody": "आप वीडियो (MP4, MOV, WebM, MKV), इमेज (JPG, PNG, WebP) और ऑडियो (MP3, WAV, AAC) इंपोर्ट कर सकते हैं। एक्सपोर्ट MP4 (H.264 या H.265 वीडियो, AAC या Opus ऑडियो), MOV, WebM (Opus या Vorbis के साथ VP9), MKV, या सिर्फ़ ऑडियो वाली MP3, WAV और Opus में कर सकते हैं। Pro में AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC और 24-बिट WAV भी मिलते हैं।",
+    "supportedMediaBody": "आप वीडियो (MP4, MOV, WebM, MKV), इमेज (JPG, PNG, WebP) और ऑडियो (MP3, WAV, AAC) इंपोर्ट कर सकते हैं। एक्सपोर्ट MP4 (H.264 या H.265 वीडियो, AAC या Opus ऑडियो), MOV, WebM (Opus या Vorbis के साथ VP9), MKV, या सिर्फ़ ऑडियो वाली MP3, WAV और Opus में कर सकते हैं। Pro में AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC और 24-बिट WAV भी मिलते हैं। कैप्शन हर शब्द के समय से जुड़े होते हैं और छह तैयार लुक व 27 फ़ॉन्ट में एनिमेट किए जा सकते हैं (कराओके फ़िल, हाइलाइट, पॉप); प्रीव्यू उन्हें उसी इंजन से बनाता है जिससे एक्सपोर्ट होता है।",
     "stepByStepTitle": "चरण-दर-चरण",
     "step1": "प्रोजेक्ट बनाएँ और रिज़ॉल्यूशन (4K तक) और फ़्रेम रेट (24/30/60 fps) चुनें।",
     "step2": "वीडियो, इमेज और ऑडियो फ़ाइलें मीडिया बिन में ड्रैग करें।",

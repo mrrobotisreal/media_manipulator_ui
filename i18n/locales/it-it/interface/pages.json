@@ -1874,7 +1874,8 @@
       "photoPresets": "Preset {{brand}} salvati",
       "assistantGuide": "Guida del sito {{medi}}",
       "assistantTurns": "Modifiche del copilota {{medi}} al giorno",
-      "studioFormats": "Formati di esportazione Darkroom"
+      "studioFormats": "Formati di esportazione Darkroom",
+      "studioAnimatedCaptions": "Sottotitoli animati di Darkroom"
     },
     "values": {
       "yes": "Incluso",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "Impostazioni avanzate",
       "studioAudio": "Audio {{codecs}}",
       "studioEmbeddedCaptions": "Sottotitoli incorporati",
-      "studioLossless": "Senza perdita: {{codecs}}"
+      "studioLossless": "Senza perdita: {{codecs}}",
+      "captionLooksGuest": "3 stili di sottotitoli"
     },
     "unavailableTitle": "I dettagli dei piani non sono disponibili al momento",
     "unavailableBody": "Non siamo riusciti a raggiungere il servizio dei piani. Tutti gli strumenti funzionano comunque: ricarica tra un attimo per vedere il confronto.",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "Quando usarlo",
     "whenToUseBody": "Scegli Darkroom quando un solo file non basta: combinare più clip, aggiungere titoli o musica di sottofondo, sovrapporre elementi, oppure tagliare e riordinare le riprese in un video finito.",
     "supportedMediaTitle": "Tipi di media supportati",
-    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus. Pro aggiunge AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV a 24 bit.",
+    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus. Pro aggiunge AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV a 24 bit. I sottotitoli sono sincronizzati parola per parola e si possono animare (riempimento karaoke, evidenziazione, pop) con sei stili pronti e 27 caratteri; l'anteprima li disegna con lo stesso motore dell'esportazione.",
     "stepByStepTitle": "Passo dopo passo",
     "step1": "Crea un progetto e scegli una risoluzione (fino a 4K) e una frequenza fotogrammi (24/30/60 fps).",
     "step2": "Trascina file video, immagini e audio nel contenitore multimediale.",

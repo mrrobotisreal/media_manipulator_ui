@@ -579,7 +579,50 @@
       "positionBottom": "底部",
       "positionTop": "顶部",
       "maxWidth": "最大宽度",
-      "add": "添加字幕"
+      "add": "添加字幕",
+      "positionMiddle": "居中",
+      "looks": "样式",
+      "lookModified": "已修改",
+      "looksLockedHint": "免费注册即可解锁全部样式和动画。",
+      "signUpToUse": "需注册",
+      "look": {
+        "bold_pop": "醒目弹跳",
+        "karaoke_classic": "经典卡拉 OK",
+        "clean_highlight": "简洁高亮",
+        "minimal": "极简",
+        "neon": "霓虹",
+        "podcast": "播客"
+      },
+      "font": "字体",
+      "fontGroup": {
+        "sans": "无衬线",
+        "display": "展示",
+        "serif": "衬线",
+        "mono": "等宽",
+        "script": "手写",
+        "fallback": "其他文字"
+      },
+      "bold": "粗体",
+      "uppercase": "大写",
+      "animation": "动画",
+      "anim": {
+        "none": "无",
+        "karaoke_fill": "卡拉 OK 填充",
+        "highlight": "高亮当前词",
+        "pop": "弹跳"
+      },
+      "animationStrength": "弹跳强度",
+      "wordsPerGroup": "屏幕上的词数",
+      "wholeLine": "整行",
+      "highlight": "高亮色",
+      "outline": "描边",
+      "outlineWidth": "描边宽度",
+      "shadow": "阴影",
+      "backgroundMode": "背景",
+      "bgBox": "底框",
+      "bgWordBox": "当前词底框",
+      "bgNone": "无",
+      "burnInOnly": "动画和样式会烧录进视频；SRT/VTT 文件只含纯文本。"
     },
     "speed": {
       "badgeFreeze": "定格",

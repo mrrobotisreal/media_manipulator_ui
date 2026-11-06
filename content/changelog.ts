@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM121: word-timed animated captions (karaoke fill, highlight, pop), six looks, caption fonts, JASSUB preview.
+  {
+    id: '2026-11-06-darkroom-animated-captions',
+    date: '2026-11-06',
+    title: 'Darkroom captions that move with every word',
+    body: 'Generated captions now carry a timing for every word, so they can be animated: Karaoke fill sweeps each word in your highlight colour as it is sung, Highlight recolours the word being spoken, and Pop makes it jump as it lands. Pick one of six looks (Bold Pop, Karaoke Classic, Clean Highlight, Minimal, Neon and Podcast) and tweak the font, outline, shadow, background, position and how many words show at once; 27 caption fonts include six new display faces, and Cyrillic, Greek, Hebrew, Arabic, Chinese, Japanese and Korean lines fall back to a font that has them. The editor preview now draws captions with libass, the same renderer that burns them into the export, so what you see is what you get. Editing a caption keeps the timings of the words you did not change. Everyone gets every style setting; guests get three looks and a free account unlocks the rest. Styling and animation are burned into the video; SRT, VTT and embedded tracks stay plain text. Medi can apply looks too: ask for TikTok-style captions, karaoke for a music video or calm captions for an interview.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Darkroom', href: '/tools/content-studio' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MM120: Pro formats (AV1, ProRes 422 MOV, FLAC, 24-bit WAV), size estimate, Pro badges.
   {
     id: '2026-11-06-darkroom-pro-formats',
