@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM118: Darkroom output model (container x video x audio), MOV + MKV, Advanced, Medi prefill.
+  {
+    id: '2026-11-05-darkroom-export-formats',
+    date: '2026-11-05',
+    title: 'Darkroom exports MOV and MKV, and you can pick the codecs',
+    body: 'The Darkroom export dialog now lists formats by what they are for: MP4 with H.264 plays everywhere, MP4 with H.265 is about half the size at the same quality, MOV opens straight in Final Cut Pro and iMovie, MKV keeps an archive copy small, and MP3 or WAV export the audio alone. Premium and Pro also get Advanced settings: choose the container, the video codec and the audio codec yourself (combinations that cannot work are greyed out with the reason), the audio bitrate, and stereo or mono. Formats your plan does not include stay visible with the plan that unlocks them. H.265 now needs a free account; H.264, MP3 and WAV stay open to everyone. Ask Medi to export for Instagram, YouTube or Final Cut and the dialog opens already set up; you still press Export. The Exports panel names each render by its format, for example MOV · H.265 · AAC 192k, and render again keeps it. The Darkroom page and tutorial now describe every format, and the pricing page lists the export formats per plan.',
+    tags: ['new', 'improved'],
+    links: [
+      { label: 'Open Darkroom', href: '/tools/content-studio' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MM111: Medi launches (guide, copilots, jobs).
   {
     id: '2026-11-05-medi',
