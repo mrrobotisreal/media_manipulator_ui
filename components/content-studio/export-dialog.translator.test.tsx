@@ -26,6 +26,8 @@ vi.mock('@/lib/auth/AuthProvider', () => ({ useAuth: () => ({ limits: {} }) }));
 vi.mock('@tanstack/react-query', async (orig) => ({
   ...(await orig<typeof import('@tanstack/react-query')>()),
   useQueryClient: () => ({ invalidateQueries: vi.fn() }),
+  // MM118: the export-options query (the committed table stands in when it has no data).
+  useQuery: () => ({ data: undefined }),
 }));
 vi.mock('@/lib/analytics', async (orig) => ({
   ...(await orig<typeof import('@/lib/analytics')>()),

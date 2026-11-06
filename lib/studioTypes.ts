@@ -613,9 +613,20 @@ export type StudioAssetCompleteResponse = z.infer<typeof studioAssetCompleteResp
 export const studioLoudnessPresetSchema = z.enum(['', 'streaming', 'podcast', 'broadcast']);
 export type StudioLoudnessPreset = z.infer<typeof studioLoudnessPresetSchema>;
 
-/** Export formats (part 20): H.264/HEVC render an MP4; mp3/wav are audio-only. */
+/**
+ * Legacy export formats (part 20): H.264/HEVC render an MP4; mp3/wav are audio-only. Since
+ * MM118 an ALIAS of the output fields (the CreaTV embed sends it, or nothing).
+ */
 export const studioExportFormatSchema = z.enum(['h264', 'hevc', 'mp3', 'wav']);
 export type StudioExportFormat = z.infer<typeof studioExportFormatSchema>;
+
+/**
+ * MM118: the derived output label a history row and analytics carry: a legacy name for the
+ * four combinations `format` always meant, else `<container>_<video>_<audio>`. The closed
+ * list is the API output table's `formats` (lib/studio/studioOutputs.json); a string here so
+ * a newer API's row still parses (the panel falls back to the raw parts).
+ */
+export const studioOutputLabelSchema = z.string().min(1).max(40);
 
 /** One explicit captions choice per export (part 20). */
 export const studioCaptionsModeSchema = z.enum(['none', 'burn_in', 'sidecar']);
@@ -630,8 +641,17 @@ export const studioExportRequestSchema = z.object({
   preset: z.string().optional(),
   /** loudnorm target preset applied to the master audio (empty = off). */
   loudness: studioLoudnessPresetSchema.optional(),
-  /** Part 20 (additive; omitted = h264). */
+  /** Part 20 (additive; omitted = h264). An alias since MM118; never sent with the output fields. */
   format: studioExportFormatSchema.optional(),
+  /** MM118 output model (additive; from the API's output table). */
+  outputPreset: z.string().optional(),
+  container: z.string().optional(),
+  videoCodec: z.string().optional(),
+  audioCodec: z.string().optional(),
+  /** kbps from the codec's closed list; omitted = its default. Advanced only. */
+  audioBitrate: z.number().int().optional(),
+  /** 1 | 2; omitted = stereo. Advanced only. */
+  audioChannels: z.number().int().optional(),
   /** Part 20 (additive): output height in px; 0/omitted = the canvas. */
   resolution: z.number().int().optional(),
   /** Part 20 (additive): omitted = legacy (burn in when the project has captions on). */
@@ -646,7 +666,13 @@ export const studioExportRecordSchema = z.object({
   jobId: z.string(),
   fileName: z.string().optional(),
   preset: z.string().optional(),
-  format: studioExportFormatSchema,
+  format: studioOutputLabelSchema,
+  /** MM118 (additive; the API fills them from `format` for older rows). */
+  container: z.string().optional(),
+  videoCodec: z.string().optional(),
+  audioCodec: z.string().optional(),
+  audioBitrate: z.number().int().optional(),
+  audioChannels: z.number().int().optional(),
   resolution: z.number().int().default(0),
   captionsMode: studioCaptionsModeSchema.default('none'),
   loudness: z.string().optional(),

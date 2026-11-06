@@ -7,6 +7,7 @@
 // the single source of truth; a table of hard-coded numbers would be a second
 // one that silently disagrees the first time a limit is retuned.
 
+import { CODEC_NAMES, STATIC_STUDIO_OUTPUTS } from '@/lib/studio/studioOutputs';
 import Link from 'next/link';
 
 import { getServerT } from '@/lib/i18n/server';
@@ -50,6 +51,19 @@ interface Row {
 
 const count = (n: number, t: T) => (n < 0 ? t('interface:pricing.values.unlimited') : `${n}`);
 
+/** "MP4 (H.264, H.265), MOV (…), MKV (…), MP3, WAV · Advanced settings" from a tier's tokens. */
+export function studioFormatsSummary(formats: readonly string[], advanced: boolean, advancedLabel: string): string {
+  const have = new Set(formats);
+  const parts = STATIC_STUDIO_OUTPUTS.containers
+    .filter((c) => have.has(c.key))
+    .map((c) => {
+      if (c.audioOnly) return c.key.toUpperCase();
+      const codecs = c.videoCodecs.filter((v) => have.has(v)).map((v) => CODEC_NAMES[v] ?? v);
+      return codecs.length ? `${c.key.toUpperCase()} (${codecs.join(', ')})` : c.key.toUpperCase();
+    });
+  return advanced ? `${parts.join(', ')} · ${advancedLabel}` : parts.join(', ');
+}
+
 /**
  * One row per matrix line. `render` returns a string for measured values and a
  * marked-up node for the yes/no lines, so a boolean never renders as the word
@@ -77,6 +91,13 @@ const ROWS: Row[] = [
       l.studioProjects < 0
         ? t('interface:pricing.values.unlimited')
         : `${l.studioProjects}`,
+  },
+  {
+    // MM118: the Darkroom output formats each plan exports, from the served token set and the
+    // output table (container names and codecs are universal, so only "Advanced" is copy).
+    key: 'studioFormats',
+    render: (l, t) => studioFormatsSummary(l.studioFormats ?? [], !!l.studioAdvanced, t('interface:pricing.values.studioAdvanced')),
+    served: (l) => Array.isArray(l.studioFormats),
   },
   {
     key: 'vectorExportsPerDay',

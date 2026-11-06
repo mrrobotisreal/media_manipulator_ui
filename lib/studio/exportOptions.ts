@@ -15,18 +15,37 @@ import type {
   StudioExportRecord,
   StudioExportRequest,
 } from '@/lib/studioTypes';
+import {
+  STATIC_STUDIO_OUTPUTS,
+  containerExtension,
+  fitChoice,
+  isAudioOnlyContainer,
+  needsAdvanced,
+  outputLabel,
+  parseOutputLabel,
+  presetByKey,
+  presetFor,
+  type OutputChoice,
+  type StudioOutputTable,
+} from './studioOutputs';
 
 // --- formats ----------------------------------------------------------------
+// MM118: the output model lives in studioOutputs.ts (the API's table). These helpers keep
+// the part-20 names for callers that hold a legacy format or a derived label.
 
+/** The four legacy formats (the CreaTV body and pre-MM118 history rows). */
 export const EXPORT_FORMATS: readonly StudioExportFormat[] = ['h264', 'hevc', 'mp3', 'wav'];
 
-export function isAudioFormat(f: StudioExportFormat): boolean {
-  return f === 'mp3' || f === 'wav';
+/** True for an audio-only legacy format or derived label (no picture, nothing to scale). */
+export function isAudioFormat(f: string): boolean {
+  const parts = parseOutputLabel(f);
+  return parts ? isAudioOnlyContainer(parts.container) : false;
 }
 
-/** Download file extension for a format. */
-export function formatExtension(f: StudioExportFormat): string {
-  return f === 'mp3' ? 'mp3' : f === 'wav' ? 'wav' : 'mp4';
+/** Download file extension for a legacy format or derived label. */
+export function formatExtension(f: string): string {
+  const parts = parseOutputLabel(f);
+  return parts ? containerExtension(parts.container) : 'mp4';
 }
 
 // --- resolution ladder ------------------------------------------------------
@@ -70,42 +89,81 @@ export function resolutionLabel(resolution: number): string {
 
 // --- dialog state -> request ------------------------------------------------
 
+/** Preset list (everyone) or the Advanced pickers (Premium/Pro). */
+export type ExportMode = 'preset' | 'advanced';
+
 export interface ExportChoices {
   fileName: string;
   quality: 'low' | 'medium' | 'high';
   loudness: 'none' | 'streaming' | 'podcast' | 'broadcast';
-  format: StudioExportFormat;
+  /** MM118: an output preset key from the table (mp4_h264, mov_hevc, ...). */
+  outputPreset: string;
+  mode: ExportMode;
+  /** The Advanced picker's choice (ignored in preset mode). */
+  output: OutputChoice;
   resolution: number;
   captionsMode: StudioCaptionsMode;
 }
 
+const DEFAULT_PRESET = STATIC_STUDIO_OUTPUTS.presets[0].key;
+
 export const DEFAULT_EXPORT_CHOICES: Omit<ExportChoices, 'fileName'> = {
   quality: 'high',
   loudness: 'none',
-  format: 'h264',
+  outputPreset: DEFAULT_PRESET,
+  mode: 'preset',
+  output: { container: 'mp4', videoCodec: 'h264', audioCodec: 'aac', audioBitrate: 192, audioChannels: 2 },
   resolution: 0,
   captionsMode: 'burn_in',
 };
 
+/** The output a set of choices renders (the preset's row, or the Advanced picker's). */
+export function choiceOutput(c: Pick<ExportChoices, 'mode' | 'outputPreset' | 'output'>, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): OutputChoice {
+  if (c.mode === 'advanced') return c.output;
+  const p = presetByKey(c.outputPreset, t) ?? t.presets[0];
+  const codec = t.codecs.find((x) => x.key === p.audioCodec);
+  return { container: p.container, videoCodec: p.videoCodec, audioCodec: p.audioCodec, audioBitrate: codec?.defaultBitrate ?? 0, audioChannels: t.defaultChannels };
+}
+
 /**
- * Build the wire request. When the backend lacks export depth (CreaTV) only
- * the legacy fields are sent, so the host sees exactly the pre-part-20 body.
- * Audio formats drop resolution and captions (nothing to scale or burn).
+ * Build the wire request. When the backend lacks export depth (CreaTV) only the legacy
+ * fields are sent, so the host sees exactly the pre-part-20 body. Otherwise a preset sends
+ * `outputPreset` alone; Advanced sends the explicit parts, with bitrate/channels only when
+ * they differ from the defaults (a default Advanced choice that equals a preset is that
+ * preset, so the server never gates it as Advanced). Audio-only outputs drop resolution and
+ * captions (nothing to scale or burn). `format` (the alias) is never sent with these.
  */
-export function buildExportRequest(c: ExportChoices, exportDepth: boolean): StudioExportRequest {
+export function buildExportRequest(c: ExportChoices, exportDepth: boolean, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): StudioExportRequest {
   const base: StudioExportRequest = {
     fileName: c.fileName,
     preset: c.quality,
     loudness: c.loudness === 'none' ? '' : c.loudness,
   };
   if (!exportDepth) return base;
-  const audio = isAudioFormat(c.format);
+  const out = choiceOutput(c, t);
+  const audio = isAudioOnlyContainer(out.container, t);
+  const req: StudioExportRequest = { ...base, resolution: audio ? 0 : c.resolution, captionsMode: audio ? 'none' : c.captionsMode };
+  const preset = presetFor(out, t);
+  if (preset && !needsAdvanced(out, t)) return { ...req, outputPreset: preset.key };
+  const codec = t.codecs.find((x) => x.key === out.audioCodec);
   return {
-    ...base,
-    format: c.format,
-    resolution: audio ? 0 : c.resolution,
-    captionsMode: audio ? 'none' : c.captionsMode,
+    ...req,
+    container: out.container,
+    videoCodec: out.videoCodec,
+    audioCodec: out.audioCodec,
+    ...(out.audioBitrate && out.audioBitrate !== codec?.defaultBitrate ? { audioBitrate: out.audioBitrate } : {}),
+    ...(out.audioChannels && out.audioChannels !== t.defaultChannels ? { audioChannels: out.audioChannels } : {}),
   };
+}
+
+/** The analytics mode of a request: Advanced only when the output needs the picker. */
+export function exportMode(c: Pick<ExportChoices, 'mode' | 'outputPreset' | 'output'>, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): ExportMode {
+  return needsAdvanced(choiceOutput(c, t), t) ? 'advanced' : 'preset';
+}
+
+/** The derived label of a set of choices (history, analytics, the done state). */
+export function choiceLabel(c: Pick<ExportChoices, 'mode' | 'outputPreset' | 'output'>, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): string {
+  return outputLabel(choiceOutput(c, t), t);
 }
 
 /**
@@ -210,6 +268,7 @@ export function exportHistorySummary(rows: ExportRow[], limit = 10) {
     entries: rows.slice(0, limit).map((r) => ({
       jobId: r.jobId,
       format: r.format,
+      container: r.container ?? parseOutputLabel(r.format)?.container,
       resolution: r.resolution,
       status: r.displayStatus,
       available: r.canDownload,
@@ -248,4 +307,101 @@ export function clampCanvas(width: number, height: number): { width: number; hei
 /** The preset key matching a canvas, or 'custom'. Closed vocabulary for analytics. */
 export function canvasPresetKey(width: number, height: number): string {
   return CANVAS_PRESETS.find((p) => p.width === width && p.height === height)?.key ?? 'custom';
+}
+
+// --- Medi prefill (MM118) ---------------------------------------------------
+
+/** What Medi's export suggestion prefills in the dialog (the user still presses Export). */
+export interface ExportPrefill {
+  mode: ExportMode;
+  outputPreset: string;
+  output: OutputChoice;
+  resolution?: number;
+  captionsMode?: StudioCaptionsMode;
+  /** Medi's first pick was above the plan: the server swapped in the nearest allowed preset. */
+  upgrade?: { required: 'free' | 'premium' | 'pro'; option: string };
+}
+
+/**
+ * Turn the server-validated params of a `suggest_action export` into dialog values. The API
+ * already checked them against the table and the caller's plan (handlers.AssistantExports);
+ * this re-reads them defensively against the table, so a malformed or stale action prefills
+ * nothing rather than something the table does not have. null = open the dialog unchanged.
+ */
+export function prefillFromParams(p: Record<string, unknown> | null | undefined, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): ExportPrefill | null {
+  if (!p || typeof p !== 'object') return null;
+  const str = (k: string) => (typeof p[k] === 'string' ? (p[k] as string) : undefined);
+  const num = (k: string) => (typeof p[k] === 'number' && Number.isInteger(p[k]) ? (p[k] as number) : undefined);
+  let out: OutputChoice | null = null;
+  const preset = str('preset') ? presetByKey(str('preset')!, t) : undefined;
+  if (str('container') && t.containers.some((c) => c.key === str('container'))) {
+    const fitted = fitChoice(
+      {
+        container: str('container')!,
+        videoCodec: str('videoCodec') ?? '',
+        audioCodec: str('audioCodec') ?? '',
+        audioBitrate: num('audioBitrate') ?? 0,
+        audioChannels: num('audioChannels') ?? t.defaultChannels,
+      },
+      t,
+    );
+    // fitChoice swaps codecs the container lacks; a prefill must never silently change one.
+    if ((str('videoCodec') && fitted.videoCodec !== str('videoCodec')) || (str('audioCodec') && fitted.audioCodec !== str('audioCodec'))) return null;
+    out = fitted;
+  } else if (preset) {
+    out = choiceOutput({ mode: 'preset', outputPreset: preset.key, output: DEFAULT_EXPORT_CHOICES.output }, t);
+  }
+  if (!out) return null;
+  const named = presetFor(out, t);
+  const advanced = !named || needsAdvanced(out, t);
+  const prefill: ExportPrefill = {
+    mode: advanced ? 'advanced' : 'preset',
+    outputPreset: named?.key ?? DEFAULT_EXPORT_CHOICES.outputPreset,
+    output: out,
+  };
+  const res = num('resolution');
+  if (res !== undefined && (RESOLUTION_RUNGS as readonly number[]).includes(res)) prefill.resolution = res;
+  const cm = str('captionsMode');
+  if (cm === 'none' || cm === 'burn_in' || cm === 'sidecar') prefill.captionsMode = cm;
+  const up = p.upgrade as { required?: unknown; option?: unknown } | undefined;
+  if (up && (up.required === 'free' || up.required === 'premium' || up.required === 'pro') && typeof up.option === 'string') {
+    prefill.upgrade = { required: up.required, option: up.option };
+  }
+  return prefill;
+}
+
+// --- history rows (MM118) ---------------------------------------------------
+
+/** A history row's output parts: the stored ones, else what its label means. */
+export function recordOutput(r: Pick<StudioExportRecord, 'format' | 'container' | 'videoCodec' | 'audioCodec' | 'audioBitrate' | 'audioChannels'>): OutputChoice {
+  const parsed = parseOutputLabel(r.format);
+  if (r.container) {
+    return {
+      container: r.container,
+      videoCodec: r.videoCodec ?? parsed?.videoCodec ?? 'none',
+      audioCodec: r.audioCodec ?? parsed?.audioCodec ?? '',
+      audioBitrate: r.audioBitrate ?? 0,
+      audioChannels: r.audioChannels ?? STATIC_STUDIO_OUTPUTS.defaultChannels,
+    };
+  }
+  return parsed ?? { container: 'mp4', videoCodec: 'h264', audioCodec: 'aac', audioBitrate: 192, audioChannels: 2 };
+}
+
+/** The studio_export_* props of a render-again of a history row. */
+export function rerenderExportProps(row: StudioExportRecord, host: 'mm' | 'creatv') {
+  const out = recordOutput(row);
+  const audio = isAudioOnlyContainer(out.container);
+  return {
+    preset: (['low', 'medium', 'high'].includes(row.preset ?? '') ? row.preset : 'high') as 'low' | 'medium' | 'high',
+    format: row.format,
+    container: out.container,
+    videoCodec: out.videoCodec,
+    audioCodec: out.audioCodec,
+    audioBitrate: out.audioBitrate,
+    audioChannels: out.audioChannels,
+    mode: needsAdvanced(out) ? ('advanced' as const) : ('preset' as const),
+    resolution: audio ? 'audio' : resolutionLabel(row.resolution),
+    captionsMode: row.captionsMode,
+    host,
+  };
 }

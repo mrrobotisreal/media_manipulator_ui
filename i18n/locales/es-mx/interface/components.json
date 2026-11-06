@@ -633,7 +633,8 @@
       "exportsUnlimited": "Premium no tiene límite diario de exportaciones.",
       "height": "Premium exporta hasta {{value}}p.",
       "projects": "Premium guarda hasta {{value}} proyectos.",
-      "projectsUnlimited": "Premium no tiene límite de proyectos guardados."
+      "projectsUnlimited": "Premium no tiene límite de proyectos guardados.",
+      "studioFormats": "Premium agrega MOV, MKV y los ajustes avanzados de exportación."
     },
     "noHigherPlan": "Ningún plan aumenta más este límite. Reduce el ajuste para continuar.",
     "proNote": "Al actualizar se cobra hoy la diferencia prorrateada; tu fecha de renovación sigue igual.",
@@ -644,6 +645,12 @@
       "aiOpsUnlimited": "Pro no tiene límite diario de trabajos de IA.",
       "exports": "Pro permite {{value}} exportaciones al día.",
       "exportsUnlimited": "Pro no tiene límite diario de exportaciones."
+    },
+    "format": {
+      "title": "Este formato de exportación no está en tu plan",
+      "bodyPlan": "Las exportaciones en {{option}} forman parte de {{plan}}.",
+      "bodyFree": "Las exportaciones en {{option}} requieren una cuenta gratuita. Créala y se desbloquean.",
+      "advanced": "Los ajustes avanzados de exportación (tu propio contenedor y códecs, la tasa de bits de audio y mono) forman parte de {{plan}}."
     }
   },
   "recentStrip": {

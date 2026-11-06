@@ -368,12 +368,12 @@
       },
       "contentStudio": {
         "title": "So verwenden Sie Darkroom: Multi-Track-Videobearbeitung im Browser",
-        "excerpt": "Eine Schritt-für-Schritt-Anleitung für Darkroom — Medien importieren, eine Multi-Track-Zeitleiste aufbauen, zuschneiden, teilen und mit Ripple-Delete löschen, Überblendungen, Farbanpassungen und Textüberlagerungen hinzufügen und schließlich als MP4 exportieren.",
+        "excerpt": "Eine Schritt-für-Schritt-Anleitung für Darkroom — Medien importieren, eine Multi-Track-Zeitleiste aufbauen, zuschneiden, teilen und mit Ripple-Delete löschen, Überblendungen, Farbanpassungen und Textüberlagerungen hinzufügen und schließlich als MP4, MOV oder MKV exportieren.",
         "readTime": "8 Min. Lesezeit",
         "page": {
           "eyebrow": "Video-Tutorial",
           "title": "So verwenden Sie Darkroom",
-          "intro": "Darkroom ist ein Multi-Track-Videoeditor im Stil von Premiere Pro, der vollständig in Ihrem Browser läuft. Laden Sie Video, Bilder und Audio hoch, ordnen Sie sie auf einer Zeitleiste an, schichten und mischen Sie Spuren, fügen Sie Effekte hinzu und exportieren Sie ein fertiges MP4 — ohne Software zu installieren. Diese Anleitung führt Sie durch den gesamten Workflow.",
+          "intro": "Darkroom ist ein Multi-Track-Videoeditor im Stil von Premiere Pro, der vollständig in Ihrem Browser läuft. Laden Sie Video, Bilder und Audio hoch, ordnen Sie sie auf einer Zeitleiste an, schichten und mischen Sie Spuren, fügen Sie Effekte hinzu und exportieren Sie ein fertiges Video (MP4, MOV oder MKV) — ohne Software zu installieren. Diese Anleitung führt Sie durch den gesamten Workflow.",
           "overviewAlt": "Der Darkroom-Editor mit Medienablage, Vorschau, Clip-Effekte-Panel und einer Multi-Track-Zeitleiste.",
           "overviewCaption": "Der Darkroom-Arbeitsbereich: Medienablage (links), Live-Vorschau (Mitte), Clip-Effekte (rechts) und die Multi-Track-Zeitleiste (unten).",
           "create": {
@@ -422,8 +422,8 @@
             "body": "Nutzen Sie die Transportsteuerung unter der Vorschau, um wiederzugeben/zu pausieren, Bild für Bild vorzugehen oder zum Anfang/Ende zu springen. Ziehen Sie am Zeitleisten-Lineal, um zu scrubben — ziehen Sie bis zum Rand, und die Zeitleiste scrollt automatisch weiter, sodass Sie jeden Punkt erreichen können. Während der Wiedergabe folgt die Ansicht automatisch dem Abspielkopf."
           },
           "export": {
-            "title": "6. Als MP4 exportieren",
-            "body": "Klicken Sie auf „MP4 exportieren“, wählen Sie einen Dateinamen und eine Qualität, und Darkroom rendert Ihre gesamte Zeitleiste auf dem Server — Videospuren werden zusammengesetzt, Audio gemischt und Ihre Effekte angewendet — und stellt Ihnen anschließend einen Download-Link bereit. Das Rendering läuft auf einer GPU, sodass auch größere Projekte schnell fertig sind."
+            "title": "6. Exportieren",
+            "body": "Klicken Sie auf „Exportieren“, wählen Sie einen Dateinamen, ein Format und eine Qualität, und Darkroom rendert Ihre gesamte Zeitleiste auf dem Server — Videospuren werden zusammengesetzt, Audio gemischt und Ihre Effekte angewendet — und stellt Ihnen anschließend einen Download-Link bereit. MP4 mit H.264 läuft überall; die Formatliste bietet außerdem H.265, MOV, MKV und reine Audiodateien und zeigt, welcher Tarif welches Format freischaltet. Das Rendering läuft auf einer GPU, sodass auch größere Projekte schnell fertig sind."
           },
           "shortcuts": {
             "title": "Tastenkombinationen",
@@ -518,7 +518,7 @@
             "licenses": "Open-Source-Lizenzen",
             "licensesDesc": "Die Bibliotheken, die der Editor verwendet und in Ihre Exporte schreibt.",
             "darkroom": "Darkroom-Tutorial",
-            "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4."
+            "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4, MOV oder MKV."
           }
         }
       },
@@ -620,7 +620,7 @@
             "intro": "Weitere Seiten zur Arbeit mit Fotos auf Media Manipulator.",
             "toolDesc": "Die Tool-Seite des Editors mit der vollständigen Liste der Bedienfelder, Exportformate und dem, was jeder Tarif erlaubt.",
             "darkroom": "Darkroom-Videoeditor-Tutorial",
-            "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4.",
+            "darkroomDesc": "Bearbeiten Sie Video auf einer Multi-Track-Zeitleiste und exportieren Sie MP4, MOV oder MKV.",
             "licenses": "Open-Source-Lizenzen",
             "licensesDesc": "Die Open-Source-Bibliotheken und -Modelle hinter dem Editor und dem übrigen Media Manipulator."
           }
@@ -1873,7 +1873,8 @@
       "photoBatch": "{{brand}}-Fotos pro Stapel",
       "photoPresets": "Gespeicherte {{brand}}-Voreinstellungen",
       "assistantGuide": "{{medi}} als Website-Guide",
-      "assistantTurns": "{{medi}}-Copilot-Bearbeitungen pro Tag"
+      "assistantTurns": "{{medi}}-Copilot-Bearbeitungen pro Tag",
+      "studioFormats": "Darkroom-Exportformate"
     },
     "values": {
       "yes": "Enthalten",
@@ -1888,7 +1889,8 @@
       "photoLocalOnly": "1, nur in diesem Browser",
       "megapixels": "{{count}} MP",
       "notAvailable": "Nicht verfügbar",
-      "signInToUse": "Nach Anmeldung nutzbar"
+      "signInToUse": "Nach Anmeldung nutzbar",
+      "studioAdvanced": "Erweiterte Einstellungen"
     },
     "unavailableTitle": "Plandetails sind vorübergehend nicht verfügbar",
     "unavailableBody": "Wir konnten den Plandienst nicht erreichen. Alle Werkzeuge funktionieren weiterhin — laden Sie die Seite gleich neu, um den Vergleich zu sehen.",
@@ -2410,23 +2412,23 @@
   "contentStudioGuide": {
     "summaryTitle": "So funktioniert Darkroom — Kurzanleitung",
     "whatItIsTitle": "Was Darkroom ist",
-    "whatItIsBody": "Ein kostenloser, browserbasierter Multi-Track-Videoeditor. Sie stellen eine vollständige Bearbeitung zusammen — Video, Bilder, Titel und Audio über gestapelte Zeitleistenspuren hinweg — und exportieren ein einzelnes MP4. Keine Installation, keine Anmeldung.",
+    "whatItIsBody": "Ein kostenloser, browserbasierter Multi-Track-Videoeditor. Sie stellen eine vollständige Bearbeitung zusammen — Video, Bilder, Titel und Audio über gestapelte Zeitleistenspuren hinweg — und exportieren sie als eine fertige Datei. Keine Installation, keine Anmeldung.",
     "whenToUseTitle": "Wann Sie es verwenden sollten",
     "whenToUseBody": "Greifen Sie zu Darkroom, wenn eine Datei nicht ausreicht: mehrere Clips kombinieren, Titel oder Hintergrundmusik hinzufügen, Überlagerungen schichten oder Filmmaterial zuschneiden und neu anordnen, um ein fertiges Video zu erstellen.",
     "supportedMediaTitle": "Unterstützte Medientypen",
-    "supportedMediaBody": "Video (MP4, MOV, WebM, MKV), Bilder (JPG, PNG, WebP) und Audio (MP3, WAV, AAC). Der finale Export erfolgt als MP4 (H.264-Video, AAC-Audio).",
+    "supportedMediaBody": "Sie können Video (MP4, MOV, WebM, MKV), Bilder (JPG, PNG, WebP) und Audio (MP3, WAV, AAC) importieren. Exportieren können Sie MP4 (H.264- oder H.265-Video), MOV, MKV oder reines Audio als MP3 und WAV.",
     "stepByStepTitle": "Schritt für Schritt",
     "step1": "Erstellen Sie ein Projekt und wählen Sie eine Auflösung (bis zu 4K) und Bildrate (24/30/60 fps).",
     "step2": "Ziehen Sie Video-, Bild- und Audiodateien in die Medienablage.",
     "step3": "Legen Sie Clips auf die Zeitleistenspuren ab und schneiden und teilen Sie sie am Abspielkopf.",
     "step4": "Stapeln Sie Überlagerungen und Titel auf höheren Spuren und fügen Sie Audiospuren zum Mischen hinzu.",
-    "step5": "Sehen Sie sich die Komposition in der Vorschau an, exportieren Sie sie dann als MP4 und laden Sie sie herunter.",
+    "step5": "Sehen Sie sich die Komposition in der Vorschau an, exportieren Sie sie dann als MP4, MOV oder MKV und laden Sie sie herunter.",
     "timelineTitle": "Zeitleiste & Ebenen",
     "timelineBody": "Die Zeitleiste ist bildgenau — Abspielkopf und Clip-Kanten rasten an der Bildrate des Projekts ein. Spuren werden in Stapelreihenfolge zusammengesetzt, sodass ein Clip auf einer höheren Spur über den darunterliegenden gerendert wird. So liegen Titel, Logos und Bild-in-Bild-Überlagerungen über Ihrem Basisvideo.",
     "exportTitle": "Export",
-    "exportBody": "Der Export rendert die gesamte Sequenz — jede Spur, jeden Schnitt und jede Überlagerung — zu einem einzigen herunterladbaren MP4, kodiert mit H.264-Video und AAC-Audio.",
+    "exportBody": "Der Export rendert die gesamte Sequenz — jede Spur, jeden Schnitt und jede Überlagerung — auf dem Server. Alle können MP4 mit H.264-Video und AAC-Audio oder reines Audio als MP3 und WAV exportieren. Ein kostenloses Konto fügt H.265-MP4 (HEVC) hinzu, bei gleicher Qualität etwa halb so groß. Premium und Pro fügen MOV (für Final Cut und iMovie) und MKV hinzu, dazu erweiterte Einstellungen: eine eigene Kombination aus Container und Codecs, die Audio-Bitrate und Mono.",
     "limitationsTitle": "Einschränkungen",
-    "limitationsBody": "Darkroom entwickelt sich aktiv weiter. Die Kernbearbeitung — Multi-Track-Zeitleiste, Zuschneiden/Teilen, Ebenenschichtung, Audiomischung und MP4-Export — ist bereits verfügbar. Erweiterte Effekte werden im Laufe der Zeit weiter ergänzt.",
+    "limitationsBody": "Darkroom entwickelt sich aktiv weiter. Die Kernbearbeitung — Multi-Track-Zeitleiste, Zuschneiden/Teilen, Ebenenschichtung, Audiomischung und Export als MP4, MOV, MKV, MP3 oder WAV — ist bereits verfügbar. Erweiterte Effekte werden im Laufe der Zeit weiter ergänzt.",
     "privacyTitle": "Datenschutz",
     "privacyBody": "Dateien werden für Gäste 24 Stunden aufbewahrt; mit einem kostenlosen Konto wählen Sie 24 Stunden bis 2 Jahre. Es ist kein Konto erforderlich, und Dateien werden niemals mit Drittanbietern geteilt."
   },

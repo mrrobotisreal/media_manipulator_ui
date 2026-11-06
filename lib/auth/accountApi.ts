@@ -109,6 +109,11 @@ export interface TierLimits {
   assistantTurns?: number;
   /** Longest counted export in ms; 0 means no cap. */
   vectorMaxDurationMs?: number;
+  // Darkroom outputs (MM118). Optional: absent on APIs before MM118.
+  /** Output tokens this tier may export (mp4, mov, mkv, mp3, wav, h264, hevc, aac, pcm_s16le). */
+  studioFormats?: string[];
+  /** The Advanced export picker (combinations, audio bitrate, mono). */
+  studioAdvanced?: boolean;
   /** Raster export caps; a 0 field means no cap on that axis. */
   vectorVideo?: { maxHeight: number; maxFps: number; maxSeconds: number };
 }
@@ -724,20 +729,32 @@ export async function verifyCheckoutSession(
 
 /** The body of a 403 from the output-height or saved-project checks. */
 export interface LimitRefusal {
-  error: 'output_height_limited' | 'project_limit_reached' | 'file_too_large';
+  error: 'output_height_limited' | 'project_limit_reached' | 'file_too_large' | 'format_not_in_plan';
   message?: string;
-  limit: number;
+  /** Numeric limits only (absent on format_not_in_plan). */
+  limit?: number;
   requested?: number;
   used?: number;
   /** Absent for premium, pro and operator (nothing higher to buy for this limit). */
-  upgradePath?: 'signup' | 'premium';
+  upgradePath?: 'signup' | 'premium' | 'pro';
+  /** MM118 format_not_in_plan: always 'studio_format'. */
+  limitKey?: string;
+  /** MM118: the lowest plan that unlocks `option`. */
+  required?: 'free' | 'premium' | 'pro';
+  /** MM118: the output token (mov, hevc, ...) or 'advanced' the plan lacks. */
+  option?: string;
+  /**
+   * Client-only (never on the wire): the user clicked a locked option. A deliberate click
+   * opens the dialog every time; server refusals keep the once-per-session nudge.
+   */
+  fromClick?: boolean;
 }
 
 /** Narrows an unknown 403 body to a plan-limit refusal. */
 export function isLimitRefusal(body: unknown): body is LimitRefusal {
   if (typeof body !== 'object' || body === null) return false;
   const error = (body as { error?: unknown }).error;
-  return error === 'output_height_limited' || error === 'project_limit_reached';
+  return error === 'output_height_limited' || error === 'project_limit_reached' || error === 'format_not_in_plan';
 }
 
 /**

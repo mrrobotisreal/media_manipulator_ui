@@ -27,13 +27,19 @@ import { exportsQueryKey } from '@/lib/useStudioExports';
 import {
   DEFAULT_EXPORT_CHOICES,
   buildExportRequest,
+  choiceLabel,
+  choiceOutput,
   effectiveCaptionsMode,
+  exportMode,
   formatExtension,
-  isAudioFormat,
   resolutionLabel,
   resolutionOptions,
   sidecarFileNames,
+  type ExportPrefill,
 } from '@/lib/studio/exportOptions';
+import { defaultPresetKey, isAudioOnlyContainer, presetByKey, presetChoice } from '@/lib/studio/studioOutputs';
+import { useExportOptions } from '@/lib/studio/useExportOptions';
+import { ExportOutputPicker } from './export-output-picker';
 import { activationEvents, analytics, EVENTS, markJobStarted, takeJobDuration } from '@/lib/analytics';
 import type { StudioExportStartedProps } from '@/lib/analytics';
 import { exportDurationRatioBucket, studioHost } from '@/lib/studio/telemetry';
@@ -48,7 +54,17 @@ const exportFormSchema = z.object({
   quality: z.enum(['low', 'medium', 'high']),
   loudness: z.enum(['none', 'streaming', 'podcast', 'broadcast']),
   // Part 20 export depth. Defaults reproduce the pre-part-20 export exactly.
-  format: z.enum(['h264', 'hevc', 'mp3', 'wav']),
+  // MM118: the output is a preset key (everyone) or the Advanced picker's choice; both
+  // come from the API's output table, so they are strings checked by the server.
+  outputPreset: z.string().min(1),
+  mode: z.enum(['preset', 'advanced']),
+  output: z.object({
+    container: z.string().min(1),
+    videoCodec: z.string().min(1),
+    audioCodec: z.string().min(1),
+    audioBitrate: z.number().int().min(0),
+    audioChannels: z.number().int().min(1).max(2),
+  }),
   resolution: z.number().int().min(0),
   captionsMode: z.enum(['none', 'burn_in', 'sidecar']),
 });
@@ -79,10 +95,16 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
   const isCreatv = backend.ecosystem === 'creatv' && backend.capabilities.publish;
 
   const [open, setOpen] = React.useState(false);
+  // MM118: Medi's prefilled choice (applied when the dialog opens) and its upgrade note.
+  const [prefill, setPrefill] = React.useState<ExportPrefill | null>(null);
   // MM109: Medi's "Export" suggestion opens this dialog (the user still chooses and starts it).
+  // MM118: prefilled from the server-validated params; the user still presses Export.
   React.useEffect(() => {
     if (disabled) return;
-    exportDialogBridge.register(() => setOpen(true));
+    exportDialogBridge.register((next) => {
+      setPrefill(next ?? null);
+      setOpen(true);
+    });
     return () => exportDialogBridge.register(null);
   }, [disabled]);
   const [jobId, setJobId] = React.useState<string | null>(null);
@@ -121,9 +143,8 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
   const exportPropsRef = React.useRef<StudioExportStartedProps | null>(null);
   // Part 20: whether this render owes the user SRT/VTT sidecar files, and its format.
   const sidecarRef = React.useRef(false);
-  const formatRef = React.useRef<'h264' | 'hevc' | 'mp3' | 'wav'>('h264');
-  // State mirrors of the two refs, for rendering the done state.
-  const [doneFormat, setDoneFormat] = React.useState<'h264' | 'hevc' | 'mp3' | 'wav'>('h264');
+  // The derived output label of the render (MM118), for the done state's file extension.
+  const [doneFormat, setDoneFormat] = React.useState<string>('h264');
   const [sidecarOwed, setSidecarOwed] = React.useState(false);
   const baseNameRef = React.useRef('export');
   const downloadSidecars = React.useCallback(() => {
@@ -266,12 +287,38 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
     defaultValues: { fileName: projectName.replace(/\s+/g, '-').toLowerCase(), ...DEFAULT_EXPORT_CHOICES },
   });
 
+  // MM118: the output table and what the caller's plan allows (served; the committed table
+  // and the account limits until it answers).
+  const { table: outputTable, access: outputAccess } = useExportOptions(open && exportDepth);
+
+  // The default output is the first preset the caller may use; Medi's prefill wins over it.
+  const defaultsFor = React.useCallback(() => {
+    const key = defaultPresetKey(outputAccess, outputTable);
+    const preset = presetByKey(key, outputTable) ?? outputTable.presets[0];
+    return {
+      fileName: projectName.replace(/\s+/g, '-').toLowerCase(),
+      ...DEFAULT_EXPORT_CHOICES,
+      outputPreset: preset.key,
+      output: presetChoice(preset, outputTable),
+    };
+  }, [outputAccess, outputTable, projectName]);
+
+  React.useEffect(() => {
+    if (!open || !prefill) return;
+    form.setValue('mode', prefill.mode);
+    form.setValue('outputPreset', prefill.outputPreset);
+    form.setValue('output', prefill.output);
+    if (prefill.resolution !== undefined) form.setValue('resolution', prefill.resolution);
+    if (prefill.captionsMode) form.setValue('captionsMode', prefill.captionsMode);
+  }, [open, prefill, form]);
+
   const reset = () => {
     setJobId(null);
     setIntent('download');
     setSidecarOwed(false);
+    setPrefill(null);
     handedOffRef.current = false;
-    form.reset({ fileName: projectName.replace(/\s+/g, '-').toLowerCase(), ...DEFAULT_EXPORT_CHOICES });
+    form.reset(defaultsFor());
   };
 
   const runExport = async (values: ExportFormValues, nextIntent: ExportIntent) => {
@@ -288,11 +335,12 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
     }
     try {
       const captionsMode = effectiveCaptionsMode(values.captionsMode, hasCaptions);
-      const res = await startExport(buildExportRequest({ ...values, captionsMode }, exportDepth));
+      const res = await startExport(buildExportRequest({ ...values, captionsMode }, exportDepth, outputTable));
+      const out = choiceOutput(values, outputTable);
+      const audioOnly = exportDepth && isAudioOnlyContainer(out.container, outputTable);
       baseNameRef.current = values.fileName;
-      sidecarRef.current = exportDepth && captionsMode === 'sidecar' && !isAudioFormat(values.format);
-      formatRef.current = exportDepth ? values.format : 'h264';
-      setDoneFormat(formatRef.current);
+      sidecarRef.current = exportDepth && captionsMode === 'sidecar' && !audioOnly;
+      setDoneFormat(exportDepth ? choiceLabel(values, outputTable) : 'h264');
       setSidecarOwed(sidecarRef.current);
       // DERIVED METADATA ONLY — booleans and preset keys. Never `values.fileName`, which the
       // visitor typed and which routinely contains a client name or a project codename.
@@ -321,14 +369,24 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
       // preset, a closed vocabulary from the new-project picker.
       // Part 20: format is the closed enum; resolution is the output-height rung
       // ('720p'..'2160p'), 'canvas' or 'audio' - never a free-form size.
-      const audioOut = isAudioFormat(values.format) && exportDepth;
-      exportPropsRef.current = {
-        preset: values.quality,
-        format: exportDepth ? values.format : 'h264',
-        resolution: audioOut ? 'audio' : exportDepth ? resolutionLabel(values.resolution) : 'canvas',
-        captionsMode: exportDepth ? (audioOut ? 'none' : captionsMode) : undefined,
-        host: studioHost(),
-      };
+      // MM118: format is the derived output label (closed list from the table), plus its
+      // parts and the dialog mode. The legacy CreaTV body renders H.264 MP4 and says so.
+      const audioOut = audioOnly;
+      exportPropsRef.current = exportDepth
+        ? {
+            preset: values.quality,
+            format: choiceLabel(values, outputTable),
+            container: out.container,
+            videoCodec: out.videoCodec,
+            audioCodec: out.audioCodec,
+            audioBitrate: out.audioBitrate,
+            audioChannels: out.audioChannels,
+            mode: exportMode(values, outputTable),
+            resolution: audioOut ? 'audio' : resolutionLabel(values.resolution),
+            captionsMode: audioOut ? 'none' : captionsMode,
+            host: studioHost(),
+          }
+        : { preset: values.quality, format: 'h264', resolution: 'canvas', captionsMode: undefined, host: studioHost() };
       analytics.track(EVENTS.STUDIO_EXPORT_STARTED, exportPropsRef.current, {
         job_id: res.jobId,
         feature: 'studio',
@@ -366,8 +424,11 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
     });
   };
 
-  const watchedFormat = useWatch({ control: form.control, name: 'format' });
-  const audioFormat = isAudioFormat(watchedFormat);
+  const watchedMode = useWatch({ control: form.control, name: 'mode' });
+  const watchedPreset = useWatch({ control: form.control, name: 'outputPreset' });
+  const watchedOutput = useWatch({ control: form.control, name: 'output' });
+  const watchedChoice = choiceOutput({ mode: watchedMode, outputPreset: watchedPreset, output: watchedOutput }, outputTable);
+  const audioFormat = isAudioOnlyContainer(watchedChoice.container, outputTable);
   const resOptions = resolutionOptions(canvasHeight, maxOutputHeight);
   const busy = saveMutation.isPending || isStarting;
   const rendering = !!jobId && job?.status !== 'completed' && job?.status !== 'failed';
@@ -416,34 +477,29 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
                   </FormItem>
                 )}
               />
+              {exportDepth && prefill?.upgrade && (
+                <p className="rounded-md border border-border bg-muted/40 p-2 text-[12px] text-muted-foreground" data-testid="medi-export-upgrade">
+                  {prefill.upgrade.required === 'free'
+                    ? t('contentStudio.export.mediUpgradeFree')
+                    : t('contentStudio.export.mediUpgradePlan', { plan: prefill.upgrade.required === 'pro' ? 'Pro' : 'Premium' })}
+                </p>
+              )}
+              {exportDepth && (
+                <ExportOutputPicker
+                  table={outputTable}
+                  access={outputAccess}
+                  mode={watchedMode}
+                  outputPreset={watchedPreset}
+                  output={watchedOutput}
+                  onChange={(next) => {
+                    form.setValue('mode', next.mode);
+                    form.setValue('outputPreset', next.outputPreset);
+                    form.setValue('output', next.output);
+                  }}
+                />
+              )}
               {exportDepth && (
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <FormField
-                    control={form.control}
-                    name="format"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t('contentStudio.export.format')}</FormLabel>
-                        <Select value={field.value} onValueChange={field.onChange}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="h264">{t('contentStudio.export.formatH264')}</SelectItem>
-                            <SelectItem value="hevc">{t('contentStudio.export.formatHevc')}</SelectItem>
-                            <SelectItem value="mp3">{t('contentStudio.export.formatMp3')}</SelectItem>
-                            <SelectItem value="wav">{t('contentStudio.export.formatWav')}</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        {field.value === 'hevc' && (
-                          <p className="text-[11px] text-muted-foreground">{t('contentStudio.export.hevcHint')}</p>
-                        )}
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={form.control}
                     name="resolution"

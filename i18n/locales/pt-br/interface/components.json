@@ -633,7 +633,8 @@
       "exportsUnlimited": "O Premium não tem limite diário de exportações.",
       "height": "O Premium gera saídas de até {{value}}p.",
       "projects": "O Premium guarda até {{value}} projetos salvos.",
-      "projectsUnlimited": "O Premium não tem limite de projetos salvos."
+      "projectsUnlimited": "O Premium não tem limite de projetos salvos.",
+      "studioFormats": "O Premium adiciona MOV, MKV e as configurações avançadas de exportação."
     },
     "noHigherPlan": "Nenhum plano aumenta mais este limite. Reduza a configuração para continuar.",
     "proNote": "Ao fazer o upgrade, a diferença proporcional é cobrada hoje; sua data de renovação continua a mesma.",
@@ -644,6 +645,12 @@
       "aiOpsUnlimited": "O Pro não tem limite diário de trabalhos de IA.",
       "exports": "O Pro permite {{value}} exportações por dia.",
       "exportsUnlimited": "O Pro não tem limite diário de exportações."
+    },
+    "format": {
+      "title": "Este formato de exportação não está no seu plano",
+      "bodyPlan": "As exportações em {{option}} fazem parte do {{plan}}.",
+      "bodyFree": "As exportações em {{option}} exigem uma conta gratuita. Crie uma e elas são liberadas.",
+      "advanced": "As configurações avançadas de exportação (seu próprio contêiner e codecs, taxa de bits do áudio e mono) fazem parte do {{plan}}."
     }
   },
   "recentStrip": {

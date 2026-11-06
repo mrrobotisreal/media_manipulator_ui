@@ -15,12 +15,19 @@ import {
   resolutionLabel,
   resolutionOptions,
   sidecarFileNames,
+  choiceLabel,
+  exportMode,
+  prefillFromParams,
+  recordOutput,
+  rerenderExportProps,
   type ExportChoices,
 } from './exportOptions';
 import type { StudioExportRecord } from '@/lib/studioTypes';
 
+const out = (container: string, videoCodec: string, audioCodec: string, audioBitrate = 192, audioChannels = 2) => ({ container, videoCodec, audioCodec, audioBitrate, audioChannels });
 const choices = (over: Partial<ExportChoices> = {}): ExportChoices => ({
-  fileName: 'cut', quality: 'high', loudness: 'none', format: 'h264', resolution: 0, captionsMode: 'burn_in', ...over,
+  fileName: 'cut', quality: 'high', loudness: 'none', outputPreset: 'mp4_h264', mode: 'preset', output: out('mp4', 'h264', 'aac'),
+  resolution: 0, captionsMode: 'burn_in', ...over,
 });
 
 const rec = (over: Partial<StudioExportRecord> = {}): StudioExportRecord => ({
@@ -30,21 +37,76 @@ const rec = (over: Partial<StudioExportRecord> = {}): StudioExportRecord => ({
 
 describe('buildExportRequest', () => {
   it('sends the legacy body only when the backend lacks export depth (CreaTV)', () => {
-    const req = buildExportRequest(choices({ format: 'hevc', resolution: 2160, captionsMode: 'sidecar' }), false);
+    const req = buildExportRequest(choices({ outputPreset: 'mov_hevc', resolution: 2160, captionsMode: 'sidecar' }), false);
     expect(req).toEqual({ fileName: 'cut', preset: 'high', loudness: '' });
     expect(Object.keys(req)).not.toContain('format');
+    expect(Object.keys(req)).not.toContain('outputPreset');
   });
-  it('carries format/resolution/captionsMode with export depth', () => {
-    expect(buildExportRequest(choices({ format: 'hevc', resolution: 1440, captionsMode: 'sidecar', loudness: 'podcast' }), true)).toEqual({
-      fileName: 'cut', preset: 'high', loudness: 'podcast', format: 'hevc', resolution: 1440, captionsMode: 'sidecar',
+  it('a preset sends outputPreset with resolution/captionsMode, never the format alias', () => {
+    expect(buildExportRequest(choices({ outputPreset: 'mp4_hevc', resolution: 1440, captionsMode: 'sidecar', loudness: 'podcast' }), true)).toEqual({
+      fileName: 'cut', preset: 'high', loudness: 'podcast', outputPreset: 'mp4_hevc', resolution: 1440, captionsMode: 'sidecar',
     });
   });
-  it('audio formats drop resolution and captions', () => {
-    for (const format of ['mp3', 'wav'] as const) {
-      const r = buildExportRequest(choices({ format, resolution: 2160, captionsMode: 'burn_in' }), true);
+  it('advanced sends the explicit parts; non-default bitrate/channels only when set', () => {
+    const r = buildExportRequest(choices({ mode: 'advanced', output: out('mkv', 'h264', 'mp3', 320, 1) }), true);
+    expect(r).toMatchObject({ container: 'mkv', videoCodec: 'h264', audioCodec: 'mp3', audioBitrate: 320, audioChannels: 1 });
+    expect(r.outputPreset).toBeUndefined();
+    const pcm = buildExportRequest(choices({ mode: 'advanced', output: out('mov', 'h264', 'pcm_s16le', 0) }), true);
+    expect(pcm).toMatchObject({ container: 'mov', audioCodec: 'pcm_s16le' });
+    expect(pcm.audioBitrate).toBeUndefined();
+    expect(pcm.audioChannels).toBeUndefined();
+  });
+  it('an Advanced choice equal to a preset is sent as that preset (never gated as Advanced)', () => {
+    const r = buildExportRequest(choices({ mode: 'advanced', output: out('mov', 'hevc', 'aac') }), true);
+    expect(r.outputPreset).toBe('mov_hevc');
+    expect(r.container).toBeUndefined();
+    expect(exportMode(choices({ mode: 'advanced', output: out('mov', 'hevc', 'aac') }))).toBe('preset');
+    expect(exportMode(choices({ mode: 'advanced', output: out('mov', 'hevc', 'aac', 256) }))).toBe('advanced');
+  });
+  it('audio presets drop resolution and captions', () => {
+    for (const outputPreset of ['audio_mp3', 'audio_wav']) {
+      const r = buildExportRequest(choices({ outputPreset, resolution: 2160, captionsMode: 'burn_in' }), true);
       expect(r.resolution).toBe(0);
       expect(r.captionsMode).toBe('none');
     }
+  });
+  it('labels follow the table: legacy names for the four, derived labels otherwise', () => {
+    expect(choiceLabel(choices())).toBe('h264');
+    expect(choiceLabel(choices({ outputPreset: 'mp4_hevc' }))).toBe('hevc');
+    expect(choiceLabel(choices({ outputPreset: 'audio_wav' }))).toBe('wav');
+    expect(choiceLabel(choices({ outputPreset: 'mov_hevc' }))).toBe('mov_hevc_aac');
+    expect(choiceLabel(choices({ mode: 'advanced', output: out('mkv', 'hevc', 'mp3') }))).toBe('mkv_hevc_mp3');
+  });
+});
+
+describe('prefillFromParams (Medi export bridge)', () => {
+  it('prefills a preset, resolution, captions and the upgrade note', () => {
+    expect(prefillFromParams({ preset: 'mov_h264', container: 'mov', videoCodec: 'h264', audioCodec: 'aac', resolution: 1080, captionsMode: 'none' })).toMatchObject({
+      mode: 'preset', outputPreset: 'mov_h264', resolution: 1080, captionsMode: 'none',
+    });
+    expect(prefillFromParams({ preset: 'mp4_h264', upgrade: { required: 'premium', option: 'mov' } })?.upgrade).toEqual({ required: 'premium', option: 'mov' });
+  });
+  it('prefills Advanced for a combination no preset names, or a non-default bitrate', () => {
+    expect(prefillFromParams({ container: 'mkv', videoCodec: 'h264', audioCodec: 'mp3' })).toMatchObject({ mode: 'advanced', output: { container: 'mkv', audioCodec: 'mp3' } });
+    expect(prefillFromParams({ container: 'mp4', videoCodec: 'h264', audioCodec: 'aac', audioBitrate: 320 })?.mode).toBe('advanced');
+  });
+  it('refuses anything the table does not have instead of guessing', () => {
+    expect(prefillFromParams(null)).toBeNull();
+    expect(prefillFromParams({})).toBeNull();
+    expect(prefillFromParams({ preset: 'webm_vp9' })).toBeNull();
+    expect(prefillFromParams({ container: 'mov', audioCodec: 'opus' })).toBeNull();
+    expect(prefillFromParams({ preset: 'mp4_h264', resolution: 999 })?.resolution).toBeUndefined();
+  });
+});
+
+describe('history rows', () => {
+  it('reads stored parts, or the parts a legacy label means', () => {
+    expect(recordOutput(rec({ format: 'hevc' }))).toMatchObject({ container: 'mp4', videoCodec: 'hevc', audioCodec: 'aac' });
+    expect(recordOutput(rec({ format: 'mov_hevc_aac', container: 'mov', videoCodec: 'hevc', audioCodec: 'aac', audioBitrate: 256 }))).toMatchObject({ container: 'mov', audioBitrate: 256 });
+  });
+  it('render-again props carry the label, parts and mode', () => {
+    expect(rerenderExportProps(rec({ format: 'wav', preset: 'low' }), 'mm')).toMatchObject({ format: 'wav', container: 'wav', resolution: 'audio', mode: 'preset', preset: 'low' });
+    expect(rerenderExportProps(rec({ format: 'mkv_h264_mp3', container: 'mkv', videoCodec: 'h264', audioCodec: 'mp3', audioBitrate: 192 }), 'mm').mode).toBe('advanced');
   });
 });
 
@@ -85,6 +147,8 @@ describe('labels and small helpers', () => {
     expect(formatExtension('hevc')).toBe('mp4');
     expect(formatExtension('mp3')).toBe('mp3');
     expect(formatExtension('wav')).toBe('wav');
+    expect(formatExtension('mov_hevc_aac')).toBe('mov');
+    expect(formatExtension('mkv_h264_mp3')).toBe('mkv');
     expect(sidecarFileNames('my-edit.mp4')).toEqual({ srt: 'my-edit.srt', vtt: 'my-edit.vtt' });
     expect(sidecarFileNames('my.edit')).toEqual({ srt: 'my.srt', vtt: 'my.vtt' });
     expect(sidecarFileNames('')).toEqual({ srt: 'captions.srt', vtt: 'captions.vtt' });
@@ -148,7 +212,8 @@ describe('exportHistorySummary (cs:export-history)', () => {
     expect(s.total).toBe(12);
     expect(s.running).toBe(1);
     expect(s.entries).toHaveLength(10);
-    expect(Object.keys(s.entries[0]).sort()).toEqual(['available', 'format', 'jobId', 'resolution', 'status']);
+    expect(Object.keys(s.entries[0]).sort()).toEqual(['available', 'container', 'format', 'jobId', 'resolution', 'status']);
+    expect(s.entries[0]).toMatchObject({ format: 'h264', container: 'mp4' });
   });
 });
 

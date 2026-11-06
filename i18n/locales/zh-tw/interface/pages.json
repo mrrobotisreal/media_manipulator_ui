@@ -368,12 +368,12 @@
       },
       "contentStudio": {
         "title": "如何使用 Darkroom：在瀏覽器中進行多軌影片剪輯",
-        "excerpt": "Darkroom 的逐步指南：匯入媒體、建立多軌時間軸、剪輯、分割與漣漪刪除、加入交叉溶接、色彩調整與文字疊加，然後匯出 MP4。",
+        "excerpt": "Darkroom 的逐步指南：匯入媒體、建立多軌時間軸、剪輯、分割與漣漪刪除、加入交叉溶接、色彩調整與文字疊加，然後匯出 MP4、MOV 或 MKV。",
         "readTime": "閱讀時間 8 分鐘",
         "page": {
           "eyebrow": "影片教學",
           "title": "如何使用 Darkroom",
-          "intro": "Darkroom 是一款 Premiere Pro 風格的多軌影片剪輯器，完全在你的瀏覽器中執行。上傳影片、圖片與音訊，在時間軸上排列、疊加並混合軌道、加入效果，然後匯出完成的 MP4，不需要安裝任何軟體。本指南會帶你走過整個工作流程。",
+          "intro": "Darkroom 是一款 Premiere Pro 風格的多軌影片剪輯器，完全在你的瀏覽器中執行。上傳影片、圖片與音訊，在時間軸上排列、疊加並混合軌道、加入效果，然後匯出完成的 MP4、MOV 或 MKV，不需要安裝任何軟體。本指南會帶你走過整個工作流程。",
           "overviewAlt": "Darkroom 編輯器，顯示媒體庫、預覽、素材效果面板與多軌時間軸。",
           "overviewCaption": "Darkroom 工作區：媒體庫（左）、即時預覽（中）、素材效果（右）與多軌時間軸（下）。",
           "create": {
@@ -422,8 +422,8 @@
             "body": "使用預覽下方的播放控制項播放／暫停、逐格前進，或跳到開頭／結尾。在時間軸尺規上拖曳可快速瀏覽；拖到邊緣時時間軸會自動捲動，讓你能到達任何位置。播放期間畫面會自動跟隨播放指標。"
           },
           "export": {
-            "title": "6. 匯出為 MP4",
-            "body": "點選「匯出 MP4」，選擇檔案名稱與品質，Darkroom 會在伺服器上轉譯你的完整時間軸（合成影片軌、混合音訊並套用效果），然後提供下載連結。轉譯在 GPU 上進行，所以較大的專案也能快速完成。"
+            "title": "6. 匯出",
+            "body": "點選「匯出」，選擇檔案名稱、格式與品質，Darkroom 會在伺服器上轉譯你的完整時間軸（合成影片軌、混合音訊並套用效果），然後提供下載連結。H.264 的 MP4 到處都能播放；格式清單還提供 H.265、MOV、MKV 與僅音訊檔案，並標示每種格式由哪個方案解鎖。轉譯在 GPU 上進行，所以較大的專案也能快速完成。"
           },
           "shortcuts": {
             "title": "鍵盤快速鍵",
@@ -518,7 +518,7 @@
             "licenses": "開源授權",
             "licensesDesc": "編輯器使用並寫入你匯出檔案中的函式庫。",
             "darkroom": "Darkroom 教學",
-            "darkroomDesc": "在多軌時間軸上剪輯影片並匯出 MP4。"
+            "darkroomDesc": "在多軌時間軸上剪輯影片並匯出 MP4、MOV 或 MKV。"
           }
         }
       },
@@ -620,7 +620,7 @@
             "intro": "Media Manipulator 上更多處理照片的頁面。",
             "toolDesc": "編輯器的工具頁面，列出全部面板、匯出格式以及每個方案的額度。",
             "darkroom": "Darkroom 影片編輯器教學",
-            "darkroomDesc": "在多軌時間軸上剪輯影片並匯出 MP4。",
+            "darkroomDesc": "在多軌時間軸上剪輯影片並匯出 MP4、MOV 或 MKV。",
             "licenses": "開源授權",
             "licensesDesc": "編輯器以及 Media Manipulator 其餘部分所依賴的開源函式庫和模型。"
           }
@@ -1873,7 +1873,8 @@
       "photoBatch": "{{brand}} 每批次照片數",
       "photoPresets": "已儲存的 {{brand}} 預設集",
       "assistantGuide": "{{medi}} 網站指南",
-      "assistantTurns": "每日 {{medi}} 編輯助手編輯次數"
+      "assistantTurns": "每日 {{medi}} 編輯助手編輯次數",
+      "studioFormats": "Darkroom 匯出格式"
     },
     "values": {
       "yes": "包含",
@@ -1888,7 +1889,8 @@
       "photoLocalOnly": "1 個，僅限此瀏覽器",
       "megapixels": "{{count}} MP",
       "notAvailable": "無法使用",
-      "signInToUse": "登入後即可使用"
+      "signInToUse": "登入後即可使用",
+      "studioAdvanced": "進階設定"
     },
     "unavailableTitle": "方案詳細資訊暫時無法取得",
     "unavailableBody": "我們無法連線到方案服務。所有工具仍可正常使用，請稍後重新載入以查看比較。",
@@ -2410,23 +2412,23 @@
   "contentStudioGuide": {
     "summaryTitle": "Darkroom 的運作方式：快速指南",
     "whatItIsTitle": "Darkroom 是什麼",
-    "whatItIsBody": "一款免費、以瀏覽器為基礎的多軌影片剪輯器。你可以組合完整的剪輯（影片、圖片、標題與音訊分布在堆疊的時間軸軌道上），並匯出成單一 MP4。不必安裝、不必註冊。",
+    "whatItIsBody": "一款免費、以瀏覽器為基礎的多軌影片剪輯器。你可以組合完整的剪輯（影片、圖片、標題與音訊分布在堆疊的時間軸軌道上），並匯出成一個完成的檔案。不必安裝、不必註冊。",
     "whenToUseTitle": "何時使用",
     "whenToUseBody": "當一個檔案不夠用時就該用 Darkroom：合併多段素材、加入標題或背景音樂、疊加覆蓋層，或是將素材剪輯並重新排序成完成的影片。",
     "supportedMediaTitle": "支援的媒體類型",
-    "supportedMediaBody": "影片（MP4、MOV、WebM、MKV）、圖片（JPG、PNG、WebP）與音訊（MP3、WAV、AAC）。最終匯出為 MP4（H.264 影片、AAC 音訊）。",
+    "supportedMediaBody": "可匯入影片（MP4、MOV、WebM、MKV）、圖片（JPG、PNG、WebP）與音訊（MP3、WAV、AAC）。可匯出為 MP4（H.264 或 H.265 影片）、MOV、MKV，或僅音訊的 MP3 與 WAV。",
     "stepByStepTitle": "逐步說明",
     "step1": "建立專案並選擇解析度（最高 4K）與影格率（24/30/60 fps）。",
     "step2": "將影片、圖片與音訊檔案拖曳到媒體庫中。",
     "step3": "將素材放到時間軸軌道上，然後在播放指標處剪輯與分割。",
     "step4": "在較高的軌道上堆疊覆蓋層與標題，並加入音訊軌進行混音。",
-    "step5": "預覽合成結果，然後匯出為 MP4 並下載。",
+    "step5": "預覽合成結果，然後匯出為 MP4、MOV 或 MKV 並下載。",
     "timelineTitle": "時間軸與圖層",
     "timelineBody": "時間軸精確到影格：播放指標與素材邊緣會吸附到專案的影格率。軌道依堆疊順序合成，所以較高軌道上的素材會轉譯在下方軌道之上。標題、標誌與子母畫面覆蓋層就是這樣疊在你的基底影片上的。",
     "exportTitle": "匯出",
-    "exportBody": "匯出會將整個序列（每一條軌道、每一次剪輯與每一個覆蓋層）轉譯成一個可下載的 MP4，以 H.264 影片與 AAC 音訊編碼。",
+    "exportBody": "匯出會在伺服器上轉譯整個序列（每一條軌道、每一次剪輯與每一個覆蓋層）。所有人都能匯出 H.264 影片加 AAC 音訊的 MP4，或僅音訊的 MP3 與 WAV。免費帳號新增 H.265（HEVC）MP4，同樣畫質下檔案約為一半。Premium 與 Pro 新增 MOV（適用 Final Cut 與 iMovie）和 MKV，以及進階設定：自選容器與編碼器組合、音訊位元率與單聲道。",
     "limitationsTitle": "限制",
-    "limitationsBody": "Darkroom 正在持續演進。核心編輯功能（多軌時間軸、剪輯／分割、圖層疊加、音訊混音與 MP4 匯出）現已可用。進階效果會持續新增。",
+    "limitationsBody": "Darkroom 正在持續演進。核心編輯功能（多軌時間軸、剪輯／分割、圖層疊加、音訊混音，以及匯出為 MP4、MOV、MKV、MP3 或 WAV）現已可用。進階效果會持續新增。",
     "privacyTitle": "隱私",
     "privacyBody": "訪客的檔案保留 24 小時；使用免費帳號可自行選擇 24 小時到 2 年。不需要帳號，檔案絕不會與第三方供應商分享。"
   },

@@ -70,6 +70,44 @@ describe('interstitialCopy', () => {
   });
 });
 
+// MM118: 403 format_not_in_plan.
+describe('format_not_in_plan (MM118)', () => {
+  const formatBody = (option: string, required: 'free' | 'premium' | 'pro', upgradePath: 'signup' | 'premium' | 'pro') =>
+    ({ error: 'format_not_in_plan', limitKey: 'studio_format', option, required, upgradePath }) as const;
+  it('names the option and the unlocking plan', () => {
+    expect(interstitialCopy({ kind: 'limit', detail: formatBody('mov', 'premium', 'premium') })).toMatchObject({
+      titleKey: 'interface:upgradeInterstitial.format.title',
+      bodyKey: 'interface:upgradeInterstitial.format.bodyPlan',
+      values: { option: 'MOV', plan: 'Premium' },
+      limitKey: 'studio_format',
+      required: 'premium',
+    });
+    expect(interstitialCopy({ kind: 'limit', detail: formatBody('hevc', 'free', 'signup') })).toMatchObject({ bodyKey: 'interface:upgradeInterstitial.format.bodyFree', values: { option: 'H.265' } });
+    expect(interstitialCopy({ kind: 'limit', detail: formatBody('advanced', 'premium', 'premium') }).bodyKey).toBe('interface:upgradeInterstitial.format.advanced');
+  });
+  it('offers Pro only for a Pro-only format', () => {
+    const premiumFormat = interstitialCopy({ kind: 'limit', detail: formatBody('mov', 'premium', 'premium') });
+    const proFormat = interstitialCopy({ kind: 'limit', detail: formatBody('mkv', 'pro', 'pro') });
+    expect(interstitialOffer(premiumFormat, 'free', undefined)).toBe('premium');
+    expect(interstitialOffer(premiumFormat, 'premium', undefined)).toBeUndefined();
+    expect(interstitialOffer(proFormat, 'premium', undefined)).toBe('pro');
+    expect(interstitialOffer(proFormat, 'free', undefined)).toBe('pro');
+    expect(interstitialOffer(premiumFormat, 'anonymous', undefined)).toBe('signup');
+  });
+  it('a free caller asking for a Premium format gets Premium Checkout', async () => {
+    render(<UpgradeInterstitial input={{ kind: 'limit', detail: formatBody('mov', 'premium', 'premium') }} onClose={vi.fn()} />);
+    expect(screen.getByText('interface:upgradeInterstitial.format.bodyPlan|option=MOV,plan=Premium')).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'interface:upgradeInterstitial.upgrade' }));
+    await waitFor(() => expect(h.startCheckout).toHaveBeenCalledWith('monthly', 'limit_interstitial', 'en-US', 'premium'));
+  });
+  it('a Premium caller asking for a Premium-tier format is offered nothing', () => {
+    h.auth = { tier: 'premium', openAuth: vi.fn() };
+    render(<UpgradeInterstitial input={{ kind: 'limit', detail: formatBody('mov', 'premium', 'premium') }} onClose={vi.fn()} />);
+    expect(screen.queryByRole('button', { name: 'interface:upgradeInterstitial.upgrade' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'interface:billing.upgradePro' })).toBeNull();
+  });
+});
+
 describe('UpgradeInterstitial', () => {
   it('output_height_limited (premium path): shows limit/requested and starts checkout', async () => {
     const onClose = vi.fn();
@@ -77,7 +115,7 @@ describe('UpgradeInterstitial', () => {
     expect(screen.getByText('interface:upgradeInterstitial.outputHeight.body|limit=1440,requested=2160')).toBeTruthy();
     fireEvent.click(screen.getByLabelText('interface:billing.yearly'));
     fireEvent.click(screen.getByRole('button', { name: 'interface:upgradeInterstitial.upgrade' }));
-    await waitFor(() => expect(h.startCheckout).toHaveBeenCalledWith('yearly', 'limit_interstitial', 'en-US'));
+    await waitFor(() => expect(h.startCheckout).toHaveBeenCalledWith('yearly', 'limit_interstitial', 'en-US', 'premium'));
     expect(h.track).toHaveBeenCalledWith('upgrade_cta_clicked', { placement: 'limit_interstitial', cta_id: 'output_height_limited', from_tier: 'free' });
   });
 

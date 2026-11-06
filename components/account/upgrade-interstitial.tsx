@@ -26,7 +26,8 @@ import {
 import { formatBytes } from '@/lib/auth/formatLimits';
 import { readLastInterval, startCheckout } from '@/lib/billing/checkout';
 import { useBillingFallback, usePremiumPurchasable, useProPurchasable, useTiers } from '@/lib/billing/useUpgradeAction';
-import { upsellTargetFor } from '@/lib/billing/plans';
+import { studioFormatOffer, upsellTargetFor } from '@/lib/billing/plans';
+import { CODEC_NAMES } from '@/lib/studio/studioOutputs';
 import { usePlanChange } from '@/lib/billing/usePlanChange';
 import { useBillingStatus } from '@/lib/billing/useBillingStatus';
 import { CurrencyToggle } from '@/components/pricing/currency-toggle';
@@ -65,10 +66,18 @@ export interface InterstitialCopy {
   titleKey: string;
   bodyKey: string;
   values: Record<string, unknown>;
-  upgradePath: 'signup' | 'premium' | undefined;
+  upgradePath: 'signup' | 'premium' | 'pro' | undefined;
   placement: string;
   /** The limit-specific key; rides on `cta_id` so each limit's funnel reads separately. */
   limitKey: string;
+  /** MM118 format_not_in_plan: the plan that unlocks the option. */
+  required?: 'free' | 'premium' | 'pro';
+}
+
+/** MM118: the display name of an output option (container/codec names stay untranslated). */
+export function studioOptionName(option: string | undefined): string {
+  if (!option) return '';
+  return CODEC_NAMES[option] ?? option.toUpperCase();
 }
 
 /** The upgrade path for a refusal that carries none (the 413 has no body): derived from tier. */
@@ -86,6 +95,8 @@ export function interstitialOffer(
   tier: Tier | undefined,
   tiers: TiersResponse | undefined,
 ): InterstitialOffer {
+  // MM118: a format refusal sells the plan that unlocks the format (Pro only for Pro-only).
+  if (copy.limitKey === 'studio_format') return studioFormatOffer(tier, copy.required);
   if (tier && isPaidTier(tier)) {
     return upsellTargetFor(tier, copy.limitKey, tiers) === 'pro' ? 'pro' : undefined;
   }
@@ -120,11 +131,31 @@ export function interstitialCopy(
       limitKey: 'file_too_large',
     };
   }
+  if (d.error === 'format_not_in_plan') {
+    const required = d.required === 'free' || d.required === 'premium' || d.required === 'pro' ? d.required : undefined;
+    const advanced = d.option === 'advanced';
+    // Plan names are brands (untranslated); a free account is a sentence of its own.
+    const bodyKey =
+      required === 'free'
+        ? 'interface:upgradeInterstitial.format.bodyFree'
+        : advanced
+          ? 'interface:upgradeInterstitial.format.advanced'
+          : 'interface:upgradeInterstitial.format.bodyPlan';
+    return {
+      titleKey: 'interface:upgradeInterstitial.format.title',
+      bodyKey,
+      values: { option: advanced ? 'Advanced' : studioOptionName(d.option), plan: required === 'pro' ? 'Pro' : 'Premium' },
+      upgradePath: d.upgradePath,
+      placement: 'limit_interstitial',
+      limitKey: 'studio_format',
+      required,
+    };
+  }
   if (d.error === 'output_height_limited') {
     return {
       titleKey: 'interface:upgradeInterstitial.outputHeight.title',
       bodyKey: 'interface:upgradeInterstitial.outputHeight.body',
-      values: { limit: d.limit, requested: d.requested ?? d.limit },
+      values: { limit: d.limit ?? 0, requested: d.requested ?? d.limit ?? 0 },
       upgradePath: d.upgradePath,
       placement: 'limit_interstitial',
       limitKey: 'output_height_limited',
@@ -133,7 +164,7 @@ export function interstitialCopy(
   return {
     titleKey: 'interface:upgradeInterstitial.projects.title',
     bodyKey: 'interface:upgradeInterstitial.projects.body',
-    values: { limit: d.limit },
+    values: { limit: d.limit ?? 0 },
     upgradePath: d.upgradePath,
     placement: 'limit_interstitial',
     limitKey: 'project_limit_reached',
@@ -191,6 +222,11 @@ function planChangeLine(
         : null;
     case 'project_limit_reached':
       return count(limits.studioProjects, `${prefix}.projects`);
+    case 'studio_format':
+      // MM118: what the plan adds to Darkroom exports, only when the served table says so.
+      return plan === 'premium' && (limits.studioFormats ?? []).includes('mov') && limits.studioAdvanced
+        ? { key: `${prefix}.studioFormats`, values: {} }
+        : null;
     default:
       return null;
   }
@@ -213,8 +249,10 @@ export const UpgradeInterstitial: React.FC<{
   const proPurchasable = useProPurchasable(offer === 'pro');
   const purchasable = offer === 'pro' ? proPurchasable : premiumPurchasable;
   // A Pro upgrade is a plan change on the caller's live subscription; a team grant has none.
-  const statusQuery = useBillingStatus(offer === 'pro');
-  const changeable = offer !== 'pro' || (statusQuery.data?.plan === 'premium' && !statusQuery.data?.cancelAtPeriodEnd);
+  // MM118: a free caller offered Pro (a Pro-only format) goes through Checkout for Pro instead.
+  const proCheckout = offer === 'pro' && auth?.tier === 'free';
+  const statusQuery = useBillingStatus(offer === 'pro' && !proCheckout);
+  const changeable = offer !== 'pro' || proCheckout || (statusQuery.data?.plan === 'premium' && !statusQuery.data?.cancelAtPeriodEnd);
   const planChange = usePlanChange();
   const [interval, setInterval] = React.useState<BillingInterval>('monthly');
   const [busy, setBusy] = React.useState(false);
@@ -235,14 +273,14 @@ export const UpgradeInterstitial: React.FC<{
       auth.openAuth({ intent: 'signup', source: copy.limitKey });
       return;
     }
-    if (offer === 'pro') {
+    if (offer === 'pro' && !proCheckout) {
       void planChange.run('upgrade').then((outcome) => {
         if (outcome) onClose();
       });
       return;
     }
     setBusy(true);
-    void startCheckout(interval, copy.placement, language?.code)
+    void startCheckout(interval, copy.placement, language?.code, proCheckout ? 'pro' : 'premium')
       .then((outcome) => {
         if (!outcome.ok) onClose();
         return fallback(outcome, copy.placement);
@@ -264,13 +302,13 @@ export const UpgradeInterstitial: React.FC<{
           </p>
         ) : null}
 
-        {offer === 'pro' && purchasable && changeable ? (
+        {offer === 'pro' && !proCheckout && purchasable && changeable ? (
           // The prorated charge is stated before the click, as in the Billing panel.
           <p className="text-sm text-muted-foreground" data-testid="pro-upgrade-note">
             {t('interface:upgradeInterstitial.proNote')}
           </p>
         ) : null}
-        {offer === 'premium' && purchasable ? (
+        {(offer === 'premium' || proCheckout) && purchasable ? (
           <div className="grid gap-3">
             <Segmented<BillingInterval>
               name="interstitial-interval"
