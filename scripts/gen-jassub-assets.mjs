@@ -54,7 +54,7 @@ export async function render() {
     `npm license field: ${pkg.license}`,
     '(the .wasm files are the upstream builds of libass and its dependencies, copied byte for byte)',
     '',
-    readFileSync(join(PKG, 'LICENSE'), 'utf8').trim(),
+    readFileSync(join(PKG, 'LICENSE'), 'utf8').replace(/\r\n?/g, '\n').trim(),
     '',
   ].join('\n');
   return { 'jassub.js': banner + main, 'worker.js': banner + code, LICENSE: license };
