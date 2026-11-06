@@ -18,7 +18,8 @@ import {
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
 import { useSaveProject } from '@/lib/useStudioProject';
-import { useStartStudioExport, studioDownloadUrl } from '@/lib/useStudioExport';
+import { useStartStudioExport } from '@/lib/useStudioExport';
+import { downloadResult } from '@/lib/results/downloadController';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
 import { downloadText, serializeSRT, serializeVTT } from '@/lib/useStudioCaptions';
 import { useAuth } from '@/lib/auth/AuthProvider';
@@ -679,11 +680,24 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
             {done && !isCreatv && (
               <div className="space-y-3">
                 <p className="text-sm text-success">{t('contentStudio.export.ready')}</p>
-                <Button asChild>
-                  <a href={studioDownloadUrl(jobId)} download>
-                    <Download className="w-4 h-4 mr-2" />
-                    {t('contentStudio.export.downloadFile', { ext: formatExtension(doneFormat).toUpperCase() })}
-                  </a>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    // A plain <a href="/download/:jobId"> carries no identity headers, so the
+                    // owner check answered 404 "Job not found" (2026-11-06 incident). Mint a
+                    // signed link with the owner's headers, as every tool page does.
+                    if (!jobId) return;
+                    void downloadResult({
+                      jobId,
+                      fileName: `${baseNameRef.current || 'export'}.${formatExtension(doneFormat)}`,
+                      trackOptions: { feature: 'studio' },
+                    }).then((r) => {
+                      if (r.outcome === 'failed') toast.error(t('error:toasts.exportFailed'));
+                    });
+                  }}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {t('contentStudio.export.downloadFile', { ext: formatExtension(doneFormat).toUpperCase() })}
                 </Button>
                 {sidecarOwed && (
                   <Button type="button" variant="secondary" onClick={downloadSidecars}>
