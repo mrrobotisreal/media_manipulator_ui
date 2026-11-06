@@ -73,7 +73,13 @@ export async function getFirebaseAuth(): Promise<Auth | null> {
 export async function getCurrentIdToken(): Promise<string | null> {
   try {
     const auth = await getFirebaseAuth();
-    const user = auth?.currentUser;
+    if (!auth) return null;
+    // On a fresh page load Firebase restores the signed-in user asynchronously, so
+    // `currentUser` is null for the first moments. Reading it too early sent
+    // signed-in requests as anonymous: Darkroom listed no projects and owned
+    // results 404'd (2026-11-06 incident). Wait for the restore first.
+    if (typeof auth.authStateReady === 'function') await auth.authStateReady();
+    const user = auth.currentUser;
     if (!user) return null;
     return await user.getIdToken();
   } catch {
