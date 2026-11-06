@@ -20,6 +20,13 @@ _Avoid_: "Content Studio" in anything a user can see.
 The internal/engineering name for the same editor. All code identifiers keep it: route segments (`/tools/content-studio`, `/embed/content-studio`), directories (`components/content-studio`, `lib/studio`), backend API paths (`/api/studio/*`), DB tables (`studio_*`), and analytics identifiers (`feature: 'studio'`). The Darkroom rename is **cosmetic-only by decision** — renaming identifiers would churn the codebase and break the deployed CreaTV embed contract.
 _Avoid_: renaming code identifiers, API paths, or analytics event vocabulary to "darkroom".
 
+**Output table** (MM118, ADR-0019):
+The API's one table of Darkroom exports (`internal/services/studio_outputs.go`): containers (`mp4`, `mov`, `mkv`, audio-only `mp3`, `wav`), the video and audio codecs each carries, extension, warnings, audio bitrates, the output presets (`mp4_h264`, `mp4_hevc`, `mov_h264`, `mov_hevc`, `mkv_hevc_aac`, `audio_mp3`, `audio_wav`) and the default plan per token. The UI reads it from `GET /api/studio/export-options` (`lib/studio/useExportOptions.ts`) and keeps a byte-identical committed copy, `lib/studio/studioOutputs.json` (identity test in `studioOutputs.test.ts`); `lib/studio/studioOutputs.ts` derives presets, locks, Advanced pickers, warnings and the **derived label** (`h264`/`hevc`/`mp3`/`wav`, else `<container>_<video>_<audio>`) from it. The request field `outputPreset` is the output preset; `preset` stays the quality preset. The CreaTV body (`exportDepth` off) never carries the output fields.
+_Avoid_: hard-coding a container/codec combination in the dialog, Medi copy or analytics.
+
+**format_not_in_plan** (MM118):
+The API's 403 for an export or render-again whose output the caller's plan lacks: `{error, message, limitKey: "studio_format", required: free|premium|pro, option, upgradePath}`. `authedFetch` publishes it like the other plan-limit refusals and the UpgradeInterstitial routes it through `studioFormatOffer` (`lib/billing/plans.ts`): sign-up for a guest, Premium for a Premium format, Pro only when `required === "pro"`. Locked options in the dialog stay visible with a plan badge; clicking one records `studio_export_format_locked` and opens the same dialog every time (`fromClick`).
+
 **Darkroom Instrument**:
 The site-wide visual design system (`components/darkroom/*` — panels, segmented controls, stat tiles). Named for its darkroom-style theme; it is **not** the Darkroom editor product. When ambiguity is possible, say "Darkroom Instrument (design system)" vs "Darkroom (editor)".
 
