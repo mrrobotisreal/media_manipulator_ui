@@ -63,7 +63,7 @@ describe('studio op schema (MM109)', () => {
     const text = JSON.stringify(studioOpsJsonSchema());
     expect(text).toContain('"oneOf":[{"required":["clipId"]},{"required":["track"]}]');
     expect(text).toContain('"anyOf":[{"required":["sourceIn"]},{"required":["sourceOut"]}]');
-    expect(text).toContain('"anyOf":[{"required":["fontSizePct"]}');
+    expect(text).toContain('"anyOf":[{"required":["look"]},{"required":["fontSizePct"]}');
   });
 });
 
@@ -228,5 +228,36 @@ describe('studio ops: all-or-nothing, ids, locks', () => {
   it('trackLabel matches the timeline header names', () => {
     expect(trackLabel({ kind: 'video', index: 0 })).toBe('V1');
     expect(trackLabel({ kind: 'audio', index: 1 })).toBe('A2');
+  });
+});
+
+describe('set_caption_style with looks and animations (MM121)', () => {
+  const withCues = (): StudioProject => ({ ...studioFixture(), captions: [{ id: 'q', startSeconds: 0, endSeconds: 2, text: 'hello there' }] });
+
+  it('a look sets the whole style and lookId; later fields tweak it', () => {
+    const p = ok([{ op: 'set_caption_style', look: 'karaoke_classic', highlightColor: '#FF0000' }], withCues());
+    expect(p.captionStyle).toMatchObject({ lookId: 'karaoke_classic', animation: 'karaoke_fill', fontFamily: 'Lilita One', highlightColor: '#FF0000' });
+  });
+
+  it('accepts the new fields; wordsPerGroup 0 means the whole line', () => {
+    const p = ok([{ op: 'set_caption_style', animation: 'pop', animationStrength: 0.9, fontFamily: 'Bangers', uppercase: true, outlineWidth: 6, backgroundMode: 'word_box', position: 'middle', wordsPerGroup: 2 }], withCues());
+    expect(p.captionStyle).toMatchObject({ animation: 'pop', fontFamily: 'Bangers', uppercase: true, position: 'middle', wordsPerGroup: 2 });
+    const q = ok([{ op: 'set_caption_style', wordsPerGroup: 0 }], p);
+    expect(q.captionStyle).not.toHaveProperty('wordsPerGroup');
+  });
+
+  it('rejects unknown looks, fonts and animations', () => {
+    for (const bad of [{ look: 'cinema' }, { fontFamily: 'Comic Sans' }, { animation: 'bounce' }, { outlineWidth: 40 }]) {
+      expect(run([{ op: 'set_caption_style', ...bad }], withCues()).ok, JSON.stringify(bad)).toBe(false);
+    }
+  });
+
+  it('an anonymous editor is refused a locked look or animation with a reason Medi can relay', () => {
+    const anon = { ...ctx, signedIn: false };
+    const locked = applyStudioOps(withCues(), [{ op: 'set_caption_style', look: 'neon' }], anon);
+    expect(locked.ok).toBe(false);
+    if (!locked.ok) expect(locked.errors[0]).toMatch(/needs a free account/);
+    expect(applyStudioOps(withCues(), [{ op: 'set_caption_style', animation: 'karaoke_fill' }], anon).ok).toBe(false);
+    expect(applyStudioOps(withCues(), [{ op: 'set_caption_style', look: 'bold_pop' }], anon).ok).toBe(true);
   });
 });

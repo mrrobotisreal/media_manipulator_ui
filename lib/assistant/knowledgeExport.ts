@@ -754,9 +754,9 @@ function studioDocs(): Array<[string, string]> {
       `Speed: ${R.speed.min}× to ${R.speed.max}×, default ${R.speed.default} (maintain pitch optional). A freeze frame holds one source frame; it cannot be combined with speed or reverse.`,
       `Markers: up to ${R.markers.max} per project, name up to ${R.markers.maxNameLength} characters. Press M to add one at the playhead.`,
       '### Captions',
-      'Auto-captions come from Whisper (one AI job, suggested as an action); cues can be edited, styled, burned in or exported as SRT/VTT sidecars.',
-      'Caption style:',
-      ...cap,
+      'Auto-captions: Whisper with word timings (one AI job, a suggested action); cues are edited on the lane (timings re-spread); looks and animation: the studio-caption-styles recipe.',
+      // One dense line (MM121; the corpus is near its MAX_CORPUS_BYTES budget): `key range (default)`.
+      `Caption style: ${cap.filter((l) => !l.startsWith('- `lookId`')).map((l) => l.replace(/^- `([^`]+)`: /, '$1 ').replace(/one of /, '').replace(/integer /, '').replace(/ to /, '-').replace(/, /g, '|').replace(/\|default "?([^"]*)"?$/, ' ($1)').replace(/ text( \(|$)| true\/false$/, '$1')).join('; ')}; lookId (a studio-caption-styles look).`,
       '### Export',
       ...studioExportLines(),
       `Output heights: ${STUDIO_EXPORT_RESOLUTIONS.map((h) => (h === 0 ? 'canvas' : `${h}p`)).join(', ')}. Captions: none, burn in, sidecar (SRT + VTT files) or embedded (a track viewers toggle, in MP4/MOV/MKV/WebM; plain text, so styling and animation only survive burn-in; not in audio-only files). Exports render on the server, one allowance unit each; CPU encodes (VP9, ProRes) may wait as Queued.`,

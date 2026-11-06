@@ -26,7 +26,15 @@ import { LUMETRI_PARAMS, STUDIO_V3_RANGES, TRANSFORM_PARAMS, TRANSITION_TYPE_GRO
 import { NAMED_KEYFRAME_PROPERTIES, keyframeValueRange } from '@/lib/studio/keyframes';
 import { STUDIO_LOOK_IDS } from '@/lib/studio/looks';
 import { STUDIO_TITLE_FONTS } from '@/lib/studio/titleFonts';
-import { studioAudioConfigSchema, studioCaptionStyleSchema, studioKeyframeEaseSchema } from '@/lib/studioTypes';
+import {
+  STUDIO_CAPTION_ANIMATIONS,
+  STUDIO_CAPTION_BACKGROUND_MODES,
+  STUDIO_CAPTION_LOOK_IDS,
+  studioAudioConfigSchema,
+  studioCaptionStyleSchema,
+  studioKeyframeEaseSchema,
+} from '@/lib/studioTypes';
+import captionsCatalog from '@/lib/studio/captions/captionsCatalog.json';
 
 import { bridge } from './zodBridge';
 import { formatIssues } from './photo';
@@ -184,17 +192,30 @@ const setVolume = op(
 );
 const addMarker = op('add_marker', { at: time, label: z.string().min(1).max(R.markers.maxNameLength) }, 'Drop a named marker on the timeline.');
 const captionShape = studioCaptionStyleSchema.shape;
+const CAPTION_FONT_FAMILIES = captionsCatalog.fonts.map((f) => f.family) as [string, ...string[]];
 const setCaptionStyle = op(
   'set_caption_style',
   {
+    look: z.enum(STUDIO_CAPTION_LOOK_IDS).optional(),
     fontSizePct: bridge(captionShape.fontSizePct).optional(),
     color: hex.optional(),
     backgroundColor: hex.optional(),
     backgroundOpacity: bridge(captionShape.backgroundOpacity).optional(),
-    position: bridge(captionShape.position).optional(),
+    position: z.enum(['bottom', 'middle', 'top']).optional(),
     maxWidthPct: bridge(captionShape.maxWidthPct).optional(),
+    fontFamily: z.enum(CAPTION_FONT_FAMILIES).optional(),
+    bold: z.boolean().optional(),
+    uppercase: z.boolean().optional(),
+    highlightColor: hex.optional(),
+    outlineColor: hex.optional(),
+    outlineWidth: range(0, 12).optional(),
+    shadow: range(0, 1).optional(),
+    backgroundMode: z.enum(STUDIO_CAPTION_BACKGROUND_MODES).optional(),
+    wordsPerGroup: z.number().int().min(0).max(6).optional(),
+    animation: z.enum(STUDIO_CAPTION_ANIMATIONS).optional(),
+    animationStrength: range(0, 1).optional(),
   },
-  'Restyle the captions (they must exist; generating them is a suggested action).',
+  'Restyle the captions (they must exist; generating them is a suggested action). look applies a named caption look first (bold_pop = TikTok-style pop, karaoke_classic = karaoke fill for songs, clean_highlight, minimal, neon, podcast = calm boxed lines); the other fields then tweak it. animation: karaoke_fill sweeps each word in highlightColor as it is spoken, highlight recolours the current word, pop scales it (animationStrength); wordsPerGroup 1-6 words on screen at once, 0 = whole line. Styling and animation only show when captions are burned in.',
 );
 const setCanvas = op('set_canvas', { aspect: z.enum(CANVAS_ASPECTS) }, 'Change the frame shape (16:9 landscape, 9:16 vertical, 1:1 square, 4:5 portrait).');
 
@@ -275,7 +296,28 @@ export type StudioOp =
   | { op: 'set_ducking'; reason?: string; enabled: boolean; voiceTrack?: string; amountDb?: number; attackMs?: number; releaseMs?: number }
   | { op: 'set_volume'; reason?: string; clipId?: string; track?: string; gainDb: number }
   | { op: 'add_marker'; reason?: string; at: number; label: string }
-  | { op: 'set_caption_style'; reason?: string; fontSizePct?: number; color?: string; backgroundColor?: string; backgroundOpacity?: number; position?: 'bottom' | 'top'; maxWidthPct?: number }
+  | {
+      op: 'set_caption_style';
+      reason?: string;
+      look?: (typeof STUDIO_CAPTION_LOOK_IDS)[number];
+      fontSizePct?: number;
+      color?: string;
+      backgroundColor?: string;
+      backgroundOpacity?: number;
+      position?: 'bottom' | 'middle' | 'top';
+      maxWidthPct?: number;
+      fontFamily?: string;
+      bold?: boolean;
+      uppercase?: boolean;
+      highlightColor?: string;
+      outlineColor?: string;
+      outlineWidth?: number;
+      shadow?: number;
+      backgroundMode?: (typeof STUDIO_CAPTION_BACKGROUND_MODES)[number];
+      wordsPerGroup?: number;
+      animation?: (typeof STUDIO_CAPTION_ANIMATIONS)[number];
+      animationStrength?: number;
+    }
   | { op: 'set_canvas'; reason?: string; aspect: CanvasAspect };
 
 /**
@@ -283,6 +325,12 @@ export type StudioOp =
  * `set_volume` names exactly one of clipId / track, `trim` and `set_caption_style` change at
  * least one field. They are written into the exported schema below so both validators agree.
  */
+/** Every set_caption_style field (at least one is required). */
+export const SET_CAPTION_STYLE_FIELDS = [
+  'look', 'fontSizePct', 'color', 'backgroundColor', 'backgroundOpacity', 'position', 'maxWidthPct', 'fontFamily', 'bold', 'uppercase',
+  'highlightColor', 'outlineColor', 'outlineWidth', 'shadow', 'backgroundMode', 'wordsPerGroup', 'animation', 'animationStrength',
+] as const;
+
 function refineSchema(schema: Record<string, unknown>): Record<string, unknown> {
   const walk = (v: unknown): void => {
     if (Array.isArray(v)) return v.forEach(walk);
@@ -291,7 +339,7 @@ function refineSchema(schema: Record<string, unknown>): Record<string, unknown> 
     const name = (o.properties as Record<string, { const?: unknown }> | undefined)?.op?.const;
     if (o.type === 'object' && name === 'set_volume') o.oneOf = [{ required: ['clipId'] }, { required: ['track'] }];
     if (o.type === 'object' && name === 'trim') o.anyOf = [{ required: ['sourceIn'] }, { required: ['sourceOut'] }];
-    if (o.type === 'object' && name === 'set_caption_style') o.anyOf = ['fontSizePct', 'color', 'backgroundColor', 'backgroundOpacity', 'position', 'maxWidthPct'].map((k) => ({ required: [k] }));
+    if (o.type === 'object' && name === 'set_caption_style') o.anyOf = SET_CAPTION_STYLE_FIELDS.map((k) => ({ required: [k] }));
     Object.values(o).forEach(walk);
   };
   walk(schema);

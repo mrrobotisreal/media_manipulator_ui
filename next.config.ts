@@ -79,6 +79,14 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // MM121: the JASSUB caption renderer (staged by scripts/gen-jassub-assets.mjs) lives in a
+        // per-version folder, so its JS and ~2 MB WASM are immutable. Darkroom-only; nothing else
+        // references it. No CSP change is needed: no route restricts script-src or worker-src
+        // (next.config.test.ts guards that the Darkroom routes keep 'wasm-unsafe-eval' if one ever does).
+        source: '/jassub/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
         // The self-destroying cleanup worker (public/sw.js) must never be
         // served from a cache, so the browser's update check always re-fetches
         // it and replaces the stale Vite/Workbox worker left in returning

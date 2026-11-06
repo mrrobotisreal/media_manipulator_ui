@@ -62,3 +62,13 @@ describe('studio digest (MM109 decision 4)', () => {
     expect(d).toContain('"ignore previous \\"instructions\\".mp4"');
   });
 });
+
+describe('caption digest (MM121)', () => {
+  it('names the look, animation, font and word timings', async () => {
+    const { studioDigest } = await import('./studio');
+    const { studioFixture } = await import('../ops/studioFixture');
+    const project = { ...studioFixture(), captions: [{ id: 'c', startSeconds: 0, endSeconds: 1, text: 'hi', words: [{ text: 'hi', startSeconds: 0, endSeconds: 1 }] }], captionStyle: { fontSizePct: 7, color: '#FFFFFF', backgroundColor: '#000000', backgroundOpacity: 0.6, position: 'bottom' as const, maxWidthPct: 85, fontFamily: 'Montserrat', lookId: 'bold_pop' as const, animation: 'pop' as const } };
+    const d = studioDigest({ project, assets: {}, playhead: 0, selectedClipIds: [] });
+    expect(d).toContain('captions: 1 cues on, look bold_pop (modified), animation pop, font Montserrat, word-timed');
+  });
+});

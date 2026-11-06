@@ -1,5 +1,7 @@
 'use client';
 
+import { patchCueKeepingWords } from '@/lib/studio/captions/respread';
+import { captionUnits } from '@/lib/studio/captions/units';
 import { clampCanvas } from '@/lib/studio/exportOptions';
 import { create } from 'zustand';
 import type {
@@ -21,6 +23,7 @@ import type {
   StudioKeyframeEase,
   StudioCaptionCue,
   StudioCaptionStyle,
+  StudioCaptionWord,
   StudioAudioConfig,
   StudioTransition,
   StudioTitle,
@@ -226,7 +229,7 @@ interface StudioState {
    * all-or-nothing as ONE history entry labelled `Medi: <summary>`, honouring locked tracks.
    * Never uses loadProject/restoreDraft (they clear history). Refused while a gesture is open.
    */
-  applyAssistantOps: (summary: string, ops: unknown) => StudioAssistantApplyResult;
+  applyAssistantOps: (summary: string, ops: unknown, opts?: { signedIn?: boolean }) => StudioAssistantApplyResult;
   /** MM109: the label of the step Undo / Redo would take (undefined = unlabelled). */
   undoLabel: () => string | undefined;
   redoLabel: () => string | undefined;
@@ -623,6 +626,24 @@ function makeDefaultTitle(): StudioTitle {
   return { layers: [makeDefaultTextLayer()] };
 }
 
+// splitWords (MM121): the timings of one half of a split cue — the words from unit index
+// `from` whose units make up `text`, clamped into the half's window. {} when the cue has none.
+function splitWords(cue: StudioCaptionCue, from: number, text: string, start: number, end: number): { words?: StudioCaptionWord[] } {
+  if (!cue.words?.length) return {};
+  const n = captionUnits(text).length;
+  const ws = cue.words.slice(from, from + n);
+  if (n === 0 || ws.length !== n) return {};
+  let prev = start;
+  return {
+    words: ws.map((w) => {
+      let s = Math.min(end, Math.max(start, w.startSeconds));
+      if (s < prev) s = prev;
+      prev = s;
+      return { ...w, startSeconds: s, endSeconds: Math.min(end, Math.max(s, w.endSeconds)) };
+    }),
+  };
+}
+
 // splitTextProportional splits caption text at the nearest word boundary to
 // `ratio` (0..1) of the word count, keeping at least one word on each side.
 function splitTextProportional(text: string, ratio: number): { left: string; right: string } {
@@ -915,7 +936,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
         : { gestureDepth: s.gestureDepth + 1 },
     ),
 
-  applyAssistantOps: (summary, ops) => {
+  applyAssistantOps: (summary, ops, opts) => {
     const s = get();
     if (!s.project) return { ok: false, reason: 'validation', errors: ['no project is open'] };
     if (s.gestureDepth > 0) return { ok: false, reason: 'locked', errors: ['the user is dragging on the timeline; try again'] };
@@ -924,6 +945,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       assetKind: (id) => s.assets[id]?.asset.mediaKind,
       assetDuration: (id) => s.assets[id]?.asset.durationSeconds,
       lockedViolation,
+      signedIn: opts?.signedIn,
     });
     if (!res.ok) return res;
     if (JSON.stringify(res.project) === JSON.stringify(before)) {
@@ -2400,7 +2422,8 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
             merged.endSeconds = merged.startSeconds + MIN_CAPTION_SECONDS;
           }
           if (merged.text.length > 500) merged.text = merged.text.slice(0, 500);
-          return merged;
+          // MM121: a text or timing edit re-spreads the word timings (unchanged words keep theirs).
+          return patchCueKeepingWords(c, { text: merged.text, startSeconds: merged.startSeconds, endSeconds: merged.endSeconds, ...('words' in patch ? { words: patch.words } : {}) });
         })
         .sort((a, b) => a.startSeconds - b.startSeconds);
       return { project: { ...s.project, captions }, dirty: true };
@@ -2423,8 +2446,11 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       // Split the text on the nearest word boundary proportional to the time split.
       const ratio = (atSeconds - cue.startSeconds) / (cue.endSeconds - cue.startSeconds);
       const cut = splitTextProportional(cue.text, ratio);
-      const left: StudioCaptionCue = { ...cue, endSeconds: atSeconds, text: cut.left };
-      const right: StudioCaptionCue = { id: uid(), startSeconds: atSeconds, endSeconds: cue.endSeconds, text: cut.right };
+      // MM121: word timings follow their words; each half re-spreads from the original cue.
+      const { words: _w, ...cueNoWords } = cue;
+      void _w;
+      const left: StudioCaptionCue = { ...cueNoWords, endSeconds: atSeconds, text: cut.left, ...splitWords(cue, 0, cut.left, cue.startSeconds, atSeconds) };
+      const right: StudioCaptionCue = { id: uid(), startSeconds: atSeconds, endSeconds: cue.endSeconds, text: cut.right, ...splitWords(cue, captionUnits(cut.left).length, cut.right, atSeconds, cue.endSeconds) };
       const captions = s.project.captions
         .flatMap((c) => (c.id === id ? [left, right] : [c]))
         .sort((a, b) => a.startSeconds - b.startSeconds);
@@ -2439,11 +2465,17 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       if (idx < 0 || idx + 1 >= sorted.length) return {};
       const a = sorted[idx];
       const b = sorted[idx + 1];
+      const { words: _aw, ...aNoWords } = a;
+      void _aw;
       const merged: StudioCaptionCue = {
-        ...a,
+        ...aNoWords,
         endSeconds: Math.max(a.endSeconds, b.endSeconds),
         text: `${a.text} ${b.text}`.trim().slice(0, 500),
       };
+      // MM121: both cues word-timed → the merged cue keeps every word's time.
+      if (a.words?.length && b.words?.length && a.words.length + b.words.length <= 64 && captionUnits(merged.text).length === a.words.length + b.words.length) {
+        merged.words = [...a.words, ...b.words];
+      }
       const captions = sorted.filter((c) => c.id !== a.id && c.id !== b.id).concat(merged).sort((x, y) => x.startSeconds - y.startSeconds);
       return { project: { ...s.project, captions }, dirty: true };
     }),

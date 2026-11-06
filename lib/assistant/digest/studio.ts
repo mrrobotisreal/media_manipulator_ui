@@ -15,6 +15,7 @@ import { isLookEffectId } from '@/lib/studio/looks';
 import { LUMETRI_PARAMS } from '@/lib/studio/effectRegistry';
 
 import { trackLabel } from '@/lib/assistant/ops/applyStudio';
+import { captionLookModified } from '@/lib/studio/captions/captionLooks';
 
 /** ~4k tokens at the API's conservative chars/3.5 estimate (the photo digest's budget). */
 export const STUDIO_DIGEST_MAX_CHARS = 14_000;
@@ -93,7 +94,7 @@ export function studioDigest({ project: p, assets, playhead, selectedClipIds = [
     const voice = p.tracks.find((t) => t.id === a.duckVoiceTrackId);
     head.push(`ducking on: voice ${voice ? trackLabel(voice) : '?'} · ${a.duckAmountDb} dB · attack ${a.duckAttackMs} ms · release ${a.duckReleaseMs} ms`);
   }
-  head.push(`captions: ${p.captions.length ? `${p.captions.length} cues ${p.captionsEnabled ? 'on' : 'off'}` : 'none'}`);
+  head.push(`captions: ${p.captions.length ? `${p.captions.length} cues ${p.captionsEnabled ? 'on' : 'off'}${captionStyleDigest(p)}` : 'none'}`);
   const markers = [...(p.markers ?? [])].sort((x, y) => x.t - y.t);
   if (markers.length) head.push(`markers: ${markers.slice(0, 20).map((m) => `${r2(m.t)}s ${q(m.name, 30)}`).join(', ')}${markers.length > 20 ? ` (+${markers.length - 20})` : ''}`);
   head.push(`selected: ${selectedClipIds.length ? selectedClipIds.slice(0, 10).join(', ') : 'none'}`);
@@ -112,4 +113,15 @@ export function studioDigest({ project: p, assets, playhead, selectedClipIds = [
   }
   const body = blocks.flatMap((b) => [b.head, ...(b.lines.length ? b.lines : ['  (empty)'])]);
   return [...head, ...body, ...(dropped ? [`… ${dropped} more clips not shown`] : [])].join('\n');
+}
+
+/** MM121: the caption look, animation, font and whether cues carry word timings (deterministic). */
+function captionStyleDigest(p: StudioProject): string {
+  const st = p.captionStyle;
+  const parts: string[] = [];
+  if (st?.lookId) parts.push(`look ${st.lookId}${captionLookModified(st) ? ' (modified)' : ''}`);
+  parts.push(`animation ${st?.animation ?? 'none'}`);
+  if (st?.fontFamily) parts.push(`font ${st.fontFamily}`);
+  parts.push(p.captions.some((c) => (c.words?.length ?? 0) > 0) ? 'word-timed' : 'no word timings');
+  return `, ${parts.join(', ')}`;
 }

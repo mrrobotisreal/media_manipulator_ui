@@ -420,23 +420,62 @@ export type StudioTrack = z.infer<typeof studioTrackSchema>;
 // job don't clobber each other.
 // ---------------------------------------------------------------------------
 
+/** One timed word of a cue (MM121). `emphasis` colours it with the highlight for the whole cue. */
+export const studioCaptionWordSchema = z.object({
+  text: z.string().min(1).max(100),
+  startSeconds: z.number().min(0),
+  endSeconds: z.number().min(0),
+  emphasis: z.boolean().optional(),
+});
+export type StudioCaptionWord = z.infer<typeof studioCaptionWordSchema>;
+
 /** One caption cue rendered on the dedicated caption lane / burned at export. */
 export const studioCaptionCueSchema = z.object({
   id: z.string(),
   startSeconds: z.number().min(0),
   endSeconds: z.number().min(0),
   text: z.string().max(500),
+  /** MM121 (additive): one entry per caption unit of `text` (lib/studio/captions/units.ts), ≤ 64. */
+  words: z.array(studioCaptionWordSchema).max(64).optional(),
 });
 export type StudioCaptionCue = z.infer<typeof studioCaptionCueSchema>;
 
-/** Project-wide caption appearance. fontSizePct is a % of project height. */
+/** MM121 caption animations (MM122 adds the rest). Mirrors models.CaptionAnimations. */
+export const STUDIO_CAPTION_ANIMATIONS = ['none', 'karaoke_fill', 'highlight', 'pop'] as const;
+export type StudioCaptionAnimation = (typeof STUDIO_CAPTION_ANIMATIONS)[number];
+export const STUDIO_CAPTION_BACKGROUND_MODES = ['box', 'none', 'word_box'] as const;
+/** The six MM121 caption looks (lib/studio/captions/captionLooks.ts; mirrors models.StudioCaptionLooks). */
+export const STUDIO_CAPTION_LOOK_IDS = ['bold_pop', 'karaoke_classic', 'clean_highlight', 'minimal', 'neon', 'podcast'] as const;
+export type StudioCaptionLookId = (typeof STUDIO_CAPTION_LOOK_IDS)[number];
+
+/**
+ * Project-wide caption appearance. fontSizePct is a % of project height. The MM121 fields are all
+ * optional (absent on older projects, which round-trip unchanged); absent fields take the
+ * defaults in lib/studio/captions/captionsCatalog.json.
+ */
 export const studioCaptionStyleSchema = z.object({
   fontSizePct: z.number().min(1).max(15).default(4.5),
   color: z.string().default('#FFFFFF'),
   backgroundColor: z.string().default('#000000'),
   backgroundOpacity: z.number().min(0).max(1).default(0.55),
-  position: z.enum(['bottom', 'top']).default('bottom'),
+  position: z.enum(['bottom', 'middle', 'top']).default('bottom'),
   maxWidthPct: z.number().min(40).max(100).default(90),
+  fontFamily: z.string().max(64).optional(),
+  bold: z.boolean().optional(),
+  uppercase: z.boolean().optional(),
+  highlightColor: z.string().optional(),
+  outlineColor: z.string().optional(),
+  /** Outline width in px at 1080p, 0–12. */
+  outlineWidth: z.number().min(0).max(12).optional(),
+  /** Drop shadow, 0–1. */
+  shadow: z.number().min(0).max(1).optional(),
+  backgroundMode: z.enum(STUDIO_CAPTION_BACKGROUND_MODES).optional(),
+  /** Words on screen at once, 1–6; absent = the whole cue. */
+  wordsPerGroup: z.number().int().min(1).max(6).optional(),
+  animation: z.enum(STUDIO_CAPTION_ANIMATIONS).optional(),
+  animationStrength: z.number().min(0).max(1).optional(),
+  /** The caption look the style started from (kept after tweaks; the editor shows "modified"). */
+  lookId: z.enum(STUDIO_CAPTION_LOOK_IDS).optional(),
 });
 export type StudioCaptionStyle = z.infer<typeof studioCaptionStyleSchema>;
 

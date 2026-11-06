@@ -143,6 +143,9 @@ export const EVENTS = {
   STUDIO_PUBLISH_REQUESTED: 'studio_publish_requested',
   /** MM118: a locked export option (container, codec or Advanced) was clicked. */
   STUDIO_EXPORT_FORMAT_LOCKED: 'studio_export_format_locked',
+  STUDIO_CAPTION_STYLE_CHANGED: 'studio_caption_style_changed',
+  STUDIO_CAPTION_LOOK_APPLIED: 'studio_caption_look_applied',
+  STUDIO_CAPTION_RENDERER_FALLBACK: 'studio_caption_renderer_fallback',
   STUDIO_RECOVERY_OFFERED: 'studio_recovery_offered',
   STUDIO_RECOVERY_ACCEPTED: 'studio_recovery_accepted',
   STUDIO_SAVE_CONFLICT: 'studio_save_conflict',
@@ -345,6 +348,9 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   studio_export_failed: PRIORITY_CRITICAL,
   studio_publish_requested: PRIORITY_CRITICAL,
   studio_export_format_locked: PRIORITY_HIGH,
+  studio_caption_style_changed: PRIORITY_NORMAL,
+  studio_caption_look_applied: PRIORITY_NORMAL,
+  studio_caption_renderer_fallback: PRIORITY_HIGH,
   studio_recovery_offered: PRIORITY_HIGH,
   studio_recovery_accepted: PRIORITY_HIGH,
   studio_save_conflict: PRIORITY_HIGH,
@@ -906,6 +912,35 @@ export interface StudioDeriveUsedProps extends StudioHostProp {
 
 export interface StudioCaptionsGeneratedProps extends StudioHostProp {
   cueCountBucket: string;
+  /** MM121: the cues carry Whisper word timings. */
+  hasWords?: boolean;
+}
+
+/** MM121: the caption style fields the editor reports (closed vocabulary; never caption text). */
+export type StudioCaptionStyleField =
+  | 'fontFamily' | 'fontSizePct' | 'color' | 'highlightColor' | 'outlineColor' | 'outlineWidth' | 'shadow'
+  | 'backgroundMode' | 'backgroundColor' | 'backgroundOpacity' | 'position' | 'maxWidthPct' | 'bold'
+  | 'uppercase' | 'wordsPerGroup' | 'animation' | 'animationStrength';
+
+/** MM121: one caption style field changed in the caption editor (debounced per field and gesture). */
+export interface StudioCaptionStyleChangedProps extends StudioHostProp {
+  field: StudioCaptionStyleField;
+  /** The style's animation after the change: none | karaoke_fill | highlight | pop. */
+  animation: string;
+  /** The look the style started from (bold_pop | karaoke_classic | clean_highlight | minimal | neon | podcast), or 'none'. */
+  lookId: string;
+  hasWords: boolean;
+}
+
+/** MM121: a named caption look was applied. */
+export interface StudioCaptionLookAppliedProps extends StudioHostProp {
+  lookId: string;
+  source: 'ui' | 'medi';
+}
+
+/** MM121: the JASSUB caption preview could not start; plain-text captions are shown instead. */
+export interface StudioCaptionRendererFallbackProps extends StudioHostProp {
+  reason: 'unsupported' | 'load_failed' | 'render_failed';
 }
 
 export interface StudioExportStartedProps extends StudioHostProp {
@@ -936,6 +971,8 @@ export interface StudioExportStartedProps extends StudioHostProp {
   resolution: string;
   /** Part 20: the one explicit captions choice (MM119: + embedded, a subtitle track). */
   captionsMode?: 'none' | 'burn_in' | 'sidecar' | 'embedded';
+  /** MM121: the burned-in caption animation (none | karaoke_fill | highlight | pop); 'none' when nothing is burned in. */
+  captionAnimation?: string;
 }
 
 export interface StudioExportCompletedProps extends StudioExportStartedProps {
@@ -1571,6 +1608,9 @@ export interface EventPropsMap {
   studio_export_failed: StudioExportFailedProps;
   studio_publish_requested: StudioPublishRequestedProps;
   studio_export_format_locked: StudioExportFormatLockedProps;
+  studio_caption_style_changed: StudioCaptionStyleChangedProps;
+  studio_caption_look_applied: StudioCaptionLookAppliedProps;
+  studio_caption_renderer_fallback: StudioCaptionRendererFallbackProps;
   studio_recovery_offered: StudioRecoveryOfferedProps;
   studio_recovery_accepted: StudioRecoveryAcceptedProps;
   studio_save_conflict: StudioSaveConflictProps;

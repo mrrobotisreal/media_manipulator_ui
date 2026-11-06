@@ -20,6 +20,7 @@ import type {
   StudioLumetriEffect,
 } from '@/lib/studioTypes';
 import { DEFAULT_CAPTION_STYLE, studioProjectSchema } from '@/lib/studioTypes';
+import { applyCaptionLook, captionAnimationLocked, captionLookById } from '@/lib/studio/captions/captionLooks';
 import { CANVAS_PRESETS } from '@/lib/studio/exportOptions';
 import { makeDefaultEffect, STUDIO_V3_RANGES } from '@/lib/studio/effectRegistry';
 import { clipDuration, clipEnd } from '@/lib/studio/previewEngine';
@@ -52,6 +53,8 @@ export interface StudioOpsContext {
   /** Source length of an asset in seconds (trim bound), undefined when unknown. */
   assetDuration: (assetId: string) => number | undefined;
   lockedViolation: LockedCheck;
+  /** MM121: false for an anonymous editor (locked caption looks/animations are refused). */
+  signedIn?: boolean;
   /** Id factory (tests pass a deterministic one). */
   newId?: () => string;
 }
@@ -382,9 +385,22 @@ function runOp(p: StudioProject, o: StudioOp, ctx: StudioOpsContext, newId: () =
     }
     case 'set_caption_style': {
       if (!p.captions.length) throw new OpError('validation', 'there are no captions yet; offer generate_captions with suggest_action first');
-      const { op: _op, ...patch } = o;
+      const { op: _op, reason: _r, look, wordsPerGroup, ...patch } = o;
       void _op;
-      const captionStyle: StudioCaptionStyle = { ...DEFAULT_CAPTION_STYLE, ...p.captionStyle, ...patch };
+      void _r;
+      // MM121: anonymous editors get three looks and their animations (design §6.4); the server
+      // rewrites anything else on save, so refuse here with a reason Medi can relay.
+      if (ctx.signedIn === false) {
+        const lk = look ? captionLookById(look) : undefined;
+        if (lk && !lk.anon) throw new OpError('validation', `the ${look} look needs a free account; offer sign-up, or use bold_pop, clean_highlight or minimal`);
+        if (patch.animation && captionAnimationLocked(patch.animation, false)) throw new OpError('validation', `the ${patch.animation} animation needs a free account; offer sign-up, or use highlight or pop`);
+      }
+      const base: StudioCaptionStyle = look ? applyCaptionLook(captionLookById(look)!) : { ...DEFAULT_CAPTION_STYLE, ...p.captionStyle };
+      const captionStyle: StudioCaptionStyle = { ...base, ...patch };
+      if (wordsPerGroup !== undefined) {
+        if (wordsPerGroup === 0) delete captionStyle.wordsPerGroup;
+        else captionStyle.wordsPerGroup = wordsPerGroup;
+      }
       return { project: { ...p, captionStyle, captionsEnabled: true }, touched: [] };
     }
     case 'set_canvas': {

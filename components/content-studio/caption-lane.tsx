@@ -1,5 +1,6 @@
 'use client';
 
+import { cuesHaveWords } from '@/lib/studio/captions/analytics';
 import React from 'react';
 import { Captions, Loader2, Download } from 'lucide-react';
 import { toast } from 'sonner';
@@ -56,7 +57,7 @@ export const CaptionControls: React.FC<{ projectId: string }> = ({ projectId }) 
           // transcript of someone's media and is forbidden in event properties.
           analytics.track(
             EVENTS.STUDIO_CAPTIONS_GENERATED,
-            { cueCountBucket: cueCountBucket(fresh.captions.length), host: studioHost() },
+            { cueCountBucket: cueCountBucket(fresh.captions.length), hasWords: cuesHaveWords(fresh.captions), host: studioHost() },
             { feature: 'studio' },
           );
           toast.success(t('toasts.captionsReady'));

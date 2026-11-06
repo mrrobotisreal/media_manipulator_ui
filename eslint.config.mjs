@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Generated-code goldens (exporter output is a byte-exact fixture, not source).
     "**/__golden__/**",
+    // MM121: the vendored JASSUB renderer, bundled by scripts/gen-jassub-assets.mjs.
+    "public/jassub/**",
   ]),
   {
     // Rule tuning for code ported from the Vite app. Deliberate, narrow choices

@@ -87,6 +87,10 @@ export type {
   StudioExportCompletedProps,
   StudioExportFailedProps,
   StudioExportFormatLockedProps,
+  StudioCaptionStyleChangedProps,
+  StudioCaptionStyleField,
+  StudioCaptionLookAppliedProps,
+  StudioCaptionRendererFallbackProps,
 } from './events';
 
 // Shared bucket helpers (ADR ws/0003 catalog law: enums/buckets only).
