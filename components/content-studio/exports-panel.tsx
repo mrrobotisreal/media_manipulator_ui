@@ -17,6 +17,7 @@ import { useStudioStore } from '@/lib/studioStore';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
 import { studioDownloadUrl } from '@/lib/useStudioExport';
+import { downloadResult } from '@/lib/results/downloadController';
 import { useExportFrame, useExportsQuery, useRenderAgain, exportsQueryKey } from '@/lib/useStudioExports';
 import { analytics, EVENTS } from '@/lib/analytics';
 import { editSummary, studioHost } from '@/lib/studio/telemetry';
@@ -161,6 +162,15 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
 
   const downloadHref = (row: ExportRow) => (backend.downloadUrl(row.jobId) ? studioDownloadUrl(row.jobId) : '');
 
+  // A plain <a href="/download/:jobId"> sends no identity headers, so the API's
+  // owner check answered 404 "Job not found" for every owned export (2026-11-06
+  // incident). Mint a signed link with the owner's headers, like every tool page.
+  const handleDownload = async (row: ExportRow) => {
+    const fileName = `${row.fileName || 'export'}.${formatExtension(row.format)}`;
+    const result = await downloadResult({ jobId: row.jobId, fileName, trackOptions: { feature: 'studio' } });
+    if (result.outcome === 'failed') toast.error(t('error:toasts.exportFailed'));
+  };
+
   return (
     <>
       {/* One invisible watcher per running row. */}
@@ -259,11 +269,9 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
                     {row.displayStatus !== 'running' && (
                       <div className="mt-2 flex flex-wrap gap-2">
                         {row.canDownload && downloadHref(row) && (
-                          <Button asChild size="sm">
-                            <a href={downloadHref(row)} download>
-                              <Download className="w-3.5 h-3.5 mr-1.5" />
-                              {t('contentStudio.exports.download')}
-                            </a>
+                          <Button size="sm" onClick={() => void handleDownload(row)}>
+                            <Download className="w-3.5 h-3.5 mr-1.5" />
+                            {t('contentStudio.exports.download')}
                           </Button>
                         )}
                         {row.canDownload && !downloadHref(row) && (
