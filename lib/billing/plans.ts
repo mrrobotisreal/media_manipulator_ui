@@ -28,6 +28,10 @@ export const LIMIT_FIELDS = {
   // MM118: a Darkroom output (container, codec or Advanced) the plan lacks. Not numeric: the
   // offer follows the refusal's `required` plan (studioFormatOffer), never this field's value.
   studio_format: 'studioFormats',
+  // MM122: saved caption looks (Premium 10, Pro unlimited) and the per-word editor (Premium+;
+  // a client-only refusal from a locked word drag, not numeric).
+  caption_looks_limit: 'captionLooksSaved',
+  caption_word_edit: 'captionWordEdit',
 } as const satisfies Record<string, keyof TierLimits>;
 
 export type LimitKey = keyof typeof LIMIT_FIELDS;
@@ -42,6 +46,8 @@ const PRO_RAISES: ReadonlySet<LimitKey> = new Set<LimitKey>([
   'quota_ai_ops',
   'quota_export',
   'quota_vector_export',
+  // MM122 decision 4: Pro has no saved-look cap, so a Premium caller at 10 is offered Pro.
+  'caption_looks_limit',
 ]);
 
 function limitValue(limits: TierLimits | undefined, key: LimitKey): number | undefined {

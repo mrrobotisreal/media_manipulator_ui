@@ -51,6 +51,8 @@ interface Refs {
   derive: (assetId: string, op: StudioDeriveOperation) => void;
   /** MM121: anonymous editors get three caption looks. */
   signedIn: boolean;
+  /** MM122: the plan's per-word caption editor (Medi's set_caption_words). */
+  captionWordEdit: boolean;
 }
 
 function useStudioAdapter(refs: React.RefObject<Refs | null>) {
@@ -68,6 +70,10 @@ function useStudioAdapter(refs: React.RefObject<Refs | null>) {
         signedIn: () => refs.current?.signedIn ?? true,
         onCaptionLookApplied: (lookId) => {
           analytics.track(EVENTS.STUDIO_CAPTION_LOOK_APPLIED, { lookId, source: 'medi', host: studioHost() }, { feature: 'studio' });
+        },
+        captionWordEdit: () => refs.current?.captionWordEdit ?? false,
+        onCaptionWordsEdited: () => {
+          analytics.track(EVENTS.STUDIO_CAPTION_WORD_EDITED, { kind: 'emphasis', source: 'medi', host: studioHost() }, { feature: 'studio' });
         },
         onGenerateCaptions: (language) => {
           captionGenerateBridge.request(language);
@@ -112,7 +118,7 @@ export function useStudioCopilot(projectId: string, embedded: boolean) {
   useKeptSessionEnd('studio'); // MM113
   const refs = React.useRef<Refs | null>(null);
   React.useEffect(() => {
-    refs.current = { projectId, caps, t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized, derive, signedIn: !!auth && auth.tier !== 'anonymous' };
+    refs.current = { projectId, caps, t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized, derive, signedIn: !!auth && auth.tier !== 'anonymous', captionWordEdit: auth?.limits?.captionWordEdit === true };
   });
   const adapter = useStudioAdapter(refs);
 

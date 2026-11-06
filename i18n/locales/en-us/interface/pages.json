@@ -421,6 +421,10 @@
             "title": "5. Preview your edit",
             "body": "Use the transport controls under the preview to play/pause, step a frame at a time, or jump to the start/end. Drag on the timeline ruler to scrub — drag to the edge and the timeline auto-scrolls so you can reach any point. During playback the view follows the playhead automatically."
           },
+          "captions": {
+            "title": "Captions",
+            "body": "Click “Generate” on the caption lane to transcribe your audio into word-timed captions (one AI job). Select a cue to edit its text and timing, then pick one of twelve looks or set the font, colours, outline and animation yourself: karaoke fill, highlight, pop, bounce, word by word, box highlight, fade, typewriter or glow. With Premium or Pro you can drag the boundaries between words to retime them, click a word to emphasise it, use “Re-time from audio” to go back to the transcribed timing, and save your own looks to your account (Premium keeps 10, Pro unlimited). Styling and animation are burned into the video; SRT and VTT files are plain text."
+          },
           "export": {
             "title": "6. Export",
             "body": "Click “Export”, choose a file name, a format and the quality, and Darkroom renders your full timeline on the server — compositing video tracks, mixing audio, and applying your effects — then gives you a download link. MP4 with H.264 plays everywhere; the format list also offers H.265, MOV, MKV and audio-only files, and shows which plan unlocks each. Rendering happens on a GPU, so larger projects finish quickly."
@@ -1875,7 +1879,9 @@
       "assistantGuide": "{{medi}} site guide",
       "assistantTurns": "{{medi}} copilot edits per day",
       "studioFormats": "Darkroom export formats",
-      "studioAnimatedCaptions": "Darkroom animated captions"
+      "studioAnimatedCaptions": "Darkroom animated captions",
+      "studioCaptionWordEdit": "Per-word caption timing",
+      "studioCaptionLooksSaved": "Saved caption looks"
     },
     "values": {
       "yes": "Included",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "When to use it",
     "whenToUseBody": "Reach for Darkroom when one file isn’t enough: combining several clips, adding titles or background music, layering overlays, or trimming and re-ordering footage into a finished video.",
     "supportedMediaTitle": "Supported media types",
-    "supportedMediaBody": "You can import video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). You can export MP4 (H.264 or H.265 video, AAC or Opus audio), MOV, WebM (VP9 with Opus or Vorbis), MKV, or audio-only MP3, WAV and Opus. Pro adds AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC and 24-bit WAV. Captions are word-timed and can be animated (karaoke fill, highlight, pop) in six ready-made looks and 27 caption fonts; the preview draws them with the same engine as the export.",
+    "supportedMediaBody": "You can import video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). You can export MP4 (H.264 or H.265 video, AAC or Opus audio), MOV, WebM (VP9 with Opus or Vorbis), MKV, or audio-only MP3, WAV and Opus. Pro adds AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC and 24-bit WAV. Captions are word-timed and can be animated (karaoke fill, highlight, pop, bounce, word by word, box highlight, fade, typewriter, glow) in twelve ready-made looks and 27 caption fonts; the preview draws them with the same engine as the export. Premium and Pro add per-word timing and emphasis on the caption lane, and saved caption looks on your account.",
     "stepByStepTitle": "Step by step",
     "step1": "Create a project and choose a resolution (up to 4K) and frame rate (24/30/60 fps).",
     "step2": "Drag video, image, and audio files into the media bin.",

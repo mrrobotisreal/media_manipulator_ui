@@ -31,7 +31,7 @@ export interface StudioCopilotState {
   selectedClipIds: string[];
   past: StudioProject[];
   gestureDepth: number;
-  applyAssistantOps: (summary: string, ops: unknown, opts?: { signedIn?: boolean }) => { ok: true; project: StudioProject; touched: string[] } | { ok: false; reason: 'validation' | 'unknown_id' | 'locked'; errors: string[] };
+  applyAssistantOps: (summary: string, ops: unknown, opts?: { signedIn?: boolean; captionWordEdit?: boolean }) => { ok: true; project: StudioProject; touched: string[] } | { ok: false; reason: 'validation' | 'unknown_id' | 'locked'; errors: string[] };
   undo: () => void;
 }
 
@@ -55,6 +55,10 @@ export interface StudioAdapterDeps {
   signedIn?: () => boolean;
   /** MM121: a caption look Medi applied (studio_caption_look_applied {source: medi}). */
   onCaptionLookApplied?: (lookId: string) => void;
+  /** MM122: whether the plan has the per-word caption editor (set_caption_words). */
+  captionWordEdit?: () => boolean;
+  /** MM122: Medi emphasised caption words (studio_caption_word_edited {kind: emphasis, source: medi}). */
+  onCaptionWordsEdited?: () => void;
 }
 
 /** Ops whose result is visible in the preview (the verify loop sends a frame after these). */
@@ -131,6 +135,9 @@ export function describeStudioOp(o: StudioOp, before: StudioProject, t: Translat
         break;
       case 'set_caption_style':
         k('captionStyle');
+        break;
+      case 'set_caption_words':
+        k('captionWords', { count: o.emphasis.length });
         break;
       case 'set_canvas':
         k('canvas', { aspect: (CANVAS_ASPECTS as readonly string[]).includes(o.aspect) ? o.aspect : '' });
@@ -261,9 +268,12 @@ export function createStudioAdapter(deps: StudioAdapterDeps): CopilotAdapter {
       const s = deps.store.getState();
       if (!s.project) return { ok: false, reason: 'validation', errors: ['no project is open'] };
       const before = s.project;
-      const res = s.applyAssistantOps(summary, ops, { signedIn: deps.signedIn?.() });
+      const res = s.applyAssistantOps(summary, ops, { signedIn: deps.signedIn?.(), captionWordEdit: deps.captionWordEdit?.() });
       if (!res.ok) return res;
-      for (const o of ops as StudioOp[]) if (o.op === 'set_caption_style' && o.look) deps.onCaptionLookApplied?.(o.look);
+      for (const o of ops as StudioOp[]) {
+        if (o.op === 'set_caption_style' && o.look) deps.onCaptionLookApplied?.(o.look);
+        if (o.op === 'set_caption_words') deps.onCaptionWordsEdited?.();
+      }
       const after = deps.store.getState();
       tokenSeq += 1;
       const token: CopilotEditToken = { id: tokenSeq };
@@ -279,6 +289,7 @@ export function createStudioAdapter(deps: StudioAdapterDeps): CopilotAdapter {
         assetDuration: (id: string) => s.assets[id]?.asset.durationSeconds,
         lockedViolation,
         signedIn: deps.signedIn?.(),
+        captionWordEdit: deps.captionWordEdit?.(),
       };
       const list = ops as StudioOp[];
       const whole = applyStudioOps(s.project, ops, ctx);

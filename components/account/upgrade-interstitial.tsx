@@ -151,6 +151,28 @@ export function interstitialCopy(
       required,
     };
   }
+  // MM122: the saved caption look cap (403 caption_looks_limit; Premium 10 -> Pro unlimited).
+  if (d.error === 'caption_looks_limit') {
+    return {
+      titleKey: 'interface:upgradeInterstitial.captionLooks.title',
+      bodyKey: (d.limit ?? 0) > 0 ? 'interface:upgradeInterstitial.captionLooks.body' : 'interface:upgradeInterstitial.captionLooks.bodyNone',
+      values: { limit: d.limit ?? 0 },
+      upgradePath: d.upgradePath ?? pathForTier(context.tier),
+      placement: 'limit_interstitial',
+      limitKey: 'caption_looks_limit',
+    };
+  }
+  // MM122: a locked word drag / emphasis click (client-only; the editor is Premium+).
+  if (d.error === 'caption_word_edit') {
+    return {
+      titleKey: 'interface:upgradeInterstitial.captionWords.title',
+      bodyKey: 'interface:upgradeInterstitial.captionWords.body',
+      values: {},
+      upgradePath: d.upgradePath ?? pathForTier(context.tier),
+      placement: 'limit_interstitial',
+      limitKey: 'caption_word_edit',
+    };
+  }
   if (d.error === 'output_height_limited') {
     return {
       titleKey: 'interface:upgradeInterstitial.outputHeight.title',
@@ -187,7 +209,7 @@ export function proChange(
   limitKey: string,
   tiers: TiersResponse | undefined,
 ): { key: string; values: Record<string, unknown> } | null {
-  if (!['quota_ops', 'quota_ai_ops', 'quota_export'].includes(limitKey)) return null;
+  if (!['quota_ops', 'quota_ai_ops', 'quota_export', 'caption_looks_limit'].includes(limitKey)) return null;
   return planChangeLine('pro', limitKey, tiers);
 }
 
@@ -222,6 +244,13 @@ function planChangeLine(
         : null;
     case 'project_limit_reached':
       return count(limits.studioProjects, `${prefix}.projects`);
+    case 'caption_looks_limit': {
+      // MM122: Premium saves 10, Pro unlimited (the served numbers decide the line).
+      const n = limits.captionLooksSaved;
+      return typeof n === 'number' ? count(n, `${prefix}.captionLooks`) : null;
+    }
+    case 'caption_word_edit':
+      return plan === 'premium' && limits.captionWordEdit ? { key: `${prefix}.captionWords`, values: {} } : null;
     case 'studio_format':
       // MM118: what the plan adds to Darkroom exports, only when the served table says so.
       return plan === 'premium' && (limits.studioFormats ?? []).includes('mov') && limits.studioAdvanced

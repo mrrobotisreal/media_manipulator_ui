@@ -459,16 +459,25 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
         'uppercase', 'wordsPerGroup', 'animation', 'animationStrength',
       ]),
       animation: z.enum(captionAnimations),
-      lookId: z.enum(['none', ...captionLookIds] as [string, ...string[]]),
+      lookId: z.enum(['none', 'saved', ...captionLookIds] as [string, ...string[]]),
       hasWords: z.boolean(),
       host: studioHostEnum.optional(),
     })
     .strict(),
   studio_caption_look_applied: z
-    .object({ lookId: z.enum(captionLookIds), source: z.enum(['ui', 'medi']), host: studioHostEnum.optional() })
+    .object({ lookId: z.enum(['saved', ...captionLookIds] as [string, ...string[]]), source: z.enum(['ui', 'medi']), host: studioHostEnum.optional() })
     .strict(),
   studio_caption_renderer_fallback: z
     .object({ reason: z.enum(['unsupported', 'load_failed', 'render_failed']), host: studioHostEnum.optional() })
+    .strict(),
+  studio_caption_word_edited: z
+    .object({ kind: z.enum(['retime', 'emphasis', 'reset']), source: z.enum(['ui', 'medi']), host: studioHostEnum.optional() })
+    .strict(),
+  studio_caption_look_saved: z
+    .object({ tier: z.string(), count: z.enum(['1', '2-5', '6-10', '11-50', '51+']), host: studioHostEnum.optional() })
+    .strict(),
+  studio_caption_look_limit_hit: z
+    .object({ tier: z.string(), limit: z.number().int().min(0), host: studioHostEnum.optional() })
     .strict(),
   studio_export_started: studioExportProps,
   studio_export_completed: studioExportProps,

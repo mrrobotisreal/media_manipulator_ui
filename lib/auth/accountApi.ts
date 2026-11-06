@@ -114,6 +114,11 @@ export interface TierLimits {
   studioFormats?: string[];
   /** The Advanced export picker (combinations, audio bitrate, mono). */
   studioAdvanced?: boolean;
+  // Darkroom caption depth (MM122). Optional: absent on APIs before MM122.
+  /** The per-word caption timing and emphasis editor (Premium and Pro). */
+  captionWordEdit?: boolean;
+  /** Saved caption looks per account; -1 means unlimited, 0 none. */
+  captionLooksSaved?: number;
   /** Raster export caps; a 0 field means no cap on that axis. */
   vectorVideo?: { maxHeight: number; maxFps: number; maxSeconds: number };
 }
@@ -729,7 +734,7 @@ export async function verifyCheckoutSession(
 
 /** The body of a 403 from the output-height or saved-project checks. */
 export interface LimitRefusal {
-  error: 'output_height_limited' | 'project_limit_reached' | 'file_too_large' | 'format_not_in_plan';
+  error: 'output_height_limited' | 'project_limit_reached' | 'file_too_large' | 'format_not_in_plan' | 'caption_looks_limit' | 'caption_word_edit';
   message?: string;
   /** Numeric limits only (absent on format_not_in_plan). */
   limit?: number;
@@ -754,7 +759,9 @@ export interface LimitRefusal {
 export function isLimitRefusal(body: unknown): body is LimitRefusal {
   if (typeof body !== 'object' || body === null) return false;
   const error = (body as { error?: unknown }).error;
-  return error === 'output_height_limited' || error === 'project_limit_reached' || error === 'format_not_in_plan';
+  // MM122: caption_looks_limit is the saved-look cap; caption_word_edit is client-only (a locked
+  // word drag), never on the wire, so it is not narrowed here.
+  return error === 'output_height_limited' || error === 'project_limit_reached' || error === 'format_not_in_plan' || error === 'caption_looks_limit';
 }
 
 /**

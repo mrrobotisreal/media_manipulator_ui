@@ -229,7 +229,7 @@ interface StudioState {
    * all-or-nothing as ONE history entry labelled `Medi: <summary>`, honouring locked tracks.
    * Never uses loadProject/restoreDraft (they clear history). Refused while a gesture is open.
    */
-  applyAssistantOps: (summary: string, ops: unknown, opts?: { signedIn?: boolean }) => StudioAssistantApplyResult;
+  applyAssistantOps: (summary: string, ops: unknown, opts?: { signedIn?: boolean; captionWordEdit?: boolean }) => StudioAssistantApplyResult;
   /** MM109: the label of the step Undo / Redo would take (undefined = unlabelled). */
   undoLabel: () => string | undefined;
   redoLabel: () => string | undefined;
@@ -946,6 +946,7 @@ export const useStudioStore = create<StudioState>((rawSet, get) => {
       assetDuration: (id) => s.assets[id]?.asset.durationSeconds,
       lockedViolation,
       signedIn: opts?.signedIn,
+      captionWordEdit: opts?.captionWordEdit,
     });
     if (!res.ok) return res;
     if (JSON.stringify(res.project) === JSON.stringify(before)) {

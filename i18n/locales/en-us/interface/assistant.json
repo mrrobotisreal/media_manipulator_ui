@@ -184,6 +184,8 @@
           "volume": "Set {{target}} to {{db}} dB",
           "marker": "Added a marker at {{at}} s",
           "captionStyle": "Restyled the captions",
+          "captionWords_one": "Emphasised {{count}} caption word",
+          "captionWords_other": "Emphasised {{count}} caption words",
           "canvas": "Changed the frame to {{aspect}}"
         },
         "field": {

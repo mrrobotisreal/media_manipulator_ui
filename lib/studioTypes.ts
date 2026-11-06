@@ -426,6 +426,9 @@ export const studioCaptionWordSchema = z.object({
   startSeconds: z.number().min(0),
   endSeconds: z.number().min(0),
   emphasis: z.boolean().optional(),
+  /** MM122: Whisper's times before the first hand retime ("Re-time from audio" restores them). */
+  origStartSeconds: z.number().min(0).optional(),
+  origEndSeconds: z.number().min(0).optional(),
 });
 export type StudioCaptionWord = z.infer<typeof studioCaptionWordSchema>;
 

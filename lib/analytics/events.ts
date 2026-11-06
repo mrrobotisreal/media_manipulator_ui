@@ -146,6 +146,12 @@ export const EVENTS = {
   STUDIO_CAPTION_STYLE_CHANGED: 'studio_caption_style_changed',
   STUDIO_CAPTION_LOOK_APPLIED: 'studio_caption_look_applied',
   STUDIO_CAPTION_RENDERER_FALLBACK: 'studio_caption_renderer_fallback',
+  /** MM122: a word retimed / emphasised / reset on the caption lane (Premium+). */
+  STUDIO_CAPTION_WORD_EDITED: 'studio_caption_word_edited',
+  /** MM122: a caption look saved to the account. */
+  STUDIO_CAPTION_LOOK_SAVED: 'studio_caption_look_saved',
+  /** MM122: the saved caption look cap was hit (403 caption_looks_limit or Save at the cap). */
+  STUDIO_CAPTION_LOOK_LIMIT_HIT: 'studio_caption_look_limit_hit',
   STUDIO_RECOVERY_OFFERED: 'studio_recovery_offered',
   STUDIO_RECOVERY_ACCEPTED: 'studio_recovery_accepted',
   STUDIO_SAVE_CONFLICT: 'studio_save_conflict',
@@ -351,6 +357,9 @@ export const EVENT_PRIORITY: Record<EventName, Priority> = {
   studio_caption_style_changed: PRIORITY_NORMAL,
   studio_caption_look_applied: PRIORITY_NORMAL,
   studio_caption_renderer_fallback: PRIORITY_HIGH,
+  studio_caption_word_edited: PRIORITY_NORMAL,
+  studio_caption_look_saved: PRIORITY_NORMAL,
+  studio_caption_look_limit_hit: PRIORITY_CRITICAL,
   studio_recovery_offered: PRIORITY_HIGH,
   studio_recovery_accepted: PRIORITY_HIGH,
   studio_save_conflict: PRIORITY_HIGH,
@@ -925,9 +934,9 @@ export type StudioCaptionStyleField =
 /** MM121: one caption style field changed in the caption editor (debounced per field and gesture). */
 export interface StudioCaptionStyleChangedProps extends StudioHostProp {
   field: StudioCaptionStyleField;
-  /** The style's animation after the change: none | karaoke_fill | highlight | pop. */
+  /** The style's animation after the change: none | karaoke_fill | highlight | pop (MM122 + bounce | word_by_word | box_highlight | fade | typewriter | glow). */
   animation: string;
-  /** The look the style started from (bold_pop | karaoke_classic | clean_highlight | minimal | neon | podcast), or 'none'. */
+  /** The look the style started from (a catalog id), 'saved' (an account look) or 'none'. */
   lookId: string;
   hasWords: boolean;
 }
@@ -936,6 +945,24 @@ export interface StudioCaptionStyleChangedProps extends StudioHostProp {
 export interface StudioCaptionLookAppliedProps extends StudioHostProp {
   lookId: string;
   source: 'ui' | 'medi';
+}
+
+/** MM122: one per-word edit on the caption lane (never caption text). */
+export interface StudioCaptionWordEditedProps extends StudioHostProp {
+  kind: 'retime' | 'emphasis' | 'reset';
+  source: 'ui' | 'medi';
+}
+
+/** MM122: a caption look saved to the account; count = saved looks after the save, bucketed. */
+export interface StudioCaptionLookSavedProps extends StudioHostProp {
+  tier: string;
+  count: '1' | '2-5' | '6-10' | '11-50' | '51+';
+}
+
+/** MM122: the saved caption look cap was hit; limit = the plan's cap. */
+export interface StudioCaptionLookLimitHitProps extends StudioHostProp {
+  tier: string;
+  limit: number;
 }
 
 /** MM121: the JASSUB caption preview could not start; plain-text captions are shown instead. */
@@ -1611,6 +1638,9 @@ export interface EventPropsMap {
   studio_caption_style_changed: StudioCaptionStyleChangedProps;
   studio_caption_look_applied: StudioCaptionLookAppliedProps;
   studio_caption_renderer_fallback: StudioCaptionRendererFallbackProps;
+  studio_caption_word_edited: StudioCaptionWordEditedProps;
+  studio_caption_look_saved: StudioCaptionLookSavedProps;
+  studio_caption_look_limit_hit: StudioCaptionLookLimitHitProps;
   studio_recovery_offered: StudioRecoveryOfferedProps;
   studio_recovery_accepted: StudioRecoveryAcceptedProps;
   studio_save_conflict: StudioSaveConflictProps;

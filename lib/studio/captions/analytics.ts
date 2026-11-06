@@ -14,3 +14,12 @@ export function captionAnimationFor(captionsMode: string | undefined, style: Stu
 export function cuesHaveWords(cues: readonly StudioCaptionCue[] | undefined): boolean {
   return (cues ?? []).some((c) => (c.words?.length ?? 0) > 0);
 }
+
+/** studio_caption_look_saved.count: the account's saved looks after the save, bucketed. */
+export function captionLookCountBucket(n: number): '1' | '2-5' | '6-10' | '11-50' | '51+' {
+  if (n <= 1) return '1';
+  if (n <= 5) return '2-5';
+  if (n <= 10) return '6-10';
+  if (n <= 50) return '11-50';
+  return '51+';
+}

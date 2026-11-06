@@ -124,6 +124,12 @@ export interface StudioBackendCapabilities {
    * always false there, whatever the host's cs:init says.
    */
   voices: boolean;
+  /**
+   * MM122: saved caption looks on the MM account (/api/studio/caption-looks). CreaTV's
+   * Darkroom API has no such routes and its users have no MM plan, so the Save look button
+   * and the saved-looks row hide there. Optional: absent = false.
+   */
+  captionLooks?: boolean;
 }
 
 export interface StudioBackendScope {
@@ -222,6 +228,7 @@ export function createMmBackend(): StudioBackend {
       exportDepth: true,
       // Learned at runtime from GET /studio/capabilities (useStudioCapabilities).
       voices: false,
+      captionLooks: true,
     },
     // Sync, so it can only carry the session id; the Firebase token needs an
     // await. Everything that actually goes over the wire uses fetch() below,
@@ -350,6 +357,8 @@ export function createCreatvBackend(opts: CreatvBackendOptions): StudioBackend {
     ...opts.capabilities,
     // MM79: the CreaTV embed never shows Generate voiceover (no route there).
     voices: false,
+    // MM122: no saved caption looks in the embed (no route, no MM plan).
+    captionLooks: false,
   };
 
   const withAuth = (init: RequestInit | undefined, token: string | null): RequestInit => {

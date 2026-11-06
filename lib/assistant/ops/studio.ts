@@ -215,7 +215,14 @@ const setCaptionStyle = op(
     animation: z.enum(STUDIO_CAPTION_ANIMATIONS).optional(),
     animationStrength: range(0, 1).optional(),
   },
-  'Restyle the captions (they must exist; generating them is a suggested action). look applies a named caption look first (bold_pop = TikTok-style pop, karaoke_classic = karaoke fill for songs, clean_highlight, minimal, neon, podcast = calm boxed lines); the other fields then tweak it. animation: karaoke_fill sweeps each word in highlightColor as it is spoken, highlight recolours the current word, pop scales it (animationStrength); wordsPerGroup 1-6 words on screen at once, 0 = whole line. Styling and animation only show when captions are burned in.',
+  'Restyle the captions (they must exist; generating them is a suggested action). look applies a named caption look first (bold_pop = TikTok-style pop, karaoke_classic = karaoke fill for songs, clean_highlight, minimal, neon, podcast = calm boxed lines, cinema = soft serif fades, comic, typewriter, box_pop, glow_night, bounce_kids); the other fields then tweak it. animation: karaoke_fill sweeps each word in highlightColor as it is spoken, highlight recolours the current word, pop scales it, bounce stretches it with a playful overshoot, word_by_word reveals words as they are spoken, box_highlight puts a highlightColor box behind it, fade fades each group in and out, typewriter types each word out, glow lights its outline (animationStrength scales each); wordsPerGroup 1-6 words on screen at once, 0 = whole line. Styling and animation only show when captions are burned in.',
+);
+/** MM122: a caption cue id (the digest's word-timed cue list) and its word positions. */
+const cueId = named('cue_id', z.string().regex(/^[A-Za-z0-9_-]{1,64}$/));
+const setCaptionWords = op(
+  'set_caption_words',
+  { cueId, emphasis: z.array(z.number().int().min(0).max(63)).max(64) },
+  'Emphasise words of one word-timed caption cue (Premium and Pro only): emphasis lists the 0-based word positions to colour in highlightColor for the whole cue (it replaces the cue\'s emphasis; [] clears it). Never retimes words.',
 );
 const setCanvas = op('set_canvas', { aspect: z.enum(CANVAS_ASPECTS) }, 'Change the frame shape (16:9 landscape, 9:16 vertical, 1:1 square, 4:5 portrait).');
 
@@ -237,6 +244,7 @@ export const studioOpSchema = z.discriminatedUnion('op', [
   setVolume,
   addMarker,
   setCaptionStyle,
+  setCaptionWords,
   setCanvas,
 ] as unknown as [z.ZodObject, z.ZodObject, ...z.ZodObject[]]);
 
@@ -261,6 +269,7 @@ export const STUDIO_OP_NAMES = [
   'set_volume',
   'add_marker',
   'set_caption_style',
+  'set_caption_words',
   'set_canvas',
 ] as const;
 export type StudioOpName = (typeof STUDIO_OP_NAMES)[number];
@@ -318,6 +327,7 @@ export type StudioOp =
       animation?: (typeof STUDIO_CAPTION_ANIMATIONS)[number];
       animationStrength?: number;
     }
+  | { op: 'set_caption_words'; reason?: string; cueId: string; emphasis: number[] }
   | { op: 'set_canvas'; reason?: string; aspect: CanvasAspect };
 
 /**

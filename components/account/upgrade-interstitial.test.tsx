@@ -309,3 +309,41 @@ describe('Premium callers: "Upgrade to Pro" only where Pro raises the limit (MM4
     vi.unstubAllEnvs();
   });
 });
+
+describe('saved caption looks and the per-word editor (MM122)', () => {
+  const caps: Record<string, { captionWordEdit: boolean; captionLooksSaved: number }> = {
+    anonymous: { captionWordEdit: false, captionLooksSaved: 0 },
+    free: { captionWordEdit: false, captionLooksSaved: 0 },
+    premium: { captionWordEdit: true, captionLooksSaved: 10 },
+    pro: { captionWordEdit: true, captionLooksSaved: -1 },
+  };
+  const base = tiersFixture();
+  const served = { ...base, tiers: base.tiers.map((x) => ({ ...x, limits: { ...x.limits, ...caps[x.tier] } })) } as never;
+  const looks = (limit: number, path: 'pro' | 'premium') => ({ kind: 'limit', detail: { error: 'caption_looks_limit', limit, used: limit, upgradePath: path } }) as never;
+
+  it('Premium at 10 saved looks is offered Pro (unlimited), with the Pro line', () => {
+    const copy = interstitialCopy(looks(10, 'pro'), { tier: 'premium' });
+    expect(copy.titleKey).toBe('interface:upgradeInterstitial.captionLooks.title');
+    expect(copy.bodyKey).toBe('interface:upgradeInterstitial.captionLooks.body');
+    expect(copy.values).toEqual({ limit: 10 });
+    expect(interstitialOffer(copy, 'premium', served)).toBe('pro');
+    expect(proChange('caption_looks_limit', served)).toEqual({ key: 'interface:upgradeInterstitial.proChange.captionLooksUnlimited', values: {} });
+  });
+
+  it('free is offered Premium (10 looks); Pro is never offered anything', () => {
+    const copy = interstitialCopy(looks(0, 'premium'), { tier: 'free' });
+    expect(copy.bodyKey).toBe('interface:upgradeInterstitial.captionLooks.bodyNone');
+    expect(interstitialOffer(copy, 'free', served)).toBe('premium');
+    expect(premiumChange('caption_looks_limit', served)).toEqual({ key: 'interface:upgradeInterstitial.premiumChange.captionLooks', values: { value: 10 } });
+    expect(interstitialOffer(copy, 'pro', served)).toBeUndefined();
+  });
+
+  it('a locked word edit offers Premium to free and sign-up to guests, never Pro', () => {
+    const input = { kind: 'limit', detail: { error: 'caption_word_edit', fromClick: true } } as never;
+    const copy = interstitialCopy(input, { tier: 'free' });
+    expect(copy.titleKey).toBe('interface:upgradeInterstitial.captionWords.title');
+    expect(interstitialOffer(copy, 'free', served)).toBe('premium');
+    expect(interstitialOffer(interstitialCopy(input, { tier: 'anonymous' }), 'anonymous', served)).toBe('signup');
+    expect(premiumChange('caption_word_edit', served)).toEqual({ key: 'interface:upgradeInterstitial.premiumChange.captionWords', values: {} });
+  });
+});

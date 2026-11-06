@@ -17,6 +17,10 @@ import { getBaseURL } from '@/lib/utils';
 import { studioProjectSchema } from '@/lib/studioTypes';
 import { analytics, EVENTS, cueCountBucket } from '@/lib/analytics';
 import { studioHost } from '@/lib/studio/telemetry';
+import { useAuth } from '@/lib/auth/AuthProvider';
+import { publishLimitRefusal } from '@/lib/auth/quotaBus';
+import { retimeBoundary, toggleEmphasis } from '@/lib/studio/captions/wordEdit';
+import type { StudioCaptionCue } from '@/lib/studioTypes';
 
 export const CAPTION_LANE_HEIGHT = 28;
 const MIN_CUE = 0.3;
@@ -200,7 +204,11 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
             onPointerUp={onUp}
             onPointerCancel={onUp}
           >
-            {cue.text || '…'}
+            {selected && (cue.words?.length ?? 0) > 0 && (cue.endSeconds - cue.startSeconds) * zoom >= (cue.words?.length ?? 0) * 6 ? (
+              <CaptionWordStrip cue={cue} zoom={zoom} />
+            ) : (
+              cue.text || '…'
+            )}
             <div
               className="absolute left-0 top-0 bottom-0 w-1.5 cursor-ew-resize bg-white/10 hover:bg-white/40"
               onPointerDown={(e) => onDown(e, 'l', cue)}
@@ -218,6 +226,111 @@ export const CaptionLaneContent: React.FC<{ zoom: number }> = ({ zoom }) => {
           </div>
         );
       })}
+    </div>
+  );
+};
+
+/** studio_caption_word_edited (never caption text). */
+export function trackCaptionWordEdit(kind: 'retime' | 'emphasis' | 'reset'): void {
+  analytics.track(EVENTS.STUDIO_CAPTION_WORD_EDITED, { kind, source: 'ui', host: studioHost() }, { feature: 'studio' });
+}
+
+/**
+ * MM122 decision 3: the selected cue's words on the lane. Each word is a button (click toggles
+ * emphasis); each boundary between words (and the first start / last end) is a drag handle that
+ * retimes it, clamped to its neighbours and snapped to one frame, one undo step per drag.
+ * Without the per-word editor (Limits.CaptionWordEdit: Premium and Pro) the words are shown
+ * read-only and a drag or click opens the upgrade interstitial instead.
+ */
+export const CaptionWordStrip: React.FC<{ cue: StudioCaptionCue; zoom: number }> = ({ cue, zoom }) => {
+  const { t } = useLocalization('interface');
+  const auth = useAuth();
+  const canEdit = auth?.limits?.captionWordEdit === true;
+  const fps = useStudioStore((s) => s.project?.fps);
+  const updateCaption = useStudioStore((s) => s.updateCaption);
+  const drag = React.useRef<{ b: number; startX: number; t0: number; moved: boolean } | null>(null);
+  const words = cue.words ?? [];
+  const x = (sec: number) => (sec - cue.startSeconds) * zoom;
+  const bounds = [...words.map((w) => w.startSeconds), words[words.length - 1].endSeconds];
+
+  const locked = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    publishLimitRefusal({ error: 'caption_word_edit', fromClick: true, upgradePath: auth?.tier === 'anonymous' ? 'signup' : 'premium' });
+  };
+  const onDown = (e: React.PointerEvent, b: number) => {
+    if (!canEdit) return locked(e);
+    e.stopPropagation();
+    e.preventDefault();
+    (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+    drag.current = { b, startX: e.clientX, t0: bounds[b], moved: false };
+    useStudioStore.getState().beginGesture();
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    e.stopPropagation();
+    const live = useStudioStore.getState().project?.captions.find((c) => c.id === cue.id);
+    if (!live) return;
+    const next = retimeBoundary(live, d.b, d.t0 + (e.clientX - d.startX) / zoom, fps);
+    if (next && next !== live.words) {
+      d.moved = true;
+      updateCaption(cue.id, { words: next });
+    }
+  };
+  const onUp = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    e.stopPropagation();
+    drag.current = null;
+    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    useStudioStore.getState().endGesture();
+    if (d.moved) trackCaptionWordEdit('retime');
+  };
+  const onWord = (e: React.MouseEvent, i: number) => {
+    if (!canEdit) return locked(e);
+    e.stopPropagation();
+    const next = toggleEmphasis(cue, i);
+    if (next) {
+      updateCaption(cue.id, { words: next });
+      trackCaptionWordEdit('emphasis');
+    }
+  };
+
+  return (
+    <div className="absolute inset-0" data-testid="caption-word-strip" aria-label={t('contentStudio.captions.words')}>
+      {words.map((w, i) => (
+        <button
+          key={`w${i}`}
+          type="button"
+          className={`absolute top-0 bottom-0 overflow-hidden px-0.5 text-[9px] leading-[22px] text-left focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring ${
+            w.emphasis ? 'bg-premium/45 text-white font-semibold' : 'hover:bg-white/10'
+          } ${canEdit ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+          style={{ left: x(w.startSeconds), width: Math.max(4, x(w.endSeconds) - x(w.startSeconds)) }}
+          title={canEdit ? `${w.text} · ${t('contentStudio.captions.emphasis')}` : t('contentStudio.captions.wordsLockedHint')}
+          aria-pressed={!!w.emphasis}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => onWord(e, i)}
+          data-testid={`caption-word-${i}`}
+        >
+          {w.text}
+        </button>
+      ))}
+      {bounds.map((b, i) => (
+        <div
+          key={`b${i}`}
+          role="separator"
+          aria-orientation="vertical"
+          aria-label={t('contentStudio.captions.wordBoundary', { word: words[Math.min(i, words.length - 1)].text })}
+          className={`absolute top-0 bottom-0 w-1.5 -ml-[3px] touch-none ${canEdit ? 'cursor-ew-resize bg-white/30 hover:bg-white/70' : 'cursor-not-allowed bg-white/15'}`}
+          style={{ left: x(b) }}
+          onPointerDown={(e) => onDown(e, i)}
+          onPointerMove={onMove}
+          onPointerUp={onUp}
+          onPointerCancel={onUp}
+          data-testid={`caption-boundary-${i}`}
+        />
+      ))}
     </div>
   );
 };

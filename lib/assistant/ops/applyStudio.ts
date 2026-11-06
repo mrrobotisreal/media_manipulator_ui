@@ -55,6 +55,8 @@ export interface StudioOpsContext {
   lockedViolation: LockedCheck;
   /** MM121: false for an anonymous editor (locked caption looks/animations are refused). */
   signedIn?: boolean;
+  /** MM122: false when the plan lacks the per-word editor (set_caption_words is refused). */
+  captionWordEdit?: boolean;
   /** Id factory (tests pass a deterministic one). */
   newId?: () => string;
 }
@@ -402,6 +404,24 @@ function runOp(p: StudioProject, o: StudioOp, ctx: StudioOpsContext, newId: () =
         else captionStyle.wordsPerGroup = wordsPerGroup;
       }
       return { project: { ...p, captionStyle, captionsEnabled: true }, touched: [] };
+    }
+    case 'set_caption_words': {
+      // MM122 decision 5: emphasis only (no retiming by Medi in v1), Premium and Pro only.
+      if (ctx.captionWordEdit === false) throw new OpError('validation', 'per-word emphasis needs Premium; say so and offer the upgrade, or use set_caption_style animation highlight instead');
+      const cue = p.captions.find((c) => c.id === o.cueId);
+      if (!cue) throw new OpError('validation', `no caption cue ${o.cueId}; use a cue id from the digest`);
+      const words = cue.words ?? [];
+      if (words.length === 0) throw new OpError('validation', `cue ${o.cueId} has no word timings; regenerate captions to get them`);
+      const bad = o.emphasis.find((i) => i >= words.length);
+      if (bad !== undefined) throw new OpError('validation', `cue ${o.cueId} has ${words.length} words (0-${words.length - 1}); ${bad} is out of range`);
+      const set = new Set(o.emphasis);
+      const next = words.map((w, i) => {
+        const { emphasis: _e, ...rest } = w;
+        void _e;
+        return set.has(i) ? { ...rest, emphasis: true } : rest;
+      });
+      const captions = p.captions.map((c) => (c.id === cue.id ? { ...c, words: next } : c));
+      return { project: { ...p, captions, captionsEnabled: true }, touched: [] };
     }
     case 'set_canvas': {
       const preset = CANVAS_PRESETS.find((c) => c.key === o.aspect)!;
