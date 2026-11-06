@@ -513,6 +513,7 @@
       "kbps": "{{value}} kbps",
       "noVideo": "비디오 없음",
       "notIn": "{{container}}에서 사용 불가",
+      "notWith": "{{codec}}와(과) 함께 사용 불가",
       "planFree": "무료 계정",
       "mediUpgradeFree": "Medi가 처음 고른 형식은 무료 계정이 필요해서, 현재 요금제에서 쓸 수 있는 가장 가까운 형식을 선택해 두었어요.",
       "mediUpgradePlan": "Medi가 처음 고른 형식은 {{plan}}이 필요해서, 현재 요금제에서 쓸 수 있는 가장 가까운 형식을 선택해 두었어요.",
@@ -526,8 +527,17 @@
       "preset_audio_mp3": "오디오만 · MP3",
       "preset_audio_wav": "오디오만 · WAV",
       "preset_audio_opus": "오디오만 · Opus (가장 작음)",
+      "preset_mp4_av1": "MP4 · AV1 (고화질 중 가장 작음)",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus (웹사이트, 가장 작음)",
+      "preset_mov_prores": "MOV · ProRes 422 (편집자 전달용)",
+      "preset_audio_flac": "오디오만 · FLAC (무손실)",
+      "preset_audio_wav24": "오디오만 · WAV 24비트 (스튜디오 마스터)",
       "warning_apple_incompatible": "QuickTime, 사진 앱, iPhone에서는 이 파일을 열 수 없어요.",
-      "warning_no_browser_preview": "브라우저에서는 이 파일을 재생할 수 없어요. VLC나 동영상 편집기에서 열어 주세요."
+      "warning_no_browser_preview": "브라우저에서는 이 파일을 재생할 수 없어요. VLC나 동영상 편집기에서 열어 주세요.",
+      "warning_av1_playback": "오래된 휴대폰, TV, 브라우저에서는 AV1이 재생되지 않을 수 있습니다. 어디서나 재생되어야 한다면 H.264를 선택하세요.",
+      "proresNote": "ProRes 422 (8비트 타임라인에서 생성): 편집용 10비트 4:2:2이며 Darkroom의 8비트 영상으로 만듭니다. 품질 설정은 영향이 없으며 파일이 매우 큽니다.",
+      "sizeEstimate": "예상 크기: {{size}}",
+      "sizeLarge": "4GB를 넘습니다. 디스크 공간과 업로드 한도를 확인하거나 내보내기를 줄이세요."
     },
     "audioPanel": {
       "button": "오디오",

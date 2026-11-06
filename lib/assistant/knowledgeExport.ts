@@ -759,7 +759,7 @@ function studioDocs(): Array<[string, string]> {
       ...cap,
       '### Export',
       ...studioExportLines(),
-      `Output heights: ${STUDIO_EXPORT_RESOLUTIONS.map((h) => (h === 0 ? 'canvas' : `${h}p`)).join(', ')}. Captions: none, burn in, sidecar (SRT + VTT files) or embedded (a track viewers toggle, in MP4/MOV/MKV/WebM; plain text, so styling and animation only survive burn-in; not in audio-only files). Exports render on the server, one allowance unit each whatever the format; VP9 can wait as Queued for an encoder.`,
+      `Output heights: ${STUDIO_EXPORT_RESOLUTIONS.map((h) => (h === 0 ? 'canvas' : `${h}p`)).join(', ')}. Captions: none, burn in, sidecar (SRT + VTT files) or embedded (a track viewers toggle, in MP4/MOV/MKV/WebM; plain text, so styling and animation only survive burn-in; not in audio-only files). Exports render on the server, one allowance unit each; CPU encodes (VP9, ProRes) may wait as Queued.`,
       'Canvas: projects up to 4K at 24, 30 or 60 fps; vertical 9:16 for Shorts/Reels/TikTok, 1:1 and 4:5 for feeds, 16:9 for YouTube.',
     ], ['timeline', 'track', 'tracks', 'split', 'cut', 'trim', 'ripple delete', 'speed', 'slow motion', 'speed ramp', 'freeze frame', 'marker', 'markers', 'captions', 'subtitles', 'srt', 'vtt', 'burn in', 'export', 'render', 'mp4', 'mov', 'mkv', 'h.265', 'hevc', 'h.264', 'final cut', 'imovie', 'wav', 'mp3', 'export format', 'codec', 'container', 'webm', 'vp9', 'opus', 'vorbis', 'embedded subtitles', 'closed captions', 'subtitle track', 'vertical video', 'aspect ratio', 'shorts', 'reels', 'tiktok', 'canvas']),
   );
@@ -784,43 +784,51 @@ const STUDIO_WARNING_TEXT: Record<string, string> = {
   apple_incompatible: 'QuickTime, Photos and iPhone will not open it',
   no_browser_preview: 'a browser cannot play it inline',
   plain_text_subtitles: 'an embedded caption track is plain text (styling and animation only survive burn-in)',
+  av1_playback: 'older phones, TVs and browsers may not play it',
 };
 const STUDIO_PRESET_TEXT: Record<string, string> = {
   mp4_h264: 'plays everywhere: social, YouTube, messaging, the default',
-  mp4_hevc: 'about half the file size at the same quality; plays on phones and modern browsers',
-  mov_h264: 'Final Cut Pro, iMovie and other Apple editing',
+  mp4_hevc: 'half the size at the same quality; phones and modern browsers',
+  mov_h264: 'Final Cut Pro, iMovie, Apple editing',
   mov_hevc: 'Apple editing at half the size',
-  mkv_hevc_aac: 'archive copies and media servers (Plex, VLC)',
-  webm_vp9_opus: 'website embeds (browsers play it natively)',
-  mkv_hevc_opus: 'archive with smaller audio',
-  audio_mp3: 'podcasts and music, small files',
-  audio_wav: 'uncompressed audio for further editing or mastering',
-  audio_opus: 'the smallest audio file; 96 kbps mono for a spoken podcast',
+  mkv_hevc_aac: 'archive and media servers (Plex, VLC)',
+  webm_vp9_opus: 'website embeds (native in browsers)',
+  mkv_hevc_opus: 'archive, smaller audio',
+  audio_mp3: 'podcasts and music, small',
+  audio_wav: 'uncompressed, for further editing',
+  audio_opus: 'smallest audio; 96 kbps mono for a spoken podcast',
+  mp4_av1: 'smallest high-quality video',
+  webm_av1_opus: 'smallest web embed',
+  mov_prores: 'hand-off to Final Cut, Premiere or Resolve; 10-bit 4:2:2 from the 8-bit timeline, very large',
+  audio_flac: 'lossless master, about half a WAV',
+  audio_wav24: 'studio master for mixing',
 };
 const PLAN_TEXT: Record<string, string> = { anonymous: 'everyone', free: 'a free account', premium: 'Premium', pro: 'Pro' };
 
 export function studioExportLines(): string[] {
   const t = STATIC_STUDIO_OUTPUTS;
   const codecName = (k: string) => CODEC_NAMES[k] ?? k;
-  const lines = ['A Darkroom export is a container plus a video codec and an audio codec, from one server table:'];
+  const lines = ['A Darkroom export is a container, a video codec and an audio codec, from one server table:'];
   for (const c of t.containers) {
-    const video = c.audioOnly ? 'audio only' : c.videoCodecs.map(codecName).join(' or ');
-    lines.push(`- ${c.key.toUpperCase()} (${c.ext}): ${video}; audio ${c.audioCodecs.map(codecName).join(', ')}.`);
+    const audio = c.audioCodecs.map(codecName).join(', ');
+    lines.push(c.audioOnly ? `- ${c.ext}: audio only, ${audio}.` : `- ${c.key.toUpperCase()}: ${c.videoCodecs.map(codecName).join(', ')}; audio ${audio}.`);
   }
-  lines.push('Presets (everyone sees them; params.preset in suggest_action export):');
+  // MM120: a video codec may narrow its container's audio (ProRes = PCM).
+  for (const v of t.codecs.filter((c) => c.audioCodecs?.length)) lines.push(`${codecName(v.key)} takes ${v.audioCodecs!.map(codecName).join(' or ')} audio only.`);
+  lines.push('Presets (params.preset in suggest_action export; the plan that unlocks each last):');
   for (const p of t.presets) {
     const tokens = choiceTokens(p);
     const plan = tokens.map((tok) => t.minTier[tok]).reduce((a, b) => (['anonymous', 'free', 'premium', 'pro'].indexOf(b) > ['anonymous', 'free', 'premium', 'pro'].indexOf(a) ? b : a), 'anonymous');
-    const who = plan === 'anonymous' ? 'open to everyone' : `needs ${PLAN_TEXT[plan] ?? plan}`;
+    const who = plan === 'anonymous' ? 'everyone' : PLAN_TEXT[plan] ?? plan;
     lines.push(`- \`${p.key}\` (${outputHumanLabel({ container: p.container, videoCodec: p.videoCodec, audioCodec: p.audioCodec })}): ${STUDIO_PRESET_TEXT[p.key] ?? ''}; ${who}.`);
   }
   const rates = t.codecs
     .filter((c) => c.kind === 'audio' && c.key !== 'mp3' && c.bitrates.length > 0)
     .map((c) => `${c.key === 'aac' ? 'AAC and MP3' : codecName(c.key)}: ${c.bitrates.join(', ')} kbps, default ${c.defaultBitrate}`);
   lines.push(
-    `Advanced (needs ${PLAN_TEXT[t.advancedMinTier]}): pick the container, video and audio codec yourself (any valid combination above), audio bitrate (${rates.join('; ')}; PCM has none) and stereo or mono. Video bitrate, keyframes and frame rate are not settable.`,
+    `Advanced (needs ${PLAN_TEXT[t.advancedMinTier]}): any valid container, video and audio codec, audio bitrate (${rates.join('; ')}; PCM and FLAC have none) and stereo or mono. Video bitrate, keyframes and frame rate are not settable.`,
   );
-  lines.push('Warnings shown under the picker:');
+  lines.push('Picker warnings:');
   // One line per warning, listing every combination that shows it (MM119 grouped them).
   const byWarning = new Map<string, string[]>();
   for (const w of t.warnings) {
@@ -828,13 +836,16 @@ export function studioExportLines(): string[] {
     byWarning.set(w.warning, [...(byWarning.get(w.warning) ?? []), where]);
   }
   for (const [warning, where] of byWarning) lines.push(`- ${where.join(', ')}: ${STUDIO_WARNING_TEXT[warning] ?? warning}.`);
+  // MM120: one clause per plan (shorter than one per token; same facts).
+  const tokName = (tok: string) => (tok === 'subs_embedded' ? 'embedded captions' : tok === 'webm' ? 'WebM' : CODEC_NAMES[tok] ?? tok.toUpperCase());
+  const byPlan = ['free', 'premium', 'pro']
+    .map((plan) => [plan, Object.entries(t.minTier).filter(([, p]) => p === plan).map(([tok]) => tokName(tok))] as const)
+    .filter(([, toks]) => toks.length)
+    .map(([plan, toks]) => `${plan === 'free' ? 'free account' : PLAN_TEXT[plan]}: ${toks.join(', ')}`);
   lines.push(
-    `Plans (the server checks the live plan): ${Object.entries(t.minTier)
-      .filter(([, plan]) => plan !== 'anonymous')
-      .map(([tok, plan]) => `${tok === 'subs_embedded' ? 'an embedded caption track' : tok === 'webm' ? 'WebM' : codecName(tok).toUpperCase() === tok.toUpperCase() ? tok.toUpperCase() : codecName(tok)} needs ${PLAN_TEXT[plan] ?? plan}`)
-      .join('; ')}. Everything else is open to everyone. MOV never carries Opus or Vorbis (offer MKV, WebM or MP4). AV1, ProRes and FLAC are not available yet.`,
+    `Plans (the server checks the live plan): ${byPlan.join('; ')}; everything else is open to everyone. MOV never carries Opus or Vorbis (offer MKV, WebM or MP4). ProRes sizes are predictable: the dialog shows an estimate, and the server refuses one over the plan's per-file cap before rendering.`,
   );
-  lines.push('Medi offers an export with suggest_action export and params; the dialog opens prefilled and the user presses Export. A choice above the plan is replaced by the nearest one the plan allows, with an upgrade note.');
+  lines.push('Medi suggests with suggest_action export; the dialog opens prefilled and the user presses Export. Above the plan, the nearest allowed choice is swapped in with an upgrade note.');
   return lines;
 }
 

@@ -513,6 +513,7 @@
       "kbps": "{{value}} kbps",
       "noVideo": "Không có video",
       "notIn": "không có trong {{container}}",
+      "notWith": "không dùng được với {{codec}}",
       "planFree": "Tài khoản miễn phí",
       "mediUpgradeFree": "Lựa chọn đầu tiên của Medi cần tài khoản miễn phí, nên định dạng gần nhất mà gói của bạn cho phép đã được chọn.",
       "mediUpgradePlan": "Lựa chọn đầu tiên của Medi cần {{plan}}, nên định dạng gần nhất mà gói của bạn cho phép đã được chọn.",
@@ -526,8 +527,17 @@
       "preset_audio_mp3": "Chỉ âm thanh · MP3",
       "preset_audio_wav": "Chỉ âm thanh · WAV",
       "preset_audio_opus": "Chỉ âm thanh · Opus (nhẹ nhất)",
+      "preset_mp4_av1": "MP4 · AV1 (nhẹ nhất ở chất lượng cao)",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus (trang web, nhẹ nhất)",
+      "preset_mov_prores": "MOV · ProRes 422 (giao cho người dựng)",
+      "preset_audio_flac": "Chỉ âm thanh · FLAC (lossless)",
+      "preset_audio_wav24": "Chỉ âm thanh · WAV 24-bit (bản master phòng thu)",
       "warning_apple_incompatible": "QuickTime, Ảnh và iPhone sẽ không mở được tệp này.",
-      "warning_no_browser_preview": "Trình duyệt không phát được tệp này; hãy mở bằng VLC hoặc trình biên tập video."
+      "warning_no_browser_preview": "Trình duyệt không phát được tệp này; hãy mở bằng VLC hoặc trình biên tập video.",
+      "warning_av1_playback": "Điện thoại, TV và trình duyệt đời cũ có thể không phát được AV1. Hãy chọn H.264 nếu tệp phải phát được ở mọi nơi.",
+      "proresNote": "ProRes 422 (từ timeline 8-bit): 10-bit 4:2:2 để dựng, tạo từ hình ảnh 8-bit của Darkroom. Mức chất lượng không có tác dụng; tệp rất lớn.",
+      "sizeEstimate": "Dung lượng ước tính: {{size}}",
+      "sizeLarge": "Hơn 4 GB: hãy kiểm tra dung lượng ổ đĩa và giới hạn tải lên, hoặc rút ngắn bản xuất."
     },
     "audioPanel": {
       "button": "Âm thanh",

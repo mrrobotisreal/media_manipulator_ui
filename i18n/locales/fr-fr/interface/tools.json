@@ -518,6 +518,7 @@
       "kbps": "{{value}} kbit/s",
       "noVideo": "Pas de vidéo",
       "notIn": "absent de {{container}}",
+      "notWith": "pas avec {{codec}}",
       "planFree": "Compte gratuit",
       "mediUpgradeFree": "Le premier choix de Medi nécessite un compte gratuit : le format le plus proche autorisé par votre offre est donc sélectionné.",
       "mediUpgradePlan": "Le premier choix de Medi nécessite {{plan}} : le format le plus proche autorisé par votre offre est donc sélectionné.",
@@ -531,8 +532,17 @@
       "preset_audio_mp3": "Audio seul · MP3",
       "preset_audio_wav": "Audio seul · WAV",
       "preset_audio_opus": "Audio seul · Opus (le plus léger)",
+      "preset_mp4_av1": "MP4 · AV1 (le plus léger en haute qualité)",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus (sites web, le plus léger)",
+      "preset_mov_prores": "MOV · ProRes 422 (à transmettre à un monteur)",
+      "preset_audio_flac": "Audio seul · FLAC (sans perte)",
+      "preset_audio_wav24": "Audio seul · WAV 24 bits (master studio)",
       "warning_apple_incompatible": "QuickTime, Photos et l'iPhone n'ouvriront pas ce fichier.",
-      "warning_no_browser_preview": "Les navigateurs ne peuvent pas lire ce fichier ; ouvrez-le dans VLC ou un logiciel de montage."
+      "warning_no_browser_preview": "Les navigateurs ne peuvent pas lire ce fichier ; ouvrez-le dans VLC ou un logiciel de montage.",
+      "warning_av1_playback": "Les anciens téléphones, téléviseurs et navigateurs peuvent ne pas lire l’AV1. Choisissez H.264 si le fichier doit être lisible partout.",
+      "proresNote": "ProRes 422 (à partir d’une timeline 8 bits) : 10 bits 4:2:2 pour le montage, produit à partir de l’image 8 bits de Darkroom. La qualité n’a aucun effet ; les fichiers sont très volumineux.",
+      "sizeEstimate": "Taille estimée : {{size}}",
+      "sizeLarge": "Plus de 4 Go : vérifiez votre espace disque et vos limites d’envoi, ou raccourcissez l’export."
     },
     "audioPanel": {
       "button": "Audio",

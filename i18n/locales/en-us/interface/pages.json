@@ -1892,7 +1892,8 @@
       "signInToUse": "Sign in to use",
       "studioAdvanced": "Advanced settings",
       "studioAudio": "{{codecs}} audio",
-      "studioEmbeddedCaptions": "Embedded captions"
+      "studioEmbeddedCaptions": "Embedded captions",
+      "studioLossless": "Lossless {{codecs}}"
     },
     "unavailableTitle": "Plan details are temporarily unavailable",
     "unavailableBody": "We could not reach the plans service. Every tool still works — reload in a moment to see the comparison.",
@@ -2418,7 +2419,7 @@
     "whenToUseTitle": "When to use it",
     "whenToUseBody": "Reach for Darkroom when one file isn’t enough: combining several clips, adding titles or background music, layering overlays, or trimming and re-ordering footage into a finished video.",
     "supportedMediaTitle": "Supported media types",
-    "supportedMediaBody": "You can import video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). You can export MP4 (H.264 or H.265 video, AAC or Opus audio), MOV, WebM (VP9 with Opus or Vorbis), MKV, or audio-only MP3, WAV and Opus.",
+    "supportedMediaBody": "You can import video (MP4, MOV, WebM, MKV), images (JPG, PNG, WebP), and audio (MP3, WAV, AAC). You can export MP4 (H.264 or H.265 video, AAC or Opus audio), MOV, WebM (VP9 with Opus or Vorbis), MKV, or audio-only MP3, WAV and Opus. Pro adds AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC and 24-bit WAV.",
     "stepByStepTitle": "Step by step",
     "step1": "Create a project and choose a resolution (up to 4K) and frame rate (24/30/60 fps).",
     "step2": "Drag video, image, and audio files into the media bin.",
@@ -2428,7 +2429,7 @@
     "timelineTitle": "Timeline & layers",
     "timelineBody": "The timeline is frame-accurate — the playhead and clip edges snap to the project frame rate. Tracks composite in stacking order, so a clip on a higher track renders over the ones below it. That’s how titles, logos, and picture-in-picture overlays sit on top of your base video.",
     "exportTitle": "Export",
-    "exportBody": "Exporting renders the whole sequence — every track, trim, and overlay — on the server. Everyone can export MP4 with H.264 video and AAC audio, or audio-only MP3 and WAV. A free account adds H.265 (HEVC) MP4, about half the file size at the same quality. Premium and Pro add MOV (for Final Cut and iMovie), WebM with VP9 and Opus (made for websites), MKV, Opus audio and .opus files, embedded caption tracks viewers can turn on and off (plain text; styling and animation only survive burn-in), plus Advanced settings: your own container and codec combination, audio bitrate, and mono. WebM exports may wait briefly in a queue for an encoder.",
+    "exportBody": "Exporting renders the whole sequence — every track, trim, and overlay — on the server. Everyone can export MP4 with H.264 video and AAC audio, or audio-only MP3 and WAV. A free account adds H.265 (HEVC) MP4, about half the file size at the same quality. Premium and Pro add MOV (for Final Cut and iMovie), WebM with VP9 and Opus (made for websites), MKV, Opus audio and .opus files, embedded caption tracks viewers can turn on and off (plain text; styling and animation only survive burn-in), plus Advanced settings: your own container and codec combination, audio bitrate, and mono. WebM exports may wait briefly in a queue for an encoder. Pro adds AV1 (the smallest high-quality files; older devices may not play it), ProRes 422 MOV for handing off to Final Cut, Premiere or Resolve (made from an 8-bit timeline; very large files, so the dialog shows the estimated size), and lossless FLAC and 24-bit WAV for music masters.",
     "limitationsTitle": "Limitations",
     "limitationsBody": "Darkroom is actively evolving. Core editing — multi-track timeline, trim/split, layering, audio mixing, and export to MP4, MOV, WebM, MKV, MP3, WAV or Opus — is available now. Advanced effects continue to be added over time.",
     "privacyTitle": "Privacy",

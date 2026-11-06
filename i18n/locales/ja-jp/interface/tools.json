@@ -513,6 +513,7 @@
       "kbps": "{{value}} kbps",
       "noVideo": "映像なし",
       "notIn": "{{container}}では使用不可",
+      "notWith": "{{codec}}では使用不可",
       "planFree": "無料アカウント",
       "mediUpgradeFree": "Mediが最初に選んだ形式には無料アカウントが必要なため、お使いのプランで使える最も近い形式を選択しています。",
       "mediUpgradePlan": "Mediが最初に選んだ形式には{{plan}}が必要なため、お使いのプランで使える最も近い形式を選択しています。",
@@ -526,8 +527,17 @@
       "preset_audio_mp3": "音声のみ · MP3",
       "preset_audio_wav": "音声のみ · WAV",
       "preset_audio_opus": "音声のみ · Opus（最小）",
+      "preset_mp4_av1": "MP4 · AV1（高画質で最小）",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus（Webサイト向け・最小）",
+      "preset_mov_prores": "MOV · ProRes 422（編集者への受け渡し用）",
+      "preset_audio_flac": "音声のみ · FLAC（ロスレス）",
+      "preset_audio_wav24": "音声のみ · WAV 24ビット（スタジオマスター）",
       "warning_apple_incompatible": "QuickTime、写真アプリ、iPhoneではこのファイルを開けません。",
-      "warning_no_browser_preview": "ブラウザではこのファイルを再生できません。VLCや動画編集ソフトで開いてください。"
+      "warning_no_browser_preview": "ブラウザではこのファイルを再生できません。VLCや動画編集ソフトで開いてください。",
+      "warning_av1_playback": "古いスマートフォン、テレビ、ブラウザではAV1を再生できない場合があります。どこでも再生する必要があるならH.264を選んでください。",
+      "proresNote": "ProRes 422（8ビットのタイムラインから）：編集用の10ビット4:2:2で、Darkroomの8ビット映像から作成します。画質設定は影響しません。ファイルは非常に大きくなります。",
+      "sizeEstimate": "推定サイズ：{{size}}",
+      "sizeLarge": "4 GBを超えます。ディスクの空き容量とアップロード上限を確認するか、エクスポートを短くしてください。"
     },
     "audioPanel": {
       "button": "音声",

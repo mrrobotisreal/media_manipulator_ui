@@ -1892,7 +1892,8 @@
       "signInToUse": "Accedi per usarlo",
       "studioAdvanced": "Impostazioni avanzate",
       "studioAudio": "Audio {{codecs}}",
-      "studioEmbeddedCaptions": "Sottotitoli incorporati"
+      "studioEmbeddedCaptions": "Sottotitoli incorporati",
+      "studioLossless": "Senza perdita: {{codecs}}"
     },
     "unavailableTitle": "I dettagli dei piani non sono disponibili al momento",
     "unavailableBody": "Non siamo riusciti a raggiungere il servizio dei piani. Tutti gli strumenti funzionano comunque: ricarica tra un attimo per vedere il confronto.",
@@ -2418,7 +2419,7 @@
     "whenToUseTitle": "Quando usarlo",
     "whenToUseBody": "Scegli Darkroom quando un solo file non basta: combinare più clip, aggiungere titoli o musica di sottofondo, sovrapporre elementi, oppure tagliare e riordinare le riprese in un video finito.",
     "supportedMediaTitle": "Tipi di media supportati",
-    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus.",
+    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus. Pro aggiunge AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV a 24 bit.",
     "stepByStepTitle": "Passo dopo passo",
     "step1": "Crea un progetto e scegli una risoluzione (fino a 4K) e una frequenza fotogrammi (24/30/60 fps).",
     "step2": "Trascina file video, immagini e audio nel contenitore multimediale.",
@@ -2428,7 +2429,7 @@
     "timelineTitle": "Timeline e livelli",
     "timelineBody": "La timeline è precisa al fotogramma: il cursore e i bordi delle clip si agganciano alla frequenza fotogrammi del progetto. Le tracce si compongono in ordine di impilamento, quindi una clip su una traccia superiore viene renderizzata sopra quelle sottostanti. È così che titoli, loghi e sovrapposizioni picture-in-picture stanno sopra il tuo video di base.",
     "exportTitle": "Esportazione",
-    "exportBody": "L'esportazione renderizza l'intera sequenza (ogni traccia, taglio e sovrapposizione) sul server. Chiunque può esportare in MP4 con video H.264 e audio AAC, oppure solo audio in MP3 e WAV. Un account gratuito aggiunge l'MP4 in H.265 (HEVC), circa metà dimensione a parità di qualità. Premium e Pro aggiungono MOV (per Final Cut e iMovie), WebM con VP9 e Opus (pensato per i siti web), MKV, l'audio Opus e i file .opus, tracce di sottotitoli incorporate che chi guarda attiva o disattiva (testo semplice: stile e animazione restano solo se impressi nel video), più le impostazioni avanzate: una combinazione di contenitore e codec a tua scelta, il bitrate audio e il mono. Le esportazioni WebM possono attendere un attimo in coda per un encoder.",
+    "exportBody": "L'esportazione renderizza l'intera sequenza (ogni traccia, taglio e sovrapposizione) sul server. Chiunque può esportare in MP4 con video H.264 e audio AAC, oppure solo audio in MP3 e WAV. Un account gratuito aggiunge l'MP4 in H.265 (HEVC), circa metà dimensione a parità di qualità. Premium e Pro aggiungono MOV (per Final Cut e iMovie), WebM con VP9 e Opus (pensato per i siti web), MKV, l'audio Opus e i file .opus, tracce di sottotitoli incorporate che chi guarda attiva o disattiva (testo semplice: stile e animazione restano solo se impressi nel video), più le impostazioni avanzate: una combinazione di contenitore e codec a tua scelta, il bitrate audio e il mono. Le esportazioni WebM possono attendere un attimo in coda per un encoder. Pro aggiunge AV1 (i file più leggeri in alta qualità; i dispositivi meno recenti potrebbero non riprodurlo), ProRes 422 MOV per consegnare il progetto a Final Cut, Premiere o Resolve (ricavato da una timeline a 8 bit; file molto grandi, per questo la finestra mostra la dimensione stimata) e FLAC senza perdita e WAV a 24 bit per i master musicali.",
     "limitationsTitle": "Limitazioni",
     "limitationsBody": "Darkroom è in continua evoluzione. Il montaggio di base (timeline multitraccia, taglio/divisione, sovrapposizione, mixaggio audio ed esportazione in MP4, MOV, WebM, MKV, MP3, WAV o Opus) è disponibile ora. Gli effetti avanzati continuano ad arrivare nel tempo.",
     "privacyTitle": "Privacy",

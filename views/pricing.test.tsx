@@ -158,6 +158,15 @@ describe('three-column pricing (MM40 decision 1)', () => {
     const html119 = renderToStaticMarkup(<PricingView data={withMM119} />);
     const cell119 = html119.match(/data-tier="premium" data-row="studioFormats"><span[^>]*>([^<]*)</)?.[1];
     expect(cell119).toBe('MP4 (H.264, H.265), MOV (H.264, H.265), MKV (H.264, H.265, VP9), WebM (VP9), MP3, WAV, Opus · Opus, Vorbis audio · Embedded captions · Advanced settings');
+    // MM120: Pro's served set adds AV1, ProRes, FLAC and 24-bit PCM: the Pro column names them.
+    const mm120 = [...mm119, 'flac', 'av1', 'prores', 'pcm_s24le'];
+    const withMM120 = { ...fixture, tiers: fixture.tiers.map((x) => ({ ...x, limits: { ...x.limits, studioFormats: x.tier === 'pro' ? mm120 : x.tier === 'premium' ? mm119 : sets[x.tier][0], studioAdvanced: sets[x.tier][1] } })) };
+    const html120 = renderToStaticMarkup(<PricingView data={withMM120} />);
+    const proCell = html120.match(/data-tier="pro" data-row="studioFormats"><span[^>]*>([^<]*)</)?.[1];
+    expect(proCell).toBe(
+      'MP4 (H.264, H.265, AV1), MOV (H.264, H.265, ProRes 422), MKV (H.264, H.265, VP9, AV1), WebM (VP9, AV1), MP3, WAV, Opus, FLAC · Opus, Vorbis audio · Lossless FLAC, PCM 24-bit · Embedded captions · Advanced settings',
+    );
+    expect(html120.match(/data-tier="premium" data-row="studioFormats"><span[^>]*>([^<]*)</)?.[1]).toBe(cell119);
     // An API before MM118 hides the row.
     expect(renderToStaticMarkup(<PricingView data={fixture} />)).not.toContain('data-row="studioFormats"');
   });

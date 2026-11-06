@@ -513,6 +513,7 @@
       "kbps": "{{value}} kbps",
       "noVideo": "無影片",
       "notIn": "{{container}} 不支援",
+      "notWith": "不支援與 {{codec}} 搭配",
       "planFree": "免費帳號",
       "mediUpgradeFree": "Medi 的首選格式需要免費帳號，因此已選取你的方案允許的最接近格式。",
       "mediUpgradePlan": "Medi 的首選格式需要 {{plan}}，因此已選取你的方案允許的最接近格式。",
@@ -526,8 +527,17 @@
       "preset_audio_mp3": "僅音訊 · MP3",
       "preset_audio_wav": "僅音訊 · WAV",
       "preset_audio_opus": "僅音訊 · Opus（檔案最小）",
+      "preset_mp4_av1": "MP4 · AV1（高畫質下檔案最小）",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus（網站，檔案最小）",
+      "preset_mov_prores": "MOV · ProRes 422（交給剪輯師）",
+      "preset_audio_flac": "僅音訊 · FLAC（無損）",
+      "preset_audio_wav24": "僅音訊 · WAV 24 位元（錄音室母帶）",
       "warning_apple_incompatible": "QuickTime、「照片」與 iPhone 無法開啟這個檔案。",
-      "warning_no_browser_preview": "瀏覽器無法播放這個檔案，請用 VLC 或影片剪輯軟體開啟。"
+      "warning_no_browser_preview": "瀏覽器無法播放這個檔案，請用 VLC 或影片剪輯軟體開啟。",
+      "warning_av1_playback": "較舊的手機、電視和瀏覽器可能無法播放 AV1。如果必須在所有裝置上播放，請選擇 H.264。",
+      "proresNote": "ProRes 422（來自 8 位元時間軸）：供剪輯使用的 10 位元 4:2:2，由 Darkroom 的 8 位元畫面產生。畫質設定沒有作用；檔案非常大。",
+      "sizeEstimate": "預估大小：{{size}}",
+      "sizeLarge": "超過 4 GB：請檢查磁碟空間與上傳限制，或縮短匯出內容。"
     },
     "audioPanel": {
       "button": "音訊",

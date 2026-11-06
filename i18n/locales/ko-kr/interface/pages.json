@@ -1892,7 +1892,8 @@
       "signInToUse": "로그인 후 사용",
       "studioAdvanced": "고급 설정",
       "studioAudio": "{{codecs}} 오디오",
-      "studioEmbeddedCaptions": "내장 자막"
+      "studioEmbeddedCaptions": "내장 자막",
+      "studioLossless": "무손실: {{codecs}}"
     },
     "unavailableTitle": "요금제 정보를 일시적으로 불러올 수 없습니다",
     "unavailableBody": "요금제 서비스에 연결하지 못했습니다. 모든 도구는 정상 작동하니, 잠시 후 새로고침해서 비교표를 확인하세요.",
@@ -2418,7 +2419,7 @@
     "whenToUseTitle": "언제 사용하나요",
     "whenToUseBody": "파일 하나로는 부족할 때 Darkroom을 꺼내세요. 여러 클립 합치기, 타이틀이나 배경 음악 추가, 오버레이 쌓기, 영상을 자르고 순서를 바꿔 완성된 동영상 만들기에 알맞아요.",
     "supportedMediaTitle": "지원 미디어 유형",
-    "supportedMediaBody": "동영상(MP4, MOV, WebM, MKV), 이미지(JPG, PNG, WebP), 오디오(MP3, WAV, AAC)를 가져올 수 있어요. 내보내기는 MP4(H.264 또는 H.265 비디오, AAC 또는 Opus 오디오), MOV, WebM(VP9와 Opus 또는 Vorbis), MKV, 오디오만 담은 MP3, WAV, Opus를 지원해요.",
+    "supportedMediaBody": "동영상(MP4, MOV, WebM, MKV), 이미지(JPG, PNG, WebP), 오디오(MP3, WAV, AAC)를 가져올 수 있어요. 내보내기는 MP4(H.264 또는 H.265 비디오, AAC 또는 Opus 오디오), MOV, WebM(VP9와 Opus 또는 Vorbis), MKV, 오디오만 담은 MP3, WAV, Opus를 지원해요. Pro는 AV1(MP4, WebM, MKV), ProRes 422 MOV, FLAC, 24비트 WAV를 추가로 제공합니다.",
     "stepByStepTitle": "단계별 안내",
     "step1": "프로젝트를 만들고 해상도(최대 4K)와 프레임 레이트(24/30/60 fps)를 고르세요.",
     "step2": "동영상, 이미지, 오디오 파일을 미디어 보관함으로 끌어다 놓으세요.",
@@ -2428,7 +2429,7 @@
     "timelineTitle": "타임라인 및 레이어",
     "timelineBody": "타임라인은 프레임 단위로 정확해요. 재생 헤드와 클립 가장자리가 프로젝트 프레임 레이트에 스냅돼요. 트랙은 쌓인 순서대로 합성되므로 위쪽 트랙의 클립이 아래 클립 위에 렌더링돼요. 타이틀, 로고, PIP 오버레이가 기본 영상 위에 놓이는 원리예요.",
     "exportTitle": "내보내기",
-    "exportBody": "내보내기는 모든 트랙, 자르기, 오버레이를 포함한 전체 시퀀스를 서버에서 렌더링해요. H.264 비디오와 AAC 오디오의 MP4, 또는 오디오만 담은 MP3와 WAV는 누구나 내보낼 수 있어요. 무료 계정은 H.265(HEVC) MP4가 추가되어, 같은 화질에 파일 크기는 약 절반이에요. Premium과 Pro는 MOV(Final Cut, iMovie용), 웹사이트에 맞춘 WebM(VP9와 Opus), MKV, Opus 오디오와 .opus 파일, 시청자가 켜고 끌 수 있는 내장 자막 트랙(일반 텍스트이며, 스타일과 애니메이션은 영상에 입혔을 때만 유지돼요), 그리고 고급 설정(컨테이너와 코덱 직접 조합, 오디오 비트레이트, 모노)이 추가돼요. WebM 내보내기는 인코더를 잠시 기다릴 수 있어요.",
+    "exportBody": "내보내기는 모든 트랙, 자르기, 오버레이를 포함한 전체 시퀀스를 서버에서 렌더링해요. H.264 비디오와 AAC 오디오의 MP4, 또는 오디오만 담은 MP3와 WAV는 누구나 내보낼 수 있어요. 무료 계정은 H.265(HEVC) MP4가 추가되어, 같은 화질에 파일 크기는 약 절반이에요. Premium과 Pro는 MOV(Final Cut, iMovie용), 웹사이트에 맞춘 WebM(VP9와 Opus), MKV, Opus 오디오와 .opus 파일, 시청자가 켜고 끌 수 있는 내장 자막 트랙(일반 텍스트이며, 스타일과 애니메이션은 영상에 입혔을 때만 유지돼요), 그리고 고급 설정(컨테이너와 코덱 직접 조합, 오디오 비트레이트, 모노)이 추가돼요. WebM 내보내기는 인코더를 잠시 기다릴 수 있어요. Pro는 AV1(고화질 중 가장 작은 파일, 오래된 기기에서는 재생되지 않을 수 있음), Final Cut, Premiere, Resolve로 넘기기 위한 ProRes 422 MOV(8비트 타임라인에서 생성되며 파일이 매우 커서 대화 상자에 예상 크기가 표시됨), 음악 마스터용 무손실 FLAC과 24비트 WAV를 추가로 제공합니다.",
     "limitationsTitle": "제한 사항",
     "limitationsBody": "Darkroom은 계속 발전하고 있어요. 멀티트랙 타임라인, 자르기/분할, 레이어, 오디오 믹싱, MP4·MOV·WebM·MKV·MP3·WAV·Opus 내보내기 같은 핵심 편집 기능은 지금 사용할 수 있어요. 고급 효과는 시간이 지나면서 계속 추가돼요.",
     "privacyTitle": "개인정보 보호",

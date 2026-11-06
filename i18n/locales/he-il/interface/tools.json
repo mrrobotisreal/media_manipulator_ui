@@ -528,6 +528,7 @@
       "kbps": "{{value}} קילוביט/ש׳",
       "noVideo": "ללא וידאו",
       "notIn": "לא זמין ב־{{container}}",
+      "notWith": "לא זמין עם {{codec}}",
       "planFree": "חשבון חינמי",
       "mediUpgradeFree": "הבחירה הראשונה של Medi דורשת חשבון חינמי, ולכן נבחר הפורמט הקרוב ביותר שהמסלול שלכם מאפשר.",
       "mediUpgradePlan": "הבחירה הראשונה של Medi דורשת {{plan}}, ולכן נבחר הפורמט הקרוב ביותר שהמסלול שלכם מאפשר.",
@@ -541,8 +542,17 @@
       "preset_audio_mp3": "אודיו בלבד · MP3",
       "preset_audio_wav": "אודיו בלבד · WAV",
       "preset_audio_opus": "אודיו בלבד · Opus (הקטן ביותר)",
+      "preset_mp4_av1": "MP4 · AV1 (הקובץ הקטן ביותר באיכות גבוהה)",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus (אתרים, הקטן ביותר)",
+      "preset_mov_prores": "MOV · ProRes 422 (להעברה לעורך)",
+      "preset_audio_flac": "אודיו בלבד · FLAC (ללא אובדן)",
+      "preset_audio_wav24": "אודיו בלבד · WAV ‏24 ביט (מאסטר אולפני)",
       "warning_apple_incompatible": "‏QuickTime, ‏Photos ו־iPhone לא יפתחו את הקובץ הזה.",
-      "warning_no_browser_preview": "דפדפנים לא יכולים לנגן את הקובץ הזה; פתחו אותו ב־VLC או בעורך וידאו."
+      "warning_no_browser_preview": "דפדפנים לא יכולים לנגן את הקובץ הזה; פתחו אותו ב־VLC או בעורך וידאו.",
+      "warning_av1_playback": "טלפונים, טלוויזיות ודפדפנים ישנים עלולים לא לנגן AV1. בחרו H.264 אם הקובץ חייב לפעול בכל מקום.",
+      "proresNote": "ProRes 422 (מציר זמן של 8 ביט): ‏10 ביט 4:2:2 לעריכה, נוצר מהתמונה של Darkroom ב־8 ביט. לאיכות אין השפעה; הקבצים גדולים מאוד.",
+      "sizeEstimate": "גודל משוער: {{size}}",
+      "sizeLarge": "זה יותר מ־4 GB: בדקו את המקום בדיסק ואת מגבלות ההעלאה, או קצרו את הייצוא."
     },
     "audioPanel": {
       "button": "אודיו",

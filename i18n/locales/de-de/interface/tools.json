@@ -518,6 +518,7 @@
       "kbps": "{{value}} kbit/s",
       "noVideo": "Kein Video",
       "notIn": "nicht in {{container}}",
+      "notWith": "nicht mit {{codec}}",
       "planFree": "Kostenloses Konto",
       "mediUpgradeFree": "Medis erste Wahl erfordert ein kostenloses Konto, daher ist das nächstliegende Format ausgewählt, das Ihr Tarif erlaubt.",
       "mediUpgradePlan": "Medis erste Wahl erfordert {{plan}}, daher ist das nächstliegende Format ausgewählt, das Ihr Tarif erlaubt.",
@@ -531,8 +532,17 @@
       "preset_audio_mp3": "Nur Audio · MP3",
       "preset_audio_wav": "Nur Audio · WAV",
       "preset_audio_opus": "Nur Audio · Opus (am kleinsten)",
+      "preset_mp4_av1": "MP4 · AV1 (kleinste Datei in hoher Qualität)",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus (Websites, am kleinsten)",
+      "preset_mov_prores": "MOV · ProRes 422 (Übergabe an den Schnitt)",
+      "preset_audio_flac": "Nur Audio · FLAC (verlustfrei)",
+      "preset_audio_wav24": "Nur Audio · WAV 24 Bit (Studio-Master)",
       "warning_apple_incompatible": "QuickTime, Fotos und das iPhone öffnen diese Datei nicht.",
-      "warning_no_browser_preview": "Browser können diese Datei nicht abspielen; öffnen Sie sie in VLC oder einem Videoeditor."
+      "warning_no_browser_preview": "Browser können diese Datei nicht abspielen; öffnen Sie sie in VLC oder einem Videoeditor.",
+      "warning_av1_playback": "Ältere Smartphones, Fernseher und Browser spielen AV1 eventuell nicht ab. Wähle H.264, wenn die Datei überall laufen muss.",
+      "proresNote": "ProRes 422 (aus einer 8-Bit-Timeline): 10 Bit 4:2:2 für den Schnitt, erzeugt aus dem 8-Bit-Bild von Darkroom. Die Qualitätsstufe hat keine Wirkung; die Dateien werden sehr groß.",
+      "sizeEstimate": "Geschätzte Größe: {{size}}",
+      "sizeLarge": "Das sind über 4 GB: Prüfe deinen Speicherplatz und deine Upload-Limits oder kürze den Export."
     },
     "audioPanel": {
       "button": "Audio",

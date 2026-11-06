@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM120: Pro formats (AV1, ProRes 422 MOV, FLAC, 24-bit WAV), size estimate, Pro badges.
+  {
+    id: '2026-11-06-darkroom-pro-formats',
+    date: '2026-11-06',
+    title: 'Darkroom Pro exports: AV1, ProRes 422, FLAC and 24-bit WAV',
+    body: 'Pro now has export formats of its own. AV1 in MP4, WebM or MKV gives the smallest high-quality files, encoded on the GPU; older phones, TVs and browsers may not play AV1, so the dialog says so. ProRes 422 MOV is for handing a timeline to an editor in Final Cut, Premiere or Resolve: it is 10-bit 4:2:2 made from Darkroom\'s 8-bit picture, with 24-bit PCM audio, and because ProRes files are very large the dialog shows the estimated size before you export and warns above 4 GB. For music and podcasts, FLAC (lossless, about half the size of a WAV) and 24-bit WAV export the mix at 48 kHz without touching its loudness. On Premium these formats are listed with a Pro badge. Medi knows them too: ask it for an export to hand off to your editor, the smallest high-quality file, or a lossless master.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Darkroom', href: '/tools/content-studio' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MM119: Opus, Vorbis, WebM/VP9, .opus audio-only, embedded subtitle tracks, Queued.
   {
     id: '2026-11-06-darkroom-webm-opus-embedded-captions',

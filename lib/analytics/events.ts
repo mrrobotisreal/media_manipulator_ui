@@ -916,11 +916,11 @@ export interface StudioExportStartedProps extends StudioHostProp {
    * (closed list: lib/studio/studioOutputs.json `formats`). Pre-part-20 builds sent 'mp4'.
    */
   format: string;
-  /** MM118: mp4 | mov | mkv | mp3 | wav (MM119: + webm | opus). Absent from the legacy CreaTV body. */
+  /** MM118: mp4 | mov | mkv | mp3 | wav (MM119: + webm | opus; MM120: + flac). Absent from the legacy CreaTV body. */
   container?: string;
-  /** MM118: h264 | hevc | none (MM119: + vp9). */
+  /** MM118: h264 | hevc | none (MM119: + vp9; MM120: + av1 | prores). */
   videoCodec?: string;
-  /** MM118: aac | pcm_s16le | mp3 (MM119: + opus | vorbis). */
+  /** MM118: aac | pcm_s16le | mp3 (MM119: + opus | vorbis; MM120: + flac | pcm_s24le). */
   audioCodec?: string;
   /** MM118: kbps from the codec's closed list; 0 = the codec has none (PCM). */
   audioBitrate?: number;
@@ -948,7 +948,7 @@ export interface StudioExportFailedProps extends StudioExportStartedProps {
 }
 
 export interface StudioExportFormatLockedProps extends StudioHostProp {
-  /** An output token (mp4|mov|mkv|webm|mp3|wav|opus|h264|hevc|vp9|aac|pcm_s16le|vorbis|subs_embedded) or 'advanced'. */
+  /** An output token (mp4|mov|mkv|webm|mp3|wav|opus|flac|h264|hevc|vp9|av1|prores|aac|pcm_s16le|vorbis|pcm_s24le|subs_embedded) or 'advanced'. MM120's Pro-only tokens carry required 'pro'. */
   option: string;
   /** The lowest plan that unlocks it. */
   required: 'free' | 'premium' | 'pro';

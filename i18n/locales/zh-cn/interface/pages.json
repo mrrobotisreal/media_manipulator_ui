@@ -1892,7 +1892,8 @@
       "signInToUse": "登录后可用",
       "studioAdvanced": "高级设置",
       "studioAudio": "{{codecs}} 音频",
-      "studioEmbeddedCaptions": "内嵌字幕"
+      "studioEmbeddedCaptions": "内嵌字幕",
+      "studioLossless": "无损：{{codecs}}"
     },
     "unavailableTitle": "套餐详情暂时不可用",
     "unavailableBody": "我们无法连接到套餐服务。所有工具仍可正常使用——请稍后重新加载以查看对比。",
@@ -2418,7 +2419,7 @@
     "whenToUseTitle": "何时使用",
     "whenToUseBody": "当一个文件不够用时，就选择Darkroom：合并多个片段、添加标题或背景音乐、叠加覆盖层，或将素材裁剪并重新排序成完整的视频。",
     "supportedMediaTitle": "支持的媒体类型",
-    "supportedMediaBody": "可导入视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。可导出为 MP4（H.264 或 H.265 视频，AAC 或 Opus 音频）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或仅音频的 MP3、WAV 和 Opus。",
+    "supportedMediaBody": "可导入视频（MP4、MOV、WebM、MKV）、图片（JPG、PNG、WebP）和音频（MP3、WAV、AAC）。可导出为 MP4（H.264 或 H.265 视频，AAC 或 Opus 音频）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或仅音频的 MP3、WAV 和 Opus。Pro 还提供 AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC 和 24 位 WAV。",
     "stepByStepTitle": "分步说明",
     "step1": "创建项目并选择分辨率（最高4K）和帧率（24/30/60 fps）。",
     "step2": "将视频、图片和音频文件拖入媒体库。",
@@ -2428,7 +2429,7 @@
     "timelineTitle": "时间线与图层",
     "timelineBody": "时间线精确到帧——播放头和片段边缘会吸附到项目帧率。轨道按叠放顺序合成，因此较高轨道上的片段会渲染在下方轨道之上。标题、标志和画中画覆盖层就是这样位于你的基础视频之上的。",
     "exportTitle": "导出",
-    "exportBody": "导出会在服务器上渲染整个序列——每条轨道、每次裁剪和每个覆盖层。所有人都可以导出 H.264 视频加 AAC 音频的 MP4，或仅音频的 MP3 和 WAV。免费账号新增 H.265（HEVC）MP4，同等画质下体积约为一半。Premium 和 Pro 新增 MOV（适用于 Final Cut 和 iMovie）、WebM（VP9 加 Opus，专为网站而生）、MKV、Opus 音频和 .opus 文件、观众可自行开关的内嵌字幕轨（纯文本：样式和动画只有烧录进画面时才会保留），以及高级设置：自选容器与编解码器组合、音频码率和单声道。WebM 导出可能会短暂排队等待编码器。",
+    "exportBody": "导出会在服务器上渲染整个序列——每条轨道、每次裁剪和每个覆盖层。所有人都可以导出 H.264 视频加 AAC 音频的 MP4，或仅音频的 MP3 和 WAV。免费账号新增 H.265（HEVC）MP4，同等画质下体积约为一半。Premium 和 Pro 新增 MOV（适用于 Final Cut 和 iMovie）、WebM（VP9 加 Opus，专为网站而生）、MKV、Opus 音频和 .opus 文件、观众可自行开关的内嵌字幕轨（纯文本：样式和动画只有烧录进画面时才会保留），以及高级设置：自选容器与编解码器组合、音频码率和单声道。WebM 导出可能会短暂排队等待编码器。Pro 还提供 AV1（高画质下体积最小的文件；较旧的设备可能无法播放）、用于交给 Final Cut、Premiere 或 Resolve 的 ProRes 422 MOV（由 8 位时间线生成；文件非常大，因此对话框会显示预计大小），以及用于音乐母带的无损 FLAC 和 24 位 WAV。",
     "limitationsTitle": "限制",
     "limitationsBody": "Darkroom在持续演进。核心编辑功能——多轨时间线、裁剪/分割、图层叠放、音频混合，以及导出为 MP4、MOV、WebM、MKV、MP3、WAV 或 Opus——现已可用。高级效果会随时间不断添加。",
     "privacyTitle": "隐私",
