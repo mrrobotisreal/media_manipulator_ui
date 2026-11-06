@@ -72,3 +72,15 @@ describe('caption digest (MM121)', () => {
     expect(d).toContain('captions: 1 cues on, look bold_pop (modified), animation pop, font Montserrat, word-timed');
   });
 });
+
+describe('caption words digest (MM122)', () => {
+  it('lists word-timed cues by id with numbered words (emphasis starred) for set_caption_words', () => {
+    const project = { ...studioFixture(), captions: [
+      { id: 'c1', startSeconds: 0, endSeconds: 1.5, text: 'big news', words: [{ text: 'big', startSeconds: 0, endSeconds: 0.7, emphasis: true }, { text: 'news', startSeconds: 0.7, endSeconds: 1.5 }] },
+      { id: 'c2', startSeconds: 2, endSeconds: 3, text: 'plain' },
+    ] };
+    const d = studioDigest({ project, assets: {}, playhead: 0 });
+    expect(d).toContain('  cue c1 · 0–1.5s · 0:big* 1:news');
+    expect(d).not.toContain('cue c2');
+  });
+});

@@ -134,6 +134,19 @@ const ROWS: Row[] = [
     served: (l) => Array.isArray(l.studioFormats),
   },
   {
+    // MM122: the per-word caption timing and emphasis editor (Premium and Pro).
+    key: 'studioCaptionWordEdit',
+    render: (l, t) => t(l.captionWordEdit ? 'interface:pricing.values.yes' : 'interface:pricing.values.no'),
+    served: (l) => typeof l.captionWordEdit === 'boolean',
+  },
+  {
+    // MM122: saved caption looks on the account (Premium 10, Pro unlimited, none below).
+    key: 'studioCaptionLooksSaved',
+    render: (l, t) =>
+      (l.captionLooksSaved ?? 0) === 0 ? t('interface:pricing.values.no') : count(l.captionLooksSaved ?? 0, t),
+    served: (l) => typeof l.captionLooksSaved === 'number',
+  },
+  {
     key: 'vectorExportsPerDay',
     render: (l, t) => count(l.vectorExportsPerDay ?? 0, t),
     served: (l) => typeof l.vectorExportsPerDay === 'number',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Captions, Scissors, Merge, Trash2, Lock } from 'lucide-react';
+import { Captions, Scissors, Merge, Trash2, Lock, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,11 +15,15 @@ import { CAPTION_FONTS } from '@/lib/studio/captions/units';
 import catalog from '@/lib/studio/captions/captionsCatalog.json';
 import { studioHost } from '@/lib/studio/telemetry';
 import { useStudioStore } from '@/lib/studioStore';
-import { DEFAULT_CAPTION_STYLE, STUDIO_CAPTION_ANIMATIONS, type StudioCaptionStyle } from '@/lib/studioTypes';
+import { DEFAULT_CAPTION_STYLE, STUDIO_CAPTION_ANIMATIONS, studioCaptionStyleSchema, type StudioCaptionStyle } from '@/lib/studioTypes';
 import { Panel } from '@/components/darkroom/panel';
 import { cn } from '@/lib/utils';
 import { useUndoGesture } from './useUndoGesture';
 import CaptionLookPreview from './caption-look-preview';
+import CaptionSavedLooks from './caption-saved-looks';
+import { trackCaptionWordEdit } from './caption-lane';
+import { cueRetimed, resetCueTimes } from '@/lib/studio/captions/wordEdit';
+import { publishLimitRefusal } from '@/lib/auth/quotaBus';
 
 const D = catalog.defaults;
 const FONT_GROUPS = ['sans', 'display', 'serif', 'mono', 'script', 'fallback'] as const;
@@ -91,6 +95,8 @@ const CaptionEditor: React.FC = () => {
     }
     setField('animation', { animation });
   };
+  const canEditWords = auth?.limits?.captionWordEdit === true;
+  const applySavedStyle = (saved: StudioCaptionStyle) => setCaptionStyle(savedLookPatch(saved));
   const modified = captionLookModified(style);
   const fontFamily = style.fontFamily ?? D.fontFamily;
   const fontEntry = CAPTION_FONTS.find((f) => f.family === fontFamily);
@@ -169,6 +175,38 @@ const CaptionEditor: React.FC = () => {
         </div>
       </section>
 
+      {(cue.words?.length ?? 0) > 0 ? (
+        <section className="mb-4 space-y-1" aria-labelledby="caption-words-label">
+          <Label id="caption-words-label" className="text-xs font-semibold">{t('contentStudio.captions.words')}</Label>
+          <p className="text-[10px] text-muted-foreground">
+            {t(canEditWords ? 'contentStudio.captions.wordsHint' : 'contentStudio.captions.wordsLockedHint')}
+          </p>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="h-7 text-xs"
+            disabled={canEditWords && !cueRetimed(cue)}
+            data-testid="caption-retime-from-audio"
+            onClick={() => {
+              if (!canEditWords) {
+                publishLimitRefusal({ error: 'caption_word_edit', fromClick: true, upgradePath: signedIn ? 'premium' : 'signup' });
+                return;
+              }
+              const words = resetCueTimes(cue);
+              if (words && words !== cue.words) {
+                updateCaption(cue.id, { words });
+                trackCaptionWordEdit('reset');
+              }
+            }}
+          >
+            {canEditWords ? <RotateCcw className="w-3.5 h-3.5 mr-1" aria-hidden /> : <Lock className="w-3.5 h-3.5 mr-1" aria-hidden />}
+            {t('contentStudio.captions.retimeFromAudio')}
+          </Button>
+        </section>
+      ) : (
+        <p className="mb-4 text-[10px] text-muted-foreground">{t('contentStudio.captions.wordsNone')}</p>
+      )}
+
       <section className="space-y-2 border-t border-border pt-3 mb-3" aria-labelledby="caption-looks-label">
         <div className="flex items-center justify-between">
           <Label id="caption-looks-label" className="text-xs font-semibold">{t('contentStudio.captions.looks')}</Label>
@@ -206,6 +244,8 @@ const CaptionEditor: React.FC = () => {
         </div>
         {!signedIn && <p className="text-[10px] text-muted-foreground">{t('contentStudio.captions.looksLockedHint')}</p>}
       </section>
+
+      <CaptionSavedLooks style={style} onApply={applySavedStyle} />
 
       <section className="space-y-3 border-t border-border pt-3">
         <Label className="text-xs font-semibold">{t('contentStudio.captions.style')}</Label>
@@ -274,7 +314,7 @@ const CaptionEditor: React.FC = () => {
           </Select>
         </div>
 
-        {(style.animation ?? 'none') === 'pop' && (
+        {(style.animation ?? 'none') !== 'none' && (
           <StyleSlider
             label={t('contentStudio.captions.animationStrength')}
             readout={`${Math.round((style.animationStrength ?? D.animationStrength) * 100)}%`}
@@ -386,6 +426,20 @@ const CaptionEditor: React.FC = () => {
     </Panel>
   );
 };
+
+/**
+ * The style patch that applies a saved look: every style key set (absent ones explicitly
+ * undefined), so nothing of the previous style survives the merge in setCaptionStyle; never a
+ * catalog lookId (a saved look is the user's own).
+ */
+export function savedLookPatch(saved: StudioCaptionStyle): Partial<StudioCaptionStyle> {
+  const full: StudioCaptionStyle = { ...DEFAULT_CAPTION_STYLE, ...saved };
+  const out: Partial<StudioCaptionStyle> = {};
+  for (const k of Object.keys(studioCaptionStyleSchema.shape) as (keyof StudioCaptionStyle)[]) {
+    (out as Record<string, unknown>)[k] = k === 'lookId' ? undefined : full[k];
+  }
+  return out;
+}
 
 const ColorField: React.FC<{ label: string; value: string; onChange: (v: string) => void; gesture: ReturnType<typeof useUndoGesture> }> = ({ label, value, onChange, gesture }) => (
   <label className="flex flex-col gap-1 text-[11px] text-muted-foreground">

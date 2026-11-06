@@ -441,6 +441,10 @@
             "studioDesc": "Abre el editor multipista.",
             "video": "Primeros pasos con video",
             "videoDesc": "Convierte, comprime y recorta archivos de video."
+          },
+          "captions": {
+            "title": "Subtítulos",
+            "body": "Haz clic en «Generar» en la pista de subtítulos para transcribir tu audio en subtítulos sincronizados palabra por palabra (una tarea de IA). Selecciona un subtítulo para editar su texto y su sincronización, y después elige uno de los doce estilos o ajusta tú mismo la fuente, los colores, el contorno y la animación: relleno karaoke, resaltado, pop, rebote, palabra a palabra, resaltado en recuadro, fundido, máquina de escribir o brillo. Con Premium o Pro puedes arrastrar los límites entre palabras para resincronizarlas, hacer clic en una palabra para enfatizarla, usar «Resincronizar con el audio» para volver a la sincronización transcrita y guardar tus propios estilos en tu cuenta (Premium guarda 10 y Pro, ilimitados). El estilo y la animación se integran en el video; los archivos SRT y VTT solo contienen texto."
           }
         }
       },
@@ -876,7 +880,7 @@
             "title": "1.7 Información de la cuenta",
             "paragraphs": [
               "Si creas una cuenta, el inicio de sesión lo administra Firebase Authentication, un servicio de Google. Puedes iniciar sesión con una dirección de correo y una contraseña, con tu cuenta de Google o con tu cuenta de Apple. Si inicias sesión con Apple, Apple nos comparte tu nombre y tu dirección de correo electrónico o, si eliges «Ocultar mi correo electrónico», una dirección de retransmisión privada que te reenvía los mensajes; la política de privacidad de Apple se aplica a tu cuenta de Apple. Firebase guarda tus credenciales y envía los correos que necesita para el inicio de sesión, como la verificación del correo. Si pides restablecer tu contraseña, Firebase envía un enlace de restablecimiento a tu dirección de correo electrónico.",
-              "Por nuestra parte guardamos un registro de tu cuenta: tu correo electrónico, tu nombre visible, si tu correo está verificado, tu identificador de inicio de sesión de Firebase, tu plan, cuándo te registraste y cuándo usaste el servicio por última vez, la configuración de conservación que elegiste y tu historial de conversiones y proyectos (Sección 3). Enviamos un pequeño número de correos de servicio desde Media Manipulator: un correo de bienvenida, avisos de pago y de eliminación de la cuenta y, si los mantienes activados en la configuración de tu cuenta, recordatorios antes de que expiren tus archivos y avisos cuando termina una tarea larga de IA. No enviamos correo de marketing. Los correos se entregan a través de nuestro proveedor de correo, Resend."
+              "Por nuestra parte guardamos un registro de tu cuenta: tu correo electrónico, tu nombre visible, si tu correo está verificado, tu identificador de inicio de sesión de Firebase, tu plan, cuándo te registraste y cuándo usaste el servicio por última vez, la configuración de conservación que elegiste y tu historial de conversiones y proyectos (Sección 3). Los estilos de subtítulos de Darkroom que guardas (un nombre y el estilo de los subtítulos: fuente, colores, contorno, posición y animación) se almacenan en tu cuenta hasta que los eliminas o hasta que se elimina la cuenta, y se incluyen en tu exportación de datos. Enviamos un pequeño número de correos de servicio desde Media Manipulator: un correo de bienvenida, avisos de pago y de eliminación de la cuenta y, si los mantienes activados en la configuración de tu cuenta, recordatorios antes de que expiren tus archivos y avisos cuando termina una tarea larga de IA. No enviamos correo de marketing. Los correos se entregan a través de nuestro proveedor de correo, Resend."
             ]
           },
           {
@@ -1875,7 +1879,9 @@
       "assistantGuide": "Guía del sitio {{medi}}",
       "assistantTurns": "Ediciones del copiloto {{medi}} por día",
       "studioFormats": "Formatos de exportación de Darkroom",
-      "studioAnimatedCaptions": "Subtítulos animados de Darkroom"
+      "studioAnimatedCaptions": "Subtítulos animados de Darkroom",
+      "studioCaptionWordEdit": "Sincronización de subtítulos por palabra",
+      "studioCaptionLooksSaved": "Estilos de subtítulos guardados"
     },
     "values": {
       "yes": "Incluido",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Cuándo usarlo",
     "whenToUseBody": "Recurre a Darkroom cuando un solo archivo no es suficiente: combinar varios clips, agregar títulos o música de fondo, superponer capas, o recortar y reordenar imágenes hasta formar un video terminado.",
     "supportedMediaTitle": "Tipos de medios compatibles",
-    "supportedMediaBody": "Puedes importar video (MP4, MOV, WebM, MKV), imágenes (JPG, PNG, WebP) y audio (MP3, WAV, AAC). Puedes exportar MP4 (video H.264 o H.265, audio AAC u Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio en MP3, WAV y Opus. Pro agrega AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC y WAV de 24 bits. Los subtítulos se sincronizan palabra por palabra y se pueden animar (relleno karaoke, resaltado, pop) con seis estilos listos y 27 fuentes; la vista previa los dibuja con el mismo motor que la exportación.",
+    "supportedMediaBody": "Puedes importar video (MP4, MOV, WebM, MKV), imágenes (JPG, PNG, WebP) y audio (MP3, WAV, AAC). Puedes exportar MP4 (video H.264 o H.265, audio AAC u Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio en MP3, WAV y Opus. Pro agrega AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC y WAV de 24 bits. Los subtítulos se sincronizan palabra por palabra y se pueden animar (relleno karaoke, resaltado, pop, rebote, palabra a palabra, resaltado en recuadro, fundido, máquina de escribir, brillo) con doce estilos listos y 27 fuentes; la vista previa los dibuja con el mismo motor que la exportación. Premium y Pro agregan la sincronización y el énfasis palabra por palabra en la pista de subtítulos, y estilos de subtítulos guardados en tu cuenta.",
     "stepByStepTitle": "Paso a paso",
     "step1": "Crea un proyecto y elige una resolución (hasta 4K) y una tasa de fotogramas (24/30/60 fps).",
     "step2": "Arrastra archivos de video, imagen y audio al depósito de medios.",

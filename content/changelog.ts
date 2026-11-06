@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM122: six more caption animations, twelve looks, per-word timing/emphasis (Premium+), saved caption looks.
+  {
+    id: '2026-11-06-darkroom-caption-depth',
+    date: '2026-11-06',
+    title: 'Darkroom captions: six more animations, twelve looks, per-word timing and saved looks',
+    body: 'Captions gain six animations: Bounce stretches the spoken word with a playful overshoot, Word by word reveals each word as it is said, Box highlight puts a coloured box behind it, Fade eases each group in and out, Typewriter types every word out letter by letter, and Glow lights its outline. The strength slider now tunes every animation. Six new looks join the catalogue (Cinema, Comic, Typewriter, Box Pop, Glow Night and Bounce Kids), twelve in all, each previewed with the same renderer as the export. With Premium or Pro, select a caption and its words appear on the caption lane: drag the boundary between two words to retime them to the frame, click a word to emphasise it in your highlight colour, and use Re-time from audio to go back to the transcribed timing. You can also save your own looks to your account and apply them in any project: Premium keeps 10, Pro unlimited; they are in your data export and are deleted with your account. Free accounts keep every animation and look and see the word timings read-only. Medi knows the new looks and, on Premium and Pro, can emphasise the important words for you. The pricing page lists per-word caption timing and saved caption looks per plan.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Darkroom', href: '/tools/content-studio' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MM121: word-timed animated captions (karaoke fill, highlight, pop), six looks, caption fonts, JASSUB preview.
   {
     id: '2026-11-06-darkroom-animated-captions',

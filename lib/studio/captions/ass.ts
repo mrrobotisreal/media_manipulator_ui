@@ -34,6 +34,22 @@ interface Resolved {
   align: number;
   popScale: number;
   maxWidthPct: number;
+  // MM122 effect parameters (all derived from animationStrength).
+  boxed: boolean;
+  wordBoxPad: number;
+  bounceX: number;
+  bounceY: number;
+  bounceDipX: number;
+  bounceDipY: number;
+  fadeIn: number;
+  fadeOut: number;
+  revealMs: number;
+  typeFrac: number;
+  glowBord: number;
+  glowBlur: number;
+  glowPulse: number;
+  outlineTag: string;
+  backAlpha: string;
 }
 
 /** Go's math.Round: half away from zero (JS Math.round rounds half up). */
@@ -100,6 +116,11 @@ function resolve(st0: StudioCaptionStyle | null, height: number): Resolved {
   const strength = st.animationStrength ?? D.animationStrength;
   const highlight = st.highlightColor || D.highlightColor;
   const boxColor = hexToASSColor(st.backgroundColor, st.backgroundOpacity);
+  const bgMode = st.backgroundMode || D.backgroundMode;
+  const animation = st.animation || D.animation;
+  const outlinePx = roundCentis(outline * scale);
+  const boxPad = roundCentis(fontSize * 0.2);
+  const fadeIn = goRound(120 + 180 * strength);
   return {
     family,
     bold,
@@ -110,17 +131,34 @@ function resolve(st0: StudioCaptionStyle | null, height: number): Resolved {
     primaryTag: colorTag(st.color),
     highlightTag: colorTag(highlight),
     highlight,
-    outlinePx: roundCentis(outline * scale),
+    outlinePx,
     shadowPx: roundCentis(shadow * 8 * scale),
-    boxPad: roundCentis(fontSize * 0.2),
+    boxPad,
     shadowColor: boxColor,
     boxColor,
-    bgMode: st.backgroundMode || D.backgroundMode,
-    animation: st.animation || D.animation,
+    bgMode,
+    animation,
     wordsPerGroup: st.wordsPerGroup ?? 0,
     align: st.position === 'top' ? 8 : st.position === 'middle' ? 5 : 2,
     popScale: 100 + goRound(40 * strength),
     maxWidthPct: st.maxWidthPct,
+    // MM122. Timings follow the motion reference (word stagger 60-120 ms, exits 40-50 % shorter
+    // than entrances); sizes scale with the canvas.
+    boxed: bgMode === 'word_box' || animation === 'box_highlight',
+    wordBoxPad: bgMode === 'word_box' ? boxPad : roundCentis(fontSize * (0.1 + 0.15 * strength)),
+    bounceX: 100 + goRound(20 * strength),
+    bounceY: 100 + goRound(45 * strength),
+    bounceDipX: 100 - goRound(6 * strength),
+    bounceDipY: 100 - goRound(10 * strength),
+    fadeIn,
+    fadeOut: goRound(fadeIn * 0.55),
+    revealMs: goRound(60 + 80 * strength),
+    typeFrac: 0.5 + 0.5 * strength,
+    glowBord: Math.max(outlinePx, roundCentis((2 + 4 * strength) * scale)),
+    glowBlur: roundCentis((1 + 3 * strength) * scale),
+    glowPulse: roundCentis((2 + 6 * strength) * scale),
+    outlineTag: colorTag(st.outlineColor || D.outlineColor),
+    backAlpha: `&H${boxColor.slice(2, 4)}&`,
   };
 }
 
@@ -175,46 +213,102 @@ function captionGroups(units: TimedUnit[], perGroup: number, hasWords: boolean):
   return out;
 }
 
+/** Animations that emit one Dialogue per word span (the active word changes over the group). */
+function captionPerWord(animation: string): boolean {
+  return ['highlight', 'pop', 'bounce', 'word_by_word', 'box_highlight', 'typewriter', 'glow'].includes(animation);
+}
 const popTags = (r: Resolved) => `\\t(0,80,\\fscx${r.popScale}\\fscy${r.popScale})\\t(80,180,\\fscx100\\fscy100)`;
+/** A tall stretch, an overshoot dip and the settle (MM122). */
+const bounceTags = (r: Resolved) =>
+  `\\t(0,90,\\fscx${r.bounceX}\\fscy${r.bounceY})\\t(90,180,\\fscx${r.bounceDipX}\\fscy${r.bounceDipY})\\t(180,260,\\fscx100\\fscy100)`;
+const scaleTags = (r: Resolved) => (r.animation === 'pop' ? popTags(r) : r.animation === 'bounce' ? bounceTags(r) : '');
+/** The active word's outline in the highlight colour with a pulsing blur; glowReset restores it. */
+const glowTags = (r: Resolved) =>
+  `\\3c${r.highlightTag}\\bord${assNum(r.glowBord)}\\blur${assNum(r.glowBlur)}\\t(0,150,\\blur${assNum(r.glowPulse)})\\t(150,300,\\blur${assNum(r.glowBlur)})`;
+const glowReset = (r: Resolved) => `\\3c${r.outlineTag}\\bord${assNum(r.outlinePx)}\\blur0`;
+/** Hide / restore a run's fill, outline and shadow alpha; under backgroundMode box the line's box stays. */
+const hideTags = (r: Resolved) => (r.bgMode === 'box' ? '\\1a&HFF&\\3a&HFF&' : '\\1a&HFF&\\3a&HFF&\\4a&HFF&');
+const showTags = (r: Resolved) => (r.bgMode === 'box' ? '\\1a&H00&\\3a&H00&' : `\\1a&H00&\\3a&H00&\\4a${r.backAlpha}`);
+/** word_by_word and typewriter show nothing before a group's first word and hide later words. */
+const revealingAnimation = (a: string) => a === 'word_by_word' || a === 'typewriter';
+/** The animations that paint the active word's fill in the highlight colour. */
+const recolorsActive = (a: string) => a === 'highlight' || a === 'pop' || a === 'bounce';
 const openTags = (prefix: string) => (prefix === '' ? '' : `{${prefix}}`);
+
+const COMBINING = /^[\p{Mn}\p{Me}]$/u;
+/** Characters, a combining mark joining the one before it (Go's unicode Mn / Me). */
+export function captionClusters(s: string): string[] {
+  const out: string[] = [];
+  for (const ch of Array.from(s)) {
+    if (out.length > 0 && COMBINING.test(ch)) out[out.length - 1] += ch;
+    else out.push(ch);
+  }
+  return out;
+}
+
+/** Typewriter: a word's characters revealed across typeFrac of its spoken span, one run each. */
+function typewriterText(u: TimedUnit, r: Resolved): string {
+  const clusters = captionClusters(u.text);
+  const d = goRound((u.end - u.start) * 10 * r.typeFrac);
+  let b = '';
+  clusters.forEach((cl, i) => {
+    const t = intDiv(i * d, clusters.length);
+    b += `{${hideTags(r)}\\t(${t},${t + 1},${showTags(r)})}${assEscape(cl)}`;
+  });
+  return b;
+}
 
 function textLine(gu: TimedUnit[], active: number, r: Resolved, prefix: string): string {
   let b = openTags(prefix);
-  const wordBox = r.bgMode === 'word_box';
+  const revealing = revealingAnimation(r.animation);
   gu.forEach((u, i) => {
+    if (revealing && active >= 0 && i === active + 1) b += `{${hideTags(r)}}`;
     if (i > 0) b += assSep(u.sep);
     const isActive = i === active;
-    const color = !wordBox && (isActive || u.emphasis);
-    const pop = isActive && r.animation === 'pop';
-    if (!color && !pop) {
+    let open = '';
+    let closing = '';
+    if (!r.boxed && (u.emphasis || (isActive && recolorsActive(r.animation)))) {
+      open += `\\1c${r.highlightTag}`;
+      closing += `\\1c${r.primaryTag}`;
+    }
+    if (isActive) {
+      const sc = scaleTags(r);
+      if (sc !== '') {
+        open += sc;
+        closing += '\\fscx100\\fscy100';
+      }
+      if (r.animation === 'glow') {
+        open += glowTags(r);
+        closing += glowReset(r);
+      } else if (r.animation === 'word_by_word') {
+        open += `${hideTags(r)}\\t(0,${r.revealMs},${showTags(r)})`;
+      }
+    }
+    const typing = isActive && r.animation === 'typewriter';
+    if (open === '' && closing === '' && !typing) {
       b += assEscape(u.text);
       return;
     }
-    b += '{';
-    if (color) b += `\\1c${r.highlightTag}`;
-    if (pop) b += popTags(r);
-    b += `}${assEscape(u.text)}{`;
-    if (color) b += `\\1c${r.primaryTag}`;
-    if (pop) b += '\\fscx100\\fscy100';
-    b += '}';
+    if (open !== '') b += `{${open}}`;
+    b += typing ? typewriterText(u, r) : assEscape(u.text);
+    if (closing !== '') b += `{${closing}}`;
   });
   return b;
 }
 
 function boxLine(gu: TimedUnit[], active: number, r: Resolved, prefix: string): string {
   let b = `{${prefix}\\3a&HFF&}`;
+  const revealing = revealingAnimation(r.animation);
   gu.forEach((u, i) => {
     if (i > 0) b += assSep(u.sep);
     const isActive = i === active && r.animation !== 'none';
-    const pop = i === active && r.animation === 'pop';
-    if (!isActive && !u.emphasis) {
+    const sc = i === active ? scaleTags(r) : '';
+    if ((!isActive && !u.emphasis) || (revealing && i > active)) {
       b += assEscape(u.text);
       return;
     }
-    b += '{\\3a&H00&';
-    if (pop) b += popTags(r);
-    b += `}${assEscape(u.text)}{\\3a&HFF&`;
-    if (pop) b += '\\fscx100\\fscy100';
+    b += `{\\3a&H00&${sc}}${assEscape(u.text)}{\\3a&HFF&`;
+    if (sc !== '') b += '\\fscx100\\fscy100';
     b += '}';
   });
   return b;
@@ -251,6 +345,7 @@ function writeCueEvents(lines: string[], c: StudioCaptionCue, r: Resolved): void
   }
   const groups = captionGroups(units, r.wordsPerGroup, hasWords);
   const wordBox = r.bgMode === 'word_box';
+  const revealing = revealingAnimation(r.animation);
   groups.forEach((g, gi) => {
     let gs = cs;
     let ge = ce;
@@ -258,7 +353,19 @@ function writeCueEvents(lines: string[], c: StudioCaptionCue, r: Resolved): void
     if (gi < groups.length - 1) ge = units[groups[gi + 1][0]].start;
     if (ge <= gs) return;
     const gu = units.slice(g[0], g[1]);
-    const perWord = r.animation === 'highlight' || r.animation === 'pop' || (wordBox && r.animation === 'karaoke_fill');
+    const perWord = captionPerWord(r.animation) || (wordBox && r.animation === 'karaoke_fill');
+    let pfx = prefix;
+    if (r.animation === 'fade') {
+      let fin = r.fadeIn;
+      let fout = r.fadeOut;
+      const dur = (ge - gs) * 10;
+      if (fin + fout > dur) {
+        const tot = fin + fout;
+        fin = intDiv(fin * dur, tot);
+        fout = intDiv(fout * dur, tot);
+      }
+      pfx = `\\fad(${fin},${fout})` + prefix;
+    }
     let spans: { s: number; e: number; active: number }[] = [{ s: gs, e: ge, active: -1 }];
     if (perWord) {
       spans = [];
@@ -269,14 +376,15 @@ function writeCueEvents(lines: string[], c: StudioCaptionCue, r: Resolved): void
         if (e > s) spans.push({ s, e, active: i });
       }
     }
-    if (wordBox) {
+    if (r.boxed) {
       for (const sp of spans) {
+        if (revealing && sp.active < 0) continue;
         let boxed = false;
         gu.forEach((u, i) => {
           boxed = boxed || u.emphasis || (i === sp.active && r.animation !== 'none');
         });
         if (!boxed) continue;
-        lines.push(`Dialogue: 0,${assCentis(sp.s)},${assCentis(sp.e)},WordBox,,0,0,0,,${boxLine(gu, sp.active, r, prefix)}`);
+        lines.push(`Dialogue: 0,${assCentis(sp.s)},${assCentis(sp.e)},WordBox,,0,0,0,,${boxLine(gu, sp.active, r, pfx)}`);
       }
     }
     if (r.animation === 'karaoke_fill') {
@@ -284,7 +392,8 @@ function writeCueEvents(lines: string[], c: StudioCaptionCue, r: Resolved): void
       return;
     }
     for (const sp of spans) {
-      lines.push(`Dialogue: 1,${assCentis(sp.s)},${assCentis(sp.e)},Default,,0,0,0,,${textLine(gu, sp.active, r, prefix)}`);
+      if (revealing && sp.active < 0) continue;
+      lines.push(`Dialogue: 1,${assCentis(sp.s)},${assCentis(sp.e)},Default,,0,0,0,,${textLine(gu, sp.active, r, pfx)}`);
     }
   });
 }
@@ -318,8 +427,8 @@ export function buildASS(cues: readonly StudioCaptionCue[], style: StudioCaption
     'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding',
     `Style: Default,${r.family},${r.fontSize},${r.primary},${r.primary},${r.outlineColor},${back},${bold},0,0,0,100,100,0,0,${borderStyle},${assNum(r.outlinePx)},${assNum(shadow)},${r.align},${marginH},${marginH},${marginV},-1`,
   ];
-  if (r.bgMode === 'word_box') {
-    lines.push(`Style: WordBox,${r.family},${r.fontSize},&HFF000000,&HFF000000,${hexToASSColor(r.highlight, 1)},&HFF000000,${bold},0,0,0,100,100,0,0,3,${assNum(r.boxPad)},0,${r.align},${marginH},${marginH},${marginV},-1`);
+  if (r.boxed) {
+    lines.push(`Style: WordBox,${r.family},${r.fontSize},&HFF000000,&HFF000000,${hexToASSColor(r.highlight, 1)},&HFF000000,${bold},0,0,0,100,100,0,0,3,${assNum(r.wordBoxPad)},0,${r.align},${marginH},${marginH},${marginV},-1`);
   }
   lines.push('', '[Events]', 'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text');
   for (const c of cues) writeCueEvents(lines, c, r);

@@ -441,6 +441,10 @@
             "studioDesc": "Abra o editor multitrilha.",
             "video": "Primeiros passos com vídeo",
             "videoDesc": "Converta, compacte e corte arquivos de vídeo."
+          },
+          "captions": {
+            "title": "Legendas",
+            "body": "Clique em “Gerar” na faixa de legendas para transcrever seu áudio em legendas sincronizadas palavra por palavra (um job de IA). Selecione uma legenda para editar o texto e o tempo, depois escolha um dos doze estilos ou defina você mesmo fonte, cores, contorno e animação: preenchimento karaokê, destaque, pop, quique, palavra por palavra, destaque em caixa, esmaecer, máquina de escrever ou brilho. Com Premium ou Pro, você pode arrastar os limites entre as palavras para ressincronizá-las, clicar em uma palavra para enfatizá-la, usar “Ressincronizar pelo áudio” para voltar ao tempo transcrito e salvar seus próprios estilos na sua conta (Premium guarda 10, Pro ilimitados). Estilo e animação são gravados no vídeo; arquivos SRT e VTT contêm só texto."
           }
         }
       },
@@ -876,7 +880,7 @@
             "title": "1.7 Informações da conta",
             "paragraphs": [
               "Se você criar uma conta, o login é gerenciado pelo Firebase Authentication, um serviço do Google. Você pode entrar com um endereço de e-mail e senha, com sua conta do Google ou com sua Conta Apple. Se você entrar com a Apple, a Apple compartilha conosco seu nome e e-mail ou, se você escolher \"Ocultar E-mail\", um endereço de retransmissão privado que encaminha as mensagens para você; a política de privacidade da Apple se aplica à sua Conta Apple. O Firebase armazena suas credenciais e envia os e-mails necessários para o login, como a verificação de e-mail. Se você pedir para redefinir sua senha, o Firebase envia um link de redefinição para o seu e-mail.",
-              "Do nosso lado, armazenamos um registro da sua conta: seu endereço de e-mail, nome de exibição, se seu e-mail está verificado, seu identificador de login do Firebase, seu plano, quando você se cadastrou e usou o serviço pela última vez, as configurações de retenção que escolheu, e seu histórico de conversões e seus projetos (Seção 3). Enviamos um pequeno número de e-mails de serviço do Media Manipulator: um e-mail de boas-vindas, avisos de pagamento e de exclusão de conta e, se você os mantiver ativados nas configurações da sua conta, lembretes antes de seus arquivos expirarem e avisos quando um trabalho longo de IA terminar. Não enviamos e-mails de marketing. Os e-mails são entregues pelo nosso provedor de e-mail, a Resend."
+              "Do nosso lado, armazenamos um registro da sua conta: seu endereço de e-mail, nome de exibição, se seu e-mail está verificado, seu identificador de login do Firebase, seu plano, quando você se cadastrou e usou o serviço pela última vez, as configurações de retenção que escolheu, e seu histórico de conversões e seus projetos (Seção 3). Os estilos de legenda do Darkroom que você salva (um nome e o estilo da legenda: fonte, cores, contorno, posição e animação) ficam armazenados na sua conta até você excluí-los ou excluir a conta, e são incluídos na sua exportação de dados. Enviamos um pequeno número de e-mails de serviço do Media Manipulator: um e-mail de boas-vindas, avisos de pagamento e de exclusão de conta e, se você os mantiver ativados nas configurações da sua conta, lembretes antes de seus arquivos expirarem e avisos quando um trabalho longo de IA terminar. Não enviamos e-mails de marketing. Os e-mails são entregues pelo nosso provedor de e-mail, a Resend."
             ]
           },
           {
@@ -1875,7 +1879,9 @@
       "assistantGuide": "Guia do site {{medi}}",
       "assistantTurns": "Edições do copiloto {{medi}} por dia",
       "studioFormats": "Formatos de exportação do Darkroom",
-      "studioAnimatedCaptions": "Legendas animadas do Darkroom"
+      "studioAnimatedCaptions": "Legendas animadas do Darkroom",
+      "studioCaptionWordEdit": "Sincronização de legendas por palavra",
+      "studioCaptionLooksSaved": "Estilos de legenda salvos"
     },
     "values": {
       "yes": "Incluído",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Quando usar",
     "whenToUseBody": "Use o Darkroom quando um arquivo só não basta: para combinar vários clipes, adicionar títulos ou música de fundo, sobrepor camadas, ou cortar e reordenar filmagens em um vídeo pronto.",
     "supportedMediaTitle": "Tipos de mídia suportados",
-    "supportedMediaBody": "Você pode importar vídeo (MP4, MOV, WebM, MKV), imagens (JPG, PNG, WebP) e áudio (MP3, WAV, AAC). Pode exportar em MP4 (vídeo H.264 ou H.265, áudio AAC ou Opus), MOV, WebM (VP9 com Opus ou Vorbis), MKV ou só áudio em MP3, WAV e Opus. O Pro adiciona AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV de 24 bits. As legendas são sincronizadas palavra por palavra e podem ser animadas (preenchimento karaokê, destaque, pop) em seis estilos prontos e 27 fontes; a prévia as desenha com o mesmo motor da exportação.",
+    "supportedMediaBody": "Você pode importar vídeo (MP4, MOV, WebM, MKV), imagens (JPG, PNG, WebP) e áudio (MP3, WAV, AAC). Pode exportar em MP4 (vídeo H.264 ou H.265, áudio AAC ou Opus), MOV, WebM (VP9 com Opus ou Vorbis), MKV ou só áudio em MP3, WAV e Opus. O Pro adiciona AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV de 24 bits. As legendas são sincronizadas palavra por palavra e podem ser animadas (preenchimento karaokê, destaque, pop, quique, palavra por palavra, destaque em caixa, esmaecer, máquina de escrever, brilho) em doze estilos prontos e 27 fontes; a prévia as desenha com o mesmo motor da exportação. Premium e Pro adicionam sincronização e ênfase por palavra na faixa de legendas, além de estilos de legenda salvos na sua conta.",
     "stepByStepTitle": "Passo a passo",
     "step1": "Crie um projeto e escolha uma resolução (até 4K) e uma taxa de quadros (24/30/60 fps).",
     "step2": "Arraste arquivos de vídeo, imagem e áudio para a biblioteca de mídia.",

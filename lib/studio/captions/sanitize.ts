@@ -58,6 +58,11 @@ export function sanitizeCaptionWords(c: StudioCaptionCue): StudioCaptionWord[] |
     prev = start;
     const w: StudioCaptionWord = { text, startSeconds: start, endSeconds: end };
     if (w0.emphasis) w.emphasis = true;
+    // MM122: the pre-retime Whisper times, kept only as a clamped pair.
+    if (typeof w0.origStartSeconds === 'number' && typeof w0.origEndSeconds === 'number') {
+      w.origStartSeconds = clamp(w0.origStartSeconds, c.startSeconds, c.endSeconds);
+      w.origEndSeconds = clamp(w0.origEndSeconds, w.origStartSeconds, c.endSeconds);
+    }
     out.push(w);
   }
   return out;

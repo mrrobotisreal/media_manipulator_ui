@@ -37,6 +37,10 @@ function normalize(ws: StudioCaptionWord[], start: number, end: number): StudioC
     prev = s;
     const out: StudioCaptionWord = { text: w.text, startSeconds: s, endSeconds: e };
     if (w.emphasis) out.emphasis = true;
+    if (w.origStartSeconds !== undefined && w.origEndSeconds !== undefined) {
+      out.origStartSeconds = w.origStartSeconds;
+      out.origEndSeconds = w.origEndSeconds;
+    }
     return out;
   });
 }

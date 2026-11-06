@@ -426,6 +426,9 @@ export const studioCaptionWordSchema = z.object({
   startSeconds: z.number().min(0),
   endSeconds: z.number().min(0),
   emphasis: z.boolean().optional(),
+  /** MM122: Whisper's times before the first hand retime ("Re-time from audio" restores them). */
+  origStartSeconds: z.number().min(0).optional(),
+  origEndSeconds: z.number().min(0).optional(),
 });
 export type StudioCaptionWord = z.infer<typeof studioCaptionWordSchema>;
 
@@ -441,11 +444,14 @@ export const studioCaptionCueSchema = z.object({
 export type StudioCaptionCue = z.infer<typeof studioCaptionCueSchema>;
 
 /** MM121 caption animations (MM122 adds the rest). Mirrors models.CaptionAnimations. */
-export const STUDIO_CAPTION_ANIMATIONS = ['none', 'karaoke_fill', 'highlight', 'pop'] as const;
+export const STUDIO_CAPTION_ANIMATIONS = ['none', 'karaoke_fill', 'highlight', 'pop', 'bounce', 'word_by_word', 'box_highlight', 'fade', 'typewriter', 'glow'] as const;
 export type StudioCaptionAnimation = (typeof STUDIO_CAPTION_ANIMATIONS)[number];
 export const STUDIO_CAPTION_BACKGROUND_MODES = ['box', 'none', 'word_box'] as const;
-/** The six MM121 caption looks (lib/studio/captions/captionLooks.ts; mirrors models.StudioCaptionLooks). */
-export const STUDIO_CAPTION_LOOK_IDS = ['bold_pop', 'karaoke_classic', 'clean_highlight', 'minimal', 'neon', 'podcast'] as const;
+/** The twelve caption looks, MM121's six then MM122's (lib/studio/captions/captionLooks.ts; mirrors models.StudioCaptionLooks). */
+export const STUDIO_CAPTION_LOOK_IDS = [
+  'bold_pop', 'karaoke_classic', 'clean_highlight', 'minimal', 'neon', 'podcast',
+  'cinema', 'comic', 'typewriter', 'box_pop', 'glow_night', 'bounce_kids',
+] as const;
 export type StudioCaptionLookId = (typeof STUDIO_CAPTION_LOOK_IDS)[number];
 
 /**

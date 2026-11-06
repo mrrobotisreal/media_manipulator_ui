@@ -1,5 +1,9 @@
 # Web UI (media-manipulator-ui)
 
+**Saved caption look** (MM122): a caption style the user saved on their account (Premium 10, Pro unlimited), listed under the catalog looks in the caption editor ("My looks", `caption-saved-looks.tsx`, `lib/studio/captions/captionLooksApi.ts` over `/api/studio/caption-looks`). Applying one replaces the whole style and sets no `lookId`; analytics names it `saved`, never its id or name. Hidden in the CreaTV embed (`capabilities.captionLooks`).
+
+**Per-word caption editor** (MM122): the selected cue's words on the caption lane (`CaptionWordStrip`): drag a boundary to retime (clamped to the neighbours, snapped to one frame, one undo per drag), click a word to toggle `emphasis`; "Re-time from audio" restores `origStartSeconds`/`origEndSeconds`. Premium+ (`limits.captionWordEdit`); otherwise read-only and a drag opens the upgrade interstitial (`caption_word_edit`).
+
 The customer-facing Next.js app for media-manipulator.com: media tool pages, the Darkroom editor, marketing/SEO pages. This glossary is the ubiquitous language for this context — use these terms in code comments, docs, tickets, and UI copy.
 
 ## Language

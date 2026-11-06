@@ -441,6 +441,10 @@
             "studioDesc": "Apri l'editor multitraccia.",
             "video": "Primi passi con i video",
             "videoDesc": "Converti, comprimi e taglia file video."
+          },
+          "captions": {
+            "title": "Sottotitoli",
+            "body": "Fai clic su «Genera» nella traccia dei sottotitoli per trascrivere l'audio in sottotitoli sincronizzati parola per parola (un lavoro IA). Seleziona un sottotitolo per modificarne testo e tempi, poi scegli uno dei dodici stili o imposta tu carattere, colori, contorno e animazione: riempimento karaoke, evidenziazione, pop, rimbalzo, parola per parola, evidenziazione a riquadro, dissolvenza, macchina da scrivere o bagliore. Con Premium o Pro puoi trascinare i confini tra le parole per risincronizzarle, fare clic su una parola per enfatizzarla, usare «Risincronizza dall'audio» per tornare ai tempi trascritti e salvare i tuoi stili nel tuo account (Premium ne conserva 10, Pro senza limiti). Stile e animazione vengono impressi nel video; i file SRT e VTT contengono solo testo."
           }
         }
       },
@@ -876,7 +880,7 @@
             "title": "1.7 Informazioni sull'account",
             "paragraphs": [
               "Se crea un account, l'accesso è gestito da Firebase Authentication, un servizio di Google. Può accedere con un indirizzo email e una password, con il Suo account Google oppure con il Suo Apple Account. Se accede con Apple, Apple condivide con noi il Suo nome e indirizzo email oppure, se sceglie \"Nascondi la mia email\", un indirizzo di inoltro privato che inoltra i messaggi a Lei; l'informativa sulla privacy di Apple si applica al Suo Apple Account. Firebase conserva le Sue credenziali e invia le email necessarie al funzionamento dell'accesso, come la verifica dell'email. Se chiede di reimpostare la password, Firebase invia un link di reimpostazione al Suo indirizzo email.",
-              "Da parte nostra conserviamo una registrazione del Suo account: indirizzo email, nome visualizzato, se l'email è verificata, identificatore di accesso Firebase, piano, data di registrazione e ultimo utilizzo del servizio, impostazioni di conservazione scelte, cronologia delle conversioni e progetti (Sezione 3). Inviamo un numero ridotto di email di servizio da Media Manipulator: un'email di benvenuto, avvisi su pagamenti ed eliminazione dell'account e, se li mantiene attivi nelle impostazioni dell'account, promemoria prima della scadenza dei file e avvisi al termine di un lavoro IA lungo. Non inviamo email di marketing. Le email vengono recapitate tramite il nostro fornitore di posta, Resend."
+              "Da parte nostra conserviamo una registrazione del Suo account: indirizzo email, nome visualizzato, se l'email è verificata, identificatore di accesso Firebase, piano, data di registrazione e ultimo utilizzo del servizio, impostazioni di conservazione scelte, cronologia delle conversioni e progetti (Sezione 3). Gli stili dei sottotitoli Darkroom che salva (un nome e lo stile dei sottotitoli: carattere, colori, contorno, posizione e animazione) sono conservati insieme al Suo account finché non li elimina o non elimina l'account, e sono inclusi nella Sua esportazione dei dati. Inviamo un numero ridotto di email di servizio da Media Manipulator: un'email di benvenuto, avvisi su pagamenti ed eliminazione dell'account e, se li mantiene attivi nelle impostazioni dell'account, promemoria prima della scadenza dei file e avvisi al termine di un lavoro IA lungo. Non inviamo email di marketing. Le email vengono recapitate tramite il nostro fornitore di posta, Resend."
             ]
           },
           {
@@ -1875,7 +1879,9 @@
       "assistantGuide": "Guida del sito {{medi}}",
       "assistantTurns": "Modifiche del copilota {{medi}} al giorno",
       "studioFormats": "Formati di esportazione Darkroom",
-      "studioAnimatedCaptions": "Sottotitoli animati di Darkroom"
+      "studioAnimatedCaptions": "Sottotitoli animati di Darkroom",
+      "studioCaptionWordEdit": "Sincronizzazione dei sottotitoli per parola",
+      "studioCaptionLooksSaved": "Stili dei sottotitoli salvati"
     },
     "values": {
       "yes": "Incluso",
@@ -2421,7 +2427,7 @@
     "whenToUseTitle": "Quando usarlo",
     "whenToUseBody": "Scegli Darkroom quando un solo file non basta: combinare più clip, aggiungere titoli o musica di sottofondo, sovrapporre elementi, oppure tagliare e riordinare le riprese in un video finito.",
     "supportedMediaTitle": "Tipi di media supportati",
-    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus. Pro aggiunge AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV a 24 bit. I sottotitoli sono sincronizzati parola per parola e si possono animare (riempimento karaoke, evidenziazione, pop) con sei stili pronti e 27 caratteri; l'anteprima li disegna con lo stesso motore dell'esportazione.",
+    "supportedMediaBody": "Puoi importare video (MP4, MOV, WebM, MKV), immagini (JPG, PNG, WebP) e audio (MP3, WAV, AAC). Puoi esportare in MP4 (video H.264 o H.265, audio AAC o Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio in MP3, WAV e Opus. Pro aggiunge AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC e WAV a 24 bit. I sottotitoli sono sincronizzati parola per parola e si possono animare (riempimento karaoke, evidenziazione, pop, rimbalzo, parola per parola, evidenziazione a riquadro, dissolvenza, macchina da scrivere, bagliore) con dodici stili pronti e 27 caratteri; l'anteprima li disegna con lo stesso motore dell'esportazione. Premium e Pro aggiungono la sincronizzazione e l'enfasi per parola nella traccia dei sottotitoli e gli stili dei sottotitoli salvati nel tuo account.",
     "stepByStepTitle": "Passo dopo passo",
     "step1": "Crea un progetto e scegli una risoluzione (fino a 4K) e una frequenza fotogrammi (24/30/60 fps).",
     "step2": "Trascina file video, immagini e audio nel contenitore multimediale.",

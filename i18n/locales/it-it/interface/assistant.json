@@ -170,7 +170,6 @@
           "look": "Look «{{look}}» applicato: {{clips}}",
           "transform": "{{clip}} spostata e ridimensionata",
           "keyframes_one": "{{clip}} animata con {{count}} fotogramma chiave",
-          "keyframes_many": "{{clip}} animata con {{count}} fotogrammi chiave",
           "keyframes_other": "{{clip}} animata con {{count}} fotogrammi chiave",
           "title": {
             "lowerThird": "Sottopancia aggiunto a {{at}} s",
@@ -186,7 +185,11 @@
           "volume": "{{target}} impostato a {{db}} dB",
           "marker": "Marcatore aggiunto a {{at}} s",
           "captionStyle": "Stile dei sottotitoli modificato",
-          "canvas": "Formato dell’immagine cambiato in {{aspect}}"
+          "captionWords_one": "{{count}} parola dei sottotitoli enfatizzata",
+          "captionWords_other": "{{count}} parole dei sottotitoli enfatizzate",
+          "captionWords_many": "{{count}} parole dei sottotitoli enfatizzate",
+          "canvas": "Formato dell’immagine cambiato in {{aspect}}",
+          "keyframes_many": "{{clip}} animata con {{count}} fotogrammi chiave"
         },
         "field": {
           "opacity": "Opacità",

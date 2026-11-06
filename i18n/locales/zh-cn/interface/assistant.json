@@ -182,6 +182,7 @@
           "volume": "已将{{target}}设为 {{db}} dB",
           "marker": "已在 {{at}} 秒添加标记",
           "captionStyle": "已修改字幕样式",
+          "captionWords_other": "已强调 {{count}} 个字幕词",
           "canvas": "已将画面比例改为 {{aspect}}"
         },
         "field": {

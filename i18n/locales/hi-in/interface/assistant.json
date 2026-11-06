@@ -184,6 +184,8 @@
           "volume": "{{target}} को {{db}} dB पर सेट किया",
           "marker": "{{at}} से. पर मार्कर जोड़ा",
           "captionStyle": "कैप्शन की स्टाइल बदली",
+          "captionWords_one": "{{count}} कैप्शन शब्द पर ज़ोर दिया",
+          "captionWords_other": "{{count}} कैप्शन शब्दों पर ज़ोर दिया",
           "canvas": "फ़्रेम का अनुपात {{aspect}} किया"
         },
         "field": {

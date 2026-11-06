@@ -1121,9 +1121,24 @@ const firstSentenceOf = (s: string) => (/^([\s\S]+?[.!?])(\s|$)/.exec(s.replace(
 const criterionLine = (c: RecipeCriterion) =>
   `- ${c.metric} ${c.min !== undefined && c.max !== undefined ? `${c.min} to ${c.max}` : c.max !== undefined ? `at most ${c.max}` : `at least ${c.min}`}`;
 
+/**
+ * MM122 (corpus budget): a Darkroom recipe's Summary already carries the first sentence of
+ * "What a pro does and why", and the doc body the model reads is Summary + Details, so that
+ * sentence is not repeated under the heading (nothing is lost; the editor capsule reads the
+ * Summary). Other editors keep the section whole.
+ */
+function recipeSection(r: Recipe, name: (typeof RECIPE_SECTIONS)[number]): string {
+  const body = r.sections[name];
+  if (r.editor !== 'studio' || name !== 'What a pro does and why') return body;
+  const lead = /^\s*([\s\S]+?[.!?])(\s+|$)/.exec(body);
+  if (!lead || lead[1].replace(/\s+/g, ' ').trim() !== firstSentenceOf(body)) return body;
+  const rest = body.slice(lead[0].length);
+  return rest.trim() ? rest : body;
+}
+
 export function recipeDoc(r: Recipe): string {
   const details: string[] = [];
-  for (const name of RECIPE_SECTIONS) details.push(`### ${name}`, '', ...r.sections[name].split('\n'), '');
+  for (const name of RECIPE_SECTIONS) details.push(`### ${name}`, '', ...recipeSection(r, name).split('\n'), '');
   if (r.criteria.length) details.push('### Success criteria', '', ...r.criteria.map(criterionLine), '');
   return doc({
     title: r.title,

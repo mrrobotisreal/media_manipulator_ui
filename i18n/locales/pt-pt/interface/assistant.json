@@ -170,7 +170,6 @@
           "look": "Look «{{look}}» aplicado: {{clips}}",
           "transform": "{{clip}} movido e redimensionado",
           "keyframes_one": "{{clip}} animado com {{count}} fotograma-chave",
-          "keyframes_many": "{{clip}} animado com {{count}} fotogramas-chave",
           "keyframes_other": "{{clip}} animado com {{count}} fotogramas-chave",
           "title": {
             "lowerThird": "Oráculo adicionado aos {{at}} s",
@@ -186,7 +185,11 @@
           "volume": "{{target}} a {{db}} dB",
           "marker": "Marcador adicionado aos {{at}} s",
           "captionStyle": "Estilo das legendas alterado",
-          "canvas": "Formato da imagem alterado para {{aspect}}"
+          "captionWords_one": "{{count}} palavra de legenda enfatizada",
+          "captionWords_other": "{{count}} palavras de legenda enfatizadas",
+          "captionWords_many": "{{count}} palavras de legenda enfatizadas",
+          "canvas": "Formato da imagem alterado para {{aspect}}",
+          "keyframes_many": "{{clip}} animado com {{count}} fotogramas-chave"
         },
         "field": {
           "opacity": "Opacidade",

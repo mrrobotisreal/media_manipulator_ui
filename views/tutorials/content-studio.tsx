@@ -96,6 +96,9 @@ const ContentStudioTutorial: React.FC<{ locale?: string }> = ({ locale }) => {
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.preview.title`)}</h2>
               <p className="mb-4">{t(`${K}.preview.body`)}</p>
 
+              <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.captions.title`)}</h2>
+              <p className="mb-4">{t(`${K}.captions.body`)}</p>
+
               <h2 className="text-2xl font-semibold mb-3 text-card-foreground">{t(`${K}.export.title`)}</h2>
               <p className="mb-4">{t(`${K}.export.body`)}</p>
 

@@ -95,6 +95,10 @@ export function studioDigest({ project: p, assets, playhead, selectedClipIds = [
     head.push(`ducking on: voice ${voice ? trackLabel(voice) : '?'} · ${a.duckAmountDb} dB · attack ${a.duckAttackMs} ms · release ${a.duckReleaseMs} ms`);
   }
   head.push(`captions: ${p.captions.length ? `${p.captions.length} cues ${p.captionsEnabled ? 'on' : 'off'}${captionStyleDigest(p)}` : 'none'}`);
+  // MM122: word-timed cues by id with their words numbered (set_caption_words addresses them).
+  const timed = p.captions.filter((c) => (c.words?.length ?? 0) > 0);
+  for (const c of timed.slice(0, CAPTION_CUES_SHOWN)) head.push(`  cue ${c.id} · ${r2(c.startSeconds)}–${r2(c.endSeconds)}s · ${cueWordsLine(c)}`);
+  if (timed.length > CAPTION_CUES_SHOWN) head.push(`  … ${timed.length - CAPTION_CUES_SHOWN} more word-timed cues not shown`);
   const markers = [...(p.markers ?? [])].sort((x, y) => x.t - y.t);
   if (markers.length) head.push(`markers: ${markers.slice(0, 20).map((m) => `${r2(m.t)}s ${q(m.name, 30)}`).join(', ')}${markers.length > 20 ? ` (+${markers.length - 20})` : ''}`);
   head.push(`selected: ${selectedClipIds.length ? selectedClipIds.slice(0, 10).join(', ') : 'none'}`);
@@ -113,6 +117,13 @@ export function studioDigest({ project: p, assets, playhead, selectedClipIds = [
   }
   const body = blocks.flatMap((b) => [b.head, ...(b.lines.length ? b.lines : ['  (empty)'])]);
   return [...head, ...body, ...(dropped ? [`… ${dropped} more clips not shown`] : [])].join('\n');
+}
+
+/** MM122: the word-timed cues the digest lists (ids for set_caption_words), and one cue's words. */
+const CAPTION_CUES_SHOWN = 12;
+function cueWordsLine(c: StudioProject['captions'][number]): string {
+  const line = (c.words ?? []).map((w, i) => `${i}:${w.text}${w.emphasis ? '*' : ''}`).join(' ');
+  return line.length > 200 ? `${line.slice(0, 199)}…` : line;
 }
 
 /** MM121: the caption look, animation, font and whether cues carry word timings (deterministic). */

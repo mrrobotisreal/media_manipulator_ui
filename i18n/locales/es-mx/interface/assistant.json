@@ -170,7 +170,6 @@
           "look": "Estilo «{{look}}» aplicado: {{clips}}",
           "transform": "{{clip}} movido y escalado",
           "keyframes_one": "{{clip}} animado con {{count}} fotograma clave",
-          "keyframes_many": "{{clip}} animado con {{count}} fotogramas clave",
           "keyframes_other": "{{clip}} animado con {{count}} fotogramas clave",
           "title": {
             "lowerThird": "Cintillo inferior agregado en {{at}} s",
@@ -186,7 +185,11 @@
           "volume": "{{target}} a {{db}} dB",
           "marker": "Marcador agregado en {{at}} s",
           "captionStyle": "Estilo de subtítulos cambiado",
-          "canvas": "Formato de imagen cambiado a {{aspect}}"
+          "captionWords_one": "{{count}} palabra de subtítulo enfatizada",
+          "captionWords_other": "{{count}} palabras de subtítulos enfatizadas",
+          "captionWords_many": "{{count}} palabras de subtítulos enfatizadas",
+          "canvas": "Formato de imagen cambiado a {{aspect}}",
+          "keyframes_many": "{{clip}} animado con {{count}} fotogramas clave"
         },
         "field": {
           "opacity": "Opacidad",

@@ -247,7 +247,7 @@ describe('set_caption_style with looks and animations (MM121)', () => {
   });
 
   it('rejects unknown looks, fonts and animations', () => {
-    for (const bad of [{ look: 'cinema' }, { fontFamily: 'Comic Sans' }, { animation: 'bounce' }, { outlineWidth: 40 }]) {
+    for (const bad of [{ look: 'vaporwave' }, { fontFamily: 'Comic Sans' }, { animation: 'wobble' }, { outlineWidth: 40 }]) {
       expect(run([{ op: 'set_caption_style', ...bad }], withCues()).ok, JSON.stringify(bad)).toBe(false);
     }
   });
@@ -259,5 +259,43 @@ describe('set_caption_style with looks and animations (MM121)', () => {
     if (!locked.ok) expect(locked.errors[0]).toMatch(/needs a free account/);
     expect(applyStudioOps(withCues(), [{ op: 'set_caption_style', animation: 'karaoke_fill' }], anon).ok).toBe(false);
     expect(applyStudioOps(withCues(), [{ op: 'set_caption_style', look: 'bold_pop' }], anon).ok).toBe(true);
+  });
+});
+
+describe('set_caption_words (MM122 decision 5)', () => {
+  const timed = (): StudioProject => ({
+    ...studioFixture(),
+    captions: [{ id: 'q', startSeconds: 0, endSeconds: 2, text: 'big news today', words: [
+      { text: 'big', startSeconds: 0, endSeconds: 0.6, emphasis: true },
+      { text: 'news', startSeconds: 0.6, endSeconds: 1.2 },
+      { text: 'today', startSeconds: 1.2, endSeconds: 2 },
+    ] }],
+  });
+  const premium = { ...ctx, captionWordEdit: true };
+
+  it('Premium: replaces the cue emphasis with the listed words, never times', () => {
+    const r = applyStudioOps(timed(), [{ op: 'set_caption_words', cueId: 'q', emphasis: [1, 2] }], premium);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    const ws = r.project.captions[0].words!;
+    expect(ws.map((w) => !!w.emphasis)).toEqual([false, true, true]);
+    expect(ws.map((w) => [w.startSeconds, w.endSeconds])).toEqual(timed().captions[0].words!.map((w) => [w.startSeconds, w.endSeconds]));
+    const cleared = applyStudioOps(timed(), [{ op: 'set_caption_words', cueId: 'q', emphasis: [] }], premium);
+    expect(cleared.ok && cleared.project.captions[0].words!.every((w) => !w.emphasis)).toBe(true);
+  });
+
+  it('Free: refused with a reason that names Premium', () => {
+    const r = applyStudioOps(timed(), [{ op: 'set_caption_words', cueId: 'q', emphasis: [1] }], { ...ctx, captionWordEdit: false });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.errors[0]).toMatch(/needs Premium/);
+  });
+
+  it('refuses an unknown cue, a cue without words, an out-of-range index and any timing field', () => {
+    expect(applyStudioOps(timed(), [{ op: 'set_caption_words', cueId: 'zz', emphasis: [0] }], premium).ok).toBe(false);
+    const plain = { ...timed(), captions: [{ id: 'q', startSeconds: 0, endSeconds: 2, text: 'no words' }] };
+    expect(applyStudioOps(plain, [{ op: 'set_caption_words', cueId: 'q', emphasis: [0] }], premium).ok).toBe(false);
+    expect(applyStudioOps(timed(), [{ op: 'set_caption_words', cueId: 'q', emphasis: [3] }], premium).ok).toBe(false);
+    expect(studioOpsProblems([{ op: 'set_caption_words', cueId: 'q', emphasis: [0], startSeconds: 1 }])).not.toEqual([]);
+    expect(STUDIO_OP_NAMES).toContain('set_caption_words');
   });
 });

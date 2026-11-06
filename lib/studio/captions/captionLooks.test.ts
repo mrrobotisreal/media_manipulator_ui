@@ -4,8 +4,11 @@ import { applyCaptionLook, CAPTION_LOOKS, captionAnimationLocked, captionLookLoc
 import { sanitizeCaptionStyle } from './sanitize';
 
 describe('caption looks (decision 7)', () => {
-  it('six looks, three anonymous (Minimal, Clean Highlight, Bold Pop)', () => {
-    expect(CAPTION_LOOKS.map((l) => l.id)).toEqual(['bold_pop', 'karaoke_classic', 'clean_highlight', 'minimal', 'neon', 'podcast']);
+  it('twelve looks (MM122), three anonymous (Minimal, Clean Highlight, Bold Pop)', () => {
+    expect(CAPTION_LOOKS.map((l) => l.id)).toEqual([
+      'bold_pop', 'karaoke_classic', 'clean_highlight', 'minimal', 'neon', 'podcast',
+      'cinema', 'comic', 'typewriter', 'box_pop', 'glow_night', 'bounce_kids',
+    ]);
     expect(CAPTION_LOOKS.filter((l) => l.anon).map((l) => l.id).sort()).toEqual(['bold_pop', 'clean_highlight', 'minimal']);
   });
 
@@ -31,5 +34,9 @@ describe('caption looks (decision 7)', () => {
     expect(captionAnimationLocked('karaoke_fill', false)).toBe(true);
     expect(captionAnimationLocked('karaoke_fill', true)).toBe(false);
     expect(captionAnimationLocked('pop', false)).toBe(false);
+    for (const a of ['bounce', 'word_by_word', 'box_highlight', 'fade', 'typewriter', 'glow']) {
+      expect(captionAnimationLocked(a, false), a).toBe(true);
+      expect(captionAnimationLocked(a, true), a).toBe(false);
+    }
   });
 });
