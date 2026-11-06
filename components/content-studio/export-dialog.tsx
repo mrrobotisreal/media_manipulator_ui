@@ -41,7 +41,16 @@ import {
   sidecarFileNames,
   type ExportPrefill,
 } from '@/lib/studio/exportOptions';
-import { defaultPresetKey, isAudioOnlyContainer, lockFor, presetByKey, presetChoice } from '@/lib/studio/studioOutputs';
+import {
+  LARGE_EXPORT_BYTES,
+  defaultPresetKey,
+  isAudioOnlyContainer,
+  lockFor,
+  outputEstimateBytes,
+  presetByKey,
+  presetChoice,
+} from '@/lib/studio/studioOutputs';
+import { outputDimensions } from '@/lib/studio/exportOptions';
 import { Badge } from '@/components/ui/badge';
 import { publishLimitRefusal } from '@/lib/auth/quotaBus';
 import type { Tier } from '@/lib/auth/accountApi';
@@ -466,6 +475,14 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
     });
   };
   const resOptions = resolutionOptions(canvasHeight, maxOutputHeight);
+  // MM120: the predicted size of a predictable-size output (ProRes, 24-bit PCM) at the chosen
+  // resolution; the server refuses one over the plan's per-file cap before rendering.
+  const watchedResolution = useWatch({ control: form.control, name: 'resolution' });
+  const outDims = outputDimensions(project?.width ?? 1920, canvasHeight, watchedResolution ?? 0);
+  const estimateBytes = exportDepth
+    ? outputEstimateBytes(watchedChoice, { ...outDims, fps: project?.fps ?? 30, seconds: durationSeconds }, outputTable)
+    : null;
+  const proresSource = exportDepth && watchedChoice.videoCodec === 'prores';
   const busy = saveMutation.isPending || isStarting;
   const inFlight = !!jobId && job?.status !== 'completed' && job?.status !== 'failed';
   // MM119: accepted and charged, waiting for a server CPU encode slot (VP9).
@@ -536,6 +553,20 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
                     form.setValue('output', next.output);
                   }}
                 />
+              )}
+              {proresSource && (
+                <p className="text-[11px] text-muted-foreground" data-testid="export-prores-note">
+                  {t('contentStudio.export.proresNote')}
+                </p>
+              )}
+              {estimateBytes !== null && (
+                <p
+                  className={estimateBytes > LARGE_EXPORT_BYTES ? 'text-[11px] text-amber-600 dark:text-amber-400' : 'text-[11px] text-muted-foreground'}
+                  data-testid="export-size-estimate"
+                >
+                  {t('contentStudio.export.sizeEstimate', { size: formatEstimate(estimateBytes) })}
+                  {estimateBytes > LARGE_EXPORT_BYTES ? ` ${t('contentStudio.export.sizeLarge')}` : ''}
+                </p>
               )}
               {exportDepth && (
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -791,5 +822,11 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
     </Dialog>
   );
 };
+
+/** "≈ 1.2 GB" / "≈ 350 MB" for the size estimate (decimal units, like the plan copy). */
+export function formatEstimate(bytes: number): string {
+  if (bytes >= 1e9) return `≈ ${(bytes / 1e9).toFixed(1)} GB`;
+  return `≈ ${Math.max(1, Math.round(bytes / 1e6))} MB`;
+}
 
 export default ExportDialog;

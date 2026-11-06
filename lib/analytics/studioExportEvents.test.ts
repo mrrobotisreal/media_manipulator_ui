@@ -21,9 +21,17 @@ describe('studio export events (MM119 vocabulary)', () => {
     expect(check('studio_export_started', { ...webm, format: 'webm_vp9_vorbis', audioCodec: 'vorbis', audioBitrate: 192 })).toEqual([]);
   });
   it('rejects values outside the table', () => {
-    expect(check('studio_export_started', { ...webm, videoCodec: 'av1' })).not.toEqual([]);
+    expect(check('studio_export_started', { ...webm, videoCodec: 'dnxhr' })).not.toEqual([]);
     expect(check('studio_export_started', { ...webm, captionsMode: 'karaoke' })).not.toEqual([]);
-    expect(check('studio_export_started', { ...webm, format: 'webm_av1_opus' })).not.toEqual([]);
+    expect(check('studio_export_started', { ...webm, format: 'mov_prores_aac' })).not.toEqual([]); // ProRes takes PCM only
+  });
+  it('MM120: accepts the Pro rows (AV1, ProRes, FLAC, 24-bit PCM) and the Pro-only locked clicks', () => {
+    expect(check('studio_export_started', { ...webm, format: 'webm_av1_opus', videoCodec: 'av1' })).toEqual([]);
+    expect(check('studio_export_started', { ...webm, format: 'mov_prores_pcm_s24le', container: 'mov', videoCodec: 'prores', audioCodec: 'pcm_s24le', audioBitrate: 0, captionsMode: 'none' })).toEqual([]);
+    expect(check('studio_export_started', { ...webm, format: 'flac_none_flac', container: 'flac', videoCodec: 'none', audioCodec: 'flac', audioBitrate: 0, resolution: 'audio', captionsMode: 'none' })).toEqual([]);
+    for (const option of ['av1', 'prores', 'flac', 'pcm_s24le']) {
+      expect(check('studio_export_format_locked', { option, required: 'pro', tier: 'premium', host: 'mm' })).toEqual([]);
+    }
   });
   it('the locked-option click names subs_embedded and the new tokens', () => {
     for (const option of ['subs_embedded', 'webm', 'opus', 'vp9', 'vorbis']) {

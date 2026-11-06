@@ -518,6 +518,7 @@
       "kbps": "{{value}} kbps",
       "noVideo": "No video",
       "notIn": "not in {{container}}",
+      "notWith": "not with {{codec}}",
       "planFree": "Free account",
       "mediUpgradeFree": "Medi's first choice needs a free account, so the closest format your plan allows is selected.",
       "mediUpgradePlan": "Medi's first choice needs {{plan}}, so the closest format your plan allows is selected.",
@@ -531,8 +532,17 @@
       "preset_audio_mp3": "Audio only · MP3",
       "preset_audio_wav": "Audio only · WAV",
       "preset_audio_opus": "Audio only · Opus (smallest)",
+      "preset_mp4_av1": "MP4 · AV1 (smallest high quality)",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus (websites, smallest)",
+      "preset_mov_prores": "MOV · ProRes 422 (hand-off to an editor)",
+      "preset_audio_flac": "Audio only · FLAC (lossless)",
+      "preset_audio_wav24": "Audio only · WAV 24-bit (studio master)",
       "warning_apple_incompatible": "QuickTime, Photos and iPhone won't open this file.",
-      "warning_no_browser_preview": "Browsers can't play this file; open it in VLC or a video editor."
+      "warning_no_browser_preview": "Browsers can't play this file; open it in VLC or a video editor.",
+      "warning_av1_playback": "Older phones, TVs and browsers may not play AV1. Pick H.264 if it must play everywhere.",
+      "proresNote": "ProRes 422 (from an 8-bit timeline): 10-bit 4:2:2 for editing, made from Darkroom's 8-bit picture. Quality has no effect; files are very large.",
+      "sizeEstimate": "Estimated size: {{size}}",
+      "sizeLarge": "That is over 4 GB: check your disk and upload limits, or shorten the export."
     },
     "audioPanel": {
       "button": "Audio",

@@ -54,13 +54,14 @@ const count = (n: number, t: T) => (n < 0 ? t('interface:pricing.values.unlimite
 /**
  * "MP4 (H.264, H.265), MOV (…), WebM (VP9), MKV (…), MP3, WAV, Opus · Opus, Vorbis audio ·
  * Embedded captions · Advanced settings" from a tier's tokens. MM119: audio codecs beyond
- * the universal AAC/PCM/MP3 and the embedded captions token get their own segment.
+ * the universal AAC/PCM/MP3 and the embedded captions token get their own segment. MM120: the
+ * lossless codecs (FLAC, 24-bit PCM) get a "Lossless …" segment of their own (Pro column).
  */
 export function studioFormatsSummary(
   formats: readonly string[],
   advanced: boolean,
   advancedLabel: string,
-  labels: { audio?: (codecs: string) => string; embedded?: string } = {},
+  labels: { audio?: (codecs: string) => string; embedded?: string; lossless?: (codecs: string) => string } = {},
 ): string {
   const have = new Set(formats);
   const name = (key: string) => (key === 'webm' ? 'WebM' : key === 'opus' ? 'Opus' : key.toUpperCase());
@@ -72,11 +73,14 @@ export function studioFormatsSummary(
       return codecs.length ? `${name(c.key)} (${codecs.join(', ')})` : name(c.key);
     });
   const segments = [parts.join(', ')];
+  const lossless = ['flac', 'pcm_s24le'];
   const extraAudio = STATIC_STUDIO_OUTPUTS.codecs
-    .filter((c) => c.kind === 'audio' && !['aac', 'pcm_s16le', 'mp3'].includes(c.key) && have.has(c.key))
+    .filter((c) => c.kind === 'audio' && !['aac', 'pcm_s16le', 'mp3', ...lossless].includes(c.key) && have.has(c.key))
     .map((c) => CODEC_NAMES[c.key] ?? c.key);
   // ("opus" is one token: the .opus container and the Opus codec, like mp3.)
   if (extraAudio.length && labels.audio) segments.push(labels.audio(extraAudio.join(', ')));
+  const losslessHave = lossless.filter((k) => have.has(k)).map((k) => CODEC_NAMES[k] ?? k);
+  if (losslessHave.length && labels.lossless) segments.push(labels.lossless(losslessHave.join(', ')));
   if (have.has('subs_embedded') && labels.embedded) segments.push(labels.embedded);
   if (advanced) segments.push(advancedLabel);
   return segments.join(' · ');
@@ -118,6 +122,7 @@ const ROWS: Row[] = [
       studioFormatsSummary(l.studioFormats ?? [], !!l.studioAdvanced, t('interface:pricing.values.studioAdvanced'), {
         audio: (codecs) => t('interface:pricing.values.studioAudio', { values: { codecs } }),
         embedded: t('interface:pricing.values.studioEmbeddedCaptions'),
+        lossless: (codecs) => t('interface:pricing.values.studioLossless', { values: { codecs } }),
       }),
     served: (l) => Array.isArray(l.studioFormats),
   },

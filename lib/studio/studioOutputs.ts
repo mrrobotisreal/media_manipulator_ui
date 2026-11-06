@@ -33,6 +33,14 @@ export interface StudioOutputCodec {
   kind: 'video' | 'audio' | string;
   bitrates: number[];
   defaultBitrate: number;
+  /** MM120 (video codecs): narrows the container's audio codecs, in preference order (ProRes = PCM 24/16). */
+  audioCodecs?: string[];
+  /** MM120: predictable bitrate (video: at 1920x1080 30 fps; audio: stereo); absent = constant quality, no estimate. */
+  estimateKbps?: number;
+  /** MM120: what a plan without this codec gets instead (Medi's nearest preset). */
+  fallback?: string[];
+  /** MM120: no +faststart even in MP4/MOV (ProRes). */
+  noFaststart?: boolean;
 }
 
 export interface StudioOutputWarningRule {
@@ -136,6 +144,19 @@ export function presetFor(c: Pick<OutputChoice, 'container' | 'videoCodec' | 'au
   return t.presets.find((p) => p.container === c.container && p.videoCodec === c.videoCodec && p.audioCodec === c.audioCodec);
 }
 
+/**
+ * MM120: the audio codecs a container offers with a video codec: the container's list, narrowed
+ * and reordered by the video codec's own `audioCodecs` (ProRes takes PCM only, 24-bit first).
+ * Mirrors the API's StudioAudioCodecsFor.
+ */
+export function audioCodecsFor(containerKey: string, videoCodec: string, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): string[] {
+  const c = container(t, containerKey);
+  if (!c) return [];
+  const narrow = codec(t, videoCodec)?.audioCodecs;
+  if (!narrow?.length) return c.audioCodecs;
+  return narrow.filter((a) => c.audioCodecs.includes(a));
+}
+
 export function isAudioOnlyContainer(key: string, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): boolean {
   return !!container(t, key)?.audioOnly;
 }
@@ -169,7 +190,7 @@ export function parseOutputLabel(label: string, t: StudioOutputTable = STATIC_ST
   for (const c of t.containers) {
     if (!label.startsWith(`${c.key}_`)) continue;
     for (const v of c.videoCodecs) {
-      for (const a of c.audioCodecs) {
+      for (const a of audioCodecsFor(c.key, v, t)) {
         if (label === `${c.key}_${v}_${a}`) {
           return { container: c.key, videoCodec: v, audioCodec: a, audioBitrate: codec(t, a)?.defaultBitrate ?? 0, audioChannels: t.defaultChannels };
         }
@@ -258,10 +279,21 @@ export function containerOptions(access: StudioOutputAccess, t: StudioOutputTabl
   return t.containers.map((c) => ({ value: c.key, valid: true, lock: lockFor([c.key], access) }));
 }
 
-/** Every video (or audio) codec the table knows, valid only when the container carries it. */
-export function codecOptions(kind: 'video' | 'audio', containerKey: string, access: StudioOutputAccess, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): PickerOption[] {
+/**
+ * Every video (or audio) codec the table knows, valid only when the container carries it
+ * (MM120: audio also narrowed by the chosen video codec, e.g. ProRes = PCM; `invalidBecause`
+ * then names the video codec).
+ */
+export function codecOptions(
+  kind: 'video' | 'audio',
+  containerKey: string,
+  access: StudioOutputAccess,
+  t: StudioOutputTable = STATIC_STUDIO_OUTPUTS,
+  videoCodec?: string,
+): PickerOption[] {
   const c = container(t, containerKey);
-  const allowed = new Set(kind === 'video' ? c?.videoCodecs ?? [] : c?.audioCodecs ?? []);
+  const containerAudio = new Set(c?.audioCodecs ?? []);
+  const allowed = new Set(kind === 'video' ? c?.videoCodecs ?? [] : videoCodec ? audioCodecsFor(containerKey, videoCodec, t) : c?.audioCodecs ?? []);
   const all = t.codecs.filter((x) => x.kind === kind).map((x) => x.key);
   // An audio-only container's video "codec" is none; it is not a table codec row.
   if (kind === 'video' && c?.audioOnly) return [{ value: 'none', valid: true, lock: null }];
@@ -269,7 +301,8 @@ export function codecOptions(kind: 'video' | 'audio', containerKey: string, acce
     const valid = allowed.has(value);
     // The container's own codec (mp3 in .mp3) is not a separate token.
     const tokens = value === containerKey ? [] : [value];
-    return { value, valid, invalidBecause: valid ? undefined : containerKey, lock: valid ? lockFor(tokens, access) : null };
+    const because = kind === 'audio' && videoCodec && containerAudio.has(value) ? videoCodec : containerKey;
+    return { value, valid, invalidBecause: valid ? undefined : because, lock: valid ? lockFor(tokens, access) : null };
   });
 }
 
@@ -285,7 +318,8 @@ export function bitrateOptions(audioCodec: string, t: StudioOutputTable = STATIC
 export function fitChoice(c: OutputChoice, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): OutputChoice {
   const k = container(t, c.container) ?? t.containers[0];
   const videoCodec = k.videoCodecs.includes(c.videoCodec) ? c.videoCodec : k.videoCodecs[0];
-  const audioCodec = k.audioCodecs.includes(c.audioCodec) ? c.audioCodec : k.audioCodecs[0];
+  const audio = audioCodecsFor(k.key, videoCodec, t);
+  const audioCodec = audio.includes(c.audioCodec) ? c.audioCodec : audio[0];
   const rates = bitrateOptions(audioCodec, t);
   const def = codec(t, audioCodec)?.defaultBitrate ?? 0;
   const audioBitrate = rates.length === 0 ? 0 : rates.includes(c.audioBitrate) ? c.audioBitrate : def;
@@ -303,12 +337,53 @@ export const CODEC_NAMES: Record<string, string> = {
   h264: 'H.264',
   hevc: 'H.265',
   vp9: 'VP9',
+  av1: 'AV1',
+  prores: 'ProRes 422',
   aac: 'AAC',
   pcm_s16le: 'PCM 16-bit',
+  pcm_s24le: 'PCM 24-bit',
   mp3: 'MP3',
   opus: 'Opus',
   vorbis: 'Vorbis',
+  flac: 'FLAC',
 };
+
+/** Pixels x fps the table's video `estimateKbps` is for (1920x1080 at 30 fps). */
+const ESTIMATE_REF_PIXEL_RATE = 1920 * 1080 * 30;
+
+/**
+ * MM120: the predicted output size in bytes from the table's `estimateKbps` (mirrors the API's
+ * StudioOutputEstimateBytes, which the server uses to refuse a too-large render): a video
+ * codec's rate scales with output pixels x fps; an audio codec's is for stereo (mono halves
+ * it), else its chosen bitrate. null when any part is not predictable (constant-quality codecs).
+ */
+export function outputEstimateBytes(
+  c: OutputChoice,
+  dims: { width: number; height: number; fps: number; seconds: number },
+  t: StudioOutputTable = STATIC_STUDIO_OUTPUTS,
+): number | null {
+  if (!(dims.seconds > 0)) return null;
+  let kbps = 0;
+  if (c.videoCodec && c.videoCodec !== 'none') {
+    const v = codec(t, c.videoCodec);
+    if (!v?.estimateKbps) return null;
+    const w = dims.width > 0 ? dims.width : 1920;
+    const h = dims.height > 0 ? dims.height : 1080;
+    const fps = dims.fps > 0 ? dims.fps : 30;
+    kbps += (v.estimateKbps * w * h * fps) / ESTIMATE_REF_PIXEL_RATE;
+  }
+  if (c.audioCodec && c.audioCodec !== 'none') {
+    const a = codec(t, c.audioCodec);
+    if (!a) return null;
+    if (a.estimateKbps) kbps += c.audioChannels === 1 ? a.estimateKbps / 2 : a.estimateKbps;
+    else if (c.audioBitrate > 0) kbps += c.audioBitrate;
+    else return null;
+  }
+  return Math.floor(((kbps * 1000) / 8) * dims.seconds);
+}
+
+/** MM120: the dialog warns above this estimate (4 GB). */
+export const LARGE_EXPORT_BYTES = 4e9;
 
 export function outputHumanLabel(c: Partial<OutputChoice> & { container: string; videoCodec?: string; audioCodec?: string }): string {
   const parts = [c.container.toUpperCase()];

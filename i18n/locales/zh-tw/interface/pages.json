@@ -1892,7 +1892,8 @@
       "signInToUse": "登入後即可使用",
       "studioAdvanced": "進階設定",
       "studioAudio": "{{codecs}} 音訊",
-      "studioEmbeddedCaptions": "內嵌字幕"
+      "studioEmbeddedCaptions": "內嵌字幕",
+      "studioLossless": "無損：{{codecs}}"
     },
     "unavailableTitle": "方案詳細資訊暫時無法取得",
     "unavailableBody": "我們無法連線到方案服務。所有工具仍可正常使用，請稍後重新載入以查看比較。",
@@ -2418,7 +2419,7 @@
     "whenToUseTitle": "何時使用",
     "whenToUseBody": "當一個檔案不夠用時就該用 Darkroom：合併多段素材、加入標題或背景音樂、疊加覆蓋層，或是將素材剪輯並重新排序成完成的影片。",
     "supportedMediaTitle": "支援的媒體類型",
-    "supportedMediaBody": "可匯入影片（MP4、MOV、WebM、MKV）、圖片（JPG、PNG、WebP）與音訊（MP3、WAV、AAC）。可匯出為 MP4（H.264 或 H.265 影片，AAC 或 Opus 音訊）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或僅音訊的 MP3、WAV 與 Opus。",
+    "supportedMediaBody": "可匯入影片（MP4、MOV、WebM、MKV）、圖片（JPG、PNG、WebP）與音訊（MP3、WAV、AAC）。可匯出為 MP4（H.264 或 H.265 影片，AAC 或 Opus 音訊）、MOV、WebM（VP9 搭配 Opus 或 Vorbis）、MKV，或僅音訊的 MP3、WAV 與 Opus。Pro 另提供 AV1（MP4、WebM、MKV）、ProRes 422 MOV、FLAC 與 24 位元 WAV。",
     "stepByStepTitle": "逐步說明",
     "step1": "建立專案並選擇解析度（最高 4K）與影格率（24/30/60 fps）。",
     "step2": "將影片、圖片與音訊檔案拖曳到媒體庫中。",
@@ -2428,7 +2429,7 @@
     "timelineTitle": "時間軸與圖層",
     "timelineBody": "時間軸精確到影格：播放指標與素材邊緣會吸附到專案的影格率。軌道依堆疊順序合成，所以較高軌道上的素材會轉譯在下方軌道之上。標題、標誌與子母畫面覆蓋層就是這樣疊在你的基底影片上的。",
     "exportTitle": "匯出",
-    "exportBody": "匯出會在伺服器上轉譯整個序列（每一條軌道、每一次剪輯與每一個覆蓋層）。所有人都能匯出 H.264 影片加 AAC 音訊的 MP4，或僅音訊的 MP3 與 WAV。免費帳號新增 H.265（HEVC）MP4，同樣畫質下檔案約為一半。Premium 與 Pro 新增 MOV（適用 Final Cut 與 iMovie）、WebM（VP9 加 Opus，專為網站設計）、MKV、Opus 音訊與 .opus 檔案、觀眾可自行開關的內嵌字幕軌（純文字：樣式與動畫只有燒錄進畫面時才會保留），以及進階設定：自選容器與編碼器組合、音訊位元率與單聲道。WebM 匯出可能會短暫排隊等待編碼器。",
+    "exportBody": "匯出會在伺服器上轉譯整個序列（每一條軌道、每一次剪輯與每一個覆蓋層）。所有人都能匯出 H.264 影片加 AAC 音訊的 MP4，或僅音訊的 MP3 與 WAV。免費帳號新增 H.265（HEVC）MP4，同樣畫質下檔案約為一半。Premium 與 Pro 新增 MOV（適用 Final Cut 與 iMovie）、WebM（VP9 加 Opus，專為網站設計）、MKV、Opus 音訊與 .opus 檔案、觀眾可自行開關的內嵌字幕軌（純文字：樣式與動畫只有燒錄進畫面時才會保留），以及進階設定：自選容器與編碼器組合、音訊位元率與單聲道。WebM 匯出可能會短暫排隊等待編碼器。Pro 另提供 AV1（高畫質下檔案最小；較舊的裝置可能無法播放）、用於交給 Final Cut、Premiere 或 Resolve 的 ProRes 422 MOV（由 8 位元時間軸產生；檔案非常大，因此對話框會顯示預估大小），以及用於音樂母帶的無損 FLAC 與 24 位元 WAV。",
     "limitationsTitle": "限制",
     "limitationsBody": "Darkroom 正在持續演進。核心編輯功能（多軌時間軸、剪輯／分割、圖層疊加、音訊混音，以及匯出為 MP4、MOV、WebM、MKV、MP3、WAV 或 Opus）現已可用。進階效果會持續新增。",
     "privacyTitle": "隱私",

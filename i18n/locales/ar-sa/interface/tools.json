@@ -538,6 +538,7 @@
       "kbps": "{{value}} كيلوبت/ث",
       "noVideo": "بلا فيديو",
       "notIn": "غير متاح في {{container}}",
+      "notWith": "غير متاح مع {{codec}}",
       "planFree": "حساب مجاني",
       "mediUpgradeFree": "يتطلب الخيار الأول الذي اقترحه Medi حسابًا مجانيًا، لذا تم تحديد أقرب تنسيق تسمح به باقتك.",
       "mediUpgradePlan": "يتطلب الخيار الأول الذي اقترحه Medi باقة {{plan}}، لذا تم تحديد أقرب تنسيق تسمح به باقتك.",
@@ -551,8 +552,17 @@
       "preset_audio_mp3": "صوت فقط · MP3",
       "preset_audio_wav": "صوت فقط · WAV",
       "preset_audio_opus": "صوت فقط · Opus (الأصغر حجمًا)",
+      "preset_mp4_av1": "MP4 · AV1 (أصغر حجم بجودة عالية)",
+      "preset_webm_av1_opus": "WebM · AV1 + Opus (للمواقع، الأصغر)",
+      "preset_mov_prores": "MOV · ProRes 422 (للتسليم إلى محرر)",
+      "preset_audio_flac": "صوت فقط · FLAC (دون فقدان)",
+      "preset_audio_wav24": "صوت فقط · WAV ‏24 بت (ماستر الاستوديو)",
       "warning_apple_incompatible": "لن يفتح QuickTime وتطبيق الصور وiPhone هذا الملف.",
-      "warning_no_browser_preview": "لا تستطيع المتصفحات تشغيل هذا الملف؛ افتحه في VLC أو في محرر فيديو."
+      "warning_no_browser_preview": "لا تستطيع المتصفحات تشغيل هذا الملف؛ افتحه في VLC أو في محرر فيديو.",
+      "warning_av1_playback": "قد لا تشغّل الهواتف وأجهزة التلفاز والمتصفحات القديمة صيغة AV1. اختر H.264 إذا كان يجب تشغيل الملف في كل مكان.",
+      "proresNote": "ProRes 422 (من مخطط زمني بدقة 8 بت): ‏10 بت 4:2:2 للتحرير، مُنشأ من صورة Darkroom بدقة 8 بت. الجودة لا تؤثر؛ والملفات كبيرة جدًا.",
+      "sizeEstimate": "الحجم التقديري: {{size}}",
+      "sizeLarge": "يتجاوز 4 غيغابايت: تحقّق من مساحة القرص وحدود الرفع لديك، أو اختصر التصدير."
     },
     "audioPanel": {
       "button": "الصوت",

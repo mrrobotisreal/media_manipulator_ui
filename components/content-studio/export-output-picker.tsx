@@ -178,12 +178,14 @@ export const ExportOutputPicker: React.FC<ExportOutputPickerProps> = ({ table, a
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {codecOptions(kind, output.container, access, table).map((o) => (
+                    {codecOptions(kind, output.container, access, table, kind === 'audio' ? output.videoCodec : undefined).map((o) => (
                       <SelectItem key={o.value} value={o.lock ? lockedValue(o.lock) : o.value} disabled={!o.valid}>
                         <span className={!o.valid || o.lock ? 'text-muted-foreground' : undefined}>{codecLabel(o.value)}</span>
                         {!o.valid && (
                           <span className="ml-2 text-[10px] text-muted-foreground">
-                            {t('contentStudio.export.notIn', { container: (o.invalidBecause ?? '').toUpperCase() })}
+                            {o.invalidBecause === output.container
+                              ? t('contentStudio.export.notIn', { container: (o.invalidBecause ?? '').toUpperCase() })
+                              : t('contentStudio.export.notWith', { codec: CODEC_NAMES[o.invalidBecause ?? ''] ?? o.invalidBecause })}
                           </span>
                         )}
                         {badge(o.lock)}

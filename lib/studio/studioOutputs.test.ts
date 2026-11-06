@@ -4,6 +4,9 @@ import { describe, expect, it } from 'vitest';
 import {
   STATIC_STUDIO_OUTPUTS as T,
   accessFromLimits,
+  audioCodecsFor,
+  outputEstimateBytes,
+  LARGE_EXPORT_BYTES,
   bitrateOptions,
   choiceTokens,
   codecOptions,
@@ -40,14 +43,14 @@ describe('studio output table identity (MM118)', () => {
   it('every container × codec label round-trips and is in the closed list', () => {
     for (const c of T.containers) {
       for (const v of c.videoCodecs) {
-        for (const a of c.audioCodecs) {
+        for (const a of audioCodecsFor(c.key, v)) {
           const label = outputLabel({ container: c.key, videoCodec: v, audioCodec: a });
           expect(T.formats).toContain(label);
           expect(parseOutputLabel(label)).toMatchObject({ container: c.key, videoCodec: v, audioCodec: a });
         }
       }
     }
-    expect(T.formats).toHaveLength(28); // MM118 14 + MM119 14
+    expect(T.formats).toHaveLength(51); // MM118 14 + MM119 14 + MM120 23
   });
 });
 
@@ -59,6 +62,7 @@ describe('locks (visible, never hidden)', () => {
     expect(lock).toEqual({
       mp4_h264: null, mp4_hevc: 'free', mov_h264: 'premium', mov_hevc: 'premium', webm_vp9_opus: 'premium',
       mkv_hevc_aac: 'premium', mkv_hevc_opus: 'premium', audio_mp3: null, audio_wav: null, audio_opus: 'premium',
+      mp4_av1: 'pro', webm_av1_opus: 'premium', mov_prores: 'premium', audio_flac: 'pro', audio_wav24: 'pro',
     });
   });
   it('free: H.265 unlocked, MOV still Premium, Advanced locked', () => {
@@ -67,11 +71,11 @@ describe('locks (visible, never hidden)', () => {
     expect(presetOptions(a).find((r) => r.preset.key === 'mov_h264')?.lock).toEqual({ option: 'mov', required: 'premium' });
     expect(lockFor([], a, true)).toEqual({ option: 'advanced', required: 'premium' });
   });
-  it('premium: nothing locked, Advanced on', () => {
+  it('premium: nothing below Pro locked, Advanced on (MM120 Pro rows stay locked)', () => {
     const a = access(PREMIUM, true, 'premium');
-    expect(presetOptions(a).every((r) => r.lock === null)).toBe(true);
+    expect(presetOptions(a).filter((r) => r.lock !== null).map((r) => r.lock?.required)).toEqual(['pro', 'pro', 'pro', 'pro', 'pro']);
     expect(lockFor([], a, true)).toBeNull();
-    expect(containerOptions(a).every((o) => o.lock === null)).toBe(true);
+    expect(containerOptions(a).filter((o) => o.lock !== null).map((o) => o.value)).toEqual(['flac']);
   });
   it('unknown caller (API before MM118): nothing marked, the server decides', () => {
     expect(presetOptions(accessFromLimits(undefined, 'free')).every((r) => r.lock === null)).toBe(true);
@@ -127,7 +131,7 @@ describe('warnings, tokens and labels', () => {
 describe('MM119 rows (Opus, Vorbis, VP9, WebM, .opus, embedded subtitles)', () => {
   it('WebM carries VP9 with Opus or Vorbis; MOV never Opus/Vorbis; MP4 Opus warns', () => {
     const webm = T.containers.find((c) => c.key === 'webm')!;
-    expect(webm).toMatchObject({ ext: '.webm', mime: 'video/webm', videoCodecs: ['vp9'], audioCodecs: ['opus', 'vorbis'], faststart: false, subtitleCodec: 'webvtt' });
+    expect(webm).toMatchObject({ ext: '.webm', mime: 'video/webm', videoCodecs: ['vp9', 'av1'], audioCodecs: ['opus', 'vorbis'], faststart: false, subtitleCodec: 'webvtt' }); // MM120 + AV1
     expect(T.containers.find((c) => c.key === 'mov')!.audioCodecs).not.toContain('opus');
     expect(T.containers.find((c) => c.key === 'mov')!.audioCodecs).not.toContain('vorbis');
     expect(outputWarnings({ container: 'mp4', videoCodec: 'h264', audioCodec: 'opus' })).toEqual(['apple_incompatible']);
@@ -157,5 +161,61 @@ describe('MM119 rows (Opus, Vorbis, VP9, WebM, .opus, embedded subtitles)', () =
   it('the exports panel names the new codecs', () => {
     expect(outputHumanLabel({ container: 'webm', videoCodec: 'vp9', audioCodec: 'opus', audioBitrate: 96 })).toBe('WEBM · VP9 · Opus 96k');
     expect(outputHumanLabel({ container: 'opus', videoCodec: 'none', audioCodec: 'opus', audioBitrate: 64, audioChannels: 1 })).toBe('OPUS · mono');
+  });
+});
+
+const PRO = [...PREMIUM, 'flac', 'av1', 'prores', 'pcm_s24le'];
+
+describe('MM120 Pro rows (AV1, ProRes 422, FLAC, 24-bit PCM)', () => {
+  it('rows: AV1 in MP4/WebM/MKV, ProRes MOV only with PCM only, FLAC in MKV and .flac, 24-bit in MOV/MKV/WAV', () => {
+    const c = (k: string) => T.containers.find((x) => x.key === k)!;
+    expect(c('mp4').videoCodecs).toContain('av1');
+    expect(c('webm').videoCodecs).toEqual(['vp9', 'av1']);
+    expect(c('mov').videoCodecs).toContain('prores');
+    expect(c('mp4').videoCodecs).not.toContain('prores');
+    expect(c('mkv').videoCodecs).not.toContain('prores');
+    expect(c('flac')).toMatchObject({ ext: '.flac', mime: 'audio/flac', audioOnly: true, audioCodecs: ['flac'] });
+    expect(c('wav').audioCodecs).toEqual(['pcm_s16le', 'pcm_s24le']);
+    expect(audioCodecsFor('mov', 'prores')).toEqual(['pcm_s24le', 'pcm_s16le']);
+    expect(audioCodecsFor('mov', 'h264')).toEqual(['aac', 'pcm_s16le', 'pcm_s24le']);
+    for (const tok of ['av1', 'prores', 'flac', 'pcm_s24le']) expect(T.minTier[tok]).toBe('pro');
+  });
+  it('picking ProRes refits MOV audio to 24-bit PCM, greys AAC "not with ProRes 422"', () => {
+    expect(fitChoice({ container: 'mov', videoCodec: 'prores', audioCodec: 'aac', audioBitrate: 192, audioChannels: 2 })).toEqual({
+      container: 'mov', videoCodec: 'prores', audioCodec: 'pcm_s24le', audioBitrate: 0, audioChannels: 2,
+    });
+    const audio = codecOptions('audio', 'mov', access(PRO, true, 'pro'), T, 'prores');
+    expect(audio.find((o) => o.value === 'aac')).toMatchObject({ valid: false, invalidBecause: 'prores' });
+    expect(audio.find((o) => o.value === 'opus')).toMatchObject({ valid: false, invalidBecause: 'mov' });
+    expect(audio.find((o) => o.value === 'pcm_s24le')).toMatchObject({ valid: true, lock: null });
+  });
+  it('premium: Pro presets stay listed, locked with the Pro badge (the first token Premium lacks)', () => {
+    const rows = presetOptions(access(PREMIUM, true, 'premium'));
+    const lock = Object.fromEntries(rows.map((r) => [r.preset.key, r.lock]));
+    expect(lock.mp4_av1).toEqual({ option: 'av1', required: 'pro' });
+    expect(lock.webm_av1_opus).toEqual({ option: 'av1', required: 'pro' });
+    expect(lock.mov_prores).toEqual({ option: 'prores', required: 'pro' });
+    expect(lock.audio_flac).toEqual({ option: 'flac', required: 'pro' });
+    expect(lock.audio_wav24).toEqual({ option: 'pcm_s24le', required: 'pro' });
+    expect(presetOptions(access(PRO, true, 'pro')).every((r) => r.lock === null)).toBe(true);
+  });
+  it('AV1 carries the playback warning; labels', () => {
+    expect(outputWarnings({ container: 'mp4', videoCodec: 'av1', audioCodec: 'aac' })).toEqual(['av1_playback']);
+    expect(outputWarnings({ container: 'webm', videoCodec: 'av1', audioCodec: 'opus' })).toEqual(['apple_incompatible', 'av1_playback']);
+    expect(outputLabel({ container: 'mov', videoCodec: 'prores', audioCodec: 'pcm_s24le' })).toBe('mov_prores_pcm_s24le');
+    expect(outputHumanLabel({ container: 'mov', videoCodec: 'prores', audioCodec: 'pcm_s24le' })).toBe('MOV · ProRes 422 · PCM 24-bit');
+    expect(outputHumanLabel({ container: 'flac', videoCodec: 'none', audioCodec: 'flac' })).toBe('FLAC');
+  });
+  it('size estimate: ProRes ~147 Mb/s at 1080p30 (scaled by pixels x fps) + 24-bit PCM; none for constant quality', () => {
+    const prores = { container: 'mov', videoCodec: 'prores', audioCodec: 'pcm_s24le', audioBitrate: 0, audioChannels: 2 };
+    const minute = outputEstimateBytes(prores, { width: 1920, height: 1080, fps: 30, seconds: 60 })!;
+    expect(minute).toBe(Math.floor(((147000 + 2304) * 1000) / 8 * 60)); // ≈ 1.12 GB, the API's StudioOutputEstimateBytes
+    const uhd = outputEstimateBytes(prores, { width: 3840, height: 2160, fps: 30, seconds: 60 })!;
+    expect(uhd / minute).toBeGreaterThan(3.9);
+    expect(outputEstimateBytes(prores, { width: 3840, height: 2160, fps: 30, seconds: 120 })!).toBeGreaterThan(LARGE_EXPORT_BYTES);
+    expect(outputEstimateBytes({ ...prores, audioChannels: 1 }, { width: 1920, height: 1080, fps: 30, seconds: 60 })).toBe(minute - (1152 * 1000) / 8 * 60);
+    expect(outputEstimateBytes({ container: 'mp4', videoCodec: 'av1', audioCodec: 'aac', audioBitrate: 192, audioChannels: 2 }, { width: 1920, height: 1080, fps: 30, seconds: 60 })).toBeNull();
+    expect(outputEstimateBytes({ container: 'flac', videoCodec: 'none', audioCodec: 'flac', audioBitrate: 0, audioChannels: 2 }, { width: 0, height: 0, fps: 0, seconds: 60 })).toBeNull();
+    expect(outputEstimateBytes({ container: 'wav', videoCodec: 'none', audioCodec: 'pcm_s24le', audioBitrate: 0, audioChannels: 2 }, { width: 0, height: 0, fps: 0, seconds: 10 })).toBe(2304 * 125 * 10);
   });
 });
