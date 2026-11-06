@@ -23,6 +23,18 @@ export interface ChangelogEntry {
 }
 
 export const CHANGELOG: ChangelogEntry[] = [
+  // MM119: Opus, Vorbis, WebM/VP9, .opus audio-only, embedded subtitle tracks, Queued.
+  {
+    id: '2026-11-06-darkroom-webm-opus-embedded-captions',
+    date: '2026-11-06',
+    title: 'Darkroom exports WebM and Opus, with caption tracks you can turn on and off',
+    body: 'Premium and Pro can now export WebM with VP9 video and Opus audio, the pair browsers play natively and the best choice for embedding a video on a website. Opus also works in MKV and MP4 (Apple apps will not play Opus, so the dialog says so), Vorbis is available in WebM and MKV, and an audio-only .opus file is the smallest audio export at the same quality: 96 kbps mono suits a spoken podcast. A new Embedded captions choice puts your captions in the file as a subtitle track that viewers switch on and off in VLC, QuickTime, phones and browsers; it is plain text, so caption styling and animation still need Burn into video. VP9 encodes on the server CPU, so a WebM export may show Queued for a moment while an encoder frees up; it starts on its own and you can leave the page. Medi knows the new formats: ask it to set up an export for your website, a small audio file, or subtitles people can turn off.',
+    tags: ['new'],
+    links: [
+      { label: 'Open Darkroom', href: '/tools/content-studio' },
+      { label: 'Compare plans', href: '/pricing' },
+    ],
+  },
   // MM118: Darkroom output model (container x video x audio), MOV + MKV, Advanced, Medi prefill.
   {
     id: '2026-11-05-darkroom-export-formats',

@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "Nouveau",
-    "tagline": "Montez, superposez et mixez vidéo et audio sur une timeline multipiste, puis exportez en MP4, MOV ou MKV. Un éditeur façon Premiere Pro, directement dans votre navigateur.",
+    "tagline": "Montez, superposez et mixez vidéo et audio sur une timeline multipiste, puis exportez en MP4, MOV, WebM ou MKV. Un éditeur façon Premiere Pro, directement dans votre navigateur.",
     "backToTools": "Retour aux outils",
     "slots": {
       "mediaBin": {
@@ -500,8 +500,10 @@
       "captionsNone": "Aucun",
       "captionsBurnIn": "Incruster dans la vidéo",
       "captionsSidecar": "Fichiers séparés (.srt + .vtt)",
+      "captionsEmbedded": "Piste intégrée (activable/désactivable)",
       "captionsHint": "L'option fichiers séparés télécharge les sous-titres à côté de votre vidéo au lieu de les incruster.",
       "captionsEmpty": "Ce projet n'a pas encore de sous-titres.",
+      "captionsEmbeddedHint": "Les pistes intégrées sont du texte brut : le style et l'animation ne sont conservés qu'en incrustation.",
       "downloadFile": "Télécharger le {{ext}}",
       "downloadCaptions": "Télécharger les sous-titres (.srt + .vtt)",
       "advanced": "Avancé",
@@ -523,9 +525,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (deux fois plus léger)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (montage Apple, plus léger)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (sites web)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (archivage)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (archivage, audio plus léger)",
       "preset_audio_mp3": "Audio seul · MP3",
       "preset_audio_wav": "Audio seul · WAV",
+      "preset_audio_opus": "Audio seul · Opus (le plus léger)",
       "warning_apple_incompatible": "QuickTime, Photos et l'iPhone n'ouvriront pas ce fichier.",
       "warning_no_browser_preview": "Les navigateurs ne peuvent pas lire ce fichier ; ouvrez-le dans VLC ou un logiciel de montage."
     },
@@ -656,8 +661,10 @@
       "expired": "Ce fichier a dépassé sa durée de conservation. Relancez le rendu pour le récupérer.",
       "hostDownload": "Téléchargez depuis votre brouillon dans CreaTV",
       "status_running": "Rendu en cours",
+      "status_queued": "En file d'attente",
       "status_completed": "Terminé",
       "status_failed": "Échec",
+      "queuedHint": "En attente d'un encodeur libre. L'export démarre tout seul ; vous pouvez quitter la page.",
       "error_generic": "Le rendu a échoué.",
       "error_timeout": "Le rendu a pris trop de temps et a été arrêté.",
       "error_unsupported": "Ce serveur ne peut pas produire ce format.",

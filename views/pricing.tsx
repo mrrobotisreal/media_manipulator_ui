@@ -51,17 +51,35 @@ interface Row {
 
 const count = (n: number, t: T) => (n < 0 ? t('interface:pricing.values.unlimited') : `${n}`);
 
-/** "MP4 (H.264, H.265), MOV (…), MKV (…), MP3, WAV · Advanced settings" from a tier's tokens. */
-export function studioFormatsSummary(formats: readonly string[], advanced: boolean, advancedLabel: string): string {
+/**
+ * "MP4 (H.264, H.265), MOV (…), WebM (VP9), MKV (…), MP3, WAV, Opus · Opus, Vorbis audio ·
+ * Embedded captions · Advanced settings" from a tier's tokens. MM119: audio codecs beyond
+ * the universal AAC/PCM/MP3 and the embedded captions token get their own segment.
+ */
+export function studioFormatsSummary(
+  formats: readonly string[],
+  advanced: boolean,
+  advancedLabel: string,
+  labels: { audio?: (codecs: string) => string; embedded?: string } = {},
+): string {
   const have = new Set(formats);
+  const name = (key: string) => (key === 'webm' ? 'WebM' : key === 'opus' ? 'Opus' : key.toUpperCase());
   const parts = STATIC_STUDIO_OUTPUTS.containers
     .filter((c) => have.has(c.key))
     .map((c) => {
-      if (c.audioOnly) return c.key.toUpperCase();
+      if (c.audioOnly) return name(c.key);
       const codecs = c.videoCodecs.filter((v) => have.has(v)).map((v) => CODEC_NAMES[v] ?? v);
-      return codecs.length ? `${c.key.toUpperCase()} (${codecs.join(', ')})` : c.key.toUpperCase();
+      return codecs.length ? `${name(c.key)} (${codecs.join(', ')})` : name(c.key);
     });
-  return advanced ? `${parts.join(', ')} · ${advancedLabel}` : parts.join(', ');
+  const segments = [parts.join(', ')];
+  const extraAudio = STATIC_STUDIO_OUTPUTS.codecs
+    .filter((c) => c.kind === 'audio' && !['aac', 'pcm_s16le', 'mp3'].includes(c.key) && have.has(c.key))
+    .map((c) => CODEC_NAMES[c.key] ?? c.key);
+  // ("opus" is one token: the .opus container and the Opus codec, like mp3.)
+  if (extraAudio.length && labels.audio) segments.push(labels.audio(extraAudio.join(', ')));
+  if (have.has('subs_embedded') && labels.embedded) segments.push(labels.embedded);
+  if (advanced) segments.push(advancedLabel);
+  return segments.join(' · ');
 }
 
 /**
@@ -96,7 +114,11 @@ const ROWS: Row[] = [
     // MM118: the Darkroom output formats each plan exports, from the served token set and the
     // output table (container names and codecs are universal, so only "Advanced" is copy).
     key: 'studioFormats',
-    render: (l, t) => studioFormatsSummary(l.studioFormats ?? [], !!l.studioAdvanced, t('interface:pricing.values.studioAdvanced')),
+    render: (l, t) =>
+      studioFormatsSummary(l.studioFormats ?? [], !!l.studioAdvanced, t('interface:pricing.values.studioAdvanced'), {
+        audio: (codecs) => t('interface:pricing.values.studioAudio', { values: { codecs } }),
+        embedded: t('interface:pricing.values.studioEmbeddedCaptions'),
+      }),
     served: (l) => Array.isArray(l.studioFormats),
   },
   {

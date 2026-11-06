@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "Novità",
-    "tagline": "Monta, sovrapponi e mixa video e audio su una timeline multitraccia, poi esporta in MP4, MOV o MKV. Un editor in stile Premiere Pro, direttamente nel browser.",
+    "tagline": "Monta, sovrapponi e mixa video e audio su una timeline multitraccia, poi esporta in MP4, MOV, WebM o MKV. Un editor in stile Premiere Pro, direttamente nel browser.",
     "backToTools": "Torna agli strumenti",
     "slots": {
       "mediaBin": {
@@ -500,8 +500,10 @@
       "captionsNone": "Nessuno",
       "captionsBurnIn": "Impressi nel video",
       "captionsSidecar": "File separati (.srt + .vtt)",
+      "captionsEmbedded": "Traccia incorporata (attivabile/disattivabile)",
       "captionsHint": "Con i file separati scarichi i sottotitoli accanto al video invece di imprimerli.",
       "captionsEmpty": "Questo progetto non ha ancora sottotitoli.",
+      "captionsEmbeddedHint": "Le tracce incorporate sono testo semplice: stile e animazione restano solo se impressi nel video.",
       "downloadFile": "Scarica {{ext}}",
       "downloadCaptions": "Scarica i sottotitoli (.srt + .vtt)",
       "advanced": "Avanzate",
@@ -523,9 +525,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (metà dimensione)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (montaggio Apple, più leggero)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (siti web)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (archivio)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (archivio, audio più leggero)",
       "preset_audio_mp3": "Solo audio · MP3",
       "preset_audio_wav": "Solo audio · WAV",
+      "preset_audio_opus": "Solo audio · Opus (il più leggero)",
       "warning_apple_incompatible": "QuickTime, Foto e iPhone non aprono questo file.",
       "warning_no_browser_preview": "I browser non possono riprodurre questo file; aprilo in VLC o in un editor video."
     },
@@ -656,8 +661,10 @@
       "expired": "Questo file ha superato il periodo di conservazione. Esegui di nuovo il rendering per recuperarlo.",
       "hostDownload": "Scarica dalla tua bozza su CreaTV",
       "status_running": "Rendering",
+      "status_queued": "In coda",
       "status_completed": "Completato",
       "status_failed": "Non riuscito",
+      "queuedHint": "In attesa di un encoder libero. Parte da solo; puoi lasciare la pagina.",
       "error_generic": "Il rendering non è riuscito.",
       "error_timeout": "Il rendering ha richiesto troppo tempo ed è stato interrotto.",
       "error_unsupported": "Questo server non può produrre quel formato.",

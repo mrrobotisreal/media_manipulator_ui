@@ -4,7 +4,7 @@ import React from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Download, Loader2, Upload, Send } from 'lucide-react';
+import { Download, Loader2, Lock, Upload, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,18 +27,24 @@ import { useQueryClient } from '@tanstack/react-query';
 import { exportsQueryKey } from '@/lib/useStudioExports';
 import {
   DEFAULT_EXPORT_CHOICES,
+  EMBEDDED_SUBS_TOKEN,
   buildExportRequest,
   choiceLabel,
   choiceOutput,
   effectiveCaptionsMode,
+  embeddedSubtitleCodec,
   exportMode,
+  fitCaptionsMode,
   formatExtension,
   resolutionLabel,
   resolutionOptions,
   sidecarFileNames,
   type ExportPrefill,
 } from '@/lib/studio/exportOptions';
-import { defaultPresetKey, isAudioOnlyContainer, presetByKey, presetChoice } from '@/lib/studio/studioOutputs';
+import { defaultPresetKey, isAudioOnlyContainer, lockFor, presetByKey, presetChoice } from '@/lib/studio/studioOutputs';
+import { Badge } from '@/components/ui/badge';
+import { publishLimitRefusal } from '@/lib/auth/quotaBus';
+import type { Tier } from '@/lib/auth/accountApi';
 import { useExportOptions } from '@/lib/studio/useExportOptions';
 import { ExportOutputPicker } from './export-output-picker';
 import { activationEvents, analytics, EVENTS, markJobStarted, takeJobDuration } from '@/lib/analytics';
@@ -67,7 +73,7 @@ const exportFormSchema = z.object({
     audioChannels: z.number().int().min(1).max(2),
   }),
   resolution: z.number().int().min(0),
-  captionsMode: z.enum(['none', 'burn_in', 'sidecar']),
+  captionsMode: z.enum(['none', 'burn_in', 'sidecar', 'embedded']),
 });
 type ExportFormValues = z.infer<typeof exportFormSchema>;
 
@@ -335,7 +341,9 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
       return;
     }
     try {
-      const captionsMode = effectiveCaptionsMode(values.captionsMode, hasCaptions);
+      // MM119: an `embedded` choice left over from a video container falls back to sidecar
+      // when the output cannot carry a subtitle track (the request builder does the same).
+      const captionsMode = fitCaptionsMode(effectiveCaptionsMode(values.captionsMode, hasCaptions), choiceOutput(values, outputTable).container, outputTable);
       const res = await startExport(buildExportRequest({ ...values, captionsMode }, exportDepth, outputTable));
       const out = choiceOutput(values, outputTable);
       const audioOnly = exportDepth && isAudioOnlyContainer(out.container, outputTable);
@@ -430,9 +438,39 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
   const watchedOutput = useWatch({ control: form.control, name: 'output' });
   const watchedChoice = choiceOutput({ mode: watchedMode, outputPreset: watchedPreset, output: watchedOutput }, outputTable);
   const audioFormat = isAudioOnlyContainer(watchedChoice.container, outputTable);
+  // MM119 embedded captions: offered only when the container carries a subtitle track,
+  // locked (visible, with the plan badge) when the caller's plan lacks subs_embedded.
+  const watchedCaptions = useWatch({ control: form.control, name: 'captionsMode' });
+  const subsCodec = embeddedSubtitleCodec(watchedChoice.container, outputTable);
+  const embeddedLock = lockFor([EMBEDDED_SUBS_TOKEN], outputAccess);
+  React.useEffect(() => {
+    if (watchedCaptions === 'embedded' && (!subsCodec || embeddedLock)) form.setValue('captionsMode', 'sidecar');
+  }, [watchedCaptions, subsCodec, embeddedLock, form]);
+  const onEmbeddedLocked = () => {
+    if (!embeddedLock) return;
+    const required = embeddedLock.required === 'free' || embeddedLock.required === 'premium' || embeddedLock.required === 'pro' ? embeddedLock.required : undefined;
+    if (required) {
+      analytics.track(
+        EVENTS.STUDIO_EXPORT_FORMAT_LOCKED,
+        { option: EMBEDDED_SUBS_TOKEN, required, tier: (outputAccess.tier ?? 'anonymous') as Tier, host: studioHost() },
+        { feature: 'studio' },
+      );
+    }
+    publishLimitRefusal({
+      error: 'format_not_in_plan',
+      limitKey: 'studio_format',
+      option: EMBEDDED_SUBS_TOKEN,
+      required,
+      upgradePath: outputAccess.tier === 'anonymous' || required === 'free' ? 'signup' : required,
+      fromClick: true,
+    });
+  };
   const resOptions = resolutionOptions(canvasHeight, maxOutputHeight);
   const busy = saveMutation.isPending || isStarting;
-  const rendering = !!jobId && job?.status !== 'completed' && job?.status !== 'failed';
+  const inFlight = !!jobId && job?.status !== 'completed' && job?.status !== 'failed';
+  // MM119: accepted and charged, waiting for a server CPU encode slot (VP9).
+  const queued = inFlight && !!job?.queued;
+  const rendering = inFlight && !queued;
   const done = job?.status === 'completed';
 
   return (
@@ -589,7 +627,17 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>{t('contentStudio.export.captions')}</FormLabel>
-                      <Select value={field.value} onValueChange={field.onChange} disabled={!hasCaptions}>
+                      <Select
+                        value={field.value}
+                        onValueChange={(v) => {
+                          if (v === '__locked__:embedded') {
+                            onEmbeddedLocked();
+                            return;
+                          }
+                          field.onChange(v);
+                        }}
+                        disabled={!hasCaptions}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue />
@@ -599,10 +647,25 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
                           <SelectItem value="none">{t('contentStudio.export.captionsNone')}</SelectItem>
                           <SelectItem value="burn_in">{t('contentStudio.export.captionsBurnIn')}</SelectItem>
                           <SelectItem value="sidecar">{t('contentStudio.export.captionsSidecar')}</SelectItem>
+                          {subsCodec && (
+                            <SelectItem value={embeddedLock ? '__locked__:embedded' : 'embedded'} data-testid="captions-embedded">
+                              <span className={embeddedLock ? 'text-muted-foreground' : undefined}>{t('contentStudio.export.captionsEmbedded')}</span>
+                              {embeddedLock?.required && (
+                                <Badge variant="outline" className="ml-2 gap-1 text-[10px]">
+                                  <Lock aria-hidden />
+                                  {embeddedLock.required === 'pro' ? 'Pro' : embeddedLock.required === 'premium' ? 'Premium' : t('contentStudio.export.planFree')}
+                                </Badge>
+                              )}
+                            </SelectItem>
+                          )}
                         </SelectContent>
                       </Select>
                       <p className="text-[11px] text-muted-foreground">
-                        {hasCaptions ? t('contentStudio.export.captionsHint') : t('contentStudio.export.captionsEmpty')}
+                        {!hasCaptions
+                          ? t('contentStudio.export.captionsEmpty')
+                          : watchedCaptions === 'embedded'
+                            ? t('contentStudio.export.captionsEmbeddedHint')
+                            : t('contentStudio.export.captionsHint')}
                       </p>
                       <FormMessage />
                     </FormItem>
@@ -645,6 +708,16 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
           </Form>
         ) : (
           <div className="space-y-4">
+            {queued && (
+              <div className="flex items-start gap-2 text-sm text-muted-foreground" data-testid="export-queued">
+                <Loader2 className="mt-0.5 w-4 h-4 animate-spin" />
+                <span>
+                  <span className="font-medium text-foreground">{t('contentStudio.exports.status_queued')}</span>
+                  {' · '}
+                  {t('contentStudio.exports.queuedHint')}
+                </span>
+              </div>
+            )}
             {rendering && (
               <div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">

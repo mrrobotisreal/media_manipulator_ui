@@ -24,6 +24,8 @@ export interface StudioOutputContainer {
   videoCodecs: string[];
   audioCodecs: string[];
   faststart: boolean;
+  /** MM119: the embedded subtitle codec (srt | mov_text | webvtt); absent = no track (audio-only). */
+  subtitleCodec?: string;
 }
 
 export interface StudioOutputCodec {
@@ -300,9 +302,12 @@ export function defaultPresetKey(access: StudioOutputAccess, t: StudioOutputTabl
 export const CODEC_NAMES: Record<string, string> = {
   h264: 'H.264',
   hevc: 'H.265',
+  vp9: 'VP9',
   aac: 'AAC',
   pcm_s16le: 'PCM 16-bit',
   mp3: 'MP3',
+  opus: 'Opus',
+  vorbis: 'Vorbis',
 };
 
 export function outputHumanLabel(c: Partial<OutputChoice> & { container: string; videoCodec?: string; audioCodec?: string }): string {

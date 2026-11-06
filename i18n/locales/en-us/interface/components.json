@@ -634,7 +634,7 @@
       "height": "Premium outputs up to {{value}}p.",
       "projects": "Premium keeps up to {{value}} saved projects.",
       "projectsUnlimited": "Premium has no saved-project limit.",
-      "studioFormats": "Premium adds MOV, MKV and Advanced export settings."
+      "studioFormats": "Premium adds MOV, WebM, MKV, Opus audio, embedded caption tracks and Advanced export settings."
     },
     "noHigherPlan": "No plan raises this limit further. Lower the setting to continue.",
     "proNote": "Upgrading charges the prorated difference today; your renewal date stays the same.",

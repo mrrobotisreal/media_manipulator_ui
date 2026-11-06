@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "नया",
-    "tagline": "मल्टी-ट्रैक टाइमलाइन पर वीडियो और ऑडियो को एडिट, लेयर और मिक्स करें — फिर MP4, MOV या MKV एक्सपोर्ट करें। Premiere Pro जैसा एडिटर, सीधे आपके ब्राउज़र में।",
+    "tagline": "मल्टी-ट्रैक टाइमलाइन पर वीडियो और ऑडियो को एडिट, लेयर और मिक्स करें — फिर MP4, MOV, WebM या MKV एक्सपोर्ट करें। Premiere Pro जैसा एडिटर, सीधे आपके ब्राउज़र में।",
     "backToTools": "टूल्स पर वापस जाएँ",
     "slots": {
       "mediaBin": {
@@ -500,8 +500,10 @@
       "captionsNone": "कोई नहीं",
       "captionsBurnIn": "वीडियो में बर्न करें",
       "captionsSidecar": "साइडकार फ़ाइलें (.srt + .vtt)",
+      "captionsEmbedded": "एम्बेडेड ट्रैक (देखते समय चालू/बंद)",
       "captionsHint": "साइडकार कैप्शन फ़ाइलों को वीडियो में बर्न करने के बजाय उसके साथ अलग से डाउनलोड करता है।",
       "captionsEmpty": "इस प्रोजेक्ट में अभी कोई कैप्शन नहीं है।",
+      "captionsEmbeddedHint": "एम्बेडेड ट्रैक सादा टेक्स्ट होते हैं: स्टाइल और एनिमेशन सिर्फ़ बर्न-इन करने पर ही बचते हैं।",
       "downloadFile": "{{ext}} डाउनलोड करें",
       "downloadCaptions": "कैप्शन डाउनलोड करें (.srt + .vtt)",
       "advanced": "एडवांस्ड",
@@ -523,9 +525,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (आधा साइज़)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (Apple एडिटिंग, छोटा)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (वेबसाइट के लिए)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (आर्काइव)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (आर्काइव, छोटा ऑडियो)",
       "preset_audio_mp3": "सिर्फ़ ऑडियो · MP3",
       "preset_audio_wav": "सिर्फ़ ऑडियो · WAV",
+      "preset_audio_opus": "सिर्फ़ ऑडियो · Opus (सबसे छोटा)",
       "warning_apple_incompatible": "QuickTime, Photos और iPhone यह फ़ाइल नहीं खोलेंगे।",
       "warning_no_browser_preview": "ब्राउज़र यह फ़ाइल नहीं चला सकते; इसे VLC या किसी वीडियो एडिटर में खोलें।"
     },
@@ -656,8 +661,10 @@
       "expired": "यह फ़ाइल अपनी रिटेंशन अवधि पार कर चुकी है। इसे वापस पाने के लिए फिर से रेंडर करें।",
       "hostDownload": "CreaTV में अपने ड्राफ़्ट से डाउनलोड करें",
       "status_running": "रेंडर हो रहा है",
+      "status_queued": "कतार में",
       "status_completed": "पूरा",
       "status_failed": "विफल",
+      "queuedHint": "किसी खाली एनकोडर का इंतज़ार है। यह अपने आप शुरू होगा; आप पेज छोड़ सकते हैं।",
       "error_generic": "रेंडर विफल रहा।",
       "error_timeout": "रेंडर में बहुत समय लगा और उसे रोक दिया गया।",
       "error_unsupported": "यह सर्वर वह फ़ॉर्मैट नहीं बना सकता।",

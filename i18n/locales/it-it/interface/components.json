@@ -634,7 +634,7 @@
       "height": "Premium produce output fino a {{value}}p.",
       "projects": "Premium conserva fino a {{value}} progetti salvati.",
       "projectsUnlimited": "Premium non ha limiti di progetti salvati.",
-      "studioFormats": "Premium aggiunge MOV, MKV e le impostazioni di esportazione avanzate."
+      "studioFormats": "Premium aggiunge MOV, WebM, MKV, l'audio Opus, le tracce di sottotitoli incorporate e le impostazioni di esportazione avanzate."
     },
     "noHigherPlan": "Nessun piano alza ulteriormente questo limite. Riduci l'impostazione per continuare.",
     "proNote": "Il passaggio addebita oggi la differenza proporzionale; la data di rinnovo resta la stessa.",

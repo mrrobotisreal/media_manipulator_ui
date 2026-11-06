@@ -759,9 +759,9 @@ function studioDocs(): Array<[string, string]> {
       ...cap,
       '### Export',
       ...studioExportLines(),
-      `Output heights: ${STUDIO_EXPORT_RESOLUTIONS.map((h) => (h === 0 ? 'canvas' : `${h}p`)).join(', ')}. Captions: none, burn in or sidecar (SRT + VTT files next to the video). Exports render on the server and count toward the plan's Darkroom export allowance, one per export whatever the format.`,
+      `Output heights: ${STUDIO_EXPORT_RESOLUTIONS.map((h) => (h === 0 ? 'canvas' : `${h}p`)).join(', ')}. Captions: none, burn in, sidecar (SRT + VTT files) or embedded (a track viewers toggle, in MP4/MOV/MKV/WebM; plain text, so styling and animation only survive burn-in; not in audio-only files). Exports render on the server, one allowance unit each whatever the format; VP9 can wait as Queued for an encoder.`,
       'Canvas: projects up to 4K at 24, 30 or 60 fps; vertical 9:16 for Shorts/Reels/TikTok, 1:1 and 4:5 for feeds, 16:9 for YouTube.',
-    ], ['timeline', 'track', 'tracks', 'split', 'cut', 'trim', 'ripple delete', 'speed', 'slow motion', 'speed ramp', 'freeze frame', 'marker', 'markers', 'captions', 'subtitles', 'srt', 'vtt', 'burn in', 'export', 'render', 'mp4', 'mov', 'mkv', 'h.265', 'hevc', 'h.264', 'final cut', 'imovie', 'wav', 'mp3', 'export format', 'codec', 'container', 'vertical video', 'aspect ratio', 'shorts', 'reels', 'tiktok', 'canvas']),
+    ], ['timeline', 'track', 'tracks', 'split', 'cut', 'trim', 'ripple delete', 'speed', 'slow motion', 'speed ramp', 'freeze frame', 'marker', 'markers', 'captions', 'subtitles', 'srt', 'vtt', 'burn in', 'export', 'render', 'mp4', 'mov', 'mkv', 'h.265', 'hevc', 'h.264', 'final cut', 'imovie', 'wav', 'mp3', 'export format', 'codec', 'container', 'webm', 'vp9', 'opus', 'vorbis', 'embedded subtitles', 'closed captions', 'subtitle track', 'vertical video', 'aspect ratio', 'shorts', 'reels', 'tiktok', 'canvas']),
   );
 
   const sections = cheatSheetSections();
@@ -783,6 +783,7 @@ function studioDocs(): Array<[string, string]> {
 const STUDIO_WARNING_TEXT: Record<string, string> = {
   apple_incompatible: 'QuickTime, Photos and iPhone will not open it',
   no_browser_preview: 'a browser cannot play it inline',
+  plain_text_subtitles: 'an embedded caption track is plain text (styling and animation only survive burn-in)',
 };
 const STUDIO_PRESET_TEXT: Record<string, string> = {
   mp4_h264: 'plays everywhere: social, YouTube, messaging, the default',
@@ -790,8 +791,11 @@ const STUDIO_PRESET_TEXT: Record<string, string> = {
   mov_h264: 'Final Cut Pro, iMovie and other Apple editing',
   mov_hevc: 'Apple editing at half the size',
   mkv_hevc_aac: 'archive copies and media servers (Plex, VLC)',
+  webm_vp9_opus: 'website embeds (browsers play it natively)',
+  mkv_hevc_opus: 'archive with smaller audio',
   audio_mp3: 'podcasts and music, small files',
   audio_wav: 'uncompressed audio for further editing or mastering',
+  audio_opus: 'the smallest audio file; 96 kbps mono for a spoken podcast',
 };
 const PLAN_TEXT: Record<string, string> = { anonymous: 'everyone', free: 'a free account', premium: 'Premium', pro: 'Pro' };
 
@@ -810,20 +814,25 @@ export function studioExportLines(): string[] {
     const who = plan === 'anonymous' ? 'open to everyone' : `needs ${PLAN_TEXT[plan] ?? plan}`;
     lines.push(`- \`${p.key}\` (${outputHumanLabel({ container: p.container, videoCodec: p.videoCodec, audioCodec: p.audioCodec })}): ${STUDIO_PRESET_TEXT[p.key] ?? ''}; ${who}.`);
   }
-  const aac = t.codecs.find((c) => c.key === 'aac');
+  const rates = t.codecs
+    .filter((c) => c.kind === 'audio' && c.key !== 'mp3' && c.bitrates.length > 0)
+    .map((c) => `${c.key === 'aac' ? 'AAC and MP3' : codecName(c.key)}: ${c.bitrates.join(', ')} kbps, default ${c.defaultBitrate}`);
   lines.push(
-    `Advanced (needs ${PLAN_TEXT[t.advancedMinTier]}): pick the container, video and audio codec yourself (any valid combination above), audio bitrate (AAC and MP3: ${(aac?.bitrates ?? []).join(', ')} kbps, default ${aac?.defaultBitrate}; PCM has none) and stereo or mono. Video bitrate, keyframes and frame rate are not settable.`,
+    `Advanced (needs ${PLAN_TEXT[t.advancedMinTier]}): pick the container, video and audio codec yourself (any valid combination above), audio bitrate (${rates.join('; ')}; PCM has none) and stereo or mono. Video bitrate, keyframes and frame rate are not settable.`,
   );
   lines.push('Warnings shown under the picker:');
+  // One line per warning, listing every combination that shows it (MM119 grouped them).
+  const byWarning = new Map<string, string[]>();
   for (const w of t.warnings) {
     const where = [w.container?.toUpperCase(), w.videoCodec && codecName(w.videoCodec), w.audioCodec && `${codecName(w.audioCodec)} audio`].filter(Boolean).join(' with ');
-    lines.push(`- ${where}: ${STUDIO_WARNING_TEXT[w.warning] ?? w.warning}.`);
+    byWarning.set(w.warning, [...(byWarning.get(w.warning) ?? []), where]);
   }
+  for (const [warning, where] of byWarning) lines.push(`- ${where.join(', ')}: ${STUDIO_WARNING_TEXT[warning] ?? warning}.`);
   lines.push(
     `Plans (the server checks the live plan): ${Object.entries(t.minTier)
       .filter(([, plan]) => plan !== 'anonymous')
-      .map(([tok, plan]) => `${codecName(tok).toUpperCase() === tok.toUpperCase() ? tok.toUpperCase() : codecName(tok)} needs ${PLAN_TEXT[plan] ?? plan}`)
-      .join('; ')}. Everything else is open to everyone. Opus, WebM, AV1, ProRes and FLAC are not available yet.`,
+      .map(([tok, plan]) => `${tok === 'subs_embedded' ? 'an embedded caption track' : tok === 'webm' ? 'WebM' : codecName(tok).toUpperCase() === tok.toUpperCase() ? tok.toUpperCase() : codecName(tok)} needs ${PLAN_TEXT[plan] ?? plan}`)
+      .join('; ')}. Everything else is open to everyone. MOV never carries Opus or Vorbis (offer MKV, WebM or MP4). AV1, ProRes and FLAC are not available yet.`,
   );
   lines.push('Medi offers an export with suggest_action export and params; the dialog opens prefilled and the user presses Export. A choice above the plan is replaced by the nearest one the plan allows, with an upgrade note.');
   return lines;

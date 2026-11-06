@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "Novo",
-    "tagline": "Edite, sobreponha e misture vídeo e áudio numa linha temporal multipista e exporte em MP4, MOV ou MKV. Um editor ao estilo do Premiere Pro, diretamente no seu navegador.",
+    "tagline": "Edite, sobreponha e misture vídeo e áudio numa linha temporal multipista e exporte em MP4, MOV, WebM ou MKV. Um editor ao estilo do Premiere Pro, diretamente no seu navegador.",
     "backToTools": "Voltar às ferramentas",
     "slots": {
       "mediaBin": {
@@ -500,8 +500,10 @@
       "captionsNone": "Nenhumas",
       "captionsBurnIn": "Gravar no vídeo",
       "captionsSidecar": "Ficheiros separados (.srt + .vtt)",
+      "captionsEmbedded": "Faixa incorporada (liga e desliga)",
       "captionsHint": "A opção de ficheiros separados transfere os ficheiros de legendas junto com o vídeo, em vez de os gravar na imagem.",
       "captionsEmpty": "Este projeto ainda não tem legendas.",
+      "captionsEmbeddedHint": "As faixas incorporadas são texto simples: o estilo e a animação só se mantêm se forem gravados no vídeo.",
       "downloadFile": "Transferir {{ext}}",
       "downloadCaptions": "Transferir legendas (.srt + .vtt)",
       "advanced": "Avançado",
@@ -523,9 +525,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (metade do tamanho)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (edição Apple, mais pequeno)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (sites)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (arquivo)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (arquivo, áudio mais leve)",
       "preset_audio_mp3": "Só áudio · MP3",
       "preset_audio_wav": "Só áudio · WAV",
+      "preset_audio_opus": "Só áudio · Opus (o mais leve)",
       "warning_apple_incompatible": "O QuickTime, o Fotografias e o iPhone não abrem este ficheiro.",
       "warning_no_browser_preview": "Os navegadores não conseguem reproduzir este ficheiro; abra-o no VLC ou num editor de vídeo."
     },
@@ -656,8 +661,10 @@
       "expired": "Este ficheiro ultrapassou o período de retenção. Renderize novamente para o recuperar.",
       "hostDownload": "Transferir a partir do seu rascunho na CreaTV",
       "status_running": "A renderizar",
+      "status_queued": "Em fila",
       "status_completed": "Concluído",
       "status_failed": "Falhou",
+      "queuedHint": "À espera de um codificador livre. Começa sozinho; pode sair da página.",
       "error_generic": "A renderização falhou.",
       "error_timeout": "A renderização demorou demasiado tempo e foi interrompida.",
       "error_unsupported": "Este servidor não consegue produzir esse formato.",

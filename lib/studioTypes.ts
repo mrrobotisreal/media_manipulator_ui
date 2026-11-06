@@ -629,7 +629,8 @@ export type StudioExportFormat = z.infer<typeof studioExportFormatSchema>;
 export const studioOutputLabelSchema = z.string().min(1).max(40);
 
 /** One explicit captions choice per export (part 20). */
-export const studioCaptionsModeSchema = z.enum(['none', 'burn_in', 'sidecar']);
+// MM119: `embedded` muxes the cues as a plain-text subtitle stream (Premium+, video containers only).
+export const studioCaptionsModeSchema = z.enum(['none', 'burn_in', 'sidecar', 'embedded']);
 export type StudioCaptionsMode = z.infer<typeof studioCaptionsModeSchema>;
 
 /** The output-height ladder the server accepts (0 = the project's canvas). */

@@ -631,7 +631,7 @@
       "height": "Premium xuất tối đa {{value}}p.",
       "projects": "Premium lưu tối đa {{value}} dự án.",
       "projectsUnlimited": "Premium không giới hạn dự án được lưu.",
-      "studioFormats": "Premium bổ sung MOV, MKV và cài đặt xuất nâng cao."
+      "studioFormats": "Premium bổ sung MOV, WebM, MKV, âm thanh Opus, track phụ đề nhúng và cài đặt xuất nâng cao."
     },
     "noHigherPlan": "Không có gói nào nâng giới hạn này cao hơn. Hãy hạ cài đặt xuống để tiếp tục.",
     "proNote": "Nâng cấp sẽ tính phần chênh lệch theo tỷ lệ ngay hôm nay; ngày gia hạn của bạn không đổi.",

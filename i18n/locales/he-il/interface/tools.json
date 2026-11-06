@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "חדש",
-    "tagline": "ערכו, שכבו ומזגו וידאו ואודיו על טיימליין מרובה־רצועות — ואז ייצאו ל־MP4,‏ MOV או MKV. עורך בסגנון Premiere Pro, ישירות בדפדפן.",
+    "tagline": "ערכו, שכבו ומזגו וידאו ואודיו על טיימליין מרובה־רצועות — ואז ייצאו ל־MP4,‏ MOV,‏ WebM או MKV. עורך בסגנון Premiere Pro, ישירות בדפדפן.",
     "backToTools": "חזרה לכלים",
     "slots": {
       "mediaBin": {
@@ -510,8 +510,10 @@
       "captionsNone": "None",
       "captionsBurnIn": "Burn into video",
       "captionsSidecar": "Sidecar files (.srt + .vtt)",
+      "captionsEmbedded": "רצועה מוטמעת (מדליקים ומכבים בצפייה)",
       "captionsHint": "Sidecar downloads the caption files next to your video instead of burning them in.",
       "captionsEmpty": "This project has no captions yet.",
+      "captionsEmbeddedHint": "רצועות מוטמעות הן טקסט פשוט: עיצוב ואנימציה נשמרים רק כשצורבים את הכתוביות בווידאו.",
       "downloadFile": "Download {{ext}}",
       "downloadCaptions": "Download captions (.srt + .vtt)",
       "advanced": "מתקדם",
@@ -533,9 +535,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (חצי מהגודל)",
       "preset_mov_h264": "MOV · H.264 ‏(Final Cut,‏ iMovie)",
       "preset_mov_hevc": "MOV · H.265 (עריכה ב־Apple, קטן יותר)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (לאתרים)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (ארכיון)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (ארכיון, אודיו קטן יותר)",
       "preset_audio_mp3": "אודיו בלבד · MP3",
       "preset_audio_wav": "אודיו בלבד · WAV",
+      "preset_audio_opus": "אודיו בלבד · Opus (הקטן ביותר)",
       "warning_apple_incompatible": "‏QuickTime, ‏Photos ו־iPhone לא יפתחו את הקובץ הזה.",
       "warning_no_browser_preview": "דפדפנים לא יכולים לנגן את הקובץ הזה; פתחו אותו ב־VLC או בעורך וידאו."
     },
@@ -666,8 +671,10 @@
       "expired": "This file is past its retention window. Render again to get it back.",
       "hostDownload": "Download from your draft in CreaTV",
       "status_running": "Rendering",
+      "status_queued": "בתור",
       "status_completed": "Done",
       "status_failed": "Failed",
+      "queuedHint": "ממתין למקודד פנוי. הייצוא יתחיל לבד; אפשר לעזוב את הדף.",
       "error_generic": "The render failed.",
       "error_timeout": "The render took too long and was stopped.",
       "error_unsupported": "This server can't produce that format.",

@@ -152,6 +152,12 @@ describe('three-column pricing (MM40 decision 1)', () => {
     expect(cell('free')).toBe('MP4 (H.264, H.265), MP3, WAV');
     expect(cell('premium')).toBe('MP4 (H.264, H.265), MOV (H.264, H.265), MKV (H.264, H.265), MP3, WAV · Advanced settings');
     expect(html).toContain('Darkroom export formats');
+    // MM119: Premium's served set gains WebM, .opus, VP9, Vorbis and embedded captions.
+    const mm119 = [...anon, 'hevc', 'mov', 'mkv', 'webm', 'opus', 'vp9', 'vorbis', 'subs_embedded'];
+    const withMM119 = { ...fixture, tiers: fixture.tiers.map((x) => ({ ...x, limits: { ...x.limits, studioFormats: x.tier === 'premium' ? mm119 : sets[x.tier][0], studioAdvanced: sets[x.tier][1] } })) };
+    const html119 = renderToStaticMarkup(<PricingView data={withMM119} />);
+    const cell119 = html119.match(/data-tier="premium" data-row="studioFormats"><span[^>]*>([^<]*)</)?.[1];
+    expect(cell119).toBe('MP4 (H.264, H.265), MOV (H.264, H.265), MKV (H.264, H.265, VP9), WebM (VP9), MP3, WAV, Opus · Opus, Vorbis audio · Embedded captions · Advanced settings');
     // An API before MM118 hides the row.
     expect(renderToStaticMarkup(<PricingView data={fixture} />)).not.toContain('data-row="studioFormats"');
   });

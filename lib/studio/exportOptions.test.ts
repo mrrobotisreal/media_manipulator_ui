@@ -20,8 +20,12 @@ import {
   prefillFromParams,
   recordOutput,
   rerenderExportProps,
+  embeddedSubtitleCodec,
+  fitCaptionsMode,
+  isInFlight,
   type ExportChoices,
 } from './exportOptions';
+import { createMmBackend } from './studioBackend';
 import type { StudioExportRecord } from '@/lib/studioTypes';
 
 const out = (container: string, videoCodec: string, audioCodec: string, audioBitrate = 192, audioChannels = 2) => ({ container, videoCodec, audioCodec, audioBitrate, audioChannels });
@@ -232,5 +236,59 @@ describe('canvas presets', () => {
   it('maps a size back to a preset key or custom', () => {
     expect(canvasPresetKey(1080, 1350)).toBe('4:5');
     expect(canvasPresetKey(1000, 1000)).toBe('custom');
+  });
+});
+
+describe('MM119: embedded captions, Queued, new presets', () => {
+  it('embedded is sent as is for a video container and falls back to sidecar for audio-only', () => {
+    expect(buildExportRequest(choices({ outputPreset: 'webm_vp9_opus', captionsMode: 'embedded' }), true)).toMatchObject({ outputPreset: 'webm_vp9_opus', captionsMode: 'embedded' });
+    expect(buildExportRequest(choices({ outputPreset: 'mkv_hevc_opus', captionsMode: 'embedded' }), true)).toMatchObject({ outputPreset: 'mkv_hevc_opus', captionsMode: 'embedded' });
+    // Audio-only drops captions entirely (nothing to carry them).
+    expect(buildExportRequest(choices({ outputPreset: 'audio_opus', captionsMode: 'embedded' }), true)).toMatchObject({ outputPreset: 'audio_opus', captionsMode: 'none', resolution: 0 });
+    expect(fitCaptionsMode('embedded', 'opus')).toBe('sidecar');
+    expect(fitCaptionsMode('embedded', 'mov')).toBe('embedded');
+    expect(fitCaptionsMode('burn_in', 'opus')).toBe('burn_in');
+    expect(embeddedSubtitleCodec('mkv')).toBe('srt');
+    expect(embeddedSubtitleCodec('mp4')).toBe('mov_text');
+    expect(embeddedSubtitleCodec('webm')).toBe('webvtt');
+    expect(embeddedSubtitleCodec('wav')).toBeUndefined();
+  });
+  it('the legacy CreaTV body never carries the embedded mode', () => {
+    expect(buildExportRequest(choices({ captionsMode: 'embedded' }), false)).not.toHaveProperty('captionsMode');
+  });
+  it('new presets send outputPreset alone; a non-default Opus bitrate goes Advanced', () => {
+    expect(buildExportRequest(choices({ outputPreset: 'audio_opus' }), true)).toMatchObject({ outputPreset: 'audio_opus' });
+    const adv = buildExportRequest(choices({ mode: 'advanced', output: out('webm', 'vp9', 'opus', 96) }), true);
+    expect(adv).toMatchObject({ container: 'webm', videoCodec: 'vp9', audioCodec: 'opus', audioBitrate: 96 });
+    expect(adv).not.toHaveProperty('outputPreset');
+    expect(choiceLabel(choices({ outputPreset: 'webm_vp9_opus' }))).toBe('webm_vp9_opus');
+    expect(formatExtension('opus_none_opus')).toBe('opus');
+    expect(formatExtension('webm_vp9_vorbis')).toBe('webm');
+  });
+  it('Medi prefill keeps embedded and the new rows', () => {
+    expect(prefillFromParams({ preset: 'webm_vp9_opus', container: 'webm', videoCodec: 'vp9', audioCodec: 'opus', audioBitrate: 96, captionsMode: 'embedded' })).toMatchObject({
+      mode: 'advanced', output: out('webm', 'vp9', 'opus', 96), captionsMode: 'embedded',
+    });
+    expect(prefillFromParams({ preset: 'audio_opus' })).toMatchObject({ mode: 'preset', outputPreset: 'audio_opus' });
+    expect(prefillFromParams({ preset: 'mp4_h264', captionsMode: 'sidecar', upgrade: { required: 'premium', option: 'subs_embedded' } })).toMatchObject({
+      captionsMode: 'sidecar', upgrade: { required: 'premium', option: 'subs_embedded' },
+    });
+  });
+  it('a queued live job shows Queued (in flight, no progress) until the encoder starts', () => {
+    const [q] = mergeExportRows([rec()], { j1: { status: 'processing', progress: 0, queued: true } });
+    expect(q).toMatchObject({ displayStatus: 'queued', progress: 0, canDownload: false });
+    expect(isInFlight(q.displayStatus)).toBe(true);
+    expect(hasRunning([q])).toBe(true);
+    const [r] = mergeExportRows([rec()], { j1: { status: 'processing', progress: 12, queued: false } });
+    expect(r).toMatchObject({ displayStatus: 'running', progress: 12 });
+    // The embed protocol keeps its closed status list: queued is reported as running.
+    expect(exportHistorySummary([q]).entries[0].status).toBe('running');
+    expect(exportHistorySummary([q]).running).toBe(1);
+  });
+  it('the MM backend reads the API job currentStage "queued"', () => {
+    const be = createMmBackend();
+    expect(be.parseJob({ status: 'processing', progress: 0, currentStage: 'queued' })).toMatchObject({ status: 'processing', queued: true });
+    expect(be.parseJob({ status: 'processing', progress: 30 })).not.toHaveProperty('queued');
+    expect(be.parseJob({ status: 'completed', progress: 100, currentStage: 'queued' })).not.toHaveProperty('queued');
   });
 });

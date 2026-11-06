@@ -631,7 +631,7 @@
       "height": "Premiumなら最大{{value}}pで出力できます。",
       "projects": "Premiumならプロジェクトを{{value}}件まで保存できます。",
       "projectsUnlimited": "Premiumには保存プロジェクト数の上限がありません。",
-      "studioFormats": "PremiumではMOV、MKV、エクスポートの詳細設定が使えます。"
+      "studioFormats": "PremiumではMOV、WebM、MKV、Opus音声、埋め込み字幕トラック、エクスポートの詳細設定が使えます。"
     },
     "noHigherPlan": "この上限をさらに引き上げるプランはありません。続行するには設定値を下げてください。",
     "proNote": "アップグレードすると日割りの差額が本日請求されます。更新日は変わりません。",
