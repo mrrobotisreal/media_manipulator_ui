@@ -12,7 +12,8 @@ import { buildASS } from './ass';
  * checkout sits next to this repo, the op-schema pattern).
  */
 const DIR = join(process.cwd(), 'lib', 'studio', 'captions', 'goldens');
-const API_DIR = join(process.cwd(), '..', 'media_manipulator_api', 'internal', 'services', 'testdata', 'captions');
+// MM_API_CAPTIONS_DIR points at another API checkout (a worktree) for the identity check.
+const API_DIR = process.env.MM_API_CAPTIONS_DIR ?? join(process.cwd(), '..', 'media_manipulator_api', 'internal', 'services', 'testdata', 'captions');
 const names = readdirSync(DIR).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)).sort();
 
 interface Fixture {
@@ -24,8 +25,8 @@ interface Fixture {
 }
 
 describe('caption ASS goldens (TS = Go, byte for byte)', () => {
-  it('has the decision-4 fixture count', () => {
-    expect(names.length).toBeGreaterThanOrEqual(12);
+  it('has the fixture count (MM121 18 + MM122 12)', () => {
+    expect(names.length).toBeGreaterThanOrEqual(30);
   });
 
   for (const name of names) {
