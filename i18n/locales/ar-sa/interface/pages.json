@@ -1874,7 +1874,8 @@
       "photoPresets": "إعدادات {{brand}} المسبقة المحفوظة",
       "assistantGuide": "دليل {{medi}} للموقع",
       "assistantTurns": "تعديلات مساعد {{medi}} في اليوم",
-      "studioFormats": "تنسيقات تصدير Darkroom"
+      "studioFormats": "تنسيقات تصدير Darkroom",
+      "studioAnimatedCaptions": "ترجمات Darkroom المتحركة"
     },
     "values": {
       "yes": "مضمّن",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "إعدادات متقدمة",
       "studioAudio": "صوت {{codecs}}",
       "studioEmbeddedCaptions": "ترجمة مضمّنة",
-      "studioLossless": "دون فقدان: {{codecs}}"
+      "studioLossless": "دون فقدان: {{codecs}}",
+      "captionLooksGuest": "3 أنماط للترجمة"
     },
     "unavailableTitle": "تفاصيل الباقات غير متاحة مؤقتًا",
     "unavailableBody": "تعذّر الوصول إلى خدمة الباقات. لا تزال كل الأدوات تعمل؛ أعد تحميل الصفحة بعد قليل لعرض المقارنة.",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "متى تستخدمه",
     "whenToUseBody": "الجأ إلى Darkroom عندما لا يكفي ملف واحد: دمج عدة مقاطع، أو إضافة عناوين أو موسيقى خلفية، أو تركيب طبقات، أو قص اللقطات وإعادة ترتيبها في فيديو نهائي.",
     "supportedMediaTitle": "أنواع الوسائط المدعومة",
-    "supportedMediaBody": "يمكنك استيراد الفيديو (MP4 وMOV وWebM وMKV)، والصور (JPG وPNG وWebP)، والصوت (MP3 وWAV وAAC). ويمكنك التصدير بصيغة MP4 (فيديو H.264 أو H.265، وصوت AAC أو Opus) أو MOV أو WebM (VP9 مع Opus أو Vorbis) أو MKV، أو صوت فقط بصيغ MP3 وWAV وOpus. تضيف خطة Pro صيغة AV1 ‏(MP4 وWebM وMKV) وProRes 422 MOV وFLAC وWAV بدقة 24 بت.",
+    "supportedMediaBody": "يمكنك استيراد الفيديو (MP4 وMOV وWebM وMKV)، والصور (JPG وPNG وWebP)، والصوت (MP3 وWAV وAAC). ويمكنك التصدير بصيغة MP4 (فيديو H.264 أو H.265، وصوت AAC أو Opus) أو MOV أو WebM (VP9 مع Opus أو Vorbis) أو MKV، أو صوت فقط بصيغ MP3 وWAV وOpus. تضيف خطة Pro صيغة AV1 ‏(MP4 وWebM وMKV) وProRes 422 MOV وFLAC وWAV بدقة 24 بت. الترجمات مُوقّتة على مستوى الكلمة ويمكن تحريكها (تعبئة كاريوكي، تمييز، بروز) بستة أنماط جاهزة و27 خطًا؛ وتعرضها المعاينة بالمحرك نفسه الذي يستخدمه التصدير.",
     "stepByStepTitle": "خطوة بخطوة",
     "step1": "أنشئ مشروعًا واختر دقة (حتى 4K) ومعدل إطارات (24/30/60 fps).",
     "step2": "اسحب ملفات الفيديو والصور والصوت إلى حاوية الوسائط.",

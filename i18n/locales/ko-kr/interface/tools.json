@@ -579,7 +579,50 @@
       "positionBottom": "아래",
       "positionTop": "위",
       "maxWidth": "최대 너비",
-      "add": "자막 추가"
+      "add": "자막 추가",
+      "positionMiddle": "가운데",
+      "looks": "스타일",
+      "lookModified": "수정됨",
+      "looksLockedHint": "무료로 가입하면 모든 스타일과 애니메이션을 사용할 수 있습니다.",
+      "signUpToUse": "가입 필요",
+      "look": {
+        "bold_pop": "볼드 팝",
+        "karaoke_classic": "클래식 노래방",
+        "clean_highlight": "깔끔한 강조",
+        "minimal": "미니멀",
+        "neon": "네온",
+        "podcast": "팟캐스트"
+      },
+      "font": "글꼴",
+      "fontGroup": {
+        "sans": "산세리프",
+        "display": "디스플레이",
+        "serif": "세리프",
+        "mono": "고정폭",
+        "script": "손글씨",
+        "fallback": "기타 문자"
+      },
+      "bold": "굵게",
+      "uppercase": "대문자",
+      "animation": "애니메이션",
+      "anim": {
+        "none": "없음",
+        "karaoke_fill": "노래방 채우기",
+        "highlight": "단어 강조",
+        "pop": "팝"
+      },
+      "animationStrength": "팝 강도",
+      "wordsPerGroup": "화면에 보일 단어 수",
+      "wholeLine": "한 줄 전체",
+      "highlight": "강조색",
+      "outline": "외곽선",
+      "outlineWidth": "외곽선 두께",
+      "shadow": "그림자",
+      "backgroundMode": "배경",
+      "bgBox": "상자",
+      "bgWordBox": "현재 단어에 상자",
+      "bgNone": "없음",
+      "burnInOnly": "애니메이션과 스타일은 영상에 입혀집니다. SRT/VTT 파일은 텍스트만 담습니다."
     },
     "speed": {
       "badgeFreeze": "프리즈",

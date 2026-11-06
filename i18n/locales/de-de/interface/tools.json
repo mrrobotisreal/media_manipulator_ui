@@ -584,7 +584,50 @@
       "positionBottom": "Unten",
       "positionTop": "Oben",
       "maxWidth": "Max. Breite",
-      "add": "Untertitel hinzufügen"
+      "add": "Untertitel hinzufügen",
+      "positionMiddle": "Mitte",
+      "looks": "Stile",
+      "lookModified": "geändert",
+      "looksLockedHint": "Kostenlos registrieren, um alle Stile und Animationen freizuschalten.",
+      "signUpToUse": "Registrierung nötig",
+      "look": {
+        "bold_pop": "Kräftiger Pop",
+        "karaoke_classic": "Karaoke klassisch",
+        "clean_highlight": "Klare Hervorhebung",
+        "minimal": "Minimal",
+        "neon": "Neon",
+        "podcast": "Podcast"
+      },
+      "font": "Schrift",
+      "fontGroup": {
+        "sans": "Serifenlos",
+        "display": "Display",
+        "serif": "Serifen",
+        "mono": "Monospace",
+        "script": "Schreibschrift",
+        "fallback": "Andere Schriftsysteme"
+      },
+      "bold": "Fett",
+      "uppercase": "Großbuchstaben",
+      "animation": "Animation",
+      "anim": {
+        "none": "Keine",
+        "karaoke_fill": "Karaoke-Füllung",
+        "highlight": "Wort hervorheben",
+        "pop": "Pop"
+      },
+      "animationStrength": "Pop-Stärke",
+      "wordsPerGroup": "Wörter im Bild",
+      "wholeLine": "Ganze Zeile",
+      "highlight": "Hervorhebung",
+      "outline": "Kontur",
+      "outlineWidth": "Konturbreite",
+      "shadow": "Schatten",
+      "backgroundMode": "Hintergrund",
+      "bgBox": "Kasten",
+      "bgWordBox": "Kasten hinter dem aktuellen Wort",
+      "bgNone": "Keiner",
+      "burnInOnly": "Animationen und Styling werden ins Video eingebrannt; SRT-/VTT-Dateien enthalten nur Text."
     },
     "speed": {
       "badgeFreeze": "Freeze",

@@ -29,6 +29,14 @@ MM120 added the **Pro formats** (AV1, ProRes 422 MOV, FLAC, 24-bit PCM; presets 
 **Embedded captions** (MM119):
 The export dialog's fourth captions mode (`captionsMode: "embedded"`, Premium+, token `subs_embedded`): the cues ride inside the file as a plain-text track viewers turn on and off. Offered only when the chosen container has a `subtitleCodec`, and shown locked with a plan badge when the plan lacks `subs_embedded`; the dialog says embedded tracks are plain text and that styling and animation only survive **burn-in**. A stale `embedded` choice falls back to `sidecar` (`fitCaptionsMode`).
 
+**Word timings** (MM121):
+A cue's optional `words` array (`{text, startSeconds, endSeconds, emphasis?}`), one entry per **caption unit** of its text (`lib/studio/captions/units.ts`: whitespace-separated words; Han and kana per character). Generated captions carry them (Whisper word timestamps). Editing a cue re-spreads them (`lib/studio/captions/respread.ts`: unchanged words keep their times by position, inserted ones share the gap by character count); a cue without them animates on an even spread.
+
+**Caption look** (MM121):
+A named, complete caption style (`lib/studio/captions/captionLooks.ts`, from the API's `captionsCatalog.json`): `bold_pop`, `karaoke_classic`, `clean_highlight`, `minimal`, `neon`, `podcast`. Picking one sets every field and `lookId`; a later tweak keeps `lookId` and the editor shows "modified". Guests get bold_pop, clean_highlight and minimal (others show a sign-up lock); every signed-in plan gets all looks and animations (`none`, `karaoke_fill`, `highlight`, `pop`).
+The **caption preview** is JASSUB (libass in WASM, staged in `public/jassub/<v>/`, imported by URL only when captions show) drawing the `.ass` from `lib/studio/captions/ass.ts`, the TS twin of the API's `BuildASS`; both reproduce `lib/studio/captions/goldens/` byte for byte. Fonts: `public/fonts/studio/captions/` (woff2 of the API's TTFs).
+_Avoid_: styling captions with CSS in the preview (the export would differ); importing `jassub` from app code.
+
 **Queued** (MM119):
 An export the API accepted and charged that waits for a server CPU encode slot (VP9). The MM backend's `parseJob` reads the job's `currentStage: "queued"` into `queued: true`; the dialog and the Exports panel show Queued (no progress bar) until rendering starts. The CreaTV `cs:export-history` keeps its closed status list, so a queued row is reported as `running`.
 

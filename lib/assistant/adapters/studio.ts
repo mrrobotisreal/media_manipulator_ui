@@ -31,7 +31,7 @@ export interface StudioCopilotState {
   selectedClipIds: string[];
   past: StudioProject[];
   gestureDepth: number;
-  applyAssistantOps: (summary: string, ops: unknown) => { ok: true; project: StudioProject; touched: string[] } | { ok: false; reason: 'validation' | 'unknown_id' | 'locked'; errors: string[] };
+  applyAssistantOps: (summary: string, ops: unknown, opts?: { signedIn?: boolean }) => { ok: true; project: StudioProject; touched: string[] } | { ok: false; reason: 'validation' | 'unknown_id' | 'locked'; errors: string[] };
   undo: () => void;
 }
 
@@ -51,6 +51,10 @@ export interface StudioAdapterDeps {
   /** MM118: the server-validated export params (preset or container/codecs, resolution, captionsMode, upgrade). */
   onExport: (params: Record<string, unknown>) => void;
   onOpenTool: (params: Record<string, unknown>) => void;
+  /** MM121: false for an anonymous editor (locked caption looks/animations are refused). */
+  signedIn?: () => boolean;
+  /** MM121: a caption look Medi applied (studio_caption_look_applied {source: medi}). */
+  onCaptionLookApplied?: (lookId: string) => void;
 }
 
 /** Ops whose result is visible in the preview (the verify loop sends a frame after these). */
@@ -257,8 +261,9 @@ export function createStudioAdapter(deps: StudioAdapterDeps): CopilotAdapter {
       const s = deps.store.getState();
       if (!s.project) return { ok: false, reason: 'validation', errors: ['no project is open'] };
       const before = s.project;
-      const res = s.applyAssistantOps(summary, ops);
+      const res = s.applyAssistantOps(summary, ops, { signedIn: deps.signedIn?.() });
       if (!res.ok) return res;
+      for (const o of ops as StudioOp[]) if (o.op === 'set_caption_style' && o.look) deps.onCaptionLookApplied?.(o.look);
       const after = deps.store.getState();
       tokenSeq += 1;
       const token: CopilotEditToken = { id: tokenSeq };
@@ -273,6 +278,7 @@ export function createStudioAdapter(deps: StudioAdapterDeps): CopilotAdapter {
         assetKind: (id: string) => s.assets[id]?.asset.mediaKind,
         assetDuration: (id: string) => s.assets[id]?.asset.durationSeconds,
         lockedViolation,
+        signedIn: deps.signedIn?.(),
       };
       const list = ops as StudioOp[];
       const whole = applyStudioOps(s.project, ops, ctx);

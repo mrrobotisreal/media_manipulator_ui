@@ -604,7 +604,50 @@
       "positionBottom": "أسفل",
       "positionTop": "أعلى",
       "maxWidth": "أقصى عرض",
-      "add": "إضافة ترجمة"
+      "add": "إضافة ترجمة",
+      "positionMiddle": "الوسط",
+      "looks": "الأنماط",
+      "lookModified": "معدّل",
+      "looksLockedHint": "سجّل مجانًا لفتح كل الأنماط والحركات.",
+      "signUpToUse": "يتطلب التسجيل",
+      "look": {
+        "bold_pop": "بروز جريء",
+        "karaoke_classic": "كاريوكي كلاسيكي",
+        "clean_highlight": "تمييز نظيف",
+        "minimal": "بسيط",
+        "neon": "نيون",
+        "podcast": "بودكاست"
+      },
+      "font": "الخط",
+      "fontGroup": {
+        "sans": "بلا زوائد",
+        "display": "عرض",
+        "serif": "بزوائد",
+        "mono": "ثابت العرض",
+        "script": "يدوي",
+        "fallback": "أنظمة كتابة أخرى"
+      },
+      "bold": "عريض",
+      "uppercase": "أحرف كبيرة",
+      "animation": "الحركة",
+      "anim": {
+        "none": "بلا",
+        "karaoke_fill": "تعبئة كاريوكي",
+        "highlight": "تمييز الكلمة",
+        "pop": "بروز"
+      },
+      "animationStrength": "قوة البروز",
+      "wordsPerGroup": "الكلمات على الشاشة",
+      "wholeLine": "السطر كاملًا",
+      "highlight": "لون التمييز",
+      "outline": "الحد",
+      "outlineWidth": "سماكة الحد",
+      "shadow": "الظل",
+      "backgroundMode": "الخلفية",
+      "bgBox": "مربع",
+      "bgWordBox": "مربع خلف الكلمة الحالية",
+      "bgNone": "بلا",
+      "burnInOnly": "تُدمج الحركات والتنسيق في الفيديو؛ ملفات SRT/VTT نص فقط."
     },
     "speed": {
       "badgeFreeze": "تجميد",

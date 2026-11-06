@@ -44,8 +44,9 @@ describe('next.config.ts headers()', () => {
       source: '/:path*',
       headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
     });
-    // MM88 added the security-header rules (catch-all + non-embed frame-ancestors).
-    expect(rules.map((r) => r.source)).toEqual(['/:path*', '/:path*', NON_EMBED_SOURCE, '/embed/:path*', '/sw.js']);
+    // MM88 added the security-header rules (catch-all + non-embed frame-ancestors); MM121 the
+    // immutable cache rule for the versioned JASSUB caption renderer.
+    expect(rules.map((r) => r.source)).toEqual(['/:path*', '/:path*', NON_EMBED_SOURCE, '/embed/:path*', '/jassub/:path*', '/sw.js']);
     expect(config.env).toEqual({ NEXT_PUBLIC_DEPLOY_ROLE: 'translator', NEXT_PUBLIC_TRANSLATOR_LOCALE: 'de-DE' });
   });
 
@@ -56,7 +57,7 @@ describe('next.config.ts headers()', () => {
     vi.resetModules();
     const config = (await import('@/next.config')).default;
     const rules = await config.headers!();
-    expect(rules.map((r) => r.source)).toEqual(['/:path*', NON_EMBED_SOURCE, '/embed/:path*', '/sw.js']);
+    expect(rules.map((r) => r.source)).toEqual(['/:path*', NON_EMBED_SOURCE, '/embed/:path*', '/jassub/:path*', '/sw.js']);
     expect(JSON.stringify(rules)).not.toContain('X-Robots-Tag');
     expect(config.env).toEqual({ NEXT_PUBLIC_DEPLOY_ROLE: '', NEXT_PUBLIC_TRANSLATOR_LOCALE: '' });
   });

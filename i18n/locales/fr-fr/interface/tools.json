@@ -584,7 +584,50 @@
       "positionBottom": "Bas",
       "positionTop": "Haut",
       "maxWidth": "Largeur max.",
-      "add": "Ajouter un sous-titre"
+      "add": "Ajouter un sous-titre",
+      "positionMiddle": "Milieu",
+      "looks": "Styles",
+      "lookModified": "modifié",
+      "looksLockedHint": "Inscrivez-vous gratuitement pour débloquer tous les styles et animations.",
+      "signUpToUse": "inscription requise",
+      "look": {
+        "bold_pop": "Pop audacieux",
+        "karaoke_classic": "Karaoké classique",
+        "clean_highlight": "Surlignage net",
+        "minimal": "Minimal",
+        "neon": "Néon",
+        "podcast": "Podcast"
+      },
+      "font": "Police",
+      "fontGroup": {
+        "sans": "Sans empattement",
+        "display": "Display",
+        "serif": "Avec empattement",
+        "mono": "Chasse fixe",
+        "script": "Manuscrite",
+        "fallback": "Autres écritures"
+      },
+      "bold": "Gras",
+      "uppercase": "Majuscules",
+      "animation": "Animation",
+      "anim": {
+        "none": "Aucune",
+        "karaoke_fill": "Remplissage karaoké",
+        "highlight": "Mot surligné",
+        "pop": "Pop"
+      },
+      "animationStrength": "Intensité du pop",
+      "wordsPerGroup": "Mots à l'écran",
+      "wholeLine": "Ligne entière",
+      "highlight": "Surlignage",
+      "outline": "Contour",
+      "outlineWidth": "Épaisseur du contour",
+      "shadow": "Ombre",
+      "backgroundMode": "Fond",
+      "bgBox": "Encadré",
+      "bgWordBox": "Encadré sur le mot en cours",
+      "bgNone": "Aucun",
+      "burnInOnly": "Les animations et le style sont incrustés dans la vidéo ; les fichiers SRT/VTT ne contiennent que du texte."
     },
     "speed": {
       "badgeFreeze": "Arrêt",

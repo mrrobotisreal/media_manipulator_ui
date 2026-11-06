@@ -127,6 +127,13 @@ const ROWS: Row[] = [
     served: (l) => Array.isArray(l.studioFormats),
   },
   {
+    // MM121: animated captions (word-timed karaoke fill, highlight, pop and the caption looks)
+    // are every signed-in plan's; guests get three looks (design §6.4, a product rule, not a limit).
+    key: 'studioAnimatedCaptions',
+    render: (_l, t, tier) => (tier === 'anonymous' ? t('interface:pricing.values.captionLooksGuest') : t('interface:pricing.values.yes')),
+    served: (l) => Array.isArray(l.studioFormats),
+  },
+  {
     key: 'vectorExportsPerDay',
     render: (l, t) => count(l.vectorExportsPerDay ?? 0, t),
     served: (l) => typeof l.vectorExportsPerDay === 'number',

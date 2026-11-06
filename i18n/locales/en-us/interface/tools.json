@@ -584,7 +584,50 @@
       "positionBottom": "Bottom",
       "positionTop": "Top",
       "maxWidth": "Max width",
-      "add": "Add caption"
+      "add": "Add caption",
+      "positionMiddle": "Middle",
+      "looks": "Looks",
+      "lookModified": "modified",
+      "looksLockedHint": "Sign up free to unlock every look and animation.",
+      "signUpToUse": "sign up to use",
+      "look": {
+        "bold_pop": "Bold Pop",
+        "karaoke_classic": "Karaoke Classic",
+        "clean_highlight": "Clean Highlight",
+        "minimal": "Minimal",
+        "neon": "Neon",
+        "podcast": "Podcast"
+      },
+      "font": "Font",
+      "fontGroup": {
+        "sans": "Sans",
+        "display": "Display",
+        "serif": "Serif",
+        "mono": "Mono",
+        "script": "Script",
+        "fallback": "Other scripts"
+      },
+      "bold": "Bold",
+      "uppercase": "Uppercase",
+      "animation": "Animation",
+      "anim": {
+        "none": "None",
+        "karaoke_fill": "Karaoke fill",
+        "highlight": "Highlight word",
+        "pop": "Pop"
+      },
+      "animationStrength": "Pop strength",
+      "wordsPerGroup": "Words on screen",
+      "wholeLine": "Whole line",
+      "highlight": "Highlight",
+      "outline": "Outline",
+      "outlineWidth": "Outline width",
+      "shadow": "Shadow",
+      "backgroundMode": "Background",
+      "bgBox": "Box",
+      "bgWordBox": "Box on the current word",
+      "bgNone": "None",
+      "burnInOnly": "Animations and styling are burned into the video; SRT/VTT files are plain text."
     },
     "speed": {
       "badgeFreeze": "Freeze",

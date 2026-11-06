@@ -49,6 +49,8 @@ interface Refs {
   t: (key: string, vars?: Record<string, unknown>) => string;
   localized: (href: string) => string;
   derive: (assetId: string, op: StudioDeriveOperation) => void;
+  /** MM121: anonymous editors get three caption looks. */
+  signedIn: boolean;
 }
 
 function useStudioAdapter(refs: React.RefObject<Refs | null>) {
@@ -63,6 +65,10 @@ function useStudioAdapter(refs: React.RefObject<Refs | null>) {
           return c ? captureJpeg(c, caps && caps.enabled ? caps.maxFrameBytes : undefined) : null;
         },
         projectId: () => refs.current?.projectId ?? null,
+        signedIn: () => refs.current?.signedIn ?? true,
+        onCaptionLookApplied: (lookId) => {
+          analytics.track(EVENTS.STUDIO_CAPTION_LOOK_APPLIED, { lookId, source: 'medi', host: studioHost() }, { feature: 'studio' });
+        },
         onGenerateCaptions: (language) => {
           captionGenerateBridge.request(language);
         },
@@ -106,7 +112,7 @@ export function useStudioCopilot(projectId: string, embedded: boolean) {
   useKeptSessionEnd('studio'); // MM113
   const refs = React.useRef<Refs | null>(null);
   React.useEffect(() => {
-    refs.current = { projectId, caps, t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized, derive };
+    refs.current = { projectId, caps, t: (key, vars) => String(t(key, vars as Record<string, unknown>)), localized, derive, signedIn: !!auth && auth.tier !== 'anonymous' };
   });
   const adapter = useStudioAdapter(refs);
 

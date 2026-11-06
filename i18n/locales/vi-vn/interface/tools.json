@@ -579,7 +579,50 @@
       "positionBottom": "Dưới",
       "positionTop": "Trên",
       "maxWidth": "Chiều rộng tối đa",
-      "add": "Thêm phụ đề"
+      "add": "Thêm phụ đề",
+      "positionMiddle": "Giữa",
+      "looks": "Kiểu",
+      "lookModified": "đã sửa",
+      "looksLockedHint": "Đăng ký miễn phí để mở mọi kiểu và hiệu ứng động.",
+      "signUpToUse": "cần đăng ký",
+      "look": {
+        "bold_pop": "Nổi bật",
+        "karaoke_classic": "Karaoke cổ điển",
+        "clean_highlight": "Tô sáng gọn",
+        "minimal": "Tối giản",
+        "neon": "Neon",
+        "podcast": "Podcast"
+      },
+      "font": "Phông chữ",
+      "fontGroup": {
+        "sans": "Không chân",
+        "display": "Trang trí",
+        "serif": "Có chân",
+        "mono": "Đơn cách",
+        "script": "Viết tay",
+        "fallback": "Hệ chữ khác"
+      },
+      "bold": "Đậm",
+      "uppercase": "Chữ hoa",
+      "animation": "Hiệu ứng động",
+      "anim": {
+        "none": "Không",
+        "karaoke_fill": "Tô màu karaoke",
+        "highlight": "Tô sáng từ",
+        "pop": "Bật nảy"
+      },
+      "animationStrength": "Độ bật nảy",
+      "wordsPerGroup": "Số từ trên màn hình",
+      "wholeLine": "Cả dòng",
+      "highlight": "Màu tô sáng",
+      "outline": "Viền",
+      "outlineWidth": "Độ dày viền",
+      "shadow": "Bóng",
+      "backgroundMode": "Nền",
+      "bgBox": "Hộp",
+      "bgWordBox": "Hộp sau từ đang nói",
+      "bgNone": "Không",
+      "burnInOnly": "Hiệu ứng động và kiểu dáng được in vào video; tệp SRT/VTT chỉ chứa văn bản."
     },
     "speed": {
       "badgeFreeze": "Đóng băng",

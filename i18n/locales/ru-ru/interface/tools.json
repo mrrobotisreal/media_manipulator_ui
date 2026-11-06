@@ -594,7 +594,50 @@
       "positionBottom": "Внизу",
       "positionTop": "Вверху",
       "maxWidth": "Максимальная ширина",
-      "add": "Добавить субтитр"
+      "add": "Добавить субтитр",
+      "positionMiddle": "По центру",
+      "looks": "Стили",
+      "lookModified": "изменён",
+      "looksLockedHint": "Зарегистрируйтесь бесплатно, чтобы открыть все стили и анимации.",
+      "signUpToUse": "нужна регистрация",
+      "look": {
+        "bold_pop": "Яркий акцент",
+        "karaoke_classic": "Караоке",
+        "clean_highlight": "Чистая подсветка",
+        "minimal": "Минимализм",
+        "neon": "Неон",
+        "podcast": "Подкаст"
+      },
+      "font": "Шрифт",
+      "fontGroup": {
+        "sans": "Без засечек",
+        "display": "Акцидентные",
+        "serif": "С засечками",
+        "mono": "Моноширинные",
+        "script": "Рукописные",
+        "fallback": "Другие письменности"
+      },
+      "bold": "Жирный",
+      "uppercase": "Заглавные",
+      "animation": "Анимация",
+      "anim": {
+        "none": "Нет",
+        "karaoke_fill": "Караоке-заливка",
+        "highlight": "Подсветка слова",
+        "pop": "Всплытие"
+      },
+      "animationStrength": "Сила всплытия",
+      "wordsPerGroup": "Слов на экране",
+      "wholeLine": "Вся строка",
+      "highlight": "Подсветка",
+      "outline": "Обводка",
+      "outlineWidth": "Толщина обводки",
+      "shadow": "Тень",
+      "backgroundMode": "Фон",
+      "bgBox": "Плашка",
+      "bgWordBox": "Плашка под текущим словом",
+      "bgNone": "Нет",
+      "burnInOnly": "Анимация и оформление вшиваются в видео; файлы SRT/VTT содержат только текст."
     },
     "speed": {
       "badgeFreeze": "Freeze",

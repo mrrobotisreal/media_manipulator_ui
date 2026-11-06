@@ -25,6 +25,7 @@
  */
 
 import { STATIC_STUDIO_OUTPUTS } from '@/lib/studio/studioOutputs';
+import { STUDIO_CAPTION_ANIMATIONS, STUDIO_CAPTION_LOOK_IDS } from '@/lib/studioTypes';
 import { z } from 'zod';
 
 import type { AnalyticsClient } from './client';
@@ -61,6 +62,9 @@ const studioHostEnum = z.enum(['mm', 'creatv']);
 const onboardingStepId = z.enum(['keep_results', 'darkroom_projects', 'retention']);
 const retentionBucketEnum = z.enum(['24h', '7d', '30d', '90d', '6mo', '1y', '2y', 'custom']);
 const studioHostProps = z.object({ host: studioHostEnum.optional() }).strict();
+// MM121 caption vocabularies (the API's caption catalog, copied into the UI).
+const captionAnimations = [...STUDIO_CAPTION_ANIMATIONS] as unknown as [string, ...string[]];
+const captionLookIds = [...STUDIO_CAPTION_LOOK_IDS] as unknown as [string, ...string[]];
 // MM118: the derived output label is the API output table's closed list (+ the pre-part-20 'mp4').
 const studioOutputFormats = [...STATIC_STUDIO_OUTPUTS.formats, 'mp4'] as unknown as [string, ...string[]];
 const studioExportProps = z
@@ -75,6 +79,7 @@ const studioExportProps = z
     mode: z.enum(['preset', 'advanced']).optional(),
     resolution: z.string(),
     captionsMode: z.enum(['none', 'burn_in', 'sidecar', 'embedded']).optional(),
+    captionAnimation: z.enum(captionAnimations).optional(),
     durationRatioBucket: z.string().optional(),
     host: studioHostEnum.optional(),
   })
@@ -444,7 +449,26 @@ const eventSchemas: { [E in keyof EventPropsMap]: z.ZodType<EventPropsMap[E]> } 
     .strict(),
   studio_derive_used: z.object({ op: z.string(), host: studioHostEnum.optional() }).strict(),
   studio_captions_generated: z
-    .object({ cueCountBucket: z.string(), host: studioHostEnum.optional() })
+    .object({ cueCountBucket: z.string(), hasWords: z.boolean().optional(), host: studioHostEnum.optional() })
+    .strict(),
+  studio_caption_style_changed: z
+    .object({
+      field: z.enum([
+        'fontFamily', 'fontSizePct', 'color', 'highlightColor', 'outlineColor', 'outlineWidth', 'shadow',
+        'backgroundMode', 'backgroundColor', 'backgroundOpacity', 'position', 'maxWidthPct', 'bold',
+        'uppercase', 'wordsPerGroup', 'animation', 'animationStrength',
+      ]),
+      animation: z.enum(captionAnimations),
+      lookId: z.enum(['none', ...captionLookIds] as [string, ...string[]]),
+      hasWords: z.boolean(),
+      host: studioHostEnum.optional(),
+    })
+    .strict(),
+  studio_caption_look_applied: z
+    .object({ lookId: z.enum(captionLookIds), source: z.enum(['ui', 'medi']), host: studioHostEnum.optional() })
+    .strict(),
+  studio_caption_renderer_fallback: z
+    .object({ reason: z.enum(['unsupported', 'load_failed', 'render_failed']), host: studioHostEnum.optional() })
     .strict(),
   studio_export_started: studioExportProps,
   studio_export_completed: studioExportProps,

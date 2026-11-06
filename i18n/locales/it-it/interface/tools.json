@@ -584,7 +584,50 @@
       "positionBottom": "In basso",
       "positionTop": "In alto",
       "maxWidth": "Larghezza massima",
-      "add": "Aggiungi sottotitolo"
+      "add": "Aggiungi sottotitolo",
+      "positionMiddle": "Centro",
+      "looks": "Stili",
+      "lookModified": "modificato",
+      "looksLockedHint": "Registrati gratis per sbloccare tutti gli stili e le animazioni.",
+      "signUpToUse": "serve la registrazione",
+      "look": {
+        "bold_pop": "Pop deciso",
+        "karaoke_classic": "Karaoke classico",
+        "clean_highlight": "Evidenziazione pulita",
+        "minimal": "Minimal",
+        "neon": "Neon",
+        "podcast": "Podcast"
+      },
+      "font": "Carattere",
+      "fontGroup": {
+        "sans": "Senza grazie",
+        "display": "Display",
+        "serif": "Con grazie",
+        "mono": "Monospaziato",
+        "script": "Calligrafico",
+        "fallback": "Altri sistemi di scrittura"
+      },
+      "bold": "Grassetto",
+      "uppercase": "Maiuscolo",
+      "animation": "Animazione",
+      "anim": {
+        "none": "Nessuna",
+        "karaoke_fill": "Riempimento karaoke",
+        "highlight": "Evidenzia parola",
+        "pop": "Pop"
+      },
+      "animationStrength": "Intensità del pop",
+      "wordsPerGroup": "Parole sullo schermo",
+      "wholeLine": "Riga intera",
+      "highlight": "Evidenziazione",
+      "outline": "Contorno",
+      "outlineWidth": "Spessore contorno",
+      "shadow": "Ombra",
+      "backgroundMode": "Sfondo",
+      "bgBox": "Riquadro",
+      "bgWordBox": "Riquadro sulla parola corrente",
+      "bgNone": "Nessuno",
+      "burnInOnly": "Animazioni e stile vengono impressi nel video; i file SRT/VTT contengono solo testo."
     },
     "speed": {
       "badgeFreeze": "Fermo",

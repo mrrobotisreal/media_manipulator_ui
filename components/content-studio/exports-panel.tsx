@@ -14,6 +14,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
+import { captionAnimationFor } from '@/lib/studio/captions/analytics';
 import { useStudioBackend } from '@/lib/studio/studioBackendProvider';
 import { useStudioJobProgress } from '@/lib/useStudioJob';
 import { studioDownloadUrl } from '@/lib/useStudioExport';
@@ -132,6 +133,9 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
       editSummary.increment('uiInvocations');
       // MM118: the derived label, its output parts and the mode the stored row implies.
       const props = rerenderExportProps(row, studioHost());
+      // MM121: a render-again re-reads the project's current caption style on the server.
+      const proj = useStudioStore.getState().project;
+      Object.assign(props, { captionAnimation: captionAnimationFor(row.captionsMode, proj?.captionStyle, (proj?.captions.length ?? 0) > 0) });
       rerenderProps.current[res.jobId] = props;
       analytics.track(EVENTS.STUDIO_EXPORT_STARTED, props, { job_id: res.jobId, feature: 'studio' });
       toast.success(t('contentStudio.exports.rerenderStarted'));

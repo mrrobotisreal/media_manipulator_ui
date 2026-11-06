@@ -41,7 +41,7 @@ import { parseCubeLut } from '@/lib/studio/lutParser';
 import { registerEyedropper, rgbToHex } from '@/lib/studio/eyedropper';
 import { registerFrameGrab } from '@/lib/studio/frameGrab';
 import { ensureImage, getImageBitmap, pruneImageCache, subscribeImageCache } from '@/lib/studio/imageCache';
-import { DEFAULT_CAPTION_STYLE, type StudioTitle } from '@/lib/studioTypes';
+import { type StudioTitle } from '@/lib/studioTypes';
 import { Segmented } from '@/components/darkroom/segmented';
 import {
   QUALITY_SCALE,
@@ -76,18 +76,9 @@ import {
   type SlotSyncState,
 } from '@/lib/studio/playbackSync';
 import ReverseWatchers from './reverse-watchers';
+import CaptionPreview from './caption-preview';
 import ProxyRebuildWatchers from './proxy-rebuild-watchers';
 import { isReversedSrcKey, proxyGenerationOf, proxySrcKey } from '@/lib/studio/proxyRebuild';
-
-// hexWithOpacity → rgba() string for the caption background box.
-function hexWithOpacity(hex: string, opacity: number): string {
-  const h = hex.replace('#', '');
-  if (h.length !== 6) return `rgba(0,0,0,${opacity})`;
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  return `rgba(${r},${g},${b},${opacity})`;
-}
 
 // hexToRgb01 converts "#RRGGBB" → [r,g,b] in 0..1 for the chroma-key uniform.
 function hexToRgb01(hex: string): [number, number, number] {
@@ -482,17 +473,11 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
     [activeNow, playhead],
   );
 
-  // Active caption cue (DOM overlay above the canvas), gated by captionsEnabled.
-  const captionStyle = project?.captionStyle ?? DEFAULT_CAPTION_STYLE;
+  // Captions (MM121): drawn by JASSUB from the shared ASS generator, mounted (and loaded) only
+  // while captions are on and the project has cues.
   const captionsEnabled = project?.captionsEnabled ?? true;
   const captions = project?.captions;
-  const activeCue = React.useMemo(
-    () =>
-      captionsEnabled
-        ? (captions ?? []).find((c) => playhead >= c.startSeconds && playhead < c.endSeconds)
-        : undefined,
-    [captions, captionsEnabled, playhead],
-  );
+  const showCaptions = captionsEnabled && (captions?.length ?? 0) > 0;
 
   // --- Web Audio wiring (created lazily within a user gesture) ---
   const ensureAudioGraph = React.useCallback(() => {
@@ -1677,29 +1662,15 @@ const PreviewSurface: React.FC<{ focused?: boolean }> = ({ focused = false }) =>
             </span>
           </div>
         ))}
-        {activeCue && (
-          <div
-            className="absolute inset-x-0 flex justify-center px-[5%] pointer-events-none"
-            style={captionStyle.position === 'top' ? { top: '6%' } : { bottom: '6%' }}
-          >
-            <span
-              style={{
-                fontSize: `${(captionStyle.fontSizePct / 100) * boxH}px`,
-                color: captionStyle.color,
-                background: hexWithOpacity(captionStyle.backgroundColor, captionStyle.backgroundOpacity),
-                maxWidth: `${captionStyle.maxWidthPct}%`,
-                padding: '0.1em 0.4em',
-                borderRadius: '0.2em',
-                textAlign: 'center',
-                lineHeight: 1.25,
-                fontWeight: 600,
-                whiteSpace: 'pre-wrap',
-                zIndex: 8,
-              }}
-            >
-              {activeCue.text}
-            </span>
-          </div>
+        {showCaptions && boxW > 0 && boxH > 0 && (
+          <CaptionPreview
+            cues={captions ?? []}
+            style={project?.captionStyle}
+            projectW={project?.width ?? 1920}
+            projectH={project?.height ?? 1080}
+            boxW={boxW}
+            boxH={boxH}
+          />
         )}
         {qualityDegraded && (
           <div className="absolute top-2 right-2 z-10 rounded-md bg-surface-0/70 px-2 py-0.5 text-[11px] font-medium text-premium pointer-events-none">

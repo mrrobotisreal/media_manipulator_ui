@@ -64,4 +64,28 @@ describe('MM88 next.config headers()', () => {
     const h = await headersFor('/sw.js');
     expect(h['cache-control']).toBe('no-cache, no-store, must-revalidate');
   });
+
+  // MM121: the JASSUB caption preview needs module workers from our origin and WebAssembly. No
+  // route sets script-src / worker-src / default-src today, so both are allowed. If a policy
+  // ever adds them, the Darkroom routes must keep 'wasm-unsafe-eval' and worker-src 'self' blob:
+  // (and ad pages must not gain them by accident).
+  it.each(['/en/tools/content-studio', '/tools/content-studio', '/embed/content-studio'])('%s lets the JASSUB caption preview run', async (path) => {
+    const csp = (await headersFor(path))['content-security-policy'] ?? '';
+    const directive = (name: string) => csp.split(';').map((d) => d.trim()).find((d) => d.startsWith(name + ' '));
+    const script = directive('script-src') ?? directive('default-src');
+    if (script) expect(script).toContain("'wasm-unsafe-eval'");
+    const worker = directive('worker-src') ?? directive('child-src') ?? script;
+    if (worker) expect(worker).toMatch(/'self'/);
+  });
+
+  it('the versioned JASSUB folder is cached immutably', async () => {
+    expect((await headersFor('/jassub/2.5.23/jassub-worker.wasm'))['cache-control']).toBe('public, max-age=31536000, immutable');
+  });
+
+  it('ad pages keep frame-ancestors only (no caption-renderer allowances leak)', async () => {
+    for (const path of ['/', '/en', '/ar/tools/compress-image']) {
+      expect((await headersFor(path))['content-security-policy']).toBe("frame-ancestors 'self';");
+    }
+  });
 });
+

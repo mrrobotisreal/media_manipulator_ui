@@ -1874,7 +1874,8 @@
       "photoPresets": "Ajustes preestablecidos de {{brand}} guardados",
       "assistantGuide": "Guía del sitio {{medi}}",
       "assistantTurns": "Ediciones del copiloto {{medi}} por día",
-      "studioFormats": "Formatos de exportación de Darkroom"
+      "studioFormats": "Formatos de exportación de Darkroom",
+      "studioAnimatedCaptions": "Subtítulos animados de Darkroom"
     },
     "values": {
       "yes": "Incluido",
@@ -1893,7 +1894,8 @@
       "studioAdvanced": "Ajustes avanzados",
       "studioAudio": "Audio {{codecs}}",
       "studioEmbeddedCaptions": "Subtítulos integrados",
-      "studioLossless": "Sin pérdida: {{codecs}}"
+      "studioLossless": "Sin pérdida: {{codecs}}",
+      "captionLooksGuest": "3 estilos de subtítulos"
     },
     "unavailableTitle": "Los detalles de los planes no están disponibles temporalmente",
     "unavailableBody": "No pudimos contactar al servicio de planes. Todas las herramientas siguen funcionando: recarga en un momento para ver la comparación.",
@@ -2419,7 +2421,7 @@
     "whenToUseTitle": "Cuándo usarlo",
     "whenToUseBody": "Recurre a Darkroom cuando un solo archivo no es suficiente: combinar varios clips, agregar títulos o música de fondo, superponer capas, o recortar y reordenar imágenes hasta formar un video terminado.",
     "supportedMediaTitle": "Tipos de medios compatibles",
-    "supportedMediaBody": "Puedes importar video (MP4, MOV, WebM, MKV), imágenes (JPG, PNG, WebP) y audio (MP3, WAV, AAC). Puedes exportar MP4 (video H.264 o H.265, audio AAC u Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio en MP3, WAV y Opus. Pro agrega AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC y WAV de 24 bits.",
+    "supportedMediaBody": "Puedes importar video (MP4, MOV, WebM, MKV), imágenes (JPG, PNG, WebP) y audio (MP3, WAV, AAC). Puedes exportar MP4 (video H.264 o H.265, audio AAC u Opus), MOV, WebM (VP9 con Opus o Vorbis), MKV o solo audio en MP3, WAV y Opus. Pro agrega AV1 (MP4, WebM, MKV), ProRes 422 MOV, FLAC y WAV de 24 bits. Los subtítulos se sincronizan palabra por palabra y se pueden animar (relleno karaoke, resaltado, pop) con seis estilos listos y 27 fuentes; la vista previa los dibuja con el mismo motor que la exportación.",
     "stepByStepTitle": "Paso a paso",
     "step1": "Crea un proyecto y elige una resolución (hasta 4K) y una tasa de fotogramas (24/30/60 fps).",
     "step2": "Arrastra archivos de video, imagen y audio al depósito de medios.",

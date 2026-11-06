@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/select';
 import { useLocalization } from '@/i18n/useLocalization';
 import { useStudioStore } from '@/lib/studioStore';
+import { captionAnimationFor } from '@/lib/studio/captions/analytics';
 import { useSaveProject } from '@/lib/useStudioProject';
 import { useStartStudioExport } from '@/lib/useStudioExport';
 import { downloadResult } from '@/lib/results/downloadController';
@@ -402,9 +403,10 @@ const ExportDialogInner: React.FC<{ projectId: string; disabled?: boolean }> = (
             mode: exportMode(values, outputTable),
             resolution: audioOut ? 'audio' : resolutionLabel(values.resolution),
             captionsMode: audioOut ? 'none' : captionsMode,
+            captionAnimation: audioOut ? 'none' : captionAnimationFor(captionsMode, project?.captionStyle, hasCaptions),
             host: studioHost(),
           }
-        : { preset: values.quality, format: 'h264', resolution: 'canvas', captionsMode: undefined, host: studioHost() };
+        : { preset: values.quality, format: 'h264', resolution: 'canvas', captionsMode: undefined, captionAnimation: captionAnimationFor(undefined, project?.captionStyle, hasCaptions && project?.captionsEnabled !== false), host: studioHost() };
       analytics.track(EVENTS.STUDIO_EXPORT_STARTED, exportPropsRef.current, {
         job_id: res.jobId,
         feature: 'studio',
