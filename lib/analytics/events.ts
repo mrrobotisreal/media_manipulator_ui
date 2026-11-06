@@ -916,11 +916,11 @@ export interface StudioExportStartedProps extends StudioHostProp {
    * (closed list: lib/studio/studioOutputs.json `formats`). Pre-part-20 builds sent 'mp4'.
    */
   format: string;
-  /** MM118: mp4 | mov | mkv | mp3 | wav. Absent from the legacy CreaTV body. */
+  /** MM118: mp4 | mov | mkv | mp3 | wav (MM119: + webm | opus). Absent from the legacy CreaTV body. */
   container?: string;
-  /** MM118: h264 | hevc | none. */
+  /** MM118: h264 | hevc | none (MM119: + vp9). */
   videoCodec?: string;
-  /** MM118: aac | pcm_s16le | mp3. */
+  /** MM118: aac | pcm_s16le | mp3 (MM119: + opus | vorbis). */
   audioCodec?: string;
   /** MM118: kbps from the codec's closed list; 0 = the codec has none (PCM). */
   audioBitrate?: number;
@@ -934,8 +934,8 @@ export interface StudioExportStartedProps extends StudioHostProp {
    * free-form size.
    */
   resolution: string;
-  /** Part 20: the one explicit captions choice. */
-  captionsMode?: 'none' | 'burn_in' | 'sidecar';
+  /** Part 20: the one explicit captions choice (MM119: + embedded, a subtitle track). */
+  captionsMode?: 'none' | 'burn_in' | 'sidecar' | 'embedded';
 }
 
 export interface StudioExportCompletedProps extends StudioExportStartedProps {
@@ -948,7 +948,7 @@ export interface StudioExportFailedProps extends StudioExportStartedProps {
 }
 
 export interface StudioExportFormatLockedProps extends StudioHostProp {
-  /** An output token (mp4|mov|mkv|mp3|wav|h264|hevc|aac|pcm_s16le) or 'advanced'. */
+  /** An output token (mp4|mov|mkv|webm|mp3|wav|opus|h264|hevc|vp9|aac|pcm_s16le|vorbis|subs_embedded) or 'advanced'. */
   option: string;
   /** The lowest plan that unlocks it. */
   required: 'free' | 'premium' | 'pro';

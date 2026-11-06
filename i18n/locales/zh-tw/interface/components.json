@@ -631,7 +631,7 @@
       "height": "Premium 最高可輸出 {{value}}p。",
       "projects": "Premium 最多可保留 {{value}} 個已儲存的專案。",
       "projectsUnlimited": "Premium 沒有已儲存專案的上限。",
-      "studioFormats": "Premium 新增 MOV、MKV 與進階匯出設定。"
+      "studioFormats": "Premium 新增 MOV、WebM、MKV、Opus 音訊、內嵌字幕軌與進階匯出設定。"
     },
     "noHigherPlan": "沒有任何方案能進一步提高這個限額。請調低設定以繼續。",
     "proNote": "升級時今天會收取按比例計算的差額；你的續訂日期維持不變。",

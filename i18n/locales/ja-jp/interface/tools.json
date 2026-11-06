@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "新登場",
-    "tagline": "マルチトラックのタイムラインで動画と音声を編集・重ね合わせ・ミックスし、MP4・MOV・MKVで書き出せます。Premiere Pro風のエディターがブラウザでそのまま使えます。",
+    "tagline": "マルチトラックのタイムラインで動画と音声を編集・重ね合わせ・ミックスし、MP4・MOV・WebM・MKVで書き出せます。Premiere Pro風のエディターがブラウザでそのまま使えます。",
     "backToTools": "ツール一覧に戻る",
     "slots": {
       "mediaBin": {
@@ -495,8 +495,10 @@
       "captionsNone": "なし",
       "captionsBurnIn": "動画に焼き込む",
       "captionsSidecar": "サイドカーファイル（.srt + .vtt）",
+      "captionsEmbedded": "埋め込みトラック（再生時にオン／オフ）",
       "captionsHint": "サイドカーでは、字幕を焼き込む代わりに字幕ファイルを動画と一緒にダウンロードします。",
       "captionsEmpty": "このプロジェクトにはまだ字幕がありません。",
+      "captionsEmbeddedHint": "埋め込みトラックはプレーンテキストです。スタイルとアニメーションは焼き込んだ場合のみ残ります。",
       "downloadFile": "{{ext}}をダウンロード",
       "downloadCaptions": "字幕をダウンロード（.srt + .vtt）",
       "advanced": "詳細設定",
@@ -518,9 +520,12 @@
       "preset_mp4_hevc": "MP4 · H.265（サイズ半分）",
       "preset_mov_h264": "MOV · H.264（Final Cut、iMovie）",
       "preset_mov_hevc": "MOV · H.265（Apple系編集、小さめ）",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus（Webサイト向け）",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC（保存用）",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus（保存用・音声を小さく）",
       "preset_audio_mp3": "音声のみ · MP3",
       "preset_audio_wav": "音声のみ · WAV",
+      "preset_audio_opus": "音声のみ · Opus（最小）",
       "warning_apple_incompatible": "QuickTime、写真アプリ、iPhoneではこのファイルを開けません。",
       "warning_no_browser_preview": "ブラウザではこのファイルを再生できません。VLCや動画編集ソフトで開いてください。"
     },
@@ -651,8 +656,10 @@
       "expired": "このファイルは保存期間を過ぎています。再レンダリングすると復元できます。",
       "hostDownload": "CreaTVの下書きからダウンロード",
       "status_running": "レンダリング中",
+      "status_queued": "待機中",
       "status_completed": "完了",
       "status_failed": "失敗",
+      "queuedHint": "エンコーダーの空きを待っています。自動で開始されるので、ページを離れても大丈夫です。",
       "error_generic": "レンダリングに失敗しました。",
       "error_timeout": "レンダリングに時間がかかりすぎたため停止しました。",
       "error_unsupported": "このサーバーではその形式を生成できません。",

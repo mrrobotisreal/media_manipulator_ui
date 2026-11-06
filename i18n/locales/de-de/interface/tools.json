@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "Neu",
-    "tagline": "Schneiden, layern und mischen Sie Video und Audio auf einer Multitrack-Timeline – und exportieren Sie anschließend als MP4, MOV oder MKV. Ein Editor im Stil von Premiere Pro, direkt in Ihrem Browser.",
+    "tagline": "Schneiden, layern und mischen Sie Video und Audio auf einer Multitrack-Timeline – und exportieren Sie anschließend als MP4, MOV, WebM oder MKV. Ein Editor im Stil von Premiere Pro, direkt in Ihrem Browser.",
     "backToTools": "Zurück zu den Tools",
     "slots": {
       "mediaBin": {
@@ -500,8 +500,10 @@
       "captionsNone": "None",
       "captionsBurnIn": "Burn into video",
       "captionsSidecar": "Sidecar files (.srt + .vtt)",
+      "captionsEmbedded": "Eingebettete Spur (ein-/ausschaltbar)",
       "captionsHint": "Sidecar downloads the caption files next to your video instead of burning them in.",
       "captionsEmpty": "This project has no captions yet.",
+      "captionsEmbeddedHint": "Eingebettete Spuren sind reiner Text: Stil und Animation bleiben nur beim Einbrennen erhalten.",
       "downloadFile": "Download {{ext}}",
       "downloadCaptions": "Download captions (.srt + .vtt)",
       "advanced": "Erweitert",
@@ -523,9 +525,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (halbe Dateigröße)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (Apple-Schnitt, kleiner)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (Websites)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (Archiv)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (Archiv, kleineres Audio)",
       "preset_audio_mp3": "Nur Audio · MP3",
       "preset_audio_wav": "Nur Audio · WAV",
+      "preset_audio_opus": "Nur Audio · Opus (am kleinsten)",
       "warning_apple_incompatible": "QuickTime, Fotos und das iPhone öffnen diese Datei nicht.",
       "warning_no_browser_preview": "Browser können diese Datei nicht abspielen; öffnen Sie sie in VLC oder einem Videoeditor."
     },
@@ -656,8 +661,10 @@
       "expired": "This file is past its retention window. Render again to get it back.",
       "hostDownload": "Download from your draft in CreaTV",
       "status_running": "Rendering",
+      "status_queued": "In der Warteschlange",
       "status_completed": "Done",
       "status_failed": "Failed",
+      "queuedHint": "Wartet auf einen freien Encoder. Der Export startet von selbst; Sie können die Seite verlassen.",
       "error_generic": "The render failed.",
       "error_timeout": "The render took too long and was stopped.",
       "error_unsupported": "This server can't produce that format.",

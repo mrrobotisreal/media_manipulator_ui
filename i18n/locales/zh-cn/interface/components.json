@@ -631,7 +631,7 @@
       "height": "Premium最高可输出{{value}}p。",
       "projects": "Premium最多保留{{value}}个已保存项目。",
       "projectsUnlimited": "Premium没有已保存项目数量限制。",
-      "studioFormats": "Premium 新增 MOV、MKV 和高级导出设置。"
+      "studioFormats": "Premium 新增 MOV、WebM、MKV、Opus 音频、内嵌字幕轨和高级导出设置。"
     },
     "noHigherPlan": "没有套餐能进一步提高此限额。请调低设置以继续。",
     "proNote": "升级会在今天收取按比例计算的差价；你的续订日期保持不变。",

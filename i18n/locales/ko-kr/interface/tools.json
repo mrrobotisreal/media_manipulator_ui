@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "신규",
-    "tagline": "멀티트랙 타임라인에서 동영상과 오디오를 편집하고, 레이어를 쌓고, 믹싱한 뒤 MP4, MOV, MKV로 내보내세요. Premiere Pro 스타일의 편집기를 브라우저에서 바로 사용할 수 있어요.",
+    "tagline": "멀티트랙 타임라인에서 동영상과 오디오를 편집하고, 레이어를 쌓고, 믹싱한 뒤 MP4, MOV, WebM, MKV로 내보내세요. Premiere Pro 스타일의 편집기를 브라우저에서 바로 사용할 수 있어요.",
     "backToTools": "도구로 돌아가기",
     "slots": {
       "mediaBin": {
@@ -495,8 +495,10 @@
       "captionsNone": "없음",
       "captionsBurnIn": "동영상에 새기기",
       "captionsSidecar": "별도 파일 (.srt + .vtt)",
+      "captionsEmbedded": "내장 트랙(재생 중 켜고 끄기)",
       "captionsHint": "별도 파일을 선택하면 자막을 동영상에 새기는 대신 자막 파일을 동영상과 함께 다운로드합니다.",
       "captionsEmpty": "이 프로젝트에는 아직 자막이 없습니다.",
+      "captionsEmbeddedHint": "내장 트랙은 일반 텍스트예요. 스타일과 애니메이션은 영상에 입혔을 때만 유지돼요.",
       "downloadFile": "{{ext}} 다운로드",
       "downloadCaptions": "자막 다운로드 (.srt + .vtt)",
       "advanced": "고급",
@@ -518,9 +520,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (절반 크기)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (Apple 편집용, 더 작게)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (웹사이트용)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (보관용)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (보관용, 더 작은 오디오)",
       "preset_audio_mp3": "오디오만 · MP3",
       "preset_audio_wav": "오디오만 · WAV",
+      "preset_audio_opus": "오디오만 · Opus (가장 작음)",
       "warning_apple_incompatible": "QuickTime, 사진 앱, iPhone에서는 이 파일을 열 수 없어요.",
       "warning_no_browser_preview": "브라우저에서는 이 파일을 재생할 수 없어요. VLC나 동영상 편집기에서 열어 주세요."
     },
@@ -651,8 +656,10 @@
       "expired": "이 파일은 보관 기간이 지났습니다. 다시 렌더링하면 되찾을 수 있습니다.",
       "hostDownload": "CreaTV의 초안에서 다운로드",
       "status_running": "렌더링 중",
+      "status_queued": "대기 중",
       "status_completed": "완료",
       "status_failed": "실패",
+      "queuedHint": "사용 가능한 인코더를 기다리는 중이에요. 자동으로 시작되니 페이지를 떠나도 괜찮아요.",
       "error_generic": "렌더링에 실패했습니다.",
       "error_timeout": "렌더링이 너무 오래 걸려 중단되었습니다.",
       "error_unsupported": "이 서버는 해당 형식을 생성할 수 없습니다.",

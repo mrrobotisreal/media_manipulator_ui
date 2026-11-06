@@ -29,6 +29,7 @@ import {
   formatExtension,
   hasRunning,
   isAudioFormat,
+  isInFlight,
   jobsToWatch,
   mergeExportRows,
   recordOutput,
@@ -59,7 +60,7 @@ const JobWatcher: React.FC<{
     onError: (msg) => onSettled(jobId, false, msg),
   });
   React.useEffect(() => {
-    if (job) onUpdate(jobId, { status: job.status, progress: job.progress, error: job.error });
+    if (job) onUpdate(jobId, { status: job.status, progress: job.progress, error: job.error, queued: job.queued });
   }, [job, jobId, onUpdate]);
   return null;
 };
@@ -92,7 +93,7 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
   const onUpdate = React.useCallback((jobId: string, job: LiveJob) => {
     setLive((prev) => {
       const old = prev[jobId];
-      if (old && old.status === job.status && old.progress === job.progress) return prev;
+      if (old && old.status === job.status && old.progress === job.progress && old.queued === job.queued) return prev;
       return { ...prev, [jobId]: job };
     });
   }, []);
@@ -247,6 +248,11 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
                       </span>
                     </div>
 
+                    {row.displayStatus === 'queued' && (
+                      <p className="mt-2 text-[11px] text-muted-foreground" data-testid="export-row-queued">
+                        {t('contentStudio.exports.queuedHint')}
+                      </p>
+                    )}
                     {row.displayStatus === 'running' && (
                       <div className="mt-2">
                         <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
@@ -266,7 +272,7 @@ const ExportsPanel: React.FC<{ projectId: string }> = ({ projectId }) => {
                       <p className="mt-2 text-xs text-muted-foreground">{t('contentStudio.exports.expired')}</p>
                     )}
 
-                    {row.displayStatus !== 'running' && (
+                    {!isInFlight(row.displayStatus) && (
                       <div className="mt-2 flex flex-wrap gap-2">
                         {row.canDownload && downloadHref(row) && (
                           <Button size="sm" onClick={() => void handleDownload(row)}>

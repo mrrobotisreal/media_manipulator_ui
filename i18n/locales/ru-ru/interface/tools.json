@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "Новое",
-    "tagline": "Редактируйте, накладывайте слои и микшируйте видео и аудио на многодорожечном таймлайне — а затем экспортируйте в MP4, MOV или MKV. Редактор в стиле Premiere Pro прямо в браузере.",
+    "tagline": "Редактируйте, накладывайте слои и микшируйте видео и аудио на многодорожечном таймлайне — а затем экспортируйте в MP4, MOV, WebM или MKV. Редактор в стиле Premiere Pro прямо в браузере.",
     "backToTools": "Назад к инструментам",
     "slots": {
       "mediaBin": {
@@ -510,8 +510,10 @@
       "captionsNone": "None",
       "captionsBurnIn": "Burn into video",
       "captionsSidecar": "Sidecar files (.srt + .vtt)",
+      "captionsEmbedded": "Встроенная дорожка (вкл./выкл. при просмотре)",
       "captionsHint": "Sidecar downloads the caption files next to your video instead of burning them in.",
       "captionsEmpty": "This project has no captions yet.",
+      "captionsEmbeddedHint": "Встроенные дорожки — это простой текст: стиль и анимация сохраняются только при вшивании в видео.",
       "downloadFile": "Download {{ext}}",
       "downloadCaptions": "Download captions (.srt + .vtt)",
       "advanced": "Расширенные",
@@ -533,9 +535,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (вдвое меньше)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (монтаж на Apple, меньше)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (для сайтов)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (архив)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (архив, аудио компактнее)",
       "preset_audio_mp3": "Только аудио · MP3",
       "preset_audio_wav": "Только аудио · WAV",
+      "preset_audio_opus": "Только аудио · Opus (самый компактный)",
       "warning_apple_incompatible": "QuickTime, «Фото» и iPhone не откроют этот файл.",
       "warning_no_browser_preview": "Браузеры не воспроизводят этот файл; откройте его в VLC или видеоредакторе."
     },
@@ -666,8 +671,10 @@
       "expired": "This file is past its retention window. Render again to get it back.",
       "hostDownload": "Download from your draft in CreaTV",
       "status_running": "Rendering",
+      "status_queued": "В очереди",
       "status_completed": "Done",
       "status_failed": "Failed",
+      "queuedHint": "Ожидает свободный кодировщик. Запустится сам; страницу можно закрыть.",
       "error_generic": "The render failed.",
       "error_timeout": "The render took too long and was stopped.",
       "error_unsupported": "This server can't produce that format.",

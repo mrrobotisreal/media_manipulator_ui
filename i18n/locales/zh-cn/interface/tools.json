@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "新",
-    "tagline": "在多轨时间线上编辑、叠加和混合视频与音频——然后导出MP4、MOV 或 MKV。一款Premiere Pro风格的编辑器，直接在浏览器中运行。",
+    "tagline": "在多轨时间线上编辑、叠加和混合视频与音频——然后导出MP4、MOV、WebM 或 MKV。一款Premiere Pro风格的编辑器，直接在浏览器中运行。",
     "backToTools": "返回工具列表",
     "slots": {
       "mediaBin": {
@@ -495,8 +495,10 @@
       "captionsNone": "无",
       "captionsBurnIn": "烧录到视频中",
       "captionsSidecar": "外挂文件（.srt + .vtt）",
+      "captionsEmbedded": "内嵌字幕轨（播放时可开关）",
       "captionsHint": "外挂方式会将字幕文件与视频一起下载，而不是烧录到视频中。",
       "captionsEmpty": "此项目还没有字幕。",
+      "captionsEmbeddedHint": "内嵌字幕轨是纯文本：样式和动画只有烧录进画面时才会保留。",
       "downloadFile": "下载{{ext}}",
       "downloadCaptions": "下载字幕（.srt + .vtt）",
       "advanced": "高级",
@@ -518,9 +520,12 @@
       "preset_mp4_hevc": "MP4 · H.265（体积减半）",
       "preset_mov_h264": "MOV · H.264（Final Cut、iMovie）",
       "preset_mov_hevc": "MOV · H.265（Apple 剪辑，更小）",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus（网站）",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC（归档）",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus（归档，音频更小）",
       "preset_audio_mp3": "仅音频 · MP3",
       "preset_audio_wav": "仅音频 · WAV",
+      "preset_audio_opus": "仅音频 · Opus（体积最小）",
       "warning_apple_incompatible": "QuickTime、“照片”和 iPhone 无法打开此文件。",
       "warning_no_browser_preview": "浏览器无法播放此文件，请用 VLC 或视频编辑软件打开。"
     },
@@ -651,8 +656,10 @@
       "expired": "此文件已超过保留期限。再次渲染即可找回。",
       "hostDownload": "从你在CreaTV中的草稿下载",
       "status_running": "渲染中",
+      "status_queued": "排队中",
       "status_completed": "完成",
       "status_failed": "失败",
+      "queuedHint": "正在等待空闲的编码器。它会自动开始，你可以离开此页面。",
       "error_generic": "渲染失败。",
       "error_timeout": "渲染耗时过长，已被停止。",
       "error_unsupported": "此服务器无法生成该格式。",

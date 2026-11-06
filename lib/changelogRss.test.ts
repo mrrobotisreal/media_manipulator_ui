@@ -17,7 +17,8 @@ describe('changelog data', () => {
     // 2026-11-03: MM100 (Aperture beta).
     // 2026-11-04: MM93 (tool bodies in the last seven languages).
     // 2026-11-05: MM111 (Medi launch).
-    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-31', '2026-11-01', '2026-11-03', '2026-11-04', '2026-11-05']).toContain(d);
+    // 2026-11-06: MM119 (Darkroom WebM, Opus, embedded captions).
+    for (const d of dates) expect(['2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-31', '2026-11-01', '2026-11-03', '2026-11-04', '2026-11-05', '2026-11-06']).toContain(d);
   });
 
   it('does not announce email as being sent (sending is off until configured)', () => {

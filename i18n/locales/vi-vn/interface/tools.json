@@ -2,7 +2,7 @@
   "contentStudio": {
     "title": "Darkroom",
     "badge": "Mới",
-    "tagline": "Chỉnh sửa, xếp lớp và phối video & âm thanh trên dòng thời gian đa track — rồi xuất MP4, MOV hoặc MKV. Một trình biên tập kiểu Premiere Pro, ngay trong trình duyệt của bạn.",
+    "tagline": "Chỉnh sửa, xếp lớp và phối video & âm thanh trên dòng thời gian đa track — rồi xuất MP4, MOV, WebM hoặc MKV. Một trình biên tập kiểu Premiere Pro, ngay trong trình duyệt của bạn.",
     "backToTools": "Quay lại công cụ",
     "slots": {
       "mediaBin": {
@@ -495,8 +495,10 @@
       "captionsNone": "Không",
       "captionsBurnIn": "Ghi vào video",
       "captionsSidecar": "Tệp đi kèm (.srt + .vtt)",
+      "captionsEmbedded": "Track nhúng (bật/tắt khi xem)",
       "captionsHint": "Tệp đi kèm tải các tệp phụ đề cạnh video thay vì ghi vào video.",
       "captionsEmpty": "Dự án này chưa có phụ đề.",
+      "captionsEmbeddedHint": "Track nhúng là văn bản thuần: kiểu chữ và hiệu ứng động chỉ giữ được khi in cứng vào video.",
       "downloadFile": "Tải xuống {{ext}}",
       "downloadCaptions": "Tải xuống phụ đề (.srt + .vtt)",
       "advanced": "Nâng cao",
@@ -518,9 +520,12 @@
       "preset_mp4_hevc": "MP4 · H.265 (nhỏ bằng một nửa)",
       "preset_mov_h264": "MOV · H.264 (Final Cut, iMovie)",
       "preset_mov_hevc": "MOV · H.265 (dựng trên Apple, nhỏ hơn)",
+      "preset_webm_vp9_opus": "WebM · VP9 + Opus (cho website)",
       "preset_mkv_hevc_aac": "MKV · H.265 + AAC (lưu trữ)",
+      "preset_mkv_hevc_opus": "MKV · H.265 + Opus (lưu trữ, âm thanh nhẹ hơn)",
       "preset_audio_mp3": "Chỉ âm thanh · MP3",
       "preset_audio_wav": "Chỉ âm thanh · WAV",
+      "preset_audio_opus": "Chỉ âm thanh · Opus (nhẹ nhất)",
       "warning_apple_incompatible": "QuickTime, Ảnh và iPhone sẽ không mở được tệp này.",
       "warning_no_browser_preview": "Trình duyệt không phát được tệp này; hãy mở bằng VLC hoặc trình biên tập video."
     },
@@ -651,8 +656,10 @@
       "expired": "Tệp này đã quá thời gian lưu. Hãy kết xuất lại để lấy lại.",
       "hostDownload": "Tải xuống từ bản nháp của bạn trong CreaTV",
       "status_running": "Đang kết xuất",
+      "status_queued": "Đang xếp hàng",
       "status_completed": "Xong",
       "status_failed": "Thất bại",
+      "queuedHint": "Đang chờ bộ mã hóa trống. Quá trình sẽ tự bắt đầu; bạn có thể rời trang.",
       "error_generic": "Kết xuất thất bại.",
       "error_timeout": "Kết xuất mất quá nhiều thời gian và đã bị dừng.",
       "error_unsupported": "Máy chủ này không thể tạo định dạng đó.",

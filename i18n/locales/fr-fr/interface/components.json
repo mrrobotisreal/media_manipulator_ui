@@ -634,7 +634,7 @@
       "height": "Premium produit des sorties jusqu'à {{value}}p.",
       "projects": "Premium conserve jusqu'à {{value}} projets enregistrés.",
       "projectsUnlimited": "Premium n'a pas de limite de projets enregistrés.",
-      "studioFormats": "Premium ajoute MOV, MKV et les réglages d'export avancés."
+      "studioFormats": "Premium ajoute MOV, WebM, MKV, l'audio Opus, les pistes de sous-titres intégrées et les réglages d'export avancés."
     },
     "noHigherPlan": "Aucune offre ne relève davantage cette limite. Réduisez le réglage pour continuer.",
     "proNote": "La mise à niveau facture aujourd'hui la différence au prorata ; votre date de renouvellement ne change pas.",

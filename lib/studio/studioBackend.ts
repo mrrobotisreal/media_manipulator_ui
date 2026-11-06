@@ -41,6 +41,11 @@ export interface StudioJobProgress {
   progress: number;
   resultUrl?: string;
   error?: string;
+  /**
+   * MM119: true while the export waits for a server CPU encode slot (VP9; the API's job
+   * currentStage "queued"). Accepted and charged, just not rendering yet. MM only.
+   */
+  queued?: boolean;
 }
 
 // --- Adapter input shapes (ecosystem-neutral; hooks pass these) -------------
@@ -281,12 +286,15 @@ export function createMmBackend(): StudioBackend {
       return { jobId: j.jobId };
     },
     parseJob: (json) => {
-      const d = (json ?? {}) as Partial<StudioJobProgress> & { status?: string };
+      const d = (json ?? {}) as Partial<StudioJobProgress> & { status?: string; currentStage?: unknown };
+      const status = (d.status as StudioJobProgress['status']) || 'processing';
       return {
-        status: (d.status as StudioJobProgress['status']) || 'processing',
+        status,
         progress: typeof d.progress === 'number' ? d.progress : 0,
         resultUrl: d.resultUrl,
         error: d.error,
+        // MM119: the API's CPU encode gate parks a VP9 export with currentStage "queued".
+        ...(d.currentStage === 'queued' && status !== 'completed' && status !== 'failed' ? { queued: true } : {}),
       };
     },
     parseVersion: (json) => studioProjectVersionSchema.parse(json),

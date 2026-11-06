@@ -638,7 +638,7 @@
       "height": "Premium מייצא עד {{value}}p.",
       "projects": "Premium שומר עד {{value}} פרויקטים.",
       "projectsUnlimited": "ב-Premium אין הגבלה על פרויקטים שמורים.",
-      "studioFormats": "Premium מוסיף MOV, ‏MKV והגדרות ייצוא מתקדמות."
+      "studioFormats": "Premium מוסיף MOV, ‏WebM, ‏MKV, אודיו Opus, רצועות כתוביות מוטמעות והגדרות ייצוא מתקדמות."
     },
     "noHigherPlan": "אין מסלול שמגדיל את המגבלה הזו עוד. הקטינו את ההגדרה כדי להמשיך.",
     "proNote": "שדרוג מחייב היום את ההפרש היחסי; תאריך החידוש נשאר זהה.",

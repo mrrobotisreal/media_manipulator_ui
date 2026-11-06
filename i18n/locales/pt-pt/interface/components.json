@@ -634,7 +634,7 @@
       "height": "O Premium produz saídas até {{value}}p.",
       "projects": "O Premium guarda até {{value}} projetos.",
       "projectsUnlimited": "O Premium não tem limite de projetos guardados.",
-      "studioFormats": "O Premium acrescenta MOV, MKV e as definições avançadas de exportação."
+      "studioFormats": "O Premium acrescenta MOV, WebM, MKV, áudio Opus, faixas de legendas incorporadas e as definições avançadas de exportação."
     },
     "noHigherPlan": "Nenhum plano aumenta mais este limite. Reduza a definição para continuar.",
     "proNote": "Ao passar de plano, a diferença proporcional é cobrada hoje; a sua data de renovação mantém-se.",

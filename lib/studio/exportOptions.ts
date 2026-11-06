@@ -142,7 +142,7 @@ export function buildExportRequest(c: ExportChoices, exportDepth: boolean, t: St
   if (!exportDepth) return base;
   const out = choiceOutput(c, t);
   const audio = isAudioOnlyContainer(out.container, t);
-  const req: StudioExportRequest = { ...base, resolution: audio ? 0 : c.resolution, captionsMode: audio ? 'none' : c.captionsMode };
+  const req: StudioExportRequest = { ...base, resolution: audio ? 0 : c.resolution, captionsMode: audio ? 'none' : fitCaptionsMode(c.captionsMode, out.container, t) };
   const preset = presetFor(out, t);
   if (preset && !needsAdvanced(out, t)) return { ...req, outputPreset: preset.key };
   const codec = t.codecs.find((x) => x.key === out.audioCodec);
@@ -174,6 +174,28 @@ export function effectiveCaptionsMode(mode: StudioCaptionsMode, hasCaptions: boo
   return hasCaptions ? mode : 'none';
 }
 
+/** The output token that gates the embedded captions mode (MM119; the API's subs_embedded). */
+export const EMBEDDED_SUBS_TOKEN = 'subs_embedded';
+
+/**
+ * The subtitle codec a container writes for the embedded captions mode (MM119, from the
+ * table's `subtitleCodec`: srt in MKV, mov_text in MP4/MOV, webvtt in WebM). undefined =
+ * the container cannot carry a track (audio-only), so the dialog does not offer the mode.
+ */
+export function embeddedSubtitleCodec(container: string, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): string | undefined {
+  return t.containers.find((c) => c.key === container)?.subtitleCodec || undefined;
+}
+
+/**
+ * The captions mode to send for an output: `embedded` falls back to `sidecar` when the
+ * chosen container cannot carry a subtitle track (a stale choice after a switch to an
+ * audio-only container is dropped anyway by buildExportRequest).
+ */
+export function fitCaptionsMode(mode: StudioCaptionsMode, container: string, t: StudioOutputTable = STATIC_STUDIO_OUTPUTS): StudioCaptionsMode {
+  if (mode === 'embedded' && !embeddedSubtitleCodec(container, t)) return 'sidecar';
+  return mode;
+}
+
 // --- sidecar captions -------------------------------------------------------
 
 /** Sidecar file names share the video's base name: `<base>.srt` / `<base>.vtt`. */
@@ -189,13 +211,18 @@ export interface LiveJob {
   status: 'pending' | 'processing' | 'completed' | 'failed';
   progress: number;
   error?: string;
+  /** MM119: waiting for a server CPU encode slot (VP9). */
+  queued?: boolean;
 }
 
 export interface ExportRow extends StudioExportRecord {
   /** 0-100 for a running row (live when known, else 0). */
   progress: number;
-  /** The status the user should see, with live job truth overlaid on the stored row. */
-  displayStatus: 'running' | 'completed' | 'failed';
+  /**
+   * The status the user should see, with live job truth overlaid on the stored row.
+   * MM119: `queued` = accepted and charged, waiting for a server CPU encode slot (VP9).
+   */
+  displayStatus: 'queued' | 'running' | 'completed' | 'failed';
   /** Whether the row offers a re-download. */
   canDownload: boolean;
 }
@@ -221,6 +248,8 @@ export function mergeExportRows(records: StudioExportRecord[], live: Record<stri
       } else if (job.status === 'failed') {
         displayStatus = 'failed';
         error = r.error ?? 'failed';
+      } else if (job.queued) {
+        displayStatus = 'queued';
       } else {
         progress = Math.max(0, Math.min(100, job.progress));
       }
@@ -234,9 +263,14 @@ export function jobsToWatch(records: StudioExportRecord[]): string[] {
   return records.filter((r) => r.status === 'running').map((r) => r.jobId);
 }
 
+/** True for a row still in flight: rendering, or queued for a CPU encode slot (MM119). */
+export function isInFlight(status: ExportRow['displayStatus']): boolean {
+  return status === 'running' || status === 'queued';
+}
+
 /** True when any row is in flight (drives the header badge and the history poll). */
 export function hasRunning(rows: Pick<ExportRow, 'displayStatus'>[]): boolean {
-  return rows.some((r) => r.displayStatus === 'running');
+  return rows.some((r) => isInFlight(r.displayStatus));
 }
 
 /** Error class -> i18n key suffix; unknown classes fall back to `generic`. */
@@ -264,13 +298,14 @@ export function errorClassKey(error: string | undefined): string {
 export function exportHistorySummary(rows: ExportRow[], limit = 10) {
   return {
     total: rows.length,
-    running: rows.filter((r) => r.displayStatus === 'running').length,
+    running: rows.filter((r) => isInFlight(r.displayStatus)).length,
     entries: rows.slice(0, limit).map((r) => ({
       jobId: r.jobId,
       format: r.format,
       container: r.container ?? parseOutputLabel(r.format)?.container,
       resolution: r.resolution,
-      status: r.displayStatus,
+      // The protocol's closed status list predates MM119's Queued: a queued row is running.
+      status: r.displayStatus === 'queued' ? ('running' as const) : r.displayStatus,
       available: r.canDownload,
     })),
   };
@@ -362,7 +397,7 @@ export function prefillFromParams(p: Record<string, unknown> | null | undefined,
   const res = num('resolution');
   if (res !== undefined && (RESOLUTION_RUNGS as readonly number[]).includes(res)) prefill.resolution = res;
   const cm = str('captionsMode');
-  if (cm === 'none' || cm === 'burn_in' || cm === 'sidecar') prefill.captionsMode = cm;
+  if (cm === 'none' || cm === 'burn_in' || cm === 'sidecar' || cm === 'embedded') prefill.captionsMode = cm;
   const up = p.upgrade as { required?: unknown; option?: unknown } | undefined;
   if (up && (up.required === 'free' || up.required === 'premium' || up.required === 'pro') && typeof up.option === 'string') {
     prefill.upgrade = { required: up.required, option: up.option };
