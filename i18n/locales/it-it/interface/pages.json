@@ -1293,6 +1293,7 @@
             "bullets": [
               "Foto e video: Lei sceglie i file con i selettori di foto e file di sistema di Android. L'app non legge la Sua libreria di foto e non ne richiede l'accesso.",
               "Notifiche: l'app lo chiede la prima volta che un lavoro dura a lungo. È facoltativo e l'app funziona anche senza.",
+              "Microfono: l'app lo chiede la prima volta che Lei registra in uno strumento vocale (clonare una voce, cambiarla o variarne la tonalità). Registra solo mentre il registratore è aperto sullo schermo e si interrompe quando Lei esce dall'app. Può rifiutare e caricare invece un file audio.",
               "Salvataggio nella galleria: quando salva un risultato, l'app lo aggiunge alla Sua galleria. Non legge ciò che vi si trova già."
             ]
           },

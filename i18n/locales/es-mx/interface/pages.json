@@ -1293,6 +1293,7 @@
             "bullets": [
               "Fotos y videos: eliges los archivos con los selectores de fotos y de archivos del sistema de Android. La app no lee tu biblioteca de fotos y no solicita acceso a ella.",
               "Notificaciones: la app lo pide la primera vez que un trabajo tarda mucho. Es opcional y la app funciona sin ellas.",
+              "Micrófono: la app lo pide la primera vez que grabas en una herramienta de voz (clonar una voz, cambiarla o modificar su tono). Solo graba mientras la grabadora está abierta en pantalla y se detiene cuando sales de la app. Puedes negarte y subir un archivo de audio en su lugar.",
               "Guardar en tu galería: cuando guardas un resultado, la app lo añade a tu galería. No lee lo que ya hay en ella."
             ]
           },
