@@ -1293,6 +1293,7 @@
             "bullets": [
               "Photos et vidéos : vous choisissez les fichiers avec les sélecteurs de photos et de fichiers du système Android. L'application ne lit pas votre photothèque et n'en demande pas l'accès.",
               "Notifications : l'application vous le demande la première fois qu'une tâche dure longtemps. C'est facultatif, et l'application fonctionne sans.",
+              "Microphone : l'application vous le demande la première fois que vous enregistrez dans un outil vocal (cloner une voix, la modifier ou en décaler la hauteur). Elle n'enregistre que pendant que l'enregistreur est ouvert à l'écran et s'arrête lorsque vous quittez l'application. Vous pouvez refuser et envoyer un fichier audio à la place.",
               "Enregistrement dans votre galerie : lorsque vous enregistrez un résultat, l'application l'ajoute à votre galerie. Elle ne lit pas ce qui s'y trouve déjà."
             ]
           },

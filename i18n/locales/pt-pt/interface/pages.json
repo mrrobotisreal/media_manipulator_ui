@@ -1293,6 +1293,7 @@
             "bullets": [
               "Fotografias e vídeos: escolhe os ficheiros com os seletores de fotografias e de ficheiros do sistema Android. A aplicação não lê a sua fototeca e não pede acesso à mesma.",
               "Notificações: a aplicação pergunta na primeira vez que uma tarefa demora muito tempo. É opcional e a aplicação funciona sem ela.",
+              "Microfone: a aplicação pergunta na primeira vez que grava numa ferramenta de voz (clonar uma voz, alterá-la ou mudar o respetivo tom). A aplicação só grava enquanto o gravador estiver aberto no ecrã e para quando sai da aplicação. Pode recusar e carregar um ficheiro de áudio em alternativa.",
               "Guardar na galeria: quando guarda um resultado, a aplicação adiciona-o à sua galeria. Não lê o que já lá se encontra."
             ]
           },

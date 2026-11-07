@@ -626,7 +626,22 @@ describe("MA26 mobile app legal sections", () => {
       expect(pages.legalCommon.whatChangedBody).toMatch(/\b17\b/);
       expect(flatten(pages.privacyPolicy.sections[16])).toContain("https://www.media-manipulator.com/delete-account");
     });
+    // MA34: the Voices recorder made the microphone an app permission; §17.2 lists it between
+    // notifications and saving to the gallery.
+    it(`${code}: Privacy 17.2 lists the microphone (MA34 voice recorder)`, () => {
+      const perms = load(code).privacyPolicy.sections[16].subsections?.[1];
+      expect(perms?.title).toMatch(/^17\.2/);
+      expect(perms?.bullets).toHaveLength(4);
+      expect(perms?.bullets?.[2]?.length).toBeGreaterThan(60);
+    });
   }
+  it("en-US 17.2 says when the app asks for the microphone and that recording stops off screen", () => {
+    const mic = en.privacyPolicy.sections[16].subsections?.[1]?.bullets?.[2] ?? "";
+    expect(mic).toMatch(/^Microphone:/);
+    expect(mic).toContain("the first time you record in a voice tool");
+    expect(mic).toContain("only while the recorder is open on screen");
+    expect(mic).toContain("upload an audio file instead");
+  });
 });
 
 // MM107: Medi (Privacy §1.13, the §4 exception, the §8 processors bullet, Terms §6) and the

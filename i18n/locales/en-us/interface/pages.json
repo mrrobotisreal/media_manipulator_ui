@@ -1293,6 +1293,7 @@
             "bullets": [
               "Photos and videos: you pick files with Android's system photo and file pickers. The app does not read your photo library and does not ask for access to it.",
               "Notifications: the app asks the first time a job runs long. It is optional, and the app works without it.",
+              "Microphone: the app asks the first time you record in a voice tool (clone, change or shift a voice). It records only while the recorder is open on screen and stops when you leave the app. You can say no and upload an audio file instead.",
               "Saving to your gallery: when you save a result, the app adds it to your gallery. It does not read what is already there."
             ]
           },

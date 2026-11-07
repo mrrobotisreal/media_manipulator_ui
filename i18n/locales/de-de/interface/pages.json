@@ -1293,6 +1293,7 @@
             "bullets": [
               "Fotos und Videos: Sie wählen Dateien mit den System-Foto- und Dateiauswahlen von Android aus. Die App liest Ihre Fotobibliothek nicht und fragt nicht nach Zugriff darauf.",
               "Benachrichtigungen: Die App fragt beim ersten Mal, wenn ein Auftrag lange läuft. Das ist optional, und die App funktioniert auch ohne.",
+              "Mikrofon: Die App fragt beim ersten Mal, wenn du in einem Stimmwerkzeug aufnimmst (Stimme klonen, verändern oder verschieben). Sie nimmt nur auf, solange der Rekorder auf dem Bildschirm geöffnet ist, und stoppt, wenn du die App verlässt. Du kannst ablehnen und stattdessen eine Audiodatei hochladen.",
               "Speichern in Ihrer Galerie: Wenn Sie ein Ergebnis speichern, fügt die App es Ihrer Galerie hinzu. Sie liest nicht, was bereits dort ist."
             ]
           },

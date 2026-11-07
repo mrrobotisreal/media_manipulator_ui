@@ -1293,6 +1293,7 @@
             "bullets": [
               "Ảnh và video: bạn chọn tệp bằng trình chọn ảnh và tệp của hệ thống Android. Ứng dụng không đọc thư viện ảnh của bạn và không yêu cầu quyền truy cập vào đó.",
               "Thông báo: ứng dụng hỏi vào lần đầu tiên một tác vụ chạy lâu. Đây là tùy chọn và ứng dụng vẫn hoạt động khi không có thông báo.",
+              "Micrô: ứng dụng hỏi vào lần đầu tiên bạn ghi âm trong một công cụ giọng nói (sao chép, thay đổi hoặc đổi cao độ giọng nói). Ứng dụng chỉ ghi âm khi trình ghi âm đang mở trên màn hình và dừng lại khi bạn rời khỏi ứng dụng. Bạn có thể từ chối và tải lên một tệp âm thanh thay vào đó.",
               "Lưu vào thư viện: khi bạn lưu một kết quả, ứng dụng thêm nó vào thư viện của bạn. Ứng dụng không đọc những gì đã có sẵn trong đó."
             ]
           },
