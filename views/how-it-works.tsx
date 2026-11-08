@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getServerT, ServerTrans } from '@/lib/i18n/server';
 import { Panel } from '@/components/darkroom/panel';
 import { localizeHref } from '@/i18n/locales';
+import { PageFaq } from '@/components/page-faq';
+import { MEDI_BRAND } from '@/lib/assistant/brand';
 
 /**
  * Render a localised list whose source values may contain inline <strong> /
@@ -31,6 +33,12 @@ const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
   const transcriptionItems = t('howItWorks.transcription.items', { returnObjects: true }) as string[];
   const securityItems = t('howItWorks.privacy.security.items', { returnObjects: true }) as string[];
   const qualityItems = t('howItWorks.privacy.quality.items', { returnObjects: true }) as string[];
+  const stages = t('howItWorks.journey.stages', { returnObjects: true }) as Array<{ title: string; body: string }>;
+  const whereItems = t('howItWorks.where.items', { returnObjects: true }) as string[];
+  const failureItems = t('howItWorks.failures.items', { returnObjects: true }) as string[];
+  const faqItems = t('howItWorks.faq.items', { returnObjects: true }) as Array<{ q: string; a: string }>;
+  const medi = { values: { brand: MEDI_BRAND } };
+  const link = 'text-primary underline decoration-primary/40 underline-offset-2 hover:text-[var(--accent-primary-hover)] hover:decoration-primary';
 
   return (
     <>
@@ -41,6 +49,19 @@ const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
           <p className="text-lg text-muted-foreground mb-8">{t('howItWorks.intro')}</p>
 
           <div className="grid gap-8">
+            <Panel level="2" as="section" data-testid="how-journey">
+              <h2 className="text-2xl font-semibold mb-2 text-card-foreground">{t('howItWorks.journey.title')}</h2>
+              <p className="text-muted-foreground mb-4">{t('howItWorks.journey.intro')}</p>
+              <ol className="space-y-5">
+                {stages.map((stage) => (
+                  <li key={stage.title}>
+                    <h3 className="font-semibold mb-1 text-card-foreground">{stage.title}</h3>
+                    <p className="text-muted-foreground">{stage.body}</p>
+                  </li>
+                ))}
+              </ol>
+            </Panel>
+
             <Panel level="2" as="section">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.process.title')}</h2>
               <div className="grid md:grid-cols-4 gap-6">
@@ -144,6 +165,37 @@ const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
               </div>
             </Panel>
 
+            <Panel level="2" as="section">
+              <h2 className="text-2xl font-semibold mb-2 text-card-foreground">{t('howItWorks.where.title')}</h2>
+              <p className="text-muted-foreground mb-3">{t('howItWorks.where.intro')}</p>
+              <ul className="text-muted-foreground space-y-2">
+                {whereItems.map((item) => <li key={item}>• {item}</li>)}
+              </ul>
+            </Panel>
+
+            <Panel level="2" as="section">
+              <h2 className="text-2xl font-semibold mb-2 text-card-foreground">{t('howItWorks.failures.title')}</h2>
+              <p className="text-muted-foreground mb-3">{t('howItWorks.failures.intro')}</p>
+              <ul className="text-muted-foreground space-y-2">
+                {failureItems.map((item) => <li key={item}>• {item}</li>)}
+              </ul>
+              <p className="text-muted-foreground mt-3">
+                <Link href={localizeHref('/status', loc)} className={link}>{t('howItWorks.next.ctaStatus')}</Link>
+              </p>
+            </Panel>
+
+            <Panel level="2" as="section">
+              <h2 className="text-2xl font-semibold mb-2 text-card-foreground">{t('howItWorks.medi.title', medi)}</h2>
+              <p className="text-muted-foreground">{t('howItWorks.medi.body', medi)}</p>
+              <p className="text-muted-foreground mt-3">
+                <Link href={localizeHref('/tools/medi', loc)} className={link}>{MEDI_BRAND}</Link>
+              </p>
+            </Panel>
+
+            <Panel level="2" as="section">
+              <PageFaq title={t('howItWorks.faq.title')} items={faqItems} id="how-faq" />
+            </Panel>
+
             <Panel level="1" as="section" accent="data">
               <h2 className="text-2xl font-semibold mb-4 text-card-foreground">{t('howItWorks.next.title')}</h2>
               <p className="text-muted-foreground mb-4">{t('howItWorks.next.body')}</p>
@@ -159,6 +211,18 @@ const HowItWorksPage: React.FC<{ locale?: string }> = ({ locale }) => {
                   className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"
                 >
                   {t('howItWorks.next.ctaConvert')}
+                </Link>
+                <Link
+                  href={localizeHref('/pricing', loc)}
+                  className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"
+                >
+                  {t('howItWorks.next.ctaPricing')}
+                </Link>
+                <Link
+                  href={localizeHref('/privacy-policy', loc)}
+                  className="bg-card border border-border text-card-foreground px-4 py-2 rounded-lg hover:bg-muted transition-colors"
+                >
+                  {t('howItWorks.next.ctaPrivacy')}
                 </Link>
               </div>
             </Panel>
