@@ -198,7 +198,7 @@
   },
   "howItWorks": {
     "title": "How Media Manipulator Works",
-    "intro": "Media Manipulator is a browser-based studio for converting, editing, transcribing, and AI-processing audio, video, and image files. Every job runs on our own GPU-backed servers — no third-party AI providers, no permanent storage, just fast file processing with optional local AI tools.",
+    "intro": "Media Manipulator is a browser-based studio for converting, editing, transcribing and AI-processing audio, video and image files. Your files are processed on servers we run ourselves, including a GPU server for the AI tools, and the converter tools never send them to a third-party AI provider. This page follows one job from the moment you pick a file to the moment it is deleted, so you know where your file is at every step.",
     "process": {
       "title": "The Conversion Process",
       "step1": {
@@ -257,7 +257,7 @@
     },
     "ai": {
       "title": "AI-Assisted Tools (Local, GPU-Accelerated)",
-      "intro": "Media Manipulator runs every AI operation locally on our own GPU server. Your files are never sent to a third-party AI provider. Each conversion job runs one AI operation; standard editing options are skipped for that job so the AI tool can focus on a clean output.",
+      "intro": "Media Manipulator runs every AI operation of the converter tools locally on our own GPU server. Your files are never sent to a third-party AI provider by those tools; the one exception in the whole site is Medi, the assistant, described further down. Each conversion job runs one AI operation; standard editing options are skipped for that job so the AI tool can focus on a clean output.",
       "image": {
         "title": "AI Image Tools",
         "items": [
@@ -295,7 +295,7 @@
         "items": [
           "All uploads use HTTPS encryption",
           "You choose how long files are kept (24 hours for guests)",
-          "AI processing runs on our own servers — no third-party AI provider sees your media",
+          "The converter's AI tools run on our own servers, so no third-party AI provider sees your files (Medi, the assistant, is the one exception)",
           "Automatic content-safety scanning for abusive or illegal material"
         ],
         "linkPrefix": "See our",
@@ -315,41 +315,106 @@
     },
     "next": {
       "title": "Where to next?",
-      "body": "Ready to try a specific tool? Step-by-step walkthroughs for each conversion type live in our tutorials.",
+      "body": "Ready to try a specific tool? Step-by-step walkthroughs for each conversion type live in our tutorials, and the pricing page lists what every plan includes.",
       "ctaTutorials": "Browse Tutorials",
-      "ctaConvert": "Start Converting"
+      "ctaConvert": "Start Converting",
+      "ctaPricing": "See plans and limits",
+      "ctaStatus": "Check service status",
+      "ctaPrivacy": "Read the Privacy Policy"
+    },
+    "journey": {
+      "title": "One job, from upload to deletion",
+      "intro": "Every converter tool, from a one-click image resize to an AI vocal remover, follows the same path. Knowing the path explains why some jobs finish in a second, why others wait, and what happens to your file afterwards.",
+      "stages": [
+        {
+          "title": "1. You choose a file and settings",
+          "body": "Everything starts in your browser. You pick a tool, drop in a file and choose the options. Before anything is sent, the page checks the file's type against what the tool accepts and checks its size and length against the limits of your plan. Those limits come from our plan table rather than from this page, so they are always current: see the pricing page for the numbers. The editors (Aperture, Motion and Darkroom) do much of their work in your browser as well, and upload a file only when you export, use a server-side AI step or save a project to your account."
+        },
+        {
+          "title": "2. The upload and the first checks",
+          "body": "The file travels to our API over an encrypted HTTPS connection. Visitors without an account are recognised by anonymous device and visit identifiers, which we need only to enforce free-tier limits and block abuse. Before work starts, the server checks the file again and checks your daily allowance, and our automatic content-safety scan looks for abusive or illegal material. A job spends one unit of that allowance: an everyday operation for standard tools, an AI operation for AI tools. If the job is refused or later fails, the unit is given back."
+        },
+        {
+          "title": "3. The job queue",
+          "body": "Accepted work becomes a job with its own identifier and a status that moves from pending to processing and then to completed or failed. Everyday jobs start quickly. AI jobs share a GPU, so they take their turn in a queue, and paid plans go to the front of that line. A free job that has waited a long time is moved up, so it is never left behind. You can see how busy the AI queue is on the status page."
+        },
+        {
+          "title": "4. Processing on our servers",
+          "body": "Standard conversions run on FFmpeg and ImageMagick. AI operations run on open models that we host on our own GPU server: Whisper for transcription, Real-ESRGAN for upscaling, rembg and LaMa for background and object removal, Demucs for vocals and DeepFilterNet for noise. While the job runs, the server streams updates to your browser, so the progress bar is the real status of the job. If the connection drops and reconnects, the first message you get is a snapshot of the job's current state, so nothing is lost."
+        },
+        {
+          "title": "5. The result viewer",
+          "body": "A finished job opens in the result viewer, which previews each kind of output in its own way: images with zoom, a transparency grid and a before-and-after comparison; video and audio in a player, with a waveform for audio; transcripts with search and copy; captions, PDFs, archives and streaming packages with their own views. The viewer shows when the result will be kept until. Download it as often as you like: downloading again never re-runs or charges the job. Where a result can be shared, you can create a link to it. A result can have a handful of live links at a time, each expires by itself (three days by default), and you can revoke all of them at once."
+        },
+        {
+          "title": "6. Retention",
+          "body": "Files and results are kept for the retention period that applies to you. Visitors without an account get 24 hours. If you are signed in you choose anything from 24 hours to 2 years, on every plan, and the default is 6 months. The period is counted from when each file was created, and changing it also applies to your existing files, so choosing a shorter period can delete older files soon afterwards. You can keep one result longer from your History."
+        },
+        {
+          "title": "7. Deletion",
+          "body": "When the retention period ends, the file and its result are deleted from our active systems. You can delete sooner: one result at a time, all of your files at once, or your whole account, which also removes your projects and saved voices. Visitors without an account can delete their own results during the session in which they were made. Once a file is deleted, by you or by the clock, we cannot get it back. The data export in your account is a ZIP of your history, projects and account details, and it deliberately does not contain the media files, so download anything you want to keep before it expires."
+        }
+      ]
+    },
+    "where": {
+      "title": "What runs in your browser and what runs on our servers",
+      "intro": "Not everything is a server job. The split matters for privacy and for speed.",
+      "items": [
+        "Converter tools (image, video, audio, PDF, metadata): the file is uploaded and processed on our servers, following the seven steps above.",
+        "Aperture: the live preview and the adjustments run in your browser. A photo is uploaded when you export, select a subject with AI, heal spots or apply your edits to a batch, or when you save a project to your account.",
+        "Motion: projects and exports are made in your browser. The server only counts a counted export before your browser runs it, to enforce the daily allowance, and stores a project only if you save it to your account.",
+        "Darkroom: editing and previewing happen in your browser; exports are counted against your plan's daily export allowance, and projects you save to your account follow your retention period.",
+        "Voice tools: recordings and text are processed on our own GPU server, and saved voices live in your account until you delete them."
+      ]
+    },
+    "failures": {
+      "title": "When something goes wrong",
+      "intro": "Most problems fall into one of four groups, and each has a predictable outcome.",
+      "items": [
+        "A job fails while processing. Its status becomes failed, the page shows the reason, and the allowance unit it used is returned. Try different settings, for example a lower resolution or a smaller file, and run it again.",
+        "A file is refused before work starts: the type is not accepted, it is over your plan's size or length limit, or it failed the safety scan. Nothing is processed and the unit is not kept.",
+        "The page cannot reach the status service. The status page then says Status unavailable instead of Down, because your browser failing to reach the service does not prove the tools are down. It tries again every few seconds.",
+        "You are over your daily allowance. The tool tells you, and the allowance comes back the next day. The pricing page shows what each plan includes."
+      ]
+    },
+    "medi": {
+      "title": "Where {{brand}} fits in",
+      "body": "{{brand}}, the assistant, is the one feature that uses an outside AI service: your message, the page you are on and, in an editor, a short summary of your project go through OpenRouter to Anthropic's Claude models, and the original media files do not. {{brand}} only prepares things. When it prepares a converter job, the job enters the path above at step 1, as a confirmation card, and nothing starts until you press the button. The Privacy Policy, section 1.13, describes exactly what {{brand}} sends and stores."
+    },
+    "faq": {
+      "title": "Questions about how it works",
+      "items": [
+        {
+          "q": "Why did my job wait?",
+          "a": "AI jobs share one GPU and take turns. Paid plans go to the front of the queue, and a free job that has waited long enough is promoted so it is not left behind. The status page shows how many AI jobs are running and waiting right now."
+        },
+        {
+          "q": "Does the job keep running if I close the tab?",
+          "a": "A job that has started runs on our server, not inside your browser tab. When it finishes, the result appears in the Recent list of the same browser and, if you are signed in, in your History, until its retention period ends."
+        },
+        {
+          "q": "Is my file sent to an AI company?",
+          "a": "Not by the converter tools. Their AI operations use open models that run on our own GPU server, and the Privacy Policy lists them. The exception is Medi, the assistant, which sends your messages and, if you allow it, a small preview image to its AI provider; it never sends the original files."
+        },
+        {
+          "q": "Why is there a daily allowance?",
+          "a": "The GPU is a shared resource, and everyday and AI operations cost very different amounts of it. A daily allowance keeps the tools usable for everyone and stops a single visitor from filling the queue. A job that fails gives its unit back."
+        },
+        {
+          "q": "What is different for guests and for signed-in users?",
+          "a": "Guests get 24-hour retention and a Recent list that lasts the same time. A free account lets you choose the retention period, keeps a History, and saves projects. Plans differ in allowances and limits, which the pricing page lists."
+        },
+        {
+          "q": "Who can see my results?",
+          "a": "Only you, unless you create a share link, in which case anyone who has the link can open that one result until the link expires or you revoke it. Our automatic safety scan looks for abusive or illegal material, as the Privacy Policy explains."
+        }
+      ]
     }
   },
   "tutorials": {
     "title": "Media Manipulator Tutorials",
     "intro": "Step-by-step guides for every Media Manipulator tool. Whether you're converting a single MP3, batch-resizing PNGs, redacting faces from a photo, or pulling vocals out of a music track, the tutorials below walk you through every option in the right-hand conversion panel.",
     "readTutorial": "Read tutorial →",
-    "categories": {
-      "audio": {
-        "title": "How to use the Audio Converter",
-        "description": "Convert audio files between MP3, WAV, FLAC, OGG, and more. Apply EQ, reverb, denoise, vocal isolation, and other audio AI tools."
-      },
-      "video": {
-        "title": "How to use the Video Converter",
-        "description": "Convert and edit video files between MP4, WebM, MOV, MKV, ProRes, and more. Trim, resize, apply filters and transforms, and transcribe with subtitles."
-      },
-      "image": {
-        "title": "How to use the Image Converter",
-        "description": "Convert images between JPG, PNG, WebP, and GIF. Resize, crop, apply filters, add text overlays, manage metadata, and run AI tools like Face Blur, Remove Background, AI Upscale, and Redact Text."
-      },
-      "motion": {
-        "title": "Animation tutorials",
-        "description": "Animate SVG artwork on a keyframe timeline and export it as animated SVG, Lottie, code or GIF."
-      },
-      "photo": {
-        "title": "Photo editing tutorials",
-        "description": "Fix light and color, mask, heal and export photos with {{brand}}."
-      },
-      "medi": {
-        "title": "AI assistant",
-        "description": "Ask Medi for the right tool, run a prepared job, or edit with a reason you can read."
-      }
-    },
     "tutorials": {
       "audioGettingStarted": {
         "title": "Getting Started: Converting Audio Files",
@@ -632,41 +697,141 @@
       },
       "medi": {
         "title": "How to use {{brand}}, the assistant",
-        "excerpt": "Three short workflows: find the right tool, let {{brand}} prepare a job you confirm, and edit a photo, video or animation by describing it.",
-        "readTime": "5 min read",
+        "excerpt": "Three starter workflows: find the right tool, let {{brand}} prepare a job you confirm, and edit a photo, video or animation by describing it, plus how to read, review and undo what it does.",
+        "readTime": "9 min read",
         "page": {
           "eyebrow": "Assistant Tutorial",
           "title": "How to use {{brand}}",
-          "intro": "{{brand}} is the assistant inside Media Manipulator: a guide on every public page and a copilot in Aperture, Darkroom and Motion. This tutorial covers three workflows, in the order most people need them. In all of them {{brand}} only prepares or proposes; you press the button.",
+          "intro": "{{brand}} is the assistant inside Media Manipulator: a guide on every public page and an editing copilot in Aperture, Darkroom and Motion. This tutorial covers three starter workflows in the order most people need them, then how to read, review and undo what {{brand}} does. In all of them {{brand}} only prepares or proposes; you press the button.",
+          "before": {
+            "title": "Before you start",
+            "body": "The guide is a button in the corner of every public page, and it needs no account. The copilots live inside Aperture, Darkroom and Motion: sign in, open a project and press Ctrl+J, or use the {{brand}} button in the editor. Ask in any language the site supports and {{brand}} replies in the language you write in.",
+            "items": [
+              "The guide answers from the site's own help pages and only talks about Media Manipulator.",
+              "The copilots change your open project, so they need you to be signed in.",
+              "Your plan sets how many copilot edits you get each day; the table near the end of this page reads it live."
+            ]
+          },
           "find": {
-            "title": "1. Find the right tool",
-            "body": "Press the {{brand}} button in the corner of any public page and describe the result you want in your own words, in any language the site supports. {{brand}} answers from the site's own help pages and names the tool, the one setting that matters, and a link.",
-            "bullets": {
-              "ask": "Say the goal, not the tool: for example, make this video small enough to email.",
-              "attach": "Use the paperclip to attach a file. {{brand}} reads its type, size, duration and codecs so the advice fits that file.",
-              "scope": "It only talks about Media Manipulator and will decline anything else.",
-              "plans": "Questions about plans are answered from the live plan table, never from memory."
-            }
+            "title": "Workflow 1: find the right tool",
+            "body": "Use this when you know the result you want but not the tool that produces it.",
+            "steps": [
+              "Press the {{brand}} button and describe the goal, not the tool: for example, make this video small enough to email.",
+              "Optionally attach a file with the paperclip. {{brand}} can read images, video, audio and PDF files, and uses the file's type, size, duration and codecs to fit its advice.",
+              "Read the answer. It names the tool, the one setting that matters and a link, and it cites the help page it used.",
+              "Open the link. You land on the tool, and you carry on there."
+            ],
+            "tip": "Questions about plans are answered from the live plan table, not from memory, so you can ask what a plan includes at any time."
           },
           "job": {
-            "title": "2. Let {{brand}} prepare a job",
-            "body": "Say what you want done, or drop a file and say just run it. {{brand}} shows a confirmation card: the settings in your language, how long the queue is and which daily allowance the job would use. Nothing has started.",
-            "bullets": {
-              "card": "Read the settings. They are checked against the tool's real options, so an unsupported value is refused instead of changed.",
-              "start": "Start runs in place for video compress, resize, rotate, crop and trim, audio extract and remove, and transcription; the result opens in a window.",
-              "open": "Every other tool opens on its own page with the settings filled in, and you press its button there.",
-              "click": "A click is always required. Medi never starts anything by itself."
-            }
+            "title": "Workflow 2: let {{brand}} prepare a job",
+            "body": "Use this for quick single-tool jobs. Say what you want, or drop a file and say just run it. {{brand}} replies with a confirmation card, and nothing has started yet.",
+            "card": {
+              "title": "What is on the confirmation card",
+              "items": [
+                "The tool and every setting, written in your language. Settings are checked against the tool's real options, so an unsupported value is refused instead of being quietly changed.",
+                "The file it will use.",
+                "Which daily allowance the job would spend: one everyday operation, or one AI operation for AI tools.",
+                "How long the queue is: no wait, a short wait, a longer wait, or not known."
+              ]
+            },
+            "steps": [
+              "Read the card and check the settings.",
+              "Press Start. Video compress, resize, rotate, crop and trim, audio extract and remove, and transcription run in place and the result opens in a window.",
+              "For every other tool the button is Open: the tool opens with the settings already filled in, and you press its own button there.",
+              "Download the result. Downloading again never re-runs the job."
+            ],
+            "tip": "If you would rather not run it, ignore the card. Nothing happens until you press a button."
           },
           "edit": {
-            "title": "3. Edit by describing the result",
-            "body": "In Aperture, Darkroom or Motion, sign in and press Ctrl+J, then describe the look or change you want. {{brand}} edits the project as a single step and gives a reason for every change.",
-            "bullets": {
-              "undo": "Undo takes the whole edit back in one step.",
-              "review": "Switch off automatic application in the information menu to review each edit as a card with Apply and Discard first.",
-              "showMe": "Show me opens the control an edit changed so you can see and learn it.",
-              "numbers": "{{brand}} can measure the preview, such as brightness, clipped shadows or loudness, and adjust up to three times, citing the figure each time."
-            }
+            "title": "Workflow 3: edit by describing the result",
+            "body": "Inside Aperture, Darkroom or Motion, press Ctrl+J and describe what you want. Each editor has starters to try.",
+            "steps": [
+              "In Aperture, try fix the lighting, make it moody, keep only the red or vintage film look.",
+              "In Darkroom, try cinematic grade, add a lower-third, tighten the pauses or make the voice clearer.",
+              "In Motion, try a lower-third that slides in, reveal my logo or animate this text in.",
+              "Read the change list that appears, then keep it, adjust it with a follow-up message or undo it."
+            ],
+            "tip": "Be specific about the feeling, not only the control: warmer and brighter with the shadows lifted gives {{brand}} more to work with than fix it."
+          },
+          "changes": {
+            "title": "Reading the change list",
+            "body": "Every edit comes with a list of what changed and a one-sentence reason for each change, so you learn which control did what. The lines are plain language. These are real examples of what you will see:",
+            "items": [
+              "Aperture: Made everything grey except red. Applied automatic tone and white balance. Added an exposure adjustment to part of the photo.",
+              "Darkroom: Split the interview clip at 12.4 s. Added a 0.5 s transition into the second clip. Turned on music ducking under the voice.",
+              "Motion: Added the lower-third template. Animated opacity of the title. Turned looping on."
+            ],
+            "numbers": "{{brand}} can also measure the preview, such as brightness, how much of the picture is clipped to black or white, or the loudness of audio. It may adjust up to three times to reach its target, and each round cites the figure that moved."
+          },
+          "showMe": {
+            "title": "Show me",
+            "body": "Next to a change, Show me opens the control that the edit touched, so you can see the slider or setting in its place. It is the fastest way to learn the editor from what {{brand}} did, and to fine-tune a value by hand."
+          },
+          "review": {
+            "title": "Review before applying",
+            "body": "By default edits land at once, as one step. If you want to look first, switch off applying {{brand}}'s edits automatically in the information menu of the copilot panel.",
+            "steps": [
+              "Send your request as usual. The edit appears as a card with before and after values and the line Nothing is applied yet.",
+              "Press Apply to make the edit, or Discard to drop it. Discarded edits change nothing.",
+              "Switch automatic applying back on any time you want edits to land immediately."
+            ]
+          },
+          "plan": {
+            "title": "Plan my edit",
+            "body": "For a larger change, Plan my edit has {{brand}} write the whole edit as steps first. You can do a single step, or all of them. A plan uses several of your daily edits, and the panel tells you how many before you press it."
+          },
+          "undo": {
+            "title": "Undo",
+            "body": "Undo on the change card, or the editor's own undo, takes the entire edit back in one step, however many things it changed. Edits are all-or-nothing: if one cannot be applied, you are told that nothing changed and the project stays exactly as it was."
+          },
+          "limits": {
+            "title": "Limits and the daily allowance",
+            "body": "Asking questions, undoing an edit and preparing a job cost nothing. A prepared job, once you press its button, uses the same everyday or AI allowance as running the tool yourself. Each message that makes an edit uses one of your daily copilot edits. Your remaining edits are shown in the panel and come back at midnight UTC. The table below is read from our servers, so it is always current."
+          },
+          "privacy": {
+            "title": "Privacy",
+            "intro": "{{brand}} is the one feature of the site that uses an outside AI service. This is a summary; the Privacy Policy, section 1.13, is the full account.",
+            "items": [
+              "Your message, the page you are on and, in an editor, a short text summary of your project go through OpenRouter to Anthropic's Claude models. Requests are set to go only to Anthropic, with OpenRouter's setting that excludes providers that collect user data.",
+              "In an editor, a small preview image is sent only if you allow it, with the preview switch in the panel. Preview images are never stored by us.",
+              "Original media files are not sent. A file you attach to the guide is stored like any other upload and kept under your retention setting.",
+              "If you are signed in, your conversations are saved so you can see them again. They follow your retention period, you can delete one at any time, they are in your data export and they are deleted with your account. Guests' conversations are not stored.",
+              "For every answer we keep a usage record without any text: the time, the part of the site, the model, the tokens and the cost."
+            ]
+          },
+          "whenNot": {
+            "title": "When not to use it",
+            "body": "If you already know the tool and the settings, opening the tool is faster than asking. For exact work, such as a precise crop or a specific bitrate, set the values yourself. {{brand}} follows a request for a look, but you decide whether the look is right, and it can be wrong, so check what it did."
+          },
+          "faq": {
+            "title": "Troubleshooting",
+            "items": [
+              {
+                "q": "{{brand}} says it cannot do that.",
+                "a": "It only handles Media Manipulator and refuses anything else. It also refuses a setting a tool does not have. Rephrase the goal or open the tool and set the value yourself."
+              },
+              {
+                "q": "The copilot button asks me to sign in.",
+                "a": "The copilots edit your open project and spend a daily allowance, so they need an account. The guide does not."
+              },
+              {
+                "q": "I have used all of today's edits.",
+                "a": "They come back at midnight UTC. Asking questions, undoing and preparing jobs still work, and a larger plan gives more edits a day."
+              },
+              {
+                "q": "{{brand}} did not start my job.",
+                "a": "That is by design. It prepares the card and you press Start or Open."
+              },
+              {
+                "q": "The guide says it is resting for the day.",
+                "a": "The guide has a daily cap on its use. It points you to help pages meanwhile and returns at midnight UTC."
+              },
+              {
+                "q": "I want to report a bad answer.",
+                "a": "Open the information menu of the copilot panel and quote the prompt version code with your message to support."
+              }
+            ]
           },
           "cta": {
             "title": "Meet {{brand}}",
@@ -680,8 +845,11 @@
             "aperture": "Aperture tutorial",
             "apertureDesc": "Edit a photo with layers and masks.",
             "pricing": "Pricing",
-            "pricingDesc": "Every plan's allowances, including the copilot edits per day."
-          }
+            "pricingDesc": "Every plan's allowances, including the copilot edits per day.",
+            "privacy": "Privacy Policy",
+            "privacyDesc": "Section 1.13 describes exactly what {{brand}} sends and stores."
+          },
+          "tipLabel": "Tip:"
         }
       }
     },
@@ -690,7 +858,90 @@
       "body": "Start with our high-level overview to see everything the platform can do, then jump into a tutorial that matches the kind of file you're working with.",
       "ctaHow": "How it Works",
       "ctaConvert": "Start Converting"
-    }
+    },
+    "intro2": "New to the site? Pick the goal that matches what you want to get done and start with the first guide in that group. Each tutorial names the tool, shows the settings that matter and explains what to expect, and each one links on to the tools and guides that naturally come next.",
+    "newest": {
+      "title": "Newest tutorials",
+      "intro": "The latest guides, newest first. This list updates by itself whenever a tutorial is published."
+    },
+    "goalsTitle": "Tutorials by goal",
+    "goalsIntro": "Every tutorial belongs to one goal. Groups only appear once they have a tutorial, so this page grows as new guides are added.",
+    "startHere": "Start here if",
+    "goals": {
+      "files": {
+        "title": "Convert, shrink and clean up files",
+        "description": "Change a file's format, make it smaller, resize it or tidy its details, for images and video.",
+        "start": "you have a file that is too big, the wrong format or the wrong size."
+      },
+      "video": {
+        "title": "Edit and improve video",
+        "description": "Cut, arrange and export video in Darkroom, and make footage smoother with AI.",
+        "start": "you want to turn raw clips into a finished video."
+      },
+      "photo": {
+        "title": "Edit photos",
+        "description": "Fix light and colour, mask, heal and export photos with {{brand}}.",
+        "start": "you want a better photo without learning a complicated editor."
+      },
+      "audio": {
+        "title": "Convert and fix audio",
+        "description": "Convert audio between formats, clean up speech and separate vocals.",
+        "start": "a recording is too noisy, too big or in the wrong format."
+      },
+      "motion": {
+        "title": "Animate graphics",
+        "description": "Animate SVG artwork on a keyframe timeline and export it as animated SVG, Lottie, code or GIF.",
+        "start": "you want a logo, title or icon to move."
+      },
+      "assistant": {
+        "title": "Work faster with the assistant",
+        "description": "Ask Medi for the right tool, run a prepared job, or edit with a reason you can read.",
+        "start": "you do not know which tool you need, or you would rather describe an edit than build it."
+      }
+    },
+    "how": {
+      "title": "What every tutorial contains",
+      "paragraphs": [
+        "A tutorial is organised around a task you might really have, not around a list of buttons. Each one says what you will end up with, which tool does the work, which settings matter and why, and what you should see at each step, so you can tell whether you are on track.",
+        "Every tutorial also says when not to use the tool, and what to do instead. A guide that only sells the tool is not much of a guide."
+      ],
+      "items": [
+        "The goal and the result, stated at the start.",
+        "The tool or tools involved, with links to their pages.",
+        "Numbered steps, one action each, with what the screen should show.",
+        "The settings worth changing and the ones to leave alone.",
+        "Privacy and retention notes where files are uploaded.",
+        "Links to the next tutorial or tool that follows naturally."
+      ],
+      "limitsNote": "Tutorials do not print daily limits or prices, because plans change. Where a limit matters, the tutorial points to your plan's allowance and to the pricing page, which always shows the current numbers."
+    },
+    "faq": {
+      "title": "About the tutorials",
+      "items": [
+        {
+          "q": "Do I need an account to follow them?",
+          "a": "Most converter tutorials work without one. An account helps when a guide saves projects, keeps results longer or uses an editor's saved features, and the tutorial says so where it matters."
+        },
+        {
+          "q": "Are the tutorials free?",
+          "a": "Yes. Some tools they cover have daily allowances that depend on your plan; the pricing page lists them."
+        },
+        {
+          "q": "How do I know a tutorial is up to date?",
+          "a": "Each tutorial shows when it was published and, if it changed, when it was last updated. When a tool changes, its tutorial is revised."
+        },
+        {
+          "q": "I cannot find a tutorial for my task.",
+          "a": "Ask Medi, the assistant, in the corner of any public page: it names the right tool and the setting that matters. How it works explains what happens to your file."
+        },
+        {
+          "q": "Are the tutorials available in my language?",
+          "a": "The site is available in 18 languages and the tutorials are translated along with it."
+        }
+      ]
+    },
+    "openTutorial": "Read the tutorial",
+    "atLink": "Published {{date}}"
   },
   "blog": {
     "title": "Media Conversion Blog",
@@ -2467,7 +2718,7 @@
       "demoDescription": "A necromancer duels his old teacher, Cornelius (an ElevenLabs library voice), in a storm."
     },
     "howTo": {
-      "title": "How to use them",
+      "title": "How to use the two ElevenLabs voices",
       "steps": [
         "Open a voice with the link under its demo. A free ElevenLabs account is enough.",
         "Add it to your voices, then pick it in Text to Speech, in Studio, or through the API.",
@@ -2506,6 +2757,167 @@
         }
       },
       "open": "Open"
+    },
+    "twoKinds": {
+      "title": "Two different things on this page",
+      "body": "The two voices above, Mr. Wintrow and Obsidian, are professional clones I made on ElevenLabs. They live in the ElevenLabs voice library and you use them there. The voice tools in Media Manipulator are a separate thing: with them you make your own voices, using open models that run on our own servers. Those voices are not ElevenLabs voices. Everything below is about the Media Manipulator tools, unless it says otherwise."
+    },
+    "tools": {
+      "title": "The three voice tools, step by step",
+      "intro": "Each tool has its own page with the recorder, the controls and the player. Here is how a typical session goes.",
+      "clone": {
+        "title": "Cloning your voice",
+        "intro": "A clone is a reusable voice made from a short recording of you. Nothing is trained: the model reads your recording each time the voice speaks.",
+        "steps": [
+          "Open Voice cloning and record 5 to 60 seconds of speech in the browser, or upload an audio or video file (webm, m4a, mp3, wav, ogg, flac or mp4).",
+          "Tick the consent box: this is your voice, or you have the explicit permission of the person whose voice it is.",
+          "Create the voice. A short preview is rendered and the voice is saved to your account, which needs a sign-in.",
+          "Type any text, choose a language (more than twenty are available) and an emotion level from calm to expressive, and generate the speech.",
+          "Listen, then download an MP3, or a WAV made in your browser."
+        ],
+        "tip": "Record a few natural sentences in a quiet room, at a steady distance from the microphone, with no music behind you. A clean recording matters more than a long one."
+      },
+      "design": {
+        "title": "Designing a voice from a description",
+        "intro": "A designed voice belongs to nobody: it is made from your description and a random seed, not modelled on any person.",
+        "steps": [
+          "Open Voice designer and describe the voice in words: gender, age, accent, tone and pace, or click the trait chips to build the description.",
+          "Preview a sample sentence. Previews are free and not counted: three per description each hour.",
+          "When a preview is right, name the voice and keep it. The exact voice you heard, the same seed, is saved to your account.",
+          "Use it like any other saved voice: type text, pick a language and download the audio."
+        ],
+        "tip": "Descriptions work best in English, and a voice is designed in one of ten languages. Once kept, it can speak every language the speech tool supports."
+      },
+      "change": {
+        "title": "Changing the voice in a recording",
+        "intro": "The voice changer works on a recording you already have, in one of two ways.",
+        "steps": [
+          "Shift changes pitch by up to twelve semitones either way. You choose whether the speaker keeps their character or the character moves with the pitch, or you start from a preset: Deeper, Higher, Child-like, Older or Telephone. It is instant, needs no account and uses no AI.",
+          "Convert uses AI voice conversion to make the speech sound like one of your saved voices or a preset voice, keeping the words, timing and intonation. It needs an account on a plan that includes it.",
+          "Play the original and the result in the A/B player, which switches without a gap, then download an MP3 or a WAV."
+        ],
+        "tip": "To convert a recording into someone else's voice, you need that person's permission, exactly as for cloning."
+      }
+    },
+    "choose": {
+      "title": "Which one should you use?",
+      "items": [
+        {
+          "title": "You want it to sound like you",
+          "body": "Clone your voice. It is the right choice for narration you would otherwise have to re-record."
+        },
+        {
+          "title": "You need a narrator or a character who is not a real person",
+          "body": "Design a voice. Nobody's likeness is borrowed, and the kept voice stays identical across scripts and languages."
+        },
+        {
+          "title": "You already have the recording",
+          "body": "Use the voice changer: Shift for a quick pitch effect, Convert to give the same performance a different voice."
+        },
+        {
+          "title": "You want a finished professional voice for a long project",
+          "body": "Use Mr. Wintrow or Obsidian on ElevenLabs, with the audio tags and long-form tools that ElevenLabs offers."
+        }
+      ]
+    },
+    "examples": {
+      "title": "Worked examples",
+      "items": [
+        {
+          "title": "Re-reading one line of a course",
+          "body": "You narrated a lesson and one sentence is now out of date. Clone your voice once from a 30-second read, then type only the new sentence, pick the language and generate it. Drop the clip into the timeline in place of the old line. If you also publish the course in Spanish, the same saved voice can read the translated script."
+        },
+        {
+          "title": "Voices for a game prototype",
+          "body": "Describe each character in a line (a gravelly old innkeeper, a quick bright courier). Preview until each sounds right, keep them, and generate the dialogue. Because a kept voice reuses its seed, every line from the innkeeper sounds like the same person."
+        },
+        {
+          "title": "An anonymous interview clip",
+          "body": "Shift the speaker's pitch down and let the character move with it. This hides how someone sounds, but it is ordinary signal processing: the words, accent and manner of speaking can still identify a person, so it is not a guarantee of anonymity."
+        },
+        {
+          "title": "Fixing a take",
+          "body": "A guest recorded a line in the wrong register. Convert it to the narrator's saved voice, compare it with the original in the A/B player and keep whichever you prefer."
+        }
+      ]
+    },
+    "consent": {
+      "title": "Consent: whose voice you may use",
+      "paragraphs": [
+        "You may only create a voice from a recording of your own voice, or of someone who has given you their explicit permission. Before any voice is created from a recording, you must confirm: This is my voice, or I have the explicit permission of the person whose voice this is. We store the time you confirmed it and the version of that text with the voice.",
+        "Our Terms forbid using the voice tools, or audio made with them, to impersonate a real person without permission, to commit fraud or phishing, to create political deepfakes, to harass or defame anyone, to get around voice-based identity checks, or to create sexual content with a real person's voice without their consent.",
+        "We may remove a voice or any audio made with it, and suspend or end an account, if we believe these rules have been broken."
+      ]
+    },
+    "watermark": {
+      "title": "Watermarking: what it is",
+      "paragraphs": [
+        "Speech generated with a saved or preset voice, and recordings converted to a voice, carry an inaudible watermark that marks them as synthetic. It contains no account details and does not change how the audio sounds. Detection tools that can read it can tell that the audio was generated.",
+        "Audio changed with the pitch shifter is ordinary signal processing and is not watermarked. You must not remove, alter or try to defeat the watermark. The watermark is a label, not a licence: it does not make any use of someone's voice acceptable if they did not agree to it."
+      ]
+    },
+    "privacy": {
+      "title": "What happens to your recording",
+      "items": [
+        "We keep only what a voice needs: its name, its kind (cloned or designed), its language, for a designed voice the description and seed, a reference recording, a short preview, the version of the voice engine and, for a cloned voice, the time you gave consent and the version of the consent text.",
+        "Saved voices are stored on our servers and in Amazon S3 in your account, and follow the retention period you choose.",
+        "Voice processing runs on our own GPU server. Your recordings and voices are never shared with a third-party AI provider and are never used to train any model.",
+        "You can delete a saved voice at any time from Account, Voices. Its reference recording and preview are deleted straight away; speech you already generated stays until its own retention period ends. All your voices are deleted with your account.",
+        "Your data export lists your saved voices, with the consent record, without the audio.",
+        "In the Android app, the microphone permission is requested the first time you record in a voice tool, and recording stops when you leave the app. You can say no and upload an audio file instead."
+      ],
+      "note": "The Privacy Policy, section 1.10, is the full account, and it is the version that applies."
+    },
+    "limits": {
+      "title": "Limits",
+      "body": "A recording for cloning must be 5 to 60 seconds long and contain speech. A voice name can be up to 60 characters, and a description up to 1,000. How many voices you can keep, how long a text or a recording can be, and how many voice jobs you get each day depend on your plan, and the tool pages show your own numbers as you work. The pricing page lists every plan."
+    },
+    "notFor": {
+      "title": "When not to use these tools",
+      "body": "Do not use them to imitate someone who has not agreed to it, to produce anything meant to mislead listeners about who is speaking, or as an anonymity guarantee. Expect weaker results from very noisy recordings, unusual voices and strong accents. If you need long-form studio-grade narration today, the ElevenLabs voices above, with their longer-form tools, are the better fit. The first request after a quiet period can take up to 20 seconds while the voice engine loads."
+    },
+    "faq": {
+      "title": "Voices FAQ",
+      "items": [
+        {
+          "q": "Do I need an account?",
+          "a": "Preset voices and the pitch shifter work without one. Saving a cloned or designed voice needs an account, and converting a recording to another voice needs an account on a plan that includes it."
+        },
+        {
+          "q": "Can I clone someone else's voice?",
+          "a": "Only with that person's explicit permission, which you confirm before the voice is created. Impersonation without permission is forbidden by our Terms."
+        },
+        {
+          "q": "Will the clone sound exactly like me?",
+          "a": "Usually recognisably, but not perfectly. Accents, unusual voices and noisy recordings are harder. A clean, natural recording gives the best result."
+        },
+        {
+          "q": "Is my recording used to train an AI model?",
+          "a": "No. Nothing you record, upload or generate with the voice tools is used to train any model."
+        },
+        {
+          "q": "Which languages can a voice speak?",
+          "a": "A cloned or kept voice can speak more than twenty languages. A designed voice is first rendered in one of ten languages and can then speak every language of the speech tool."
+        },
+        {
+          "q": "Is the audio marked as generated?",
+          "a": "Speech from saved and preset voices, and converted recordings, carry an inaudible watermark. Pitch-shifted audio is ordinary signal processing and does not."
+        },
+        {
+          "q": "How do I delete a voice?",
+          "a": "Open Account, Voices and delete it. Its reference recording and preview are removed at once; speech you already generated stays until its own retention period ends."
+        },
+        {
+          "q": "How are these tools related to the ElevenLabs voices?",
+          "a": "They are not. Mr. Wintrow and Obsidian are public ElevenLabs voices you use on ElevenLabs. The Media Manipulator tools make your own voices on our own servers."
+        }
+      ]
+    },
+    "links": {
+      "title": "The fine print",
+      "privacy": "Privacy Policy, section 1.10: voice samples and designed voices",
+      "terms": "Terms of Service, section 8.11: voices",
+      "pricing": "Pricing: what each plan includes"
     }
   },
   "changelog": {

@@ -198,7 +198,7 @@
   },
   "howItWorks": {
     "title": "Como funciona o Media Manipulator",
-    "intro": "O Media Manipulator é um estúdio no navegador para converter, editar, transcrever e processar com IA ficheiros de áudio, vídeo e imagem. Todas as tarefas correm nos nossos próprios servidores com GPU: sem fornecedores de IA externos, sem armazenamento permanente, apenas processamento rápido de ficheiros com ferramentas de IA locais opcionais.",
+    "intro": "O Media Manipulator é um estúdio no navegador para converter, editar, transcrever e processar com IA ficheiros de áudio, vídeo e imagem. Os seus ficheiros são processados em servidores que nós próprios gerimos, incluindo um servidor GPU para as ferramentas de IA, e as ferramentas de conversão nunca os enviam a um fornecedor de IA externo. Esta página acompanha uma tarefa desde o momento em que escolhe um ficheiro até ao momento em que é eliminado, para que saiba onde está o seu ficheiro em cada passo.",
     "process": {
       "title": "O processo de conversão",
       "step1": {
@@ -257,7 +257,7 @@
     },
     "ai": {
       "title": "Ferramentas assistidas por IA (locais, aceleradas por GPU)",
-      "intro": "O Media Manipulator executa todas as operações de IA localmente, no nosso próprio servidor GPU. Os seus ficheiros nunca são enviados a um fornecedor de IA externo. Cada tarefa de conversão executa uma operação de IA; as opções de edição normais são ignoradas nessa tarefa, para que a ferramenta de IA se concentre num resultado limpo.",
+      "intro": "O Media Manipulator executa todas as operações de IA das ferramentas de conversão localmente, no nosso próprio servidor GPU. Essas ferramentas nunca enviam os seus ficheiros a um fornecedor de IA externo; a única exceção em todo o site é o Medi, o assistente, descrito mais abaixo. Cada tarefa de conversão executa uma operação de IA; as opções de edição normais são ignoradas nessa tarefa, para que a ferramenta de IA se concentre num resultado limpo.",
       "image": {
         "title": "Ferramentas de imagem com IA",
         "items": [
@@ -295,7 +295,7 @@
         "items": [
           "Todos os carregamentos usam encriptação HTTPS",
           "A decisão de quanto tempo os ficheiros são guardados é sua (24 horas para visitantes)",
-          "O processamento de IA corre nos nossos próprios servidores: nenhum fornecedor de IA externo vê os seus conteúdos",
+          "As ferramentas de IA do conversor correm nos nossos próprios servidores, pelo que nenhum fornecedor de IA externo vê os seus ficheiros (o Medi, o assistente, é a única exceção)",
           "Análise automática de segurança de conteúdos para material abusivo ou ilegal"
         ],
         "linkPrefix": "Consulte a nossa",
@@ -315,41 +315,106 @@
     },
     "next": {
       "title": "E agora?",
-      "body": "Pronto para experimentar uma ferramenta específica? Os guias passo a passo de cada tipo de conversão estão nos nossos tutoriais.",
+      "body": "Pronto para experimentar uma ferramenta específica? Os guias passo a passo de cada tipo de conversão estão nos nossos tutoriais, e a página de preços mostra o que cada plano inclui.",
       "ctaTutorials": "Ver tutoriais",
-      "ctaConvert": "Começar a converter"
+      "ctaConvert": "Começar a converter",
+      "ctaPricing": "Ver planos e limites",
+      "ctaStatus": "Ver o estado do serviço",
+      "ctaPrivacy": "Ler a Política de Privacidade"
+    },
+    "journey": {
+      "title": "Uma tarefa, do carregamento à eliminação",
+      "intro": "Todas as ferramentas de conversão, de um redimensionamento de imagem com um clique a um removedor de vocais com IA, seguem o mesmo percurso. Conhecer esse percurso explica porque é que algumas tarefas terminam num segundo, porque é que outras esperam e o que acontece depois ao seu ficheiro.",
+      "stages": [
+        {
+          "title": "1. Escolhe um ficheiro e as definições",
+          "body": "Tudo começa no seu navegador. Escolhe uma ferramenta, larga um ficheiro e escolhe as opções. Antes de qualquer envio, a página verifica se o tipo do ficheiro é aceite pela ferramenta e se o tamanho e a duração respeitam os limites do seu plano. Esses limites vêm da nossa tabela de planos e não desta página, por isso estão sempre atualizados: consulte a página de preços para ver os números. Os editores (Aperture, Motion e Darkroom) também fazem grande parte do trabalho no seu navegador e só carregam um ficheiro quando exporta, utiliza um passo de IA no servidor ou guarda um projeto na sua conta."
+        },
+        {
+          "title": "2. O carregamento e as primeiras verificações",
+          "body": "O ficheiro chega à nossa API através de uma ligação HTTPS encriptada. Os visitantes sem conta são reconhecidos por identificadores anónimos de dispositivo e de visita, de que precisamos apenas para aplicar os limites do plano gratuito e bloquear abusos. Antes de o trabalho começar, o servidor volta a verificar o ficheiro e confirma a sua quota diária, e a nossa análise automática de segurança de conteúdos procura material abusivo ou ilegal. Uma tarefa gasta uma unidade dessa quota: uma operação comum nas ferramentas normais, uma operação de IA nas ferramentas de IA. Se a tarefa for recusada ou falhar mais tarde, a unidade é devolvida."
+        },
+        {
+          "title": "3. A fila de tarefas",
+          "body": "O trabalho aceite torna-se uma tarefa com o seu próprio identificador e um estado que passa de «em fila» para «em curso» e depois para «concluída» ou «falhada». As tarefas comuns começam depressa. As tarefas de IA partilham uma GPU, por isso aguardam a sua vez numa fila, e os planos pagos passam para a frente dessa fila. Uma tarefa gratuita que espera há muito tempo sobe na fila, para nunca ficar para trás. Pode ver o nível de ocupação da fila de IA na página de estado."
+        },
+        {
+          "title": "4. O processamento nos nossos servidores",
+          "body": "As conversões normais são executadas com o FFmpeg e o ImageMagick. As operações de IA são executadas com modelos abertos que alojamos no nosso próprio servidor GPU: o Whisper para transcrição, o Real-ESRGAN para ampliação, o rembg e o LaMa para remoção de fundos e objetos, o Demucs para vocais e o DeepFilterNet para ruído. Enquanto a tarefa decorre, o servidor transmite atualizações para o seu navegador, pelo que a barra de progresso mostra o estado real da tarefa. Se a ligação cair e for restabelecida, a primeira mensagem que recebe é um retrato do estado atual da tarefa, por isso nada se perde."
+        },
+        {
+          "title": "5. O visualizador de resultados",
+          "body": "Uma tarefa concluída abre no visualizador de resultados, que pré-visualiza cada tipo de saída à sua maneira: imagens com zoom, grelha de transparência e comparação antes e depois; vídeo e áudio num leitor, com forma de onda para o áudio; transcrições com pesquisa e cópia; legendas, PDF, arquivos e pacotes de streaming com as suas próprias vistas. O visualizador indica até quando o resultado será guardado. Transfira-o as vezes que quiser: transferir de novo nunca volta a executar nem a cobrar a tarefa. Quando um resultado pode ser partilhado, pode criar uma ligação para ele. Um resultado pode ter algumas ligações ativas ao mesmo tempo, cada uma expira por si (ao fim de três dias, por predefinição) e pode revogá-las todas de uma só vez."
+        },
+        {
+          "title": "6. Retenção",
+          "body": "Os ficheiros e os resultados são guardados durante o período de retenção que se aplica a si. Os visitantes sem conta têm 24 horas. Com sessão iniciada, escolhe qualquer período entre 24 horas e 2 anos, em todos os planos, e a predefinição é de 6 meses. O período é contado a partir da criação de cada ficheiro, e alterá-lo aplica-se também aos ficheiros que já tem, pelo que escolher um período mais curto pode eliminar ficheiros mais antigos pouco depois. Pode guardar um resultado durante mais tempo a partir do seu Histórico."
+        },
+        {
+          "title": "7. Eliminação",
+          "body": "Quando o período de retenção termina, o ficheiro e o respetivo resultado são eliminados dos nossos sistemas ativos. Pode eliminá-los mais cedo: um resultado de cada vez, todos os seus ficheiros de uma só vez ou a sua conta inteira, o que também remove os seus projetos e vozes guardadas. Os visitantes sem conta podem eliminar os seus próprios resultados durante a sessão em que foram criados. Depois de um ficheiro ser eliminado, por si ou pelo fim do prazo, não o conseguimos recuperar. A exportação dos seus dados na sua conta é um ZIP com o seu histórico, os seus projetos e os dados da conta e, propositadamente, não contém os ficheiros multimédia, por isso transfira o que quiser guardar antes de expirar."
+        }
+      ]
+    },
+    "where": {
+      "title": "O que corre no seu navegador e o que corre nos nossos servidores",
+      "intro": "Nem tudo é uma tarefa no servidor. Esta divisão é importante para a privacidade e para a velocidade.",
+      "items": [
+        "Ferramentas de conversão (imagem, vídeo, áudio, PDF, metadados): o ficheiro é carregado e processado nos nossos servidores, seguindo os sete passos acima.",
+        "Aperture: a pré-visualização em tempo real e os ajustes correm no seu navegador. Uma fotografia é carregada quando exporta, seleciona um motivo com IA, corrige manchas ou aplica as suas edições a um lote, ou quando guarda um projeto na sua conta.",
+        "Motion: os projetos e as exportações são feitos no seu navegador. O servidor limita-se a contabilizar uma exportação sujeita a contagem antes de o seu navegador a executar, para aplicar a quota diária, e só armazena um projeto se o guardar na sua conta.",
+        "Darkroom: a edição e a pré-visualização acontecem no seu navegador; as exportações são descontadas da quota diária de exportações do seu plano, e os projetos que guarda na sua conta seguem o seu período de retenção.",
+        "Ferramentas de voz: as gravações e o texto são processados no nosso próprio servidor GPU, e as vozes guardadas ficam na sua conta até as eliminar."
+      ]
+    },
+    "failures": {
+      "title": "Quando algo corre mal",
+      "intro": "A maioria dos problemas enquadra-se num de quatro grupos, e cada um tem um desfecho previsível.",
+      "items": [
+        "Uma tarefa falha durante o processamento. O estado passa a «falhada», a página mostra o motivo e a unidade da quota que utilizou é devolvida. Experimente outras definições, por exemplo uma resolução mais baixa ou um ficheiro mais pequeno, e execute-a novamente.",
+        "Um ficheiro é recusado antes de o trabalho começar: o tipo não é aceite, ultrapassa o limite de tamanho ou de duração do seu plano, ou não passou na análise de segurança. Nada é processado e a unidade não é descontada.",
+        "A página não consegue contactar o serviço de estado. A página de estado mostra então «Estado indisponível» em vez de «Indisponível», porque o facto de o seu navegador não conseguir contactar o serviço não prova que as ferramentas estejam em baixo. Volta a tentar a cada poucos segundos.",
+        "Ultrapassou a sua quota diária. A ferramenta avisa-o, e a quota é reposta no dia seguinte. A página de preços mostra o que cada plano inclui."
+      ]
+    },
+    "medi": {
+      "title": "Onde entra o {{brand}}",
+      "body": "O {{brand}}, o assistente, é a única funcionalidade que utiliza um serviço de IA externo: a sua mensagem, a página em que se encontra e, num editor, um breve resumo do seu projeto passam pela OpenRouter até aos modelos Claude da Anthropic, ao passo que os ficheiros multimédia originais não. O {{brand}} limita-se a preparar. Quando prepara uma tarefa de conversão, a tarefa entra no percurso acima no passo 1, como um cartão de confirmação, e nada começa até premir o botão. A Política de Privacidade, secção 1.13, descreve exatamente o que o {{brand}} envia e guarda."
+    },
+    "faq": {
+      "title": "Perguntas sobre como funciona",
+      "items": [
+        {
+          "q": "Porque é que a minha tarefa esperou?",
+          "a": "As tarefas de IA partilham uma GPU e aguardam a sua vez. Os planos pagos passam para a frente da fila, e uma tarefa gratuita que já esperou o suficiente sobe na fila, para não ficar para trás. A página de estado mostra quantas tarefas de IA estão em execução e em espera neste momento."
+        },
+        {
+          "q": "A tarefa continua a correr se fechar o separador?",
+          "a": "Uma tarefa que já começou corre no nosso servidor, não dentro do separador do navegador. Quando termina, o resultado aparece na lista Recentes do mesmo navegador e, se tiver sessão iniciada, no seu Histórico, até terminar o respetivo período de retenção."
+        },
+        {
+          "q": "O meu ficheiro é enviado a uma empresa de IA?",
+          "a": "Não pelas ferramentas de conversão. As respetivas operações de IA utilizam modelos abertos que correm no nosso próprio servidor GPU, e a Política de Privacidade enumera-os. A exceção é o Medi, o assistente, que envia as suas mensagens e, se o permitir, uma pequena imagem de pré-visualização ao respetivo fornecedor de IA; nunca envia os ficheiros originais."
+        },
+        {
+          "q": "Porque é que existe uma quota diária?",
+          "a": "A GPU é um recurso partilhado, e as operações comuns e as de IA consomem quantidades muito diferentes dela. Uma quota diária mantém as ferramentas utilizáveis para todos e impede que um único visitante encha a fila. Uma tarefa que falha devolve a sua unidade."
+        },
+        {
+          "q": "O que muda para visitantes e para utilizadores com sessão iniciada?",
+          "a": "Os visitantes têm uma retenção de 24 horas e uma lista Recentes que dura o mesmo tempo. Uma conta gratuita permite-lhe escolher o período de retenção, mantém um Histórico e guarda projetos. Os planos diferem nas quotas e nos limites, que a página de preços enumera."
+        },
+        {
+          "q": "Quem pode ver os meus resultados?",
+          "a": "Ninguém além de si, a menos que crie uma ligação de partilha; nesse caso, qualquer pessoa que tenha a ligação pode abrir esse resultado até a ligação expirar ou a revogar. A nossa análise automática de segurança procura material abusivo ou ilegal, como explica a Política de Privacidade."
+        }
+      ]
     }
   },
   "tutorials": {
     "title": "Tutoriais do Media Manipulator",
     "intro": "Guias passo a passo para todas as ferramentas do Media Manipulator. Quer esteja a converter um único MP3, a redimensionar PNG em lote, a censurar rostos numa fotografia ou a extrair os vocais de uma faixa musical, os tutoriais abaixo percorrem consigo todas as opções do painel de conversão à direita.",
     "readTutorial": "Ler tutorial →",
-    "categories": {
-      "audio": {
-        "title": "Como usar o conversor de áudio",
-        "description": "Converta ficheiros de áudio entre MP3, WAV, FLAC, OGG e mais. Aplique equalização, reverberação, redução de ruído, isolamento de vocais e outras ferramentas de IA para áudio."
-      },
-      "video": {
-        "title": "Como usar o conversor de vídeo",
-        "description": "Converta e edite ficheiros de vídeo entre MP4, WebM, MOV, MKV, ProRes e mais. Corte, redimensione, aplique filtros e transformações, e transcreva com legendas."
-      },
-      "image": {
-        "title": "Como usar o conversor de imagem",
-        "description": "Converta imagens entre JPG, PNG, WebP e GIF. Redimensione, recorte, aplique filtros, adicione sobreposições de texto, faça a gestão dos metadados e execute ferramentas de IA como Desfocar rostos, Remover fundo, Ampliação por IA e Censurar texto."
-      },
-      "motion": {
-        "title": "Tutoriais de animação",
-        "description": "Anime ilustrações SVG numa linha temporal de fotogramas-chave e exporte-as como SVG animado, Lottie, código ou GIF."
-      },
-      "photo": {
-        "title": "Tutoriais de edição de fotografias",
-        "description": "Corrija a luz e a cor, aplique máscaras, corrija manchas e exporte fotografias com o {{brand}}."
-      },
-      "medi": {
-        "title": "Assistente de IA",
-        "description": "Peça ao Medi a ferramenta certa, execute uma tarefa preparada ou edite com um motivo que pode ler."
-      }
-    },
     "tutorials": {
       "audioGettingStarted": {
         "title": "Primeiros passos: converter ficheiros de áudio",
@@ -632,41 +697,141 @@
       },
       "medi": {
         "title": "Como utilizar o {{brand}}, o assistente",
-        "excerpt": "Três fluxos de trabalho curtos: encontrar a ferramenta certa, deixar o {{brand}} preparar uma tarefa que confirma e editar uma fotografia, um vídeo ou uma animação descrevendo-os.",
-        "readTime": "5 min de leitura",
+        "excerpt": "Três fluxos de trabalho iniciais: encontrar a ferramenta certa, deixar o {{brand}} preparar uma tarefa que confirma e editar uma fotografia, um vídeo ou uma animação descrevendo-os, e ainda como ler, rever e anular o que faz.",
+        "readTime": "9 min de leitura",
         "page": {
           "eyebrow": "Tutorial do assistente",
-          "title": "Como utilizar o {{brand}}",
-          "intro": "O {{brand}} é o assistente do Media Manipulator: um guia em todas as páginas públicas e um copiloto no Aperture, no Darkroom e no Motion. Este tutorial aborda três fluxos de trabalho, pela ordem em que a maioria das pessoas precisa deles. Em todos, o {{brand}} apenas prepara ou propõe; quem prime o botão é você.",
+          "title": "Como usar o {{brand}}",
+          "intro": "O {{brand}} é o assistente integrado no Media Manipulator: um guia em todas as páginas públicas e um copiloto de edição no Aperture, no Darkroom e no Motion. Este tutorial aborda três fluxos de trabalho iniciais, pela ordem em que a maioria das pessoas precisa deles, e depois explica como ler, rever e anular o que o {{brand}} faz. Em todos eles, o {{brand}} limita-se a preparar ou a propor; é o utilizador que prime o botão.",
+          "before": {
+            "title": "Antes de começar",
+            "body": "O guia é um botão no canto de todas as páginas públicas e não precisa de conta. Os copilotos estão dentro do Aperture, do Darkroom e do Motion: inicie sessão, abra um projeto e prima Ctrl+J, ou use o botão do {{brand}} no editor. Pergunte em qualquer idioma suportado pelo site, e o {{brand}} responde no idioma em que escrever.",
+            "items": [
+              "O guia responde a partir das páginas de ajuda do próprio site e só fala sobre o Media Manipulator.",
+              "Os copilotos alteram o projeto que tem aberto, por isso exigem que tenha sessão iniciada.",
+              "O seu plano define quantas edições do copiloto tem por dia; a tabela perto do fim desta página lê esse valor em tempo real."
+            ]
+          },
           "find": {
-            "title": "1. Encontrar a ferramenta certa",
-            "body": "Prima o botão do {{brand}} no canto de qualquer página pública e descreva o resultado que pretende por palavras suas, em qualquer idioma suportado pelo site. O {{brand}} responde com base nas próprias páginas de ajuda do site e indica a ferramenta, a definição que importa e uma ligação.",
-            "bullets": {
-              "ask": "Diga o objetivo, não a ferramenta: por exemplo, tornar este vídeo pequeno o suficiente para enviar por e-mail.",
-              "attach": "Utilize o clipe para anexar um ficheiro. O {{brand}} lê o tipo, o tamanho, a duração e os codecs, para que o conselho se adeque a esse ficheiro.",
-              "scope": "Só fala sobre o Media Manipulator e recusa tudo o resto.",
-              "plans": "As perguntas sobre planos são respondidas a partir da tabela de planos em tempo real, nunca de memória."
-            }
+            "title": "Fluxo de trabalho 1: encontrar a ferramenta certa",
+            "body": "Use-o quando sabe o resultado que pretende, mas não a ferramenta que o produz.",
+            "steps": [
+              "Prima o botão do {{brand}} e descreva o objetivo, não a ferramenta: por exemplo, tornar este vídeo pequeno o suficiente para enviar por e-mail.",
+              "Se quiser, anexe um ficheiro com o clipe. O {{brand}} consegue ler imagens, vídeo, áudio e ficheiros PDF, e utiliza o tipo, o tamanho, a duração e os codecs do ficheiro para adaptar os conselhos.",
+              "Leia a resposta. Indica a ferramenta, a definição que importa e uma ligação, e cita a página de ajuda que utilizou.",
+              "Abra a ligação. Chega à ferramenta e continua aí."
+            ],
+            "tip": "As perguntas sobre planos são respondidas a partir da tabela de planos em tempo real, não de memória, por isso pode perguntar a qualquer momento o que um plano inclui."
           },
           "job": {
-            "title": "2. Deixar o {{brand}} preparar uma tarefa",
-            "body": "Diga o que pretende fazer, ou largue um ficheiro e diga simplesmente «executa». O {{brand}} mostra um cartão de confirmação: as definições no seu idioma, o tamanho da fila de espera e a quota diária que a tarefa iria utilizar. Ainda nada começou.",
-            "bullets": {
-              "card": "Leia as definições. São verificadas em relação às opções reais da ferramenta, por isso um valor não suportado é recusado em vez de alterado.",
-              "start": "Iniciar executa a tarefa no próprio local para comprimir, redimensionar, rodar, recortar e cortar vídeo, para extrair e remover áudio e para a transcrição; o resultado abre numa janela.",
-              "open": "Todas as outras ferramentas abrem na sua própria página com as definições preenchidas, e é aí que prime o botão.",
-              "click": "É sempre necessário um clique. O Medi nunca inicia nada por si."
-            }
+            "title": "Fluxo de trabalho 2: deixar o {{brand}} preparar uma tarefa",
+            "body": "Use-o para tarefas rápidas com uma só ferramenta. Diga o que pretende, ou largue um ficheiro e diga apenas que o execute. O {{brand}} responde com um cartão de confirmação, e ainda nada começou.",
+            "card": {
+              "title": "O que consta do cartão de confirmação",
+              "items": [
+                "A ferramenta e todas as definições, escritas no seu idioma. As definições são verificadas face às opções reais da ferramenta, por isso um valor não suportado é recusado em vez de ser alterado discretamente.",
+                "O ficheiro que vai utilizar.",
+                "Que quota diária a tarefa gastaria: uma operação comum, ou uma operação de IA nas ferramentas de IA.",
+                "Qual o tamanho da fila: sem espera, uma espera curta, uma espera mais longa ou desconhecido."
+              ]
+            },
+            "steps": [
+              "Leia o cartão e verifique as definições.",
+              "Prima Iniciar. Comprimir, redimensionar, rodar, recortar e cortar vídeo, extrair e remover áudio e a transcrição são executados ali mesmo, e o resultado abre numa janela.",
+              "Para todas as outras ferramentas, o botão é Abrir: a ferramenta abre com as definições já preenchidas, e prime lá o botão da própria ferramenta.",
+              "Transfira o resultado. Transferir de novo nunca volta a executar a tarefa."
+            ],
+            "tip": "Se preferir não a executar, ignore o cartão. Nada acontece até premir um botão."
           },
           "edit": {
-            "title": "3. Editar descrevendo o resultado",
-            "body": "No Aperture, no Darkroom ou no Motion, inicie sessão e prima Ctrl+J; depois descreva o aspeto ou a alteração que pretende. O {{brand}} edita o projeto num único passo e indica um motivo para cada alteração.",
-            "bullets": {
-              "undo": "Anular desfaz a edição inteira num só passo.",
-              "review": "Desative a aplicação automática no menu de informações para rever primeiro cada edição como um cartão com Aplicar e Descartar.",
-              "showMe": "Mostra-me abre o controlo que uma edição alterou, para que o possa ver e aprender.",
-              "numbers": "O {{brand}} consegue medir a pré-visualização, como a luminosidade, as sombras recortadas ou a intensidade sonora, e ajustar até três vezes, citando o valor de cada vez."
-            }
+            "title": "Fluxo de trabalho 3: editar descrevendo o resultado",
+            "body": "Dentro do Aperture, do Darkroom ou do Motion, prima Ctrl+J e descreva o que pretende. Cada editor tem sugestões iniciais para experimentar.",
+            "steps": [
+              "No Aperture, experimente corrigir a iluminação, dar-lhe um ambiente sombrio, manter só o vermelho ou look de película vintage.",
+              "No Darkroom, experimente correção de cor cinematográfica, adicionar um oráculo, encurtar as pausas ou tornar a voz mais nítida.",
+              "No Motion, experimente um oráculo que entra a deslizar, revelar o meu logótipo ou animar a entrada deste texto.",
+              "Leia a lista de alterações que aparece e depois mantenha-a, ajuste-a com uma nova mensagem ou anule-a."
+            ],
+            "tip": "Seja específico quanto à sensação, não só quanto ao controlo: mais quente e mais clara, com as sombras levantadas, dá ao {{brand}} mais com que trabalhar do que corrige isto."
+          },
+          "changes": {
+            "title": "Ler a lista de alterações",
+            "body": "Cada edição vem com uma lista do que mudou e um motivo numa frase para cada alteração, para que perceba que controlo fez o quê. As linhas estão escritas em linguagem simples. Eis exemplos reais do que vai ver:",
+            "items": [
+              "Aperture: Deixei tudo a cinzento, exceto vermelho. Apliquei tom e equilíbrio de brancos automáticos. Adicionei um ajuste de exposição a parte da fotografia.",
+              "Darkroom: Clipe da entrevista dividido aos 12,4 s. Transição de 0,5 s adicionada antes do segundo clipe. Atenuação da música sob a voz ativada.",
+              "Motion: Adicionei o modelo de oráculo. Animei a opacidade do título. Ativei a repetição."
+            ],
+            "numbers": "O {{brand}} também consegue medir a pré-visualização, como o brilho, a parte da imagem cortada para preto ou branco, ou o volume sonoro do áudio. Pode fazer até três ajustes para atingir o objetivo, e cada ronda cita o valor que mudou."
+          },
+          "showMe": {
+            "title": "Mostra-me",
+            "body": "Junto a uma alteração, Mostra-me abre o controlo em que a edição mexeu, para que veja o cursor ou a definição no respetivo lugar. É a forma mais rápida de aprender o editor a partir do que o {{brand}} fez e de afinar um valor à mão."
+          },
+          "review": {
+            "title": "Rever antes de aplicar",
+            "body": "Por predefinição, as edições são aplicadas de imediato, num só passo. Se quiser ver primeiro, desative a aplicação automática das edições do {{brand}} no menu de informações do painel do copiloto.",
+            "steps": [
+              "Envie o seu pedido como habitualmente. A edição aparece como um cartão com os valores antes e depois e a linha Ainda não foi aplicado nada.",
+              "Prima Aplicar para fazer a edição, ou Descartar para a pôr de parte. As edições descartadas não alteram nada.",
+              "Volte a ativar a aplicação automática sempre que quiser que as edições sejam aplicadas de imediato."
+            ]
+          },
+          "plan": {
+            "title": "Planear a minha edição",
+            "body": "Para uma alteração maior, Planear a minha edição faz com que o {{brand}} escreva primeiro toda a edição em passos. Pode fazer um único passo, ou todos. Um plano utiliza várias das suas edições diárias, e o painel indica quantas antes de premir o botão."
+          },
+          "undo": {
+            "title": "Anular",
+            "body": "Anular no cartão de alterações, ou a função anular do próprio editor, desfaz a edição inteira num só passo, independentemente de quantas coisas tenha alterado. As edições são tudo ou nada: se uma não puder ser aplicada, é informado de que nada mudou e o projeto fica exatamente como estava."
+          },
+          "limits": {
+            "title": "Limites e a quota diária",
+            "body": "Fazer perguntas, anular uma edição e preparar uma tarefa não custam nada. Uma tarefa preparada, depois de premir o respetivo botão, utiliza a mesma quota de operações comuns ou de IA que executar a ferramenta por si. Cada mensagem que faz uma edição utiliza uma das suas edições diárias do copiloto. As edições que lhe restam são mostradas no painel e são renovadas à meia-noite UTC. A tabela abaixo é lida a partir dos nossos servidores, por isso está sempre atualizada."
+          },
+          "privacy": {
+            "title": "Privacidade",
+            "intro": "O {{brand}} é a única funcionalidade do site que utiliza um serviço de IA externo. Isto é um resumo; a Política de Privacidade, secção 1.13, é a descrição completa.",
+            "items": [
+              "A sua mensagem, a página em que se encontra e, num editor, um breve resumo em texto do seu projeto passam pela OpenRouter até aos modelos Claude da Anthropic. Os pedidos estão configurados para seguir apenas para a Anthropic, com a definição da OpenRouter que exclui os fornecedores que recolhem dados dos utilizadores.",
+              "Num editor, só é enviada uma pequena imagem de pré-visualização se o permitir, com o interruptor de pré-visualização no painel. Nunca guardamos as imagens de pré-visualização.",
+              "Os ficheiros multimédia originais não são enviados. Um ficheiro que anexe ao guia é armazenado como qualquer outro carregamento e conservado de acordo com a sua definição de retenção.",
+              "Se tiver sessão iniciada, as suas conversas são guardadas para que as possa voltar a ver. Seguem o seu período de retenção, pode eliminar uma a qualquer momento, constam da exportação dos seus dados e são eliminadas juntamente com a sua conta. As conversas dos visitantes não são guardadas.",
+              "Para cada resposta guardamos um registo de utilização sem qualquer texto: a hora, a parte do site, o modelo, os tokens e o custo."
+            ]
+          },
+          "whenNot": {
+            "title": "Quando não o usar",
+            "body": "Se já conhece a ferramenta e as definições, abrir a ferramenta é mais rápido do que perguntar. Para trabalho exato, como um recorte preciso ou uma taxa de bits específica, defina os valores por si. O {{brand}} segue um pedido de um determinado aspeto, mas é o utilizador que decide se o aspeto está certo, e ele pode enganar-se, por isso verifique o que fez."
+          },
+          "faq": {
+            "title": "Resolução de problemas",
+            "items": [
+              {
+                "q": "O {{brand}} diz que não consegue fazer isso.",
+                "a": "Só trata do Media Manipulator e recusa tudo o resto. Também recusa uma definição que a ferramenta não tem. Reformule o objetivo ou abra a ferramenta e defina o valor por si."
+              },
+              {
+                "q": "O botão do copiloto pede-me que inicie sessão.",
+                "a": "Os copilotos editam o projeto que tem aberto e gastam uma quota diária, por isso precisam de uma conta. O guia não precisa."
+              },
+              {
+                "q": "Já utilizei todas as edições de hoje.",
+                "a": "São renovadas à meia-noite UTC. Fazer perguntas, anular e preparar tarefas continuam a funcionar, e um plano superior dá mais edições por dia."
+              },
+              {
+                "q": "O {{brand}} não iniciou a minha tarefa.",
+                "a": "É propositado. Prepara o cartão, e é o utilizador que prime Iniciar ou Abrir."
+              },
+              {
+                "q": "O guia diz que está a descansar hoje.",
+                "a": "O guia tem um limite diário de utilização. Entretanto, encaminha-o para as páginas de ajuda e volta à meia-noite UTC."
+              },
+              {
+                "q": "Quero comunicar uma resposta má.",
+                "a": "Abra o menu de informações do painel do copiloto e indique o código da versão das instruções na sua mensagem para o suporte."
+              }
+            ]
           },
           "cta": {
             "title": "Conheça o {{brand}}",
@@ -676,12 +841,15 @@
           "related": {
             "title": "Páginas relacionadas",
             "intro": "Mais sobre os editores em que o {{brand}} trabalha.",
-            "toolDesc": "O que o {{brand}} faz, a tabela de planos e as perguntas mais frequentes.",
+            "toolDesc": "O que o {{brand}} faz, a tabela de planos e as perguntas que as pessoas fazem.",
             "aperture": "Tutorial do Aperture",
             "apertureDesc": "Edite uma fotografia com camadas e máscaras.",
             "pricing": "Preços",
-            "pricingDesc": "As quotas de cada plano, incluindo as edições do copiloto por dia."
-          }
+            "pricingDesc": "As quotas de cada plano, incluindo as edições do copiloto por dia.",
+            "privacy": "Política de Privacidade",
+            "privacyDesc": "A secção 1.13 descreve exatamente o que o {{brand}} envia e guarda."
+          },
+          "tipLabel": "Dica:"
         }
       }
     },
@@ -690,7 +858,90 @@
       "body": "Comece pela nossa visão geral para ver tudo o que a plataforma consegue fazer, e depois salte para um tutorial que corresponda ao tipo de ficheiro com que está a trabalhar.",
       "ctaHow": "Como funciona",
       "ctaConvert": "Começar a converter"
-    }
+    },
+    "intro2": "É novo no site? Escolha o objetivo que corresponde ao que quer fazer e comece pelo primeiro guia desse grupo. Cada tutorial indica a ferramenta, mostra as definições que importam e explica o que esperar, e cada um encaminha para as ferramentas e os guias que naturalmente se seguem.",
+    "newest": {
+      "title": "Tutoriais mais recentes",
+      "intro": "Os guias mais recentes, do mais novo para o mais antigo. Esta lista atualiza-se sozinha sempre que é publicado um tutorial."
+    },
+    "goalsTitle": "Tutoriais por objetivo",
+    "goalsIntro": "Cada tutorial pertence a um objetivo. Os grupos só aparecem quando já têm um tutorial, por isso esta página cresce à medida que são acrescentados novos guias.",
+    "startHere": "Comece aqui se",
+    "goals": {
+      "files": {
+        "title": "Converter, reduzir e limpar ficheiros",
+        "description": "Altere o formato de um ficheiro, torne-o mais pequeno, redimensione-o ou arrume os respetivos dados, para imagens e vídeo.",
+        "start": "tem um ficheiro demasiado grande, no formato errado ou com o tamanho errado."
+      },
+      "video": {
+        "title": "Editar e melhorar vídeo",
+        "description": "Corte, organize e exporte vídeo no Darkroom, e torne as imagens mais fluidas com IA.",
+        "start": "quer transformar clipes em bruto num vídeo acabado."
+      },
+      "photo": {
+        "title": "Editar fotografias",
+        "description": "Corrija a luz e a cor, aplique máscaras, corrija manchas e exporte fotografias com o {{brand}}.",
+        "start": "quer uma fotografia melhor sem aprender um editor complicado."
+      },
+      "audio": {
+        "title": "Converter e corrigir áudio",
+        "description": "Converta áudio entre formatos, limpe a fala e separe os vocais.",
+        "start": "uma gravação tem demasiado ruído, é demasiado grande ou está no formato errado."
+      },
+      "motion": {
+        "title": "Animar gráficos",
+        "description": "Anime ilustrações SVG numa linha temporal de fotogramas-chave e exporte-as como SVG animado, Lottie, código ou GIF.",
+        "start": "quer pôr em movimento um logótipo, um título ou um ícone."
+      },
+      "assistant": {
+        "title": "Trabalhar mais depressa com o assistente",
+        "description": "Peça ao Medi a ferramenta certa, execute uma tarefa preparada ou edite com um motivo que pode ler.",
+        "start": "não sabe de que ferramenta precisa, ou prefere descrever uma edição a construí-la."
+      }
+    },
+    "how": {
+      "title": "O que contém cada tutorial",
+      "paragraphs": [
+        "Um tutorial organiza-se em torno de uma tarefa que pode ter realmente, não em torno de uma lista de botões. Cada um indica o que vai obter no final, que ferramenta faz o trabalho, que definições importam e porquê, e o que deve ver em cada passo, para que saiba se está no bom caminho.",
+        "Cada tutorial indica também quando não usar a ferramenta e o que fazer em alternativa. Um guia que só promove a ferramenta não é grande guia."
+      ],
+      "items": [
+        "O objetivo e o resultado, indicados logo no início.",
+        "A ferramenta ou as ferramentas envolvidas, com ligações para as respetivas páginas.",
+        "Passos numerados, uma ação cada, com o que o ecrã deve mostrar.",
+        "As definições que vale a pena alterar e as que deve deixar como estão.",
+        "Notas de privacidade e de retenção quando há ficheiros carregados.",
+        "Ligações para o tutorial ou a ferramenta que naturalmente se segue."
+      ],
+      "limitsNote": "Os tutoriais não indicam limites diários nem preços, porque os planos mudam. Quando um limite importa, o tutorial remete para a quota do seu plano e para a página de preços, que mostra sempre os números atuais."
+    },
+    "faq": {
+      "title": "Sobre os tutoriais",
+      "items": [
+        {
+          "q": "Preciso de uma conta para os seguir?",
+          "a": "A maioria dos tutoriais de conversão funciona sem conta. Uma conta ajuda quando um guia guarda projetos, conserva resultados durante mais tempo ou utiliza as funcionalidades guardadas de um editor, e o tutorial indica-o onde for relevante."
+        },
+        {
+          "q": "Os tutoriais são gratuitos?",
+          "a": "Sim. Algumas ferramentas abordadas têm quotas diárias que dependem do seu plano; a página de preços enumera-as."
+        },
+        {
+          "q": "Como sei se um tutorial está atualizado?",
+          "a": "Cada tutorial mostra quando foi publicado e, se tiver mudado, quando foi atualizado pela última vez. Quando uma ferramenta muda, o respetivo tutorial é revisto."
+        },
+        {
+          "q": "Não encontro um tutorial para a minha tarefa.",
+          "a": "Pergunte ao Medi, o assistente, no canto de qualquer página pública: indica a ferramenta certa e a definição que importa. A página Como funciona explica o que acontece ao seu ficheiro."
+        },
+        {
+          "q": "Os tutoriais estão disponíveis no meu idioma?",
+          "a": "O site está disponível em 18 idiomas e os tutoriais são traduzidos juntamente com ele."
+        }
+      ]
+    },
+    "openTutorial": "Ler o tutorial",
+    "atLink": "Publicado a {{date}}"
   },
   "blog": {
     "title": "Blogue de conversão multimédia",
@@ -2467,7 +2718,7 @@
       "demoDescription": "Um necromante duela com o seu antigo mestre, Cornelius (uma voz da biblioteca da ElevenLabs), no meio de uma tempestade."
     },
     "howTo": {
-      "title": "Como as usar",
+      "title": "Como usar as duas vozes da ElevenLabs",
       "steps": [
         "Abra uma voz através da ligação por baixo da sua demonstração. Uma conta gratuita da ElevenLabs é suficiente.",
         "Adicione-a às suas vozes e depois escolha-a em Text to Speech, no Studio ou através da API.",
@@ -2506,6 +2757,167 @@
         }
       },
       "open": "Abrir"
+    },
+    "twoKinds": {
+      "title": "Duas coisas diferentes nesta página",
+      "body": "As duas vozes acima, Mr. Wintrow e Obsidian, são clones profissionais que criei na ElevenLabs. Estão na biblioteca de vozes da ElevenLabs e é lá que as utiliza. As ferramentas de voz do Media Manipulator são outra coisa: com elas cria as suas próprias vozes, usando modelos abertos que funcionam nos nossos próprios servidores. Essas vozes não são vozes da ElevenLabs. Tudo o que se segue diz respeito às ferramentas do Media Manipulator, salvo indicação em contrário."
+    },
+    "tools": {
+      "title": "As três ferramentas de voz, passo a passo",
+      "intro": "Cada ferramenta tem a sua própria página, com o gravador, os controlos e o leitor. Eis como decorre uma sessão típica.",
+      "clone": {
+        "title": "Clonar a sua voz",
+        "intro": "Um clone é uma voz reutilizável criada a partir de uma gravação curta sua. Nada é treinado: o modelo lê a sua gravação sempre que a voz fala.",
+        "steps": [
+          "Abra a Clonagem de voz e grave 5 a 60 segundos de fala no navegador, ou carregue um ficheiro de áudio ou vídeo (webm, m4a, mp3, wav, ogg, flac ou mp4).",
+          "Assinale a caixa de consentimento: esta é a sua voz, ou tem a autorização explícita da pessoa a quem a voz pertence.",
+          "Crie a voz. É gerada uma curta pré-visualização e a voz é guardada na sua conta, o que exige sessão iniciada.",
+          "Escreva qualquer texto, escolha um idioma (há mais de vinte disponíveis) e um nível de emoção, de calmo a expressivo, e gere a fala.",
+          "Ouça e depois transfira um MP3, ou um WAV criado no seu navegador."
+        ],
+        "tip": "Grave algumas frases naturais numa sala silenciosa, a uma distância constante do microfone, sem música de fundo. Uma gravação limpa importa mais do que uma gravação longa."
+      },
+      "design": {
+        "title": "Criar uma voz a partir de uma descrição",
+        "intro": "Uma voz criada não pertence a ninguém: é feita a partir da sua descrição e de uma semente aleatória, sem se basear em nenhuma pessoa.",
+        "steps": [
+          "Abra o Criador de vozes e descreva a voz por palavras: género, idade, sotaque, tom e ritmo, ou clique nas etiquetas de caraterísticas para compor a descrição.",
+          "Pré-visualize uma frase de exemplo. As pré-visualizações são gratuitas e não contam: três por descrição a cada hora.",
+          "Quando uma pré-visualização estiver certa, dê um nome à voz e mantenha-a. A voz exata que ouviu, com a mesma semente, é guardada na sua conta.",
+          "Use-a como qualquer outra voz guardada: escreva o texto, escolha um idioma e transfira o áudio."
+        ],
+        "tip": "As descrições funcionam melhor em inglês, e uma voz é criada num de dez idiomas. Depois de mantida, pode falar todos os idiomas suportados pela ferramenta de fala."
+      },
+      "change": {
+        "title": "Alterar a voz numa gravação",
+        "intro": "O alterador de voz trabalha sobre uma gravação que já tem, de uma de duas formas.",
+        "steps": [
+          "Alterar tom muda o tom até doze semitons para cima ou para baixo. Escolhe se quem fala mantém o caráter da voz ou se o caráter muda com o tom, ou parte de uma predefinição: Mais grave, Mais agudo, Infantil, Mais velho ou Telefone. É instantâneo, não precisa de conta e não utiliza IA.",
+          "Converter utiliza a conversão de voz por IA para fazer a fala soar como uma das suas vozes guardadas ou uma voz predefinida, mantendo as palavras, o ritmo e a entoação. Exige uma conta num plano que o inclua.",
+          "Ouça o original e o resultado no leitor A/B, que alterna entre ambos sem pausas, e depois transfira um MP3 ou um WAV."
+        ],
+        "tip": "Para converter uma gravação para a voz de outra pessoa, precisa da autorização dessa pessoa, tal como na clonagem."
+      }
+    },
+    "choose": {
+      "title": "Qual deve usar?",
+      "items": [
+        {
+          "title": "Quer que a voz soe como a sua",
+          "body": "Clone a sua voz. É a escolha certa para narrações que, de outro modo, teria de voltar a gravar."
+        },
+        {
+          "title": "Precisa de um narrador ou de uma personagem que não seja uma pessoa real",
+          "body": "Crie uma voz. Não se empresta a semelhança de ninguém, e a voz mantida fica idêntica em todos os guiões e idiomas."
+        },
+        {
+          "title": "Já tem a gravação",
+          "body": "Use o alterador de voz: Alterar tom para um efeito rápido de tom, Converter para dar uma voz diferente à mesma interpretação."
+        },
+        {
+          "title": "Quer uma voz profissional acabada para um projeto longo",
+          "body": "Use Mr. Wintrow ou Obsidian na ElevenLabs, com as etiquetas de áudio e as ferramentas de longa duração que a ElevenLabs oferece."
+        }
+      ]
+    },
+    "examples": {
+      "title": "Exemplos práticos",
+      "items": [
+        {
+          "title": "Voltar a ler uma frase de um curso",
+          "body": "Narrou uma aula e uma frase está agora desatualizada. Clone a sua voz uma vez a partir de uma leitura de 30 segundos, depois escreva apenas a frase nova, escolha o idioma e gere-a. Largue o clipe na linha temporal no lugar da frase antiga. Se também publicar o curso em espanhol, a mesma voz guardada pode ler o guião traduzido."
+        },
+        {
+          "title": "Vozes para o protótipo de um jogo",
+          "body": "Descreva cada personagem numa linha (um velho estalajadeiro de voz rouca, um mensageiro rápido e vivo). Pré-visualize até cada uma soar bem, mantenha-as e gere o diálogo. Como uma voz mantida reutiliza a sua semente, todas as falas do estalajadeiro soam como a mesma pessoa."
+        },
+        {
+          "title": "Um excerto de entrevista anónimo",
+          "body": "Baixe o tom de quem fala e deixe o caráter da voz mudar com ele. Isto disfarça a forma como alguém soa, mas é processamento de sinal comum: as palavras, o sotaque e a maneira de falar podem continuar a identificar uma pessoa, por isso não é uma garantia de anonimato."
+        },
+        {
+          "title": "Corrigir um take",
+          "body": "Um convidado gravou uma frase no registo errado. Converta-a para a voz guardada do narrador, compare-a com o original no leitor A/B e fique com a que preferir."
+        }
+      ]
+    },
+    "consent": {
+      "title": "Consentimento: de quem é a voz que pode usar",
+      "paragraphs": [
+        "Só pode criar uma voz a partir de uma gravação da sua própria voz ou de alguém que lhe tenha dado autorização explícita. Antes de qualquer voz ser criada a partir de uma gravação, tem de confirmar: Esta é a minha voz, ou tenho a autorização explícita da pessoa a quem esta voz pertence. Guardamos com a voz a hora a que o confirmou e a versão desse texto.",
+        "Os nossos Termos proíbem utilizar as ferramentas de voz, ou o áudio criado com elas, para se fazer passar por uma pessoa real sem autorização, para cometer fraude ou phishing, para criar deepfakes políticos, para assediar ou difamar alguém, para contornar verificações de identidade baseadas na voz ou para criar conteúdo sexual com a voz de uma pessoa real sem o seu consentimento.",
+        "Podemos remover uma voz ou qualquer áudio criado com ela, e suspender ou encerrar uma conta, se considerarmos que estas regras foram violadas."
+      ]
+    },
+    "watermark": {
+      "title": "Marca de água: o que é",
+      "paragraphs": [
+        "A fala gerada com uma voz guardada ou predefinida, e as gravações convertidas para uma voz, contêm uma marca de água inaudível que as identifica como sintéticas. Não contém dados da conta e não altera o som do áudio. As ferramentas de deteção capazes de a ler conseguem saber que o áudio foi gerado.",
+        "O áudio alterado com o alterador de tom é processamento de sinal comum e não tem marca de água. Não pode remover nem alterar a marca de água, nem tentar contorná-la. A marca de água é uma etiqueta, não uma licença: não torna aceitável qualquer utilização da voz de alguém que não tenha dado o seu acordo."
+      ]
+    },
+    "privacy": {
+      "title": "O que acontece à sua gravação",
+      "items": [
+        "Guardamos apenas o que uma voz precisa: o nome, o tipo (clonada ou criada), o idioma, no caso de uma voz criada a descrição e a semente, uma gravação de referência, uma curta pré-visualização, a versão do motor de voz e, no caso de uma voz clonada, a hora a que deu o consentimento e a versão do texto do consentimento.",
+        "As vozes guardadas são armazenadas nos nossos servidores e no Amazon S3, na sua conta, e seguem o período de retenção que escolher.",
+        "O processamento de voz é executado no nosso próprio servidor GPU. As suas gravações e vozes nunca são partilhadas com um fornecedor de IA externo e nunca são usadas para treinar qualquer modelo.",
+        "Pode eliminar uma voz guardada em qualquer momento em Conta, Vozes. A respetiva gravação de referência e pré-visualização são eliminadas de imediato; a fala que já gerou permanece até terminar o seu próprio período de retenção. Todas as suas vozes são eliminadas com a sua conta.",
+        "A exportação dos seus dados lista as suas vozes guardadas, com o registo de consentimento, sem o áudio.",
+        "Na aplicação Android, a autorização de acesso ao microfone é pedida da primeira vez que grava numa ferramenta de voz, e a gravação para quando sai da aplicação. Pode recusar e carregar um ficheiro de áudio em alternativa."
+      ],
+      "note": "A Política de Privacidade, secção 1.10, é a descrição completa e a versão que se aplica."
+    },
+    "limits": {
+      "title": "Limites",
+      "body": "Uma gravação para clonagem tem de ter entre 5 e 60 segundos e conter fala. O nome de uma voz pode ter até 60 carateres, e uma descrição até 1.000. Quantas vozes pode manter, que extensão podem ter um texto ou uma gravação e quantas tarefas de voz tem por dia dependem do seu plano, e as páginas das ferramentas mostram os seus próprios números enquanto trabalha. A página de preços enumera todos os planos."
+    },
+    "notFor": {
+      "title": "Quando não usar estas ferramentas",
+      "body": "Não as use para imitar alguém que não tenha dado o seu acordo, para produzir algo destinado a enganar quem ouve sobre quem está a falar, nem como garantia de anonimato. Conte com resultados mais fracos em gravações muito ruidosas, vozes invulgares e sotaques fortes. Se precisar hoje de narração de longa duração com qualidade de estúdio, as vozes da ElevenLabs acima, com as respetivas ferramentas de longa duração, são mais adequadas. O primeiro pedido após um período de inatividade pode demorar até 20 segundos enquanto o motor de voz é carregado."
+    },
+    "faq": {
+      "title": "Perguntas frequentes sobre as vozes",
+      "items": [
+        {
+          "q": "Preciso de uma conta?",
+          "a": "As vozes predefinidas e o alterador de tom funcionam sem conta. Guardar uma voz clonada ou criada exige uma conta, e converter uma gravação para outra voz exige uma conta num plano que o inclua."
+        },
+        {
+          "q": "Posso clonar a voz de outra pessoa?",
+          "a": "Só com a autorização explícita dessa pessoa, que confirma antes de a voz ser criada. Os nossos Termos proíbem fazer-se passar por alguém sem autorização."
+        },
+        {
+          "q": "O clone vai soar exatamente como eu?",
+          "a": "Normalmente é reconhecível, mas não perfeito. Os sotaques, as vozes invulgares e as gravações ruidosas são mais difíceis. Uma gravação limpa e natural dá o melhor resultado."
+        },
+        {
+          "q": "A minha gravação é usada para treinar um modelo de IA?",
+          "a": "Não. Nada do que grava, carrega ou gera com as ferramentas de voz é usado para treinar qualquer modelo."
+        },
+        {
+          "q": "Que idiomas uma voz consegue falar?",
+          "a": "Uma voz clonada ou mantida consegue falar mais de vinte idiomas. Uma voz criada é gerada primeiro num de dez idiomas e depois pode falar todos os idiomas da ferramenta de fala."
+        },
+        {
+          "q": "O áudio é identificado como gerado?",
+          "a": "A fala das vozes guardadas e predefinidas, bem como as gravações convertidas, contêm uma marca de água inaudível. O áudio com o tom alterado é processamento de sinal comum e não a contém."
+        },
+        {
+          "q": "Como elimino uma voz?",
+          "a": "Abra Conta, Vozes e elimine-a. A respetiva gravação de referência e pré-visualização são removidas de imediato; a fala que já gerou permanece até terminar o seu próprio período de retenção."
+        },
+        {
+          "q": "Que relação têm estas ferramentas com as vozes da ElevenLabs?",
+          "a": "Nenhuma. Mr. Wintrow e Obsidian são vozes públicas da ElevenLabs que utiliza na ElevenLabs. As ferramentas do Media Manipulator criam as suas próprias vozes nos nossos próprios servidores."
+        }
+      ]
+    },
+    "links": {
+      "title": "As letras pequenas",
+      "privacy": "Política de Privacidade, secção 1.10: amostras de voz e vozes criadas",
+      "terms": "Termos de Serviço, secção 8.11: vozes",
+      "pricing": "Preços: o que cada plano inclui"
     }
   },
   "changelog": {

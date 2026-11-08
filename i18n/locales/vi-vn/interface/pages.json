@@ -198,7 +198,7 @@
   },
   "howItWorks": {
     "title": "Cách Media Manipulator hoạt động",
-    "intro": "Media Manipulator là một studio chạy trên trình duyệt để chuyển đổi, chỉnh sửa, chép lời và xử lý AI cho tệp âm thanh, video và hình ảnh. Mọi tác vụ chạy trên máy chủ có GPU của chính chúng tôi — không có nhà cung cấp AI bên thứ ba, không lưu trữ vĩnh viễn, chỉ là xử lý tệp nhanh với các công cụ AI cục bộ tùy chọn.",
+    "intro": "Media Manipulator là một studio chạy trên trình duyệt để chuyển đổi, chỉnh sửa, chép lời và xử lý AI cho tệp âm thanh, video và hình ảnh. Tệp của bạn được xử lý trên các máy chủ do chính chúng tôi vận hành, gồm cả một máy chủ GPU cho các công cụ AI, và các công cụ chuyển đổi không bao giờ gửi tệp đến nhà cung cấp AI bên thứ ba. Trang này theo chân một tác vụ từ lúc bạn chọn tệp đến lúc tệp bị xóa, để bạn biết tệp của mình đang ở đâu tại mỗi bước.",
     "process": {
       "title": "Quy trình chuyển đổi",
       "step1": {
@@ -257,7 +257,7 @@
     },
     "ai": {
       "title": "Công cụ hỗ trợ AI (cục bộ, tăng tốc bằng GPU)",
-      "intro": "Media Manipulator chạy mọi thao tác AI cục bộ trên máy chủ GPU của chính chúng tôi. Tệp của bạn không bao giờ được gửi đến nhà cung cấp AI bên thứ ba. Mỗi tác vụ chuyển đổi chạy một thao tác AI; các tùy chọn chỉnh sửa tiêu chuẩn được bỏ qua trong tác vụ đó để công cụ AI tập trung cho đầu ra sạch.",
+      "intro": "Media Manipulator chạy mọi thao tác AI của các công cụ chuyển đổi cục bộ trên máy chủ GPU của chính chúng tôi. Các công cụ đó không bao giờ gửi tệp của bạn đến nhà cung cấp AI bên thứ ba; ngoại lệ duy nhất trên toàn trang web là Medi, trợ lý AI, được mô tả ở phần dưới. Mỗi tác vụ chuyển đổi chạy một thao tác AI; các tùy chọn chỉnh sửa tiêu chuẩn được bỏ qua trong tác vụ đó để công cụ AI tập trung cho đầu ra sạch.",
       "image": {
         "title": "Công cụ hình ảnh AI",
         "items": [
@@ -295,7 +295,7 @@
         "items": [
           "Mọi lượt tải lên đều dùng mã hóa HTTPS",
           "Bạn chọn thời gian lưu tệp (24 giờ với khách)",
-          "Xử lý AI chạy trên máy chủ của chính chúng tôi — không nhà cung cấp AI bên thứ ba nào thấy phương tiện của bạn",
+          "Các công cụ AI của trình chuyển đổi chạy trên máy chủ của chính chúng tôi, nên không nhà cung cấp AI bên thứ ba nào thấy tệp của bạn (Medi, trợ lý AI, là ngoại lệ duy nhất)",
           "Tự động quét an toàn nội dung để phát hiện tài liệu lạm dụng hoặc bất hợp pháp"
         ],
         "linkPrefix": "Xem",
@@ -315,41 +315,106 @@
     },
     "next": {
       "title": "Tiếp theo đi đâu?",
-      "body": "Sẵn sàng thử một công cụ cụ thể? Hướng dẫn từng bước cho mỗi loại chuyển đổi nằm trong mục hướng dẫn của chúng tôi.",
+      "body": "Sẵn sàng thử một công cụ cụ thể? Hướng dẫn từng bước cho mỗi loại chuyển đổi nằm trong mục hướng dẫn của chúng tôi, và trang bảng giá liệt kê những gì mỗi gói bao gồm.",
       "ctaTutorials": "Xem hướng dẫn",
-      "ctaConvert": "Bắt đầu chuyển đổi"
+      "ctaConvert": "Bắt đầu chuyển đổi",
+      "ctaPricing": "Xem các gói và giới hạn",
+      "ctaStatus": "Kiểm tra trạng thái dịch vụ",
+      "ctaPrivacy": "Đọc Chính sách quyền riêng tư"
+    },
+    "journey": {
+      "title": "Một tác vụ, từ lúc tải lên đến lúc xóa",
+      "intro": "Mọi công cụ chuyển đổi, từ đổi kích thước ảnh chỉ bằng một cú nhấp đến loại bỏ giọng hát bằng AI, đều đi theo cùng một lộ trình. Hiểu lộ trình này sẽ giải thích vì sao có tác vụ xong trong một giây, vì sao có tác vụ phải chờ, và điều gì xảy ra với tệp của bạn sau đó.",
+      "stages": [
+        {
+          "title": "1. Bạn chọn tệp và thiết lập",
+          "body": "Mọi thứ bắt đầu trong trình duyệt của bạn. Bạn chọn một công cụ, thả tệp vào và chọn các tùy chọn. Trước khi gửi bất cứ thứ gì, trang sẽ đối chiếu loại tệp với những gì công cụ chấp nhận, và kiểm tra kích thước cũng như độ dài của tệp so với giới hạn của gói bạn dùng. Các giới hạn này lấy từ bảng gói của chúng tôi chứ không phải từ trang này, nên chúng luôn được cập nhật: hãy xem trang bảng giá để biết các con số. Các trình chỉnh sửa (Aperture, Motion và Darkroom) cũng thực hiện phần lớn công việc ngay trong trình duyệt của bạn, và chỉ tải tệp lên khi bạn xuất, dùng một bước AI phía máy chủ hoặc lưu dự án vào tài khoản."
+        },
+        {
+          "title": "2. Tải lên và các bước kiểm tra đầu tiên",
+          "body": "Tệp được truyền đến API của chúng tôi qua kết nối HTTPS được mã hóa. Khách truy cập không có tài khoản được nhận diện bằng mã định danh thiết bị và lượt truy cập ẩn danh, mà chúng tôi chỉ cần để áp dụng giới hạn của gói miễn phí và chặn hành vi lạm dụng. Trước khi bắt đầu xử lý, máy chủ kiểm tra lại tệp và kiểm tra hạn mức hằng ngày của bạn, đồng thời hệ thống quét an toàn nội dung tự động của chúng tôi tìm kiếm tài liệu lạm dụng hoặc bất hợp pháp. Mỗi tác vụ dùng một lượt trong hạn mức đó: một lượt thao tác thông thường cho công cụ tiêu chuẩn, một lượt thao tác AI cho công cụ AI. Nếu tác vụ bị từ chối hoặc thất bại sau đó, lượt này sẽ được hoàn lại."
+        },
+        {
+          "title": "3. Hàng đợi tác vụ",
+          "body": "Công việc được chấp nhận sẽ trở thành một tác vụ với mã định danh riêng và một trạng thái chuyển từ “đang chờ” sang “đang xử lý”, rồi sang “hoàn tất” hoặc “thất bại”. Tác vụ thông thường bắt đầu nhanh. Tác vụ AI dùng chung một GPU, nên chúng lần lượt chờ trong hàng đợi, và các gói trả phí được xếp lên đầu hàng. Một tác vụ miễn phí đã chờ lâu sẽ được đẩy lên, nên nó không bao giờ bị bỏ lại phía sau. Bạn có thể xem mức độ bận của hàng đợi AI trên trang trạng thái."
+        },
+        {
+          "title": "4. Xử lý trên máy chủ của chúng tôi",
+          "body": "Các chuyển đổi tiêu chuẩn chạy bằng FFmpeg và ImageMagick. Các thao tác AI chạy trên những mô hình mở mà chúng tôi lưu trữ trên máy chủ GPU của chính mình: Whisper để chép lời, Real-ESRGAN để nâng cấp độ phân giải, rembg và LaMa để xóa nền và xóa đối tượng, Demucs cho giọng hát và DeepFilterNet cho tiếng ồn. Trong khi tác vụ chạy, máy chủ truyền cập nhật về trình duyệt của bạn, nên thanh tiến trình chính là trạng thái thực của tác vụ. Nếu kết nối bị ngắt rồi kết nối lại, thông báo đầu tiên bạn nhận được là ảnh chụp trạng thái hiện tại của tác vụ, nên không có gì bị mất."
+        },
+        {
+          "title": "5. Trình xem kết quả",
+          "body": "Tác vụ hoàn tất sẽ mở trong trình xem kết quả, nơi mỗi loại đầu ra được xem trước theo cách riêng: hình ảnh có thu phóng, lưới trong suốt và so sánh trước–sau; video và âm thanh trong trình phát, kèm dạng sóng cho âm thanh; bản chép lời có tìm kiếm và sao chép; phụ đề, PDF, tệp nén và gói phát trực tuyến có chế độ xem riêng. Trình xem cho biết kết quả được lưu đến khi nào. Bạn có thể tải xuống bao nhiêu lần tùy thích: tải xuống lại không bao giờ chạy lại hay tính phí tác vụ. Với kết quả có thể chia sẻ, bạn có thể tạo liên kết đến kết quả đó. Mỗi kết quả có thể có một vài liên kết đang hoạt động cùng lúc, mỗi liên kết tự hết hạn (mặc định sau ba ngày), và bạn có thể thu hồi tất cả cùng một lúc."
+        },
+        {
+          "title": "6. Lưu giữ",
+          "body": "Tệp và kết quả được lưu trong thời gian lưu giữ áp dụng cho bạn. Khách truy cập không có tài khoản được lưu 24 giờ. Nếu đã đăng nhập, bạn chọn bất kỳ khoảng nào từ 24 giờ đến 2 năm, với mọi gói, và mặc định là 6 tháng. Thời gian được tính từ khi mỗi tệp được tạo, và việc thay đổi nó cũng áp dụng cho các tệp hiện có của bạn, nên chọn thời gian ngắn hơn có thể khiến các tệp cũ hơn bị xóa ngay sau đó. Bạn có thể giữ một kết quả lâu hơn từ mục Lịch sử."
+        },
+        {
+          "title": "7. Xóa",
+          "body": "Khi thời gian lưu giữ kết thúc, tệp và kết quả của nó bị xóa khỏi các hệ thống đang hoạt động của chúng tôi. Bạn có thể xóa sớm hơn: từng kết quả một, tất cả tệp của bạn cùng lúc, hoặc toàn bộ tài khoản, việc này cũng xóa các dự án và giọng nói đã lưu của bạn. Khách truy cập không có tài khoản có thể xóa kết quả của chính mình trong phiên đã tạo ra chúng. Khi một tệp đã bị xóa, dù do bạn hay do hết thời gian, chúng tôi không thể khôi phục nó. Bản xuất dữ liệu trong tài khoản của bạn là một tệp ZIP chứa lịch sử, dự án và thông tin tài khoản, và cố ý không chứa các tệp phương tiện, vì vậy hãy tải xuống mọi thứ bạn muốn giữ trước khi chúng hết hạn."
+        }
+      ]
+    },
+    "where": {
+      "title": "Những gì chạy trong trình duyệt và những gì chạy trên máy chủ của chúng tôi",
+      "intro": "Không phải mọi thứ đều là tác vụ trên máy chủ. Sự phân chia này quan trọng đối với quyền riêng tư và tốc độ.",
+      "items": [
+        "Công cụ chuyển đổi (hình ảnh, video, âm thanh, PDF, siêu dữ liệu): tệp được tải lên và xử lý trên máy chủ của chúng tôi, theo bảy bước ở trên.",
+        "Aperture: bản xem trước trực tiếp và các điều chỉnh chạy trong trình duyệt của bạn. Ảnh được tải lên khi bạn xuất, chọn chủ thể bằng AI, chữa lành vết hoặc áp dụng chỉnh sửa cho một loạt ảnh, hoặc khi bạn lưu dự án vào tài khoản.",
+        "Motion: dự án và bản xuất được tạo trong trình duyệt của bạn. Máy chủ chỉ tính một lượt xuất có tính hạn mức trước khi trình duyệt của bạn thực hiện nó, để áp dụng hạn mức hằng ngày, và chỉ lưu dự án nếu bạn lưu nó vào tài khoản.",
+        "Darkroom: việc chỉnh sửa và xem trước diễn ra trong trình duyệt của bạn; các lượt xuất được tính vào hạn mức xuất hằng ngày của gói bạn dùng, và các dự án bạn lưu vào tài khoản tuân theo thời gian lưu giữ của bạn.",
+        "Công cụ giọng nói: bản ghi âm và văn bản được xử lý trên máy chủ GPU của chính chúng tôi, và các giọng nói đã lưu nằm trong tài khoản của bạn cho đến khi bạn xóa chúng."
+      ]
+    },
+    "failures": {
+      "title": "Khi có sự cố",
+      "intro": "Hầu hết sự cố thuộc một trong bốn nhóm, và mỗi nhóm có kết quả có thể đoán trước.",
+      "items": [
+        "Một tác vụ thất bại trong khi xử lý. Trạng thái của nó chuyển thành thất bại, trang hiển thị lý do, và lượt hạn mức đã dùng được hoàn lại. Hãy thử thiết lập khác, chẳng hạn độ phân giải thấp hơn hoặc tệp nhỏ hơn, rồi chạy lại.",
+        "Một tệp bị từ chối trước khi bắt đầu xử lý: loại tệp không được chấp nhận, tệp vượt quá giới hạn kích thước hoặc độ dài của gói bạn dùng, hoặc không vượt qua bước quét an toàn. Không có gì được xử lý và lượt hạn mức không bị giữ lại.",
+        "Trang không kết nối được tới dịch vụ trạng thái. Khi đó trang trạng thái hiển thị “Chưa có trạng thái” thay vì “Ngừng hoạt động”, vì việc trình duyệt của bạn không kết nối được tới dịch vụ không chứng minh rằng các công cụ đang ngừng hoạt động. Trang sẽ thử lại sau mỗi vài giây.",
+        "Bạn đã vượt quá hạn mức hằng ngày. Công cụ sẽ báo cho bạn, và hạn mức được làm mới vào ngày hôm sau. Trang bảng giá cho biết mỗi gói bao gồm những gì."
+      ]
+    },
+    "medi": {
+      "title": "{{brand}} nằm ở đâu trong quy trình này",
+      "body": "{{brand}}, trợ lý AI, là tính năng duy nhất sử dụng dịch vụ AI bên ngoài: tin nhắn của bạn, trang bạn đang xem và, trong trình chỉnh sửa, một bản tóm tắt ngắn về dự án của bạn được gửi qua OpenRouter đến các mô hình Claude của Anthropic, còn các tệp phương tiện gốc thì không. {{brand}} chỉ chuẩn bị mọi thứ. Khi nó chuẩn bị một tác vụ chuyển đổi, tác vụ đó đi vào lộ trình ở trên tại bước 1, dưới dạng một thẻ xác nhận, và không có gì bắt đầu cho đến khi bạn nhấn nút. Chính sách quyền riêng tư, Mục 1.13, mô tả chính xác những gì {{brand}} gửi đi và lưu trữ."
+    },
+    "faq": {
+      "title": "Câu hỏi về cách hoạt động",
+      "items": [
+        {
+          "q": "Vì sao tác vụ của tôi phải chờ?",
+          "a": "Các tác vụ AI dùng chung một GPU và lần lượt chạy. Các gói trả phí được xếp lên đầu hàng đợi, và một tác vụ miễn phí đã chờ đủ lâu sẽ được đẩy lên để không bị bỏ lại phía sau. Trang trạng thái cho biết hiện có bao nhiêu tác vụ AI đang chạy và đang chờ."
+        },
+        {
+          "q": "Tác vụ có tiếp tục chạy nếu tôi đóng thẻ không?",
+          "a": "Một tác vụ đã bắt đầu sẽ chạy trên máy chủ của chúng tôi, không phải trong thẻ trình duyệt của bạn. Khi hoàn tất, kết quả xuất hiện trong danh sách Gần đây của cùng trình duyệt đó và, nếu bạn đã đăng nhập, trong Lịch sử của bạn, cho đến khi hết thời gian lưu giữ."
+        },
+        {
+          "q": "Tệp của tôi có bị gửi đến một công ty AI không?",
+          "a": "Không, các công cụ chuyển đổi không làm vậy. Các thao tác AI của chúng dùng những mô hình mở chạy trên máy chủ GPU của chính chúng tôi, và Chính sách quyền riêng tư liệt kê các mô hình đó. Ngoại lệ là Medi, trợ lý AI, vốn gửi tin nhắn của bạn và, nếu bạn cho phép, một ảnh xem trước nhỏ đến nhà cung cấp AI của nó; nó không bao giờ gửi tệp gốc."
+        },
+        {
+          "q": "Vì sao có hạn mức hằng ngày?",
+          "a": "GPU là tài nguyên dùng chung, và các thao tác thông thường và thao tác AI tiêu tốn lượng tài nguyên rất khác nhau. Hạn mức hằng ngày giúp các công cụ luôn dùng được cho mọi người và ngăn một khách truy cập duy nhất lấp đầy hàng đợi. Một tác vụ thất bại sẽ được hoàn lại lượt đã dùng."
+        },
+        {
+          "q": "Khách và người dùng đã đăng nhập khác nhau ở điểm nào?",
+          "a": "Khách được lưu tệp trong 24 giờ và có danh sách Gần đây tồn tại trong cùng khoảng thời gian đó. Tài khoản miễn phí cho phép bạn chọn thời gian lưu giữ, có Lịch sử và lưu được dự án. Các gói khác nhau về hạn mức và giới hạn, được liệt kê trên trang bảng giá."
+        },
+        {
+          "q": "Ai có thể xem kết quả của tôi?",
+          "a": "Chỉ bạn, trừ khi bạn tạo liên kết chia sẻ; khi đó bất kỳ ai có liên kết đều có thể mở đúng kết quả đó cho đến khi liên kết hết hạn hoặc bạn thu hồi nó. Hệ thống quét an toàn tự động của chúng tôi tìm kiếm tài liệu lạm dụng hoặc bất hợp pháp, như Chính sách quyền riêng tư đã giải thích."
+        }
+      ]
     }
   },
   "tutorials": {
     "title": "Hướng dẫn Media Manipulator",
     "intro": "Hướng dẫn từng bước cho mọi công cụ của Media Manipulator. Dù bạn đang chuyển đổi một tệp MP3, đổi kích thước hàng loạt PNG, che khuôn mặt trong ảnh hay tách giọng hát khỏi bản nhạc, các hướng dẫn bên dưới sẽ đi qua từng tùy chọn trong bảng chuyển đổi bên phải.",
     "readTutorial": "Đọc hướng dẫn →",
-    "categories": {
-      "audio": {
-        "title": "Cách dùng Bộ chuyển đổi âm thanh",
-        "description": "Chuyển đổi tệp âm thanh giữa MP3, WAV, FLAC, OGG và nhiều hơn nữa. Áp dụng EQ, reverb, khử nhiễu, tách giọng hát và các công cụ AI âm thanh khác."
-      },
-      "video": {
-        "title": "Cách dùng Bộ chuyển đổi video",
-        "description": "Chuyển đổi và chỉnh sửa tệp video giữa MP4, WebM, MOV, MKV, ProRes và nhiều hơn nữa. Cắt đoạn, đổi kích thước, áp dụng bộ lọc và biến đổi, và chép lời kèm phụ đề."
-      },
-      "image": {
-        "title": "Cách dùng Bộ chuyển đổi hình ảnh",
-        "description": "Chuyển đổi hình ảnh giữa JPG, PNG, WebP và GIF. Đổi kích thước, cắt, áp dụng bộ lọc, thêm chữ phủ, quản lý siêu dữ liệu và chạy các công cụ AI như Làm mờ khuôn mặt, Xóa nền, Nâng cấp bằng AI và Che văn bản."
-      },
-      "motion": {
-        "title": "Hướng dẫn hoạt ảnh",
-        "description": "Tạo hoạt ảnh cho đồ họa SVG trên dòng thời gian keyframe và xuất thành SVG động, Lottie, mã nguồn hoặc GIF."
-      },
-      "photo": {
-        "title": "Hướng dẫn chỉnh sửa ảnh",
-        "description": "Chỉnh ánh sáng và màu sắc, tạo mặt nạ, chữa lành và xuất ảnh với {{brand}}."
-      },
-      "medi": {
-        "title": "Trợ lý AI",
-        "description": "Hỏi Medi để tìm đúng công cụ, chạy một tác vụ đã chuẩn bị sẵn, hoặc chỉnh sửa kèm lý do bạn có thể đọc được."
-      }
-    },
     "tutorials": {
       "audioGettingStarted": {
         "title": "Bắt đầu: Chuyển đổi tệp âm thanh",
@@ -632,56 +697,159 @@
       },
       "medi": {
         "title": "Cách dùng {{brand}}, trợ lý của trang",
-        "excerpt": "Ba quy trình ngắn: tìm đúng công cụ, để {{brand}} chuẩn bị một tác vụ cho bạn xác nhận, và chỉnh sửa ảnh, video hoặc hoạt ảnh bằng cách mô tả.",
-        "readTime": "Đọc 5 phút",
+        "excerpt": "Ba quy trình khởi đầu: tìm đúng công cụ, để {{brand}} chuẩn bị một tác vụ bạn xác nhận, và chỉnh sửa ảnh, video hoặc hoạt ảnh bằng cách mô tả, cùng với cách đọc, xem lại và hoàn tác những gì nó làm.",
+        "readTime": "Đọc 9 phút",
         "page": {
-          "eyebrow": "Hướng dẫn về trợ lý",
+          "eyebrow": "Hướng dẫn trợ lý AI",
           "title": "Cách dùng {{brand}}",
-          "intro": "{{brand}} là trợ lý bên trong Media Manipulator: người hướng dẫn trên mọi trang công khai và là copilot trong Aperture, Darkroom và Motion. Bài hướng dẫn này trình bày ba quy trình, theo thứ tự mà phần lớn mọi người cần đến. Trong cả ba, {{brand}} chỉ chuẩn bị hoặc đề xuất; người nhấn nút là bạn.",
+          "intro": "{{brand}} là trợ lý bên trong Media Manipulator: trợ lý hướng dẫn trên mọi trang công khai và copilot chỉnh sửa trong Aperture, Darkroom và Motion. Hướng dẫn này trình bày ba quy trình khởi đầu theo thứ tự mà hầu hết mọi người cần đến, sau đó là cách đọc, xem lại và hoàn tác những gì {{brand}} làm. Trong mọi trường hợp, {{brand}} chỉ chuẩn bị hoặc đề xuất; người nhấn nút là bạn.",
+          "before": {
+            "title": "Trước khi bắt đầu",
+            "body": "Trợ lý hướng dẫn là một nút ở góc mọi trang công khai và không cần tài khoản. Các copilot nằm bên trong Aperture, Darkroom và Motion: hãy đăng nhập, mở một dự án và nhấn Ctrl+J, hoặc dùng nút {{brand}} trong trình chỉnh sửa. Hãy hỏi bằng bất kỳ ngôn ngữ nào mà trang web hỗ trợ và {{brand}} sẽ trả lời bằng ngôn ngữ bạn viết.",
+            "items": [
+              "Trợ lý hướng dẫn trả lời dựa trên các trang trợ giúp của chính trang web và chỉ nói về Media Manipulator.",
+              "Các copilot thay đổi dự án đang mở của bạn, nên chúng cần bạn đăng nhập.",
+              "Gói của bạn quyết định số lượt chỉnh sửa bằng copilot bạn có mỗi ngày; bảng ở gần cuối trang này đọc con số đó trực tiếp."
+            ]
+          },
           "find": {
-            "title": "1. Tìm đúng công cụ",
-            "body": "Nhấn nút {{brand}} ở góc của bất kỳ trang công khai nào và mô tả kết quả bạn muốn bằng lời của chính mình, bằng bất kỳ ngôn ngữ nào mà trang hỗ trợ. {{brand}} trả lời dựa trên các trang trợ giúp của chính trang web, nêu tên công cụ, thiết lập quan trọng nhất và một đường dẫn.",
-            "bullets": {
-              "ask": "Hãy nói mục tiêu, đừng nói tên công cụ: chẳng hạn, làm video này đủ nhỏ để gửi qua email.",
-              "attach": "Dùng biểu tượng kẹp giấy để đính kèm tệp. {{brand}} đọc loại, kích thước, thời lượng và codec của tệp để lời khuyên phù hợp với chính tệp đó.",
-              "scope": "Nó chỉ nói về Media Manipulator và sẽ từ chối mọi chủ đề khác.",
-              "plans": "Câu hỏi về các gói được trả lời dựa trên bảng gói trực tiếp, không bao giờ dựa trên trí nhớ."
-            }
+            "title": "Quy trình 1: tìm đúng công cụ",
+            "body": "Dùng cách này khi bạn biết kết quả mình muốn nhưng không biết công cụ nào tạo ra nó.",
+            "steps": [
+              "Nhấn nút {{brand}} và mô tả mục tiêu, không phải công cụ: ví dụ, làm video này đủ nhỏ để gửi qua email.",
+              "Bạn có thể đính kèm tệp bằng biểu tượng kẹp giấy nếu muốn. {{brand}} đọc được ảnh, video, âm thanh và tệp PDF, và dùng loại tệp, kích thước, thời lượng và codec của tệp để đưa ra lời khuyên phù hợp.",
+              "Đọc câu trả lời. Câu trả lời nêu tên công cụ, thiết lập quan trọng nhất và một liên kết, đồng thời dẫn nguồn trang trợ giúp đã dùng.",
+              "Mở liên kết. Bạn sẽ đến trang công cụ và tiếp tục ở đó."
+            ],
+            "tip": "Câu hỏi về các gói được trả lời dựa trên bảng gói trực tiếp, không phải từ trí nhớ, nên bạn có thể hỏi một gói bao gồm những gì bất cứ lúc nào."
           },
           "job": {
-            "title": "2. Để {{brand}} chuẩn bị tác vụ",
-            "body": "Hãy nói điều bạn muốn làm, hoặc thả một tệp và nói cứ chạy đi. {{brand}} hiển thị một thẻ xác nhận: các thiết lập bằng ngôn ngữ của bạn, hàng đợi dài bao lâu và tác vụ sẽ dùng hạn mức hằng ngày nào. Chưa có gì bắt đầu cả.",
-            "bullets": {
-              "card": "Đọc các thiết lập. Chúng được kiểm tra với các tùy chọn thật của công cụ, nên một giá trị không được hỗ trợ sẽ bị từ chối chứ không bị âm thầm thay đổi.",
-              "start": "Bắt đầu chạy ngay tại chỗ với nén, đổi kích thước, xoay, cắt khung và cắt đoạn video, tách và loại bỏ âm thanh, và chép lời; kết quả mở ra trong một cửa sổ.",
-              "open": "Mọi công cụ khác mở trên trang riêng của nó với các thiết lập đã được điền sẵn, và bạn nhấn nút của công cụ ở đó.",
-              "click": "Luôn cần một cú nhấp. Medi không bao giờ tự bắt đầu bất cứ việc gì."
-            }
+            "title": "Quy trình 2: để {{brand}} chuẩn bị một tác vụ",
+            "body": "Dùng cách này cho các tác vụ nhanh chỉ cần một công cụ. Hãy nói điều bạn muốn, hoặc thả một tệp vào và chỉ cần nói “cứ chạy đi”. {{brand}} trả lời bằng một thẻ xác nhận, và lúc này chưa có gì bắt đầu cả.",
+            "card": {
+              "title": "Thẻ xác nhận có những gì",
+              "items": [
+                "Công cụ và mọi thiết lập, được viết bằng ngôn ngữ của bạn. Các thiết lập được đối chiếu với các tùy chọn thật của công cụ, nên giá trị không được hỗ trợ sẽ bị từ chối thay vì bị lặng lẽ thay đổi.",
+                "Tệp sẽ được dùng.",
+                "Tác vụ sẽ dùng hạn mức hằng ngày nào: một lượt thao tác thông thường, hoặc một lượt thao tác AI cho công cụ AI.",
+                "Hàng đợi dài bao nhiêu: không phải chờ, chờ một chút, chờ lâu hơn, hoặc chưa rõ."
+              ]
+            },
+            "steps": [
+              "Đọc thẻ và kiểm tra các thiết lập.",
+              "Nhấn Bắt đầu. Nén, đổi kích thước, xoay, cắt khung và cắt đoạn video, trích xuất và loại bỏ âm thanh, cùng chép lời đều chạy ngay tại chỗ và kết quả mở trong một cửa sổ.",
+              "Với mọi công cụ khác, nút là Mở: công cụ mở ra với các thiết lập đã được điền sẵn, và bạn nhấn nút của chính công cụ đó.",
+              "Tải kết quả xuống. Tải xuống lại không bao giờ chạy lại tác vụ."
+            ],
+            "tip": "Nếu bạn không muốn chạy, cứ bỏ qua thẻ. Không có gì xảy ra cho đến khi bạn nhấn nút."
           },
           "edit": {
-            "title": "3. Chỉnh sửa bằng cách mô tả kết quả",
-            "body": "Trong Aperture, Darkroom hoặc Motion, hãy đăng nhập và nhấn Ctrl+J, rồi mô tả phong cách hoặc thay đổi bạn muốn. {{brand}} chỉnh sửa dự án thành một bước duy nhất và nêu lý do cho từng thay đổi.",
-            "bullets": {
-              "undo": "Hoàn tác sẽ gỡ toàn bộ chỉnh sửa chỉ trong một bước.",
-              "review": "Tắt tự động áp dụng trong menu thông tin để xem lại từng chỉnh sửa dưới dạng thẻ có nút Áp dụng và Bỏ trước.",
-              "showMe": "Chỉ cho tôi mở điều khiển mà chỉnh sửa đã thay đổi để bạn thấy và học cách dùng nó.",
-              "numbers": "{{brand}} có thể đo bản xem trước, chẳng hạn độ sáng, vùng tối bị cắt mất chi tiết hoặc độ to, rồi điều chỉnh tối đa ba lần, mỗi lần đều dẫn ra con số đo được."
-            }
+            "title": "Quy trình 3: chỉnh sửa bằng cách mô tả kết quả",
+            "body": "Bên trong Aperture, Darkroom hoặc Motion, nhấn Ctrl+J và mô tả điều bạn muốn. Mỗi trình chỉnh sửa có sẵn các gợi ý khởi đầu để thử.",
+            "steps": [
+              "Trong Aperture, hãy thử: sửa ánh sáng, tạo không khí trầm lắng, chỉ giữ lại màu đỏ hoặc phong cách phim cổ điển.",
+              "Trong Darkroom, hãy thử: chỉnh màu kiểu điện ảnh, thêm thanh tên phía dưới, rút ngắn các khoảng lặng hoặc làm giọng nói rõ hơn.",
+              "Trong Motion, hãy thử: dải chữ dưới trượt vào, làm logo của tôi xuất hiện hoặc tạo hiệu ứng xuất hiện cho chữ này.",
+              "Đọc danh sách thay đổi hiện ra, rồi giữ lại, điều chỉnh bằng một tin nhắn tiếp theo hoặc hoàn tác."
+            ],
+            "tip": "Hãy cụ thể về cảm giác, không chỉ về điều khiển: “ấm hơn, sáng hơn và nâng vùng tối lên” cho {{brand}} nhiều thông tin để làm việc hơn là “sửa nó đi”."
+          },
+          "changes": {
+            "title": "Đọc danh sách thay đổi",
+            "body": "Mỗi chỉnh sửa đi kèm danh sách những gì đã thay đổi và một câu lý do cho từng thay đổi, để bạn học được điều khiển nào làm gì. Các dòng được viết bằng lời thường. Đây là những ví dụ thực tế bạn sẽ thấy:",
+            "items": [
+              "Aperture: Đã chuyển mọi thứ sang xám, trừ màu đỏ. Đã tự động chỉnh tông màu và cân bằng trắng. Đã thêm lớp chỉnh sửa phơi sáng cho một phần của ảnh.",
+              "Darkroom: Đã cắt clip phỏng vấn tại 12,4 giây. Đã thêm chuyển cảnh 0,5 giây vào clip thứ hai. Đã bật tự động giảm nhạc dưới giọng nói.",
+              "Motion: Đã thêm mẫu dải chữ dưới. Đã tạo hoạt ảnh độ mờ đục cho tiêu đề. Đã bật phát lặp."
+            ],
+            "numbers": "{{brand}} cũng có thể đo bản xem trước, chẳng hạn độ sáng, bao nhiêu phần của hình bị cắt về đen hoặc trắng, hoặc độ to của âm thanh. Nó có thể điều chỉnh tối đa ba lần để đạt mục tiêu, và mỗi lượt đều dẫn ra con số đã thay đổi."
+          },
+          "showMe": {
+            "title": "Chỉ cho tôi",
+            "body": "Bên cạnh một thay đổi, nút Chỉ cho tôi sẽ mở điều khiển mà chỉnh sửa đã tác động, để bạn thấy thanh trượt hoặc thiết lập ở đúng vị trí của nó. Đây là cách nhanh nhất để học trình chỉnh sửa từ những gì {{brand}} đã làm, và để tinh chỉnh một giá trị bằng tay."
+          },
+          "review": {
+            "title": "Xem lại trước khi áp dụng",
+            "body": "Theo mặc định, chỉnh sửa được áp dụng ngay, trong một bước. Nếu muốn xem trước, hãy tắt tùy chọn tự động áp dụng chỉnh sửa của {{brand}} trong menu thông tin của bảng copilot.",
+            "steps": [
+              "Gửi yêu cầu như bình thường. Chỉnh sửa xuất hiện dưới dạng một thẻ với giá trị trước và sau, cùng dòng “Chưa áp dụng gì cả”.",
+              "Nhấn Áp dụng để thực hiện chỉnh sửa, hoặc Bỏ qua để loại bỏ nó. Chỉnh sửa bị bỏ qua không thay đổi gì cả.",
+              "Bật lại tự động áp dụng bất cứ lúc nào bạn muốn chỉnh sửa được áp dụng ngay."
+            ]
+          },
+          "plan": {
+            "title": "Lên kế hoạch chỉnh sửa",
+            "body": "Với một thay đổi lớn hơn, Lên kế hoạch chỉnh sửa giúp {{brand}} viết toàn bộ chỉnh sửa thành các bước trước. Bạn có thể thực hiện một bước, hoặc tất cả các bước. Một kế hoạch dùng nhiều lượt chỉnh sửa hằng ngày của bạn, và bảng cho bạn biết bao nhiêu lượt trước khi bạn nhấn nút."
+          },
+          "undo": {
+            "title": "Hoàn tác",
+            "body": "Hoàn tác trên thẻ thay đổi, hoặc chức năng hoàn tác riêng của trình chỉnh sửa, sẽ đưa toàn bộ chỉnh sửa trở lại chỉ trong một bước, dù nó đã thay đổi bao nhiêu thứ. Chỉnh sửa theo nguyên tắc tất cả hoặc không có gì: nếu một chỉnh sửa không thể áp dụng, bạn sẽ được báo rằng không có gì thay đổi và dự án vẫn y nguyên như trước."
+          },
+          "limits": {
+            "title": "Giới hạn và hạn mức hằng ngày",
+            "body": "Đặt câu hỏi, hoàn tác một chỉnh sửa và chuẩn bị một tác vụ đều miễn phí. Một tác vụ đã chuẩn bị, khi bạn nhấn nút của nó, sẽ dùng cùng hạn mức thông thường hoặc hạn mức AI như khi bạn tự chạy công cụ. Mỗi tin nhắn tạo ra chỉnh sửa dùng một lượt chỉnh sửa bằng copilot hằng ngày của bạn. Số lượt còn lại hiển thị trong bảng và được làm mới vào nửa đêm theo giờ UTC. Bảng bên dưới được đọc từ máy chủ của chúng tôi, nên luôn được cập nhật."
+          },
+          "privacy": {
+            "title": "Quyền riêng tư",
+            "intro": "{{brand}} là tính năng duy nhất của trang web sử dụng dịch vụ AI bên ngoài. Đây là bản tóm tắt; Chính sách quyền riêng tư, Mục 1.13, là bản mô tả đầy đủ.",
+            "items": [
+              "Tin nhắn của bạn, trang bạn đang xem và, trong trình chỉnh sửa, một bản tóm tắt ngắn dạng văn bản về dự án của bạn được gửi qua OpenRouter đến các mô hình Claude của Anthropic. Các yêu cầu được cấu hình để chỉ đi đến Anthropic, kèm cài đặt của OpenRouter nhằm loại trừ các nhà cung cấp thu thập dữ liệu người dùng.",
+              "Trong trình chỉnh sửa, một ảnh xem trước nhỏ chỉ được gửi nếu bạn cho phép, bằng công tắc xem trước trong bảng. Chúng tôi không bao giờ lưu trữ ảnh xem trước.",
+              "Các tệp phương tiện gốc không được gửi đi. Tệp bạn đính kèm cho trợ lý hướng dẫn được lưu như mọi tệp tải lên khác và được giữ theo thiết lập lưu giữ của bạn.",
+              "Nếu bạn đã đăng nhập, các cuộc trò chuyện của bạn được lưu để bạn xem lại. Chúng tuân theo thời gian lưu giữ của bạn, bạn có thể xóa từng cuộc trò chuyện bất cứ lúc nào, chúng có trong bản xuất dữ liệu của bạn và bị xóa cùng tài khoản. Cuộc trò chuyện của khách không được lưu trữ.",
+              "Với mỗi câu trả lời, chúng tôi lưu một bản ghi sử dụng không chứa văn bản nào: thời gian, phần của trang web, mô hình, số token và chi phí."
+            ]
+          },
+          "whenNot": {
+            "title": "Khi nào không nên dùng",
+            "body": "Nếu bạn đã biết công cụ và các thiết lập, mở công cụ sẽ nhanh hơn là hỏi. Với công việc cần chính xác, chẳng hạn một vùng cắt chính xác hoặc một tốc độ bit cụ thể, hãy tự đặt giá trị. {{brand}} làm theo yêu cầu về một phong cách, nhưng bạn là người quyết định phong cách đó có đúng không, và nó có thể sai, nên hãy kiểm tra những gì nó đã làm."
+          },
+          "faq": {
+            "title": "Khắc phục sự cố",
+            "items": [
+              {
+                "q": "{{brand}} nói rằng nó không thể làm việc đó.",
+                "a": "Nó chỉ xử lý những việc liên quan đến Media Manipulator và từ chối mọi việc khác. Nó cũng từ chối một thiết lập mà công cụ không có. Hãy diễn đạt lại mục tiêu hoặc mở công cụ và tự đặt giá trị."
+              },
+              {
+                "q": "Nút copilot yêu cầu tôi đăng nhập.",
+                "a": "Các copilot chỉnh sửa dự án đang mở của bạn và dùng hạn mức hằng ngày, nên chúng cần tài khoản. Trợ lý hướng dẫn thì không."
+              },
+              {
+                "q": "Tôi đã dùng hết lượt chỉnh sửa của hôm nay.",
+                "a": "Các lượt sẽ được làm mới vào nửa đêm theo giờ UTC. Đặt câu hỏi, hoàn tác và chuẩn bị tác vụ vẫn hoạt động, và gói cao hơn cho bạn nhiều lượt chỉnh sửa hơn mỗi ngày."
+              },
+              {
+                "q": "{{brand}} không bắt đầu tác vụ của tôi.",
+                "a": "Đó là thiết kế có chủ ý. Nó chuẩn bị thẻ, còn bạn nhấn Bắt đầu hoặc Mở."
+              },
+              {
+                "q": "Trợ lý hướng dẫn nói rằng hôm nay nó nghỉ.",
+                "a": "Trợ lý hướng dẫn có giới hạn sử dụng hằng ngày. Trong lúc đó, nó chỉ bạn đến các trang trợ giúp và quay lại vào nửa đêm theo giờ UTC."
+              },
+              {
+                "q": "Tôi muốn báo cáo một câu trả lời kém.",
+                "a": "Mở menu thông tin của bảng copilot và ghi mã phiên bản lời nhắc kèm tin nhắn của bạn gửi đến bộ phận hỗ trợ."
+              }
+            ]
           },
           "cta": {
             "title": "Làm quen với {{brand}}",
-            "body": "Trợ lý hướng dẫn có trên mọi trang công khai. Đọc về những gì nó làm được và cách hạn mức hằng ngày hoạt động trên trang của nó.",
+            "body": "Trợ lý hướng dẫn có trên mọi trang công khai. Hãy đọc những gì nó có thể làm, và cách hạn mức hằng ngày hoạt động, trên trang riêng của nó.",
             "button": "Giới thiệu {{brand}}"
           },
           "related": {
             "title": "Trang liên quan",
-            "intro": "Tìm hiểu thêm về các trình chỉnh sửa mà {{brand}} hoạt động bên trong.",
-            "toolDesc": "Những gì {{brand}} làm, bảng gói và các câu hỏi thường gặp.",
+            "intro": "Thêm thông tin về các trình chỉnh sửa mà {{brand}} hoạt động bên trong.",
+            "toolDesc": "Những gì {{brand}} làm, bảng gói và các câu hỏi mọi người thường đặt ra.",
             "aperture": "Hướng dẫn Aperture",
-            "apertureDesc": "Chỉnh sửa ảnh với lớp và mặt nạ.",
+            "apertureDesc": "Chỉnh sửa ảnh bằng lớp và mặt nạ.",
             "pricing": "Bảng giá",
-            "pricingDesc": "Hạn mức của mọi gói, bao gồm số lượt chỉnh sửa bằng copilot mỗi ngày."
-          }
+            "pricingDesc": "Hạn mức của mọi gói, bao gồm số lượt chỉnh sửa bằng copilot mỗi ngày.",
+            "privacy": "Chính sách quyền riêng tư",
+            "privacyDesc": "Mục 1.13 mô tả chính xác những gì {{brand}} gửi đi và lưu trữ."
+          },
+          "tipLabel": "Mẹo:"
         }
       }
     },
@@ -690,7 +858,90 @@
       "body": "Hãy bắt đầu với tổng quan cấp cao để thấy mọi thứ nền tảng làm được, rồi vào hướng dẫn phù hợp với loại tệp bạn đang xử lý.",
       "ctaHow": "Cách hoạt động",
       "ctaConvert": "Bắt đầu chuyển đổi"
-    }
+    },
+    "intro2": "Mới đến trang web? Hãy chọn mục tiêu phù hợp với việc bạn muốn làm và bắt đầu với hướng dẫn đầu tiên trong nhóm đó. Mỗi hướng dẫn nêu tên công cụ, cho thấy các thiết lập quan trọng và giải thích điều bạn có thể mong đợi, và mỗi hướng dẫn đều dẫn tiếp đến các công cụ và hướng dẫn tiếp theo một cách tự nhiên.",
+    "newest": {
+      "title": "Hướng dẫn mới nhất",
+      "intro": "Các hướng dẫn gần đây nhất, mới nhất ở trên cùng. Danh sách này tự cập nhật mỗi khi có hướng dẫn mới được đăng."
+    },
+    "goalsTitle": "Hướng dẫn theo mục tiêu",
+    "goalsIntro": "Mỗi hướng dẫn thuộc về một mục tiêu. Các nhóm chỉ xuất hiện khi đã có hướng dẫn, nên trang này sẽ mở rộng dần khi có thêm hướng dẫn mới.",
+    "startHere": "Bắt đầu ở đây nếu",
+    "goals": {
+      "files": {
+        "title": "Chuyển đổi, thu nhỏ và dọn dẹp tệp",
+        "description": "Đổi định dạng tệp, làm tệp nhỏ hơn, đổi kích thước hoặc sắp xếp gọn thông tin của tệp, cho hình ảnh và video.",
+        "start": "bạn có một tệp quá lớn, sai định dạng hoặc sai kích thước."
+      },
+      "video": {
+        "title": "Chỉnh sửa và cải thiện video",
+        "description": "Cắt, sắp xếp và xuất video trong Darkroom, và làm cảnh quay mượt hơn bằng AI.",
+        "start": "bạn muốn biến các clip thô thành một video hoàn chỉnh."
+      },
+      "photo": {
+        "title": "Chỉnh sửa ảnh",
+        "description": "Chỉnh ánh sáng và màu sắc, tạo mặt nạ, chữa lành và xuất ảnh với {{brand}}.",
+        "start": "bạn muốn một bức ảnh đẹp hơn mà không phải học một trình chỉnh sửa phức tạp."
+      },
+      "audio": {
+        "title": "Chuyển đổi và sửa âm thanh",
+        "description": "Chuyển đổi âm thanh giữa các định dạng, làm sạch giọng nói và tách giọng hát.",
+        "start": "một bản ghi âm quá ồn, quá lớn hoặc sai định dạng."
+      },
+      "motion": {
+        "title": "Tạo hoạt ảnh cho đồ họa",
+        "description": "Tạo hoạt ảnh cho đồ họa SVG trên dòng thời gian keyframe và xuất thành SVG động, Lottie, mã nguồn hoặc GIF.",
+        "start": "bạn muốn một logo, tiêu đề hoặc biểu tượng chuyển động."
+      },
+      "assistant": {
+        "title": "Làm việc nhanh hơn với trợ lý AI",
+        "description": "Hỏi Medi để tìm đúng công cụ, chạy một tác vụ đã chuẩn bị sẵn, hoặc chỉnh sửa kèm lý do bạn có thể đọc được.",
+        "start": "bạn không biết mình cần công cụ nào, hoặc bạn muốn mô tả một chỉnh sửa hơn là tự thực hiện nó."
+      }
+    },
+    "how": {
+      "title": "Mỗi hướng dẫn gồm những gì",
+      "paragraphs": [
+        "Mỗi hướng dẫn được xây dựng quanh một nhiệm vụ mà bạn có thể thực sự gặp, chứ không phải quanh một danh sách nút bấm. Mỗi hướng dẫn cho biết bạn sẽ đạt được gì, công cụ nào làm việc đó, những thiết lập nào quan trọng và vì sao, và bạn sẽ thấy gì ở mỗi bước, để bạn biết mình có đang đi đúng hướng hay không.",
+        "Mỗi hướng dẫn cũng cho biết khi nào không nên dùng công cụ và nên làm gì thay thế. Một hướng dẫn chỉ quảng bá công cụ thì chẳng phải là hướng dẫn đáng kể."
+      ],
+      "items": [
+        "Mục tiêu và kết quả, nêu ngay từ đầu.",
+        "Công cụ hoặc các công cụ liên quan, kèm liên kết đến trang của chúng.",
+        "Các bước được đánh số, mỗi bước một thao tác, kèm những gì màn hình sẽ hiển thị.",
+        "Những thiết lập đáng thay đổi và những thiết lập nên để nguyên.",
+        "Ghi chú về quyền riêng tư và thời gian lưu giữ ở những chỗ có tải tệp lên.",
+        "Liên kết đến hướng dẫn hoặc công cụ tiếp theo một cách tự nhiên."
+      ],
+      "limitsNote": "Các hướng dẫn không ghi giới hạn hằng ngày hay giá cả, vì các gói có thể thay đổi. Ở chỗ giới hạn có ý nghĩa, hướng dẫn sẽ chỉ đến hạn mức của gói bạn dùng và trang bảng giá, nơi luôn hiển thị các con số hiện hành."
+    },
+    "faq": {
+      "title": "Về các hướng dẫn",
+      "items": [
+        {
+          "q": "Tôi có cần tài khoản để làm theo không?",
+          "a": "Phần lớn hướng dẫn về công cụ chuyển đổi đều làm được mà không cần tài khoản. Tài khoản hữu ích khi hướng dẫn có lưu dự án, giữ kết quả lâu hơn hoặc dùng các tính năng lưu của trình chỉnh sửa, và hướng dẫn sẽ nói rõ ở chỗ cần thiết."
+        },
+        {
+          "q": "Các hướng dẫn có miễn phí không?",
+          "a": "Có. Một số công cụ được đề cập có hạn mức hằng ngày tùy theo gói của bạn; trang bảng giá liệt kê các hạn mức đó."
+        },
+        {
+          "q": "Làm sao tôi biết một hướng dẫn còn cập nhật?",
+          "a": "Mỗi hướng dẫn hiển thị ngày đăng và, nếu có thay đổi, ngày cập nhật gần nhất. Khi một công cụ thay đổi, hướng dẫn của nó được chỉnh sửa lại."
+        },
+        {
+          "q": "Tôi không tìm thấy hướng dẫn cho việc mình cần làm.",
+          "a": "Hãy hỏi Medi, trợ lý AI, ở góc của bất kỳ trang công khai nào: Medi sẽ cho biết đúng công cụ và thiết lập quan trọng. Trang Cách hoạt động giải thích điều gì xảy ra với tệp của bạn."
+        },
+        {
+          "q": "Các hướng dẫn có bằng ngôn ngữ của tôi không?",
+          "a": "Trang web có sẵn bằng 18 ngôn ngữ và các hướng dẫn được dịch cùng với trang."
+        }
+      ]
+    },
+    "openTutorial": "Đọc hướng dẫn",
+    "atLink": "Đăng ngày {{date}}"
   },
   "blog": {
     "title": "Blog về chuyển đổi phương tiện",
@@ -2467,7 +2718,7 @@
       "demoDescription": "Một pháp sư gọi hồn đấu tay đôi với người thầy cũ, Cornelius (một giọng trong thư viện ElevenLabs), giữa cơn bão."
     },
     "howTo": {
-      "title": "Cách sử dụng",
+      "title": "Cách sử dụng hai giọng ElevenLabs",
       "steps": [
         "Mở một giọng bằng liên kết dưới bản demo của nó. Tài khoản ElevenLabs miễn phí là đủ.",
         "Thêm vào danh sách giọng của bạn, rồi chọn trong Text to Speech, trong Studio hoặc qua API.",
@@ -2506,6 +2757,167 @@
         }
       },
       "open": "Mở"
+    },
+    "twoKinds": {
+      "title": "Hai thứ khác nhau trên trang này",
+      "body": "Hai giọng ở trên, Mr. Wintrow và Obsidian, là các bản sao chuyên nghiệp tôi tạo trên ElevenLabs. Chúng nằm trong thư viện giọng nói của ElevenLabs và bạn sử dụng chúng ở đó. Các công cụ giọng nói trong Media Manipulator là một thứ riêng biệt: với chúng, bạn tự tạo giọng nói của mình, bằng các mô hình mở chạy trên máy chủ của chính chúng tôi. Những giọng nói đó không phải giọng ElevenLabs. Mọi nội dung bên dưới đều nói về các công cụ của Media Manipulator, trừ khi có ghi chú khác."
+    },
+    "tools": {
+      "title": "Ba công cụ giọng nói, từng bước một",
+      "intro": "Mỗi công cụ có trang riêng với trình ghi âm, các điều khiển và trình phát. Đây là diễn biến của một phiên làm việc điển hình.",
+      "clone": {
+        "title": "Sao chép giọng nói của bạn",
+        "intro": "Bản sao là một giọng nói dùng lại được, tạo từ một bản ghi âm ngắn giọng của bạn. Không có gì được huấn luyện: mô hình đọc bản ghi âm của bạn mỗi lần giọng nói đó cất lời.",
+        "steps": [
+          "Mở Sao chép giọng nói và ghi âm 5 đến 60 giây lời nói ngay trong trình duyệt, hoặc tải lên một tệp âm thanh hay video (webm, m4a, mp3, wav, ogg, flac hoặc mp4).",
+          "Đánh dấu ô đồng ý: đây là giọng của bạn, hoặc bạn có sự cho phép rõ ràng của người sở hữu giọng nói đó.",
+          "Tạo giọng nói. Một bản nghe thử ngắn được kết xuất và giọng nói được lưu vào tài khoản của bạn, việc này cần đăng nhập.",
+          "Nhập bất kỳ văn bản nào, chọn một ngôn ngữ (có hơn hai mươi ngôn ngữ) và một mức cảm xúc từ điềm tĩnh đến biểu cảm, rồi tạo lời nói.",
+          "Nghe thử, rồi tải xuống MP3, hoặc WAV được tạo ngay trong trình duyệt của bạn."
+        ],
+        "tip": "Hãy ghi âm vài câu tự nhiên trong phòng yên tĩnh, giữ khoảng cách ổn định với micro và không có nhạc phía sau. Một bản ghi âm sạch quan trọng hơn một bản ghi âm dài."
+      },
+      "design": {
+        "title": "Thiết kế giọng nói từ mô tả",
+        "intro": "Một giọng nói được thiết kế không thuộc về ai cả: nó được tạo từ mô tả của bạn và một hạt giống (seed) ngẫu nhiên, không mô phỏng theo bất kỳ người nào.",
+        "steps": [
+          "Mở Thiết kế giọng nói và mô tả giọng nói bằng lời: giới tính, độ tuổi, giọng vùng, âm sắc và tốc độ, hoặc nhấp vào các thẻ đặc điểm để ghép mô tả.",
+          "Nghe thử một câu mẫu. Nghe thử là miễn phí và không bị tính vào hạn mức: ba lượt cho mỗi mô tả mỗi giờ.",
+          "Khi bản nghe thử đã ưng ý, hãy đặt tên cho giọng nói và giữ lại. Đúng giọng nói bạn đã nghe, với cùng hạt giống, được lưu vào tài khoản của bạn.",
+          "Dùng nó như mọi giọng nói đã lưu khác: nhập văn bản, chọn ngôn ngữ và tải âm thanh xuống."
+        ],
+        "tip": "Mô tả bằng tiếng Anh cho kết quả tốt nhất, và giọng nói được thiết kế bằng một trong mười ngôn ngữ. Sau khi được giữ lại, nó có thể nói mọi ngôn ngữ mà công cụ tạo lời nói hỗ trợ."
+      },
+      "change": {
+        "title": "Thay đổi giọng nói trong bản ghi âm",
+        "intro": "Công cụ đổi giọng nói làm việc trên bản ghi âm bạn đã có, theo một trong hai cách.",
+        "steps": [
+          "Đổi cao độ thay đổi cao độ tối đa mười hai nửa cung theo cả hai hướng. Bạn chọn để người nói giữ nguyên đặc trưng giọng hay để đặc trưng thay đổi cùng cao độ, hoặc bắt đầu từ một mẫu có sẵn: Trầm hơn, Cao hơn, Như trẻ em, Lớn tuổi hoặc Điện thoại. Việc này diễn ra tức thì, không cần tài khoản và không dùng AI.",
+          "Chuyển sang một giọng nói dùng công nghệ chuyển đổi giọng nói bằng AI để làm cho lời nói nghe như một trong các giọng nói đã lưu của bạn hoặc một giọng nói có sẵn, vẫn giữ nguyên lời, nhịp và ngữ điệu. Tính năng này cần tài khoản thuộc gói có bao gồm nó.",
+          "Phát bản gốc và kết quả trong trình phát A/B, vốn chuyển đổi liền mạch không có khoảng ngắt, rồi tải xuống MP3 hoặc WAV."
+        ],
+        "tip": "Để chuyển một bản ghi âm sang giọng của người khác, bạn cần sự cho phép của người đó, y như khi sao chép giọng nói."
+      }
+    },
+    "choose": {
+      "title": "Bạn nên dùng công cụ nào?",
+      "items": [
+        {
+          "title": "Bạn muốn nó nghe giống giọng của bạn",
+          "body": "Hãy sao chép giọng nói của bạn. Đây là lựa chọn phù hợp cho phần thuyết minh mà nếu không bạn sẽ phải ghi âm lại."
+        },
+        {
+          "title": "Bạn cần một người dẫn chuyện hoặc nhân vật không phải người thật",
+          "body": "Hãy thiết kế một giọng nói. Không mượn hình ảnh giọng nói của ai cả, và giọng nói đã giữ lại vẫn giống hệt nhau qua các kịch bản và ngôn ngữ."
+        },
+        {
+          "title": "Bạn đã có sẵn bản ghi âm",
+          "body": "Hãy dùng công cụ đổi giọng nói: Đổi cao độ cho hiệu ứng cao độ nhanh, Chuyển sang một giọng nói để trao cho cùng một màn thể hiện một giọng nói khác."
+        },
+        {
+          "title": "Bạn muốn một giọng nói chuyên nghiệp hoàn chỉnh cho một dự án dài",
+          "body": "Hãy dùng Mr. Wintrow hoặc Obsidian trên ElevenLabs, cùng các thẻ âm thanh và công cụ cho nội dung dài mà ElevenLabs cung cấp."
+        }
+      ]
+    },
+    "examples": {
+      "title": "Ví dụ thực tế",
+      "items": [
+        {
+          "title": "Đọc lại một câu trong khóa học",
+          "body": "Bạn đã thuyết minh một bài học và giờ có một câu đã lỗi thời. Hãy sao chép giọng nói của bạn một lần từ một đoạn đọc dài 30 giây, rồi chỉ nhập câu mới, chọn ngôn ngữ và tạo lời nói. Thả đoạn clip vào dòng thời gian thay cho câu cũ. Nếu bạn cũng xuất bản khóa học bằng tiếng Tây Ban Nha, cùng giọng nói đã lưu đó có thể đọc kịch bản đã dịch."
+        },
+        {
+          "title": "Giọng nói cho bản mẫu trò chơi",
+          "body": "Mô tả mỗi nhân vật bằng một dòng (một ông chủ quán trọ già giọng khàn đục, một người đưa thư nhanh nhẹn, lanh lợi). Nghe thử cho đến khi mỗi giọng đều ưng ý, giữ lại chúng và tạo lời thoại. Vì giọng nói đã giữ lại dùng lại hạt giống của nó, mọi câu thoại của ông chủ quán trọ đều nghe như cùng một người."
+        },
+        {
+          "title": "Một đoạn phỏng vấn ẩn danh",
+          "body": "Hạ cao độ của người nói xuống và để đặc trưng giọng thay đổi theo. Cách này che đi giọng nghe của một người, nhưng đó chỉ là xử lý tín hiệu thông thường: lời nói, giọng vùng và cách nói chuyện vẫn có thể giúp nhận ra một người, nên nó không phải là bảo đảm ẩn danh."
+        },
+        {
+          "title": "Sửa một lượt thu",
+          "body": "Một khách mời đã ghi âm một câu sai tông giọng. Hãy chuyển nó sang giọng nói đã lưu của người dẫn chuyện, so sánh với bản gốc trong trình phát A/B và giữ lại bản bạn thích hơn."
+        }
+      ]
+    },
+    "consent": {
+      "title": "Sự đồng ý: bạn được dùng giọng của ai",
+      "paragraphs": [
+        "Bạn chỉ được tạo giọng nói từ bản ghi âm giọng của chính bạn, hoặc của người đã cho phép bạn một cách rõ ràng. Trước khi bất kỳ giọng nói nào được tạo từ bản ghi âm, bạn phải xác nhận: Đây là giọng của tôi, hoặc tôi có sự cho phép rõ ràng của người sở hữu giọng nói này. Chúng tôi lưu thời điểm bạn xác nhận và phiên bản của nội dung đó cùng với giọng nói.",
+        "Điều khoản của chúng tôi cấm dùng các công cụ giọng nói, hoặc âm thanh được tạo bằng chúng, để mạo danh một người thật khi không được phép, để gian lận hoặc phishing, để tạo deepfake chính trị, để quấy rối hoặc bôi nhọ bất kỳ ai, để lách các bước xác minh danh tính bằng giọng nói, hoặc để tạo nội dung tình dục bằng giọng của một người thật khi không có sự đồng ý của họ.",
+        "Chúng tôi có thể gỡ bỏ một giọng nói hoặc bất kỳ âm thanh nào được tạo bằng nó, và tạm ngưng hoặc chấm dứt một tài khoản, nếu chúng tôi cho rằng các quy tắc này đã bị vi phạm."
+      ]
+    },
+    "watermark": {
+      "title": "Hình mờ âm thanh: đó là gì",
+      "paragraphs": [
+        "Lời nói được tạo bằng giọng đã lưu hoặc giọng có sẵn, và các bản ghi âm được chuyển sang một giọng nói, đều mang một hình mờ âm thanh không nghe thấy được, đánh dấu chúng là âm thanh tổng hợp. Hình mờ không chứa thông tin tài khoản và không làm thay đổi cách âm thanh nghe. Các công cụ phát hiện đọc được hình mờ này có thể nhận biết rằng âm thanh đã được tạo ra.",
+        "Âm thanh được thay đổi bằng công cụ đổi cao độ chỉ là xử lý tín hiệu thông thường và không có hình mờ. Bạn không được gỡ bỏ, chỉnh sửa hoặc tìm cách vô hiệu hóa hình mờ. Hình mờ là một nhãn, không phải giấy phép: nó không khiến bất kỳ việc sử dụng giọng của ai đó trở nên chấp nhận được nếu họ không đồng ý."
+      ]
+    },
+    "privacy": {
+      "title": "Điều gì xảy ra với bản ghi âm của bạn",
+      "items": [
+        "Chúng tôi chỉ lưu những gì một giọng nói cần: tên của nó, loại của nó (sao chép hoặc thiết kế), ngôn ngữ của nó, với giọng nói được thiết kế thì có mô tả và hạt giống, một bản ghi âm tham chiếu, một bản nghe thử ngắn, phiên bản của công cụ giọng nói và, với giọng nói được sao chép, thời điểm bạn xác nhận sự đồng ý và phiên bản của nội dung đồng ý.",
+        "Các giọng nói đã lưu được lưu trên máy chủ của chúng tôi và trong Amazon S3, trong tài khoản của bạn, và tuân theo thời gian lưu giữ bạn chọn.",
+        "Việc xử lý giọng nói chạy trên máy chủ GPU của chính chúng tôi. Các bản ghi âm và giọng nói của bạn không bao giờ được chia sẻ với nhà cung cấp AI bên thứ ba và không bao giờ được dùng để huấn luyện bất kỳ mô hình nào.",
+        "Bạn có thể xóa một giọng nói đã lưu bất cứ lúc nào từ Tài khoản, Giọng nói. Bản ghi âm tham chiếu và bản nghe thử của nó bị xóa ngay lập tức; lời nói bạn đã tạo vẫn được giữ cho đến khi hết thời gian lưu giữ riêng của nó. Tất cả giọng nói của bạn bị xóa cùng tài khoản.",
+        "Bản xuất dữ liệu của bạn liệt kê các giọng nói đã lưu, kèm bản ghi sự đồng ý, không kèm âm thanh.",
+        "Trong ứng dụng Android, quyền truy cập micro được yêu cầu vào lần đầu bạn ghi âm trong một công cụ giọng nói, và việc ghi âm dừng lại khi bạn rời ứng dụng. Bạn có thể từ chối và tải lên một tệp âm thanh thay thế."
+      ],
+      "note": "Chính sách quyền riêng tư, Mục 1.10, là bản mô tả đầy đủ, và đó là phiên bản có hiệu lực."
+    },
+    "limits": {
+      "title": "Giới hạn",
+      "body": "Bản ghi âm để sao chép giọng nói phải dài 5 đến 60 giây và có chứa lời nói. Tên giọng nói có thể dài tối đa 60 ký tự, và mô tả tối đa 1.000 ký tự. Số giọng nói bạn có thể lưu, độ dài tối đa của văn bản hoặc bản ghi âm, và số tác vụ giọng nói bạn có mỗi ngày phụ thuộc vào gói của bạn, và các trang công cụ hiển thị con số của riêng bạn trong khi bạn làm việc. Trang bảng giá liệt kê mọi gói."
+    },
+    "notFor": {
+      "title": "Khi nào không nên dùng các công cụ này",
+      "body": "Đừng dùng chúng để bắt chước người chưa đồng ý, để tạo bất cứ thứ gì nhằm đánh lừa người nghe về việc ai đang nói, hoặc như một bảo đảm ẩn danh. Hãy dự liệu kết quả kém hơn với bản ghi âm rất ồn, giọng nói khác thường và giọng vùng nặng. Nếu ngay hôm nay bạn cần phần thuyết minh dài đạt chất lượng phòng thu, các giọng ElevenLabs ở trên, cùng các công cụ cho nội dung dài của chúng, sẽ phù hợp hơn. Yêu cầu đầu tiên sau một thời gian không hoạt động có thể mất tới 20 giây trong khi công cụ giọng nói khởi động."
+    },
+    "faq": {
+      "title": "Câu hỏi thường gặp về giọng nói",
+      "items": [
+        {
+          "q": "Tôi có cần tài khoản không?",
+          "a": "Giọng nói có sẵn và công cụ đổi cao độ hoạt động mà không cần tài khoản. Việc lưu một giọng nói được sao chép hoặc được thiết kế cần có tài khoản, và việc chuyển một bản ghi âm sang giọng nói khác cần tài khoản thuộc gói có bao gồm tính năng đó."
+        },
+        {
+          "q": "Tôi có thể sao chép giọng của người khác không?",
+          "a": "Chỉ khi có sự cho phép rõ ràng của người đó, điều bạn xác nhận trước khi giọng nói được tạo. Điều khoản của chúng tôi cấm mạo danh khi không được phép."
+        },
+        {
+          "q": "Bản sao có nghe giống hệt tôi không?",
+          "a": "Thường thì có thể nhận ra, nhưng không hoàn hảo. Giọng vùng, giọng nói khác thường và bản ghi âm ồn khó xử lý hơn. Một bản ghi âm sạch, tự nhiên cho kết quả tốt nhất."
+        },
+        {
+          "q": "Bản ghi âm của tôi có được dùng để huấn luyện mô hình AI không?",
+          "a": "Không. Không có gì bạn ghi âm, tải lên hoặc tạo bằng các công cụ giọng nói được dùng để huấn luyện bất kỳ mô hình nào."
+        },
+        {
+          "q": "Một giọng nói có thể nói những ngôn ngữ nào?",
+          "a": "Một giọng nói được sao chép hoặc đã giữ lại có thể nói hơn hai mươi ngôn ngữ. Một giọng nói được thiết kế trước tiên được kết xuất bằng một trong mười ngôn ngữ, sau đó có thể nói mọi ngôn ngữ của công cụ tạo lời nói."
+        },
+        {
+          "q": "Âm thanh có được đánh dấu là do máy tạo ra không?",
+          "a": "Lời nói từ giọng đã lưu và giọng có sẵn, cũng như các bản ghi âm đã chuyển đổi, đều mang một hình mờ âm thanh không nghe thấy được. Âm thanh được đổi cao độ chỉ là xử lý tín hiệu thông thường và không có hình mờ."
+        },
+        {
+          "q": "Làm sao để xóa một giọng nói?",
+          "a": "Mở Tài khoản, Giọng nói và xóa nó. Bản ghi âm tham chiếu và bản nghe thử của nó bị gỡ ngay lập tức; lời nói bạn đã tạo vẫn được giữ cho đến khi hết thời gian lưu giữ riêng của nó."
+        },
+        {
+          "q": "Các công cụ này liên quan thế nào đến các giọng ElevenLabs?",
+          "a": "Không liên quan. Mr. Wintrow và Obsidian là các giọng ElevenLabs công khai mà bạn dùng trên ElevenLabs. Các công cụ của Media Manipulator tạo giọng nói của riêng bạn trên máy chủ của chính chúng tôi."
+        }
+      ]
+    },
+    "links": {
+      "title": "Điều khoản chi tiết",
+      "privacy": "Chính sách quyền riêng tư, Mục 1.10: mẫu giọng nói và giọng nói được thiết kế",
+      "terms": "Điều khoản dịch vụ, Mục 8.11: giọng nói",
+      "pricing": "Bảng giá: những gì mỗi gói bao gồm"
     }
   },
   "changelog": {

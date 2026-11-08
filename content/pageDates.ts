@@ -22,10 +22,10 @@ export const PAGE_DATES = {
   '/tools/medi': '2026-11-05',
   // MM85: named founder block.
   '/about': '2026-10-28',
-  // MM26 retention wording.
-  '/how-it-works': '2026-10-23',
-  // MM48 added the Motion tutorial card.
-  '/tutorials': '2026-11-03',
+  // MM-M13 thin-page expansion: the job journey, where work runs, failures, Medi and an FAQ.
+  '/how-it-works': '2026-11-08',
+  // MM-M13 thin-page expansion: data-driven index grouped by goal, newest strip, FAQ.
+  '/tutorials': '2026-11-08',
   // MM85: section 1.11 (contact messages).
   '/privacy-policy': '2026-11-03',
   // MM78 voices terms (section 8.11).
@@ -34,8 +34,8 @@ export const PAGE_DATES = {
   '/tools': '2026-10-29',
   // MM69 currency toggle.
   '/pricing': '2026-10-26',
-  // MM78 voice pages and results.
-  '/voices': '2026-10-28',
+  // MM-M13 thin-page expansion: cloning, designing, changing, consent, watermark, privacy, FAQ.
+  '/voices': '2026-11-08',
   // MM47 licence entries.
   '/licenses': '2026-10-26',
   // MA26: new page.
@@ -60,7 +60,7 @@ export const TUTORIAL_DATES = {
   '/tutorials/content-studio': { datePublished: '2026-05-30', dateModified: '2026-10-24' },
   '/tutorials/motion': { datePublished: '2026-10-26', dateModified: '2026-10-26' },
   '/tutorials/aperture': { datePublished: '2026-11-03', dateModified: '2026-11-03' },
-  '/tutorials/medi': { datePublished: '2026-11-05', dateModified: '2026-11-05' },
+  '/tutorials/medi': { datePublished: '2026-11-05', dateModified: '2026-11-08' },
 } as const satisfies Record<string, { datePublished: string; dateModified: string }>;
 
 export type TutorialPath = keyof typeof TUTORIAL_DATES;
