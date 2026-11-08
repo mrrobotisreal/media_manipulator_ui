@@ -198,7 +198,7 @@
   },
   "howItWorks": {
     "title": "Wie Media Manipulator funktioniert",
-    "intro": "Media Manipulator ist ein browserbasiertes Studio zum Konvertieren, Bearbeiten, Transkribieren und KI-gestützten Verarbeiten von Audio-, Video- und Bilddateien. Jeder Auftrag läuft auf unseren eigenen GPU-gestützten Servern — keine KI-Anbieter Dritter, keine dauerhafte Speicherung, nur schnelle Dateiverarbeitung mit optionalen lokalen KI-Werkzeugen.",
+    "intro": "Media Manipulator ist ein browserbasiertes Studio zum Konvertieren, Bearbeiten, Transkribieren und KI-gestützten Verarbeiten von Audio-, Video- und Bilddateien. Ihre Dateien werden auf Servern verarbeitet, die wir selbst betreiben, darunter ein GPU-Server für die KI-Werkzeuge, und die Konverter-Tools senden sie niemals an einen KI-Anbieter Dritter. Diese Seite begleitet einen Auftrag von dem Moment, in dem Sie eine Datei auswählen, bis zu dem Moment, in dem sie gelöscht wird, damit Sie bei jedem Schritt wissen, wo sich Ihre Datei befindet.",
     "process": {
       "title": "Der Konvertierungsprozess",
       "step1": {
@@ -257,7 +257,7 @@
     },
     "ai": {
       "title": "KI-gestützte Werkzeuge (lokal, GPU-beschleunigt)",
-      "intro": "Media Manipulator führt jede KI-Operation lokal auf unserem eigenen GPU-Server aus. Ihre Dateien werden niemals an einen KI-Anbieter Dritter gesendet. Jeder Konvertierungsauftrag führt eine KI-Operation aus; Standard-Bearbeitungsoptionen werden für diesen Auftrag übersprungen, damit sich das KI-Werkzeug auf ein sauberes Ergebnis konzentrieren kann.",
+      "intro": "Media Manipulator führt jede KI-Operation der Konverter-Tools lokal auf unserem eigenen GPU-Server aus. Diese Tools senden Ihre Dateien niemals an einen KI-Anbieter Dritter; die einzige Ausnahme auf der gesamten Website ist Medi, der Assistent, der weiter unten beschrieben wird. Jeder Konvertierungsauftrag führt eine KI-Operation aus; Standard-Bearbeitungsoptionen werden für diesen Auftrag übersprungen, damit sich das KI-Werkzeug auf ein sauberes Ergebnis konzentrieren kann.",
       "image": {
         "title": "KI-Bildwerkzeuge",
         "items": [
@@ -295,7 +295,7 @@
         "items": [
           "Alle Uploads nutzen HTTPS-Verschlüsselung",
           "Sie bestimmen, wie lange Dateien aufbewahrt werden (24 Stunden für Gäste)",
-          "KI-Verarbeitung läuft auf unseren eigenen Servern — kein KI-Anbieter Dritter sieht Ihre Medien",
+          "Die KI-Werkzeuge des Konverters laufen auf unseren eigenen Servern, daher sieht kein KI-Anbieter Dritter Ihre Dateien (Medi, der Assistent, ist die einzige Ausnahme)",
           "Automatische Inhaltssicherheitsprüfung auf missbräuchliches oder illegales Material"
         ],
         "linkPrefix": "Weitere Einzelheiten finden Sie in unserer",
@@ -315,41 +315,106 @@
     },
     "next": {
       "title": "Wie geht es weiter?",
-      "body": "Bereit, ein bestimmtes Werkzeug auszuprobieren? Schritt-für-Schritt-Anleitungen für jeden Konvertierungstyp finden Sie in unseren Tutorials.",
+      "body": "Möchten Sie ein bestimmtes Tool ausprobieren? Schritt-für-Schritt-Anleitungen für jede Konvertierungsart finden Sie in unseren Tutorials, und die Preisseite zeigt, was jeder Tarif enthält.",
       "ctaTutorials": "Tutorials durchstöbern",
-      "ctaConvert": "Jetzt konvertieren"
+      "ctaConvert": "Jetzt konvertieren",
+      "ctaPricing": "Tarife und Limits ansehen",
+      "ctaStatus": "Dienststatus prüfen",
+      "ctaPrivacy": "Datenschutzerklärung lesen"
+    },
+    "journey": {
+      "title": "Ein Auftrag, vom Upload bis zur Löschung",
+      "intro": "Jedes Konverter-Tool, von der Bildskalierung mit einem Klick bis zum KI-Gesangsentferner, folgt demselben Weg. Wer diesen Weg kennt, versteht, warum manche Aufträge in einer Sekunde fertig sind, warum andere warten und was danach mit Ihrer Datei geschieht.",
+      "stages": [
+        {
+          "title": "1. Sie wählen eine Datei und Einstellungen",
+          "body": "Alles beginnt in Ihrem Browser. Sie wählen ein Tool, legen eine Datei ab und wählen die Optionen. Bevor irgendetwas gesendet wird, prüft die Seite den Dateityp anhand dessen, was das Tool akzeptiert, sowie Größe und Länge anhand der Limits Ihres Tarifs. Diese Limits stammen aus unserer Tariftabelle und nicht von dieser Seite, daher sind sie immer aktuell: Die Zahlen finden Sie auf der Preisseite. Auch die Editoren (Aperture, Motion und Darkroom) erledigen einen Großteil ihrer Arbeit in Ihrem Browser und laden eine Datei nur hoch, wenn Sie exportieren, einen serverseitigen KI-Schritt nutzen oder ein Projekt in Ihrem Konto speichern."
+        },
+        {
+          "title": "2. Der Upload und die ersten Prüfungen",
+          "body": "Die Datei gelangt über eine verschlüsselte HTTPS-Verbindung zu unserer API. Besucher ohne Konto werden an anonymen Geräte- und Besuchskennungen erkannt, die wir nur benötigen, um die Limits des kostenlosen Angebots durchzusetzen und Missbrauch zu verhindern. Bevor die Arbeit beginnt, prüft der Server die Datei erneut und kontrolliert Ihr Tageskontingent, und unsere automatische Inhaltssicherheitsprüfung sucht nach missbräuchlichem oder illegalem Material. Ein Auftrag verbraucht eine Einheit dieses Kontingents: einen Standardvorgang bei Standard-Tools, einen KI-Vorgang bei KI-Tools. Wird der Auftrag abgelehnt oder schlägt er später fehl, erhalten Sie die Einheit zurück."
+        },
+        {
+          "title": "3. Die Auftragswarteschlange",
+          "body": "Angenommene Arbeit wird zu einem Auftrag mit eigener Kennung und einem Status, der von „ausstehend“ über „in Bearbeitung“ zu „abgeschlossen“ oder „fehlgeschlagen“ wechselt. Standardaufträge starten schnell. KI-Aufträge teilen sich eine GPU, daher warten sie in einer Warteschlange, bis sie an der Reihe sind, und kostenpflichtige Tarife kommen an den Anfang dieser Schlange. Ein kostenloser Auftrag, der lange gewartet hat, wird nach vorne gerückt, damit er nie zurückbleibt. Wie ausgelastet die KI-Warteschlange ist, sehen Sie auf der Statusseite."
+        },
+        {
+          "title": "4. Verarbeitung auf unseren Servern",
+          "body": "Standardkonvertierungen laufen mit FFmpeg und ImageMagick. KI-Vorgänge laufen mit offenen Modellen, die wir auf unserem eigenen GPU-Server hosten: Whisper für die Transkription, Real-ESRGAN für die Hochskalierung, rembg und LaMa für das Entfernen von Hintergründen und Objekten, Demucs für Gesang und DeepFilterNet für Rauschen. Während der Auftrag läuft, überträgt der Server laufend Statusmeldungen an Ihren Browser, sodass der Fortschrittsbalken den tatsächlichen Status des Auftrags zeigt. Bricht die Verbindung ab und wird wiederhergestellt, ist die erste Nachricht, die Sie erhalten, eine Momentaufnahme des aktuellen Auftragsstatus, sodass nichts verloren geht."
+        },
+        {
+          "title": "5. Die Ergebnisansicht",
+          "body": "Ein fertiger Auftrag öffnet sich in der Ergebnisansicht, die jede Art von Ausgabe auf ihre eigene Weise zeigt: Bilder mit Zoom, einem Transparenzraster und einem Vorher-Nachher-Vergleich; Video und Audio in einem Player, bei Audio mit einer Wellenform; Transkripte mit Suche und Kopierfunktion; Untertitel, PDFs, Archive und Streaming-Pakete mit eigenen Ansichten. Die Ansicht zeigt, bis wann das Ergebnis aufbewahrt wird. Laden Sie es so oft herunter, wie Sie möchten: Erneutes Herunterladen führt den Auftrag nie noch einmal aus und kostet nichts. Wo sich ein Ergebnis teilen lässt, können Sie einen Link dazu erstellen. Ein Ergebnis kann gleichzeitig eine Handvoll aktiver Freigabelinks haben, jeder läuft von selbst ab (standardmäßig nach drei Tagen), und Sie können alle auf einmal widerrufen."
+        },
+        {
+          "title": "6. Aufbewahrung",
+          "body": "Dateien und Ergebnisse werden für die Aufbewahrungsdauer aufbewahrt, die für Sie gilt. Besucher ohne Konto erhalten 24 Stunden. Wenn Sie angemeldet sind, wählen Sie in jedem Tarif einen Zeitraum von 24 Stunden bis 2 Jahre, standardmäßig sind es 6 Monate. Die Dauer wird ab dem Zeitpunkt gezählt, an dem die jeweilige Datei erstellt wurde, und eine Änderung gilt auch für Ihre bestehenden Dateien, sodass bei einer kürzeren Dauer ältere Dateien bald darauf gelöscht werden können. Ein einzelnes Ergebnis können Sie über Ihren Verlauf länger behalten."
+        },
+        {
+          "title": "7. Löschung",
+          "body": "Wenn die Aufbewahrungsdauer endet, werden die Datei und ihr Ergebnis aus unseren aktiven Systemen gelöscht. Sie können auch früher löschen: ein Ergebnis nach dem anderen, alle Ihre Dateien auf einmal oder Ihr gesamtes Konto, wodurch auch Ihre Projekte und gespeicherten Stimmen entfernt werden. Besucher ohne Konto können ihre eigenen Ergebnisse während der Sitzung löschen, in der sie erstellt wurden. Ist eine Datei einmal gelöscht, ob durch Sie oder durch Fristablauf, können wir sie nicht wiederherstellen. Der Datenexport in Ihrem Konto ist ein ZIP mit Ihrem Verlauf, Ihren Projekten und Ihren Kontodaten und enthält bewusst keine Mediendateien; laden Sie also alles, was Sie behalten möchten, vor Ablauf herunter."
+        }
+      ]
+    },
+    "where": {
+      "title": "Was in Ihrem Browser läuft und was auf unseren Servern",
+      "intro": "Nicht alles ist ein Serverauftrag. Die Aufteilung ist wichtig für den Datenschutz und für die Geschwindigkeit.",
+      "items": [
+        "Konverter-Tools (Bild, Video, Audio, PDF, Metadaten): Die Datei wird hochgeladen und auf unseren Servern verarbeitet, nach den sieben Schritten oben.",
+        "Aperture: Die Live-Vorschau und die Anpassungen laufen in Ihrem Browser. Ein Foto wird hochgeladen, wenn Sie exportieren, ein Motiv per KI auswählen, Stellen reparieren oder Ihre Bearbeitungen auf einen Stapel anwenden, oder wenn Sie ein Projekt in Ihrem Konto speichern.",
+        "Motion: Projekte und Exporte entstehen in Ihrem Browser. Der Server zählt lediglich einen anrechenbaren Export, bevor Ihr Browser ihn ausführt, um das Tageskontingent durchzusetzen, und speichert ein Projekt nur, wenn Sie es in Ihrem Konto speichern.",
+        "Darkroom: Bearbeitung und Vorschau finden in Ihrem Browser statt; Exporte werden auf das tägliche Exportkontingent Ihres Tarifs angerechnet, und Projekte, die Sie in Ihrem Konto speichern, folgen Ihrer Aufbewahrungsdauer.",
+        "Stimmwerkzeuge: Aufnahmen und Text werden auf unserem eigenen GPU-Server verarbeitet, und gespeicherte Stimmen bleiben in Ihrem Konto, bis Sie sie löschen."
+      ]
+    },
+    "failures": {
+      "title": "Wenn etwas schiefgeht",
+      "intro": "Die meisten Probleme fallen in eine von vier Gruppen, und jede hat einen vorhersehbaren Ausgang.",
+      "items": [
+        "Ein Auftrag schlägt während der Verarbeitung fehl. Sein Status wird zu „fehlgeschlagen“, die Seite zeigt den Grund, und die verbrauchte Kontingenteinheit wird zurückgegeben. Versuchen Sie andere Einstellungen, zum Beispiel eine niedrigere Auflösung oder eine kleinere Datei, und führen Sie ihn erneut aus.",
+        "Eine Datei wird abgelehnt, bevor die Arbeit beginnt: Der Typ wird nicht akzeptiert, sie überschreitet das Größen- oder Längenlimit Ihres Tarifs, oder sie hat die Sicherheitsprüfung nicht bestanden. Es wird nichts verarbeitet, und die Einheit wird nicht einbehalten.",
+        "Die Seite kann den Statusdienst nicht erreichen. Die Statusseite zeigt dann „Status nicht verfügbar“ statt „Nicht erreichbar“, denn dass Ihr Browser den Dienst nicht erreicht, beweist nicht, dass die Tools ausgefallen sind. Sie versucht es alle paar Sekunden erneut.",
+        "Sie haben Ihr Tageskontingent überschritten. Das Tool weist Sie darauf hin, und das Kontingent steht am nächsten Tag wieder zur Verfügung. Die Preisseite zeigt, was jeder Tarif enthält."
+      ]
+    },
+    "medi": {
+      "title": "Wo {{brand}} ins Bild passt",
+      "body": "{{brand}}, der Assistent, ist die einzige Funktion, die einen externen KI-Dienst nutzt: Ihre Nachricht, die Seite, auf der Sie sich befinden, und in einem Editor eine kurze Zusammenfassung Ihres Projekts gehen über OpenRouter an die Claude-Modelle von Anthropic, die Original-Mediendateien hingegen nicht. {{brand}} bereitet nur vor. Wenn er einen Konverterauftrag vorbereitet, tritt der Auftrag bei Schritt 1 als Bestätigungskarte in den oben beschriebenen Weg ein, und nichts startet, bevor Sie auf die Schaltfläche klicken. Die Datenschutzerklärung beschreibt in Abschnitt 1.13 genau, was {{brand}} sendet und speichert."
+    },
+    "faq": {
+      "title": "Fragen zur Funktionsweise",
+      "items": [
+        {
+          "q": "Warum hat mein Auftrag gewartet?",
+          "a": "KI-Aufträge teilen sich eine GPU und kommen nacheinander an die Reihe. Kostenpflichtige Tarife kommen an den Anfang der Warteschlange, und ein kostenloser Auftrag, der lange genug gewartet hat, wird nach vorne gerückt, damit er nicht zurückbleibt. Die Statusseite zeigt, wie viele KI-Aufträge gerade laufen und warten."
+        },
+        {
+          "q": "Läuft der Auftrag weiter, wenn ich den Tab schließe?",
+          "a": "Ein gestarteter Auftrag läuft auf unserem Server, nicht in Ihrem Browser-Tab. Wenn er fertig ist, erscheint das Ergebnis in der Liste „Zuletzt“ desselben Browsers und, wenn Sie angemeldet sind, in Ihrem Verlauf, bis seine Aufbewahrungsdauer endet."
+        },
+        {
+          "q": "Wird meine Datei an ein KI-Unternehmen gesendet?",
+          "a": "Nicht von den Konverter-Tools. Deren KI-Vorgänge nutzen offene Modelle, die auf unserem eigenen GPU-Server laufen, und die Datenschutzerklärung führt sie auf. Die Ausnahme ist Medi, der Assistent, der Ihre Nachrichten und, wenn Sie es erlauben, ein kleines Vorschaubild an seinen KI-Anbieter sendet; die Originaldateien sendet er nie."
+        },
+        {
+          "q": "Warum gibt es ein Tageskontingent?",
+          "a": "Die GPU ist eine gemeinsam genutzte Ressource, und Standard- und KI-Vorgänge beanspruchen sie sehr unterschiedlich stark. Ein Tageskontingent hält die Tools für alle nutzbar und verhindert, dass ein einzelner Besucher die Warteschlange füllt. Ein fehlgeschlagener Auftrag gibt seine Einheit zurück."
+        },
+        {
+          "q": "Was ist für Gäste anders als für angemeldete Nutzer?",
+          "a": "Gäste erhalten eine Aufbewahrung von 24 Stunden und eine Liste „Zuletzt“, die genauso lange besteht. Mit einem kostenlosen Konto wählen Sie die Aufbewahrungsdauer, führen einen Verlauf und speichern Projekte. Die Tarife unterscheiden sich in Kontingenten und Limits, die auf der Preisseite aufgeführt sind."
+        },
+        {
+          "q": "Wer kann meine Ergebnisse sehen?",
+          "a": "Nur Sie, es sei denn, Sie erstellen einen Freigabelink; dann kann jeder, der den Link hat, dieses eine Ergebnis öffnen, bis der Link abläuft oder Sie ihn widerrufen. Unsere automatische Sicherheitsprüfung sucht nach missbräuchlichem oder illegalem Material, wie die Datenschutzerklärung erläutert."
+        }
+      ]
     }
   },
   "tutorials": {
     "title": "Media Manipulator Tutorials",
     "intro": "Schritt-für-Schritt-Anleitungen für jedes Media-Manipulator-Werkzeug. Egal, ob Sie eine einzelne MP3 konvertieren, PNGs stapelweise skalieren, Gesichter aus einem Foto unkenntlich machen oder Gesang aus einem Musiktrack herauslösen — die folgenden Tutorials führen Sie durch jede Option im rechten Konvertierungspanel.",
     "readTutorial": "Tutorial lesen →",
-    "categories": {
-      "audio": {
-        "title": "So verwenden Sie den Audiokonverter",
-        "description": "Konvertieren Sie Audiodateien zwischen MP3, WAV, FLAC, OGG und mehr. Wenden Sie EQ, Hall, Rauschunterdrückung, Gesangsisolierung und andere KI-Audiowerkzeuge an."
-      },
-      "video": {
-        "title": "So verwenden Sie den Videokonverter",
-        "description": "Konvertieren und bearbeiten Sie Videodateien zwischen MP4, WebM, MOV, MKV, ProRes und mehr. Zuschneiden, Größe ändern, Filter und Transformationen anwenden und mit Untertiteln transkribieren."
-      },
-      "image": {
-        "title": "So verwenden Sie den Bildkonverter",
-        "description": "Konvertieren Sie Bilder zwischen JPG, PNG, WebP und GIF. Skalieren, zuschneiden, Filter anwenden, Textüberlagerungen hinzufügen, Metadaten verwalten und KI-Werkzeuge wie Gesichtsunschärfe, Hintergrund entfernen, KI-Hochskalierung und Text schwärzen nutzen."
-      },
-      "motion": {
-        "title": "Animations-Tutorials",
-        "description": "Animieren Sie SVG-Grafiken auf einer Keyframe-Zeitleiste und exportieren Sie sie als animiertes SVG, Lottie, Code oder GIF."
-      },
-      "photo": {
-        "title": "Tutorials zur Fotobearbeitung",
-        "description": "Korrigieren Sie Licht und Farbe, maskieren, reparieren und exportieren Sie Fotos mit {{brand}}."
-      },
-      "medi": {
-        "title": "KI-Assistent",
-        "description": "Fragen Sie Medi nach dem passenden Tool, starten Sie einen vorbereiteten Auftrag oder bearbeiten Sie mit einer Begründung, die Sie nachlesen können."
-      }
-    },
     "tutorials": {
       "audioGettingStarted": {
         "title": "Erste Schritte: Audiodateien konvertieren",
@@ -632,41 +697,141 @@
       },
       "medi": {
         "title": "So verwenden Sie {{brand}}, den Assistenten",
-        "excerpt": "Drei kurze Abläufe: das passende Tool finden, {{brand}} einen Auftrag vorbereiten lassen, den Sie bestätigen, und ein Foto, Video oder eine Animation bearbeiten, indem Sie das Ergebnis beschreiben.",
-        "readTime": "5 Min. Lesezeit",
+        "excerpt": "Drei Einstiegsabläufe: das passende Tool finden, {{brand}} einen Auftrag vorbereiten lassen, den Sie bestätigen, und ein Foto, Video oder eine Animation durch Beschreiben bearbeiten, dazu, wie Sie lesen, prüfen und rückgängig machen, was er tut.",
+        "readTime": "9 Min. Lesezeit",
         "page": {
           "eyebrow": "Assistenten-Tutorial",
           "title": "So verwenden Sie {{brand}}",
-          "intro": "{{brand}} ist der Assistent in Media Manipulator: ein Guide auf jeder öffentlichen Seite und ein Copilot in Aperture, Darkroom und Motion. Dieses Tutorial behandelt drei Abläufe in der Reihenfolge, in der die meisten sie brauchen. In allen dreien bereitet {{brand}} nur vor oder schlägt vor; klicken müssen Sie selbst.",
+          "intro": "{{brand}} ist der Assistent in Media Manipulator: ein Guide auf jeder öffentlichen Seite und ein Bearbeitungs-Copilot in Aperture, Darkroom und Motion. Dieses Tutorial behandelt drei Einstiegsabläufe in der Reihenfolge, in der die meisten sie brauchen, und zeigt dann, wie Sie lesen, prüfen und rückgängig machen, was {{brand}} tut. In allen Abläufen bereitet {{brand}} nur vor oder schlägt vor; klicken müssen Sie selbst.",
+          "before": {
+            "title": "Bevor Sie beginnen",
+            "body": "Der Guide ist eine Schaltfläche in der Ecke jeder öffentlichen Seite und braucht kein Konto. Die Copiloten befinden sich in Aperture, Darkroom und Motion: Melden Sie sich an, öffnen Sie ein Projekt und drücken Sie Ctrl+J, oder nutzen Sie die {{brand}}-Schaltfläche im Editor. Fragen Sie in jeder Sprache, die die Website unterstützt, und {{brand}} antwortet in der Sprache, in der Sie schreiben.",
+            "items": [
+              "Der Guide antwortet anhand der Hilfeseiten der Website und spricht nur über Media Manipulator.",
+              "Die Copiloten verändern Ihr geöffnetes Projekt, daher müssen Sie angemeldet sein.",
+              "Ihr Tarif legt fest, wie viele Copilot-Bearbeitungen Sie pro Tag erhalten; die Tabelle gegen Ende dieser Seite liest den Wert live aus."
+            ]
+          },
           "find": {
-            "title": "1. Das passende Tool finden",
-            "body": "Klicken Sie auf einer beliebigen öffentlichen Seite auf die {{brand}}-Schaltfläche in der Ecke und beschreiben Sie das gewünschte Ergebnis in eigenen Worten, in jeder Sprache, die die Website unterstützt. {{brand}} antwortet anhand der Hilfeseiten der Website und nennt das Tool, die eine Einstellung, auf die es ankommt, und einen Link.",
-            "bullets": {
-              "ask": "Nennen Sie das Ziel, nicht das Tool: zum Beispiel „Mach dieses Video klein genug für eine E-Mail“.",
-              "attach": "Hängen Sie mit der Büroklammer eine Datei an. {{brand}} liest Typ, Größe, Dauer und Codecs aus, damit der Rat zu genau dieser Datei passt.",
-              "scope": "Er spricht nur über Media Manipulator und lehnt alles andere ab.",
-              "plans": "Fragen zu Tarifen werden anhand der aktuellen Tariftabelle beantwortet, nie aus dem Gedächtnis."
-            }
+            "title": "Ablauf 1: Das passende Tool finden",
+            "body": "Nutzen Sie diesen Ablauf, wenn Sie das gewünschte Ergebnis kennen, aber nicht das Tool, das es erzeugt.",
+            "steps": [
+              "Klicken Sie auf die {{brand}}-Schaltfläche und beschreiben Sie das Ziel, nicht das Tool: zum Beispiel „Mach dieses Video klein genug für eine E-Mail“.",
+              "Hängen Sie optional mit der Büroklammer eine Datei an. {{brand}} kann Bilder, Videos, Audio- und PDF-Dateien lesen und nutzt Typ, Größe, Dauer und Codecs der Datei, um seinen Rat darauf abzustimmen.",
+              "Lesen Sie die Antwort. Sie nennt das Tool, die eine Einstellung, auf die es ankommt, und einen Link, und sie verweist auf die Hilfeseite, die verwendet wurde.",
+              "Öffnen Sie den Link. Sie landen beim Tool und machen dort weiter."
+            ],
+            "tip": "Fragen zu Tarifen werden anhand der aktuellen Tariftabelle beantwortet, nicht aus dem Gedächtnis, sodass Sie jederzeit fragen können, was ein Tarif enthält."
           },
           "job": {
-            "title": "2. {{brand}} einen Auftrag vorbereiten lassen",
-            "body": "Sagen Sie, was erledigt werden soll, oder legen Sie eine Datei ab und sagen Sie einfach „Mach es“. {{brand}} zeigt eine Bestätigungskarte: die Einstellungen in Ihrer Sprache, wie lang die Warteschlange ist und welches Tageskontingent der Auftrag verbrauchen würde. Gestartet ist noch nichts.",
-            "bullets": {
-              "card": "Lesen Sie die Einstellungen. Sie werden mit den tatsächlichen Optionen des Tools abgeglichen, daher wird ein nicht unterstützter Wert abgelehnt statt verändert.",
-              "start": "„Starten“ führt den Auftrag direkt aus beim Komprimieren, Skalieren, Drehen, Zuschneiden und Kürzen von Videos, beim Extrahieren und Entfernen von Audio sowie bei der Transkription; das Ergebnis öffnet sich in einem Fenster.",
-              "open": "Jedes andere Tool öffnet sich auf seiner eigenen Seite mit ausgefüllten Einstellungen, und dort klicken Sie auf seine Schaltfläche.",
-              "click": "Ein Klick ist immer nötig. Medi startet nie etwas von selbst."
-            }
+            "title": "Ablauf 2: {{brand}} einen Auftrag vorbereiten lassen",
+            "body": "Nutzen Sie diesen Ablauf für schnelle Aufträge mit einem einzelnen Tool. Sagen Sie, was Sie möchten, oder legen Sie eine Datei ab und sagen Sie einfach „Mach es“. {{brand}} antwortet mit einer Bestätigungskarte, und noch hat nichts begonnen.",
+            "card": {
+              "title": "Was auf der Bestätigungskarte steht",
+              "items": [
+                "Das Tool und jede Einstellung, in Ihrer Sprache. Die Einstellungen werden mit den tatsächlichen Optionen des Tools abgeglichen, daher wird ein nicht unterstützter Wert abgelehnt, statt stillschweigend geändert zu werden.",
+                "Die Datei, die verwendet wird.",
+                "Welches Tageskontingent der Auftrag verbrauchen würde: einen Standardvorgang oder bei KI-Tools einen KI-Vorgang.",
+                "Wie lang die Warteschlange ist: keine Wartezeit, eine kurze Wartezeit, eine längere Wartezeit oder unbekannt."
+              ]
+            },
+            "steps": [
+              "Lesen Sie die Karte und prüfen Sie die Einstellungen.",
+              "Klicken Sie auf „Starten“. Video komprimieren, skalieren, drehen, zuschneiden und kürzen, Audio extrahieren und entfernen sowie die Transkription laufen direkt vor Ort, und das Ergebnis öffnet sich in einem Fenster.",
+              "Bei allen anderen Tools heißt die Schaltfläche „Öffnen“: Das Tool öffnet sich mit bereits ausgefüllten Einstellungen, und Sie klicken dort auf seine eigene Schaltfläche.",
+              "Laden Sie das Ergebnis herunter. Erneutes Herunterladen führt den Auftrag nie noch einmal aus."
+            ],
+            "tip": "Wenn Sie den Auftrag lieber nicht ausführen möchten, ignorieren Sie die Karte. Es passiert nichts, bevor Sie auf eine Schaltfläche klicken."
           },
           "edit": {
-            "title": "3. Bearbeiten durch Beschreiben des Ergebnisses",
-            "body": "Melden Sie sich in Aperture, Darkroom oder Motion an, drücken Sie Ctrl+J und beschreiben Sie den Look oder die Änderung, die Sie möchten. {{brand}} bearbeitet das Projekt in einem einzigen Schritt und begründet jede Änderung.",
-            "bullets": {
-              "undo": "„Rückgängig“ nimmt die gesamte Bearbeitung in einem Schritt zurück.",
-              "review": "Schalten Sie im Infomenü die automatische Anwendung aus, um jede Bearbeitung zuerst als Karte mit „Anwenden“ und „Verwerfen“ zu prüfen.",
-              "showMe": "„Zeig mir“ öffnet den Regler, den eine Bearbeitung verändert hat, damit Sie ihn sehen und kennenlernen.",
-              "numbers": "{{brand}} kann die Vorschau messen, etwa Helligkeit, abgeschnittene Schatten oder Lautheit, und bis zu dreimal nachjustieren, wobei jedes Mal der Messwert genannt wird."
-            }
+            "title": "Ablauf 3: Bearbeiten durch Beschreiben des Ergebnisses",
+            "body": "Drücken Sie in Aperture, Darkroom oder Motion Ctrl+J und beschreiben Sie, was Sie möchten. Jeder Editor bietet Vorschläge zum Ausprobieren.",
+            "steps": [
+              "Probieren Sie in Aperture „Licht korrigieren“, „Düstere Stimmung erzeugen“, „Nur das Rot behalten“ oder „Vintage-Filmlook“.",
+              "Probieren Sie in Darkroom „Kinolook-Farbkorrektur“, „Bauchbinde hinzufügen“, „Pausen straffen“ oder „Stimme klarer machen“.",
+              "Probieren Sie in Motion „Bauchbinde, die hereingleitet“, „Mein Logo enthüllen“ oder „Diesen Text einblenden“.",
+              "Lesen Sie die Änderungsliste, die erscheint, und behalten Sie die Änderung dann, passen Sie sie mit einer weiteren Nachricht an oder machen Sie sie rückgängig."
+            ],
+            "tip": "Beschreiben Sie das Gefühl genau, nicht nur den Regler: „wärmer und heller, mit aufgehellten Schatten“ gibt {{brand}} mehr Anhaltspunkte als „Korrigier das“."
+          },
+          "changes": {
+            "title": "Die Änderungsliste lesen",
+            "body": "Jede Bearbeitung kommt mit einer Liste der Änderungen und einer Begründung in einem Satz für jede Änderung, damit Sie lernen, welcher Regler was bewirkt hat. Die Zeilen sind in einfacher Sprache verfasst. Dies sind echte Beispiele dessen, was Sie sehen werden:",
+            "items": [
+              "Aperture: Alles außer Rot grau gemacht. Automatische Tonwerte und automatischen Weißabgleich angewendet. Eine Belichtungsanpassung für einen Teil des Fotos hinzugefügt.",
+              "Darkroom: Den Interview-Clip bei 12,4 s geteilt. Einen 0,5-s-Übergang vor dem zweiten Clip hinzugefügt. Musik-Ducking unter der Stimme eingeschaltet.",
+              "Motion: Die Bauchbinden-Vorlage hinzugefügt. Die Deckkraft des Titels animiert. Endlosschleife eingeschaltet."
+            ],
+            "numbers": "{{brand}} kann auch die Vorschau messen, etwa die Helligkeit, wie viel des Bildes zu Schwarz oder Weiß abgeschnitten ist, oder die Lautheit von Audio. Er kann bis zu dreimal nachjustieren, um sein Ziel zu erreichen, und jede Runde nennt den Messwert, der sich verändert hat."
+          },
+          "showMe": {
+            "title": "Zeig mir",
+            "body": "Neben einer Änderung öffnet „Zeig mir“ das Bedienelement, das die Bearbeitung verändert hat, damit Sie den Regler oder die Einstellung an ihrem Platz sehen. So lernen Sie den Editor am schnellsten anhand dessen kennen, was {{brand}} getan hat, und können einen Wert von Hand feinjustieren."
+          },
+          "review": {
+            "title": "Vor dem Anwenden prüfen",
+            "body": "Standardmäßig werden Bearbeitungen sofort in einem Schritt übernommen. Wenn Sie sie zuerst ansehen möchten, schalten Sie im Infomenü des Copilot-Panels „Änderungen von {{brand}} automatisch anwenden“ aus.",
+            "steps": [
+              "Senden Sie Ihre Anfrage wie gewohnt. Die Bearbeitung erscheint als Karte mit Vorher- und Nachher-Werten und der Zeile „Noch nichts angewendet.“",
+              "Klicken Sie auf „Anwenden“, um die Bearbeitung auszuführen, oder auf „Verwerfen“, um sie zu verwerfen. Verworfene Bearbeitungen ändern nichts.",
+              "Schalten Sie das automatische Anwenden jederzeit wieder ein, wenn Bearbeitungen sofort übernommen werden sollen."
+            ]
+          },
+          "plan": {
+            "title": "Bearbeitung planen",
+            "body": "Bei einer größeren Änderung lässt „Bearbeitung planen“ {{brand}} zuerst die gesamte Bearbeitung als Schritte aufschreiben. Sie können einen einzelnen Schritt ausführen oder alle. Ein Plan verbraucht mehrere Ihrer täglichen Bearbeitungen, und das Panel zeigt Ihnen, wie viele, bevor Sie klicken."
+          },
+          "undo": {
+            "title": "Rückgängig",
+            "body": "„Rückgängig“ auf der Änderungskarte oder die Rückgängig-Funktion des Editors nimmt die gesamte Bearbeitung in einem Schritt zurück, egal wie viel sie verändert hat. Bearbeitungen gelten ganz oder gar nicht: Lässt sich eine nicht anwenden, erfahren Sie, dass nichts geändert wurde, und das Projekt bleibt genau so, wie es war."
+          },
+          "limits": {
+            "title": "Limits und das Tageskontingent",
+            "body": "Fragen stellen, eine Bearbeitung rückgängig machen und einen Auftrag vorbereiten kostet nichts. Ein vorbereiteter Auftrag verbraucht, sobald Sie auf seine Schaltfläche klicken, dasselbe Standard- oder KI-Kontingent, als würden Sie das Tool selbst ausführen. Jede Nachricht, die eine Bearbeitung vornimmt, verbraucht eine Ihrer täglichen Copilot-Bearbeitungen. Ihre verbleibenden Bearbeitungen werden im Panel angezeigt und stehen ab Mitternacht UTC wieder zur Verfügung. Die Tabelle unten wird von unseren Servern gelesen und ist daher immer aktuell."
+          },
+          "privacy": {
+            "title": "Datenschutz",
+            "intro": "{{brand}} ist die einzige Funktion der Website, die einen externen KI-Dienst nutzt. Dies ist eine Zusammenfassung; die vollständige Darstellung finden Sie in der Datenschutzerklärung, Abschnitt 1.13.",
+            "items": [
+              "Ihre Nachricht, die Seite, auf der Sie sich befinden, und in einem Editor eine kurze Textzusammenfassung Ihres Projekts gehen über OpenRouter an die Claude-Modelle von Anthropic. Anfragen sind so eingestellt, dass sie nur an Anthropic gehen, mit der Einstellung von OpenRouter, die Anbieter ausschließt, die Nutzerdaten erheben.",
+              "In einem Editor wird ein kleines Vorschaubild nur gesendet, wenn Sie es mit dem Vorschau-Schalter im Panel erlauben. Vorschaubilder werden von uns niemals gespeichert.",
+              "Original-Mediendateien werden nicht gesendet. Eine Datei, die Sie an den Guide anhängen, wird wie jeder andere Upload gespeichert und gemäß Ihrer Aufbewahrungseinstellung aufbewahrt.",
+              "Wenn Sie angemeldet sind, werden Ihre Unterhaltungen gespeichert, damit Sie sie wieder ansehen können. Sie folgen Ihrer Aufbewahrungsdauer, Sie können eine Unterhaltung jederzeit löschen, sie sind in Ihrem Datenexport enthalten und werden mit Ihrem Konto gelöscht. Unterhaltungen von Gästen werden nicht gespeichert.",
+              "Für jede Antwort bewahren wir einen Nutzungsdatensatz ohne Text auf: den Zeitpunkt, den Bereich der Website, das Modell, die Tokens und die Kosten."
+            ]
+          },
+          "whenNot": {
+            "title": "Wann Sie ihn nicht verwenden sollten",
+            "body": "Wenn Sie das Tool und die Einstellungen bereits kennen, ist es schneller, das Tool direkt zu öffnen, als zu fragen. Für exakte Arbeit, etwa einen präzisen Zuschnitt oder eine bestimmte Bitrate, legen Sie die Werte selbst fest. {{brand}} setzt eine Bitte um einen Look um, aber Sie entscheiden, ob der Look stimmt, und er kann sich irren, also prüfen Sie, was er getan hat."
+          },
+          "faq": {
+            "title": "Fehlerbehebung",
+            "items": [
+              {
+                "q": "{{brand}} sagt, dass er das nicht kann.",
+                "a": "Er befasst sich nur mit Media Manipulator und lehnt alles andere ab. Er lehnt auch eine Einstellung ab, die ein Tool nicht hat. Formulieren Sie das Ziel um, oder öffnen Sie das Tool und legen Sie den Wert selbst fest."
+              },
+              {
+                "q": "Die Copilot-Schaltfläche fordert mich zur Anmeldung auf.",
+                "a": "Die Copiloten bearbeiten Ihr geöffnetes Projekt und verbrauchen ein Tageskontingent, daher brauchen sie ein Konto. Der Guide nicht."
+              },
+              {
+                "q": "Ich habe alle heutigen Bearbeitungen aufgebraucht.",
+                "a": "Sie stehen ab Mitternacht UTC wieder zur Verfügung. Fragen stellen, Rückgängigmachen und Aufträge vorbereiten funktionieren weiterhin, und ein größerer Tarif bietet mehr Bearbeitungen pro Tag."
+              },
+              {
+                "q": "{{brand}} hat meinen Auftrag nicht gestartet.",
+                "a": "Das ist so gewollt. Er bereitet die Karte vor, und Sie klicken auf „Starten“ oder „Öffnen“."
+              },
+              {
+                "q": "Der Guide sagt, dass er für heute Pause macht.",
+                "a": "Der Guide hat eine tägliche Nutzungsobergrenze. In der Zwischenzeit verweist er Sie auf Hilfeseiten und ist ab Mitternacht UTC wieder da."
+              },
+              {
+                "q": "Ich möchte eine schlechte Antwort melden.",
+                "a": "Öffnen Sie das Infomenü des Copilot-Panels und nennen Sie den Code der Prompt-Version in Ihrer Nachricht an den Support."
+              }
+            ]
           },
           "cta": {
             "title": "Lernen Sie {{brand}} kennen",
@@ -680,8 +845,11 @@
             "aperture": "Aperture-Tutorial",
             "apertureDesc": "Ein Foto mit Ebenen und Masken bearbeiten.",
             "pricing": "Preise",
-            "pricingDesc": "Die Kontingente aller Tarife, einschließlich der Copilot-Bearbeitungen pro Tag."
-          }
+            "pricingDesc": "Die Kontingente aller Tarife, einschließlich der Copilot-Bearbeitungen pro Tag.",
+            "privacy": "Datenschutzerklärung",
+            "privacyDesc": "Abschnitt 1.13 beschreibt genau, was {{brand}} sendet und speichert."
+          },
+          "tipLabel": "Tipp:"
         }
       }
     },
@@ -690,7 +858,90 @@
       "body": "Beginnen Sie mit unserem Überblick, um alles zu sehen, was die Plattform kann, und wechseln Sie dann zu einem Tutorial, das zu Ihrem Dateityp passt.",
       "ctaHow": "So funktioniert es",
       "ctaConvert": "Jetzt konvertieren"
-    }
+    },
+    "intro2": "Neu hier? Wählen Sie das Ziel, das zu Ihrem Vorhaben passt, und beginnen Sie mit der ersten Anleitung in dieser Gruppe. Jedes Tutorial nennt das Tool, zeigt die wichtigen Einstellungen und erklärt, was Sie erwarten können, und jedes verweist auf die Tools und Anleitungen, die sich natürlich anschließen.",
+    "newest": {
+      "title": "Neueste Tutorials",
+      "intro": "Die aktuellsten Anleitungen, die neuesten zuerst. Diese Liste aktualisiert sich automatisch, sobald ein Tutorial veröffentlicht wird."
+    },
+    "goalsTitle": "Tutorials nach Ziel",
+    "goalsIntro": "Jedes Tutorial gehört zu einem Ziel. Gruppen erscheinen erst, wenn sie ein Tutorial enthalten, daher wächst diese Seite mit jeder neuen Anleitung.",
+    "startHere": "Beginnen Sie hier, wenn",
+    "goals": {
+      "files": {
+        "title": "Dateien konvertieren, verkleinern und bereinigen",
+        "description": "Ändern Sie das Format einer Datei, machen Sie sie kleiner, skalieren Sie sie oder bereinigen Sie ihre Angaben, für Bilder und Videos.",
+        "start": "Sie eine Datei haben, die zu groß ist, im falschen Format vorliegt oder die falschen Abmessungen hat."
+      },
+      "video": {
+        "title": "Videos bearbeiten und verbessern",
+        "description": "Schneiden, arrangieren und exportieren Sie Videos in Darkroom, und machen Sie Aufnahmen mit KI flüssiger.",
+        "start": "Sie aus Rohclips ein fertiges Video machen möchten."
+      },
+      "photo": {
+        "title": "Fotos bearbeiten",
+        "description": "Korrigieren Sie Licht und Farbe, maskieren, reparieren und exportieren Sie Fotos mit {{brand}}.",
+        "start": "Sie ein besseres Foto möchten, ohne einen komplizierten Editor erlernen zu müssen."
+      },
+      "audio": {
+        "title": "Audio konvertieren und reparieren",
+        "description": "Konvertieren Sie Audio zwischen Formaten, säubern Sie Sprachaufnahmen und trennen Sie Gesang ab.",
+        "start": "eine Aufnahme zu verrauscht, zu groß oder im falschen Format ist."
+      },
+      "motion": {
+        "title": "Grafiken animieren",
+        "description": "Animieren Sie SVG-Grafiken auf einer Keyframe-Zeitleiste und exportieren Sie sie als animiertes SVG, Lottie, Code oder GIF.",
+        "start": "Sie ein Logo, einen Titel oder ein Symbol in Bewegung bringen möchten."
+      },
+      "assistant": {
+        "title": "Schneller arbeiten mit dem Assistenten",
+        "description": "Fragen Sie Medi nach dem passenden Tool, starten Sie einen vorbereiteten Auftrag oder bearbeiten Sie mit einer Begründung, die Sie nachlesen können.",
+        "start": "Sie nicht wissen, welches Tool Sie brauchen, oder eine Bearbeitung lieber beschreiben als selbst umsetzen möchten."
+      }
+    },
+    "how": {
+      "title": "Was jedes Tutorial enthält",
+      "paragraphs": [
+        "Ein Tutorial ist um eine Aufgabe herum aufgebaut, die Sie tatsächlich haben könnten, nicht um eine Liste von Schaltflächen. Jedes sagt, was Sie am Ende haben werden, welches Tool die Arbeit erledigt, welche Einstellungen wichtig sind und warum und was Sie bei jedem Schritt sehen sollten, damit Sie erkennen, ob Sie auf dem richtigen Weg sind.",
+        "Jedes Tutorial sagt auch, wann Sie das Tool nicht verwenden sollten und was Sie stattdessen tun können. Eine Anleitung, die das Tool nur anpreist, ist keine große Hilfe."
+      ],
+      "items": [
+        "Das Ziel und das Ergebnis, gleich zu Beginn genannt.",
+        "Das oder die beteiligten Tools, mit Links zu ihren Seiten.",
+        "Nummerierte Schritte mit je einer Aktion und dem, was der Bildschirm zeigen sollte.",
+        "Die Einstellungen, die sich zu ändern lohnen, und die, die Sie besser unverändert lassen.",
+        "Hinweise zu Datenschutz und Aufbewahrung, wo Dateien hochgeladen werden.",
+        "Links zum nächsten Tutorial oder Tool, das sich natürlich anschließt."
+      ],
+      "limitsNote": "Tutorials nennen keine Tageslimits oder Preise, weil sich Tarife ändern. Wo ein Limit wichtig ist, verweist das Tutorial auf das Kontingent Ihres Tarifs und auf die Preisseite, die immer die aktuellen Zahlen zeigt."
+    },
+    "faq": {
+      "title": "Über die Tutorials",
+      "items": [
+        {
+          "q": "Brauche ich ein Konto, um ihnen zu folgen?",
+          "a": "Die meisten Konverter-Tutorials funktionieren ohne. Ein Konto hilft, wenn eine Anleitung Projekte speichert, Ergebnisse länger aufbewahrt oder gespeicherte Funktionen eines Editors nutzt, und das Tutorial weist dort darauf hin, wo es darauf ankommt."
+        },
+        {
+          "q": "Sind die Tutorials kostenlos?",
+          "a": "Ja. Einige der behandelten Tools haben Tageskontingente, die von Ihrem Tarif abhängen; die Preisseite führt sie auf."
+        },
+        {
+          "q": "Woran erkenne ich, ob ein Tutorial aktuell ist?",
+          "a": "Jedes Tutorial zeigt, wann es veröffentlicht wurde und, falls es geändert wurde, wann es zuletzt aktualisiert wurde. Wenn sich ein Tool ändert, wird sein Tutorial überarbeitet."
+        },
+        {
+          "q": "Ich finde kein Tutorial für meine Aufgabe.",
+          "a": "Fragen Sie Medi, den Assistenten, in der Ecke jeder öffentlichen Seite: Er nennt das passende Tool und die Einstellung, auf die es ankommt. Die Seite „Wie Media Manipulator funktioniert“ erklärt, was mit Ihrer Datei geschieht."
+        },
+        {
+          "q": "Gibt es die Tutorials in meiner Sprache?",
+          "a": "Die Website ist in 18 Sprachen verfügbar, und die Tutorials werden mit ihr übersetzt."
+        }
+      ]
+    },
+    "openTutorial": "Tutorial lesen",
+    "atLink": "Veröffentlicht am {{date}}"
   },
   "blog": {
     "title": "Medienkonvertierungs-Blog",
@@ -2467,7 +2718,7 @@
       "demoDescription": "Ein Nekromant duelliert sich im Sturm mit seinem alten Lehrer Cornelius (eine Stimme aus der ElevenLabs-Bibliothek)."
     },
     "howTo": {
-      "title": "So verwendest du sie",
+      "title": "So verwenden Sie die zwei ElevenLabs-Stimmen",
       "steps": [
         "Öffne eine Stimme über den Link unter ihrer Demo. Ein kostenloses ElevenLabs-Konto genügt.",
         "Füge sie zu deinen Stimmen hinzu und wähle sie in Text to Speech, in Studio oder über die API.",
@@ -2506,6 +2757,167 @@
         }
       },
       "open": "Öffnen"
+    },
+    "twoKinds": {
+      "title": "Zwei verschiedene Dinge auf dieser Seite",
+      "body": "Die zwei Stimmen oben, Mr. Wintrow und Obsidian, sind professionelle Klone, die ich auf ElevenLabs erstellt habe. Sie befinden sich in der ElevenLabs-Stimmbibliothek, und Sie verwenden sie dort. Die Stimmwerkzeuge in Media Manipulator sind etwas anderes: Mit ihnen erstellen Sie Ihre eigenen Stimmen, mit offenen Modellen, die auf unseren eigenen Servern laufen. Diese Stimmen sind keine ElevenLabs-Stimmen. Alles Folgende bezieht sich auf die Werkzeuge von Media Manipulator, sofern nicht anders angegeben."
+    },
+    "tools": {
+      "title": "Die drei Stimmwerkzeuge, Schritt für Schritt",
+      "intro": "Jedes Werkzeug hat eine eigene Seite mit der Aufnahmefunktion, den Bedienelementen und dem Player. So läuft eine typische Sitzung ab.",
+      "clone": {
+        "title": "Ihre Stimme klonen",
+        "intro": "Ein Klon ist eine wiederverwendbare Stimme, die aus einer kurzen Aufnahme von Ihnen entsteht. Es wird nichts trainiert: Das Modell liest Ihre Aufnahme jedes Mal, wenn die Stimme spricht.",
+        "steps": [
+          "Öffnen Sie Stimmklonen und nehmen Sie im Browser 5 bis 60 Sekunden Sprache auf, oder laden Sie eine Audio- oder Videodatei hoch (webm, m4a, mp3, wav, ogg, flac oder mp4).",
+          "Setzen Sie das Häkchen bei der Einwilligung: Dies ist Ihre Stimme, oder Sie haben die ausdrückliche Erlaubnis der Person, der die Stimme gehört.",
+          "Erstellen Sie die Stimme. Eine kurze Vorschau wird gerendert, und die Stimme wird in Ihrem Konto gespeichert, wofür eine Anmeldung nötig ist.",
+          "Geben Sie einen beliebigen Text ein, wählen Sie eine Sprache (mehr als zwanzig stehen zur Verfügung) und eine Emotionsstufe von ruhig bis ausdrucksstark, und erzeugen Sie die Sprache.",
+          "Hören Sie sich das Ergebnis an und laden Sie dann eine MP3 herunter oder eine WAV, die in Ihrem Browser erstellt wird."
+        ],
+        "tip": "Nehmen Sie ein paar natürliche Sätze in einem ruhigen Raum auf, in gleichbleibendem Abstand zum Mikrofon und ohne Musik im Hintergrund. Eine saubere Aufnahme ist wichtiger als eine lange."
+      },
+      "design": {
+        "title": "Eine Stimme aus einer Beschreibung entwerfen",
+        "intro": "Eine entworfene Stimme gehört niemandem: Sie entsteht aus Ihrer Beschreibung und einem zufälligen Seed und ist keiner realen Person nachempfunden.",
+        "steps": [
+          "Öffnen Sie den Stimmdesigner und beschreiben Sie die Stimme in Worten: Geschlecht, Alter, Akzent, Klang und Tempo, oder klicken Sie auf die Merkmal-Chips, um die Beschreibung zusammenzustellen.",
+          "Hören Sie sich einen Beispielsatz in der Vorschau an. Vorschauen sind kostenlos und werden nicht angerechnet: drei pro Beschreibung und Stunde.",
+          "Wenn eine Vorschau passt, geben Sie der Stimme einen Namen und behalten Sie sie. Genau die Stimme, die Sie gehört haben, mit demselben Seed, wird in Ihrem Konto gespeichert.",
+          "Verwenden Sie sie wie jede andere gespeicherte Stimme: Text eingeben, eine Sprache wählen und das Audio herunterladen."
+        ],
+        "tip": "Beschreibungen funktionieren auf Englisch am besten, und eine Stimme wird in einer von zehn Sprachen entworfen. Sobald sie behalten wurde, kann sie jede Sprache sprechen, die das Sprachwerkzeug unterstützt."
+      },
+      "change": {
+        "title": "Die Stimme in einer Aufnahme ändern",
+        "intro": "Der Stimmwechsler arbeitet mit einer Aufnahme, die Sie bereits haben, und zwar auf eine von zwei Arten.",
+        "steps": [
+          "„Verschieben“ ändert die Tonhöhe um bis zu zwölf Halbtöne nach oben oder unten. Sie wählen, ob die sprechende Person ihren Charakter behält oder ob sich der Charakter mit der Tonhöhe verschiebt, oder Sie beginnen mit einer Voreinstellung: Tiefer, Höher, Kindlich, Älter oder Telefon. Das geht sofort, braucht kein Konto und nutzt keine KI.",
+          "„Umwandeln“ nutzt KI-Stimmumwandlung, damit die Sprache wie eine Ihrer gespeicherten Stimmen oder eine voreingestellte Stimme klingt, wobei Wörter, Sprechrhythmus und Intonation erhalten bleiben. Dafür brauchen Sie ein Konto mit einem Tarif, der diese Funktion enthält.",
+          "Spielen Sie das Original und das Ergebnis im A/B-Player ab, der ohne Unterbrechung umschaltet, und laden Sie dann eine MP3 oder eine WAV herunter."
+        ],
+        "tip": "Um eine Aufnahme in die Stimme einer anderen Person umzuwandeln, brauchen Sie die Erlaubnis dieser Person, genau wie beim Klonen."
+      }
+    },
+    "choose": {
+      "title": "Welches Werkzeug sollten Sie verwenden?",
+      "items": [
+        {
+          "title": "Es soll nach Ihnen klingen",
+          "body": "Klonen Sie Ihre Stimme. Das ist die richtige Wahl für Erzählungen, die Sie sonst neu aufnehmen müssten."
+        },
+        {
+          "title": "Sie brauchen einen Erzähler oder eine Figur, die keine reale Person ist",
+          "body": "Entwerfen Sie eine Stimme. Niemandes Abbild wird entliehen, und die behaltene Stimme bleibt über Skripte und Sprachen hinweg identisch."
+        },
+        {
+          "title": "Sie haben die Aufnahme bereits",
+          "body": "Verwenden Sie den Stimmwechsler: „Verschieben“ für einen schnellen Tonhöheneffekt, „Umwandeln“, um derselben Darbietung eine andere Stimme zu geben."
+        },
+        {
+          "title": "Sie möchten eine fertige professionelle Stimme für ein langes Projekt",
+          "body": "Verwenden Sie Mr. Wintrow oder Obsidian auf ElevenLabs, mit den Audio-Tags und den Werkzeugen für lange Texte, die ElevenLabs bietet."
+        }
+      ]
+    },
+    "examples": {
+      "title": "Praxisbeispiele",
+      "items": [
+        {
+          "title": "Eine Zeile eines Kurses neu einsprechen",
+          "body": "Sie haben eine Lektion eingesprochen, und ein Satz ist inzwischen veraltet. Klonen Sie Ihre Stimme einmalig aus einer 30-sekündigen Lesung, geben Sie dann nur den neuen Satz ein, wählen Sie die Sprache und erzeugen Sie ihn. Legen Sie den Clip anstelle der alten Zeile in die Zeitleiste. Wenn Sie den Kurs auch auf Spanisch veröffentlichen, kann dieselbe gespeicherte Stimme das übersetzte Skript vorlesen."
+        },
+        {
+          "title": "Stimmen für einen Spielprototyp",
+          "body": "Beschreiben Sie jede Figur in einer Zeile (ein rauer alter Wirt, ein flinker, aufgeweckter Kurier). Hören Sie sich Vorschauen an, bis jede richtig klingt, behalten Sie sie und erzeugen Sie die Dialoge. Weil eine behaltene Stimme ihren Seed wiederverwendet, klingt jede Zeile des Wirts nach derselben Person."
+        },
+        {
+          "title": "Ein anonymer Interviewausschnitt",
+          "body": "Verschieben Sie die Tonhöhe der sprechenden Person nach unten und lassen Sie den Charakter mitwandern. Das verbirgt, wie jemand klingt, ist aber gewöhnliche Signalverarbeitung: Wörter, Akzent und Sprechweise können eine Person dennoch identifizieren, daher ist es keine Garantie für Anonymität."
+        },
+        {
+          "title": "Eine Aufnahme korrigieren",
+          "body": "Ein Gast hat eine Zeile in der falschen Stimmlage aufgenommen. Wandeln Sie sie in die gespeicherte Stimme des Erzählers um, vergleichen Sie sie im A/B-Player mit dem Original und behalten Sie die Version, die Ihnen besser gefällt."
+        }
+      ]
+    },
+    "consent": {
+      "title": "Einwilligung: Wessen Stimme Sie verwenden dürfen",
+      "paragraphs": [
+        "Sie dürfen eine Stimme nur aus einer Aufnahme Ihrer eigenen Stimme erstellen oder aus der Aufnahme einer Person, die Ihnen ihre ausdrückliche Erlaubnis gegeben hat. Bevor eine Stimme aus einer Aufnahme erstellt wird, müssen Sie bestätigen: „Das ist meine Stimme, oder ich habe die ausdrückliche Erlaubnis der Person, der diese Stimme gehört.“ Wir speichern den Zeitpunkt Ihrer Bestätigung und die Version dieses Textes zusammen mit der Stimme.",
+        "Unsere Bedingungen verbieten es, die Stimmwerkzeuge oder damit erstellte Audiodaten zu verwenden, um eine reale Person ohne Erlaubnis nachzuahmen, Betrug oder Phishing zu begehen, politische Deepfakes zu erstellen, jemanden zu belästigen oder zu verleumden, stimmbasierte Identitätsprüfungen zu umgehen oder sexuelle Inhalte mit der Stimme einer realen Person ohne deren Einwilligung zu erstellen.",
+        "Wir können eine Stimme oder damit erstellte Audiodaten entfernen und ein Konto sperren oder schließen, wenn wir der Ansicht sind, dass gegen diese Regeln verstoßen wurde."
+      ]
+    },
+    "watermark": {
+      "title": "Wasserzeichen: Was es ist",
+      "paragraphs": [
+        "Sprache, die mit einer gespeicherten oder voreingestellten Stimme erzeugt wird, und Aufnahmen, die in eine Stimme umgewandelt werden, tragen ein unhörbares Wasserzeichen, das sie als synthetisch kennzeichnet. Es enthält keine Kontodaten und verändert nicht, wie das Audio klingt. Erkennungswerkzeuge, die es lesen können, stellen fest, dass das Audio erzeugt wurde.",
+        "Mit dem Tonhöhenverschieber verändertes Audio ist gewöhnliche Signalverarbeitung und trägt kein Wasserzeichen. Sie dürfen das Wasserzeichen nicht entfernen, verändern oder zu umgehen versuchen. Das Wasserzeichen ist eine Kennzeichnung, keine Lizenz: Es macht keine Verwendung der Stimme einer Person zulässig, wenn diese nicht zugestimmt hat."
+      ]
+    },
+    "privacy": {
+      "title": "Was mit Ihrer Aufnahme geschieht",
+      "items": [
+        "Wir bewahren nur auf, was eine Stimme braucht: ihren Namen, ihre Art (geklont oder entworfen), ihre Sprache, bei einer entworfenen Stimme die Beschreibung und den Seed, eine Referenzaufnahme, eine kurze Vorschau, die Version der Stimm-Engine und, bei einer geklonten Stimme, den Zeitpunkt Ihrer Einwilligung und die Version des Einwilligungstextes.",
+        "Gespeicherte Stimmen werden auf unseren Servern und in Amazon S3 in Ihrem Konto gespeichert und folgen der von Ihnen gewählten Aufbewahrungsdauer.",
+        "Die Stimmverarbeitung läuft auf unserem eigenen GPU-Server. Ihre Aufnahmen und Stimmen werden niemals an einen KI-Anbieter Dritter weitergegeben und niemals zum Training eines Modells verwendet.",
+        "Sie können eine gespeicherte Stimme jederzeit unter Konto, Stimmen löschen. Ihre Referenzaufnahme und ihre Vorschau werden sofort gelöscht; bereits erzeugte Sprache bleibt bis zum Ende ihrer eigenen Aufbewahrungsdauer erhalten. Alle Ihre Stimmen werden mit Ihrem Konto gelöscht.",
+        "Ihr Datenexport listet Ihre gespeicherten Stimmen mit dem Einwilligungsnachweis auf, ohne das Audio.",
+        "In der Android-App wird die Mikrofonberechtigung angefordert, wenn Sie zum ersten Mal in einem Stimmwerkzeug aufnehmen, und die Aufnahme stoppt, wenn Sie die App verlassen. Sie können ablehnen und stattdessen eine Audiodatei hochladen."
+      ],
+      "note": "Die Datenschutzerklärung, Abschnitt 1.10, enthält die vollständige Darstellung, und ihre Fassung ist maßgeblich."
+    },
+    "limits": {
+      "title": "Limits",
+      "body": "Eine Aufnahme zum Klonen muss 5 bis 60 Sekunden lang sein und Sprache enthalten. Ein Stimmname darf bis zu 60 Zeichen lang sein, eine Beschreibung bis zu 1.000. Wie viele Stimmen Sie behalten können, wie lang ein Text oder eine Aufnahme sein darf und wie viele Stimmaufträge Sie pro Tag erhalten, hängt von Ihrem Tarif ab, und die Werkzeugseiten zeigen Ihnen beim Arbeiten Ihre eigenen Zahlen. Die Preisseite führt jeden Tarif auf."
+    },
+    "notFor": {
+      "title": "Wann Sie diese Werkzeuge nicht verwenden sollten",
+      "body": "Verwenden Sie sie nicht, um jemanden nachzuahmen, der dem nicht zugestimmt hat, um etwas zu produzieren, das Zuhörer darüber täuschen soll, wer spricht, oder als Garantie für Anonymität. Rechnen Sie bei sehr verrauschten Aufnahmen, ungewöhnlichen Stimmen und starken Akzenten mit schwächeren Ergebnissen. Wenn Sie heute lange Erzählungen in Studioqualität brauchen, passen die ElevenLabs-Stimmen oben mit ihren Werkzeugen für längere Texte besser. Die erste Anfrage nach einer ruhigen Phase kann bis zu 20 Sekunden dauern, während die Stimm-Engine lädt."
+    },
+    "faq": {
+      "title": "Häufige Fragen zu Stimmen",
+      "items": [
+        {
+          "q": "Brauche ich ein Konto?",
+          "a": "Voreingestellte Stimmen und der Tonhöhenverschieber funktionieren ohne. Zum Speichern einer geklonten oder entworfenen Stimme brauchen Sie ein Konto, und zum Umwandeln einer Aufnahme in eine andere Stimme ein Konto mit einem Tarif, der diese Funktion enthält."
+        },
+        {
+          "q": "Kann ich die Stimme einer anderen Person klonen?",
+          "a": "Nur mit der ausdrücklichen Erlaubnis dieser Person, die Sie bestätigen, bevor die Stimme erstellt wird. Nachahmung ohne Erlaubnis ist nach unseren Bedingungen verboten."
+        },
+        {
+          "q": "Klingt der Klon genau wie ich?",
+          "a": "Meist erkennbar, aber nicht perfekt. Akzente, ungewöhnliche Stimmen und verrauschte Aufnahmen sind schwieriger. Eine saubere, natürliche Aufnahme liefert das beste Ergebnis."
+        },
+        {
+          "q": "Wird meine Aufnahme zum Training eines KI-Modells verwendet?",
+          "a": "Nein. Nichts, was Sie mit den Stimmwerkzeugen aufnehmen, hochladen oder erzeugen, wird zum Training eines Modells verwendet."
+        },
+        {
+          "q": "Welche Sprachen kann eine Stimme sprechen?",
+          "a": "Eine geklonte oder behaltene Stimme kann mehr als zwanzig Sprachen sprechen. Eine entworfene Stimme wird zunächst in einer von zehn Sprachen gerendert und kann dann jede Sprache des Sprachwerkzeugs sprechen."
+        },
+        {
+          "q": "Ist das Audio als erzeugt gekennzeichnet?",
+          "a": "Sprache aus gespeicherten und voreingestellten Stimmen sowie umgewandelte Aufnahmen tragen ein unhörbares Wasserzeichen. Audio mit verschobener Tonhöhe ist gewöhnliche Signalverarbeitung und trägt keines."
+        },
+        {
+          "q": "Wie lösche ich eine Stimme?",
+          "a": "Öffnen Sie Konto, Stimmen und löschen Sie sie dort. Ihre Referenzaufnahme und ihre Vorschau werden sofort entfernt; bereits erzeugte Sprache bleibt bis zum Ende ihrer eigenen Aufbewahrungsdauer erhalten."
+        },
+        {
+          "q": "Wie hängen diese Werkzeuge mit den ElevenLabs-Stimmen zusammen?",
+          "a": "Gar nicht. Mr. Wintrow und Obsidian sind öffentliche ElevenLabs-Stimmen, die Sie auf ElevenLabs verwenden. Die Werkzeuge von Media Manipulator erstellen Ihre eigenen Stimmen auf unseren eigenen Servern."
+        }
+      ]
+    },
+    "links": {
+      "title": "Das Kleingedruckte",
+      "privacy": "Datenschutzerklärung, Abschnitt 1.10: Stimmproben und entworfene Stimmen",
+      "terms": "Nutzungsbedingungen, Abschnitt 8.11: Stimmen",
+      "pricing": "Preise: Was jeder Tarif enthält"
     }
   },
   "changelog": {
