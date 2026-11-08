@@ -30,21 +30,25 @@ const MediTutorial: React.FC<{ locale?: string; tiers?: TiersResponse | null }> 
   const brand = { values: { brand: MEDI_BRAND } };
   const list = (key: string) => t(`${K}.${key}`, { ...brand, returnObjects: true }) as string[];
   const faq = (t(`${K}.faq.items`, { ...brand, returnObjects: true }) as Array<{ q: string; a: string }>);
-  const Steps: React.FC<{ k: string }> = ({ k }) => (
+  const steps = (k: string) => (
     <ol className="list-decimal ps-6 space-y-1 mb-4">
-      {list(`${k}.steps`).map((s) => (
-        <li key={s}>{s}</li>
+      {list(`${k}.steps`).map((x) => (
+        <li key={x}>{x}</li>
       ))}
     </ol>
   );
-  const Bullets: React.FC<{ k: string }> = ({ k }) => (
+  const bullets = (k: string) => (
     <ul className="list-disc ps-6 space-y-1 mb-4">
-      {list(k).map((s) => (
-        <li key={s}>{s}</li>
+      {list(k).map((x) => (
+        <li key={x}>{x}</li>
       ))}
     </ul>
   );
-  const Tip: React.FC<{ k: string }> = ({ k }) => <p className="mb-6 text-sm"><strong>{t(`${K}.tipLabel`)}</strong> {t(`${K}.${k}.tip`, brand)}</p>;
+  const tip = (k: string) => (
+    <p className="mb-6 text-sm">
+      <strong>{t(`${K}.tipLabel`)}</strong> {t(`${K}.${k}.tip`, brand)}
+    </p>
+  );
   return (
     <>
       <ContentReadTracker slug="medi" contentType="tutorial" />
@@ -60,28 +64,28 @@ const MediTutorial: React.FC<{ locale?: string; tiers?: TiersResponse | null }> 
 
               <h2 className={H2}>{t(`${K}.before.title`)}</h2>
               <p className="mb-3">{t(`${K}.before.body`, brand)}</p>
-              <Bullets k="before.items" />
+              {bullets("before.items")}
 
               <h2 className={H2}>{t(`${K}.find.title`)}</h2>
               <p className="mb-3">{t(`${K}.find.body`, brand)}</p>
-              <Steps k="find" />
-              <Tip k="find" />
+              {steps("find")}
+              {tip("find")}
 
               <h2 className={H2}>{t(`${K}.job.title`, brand)}</h2>
               <p className="mb-3">{t(`${K}.job.body`, brand)}</p>
               <h3 className="text-xl font-semibold mb-2 text-card-foreground">{t(`${K}.job.card.title`)}</h3>
-              <Bullets k="job.card.items" />
-              <Steps k="job" />
-              <Tip k="job" />
+              {bullets("job.card.items")}
+              {steps("job")}
+              {tip("job")}
 
               <h2 className={H2}>{t(`${K}.edit.title`)}</h2>
               <p className="mb-3">{t(`${K}.edit.body`, brand)}</p>
-              <Steps k="edit" />
-              <Tip k="edit" />
+              {steps("edit")}
+              {tip("edit")}
 
               <h2 className={H2}>{t(`${K}.changes.title`)}</h2>
               <p className="mb-3">{t(`${K}.changes.body`, brand)}</p>
-              <Bullets k="changes.items" />
+              {bullets("changes.items")}
               <p className="mb-6">{t(`${K}.changes.numbers`, brand)}</p>
 
               <h2 className={H2}>{t(`${K}.showMe.title`)}</h2>
@@ -89,7 +93,7 @@ const MediTutorial: React.FC<{ locale?: string; tiers?: TiersResponse | null }> 
 
               <h2 className={H2}>{t(`${K}.review.title`)}</h2>
               <p className="mb-3">{t(`${K}.review.body`, brand)}</p>
-              <Steps k="review" />
+              {steps("review")}
 
               <h2 className={H2}>{t(`${K}.plan.title`)}</h2>
               <p className="mb-6">{t(`${K}.plan.body`, brand)}</p>
@@ -105,7 +109,7 @@ const MediTutorial: React.FC<{ locale?: string; tiers?: TiersResponse | null }> 
 
               <h2 className={H2}>{t(`${K}.privacy.title`, brand)}</h2>
               <p className="mb-3">{t(`${K}.privacy.intro`, brand)}</p>
-              <Bullets k="privacy.items" />
+              {bullets("privacy.items")}
               <p className="mb-6">
                 <Link href={localizeHref('/privacy-policy', loc)} className="text-primary underline">
                   {t(`${K}.related.privacy`)}
