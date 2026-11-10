@@ -58,6 +58,7 @@ import { claimInterstitial, limitKeyOf } from './interstitialGate';
 import { formatResetsIn } from './formatLimits';
 import { observedFor, withObservation, type ObservedQuota } from './observedQuota';
 import { useLocalization } from '@/i18n/useLocalization';
+import { useLabSessionCookie } from '@/lib/lab/useLabSessionCookie';
 
 /** How the account panel should be opened when something asks for it. */
 export type AuthIntent = 'signin' | 'signup' | 'upgrade';
@@ -307,6 +308,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const snapshot = snapshotQuery.data;
+  // MM138: only an operator-granted account mirrors its token into the Lab cookie.
+  useLabSessionCookie(user, snapshot?.operatorEligibility ?? null);
 
   // The observed headers only win when they describe the same tier the
   // snapshot does — otherwise a header left over from before a sign-in could

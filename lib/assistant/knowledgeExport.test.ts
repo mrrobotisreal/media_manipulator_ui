@@ -51,6 +51,12 @@ describe('export:medi corpus shape (decision 1, 2)', () => {
     for (const r of routes) expect(r.route).not.toMatch(/^\/(dr|embed|translator|translate-guide|r\/|api)/);
   });
 
+  it('never exports the hidden operator Lab (MM138)', () => {
+    const routes = JSON.parse(files['routes.json']) as Array<{ route: string }>;
+    for (const r of routes) expect(r.route).not.toMatch(/(^|\/)lab(\/|$)/);
+    expect(Object.keys(files).filter((p) => /(^|\/)lab(\/|\.|$)/.test(p))).toEqual([]);
+  });
+
   it('every doc starts with the generated line and has the five sections in order', () => {
     for (const [p, body] of docs) {
       expect(body.startsWith(GENERATED_LINE), p).toBe(true);
