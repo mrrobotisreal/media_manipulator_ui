@@ -14,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         // indexes entirely (also noindex'd via metadata; excluded from sitemap).
         // /r/ is the MM32 result share-link route: private by construction,
         // never indexable (also noindex via metadata when the route lands).
-        disallow: ['/admin/', '/private/', '/dr', '/r/'],
+        disallow: ['/admin/', '/private/', '/dr', '/r/', '/lab'],
       },
       { userAgent: 'Mediapartners-Google', allow: '/' },
       { userAgent: 'Google-Display-Ads-Bot', allow: '/' },

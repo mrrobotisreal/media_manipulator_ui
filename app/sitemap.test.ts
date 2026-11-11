@@ -138,7 +138,7 @@ describe('MM34 flag off (default)', () => {
     expect(rules[0]).toMatchObject({
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/private/', '/dr', '/r/'],
+      disallow: ['/admin/', '/private/', '/dr', '/r/', '/lab'],
     });
     expect(rules).toHaveLength(5);
     expect(r.sitemap).toBe(`${ORIGIN}/sitemap.xml`);
