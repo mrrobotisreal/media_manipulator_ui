@@ -10,6 +10,8 @@ import { BUILTIN_PRESETS } from '@/lib/photo/presets';
 import { panelForLayer } from '@/components/photo/layers-panel';
 import { ANIMATOR_IDS } from '@/lib/vector/animators';
 import { LUMETRI_PARAMS } from '@/lib/studio/effectRegistry';
+import { MEDI_BRAND } from '@/lib/assistant/brand';
+import { PHOTO_BRAND } from '@/lib/photo/brand';
 import {
   GENERATED_LINE,
   MAX_CORPUS_BYTES,
@@ -163,6 +165,28 @@ describe('no tier numbers in the corpus (decision 3)', () => {
       expect(body, `${p} has a per-day number`).not.toMatch(/\b\d[\d,.]*\s*(?:\/\s?day|per day|a day)\b/i);
       for (const sentence of body.split(/(?<=[.!?])\s+|\n/)) expect(statesTierNumber(sentence), `${p}: ${sentence}`).toBe(false);
     }
+  });
+});
+
+describe('brand placeholders', () => {
+  const files = buildMediKnowledge();
+
+  it('never leaves a {{placeholder}} in the corpus', () => {
+    // 2026-11-11: pricing.md said "{{medi}} site guide" because only {{brand}} was filled.
+    for (const [path, body] of Object.entries(files)) {
+      expect(body.match(/\{\{[a-zA-Z]+\}\}/g) ?? [], path).toEqual([]);
+    }
+  });
+
+  it('names each tutorial by its own product, not the photo editor', () => {
+    // 2026-11-11: every tutorial card was filled with the photo editor's brand, so the corpus (and the
+    // live index page) called the assistant's tutorial "How to use Aperture, the assistant".
+    const tutorials = files['pages/tutorials.md'];
+    expect(tutorials).toContain(`How to use ${MEDI_BRAND}, the assistant`);
+    expect(tutorials).toContain(`let ${MEDI_BRAND} prepare a job you confirm`);
+    expect(tutorials).not.toContain(`${PHOTO_BRAND}, the assistant`);
+    expect(tutorials).toContain(`How to edit a photo online with ${PHOTO_BRAND}`);
+    expect(files['pages/pricing.md']).toContain(`${MEDI_BRAND} site guide`);
   });
 });
 

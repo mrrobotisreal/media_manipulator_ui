@@ -32,6 +32,7 @@ import { VOICES } from '@/content/voices';
 import { MOTION_BRAND } from '@/lib/vector/brand';
 import { PHOTO_BRAND } from '@/lib/photo/brand';
 import { MEDI_BRAND } from '@/lib/assistant/brand';
+import { tutorialBrandValues } from '@/content/tutorialIndex';
 import { locales, localizeHref } from '@/i18n/locales';
 import { serverShards } from '@/i18n/generated/serverBundles.generated';
 import { getLocalizedToolBySlug } from '@/i18n/toolPageContent';
@@ -106,10 +107,16 @@ function str(obj: unknown, path: string): string {
   return typeof v === 'string' ? fill(v) : '';
 }
 
-/** Fill the brand placeholders, strip inline markup, collapse whitespace. */
-function fill(s: string): string {
+/**
+ * Fill the brand placeholders, strip inline markup, collapse whitespace. `brand` is what `{{brand}}`
+ * stands for in this string; most brand-templated copy is the photo editor's, hence the default. Copy
+ * about another product must pass its own (the tutorials list does, per `TUTORIAL_INDEX`).
+ */
+function fill(s: string, brand: string = PHOTO_BRAND): string {
   return s
-    .replace(/\{\{brand\}\}/g, PHOTO_BRAND)
+    .replace(/\{\{brand\}\}/g, brand)
+    // `{{medi}}` always means the assistant (the pricing rows use it beside `{{brand}}`).
+    .replace(/\{\{medi\}\}/g, MEDI_BRAND)
     .replace(/<\/?(strong|em|code|b|i|br|span)[^>]*>/g, '')
     .replace(/\s+/g, ' ')
     .trim();
@@ -363,7 +370,7 @@ function pageSpecs(): PageSpec[] {
       details: [
         str(p, 'pricing.subtitle'),
         ...(['anonymous', 'free', 'premium', 'pro'] as const).map((t) => `- ${str(p, `pricing.tier.${t}`)}: ${str(p, `pricing.tierBlurb.${t}`)}`),
-        'Rows compared on the page: ' + Object.values((at(p, 'pricing.rows') ?? {}) as Record<string, string>).map(fill).join('; ') + '.',
+        'Rows compared on the page: ' + Object.values((at(p, 'pricing.rows') ?? {}) as Record<string, string>).map((v) => fill(v)).join('; ') + '.',
         '### FAQ',
         ...Object.entries((at(p, 'pricing.faq') ?? {}) as Record<string, string>).map(([k, v]) => (k.startsWith('q') ? `Q: ${fill(v)}` : `A: ${fill(v)}`)),
         'Premium and Pro are monthly or yearly subscriptions paid with Stripe and can be cancelled any time from Account → Billing.',
@@ -484,7 +491,10 @@ function pageSpecs(): PageSpec[] {
       category: 'guides',
       summary: str(p, 'tutorials.intro'),
       details: Object.entries((at(p, 'tutorials.tutorials') ?? {}) as Record<string, { title?: string; excerpt?: string }>).map(
-        ([, v]) => `- ${fill(v.title ?? '')}: ${fill(v.excerpt ?? '')}`,
+        ([key, v]) => {
+          const b = tutorialBrandValues(key).brand ?? PHOTO_BRAND;
+          return `- ${fill(v.title ?? '', b)}: ${fill(v.excerpt ?? '', b)}`;
+        },
       ),
       keywords: ['tutorials', 'how to', 'learn', 'step by step', 'getting started', 'guide'],
     },

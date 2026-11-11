@@ -7,7 +7,7 @@ import { localizeHref } from '@/i18n/locales';
 import { Panel } from '@/components/darkroom/panel';
 import { PageFaq } from '@/components/page-faq';
 import { TUTORIAL_DATES } from '@/content/pageDates';
-import { TUTORIAL_GOALS, TUTORIAL_INDEX, type TutorialGoal, type TutorialIndexEntry } from '@/content/tutorialIndex';
+import { TUTORIAL_GOALS, TUTORIAL_INDEX, tutorialBrandValues, type TutorialGoal, type TutorialIndexEntry } from '@/content/tutorialIndex';
 import { formatArticleDate } from '@/components/articles/article-byline';
 
 const GOAL_ICONS: Record<TutorialGoal, React.ReactNode> = {
@@ -33,7 +33,7 @@ const TutorialsPage: React.FC<{ locale?: string }> = ({ locale }) => {
   const card = (e: TutorialIndexEntry, withDate: boolean) => (
     <Panel level="2" muted as="article" key={e.path} className="lg:p-6 transition-shadow">
       <h3 className="text-xl font-semibold mb-2 text-card-foreground hover:text-data">
-        <Link href={localizeHref(e.path, loc)}>{t(`tutorials.tutorials.${e.key}.title`, brand)}</Link>
+        <Link href={localizeHref(e.path, loc)}>{t(`tutorials.tutorials.${e.key}.title`, { values: tutorialBrandValues(e.key) })}</Link>
       </h3>
       <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-3">
         <span>{t(`tutorials.tutorials.${e.key}.readTime`)}</span>
@@ -43,7 +43,7 @@ const TutorialsPage: React.FC<{ locale?: string }> = ({ locale }) => {
           </time>
         ) : null}
       </div>
-      <p className="text-muted-foreground mb-4">{t(`tutorials.tutorials.${e.key}.excerpt`, brand)}</p>
+      <p className="text-muted-foreground mb-4">{t(`tutorials.tutorials.${e.key}.excerpt`, { values: tutorialBrandValues(e.key) })}</p>
       <Link href={localizeHref(e.path, loc)} className="text-data hover:text-data font-medium">
         {t('tutorials.readTutorial')}
       </Link>
